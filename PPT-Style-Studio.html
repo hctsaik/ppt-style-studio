@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%226%22 fill=%22%231F4E79%22/%3E%3C/svg%3E">
-<!-- PPT Style Studio 單檔版（自動產生於 2026-10-09 06:50，請勿手改；來源：studio.html + deck.js + pptxgen.bundle.js，以 tools/build_single.py 重建） -->
+<!-- PPT Style Studio 單檔版（自動產生於 2026-10-09 07:06，請勿手改；來源：studio.html + deck.js + pptxgen.bundle.js，以 tools/build_single.py 重建） -->
 <title>PPT Style Studio · 圖解元件客製工作室</title>
 <style>
 :root{--ink:#3A3A3A;--t2:#595959;--mu:#8C8C8C;--line:#E4E4E4;--fill:#F6F6F6;--p:#1F4E79}
@@ -184,7 +184,7 @@ const LANG_OF={card:{outline:'白底外框',gray:'淺灰實心',soft:'白底無�
  chain:{chev:'漸層 V 形箭號',hex:'六角形鏈',gray:'灰卡＋▶',outline:'細框方塊',hairchev:'空心線框 V 形',home:'五邊形箭號',pill:'膠囊鏈',block:'區塊 V 形'}};
 function langOf(p){return{card:LANG_OF.card[p.card]+(p.card==='outline'?' '+p.cardLW+'pt':'')+(p.sh?'＋陰影':''),tag:LANG_OF.tag[p.tag],badge:LANG_OF.badge[p.badge],sep:LANG_OF.sep[p.sep],
  conn:p.cnW+'pt '+({solid:'實線',sysDot:'點線',sysDash:'虛線',dash:'長虛線'}[p.cnDash]||'')+({triangle:'＋三角箭頭',arrow:'＋開放箭頭',stealth:'＋燕尾箭頭',oval:'＋圓點',none:''}[p.cnHead]||''),chain:LANG_OF.chain[p.chain]};}
-const SLIDES=[['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
+const SLIDES=[['catalog','元件總表'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
 
 /* ---------- 文字寬度估算（Node 端排版檢查用；瀏覽器預覽改用 canvas 實測） ---------- */
 function tw(str,size){let u=0;for(const ch of String(str)){const c=ch.codePointAt(0);
@@ -269,7 +269,7 @@ function buildModel(params,opt){
    case 'over':box(.6,.42,.5,.035,{fill:P});tt(.6,.56,11);txt(.6,1.3,11,.34,sub,{size:14,color:G.mute,font:FL});break;
    case 'gold':tt(.6,.38,11);box(.6,1.16,.9,.025,{fill:A});txt(.6,1.27,11,.34,sub,{size:14,color:G.t2,cs:1});break;
    case 'pill':tt(.6,.42,11);box(.6,1.27,.45,.1,{fill:P,r:'full'});txt(1.17,1.13,11,.38,sub,{size:16,color:subC,font:FL});break;
-   case 'dot':{tt(.6,.4,11);const dx=.6+tw(T,ts)+.08;circ(dx+.08,.4+.36+ts/150,.16,{fill:A});txt(.6,1.12,11,.38,sub,{size:15,color:subC});box(.6,1.6,.5,.06,{fill:A});break;}}}
+   case 'dot':{tt(.6,.4,11);const nLat=(T.match(/[A-Za-z]/g)||[]).length;const dx=.6+tw(T,ts)+nLat*ts/72*.07+.08;circ(dx+.08,.4+.36+ts/150,.16,{fill:A});txt(.6,1.12,11,.38,sub,{size:15,color:subC});box(.6,1.6,.5,.06,{fill:A});break;}}}
  function mark(x,yc){switch(st.mark){case 'bar':box(x,yc-.11,.05,.22,{fill:P});return .17;case 'vbar':box(x,yc-.11,.05,.22,{fill:A});return .17;
    case 'sq':box(x,yc-.055,.11,.11,{fill:A});return .22;case 'dot':circ(x+.055,yc,.11,{fill:A});return .22;default:return 0;}}
  function section(x,y,w,t){const dx=mark(x,y+.16);txt(x+dx,y,w-dx,.32,t,{size:LS(13),bold:st.lBold,color:G.ink});ln(x,y+.42,x+w,y+.42,{c:G.l2,w:.75});}
@@ -345,17 +345,20 @@ function buildModel(params,opt){
  function ribbon(x,yc,t,tone,anchor){const T=tone==='p'?st.ribbonTone:'g';tag(x,yc-.14,t,{tone:T,size:10,h:.28,anchor,sh:1});}
 
  /* ---------- 大圓 / 疊圓 ---------- */
- function bigCircle(cx,cy,r,big,sub){const d=2*r,x=cx-r,y=cy-r,lw=st.circleLW;
-  if(st.ring&&st.sh)oval(x-.07,y-.07,d+.14,d+.14,{line:mix(G.l2,'FFFFFF',.35),lw:.75,name:'外圈細環'});
+ function circleShape(x,y,d,o){o=o||{};const lw=st.circleLW,f=o.force?{force:1}:{};
+  if(st.ring&&(st.sh||o.force)&&!o.noring)oval(x-.07,y-.07,d+.14,d+.14,{line:mix(G.l2,'FFFFFF',.35),lw:.75,name:'外圈細環'});
+  const sh=o.nosh?0:'halo';
   switch(st.circle){
-   case 'ring3':oval(x,y,d,d,{fill:'FFFFFF',line:G.l2,lw,sh:'halo',name:'光暈大圓'});break;
-   case 'thick':oval(x,y,d,d,{fill:'FFFFFF',line:G.line,lw,sh:'halo',name:'大圓'});break;
-   case 'gray':oval(x,y,d,d,{fill:GF,sh:'halo',name:'光暈大圓'});break;
-   case 'thin':oval(x,y,d,d,{fill:'FFFFFF',line:G.g7,lw,sh:'halo',name:'大圓'});break;
-   case 'hair':oval(x,y,d,d,{fill:'FFFFFF',line:G.l1,lw,sh:'halo',name:'大圓'});break;
-   case 'double':oval(x,y,d,d,{fill:'FFFFFF',line:G.l2,lw,sh:'halo',name:'大圓'});oval(x+.09,y+.09,d-.18,d-.18,{line:A,lw:.75});break;
-   case 'soft':oval(x,y,d,d,{fill:'FFFFFF',sh:'halo',line:st.sh?null:G.l2,lw:.75,name:'光暈大圓'});break;
-   case 'heavy':oval(x,y,d,d,{fill:'FFFFFF',line:P,lw,sh:'halo',name:'大圓'});break;}
+   case 'ring3':oval(x,y,d,d,Object.assign({fill:'FFFFFF',line:G.l2,lw,sh,name:'光暈大圓'},f));break;
+   case 'thick':oval(x,y,d,d,Object.assign({fill:'FFFFFF',line:G.line,lw,sh,name:'大圓'},f));break;
+   case 'gray':oval(x,y,d,d,Object.assign({fill:GF,sh,name:'光暈大圓'},f));break;
+   case 'thin':oval(x,y,d,d,Object.assign({fill:'FFFFFF',line:G.g7,lw,sh,name:'大圓'},f));break;
+   case 'hair':oval(x,y,d,d,Object.assign({fill:'FFFFFF',line:G.l1,lw,sh,name:'大圓'},f));break;
+   case 'double':oval(x,y,d,d,Object.assign({fill:'FFFFFF',line:G.l2,lw,sh,name:'大圓'},f));{const k=d>1.2?.09:d*.06;oval(x+k,y+k,d-2*k,d-2*k,{line:A,lw:.75});}break;
+   case 'soft':oval(x,y,d,d,Object.assign({fill:'FFFFFF',sh,line:(st.sh||o.force)&&!o.nosh?null:G.l2,lw:.75,name:'光暈大圓'},f));break;
+   case 'heavy':oval(x,y,d,d,Object.assign({fill:'FFFFFF',line:P,lw,sh,name:'大圓'},f));break;}}
+ function bigCircle(cx,cy,r,big,sub){const d=2*r,x=cx-r,y=cy-r;
+  circleShape(x,y,d);
   const bs=Math.round(r*30);
   txt(x,cy-r*.74,d,r*.62,big,{size:bs,bold:st.tBold,color:st.circle==='hair'?PD:G.t2,align:'center',font:st.nFont||(st.tBold?F:FL)});
   if(sub)txt(x+r*.2,cy-r*.1,d-r*.4,r*.56,sub,{size:LS(15),bold:st.lBold,color:st.circle==='hair'?P:PD,align:'center',lsp:1.05,wrap:1});}
@@ -426,6 +429,91 @@ function buildModel(params,opt){
  /* ================= 投影片 ================= */
  const X0=.6,X1=W-.6,CW=X1-X0;const lang=langOf(st);
  const SL={};
+
+ /* ---------- 01 元件總表：每一列一個類別，每格一個可直接複製的獨立圖形，圖說另為文字框 ---------- */
+ SL.catalog=()=>{title('元件總表 Element Catalog','一頁看完本風格的所有元件變化：挑好樣式，直接複製圖形使用');
+  const hue=h=>{const [r,g,b]=[0,2,4].map(i=>parseInt(h.substr(i,2),16)/255);const mx=Math.max(r,g,b),mn=Math.min(r,g,b);if(mx-mn<.12)return -1;
+   let H=mx===r?((g-b)/(mx-mn))%6:mx===g?(b-r)/(mx-mn)+2:(r-g)/(mx-mn)+4;return (H*60+360)%360;};
+  const ha=HASA?hue(A):-1;const sat=(()=>{const v=[0,2,4].map(i=>parseInt(A.substr(i,2),16));return (Math.max(...v)-Math.min(...v))/Math.max(1,Math.max(...v));})();
+  const AL=ha>=0&&(ha<=40||ha>=340)&&sat>.6?A:'C0504D';   // 警示色：暖色強調色沿用，否則用克制的磚紅
+  const ALt=mix(AL,'FFFFFF',.86),ALd=mix(AL,'000000',.25);
+  const LX=X0,CX0=X0+1.42,NC=7,CWc=(X1-CX0)/NC,SW=Math.min(1.2,CWc-.3);
+  const fs=Math.min(LS(11.5),13),PR=st.r>0?Math.min(st.r,.1):0;
+  const rows=[['流程方塊','Process',.42],['判斷菱形','Decision',.52],['開始／結束','Start / End',.38],['箭頭與連接線','Arrows',.4],['例外與警示','Exception',.44],['圓形・編號・標籤','Circle / Badge / Tag',.62],['容器與群組','Container',.46]];
+  const capH=.17,gap=.11;let y=1.9;const total=rows.reduce((a,r)=>a+r[2]+capH+gap,0)-gap;
+  const yEnd=(st.canvas?6.82:6.92);if(y+total>yEnd)y=yEnd-total;
+  const cx=i=>CX0+(i+.5)*CWc;
+  let rowY,rowH;
+  const cap=(i,t)=>txt(cx(i)-CWc/2+.03,rowY+rowH+.035,CWc-.06,capH,t,{size:Math.max(7.5,st.nSize-2),color:G.mute,align:'center',name:'圖說'});
+  const cell=(i,t,fn)=>{fn(cx(i)-SW/2,rowY,SW,rowH,cx(i),rowY+rowH/2);cap(i,t);};
+  const R={};
+  R[0]=()=>{const b=(x,y,w,h,o)=>box(x,y,w,h,Object.assign({r:PR,size:fs,margin:[2,2,0,0],name:'流程方塊'},o));
+   cell(0,'無陰影・外框',(x,y,w,h)=>b(x,y,w,h,{fill:'FFFFFF',line:G.line,lw:1,text:'處理步驟',color:G.ink}));
+   cell(1,'柔和陰影',(x,y,w,h)=>b(x,y,w,h,{fill:'FFFFFF',line:G.l2,lw:.5,sh:'card',force:1,text:'處理步驟',color:G.ink}));
+   cell(2,'淺主色底',(x,y,w,h)=>b(x,y,w,h,{fill:PTn,text:'處理步驟',color:PD}));
+   cell(3,'淺灰底',(x,y,w,h)=>b(x,y,w,h,{fill:GF,text:'處理步驟',color:G.ink}));
+   cell(4,'主色粗外框',(x,y,w,h)=>b(x,y,w,h,{fill:'FFFFFF',line:P,lw:1.75,text:'處理步驟',color:P,bold:1}));
+   cell(5,'深底白字強調',(x,y,w,h)=>b(x,y,w,h,{fill:P,sh:'small',force:1,text:'關鍵步驟',color:'FFFFFF',bold:1}));
+   cell(6,'虛線・待定',(x,y,w,h)=>b(x,y,w,h,{fill:'FFFFFF',line:G.mute,lw:1,dash:'dash',text:'待定步驟',color:G.mute}));};
+  R[1]=()=>{const d=(x,y,w,h,o)=>{const ww=Math.min(w,1.05);el('diamond',x+(w-ww)/2,y,ww,h,Object.assign({size:fs-1,margin:0,inner:.62,text:'判斷？',name:'判斷菱形'},o));};
+   cell(0,'外框',(x,y,w,h)=>d(x,y,w,h,{fill:'FFFFFF',line:G.line,lw:1,color:G.ink}));
+   cell(1,'柔和陰影',(x,y,w,h)=>d(x,y,w,h,{fill:'FFFFFF',line:G.l2,lw:.5,sh:'card',force:1,color:G.ink}));
+   cell(2,'淺主色底',(x,y,w,h)=>d(x,y,w,h,{fill:PTn,color:PD}));
+   cell(3,'主色外框',(x,y,w,h)=>d(x,y,w,h,{fill:'FFFFFF',line:P,lw:1.5,color:P,bold:1}));
+   cell(4,'深底白字強調',(x,y,w,h)=>d(x,y,w,h,{fill:P,sh:'small',force:1,color:'FFFFFF',bold:1}));
+   cell(5,'虛線・待確認',(x,y,w,h)=>d(x,y,w,h,{fill:'FFFFFF',line:G.mute,lw:1,dash:'dash',color:G.mute}));
+   cell(6,'判斷＋分岔箭頭',(x,y,w,h,mx,my)=>{const ww=.62,dx=mx-.36;el('diamond',dx-ww/2,y,ww,h,{fill:'FFFFFF',line:P,lw:1.25,name:'判斷菱形'});
+    const o=Object.assign(CN(),{tail:false});ln(dx+ww/2,my,mx+.55,my,o);
+    txt(dx+ww/2+.02,my-.2,.3,.18,'是',{size:8,color:G.t2,name:'標註'});});};
+  R[2]=()=>{const p=(x,y,w,h,o)=>box(x,y,w,h,Object.assign({r:'full',size:fs,margin:[2,2,0,0],name:'開始／結束'},o));
+   cell(0,'外框',(x,y,w,h)=>p(x,y,w,h,{fill:'FFFFFF',line:P,lw:1.25,text:'開始',color:P,bold:1}));
+   cell(1,'淺主色底',(x,y,w,h)=>p(x,y,w,h,{fill:PTn,text:'開始',color:PD,bold:1}));
+   cell(2,'淺灰底',(x,y,w,h)=>p(x,y,w,h,{fill:GF,text:'開始',color:G.ink,bold:1}));
+   cell(3,'柔和陰影',(x,y,w,h)=>p(x,y,w,h,{fill:'FFFFFF',line:G.l2,lw:.5,sh:'card',force:1,text:'開始',color:G.ink,bold:1}));
+   cell(4,'深底白字強調',(x,y,w,h)=>p(x,y,w,h,{fill:P,sh:'small',force:1,text:'結束',color:'FFFFFF',bold:1}));
+   if(HASA)cell(5,'強調色',(x,y,w,h)=>p(x,y,w,h,{fill:A,text:'結束',color:hue(A)>=35&&hue(A)<=70?G.ink:'FFFFFF',bold:1}));};
+  R[3]=()=>{const L=.58,base=CN();
+   cell(0,'細直線箭頭',(x,y,w,h,mx,my)=>ln(mx-L,my,mx+L,my,Object.assign({},base,{tail:null})));
+   cell(1,'粗箭頭',(x,y,w,h,mx,my)=>ln(mx-L,my,mx+L,my,{c:P,w:Math.max(2.25,st.cnW*1.8),head:'triangle',hs:'med'}));
+   cell(2,'折線連接',(x,y,w,h,mx,my)=>conn([[mx-L,y+.05],[mx,y+.05],[mx,y+h-.05],[mx+L,y+h-.05]],{tail:false}));
+   cell(3,'虛線（次要／回饋）',(x,y,w,h,mx,my)=>ln(mx-L,my,mx+L,my,{c:G.g7,w:Math.max(1,st.cnW),dash:'sysDash',head:'arrow',hs:'med'}));
+   cell(4,'雙向箭頭',(x,y,w,h,mx,my)=>ln(mx-L,my,mx+L,my,{c:base.c,w:base.w,head:'triangle',tail:'triangle',hs:base.hs}));
+   cell(5,'▶ 三角／V 形分隔',(x,y,w,h,mx,my)=>{tri(mx-.36,my-.11,.17,.22,{fill:G.t2,name:'三角分隔'});el('chevron',mx+.18,my-.14,.16,.28,{fill:P,adj:.1,name:'V 形分隔'});});
+   cell(6,'區塊箭頭',(x,y,w,h,mx,my)=>{const l=mx-.55,r=mx+.55,t=my-h/2,b=my+h/2,s1=my-h*.2,s2=my+h*.2,hx=r-h*.6;
+    path([[l,s1],[hx,s1],[hx,t],[r,my],[hx,b],[hx,s2],[l,s2]],{close:true,fill:P,name:'區塊箭頭'});});};
+  R[4]=()=>{
+   cell(0,'警示外框',(x,y,w,h)=>box(x,y,w,h,{fill:'FFFFFF',line:AL,lw:1.5,r:PR,text:'例外狀況',size:fs,color:ALd,bold:1,margin:[2,2,0,0],name:'警示方塊'}));
+   cell(1,'警示淺底',(x,y,w,h)=>box(x,y,w,h,{fill:ALt,r:PR,text:'注意事項',size:fs,color:ALd,bold:1,margin:[2,2,0,0],name:'警示方塊'}));
+   cell(2,'深底警示',(x,y,w,h)=>box(x,y,w,h,{fill:AL,r:PR,sh:'small',force:1,text:'中止',size:fs,color:'FFFFFF',bold:1,margin:[2,2,0,0],name:'警示方塊'}));
+   cell(3,'警告三角',(x,y,w,h,mx,my)=>{const s=h*1.02,tx=mx-s*.58;
+    path([[tx,my+s/2],[tx+s*.58,my-s/2],[tx+s*1.16,my+s/2]],{close:true,fill:AL,name:'警告三角'});
+    txt(tx,my-s*.2,s*1.16,s*.68,'!',{size:Math.round(s*38),bold:1,color:'FFFFFF',align:'center',font:'Arial',name:'驚嘆號'});});
+   cell(4,'× 錯誤標記',(x,y,w,h,mx,my)=>{const d=h*.82;circ(mx,my,d,{fill:AL,text:'×',size:Math.round(d*44),bold:1,color:'FFFFFF',margin:0,font:'Arial',name:'錯誤標記'});});
+   cell(5,'紅點提示',(x,y,w,h)=>{box(x,y,w,h,{fill:'FFFFFF',line:G.line,lw:1,r:PR,text:'待處理',size:fs,color:G.ink,margin:[2,2,0,0],name:'流程方塊'});circ(x+w-.02,y+.02,.17,{fill:AL,line:'FFFFFF',lw:1.25,name:'提示紅點'});});
+   cell(6,'例外路徑（虛線）',(x,y,w,h,mx,my)=>conn([[mx-.58,y+.06],[mx-.1,y+.06],[mx-.1,y+h-.06],[mx+.58,y+h-.06]],{c:AL,w:1.25,dash:'sysDash',head:'triangle',hs:'med',tail:false}));};
+  R[5]=()=>{const d=rowH;
+   cell(0,'光暈大圓',(x,y,w,h,mx,my)=>circleShape(mx-d/2,y,d,{force:1,noring:1}));
+   cell(1,'光暈＋外圈細環',(x,y,w,h,mx,my)=>{if(st.ring&&st.sh)circleShape(mx-d/2,y,d,{force:1});else{oval(mx-d/2-.06,y-.06,d+.12,d+.12,{line:mix(G.l2,'FFFFFF',.35),lw:.75,name:'外圈細環'});circleShape(mx-d/2,y,d,{force:1,noring:1});}});
+   cell(2,'無陰影外框圓',(x,y,w,h,mx,my)=>oval(mx-d/2,y,d,d,{fill:'FFFFFF',line:G.line,lw:Math.min(st.circleLW,2),name:'外框圓'}));
+   cell(3,'編號徽章',(x,y,w,h,mx,my)=>{[1,2,3].forEach((n,j)=>badge(mx-.42+j*.42,my,bnum(n),{d:.34,alt:j===2}));});
+   cell(4,'深色標籤',(x,y,w,h,mx,my)=>{tag(mx,my-.16,'主要標籤',{anchor:'center',h:.32,size:11,sh:1});});
+   cell(5,'淺色／灰階標籤',(x,y,w,h,mx,my)=>{const a=tagW('輔助',11,.3),b=tagW('灰階',11,.3);let xx=mx-(a+b+.08)/2;tag(xx,my-.15,'輔助',{tone:'a',h:.3,size:11});tag(xx+a+.08,my-.15,'灰階',{tone:'g',h:.3,size:11});});
+   cell(6,'小圓點',(x,y,w,h,mx,my)=>{[P,A,G.line].forEach((c,j)=>circ(mx-.3+j*.3,my,.15,{fill:c,name:'圓點'}));});};
+  R[6]=()=>{
+   cell(0,'虛線群組框',(x,y,w,h)=>{box(x,y+.06,w,h-.06,{line:G.mute,lw:.75,dash:'dash',r:PR,name:'群組框'});box(x+.1,y-.03,.62,.18,{fill:st.canvas?st.canvasColor:'FFFFFF',text:'群組 A',size:8,color:G.t2,margin:0,name:'群組名稱'});});
+   cell(1,'淺灰面板',(x,y,w,h)=>box(x,y,w,h,{fill:GF,r:PR,name:'淺灰面板'}));
+   cell(2,'本風格卡片',(x,y,w,h)=>cardBase(x,y,w,h));
+   cell(3,'卡片＋陰影',(x,y,w,h)=>cardBase(x,y,w,h,{force:1}));
+   cell(4,'表頭色帶卡',(x,y,w,h)=>{box(x,y,w,h,{fill:'FFFFFF',line:G.l2,lw:.75,r:PR,name:'卡片'});topRound(x,y,w,.16,rr(w,h,PR),{fill:P,name:'表頭'});});
+   cell(5,'頂邊／側邊色條',(x,y,w,h)=>{box(x,y,w,h,{fill:'FFFFFF',line:G.l2,lw:.75,name:'卡片'});box(x,y,.06,h,{fill:A,name:'側邊色條'});});
+   cell(6,'半透明寬欄條',(x,y,w,h,mx,my)=>{const cw=.34;colBar(mx-cw-.06,y,cw,h);colBar(mx+.06,y,cw,h);});};
+  rows.forEach((r,i)=>{rowY=y;rowH=r[2];
+   const lcy=y+(rowH+capH)/2;
+   txt(LX,lcy-.22,1.32,.44,[{t:r[0],s:10.5,b:1,c:G.t2,br:1},{t:r[1],s:8,c:G.mute,f:nf}],{lsp:1.05,valign:'middle',name:'類別'});
+   R[i]();
+   y+=rowH+capH+gap;
+   if(i<rows.length-1)ln(LX,y-gap/2,X1,y-gap/2,{c:mix(G.l2,'FFFFFF',.45),w:.5});});
+  ln(CX0-.12,1.9-.04,CX0-.12,y-gap,{c:mix(G.l2,'FFFFFF',.3),w:.5});};
  SL.guide=()=>{title('風格規範','色彩、字級與元件語言一覽'+(st.desc?'：'+st.desc.split('，')[0]:''));
   section(X0,1.95,5.5,'色彩 Palette');
   const sw=[[P,'主色'],[PD,'深色'],[PTn,'淺色']].concat(HASA?[[A,'輔助色']]:[]).concat([[G.ink,'文字'],[G.mute,'註解'],[G.line,'框線'],[G.fill,'底色']]);
@@ -828,7 +916,7 @@ const G=[
 
 /* ---------- 狀態 ---------- */
 let S={base:'navy',p:templateParams('navy'),slide:0,autoTone:true};
-try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=s.base;S.p=Object.assign(templateParams(s.base),s.p);S.slide=Math.min(+s.slide||0,D.SLIDES.length-1);S.autoTone=s.autoTone!==false;}}catch(e){}
+try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=s.base;S.p=Object.assign(templateParams(s.base),s.p);S.slide=0;/* 每次開啟都先顯示 01 元件總表 */S.autoTone=s.autoTone!==false;}}catch(e){}
 const persist=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify({base:S.base,p:S.p,slide:S.slide,autoTone:S.autoTone}));}catch(e){}};
 const hex=v=>String(v||'').replace('#','').toUpperCase();
 const toast=(t)=>{const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>e.classList.remove('on'),2200);};

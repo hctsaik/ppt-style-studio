@@ -221,7 +221,7 @@ const G=[
 
 /* ---------- 狀態 ---------- */
 let S={base:'navy',p:templateParams('navy'),slide:0,autoTone:true};
-try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=s.base;S.p=Object.assign(templateParams(s.base),s.p);S.slide=Math.min(+s.slide||0,D.SLIDES.length-1);S.autoTone=s.autoTone!==false;}}catch(e){}
+try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=s.base;S.p=Object.assign(templateParams(s.base),s.p);S.slide=0;/* 每次開啟都先顯示 01 元件總表 */S.autoTone=s.autoTone!==false;}}catch(e){}
 const persist=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify({base:S.base,p:S.p,slide:S.slide,autoTone:S.autoTone}));}catch(e){}};
 const hex=v=>String(v||'').replace('#','').toUpperCase();
 const toast=(t)=>{const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>e.classList.remove('on'),2200);};
