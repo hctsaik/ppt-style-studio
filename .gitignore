@@ -1,0 +1,20 @@
+# 相依套件（npm i 可重建）
+node_modules/
+# 舊版備份與舊輸出
+old/
+out/old/
+# 網頁預覽圖（tools/previews.py 可重建）
+preview/
+# 渲染暫存（bash review.sh 可重建）；只保留 README 用的幾張截圖
+render/*
+!render/single-file.png
+!render/studio-1.png
+!render/studio-2.png
+!render/compare-navy-ex1.png
+!render/overview.png
+# 其他暫存
+*.pdf
+*.zip
+*.map
+.DS_Store
+Thumbs.db

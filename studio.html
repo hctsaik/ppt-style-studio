@@ -1,0 +1,339 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PPT Style Studio · 圖解元件客製工作室</title>
+<style>
+:root{--ink:#3A3A3A;--t2:#595959;--mu:#8C8C8C;--line:#E4E4E4;--fill:#F6F6F6;--p:#1F4E79}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:#fff;color:var(--ink);font:13px/1.5 "Microsoft JhengHei","微軟正黑體","Noto Sans TC","Noto Sans CJK TC","PingFang TC",system-ui,sans-serif;display:flex;flex-direction:column;overflow:hidden}
+button,select,input{font-family:inherit;font-size:12.5px;color:var(--ink)}
+header{flex:none;display:flex;align-items:center;gap:14px;padding:10px 20px;border-bottom:1px solid var(--line)}
+header h1{margin:0;font-size:17px;font-weight:800;letter-spacing:.3px;display:flex;align-items:center;gap:8px}
+header h1 i{width:10px;height:10px;border-radius:50%;background:var(--p);display:inline-block;transition:.2s}
+header h1 small{font-size:12px;font-weight:400;color:var(--mu)}
+header .sp{flex:1}
+.btn{border:1px solid #D6D6D6;background:#fff;border-radius:7px;padding:7px 12px;cursor:pointer;white-space:nowrap;transition:.15s}
+.btn:hover{border-color:#B5B5B5;background:#FAFAFA}
+.btn.pri{background:var(--p);border-color:var(--p);color:#fff;font-weight:700}
+.btn.pri:hover{filter:brightness(1.12)}
+.btn:disabled{opacity:.55;cursor:wait}
+.wrap{flex:1;display:grid;grid-template-columns:340px 1fr;min-height:0}
+aside{border-right:1px solid var(--line);overflow-y:auto;padding:12px 14px 40px}
+aside::-webkit-scrollbar,.thumbs::-webkit-scrollbar{width:8px;height:8px}aside::-webkit-scrollbar-thumb,.thumbs::-webkit-scrollbar-thumb{background:#DDD;border-radius:9px}
+.cap{font-size:11px;font-weight:700;color:var(--mu);letter-spacing:1.4px;margin:4px 0 8px}
+.tpls{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.tpl{border:1px solid var(--line);border-radius:8px;padding:7px 8px;cursor:pointer;background:#fff;text-align:left;transition:.15s}
+.tpl:hover{border-color:#C8C8C8}
+.tpl.on{border-color:var(--c);box-shadow:0 0 0 1px var(--c) inset}
+.tpl b{display:flex;align-items:center;gap:5px;font-size:12.5px}
+.tpl b em,.tpl b u{width:9px;height:9px;border-radius:50%;flex:none;background:var(--c)}
+.tpl b u{background:var(--a)}
+.tpl span{display:block;font-size:10.5px;color:var(--mu)}
+details{border-top:1px solid var(--line)}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;padding:10px 2px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:8px;user-select:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"";width:6px;height:6px;border-right:1.5px solid var(--mu);border-bottom:1.5px solid var(--mu);transform:rotate(-45deg);transition:.15s;margin:0 3px}
+details[open] summary:before{transform:rotate(45deg)}
+summary .n{margin-left:auto;font-size:10.5px;font-weight:400;color:var(--p);background:#F1F4F8;border-radius:99px;padding:0 7px;display:none}
+summary .n.on{display:inline-block}
+.grp{padding:0 2px 12px}
+.row{display:grid;grid-template-columns:92px 1fr;align-items:center;gap:8px;min-height:30px;position:relative}
+.row>label{color:var(--t2);font-size:12px}
+.row.mod>label:after{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--p);margin-left:5px;vertical-align:middle}
+.row select{width:100%;padding:4px 6px;border:1px solid #DADADA;border-radius:6px;background:#fff;height:28px}
+.rng{display:flex;align-items:center;gap:8px}
+.rng input{flex:1;accent-color:var(--p)}
+.rng output{width:52px;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);font-size:12px}
+.col{display:flex;align-items:center;gap:6px}
+.col input[type=color]{width:30px;height:24px;border:1px solid #D6D6D6;border-radius:5px;padding:1px;background:#fff;cursor:pointer}
+.col input[type=text]{width:74px;padding:3px 6px;border:1px solid #DADADA;border-radius:5px;font-family:Consolas,monospace;font-size:11.5px;text-transform:uppercase}
+.sw{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0 8px}
+.pal{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;cursor:pointer;height:22px;width:58px}
+.pal:hover{border-color:#AAA}.pal i{flex:1}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{border:1px solid #DADADA;background:#fff;border-radius:6px;padding:3px 8px;cursor:pointer;font-size:11.5px}
+.seg button.on{border-color:var(--p);color:var(--p);background:#F3F6FA;font-weight:700}
+.tg{position:relative;width:34px;height:19px;flex:none}
+.tg input{opacity:0;width:0;height:0}
+.tg span{position:absolute;inset:0;background:#D5D5D5;border-radius:99px;cursor:pointer;transition:.15s}
+.tg span:before{content:"";position:absolute;left:2px;top:2px;width:15px;height:15px;border-radius:50%;background:#fff;box-shadow:0 1px 2px #0003;transition:.15s}
+.tg input:checked+span{background:var(--p)}.tg input:checked+span:before{transform:translateX(15px)}
+.hint{font-size:11px;color:var(--mu);line-height:1.5;margin:2px 0 6px}
+main{display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff}
+.bar{flex:none;display:flex;align-items:center;gap:10px;padding:10px 22px 6px}
+.bar h2{margin:0;font-size:15px}.bar h2 small{color:var(--mu);font-weight:400;font-size:12px;margin-left:6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.chips span{background:var(--fill);border-radius:5px;padding:2px 8px;font-size:11px;color:var(--t2)}
+.chips span b{color:var(--mu);font-weight:600;margin-right:4px}
+.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:6px 22px}
+.slide{position:relative;aspect-ratio:16/9;max-width:100%;max-height:100%;height:100%;border:1px solid #E2E2E2;border-radius:4px;box-shadow:0 4px 18px #00000012;background:#fff;overflow:hidden}
+.slide svg{display:block;width:100%;height:100%}
+.nav{position:absolute;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;border:1px solid #DDD;background:#fffd;cursor:pointer;opacity:0;transition:.15s}
+.slide:hover .nav{opacity:1}.nav.l{left:8px}.nav.r{right:8px}
+.foot{flex:none;padding:4px 22px 12px}
+.status{display:flex;align-items:center;gap:12px;font-size:11.5px;color:var(--mu);margin-bottom:6px}
+.status .ok{color:#3C8D5A}.status .bad{color:#C0504D;cursor:help}
+.thumbs{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 6px}
+.th{flex:none;width:150px;cursor:pointer;text-align:center}
+.th div{aspect-ratio:16/9;border:1px solid #E3E3E3;border-radius:3px;overflow:hidden;background:#fff;transition:.15s}
+.th div svg{display:block;width:100%;height:100%}
+.th.on div{border-color:var(--p);box-shadow:0 0 0 2px var(--p)}
+.th span{display:block;font-size:11px;color:var(--t2);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.th.on span{color:var(--p);font-weight:700}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:#333;color:#fff;padding:8px 16px;border-radius:8px;font-size:12.5px;opacity:0;transition:.25s;pointer-events:none;z-index:9}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.fatal{position:fixed;inset:0;background:#fff;display:flex;align-items:center;justify-content:center;z-index:99;padding:30px}
+.fatal div{max-width:640px;border:1px solid #E4E4E4;border-left:5px solid #C0504D;border-radius:10px;padding:26px 30px;box-shadow:0 6px 24px #0000000f}
+.fatal h2{margin:0 0 10px;font-size:20px;color:#C0504D}.fatal p{margin:8px 0;font-size:15px;line-height:1.7;color:#3A3A3A}.fatal small{color:#8C8C8C;font-size:12px}
+</style></head><body>
+<header>
+ <h1><i id="dot"></i>PPT Style Studio <small>精緻圖解元件・客製工作室（背景永遠白色）</small></h1>
+ <span class="sp"></span>
+ <button class="btn" id="bReset" title="捨棄所有微調，回到目前範本的預設值">↺ 重設為範本</button>
+ <button class="btn" id="bSave" title="把目前設定存成 JSON 檔">儲存設定 JSON</button>
+ <button class="btn" id="bLoad" title="載入先前存的 JSON 設定">載入設定</button>
+ <input type="file" id="fLoad" accept=".json,application/json" hidden>
+ <button class="btn" id="bOne">下載本頁 .pptx</button>
+ <button class="btn pri" id="bAll">下載整份 .pptx</button>
+</header>
+<div class="wrap">
+ <aside id="panel">
+  <div class="cap">範本</div>
+  <div class="tpls" id="tpls"></div>
+  <div id="groups"></div>
+ </aside>
+ <main>
+  <div class="bar"><h2 id="sTitle"></h2><div class="chips" id="chips"></div></div>
+  <div class="stage"><div class="slide" id="big"></div></div>
+  <div class="foot">
+   <div class="status" id="status"></div>
+   <div class="thumbs" id="thumbs"></div>
+  </div>
+ </main>
+</div>
+<div class="toast" id="toast"></div>
+<script src="pptxgen.bundle.js"></script>
+<script src="deck.js"></script>
+<script>
+(function(){
+ 'use strict';
+ var miss=[];
+ if(typeof window.PptxGenJS==='undefined')miss.push('pptxgen.bundle.js');
+ if(typeof window.JSZip==='undefined'&&miss.indexOf('pptxgen.bundle.js')<0)miss.push('JSZip');
+ if(typeof window.Deck==='undefined')miss.push('deck.js');
+ if(!miss.length)return;
+ window.__studioFatal=miss;
+ var box=document.createElement('div');box.className='fatal';box.setAttribute('role','alert');
+ box.innerHTML='<div><h2>⚠ 無法載入工作室所需的檔案</h2>'+
+  '<p><b>請先把整個壓縮檔解壓縮，再開啟 studio.html；或直接開啟單檔版 <span style="white-space:nowrap">PPT-Style-Studio.html</span></b></p>'+
+  '<p>常見原因：在壓縮檔裡直接雙擊 studio.html，Windows 只會暫時解出這一個檔案，旁邊的程式檔不會一起出來。</p>'+
+  '<small>缺少：'+miss.join('、')+'（位置：'+location.href.replace(/[<>&"]/g,'')+'）</small></div>';
+ document.body.appendChild(box);
+})();
+</script>
+<script>
+(function(){
+'use strict';
+if(window.__studioFatal)return;
+const D=window.Deck,LS_KEY='ppt-studio-v4';
+const $=s=>document.querySelector(s);
+const clone=o=>JSON.parse(JSON.stringify(o));
+const presetOf=id=>D.PRESETS.find(p=>p.id===id)||D.PRESETS[0];
+function templateParams(id){const p=Object.assign(clone(D.BASE),clone(presetOf(id)));delete p.desc;delete p.ref;return p;}
+
+/* ---------- 選項定義（所有值都直接對應 deck.js 的參數） ---------- */
+const FONTS=[['Microsoft JhengHei','微軟正黑體'],['Microsoft JhengHei Light','微軟正黑體 Light'],['PMingLiU','新細明體'],['Noto Sans TC','Noto Sans TC'],['Arial','Arial']];
+const PALETTES=[
+ ['商務深藍','1F4E79','2E75B6'],['墨綠＋芥末','2F5D50','C9A227'],['石板藍','2F4B6E','6B8CB5'],['炭灰＋天藍','404040','5B9BD5'],
+ ['靛藍＋朱紅','4F5BD5','E0533D'],['酒紅＋金','7A1F2B','B08D57'],['青綠＋橘','0F7C80','F2A541'],['炭灰＋橘','3A3A3A','F07F2D'],
+ ['紫羅蘭','5B3F8C','E6A23C'],['磚紅＋灰藍','A23B2A','4A6378'],['森林綠','2E6B3A','D99A2B'],['海軍＋珊瑚','203A5C','E8735A']];
+const GREYS=[['中性灰',{ink:'3A3A3A',t2:'595959',mute:'8C8C8C',line:'BFBFBF',l2:'D9D9D9',fill:'F2F2F2'}],
+ ['暖灰',{ink:'3B3935',t2:'5C5953',mute:'8F8B84',line:'C2BEB6',l2:'DCD9D3',fill:'F3F2EF'}],
+ ['冷灰',{ink:'333A42',t2:'55606B',mute:'8792A0',line:'BCC4CE',l2:'D8DEE5',fill:'F1F3F6'}],
+ ['深黑',{ink:'222222',t2:'444444',mute:'7F7F7F',line:'B3B3B3',l2:'D4D4D4',fill:'F0F0F0'}]];
+const CANVAS=['F5F5F5','F4F4F1','F2F3F5','F7F7F7','F3F5F4'];
+const G=[
+ {t:'色彩',open:true,rows:[
+  {html:'palettes'},
+  {k:'P',l:'主色',type:'color'},{k:'PD',l:'深主色',type:'color'},{k:'PT',l:'淺主色',type:'color'},
+  {k:'autoTone',l:'自動推算',type:'toggle',ui:true,hint:'改主色時自動算出深／淺主色'},
+  {k:'useA',l:'使用強調色',type:'toggle'},{k:'A',l:'強調色',type:'color'},
+  {html:'greys'},
+  {k:'ink',l:'主文字',type:'color'},{k:'t2',l:'次文字',type:'color'},{k:'mute',l:'註解灰',type:'color'},
+  {k:'line',l:'線條灰',type:'color'},{k:'l2',l:'淺線灰',type:'color'},{k:'fill',l:'淺灰底',type:'color'}]},
+ {t:'畫布與標題',rows:[
+  {hintText:'投影片背景固定為白色；可選擇在白底上加一塊淺灰畫布面板。'},
+  {k:'canvas',l:'淺灰畫布',type:'toggle'},{k:'canvasColor',l:'畫布色',type:'seg',opts:CANVAS.map(c=>[c,'<i style="display:inline-block;width:14px;height:12px;border:1px solid #ccc;background:#'+c+';vertical-align:middle"></i>'])},
+  {k:'bar',l:'標題裝飾',type:'select',opts:[['under','下方短色條'],['banner','左側色塊'],['rule','細分隔線'],['vbar','左側直條'],['over','上方細線'],['gold','強調色細線'],['pill','膠囊色條'],['dot','圓點']]},
+  {k:'titleColor',l:'標題顏色',type:'seg',opts:[['P','主色'],['PD','深主色'],['ink','文字灰']]},
+  {k:'bracket',l:'中英括號標',type:'toggle'},
+  {k:'mark',l:'小節標記',type:'seg',opts:[['bar','色條'],['vbar','直條'],['sq','方塊'],['dot','圓點'],['none','無']]}]},
+ {t:'形狀與圓角',rows:[
+  {k:'r',l:'卡片圓角',type:'range',min:0,max:.3,step:.01,fmt:v=>(v*72).toFixed(0)+' pt'},
+  {k:'colR',l:'欄條圓角',type:'seg',opts:[['full','全圓'],['small','小圓角'],['square','直角']]},
+  {k:'colStyle',l:'欄條樣式',type:'seg',opts:[['fill','實心'],['dash','虛線框']]},
+  {k:'chain',l:'流程鏈',type:'select',opts:[['chev','漸層 V 形箭號'],['hex','六角形鏈'],['gray','灰卡＋▶'],['outline','細框方塊'],['hairchev','空心 V 形'],['home','五邊形箭號'],['pill','膠囊鏈'],['block','區塊 V 形']]},
+  {k:'circle',l:'大圓樣式',type:'select',opts:[['ring3','白底粗外框'],['thick','粗灰框'],['gray','淺灰實心'],['thin','細框'],['hair','髮絲線'],['double','雙圈'],['soft','白底＋陰影'],['heavy','粗主色框']]},
+  {k:'circleLW',l:'大圓框線',type:'range',min:.5,max:6,step:.25,fmt:v=>v+' pt'},
+  {k:'sym',l:'流程圖符號',type:'select',opts:[['outlineP','主色外框'],['thick','粗灰框'],['gray','淺灰實心'],['thin','細框'],['hair','髮絲線'],['square','直角'],['soft','柔和陰影'],['heavy','實心主色']]}]},
+ {t:'卡片',rows:[
+  {k:'card',l:'卡片樣式',type:'select',opts:[['outline','白底外框'],['gray','淺灰實心'],['soft','白底無框（靠陰影）'],['head','實心表頭色帶'],['top','頂邊色條']]},
+  {k:'cardLW',l:'外框粗細',type:'range',min:.5,max:3,step:.25,fmt:v=>v+' pt'},
+  {k:'cardLine',l:'外框顏色',type:'color'},
+  {k:'headColor',l:'卡片標題色',type:'seg',opts:[['P','主色'],['ink','文字灰']]},
+  {k:'bandStyle',l:'色帶樣式',type:'seg',opts:[['fill','實心'],['line','細線']]},
+  {k:'cornerTag',l:'角落標籤',type:'toggle'},
+  {k:'ribbonTone',l:'角標色',type:'seg',opts:[['p','主色'],['a','強調色']]}]},
+ {t:'標籤與編號',rows:[
+  {k:'tag',l:'標籤形狀',type:'seg',opts:[['pill','膠囊'],['round','小圓角'],['square','直角'],['outline','空心'],['soft','淡色底'],['dot','圓點籤']]},
+  {k:'badge',l:'編號徽章',type:'select',opts:[['circle','實心圓'],['ring','實心圓＋白環'],['halo','實心圓＋光暈'],['odot','實心圓＋強調點'],['oring','空心細圓'],['rsq','圓角方塊'],['square','方形襯線數字'],['pill','01 數字膠囊'],['enc','①②③ 圈號']]},
+  {k:'sep',l:'分隔箭號',type:'select',opts:[['tri','▶ 小三角'],['dots','▶▶▶ 點狀'],['line','細線箭頭'],['harrow','開放箭頭'],['stealth','燕尾箭頭'],['chev','細 V 形 ›'],['block','區塊 V 形']]}]},
+ {t:'陰影（立體感）',open:true,rows:[
+  {k:'sh',l:'啟用陰影',type:'toggle'},
+  {k:'shMode',l:'卡片陰影',type:'seg',opts:[['drop','下方投影'],['halo','四周光暈']]},
+  {k:'shB',l:'模糊',type:'range',min:2,max:20,step:.5,fmt:v=>v+' pt'},
+  {k:'shO',l:'距離',type:'range',min:0,max:8,step:.5,fmt:v=>v+' pt'},
+  {k:'shA',l:'濃度',type:'range',min:.05,max:.6,step:.01,fmt:v=>Math.round(v*100)+'%'},
+  {k:'shDir',l:'方向',type:'seg',opts:[[90,'正下 ↓'],[45,'右下 ↘'],[135,'左下 ↙']]},
+  {hintText:'大圓光暈（Why/How/What 那種寬柔灰暈）：'},
+  {k:'haloB',l:'光暈模糊',type:'range',min:6,max:30,step:1,fmt:v=>v+' pt'},
+  {k:'haloA',l:'光暈濃度',type:'range',min:.1,max:.6,step:.01,fmt:v=>Math.round(v*100)+'%'},
+  {k:'ring',l:'外圈細環',type:'toggle'}]},
+ {t:'線條與箭頭',rows:[
+  {k:'cnW',l:'線條粗細',type:'range',min:.5,max:4,step:.25,fmt:v=>v+' pt'},
+  {k:'cnC',l:'線條顏色',type:'color'},
+  {k:'cnDash',l:'線型',type:'seg',opts:[['solid','實線'],['sysDot','點線'],['sysDash','虛線'],['dash','長虛線']]},
+  {k:'cnHead',l:'箭頭',type:'seg',opts:[['triangle','三角'],['arrow','開放'],['stealth','燕尾'],['oval','圓點'],['none','無']]},
+  {k:'cnTail',l:'起點',type:'seg',opts:[['none','無'],['oval','圓點'],['triangle','三角'],['arrow','開放']]},
+  {k:'cnHs',l:'箭頭大小',type:'seg',opts:[['med','中'],['lg','大']]}]},
+ {t:'字型與字級',rows:[
+  {k:'tFont',l:'標題字型',type:'select',opts:FONTS},
+  {k:'bFont',l:'內文字型',type:'select',opts:FONTS.filter(f=>!/Light/.test(f[0]))},
+  {k:'nFont',l:'數字字型',type:'select',opts:[['','同內文'],['Georgia','Georgia 襯線'],['Arial','Arial']]},
+  {k:'tSize',l:'標題字級',type:'range',min:24,max:48,step:1,fmt:v=>v+' pt'},
+  {k:'tBold',l:'標題粗體',type:'toggle'},
+  {k:'lSize',l:'標籤字級',type:'range',min:12,max:20,step:.5,fmt:v=>v+' pt'},
+  {k:'lBold',l:'標籤粗體',type:'toggle'},
+  {k:'nSize',l:'註解字級',type:'range',min:8,max:14,step:.5,fmt:v=>v+' pt'},
+  {hintText:'標籤字級會等比例帶動卡片、圓形內文字；字太大時下方會顯示排版警告。'}]}
+];
+
+/* ---------- 狀態 ---------- */
+let S={base:'navy',p:templateParams('navy'),slide:0,autoTone:true};
+try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=s.base;S.p=Object.assign(templateParams(s.base),s.p);S.slide=Math.min(+s.slide||0,D.SLIDES.length-1);S.autoTone=s.autoTone!==false;}}catch(e){}
+const persist=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify({base:S.base,p:S.p,slide:S.slide,autoTone:S.autoTone}));}catch(e){}};
+const hex=v=>String(v||'').replace('#','').toUpperCase();
+const toast=(t)=>{const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>e.classList.remove('on'),2200);};
+
+/* ---------- 建立左側面板 ---------- */
+function buildTemplates(){
+ $('#tpls').innerHTML=D.PRESETS.map(p=>{const tp=templateParams(p.id);return `<button class="tpl" data-id="${p.id}" style="--c:#${tp.P};--a:#${tp.useA?tp.A:tp.P}" title="${p.desc}"><b><em></em><u></u>${p.zh}</b><span>${p.en}・${p.ref}</span></button>`;}).join('');
+ $('#tpls').onclick=e=>{const b=e.target.closest('.tpl');if(!b)return;S.base=b.dataset.id;S.p=templateParams(S.base);syncPanel();schedule();toast('已套用範本：'+presetOf(S.base).zh);};
+}
+function rowHtml(r){
+ if(r.html==='palettes')return `<div class="hint">配色組合（主色＋強調色，深／淺主色自動推算）</div><div class="sw">${PALETTES.map((p,i)=>`<div class="pal" data-pal="${i}" title="${p[0]}"><i style="background:#${p[1]}"></i><i style="background:#${D.mix(p[1],'FFFFFF',.85)}"></i><i style="background:#${p[2]}"></i></div>`).join('')}</div>`;
+ if(r.html==='greys')return `<div class="hint" style="margin-top:8px">灰階結構（文字／線條／淺灰底）</div><div class="seg" style="margin-bottom:6px">${GREYS.map((g,i)=>`<button data-grey="${i}">${g[0]}</button>`).join('')}</div>`;
+ if(r.hintText)return `<div class="hint">${r.hintText}</div>`;
+ let c='';
+ if(r.type==='color')c=`<div class="col"><input type="color" data-k="${r.k}"><input type="text" data-k="${r.k}" maxlength="7" spellcheck="false"></div>`;
+ else if(r.type==='range')c=`<div class="rng"><input type="range" data-k="${r.k}" min="${r.min}" max="${r.max}" step="${r.step}"><output data-o="${r.k}"></output></div>`;
+ else if(r.type==='select')c=`<select data-k="${r.k}">${r.opts.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join('')}</select>`;
+ else if(r.type==='seg')c=`<div class="seg" data-seg="${r.k}">${r.opts.map(o=>`<button data-v="${o[0]}">${o[1]}</button>`).join('')}</div>`;
+ else if(r.type==='toggle')c=`<label class="tg"><input type="checkbox" data-k="${r.k}"${r.ui?' data-ui="1"':''}><span></span></label>${r.hint?`<span class="hint" style="margin:0 0 0 6px;display:inline">${r.hint}</span>`:''}`;
+ return `<div class="row" data-row="${r.k}"><label>${r.l}</label><div style="display:flex;align-items:center">${c}</div></div>`;
+}
+const RANGE={};G.forEach(g=>g.rows.forEach(r=>{if(r.type==='range')RANGE[r.k]=r;}));
+function buildGroups(){
+ $('#groups').innerHTML=G.map((g,i)=>`<details${g.open?' open':''} data-g="${i}"><summary>${g.t}<span class="n"></span></summary><div class="grp">${g.rows.map(rowHtml).join('')}</div></details>`).join('');
+ const P=$('#groups');
+ P.addEventListener('input',e=>{const t=e.target,k=t.dataset.k;if(!k)return;
+  if(t.type==='checkbox'){if(t.dataset.ui)S[k]=t.checked;else S.p[k]=t.checked;}
+  else if(t.type==='range'){S.p[k]=+t.value;}
+  else if(t.type==='color'){setColor(k,hex(t.value));}
+  else if(t.type==='text'){const v=hex(t.value);if(/^[0-9A-F]{6}$/.test(v))setColor(k,v);else return;}
+  else S.p[k]=t.value;
+  syncPanel(t);schedule();});
+ P.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.v!=null){const k=b.parentNode.dataset.seg;const opt=G.flatMap(g=>g.rows).find(r=>r.k===k).opts.find(o=>String(o[0])===b.dataset.v);S.p[k]=opt[0];}
+  else if(b.dataset.grey!=null){Object.assign(S.p,GREYS[+b.dataset.grey][1]);}
+  else return;syncPanel();schedule();});
+ P.addEventListener('click',e=>{const pal=e.target.closest('.pal');if(!pal)return;const p=PALETTES[+pal.dataset.pal];
+  S.p.P=p[1];S.p.PD=D.mix(p[1],'000000',.22);S.p.PT=D.mix(p[1],'FFFFFF',.87);S.p.A=p[2];S.p.useA=true;syncPanel();schedule();});
+}
+function setColor(k,v){S.p[k]=v;if(k==='P'&&S.autoTone){S.p.PD=D.mix(v,'000000',.22);S.p.PT=D.mix(v,'FFFFFF',.87);}}
+function syncPanel(skip){
+ const T=templateParams(S.base);const p=S.p;
+ document.querySelectorAll('#groups [data-k]').forEach(el=>{if(el===skip)return;const k=el.dataset.k;
+  if(el.type==='checkbox')el.checked=el.dataset.ui?!!S[k]:!!p[k];
+  else if(el.type==='color')el.value='#'+(p[k]||'000000');
+  else if(el.type==='text')el.value=p[k]||'';
+  else el.value=p[k];});
+ document.querySelectorAll('#groups [data-o]').forEach(o=>{const r=RANGE[o.dataset.o];o.textContent=r.fmt(+p[o.dataset.o]);});
+ document.querySelectorAll('#groups [data-seg]').forEach(s=>{const k=s.dataset.seg;s.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===String(p[k])));});
+ document.querySelectorAll('#groups [data-grey]').forEach(b=>{const g=GREYS[+b.dataset.grey][1];b.classList.toggle('on',Object.keys(g).every(k=>p[k]===g[k]));});
+ /* 修改標記 */
+ document.querySelectorAll('#groups details').forEach(d=>{let n=0;d.querySelectorAll('.row[data-row]').forEach(r=>{const k=r.dataset.row;const m=k in T&&String(T[k])!==String(p[k]);r.classList.toggle('mod',m);if(m)n++;});
+  const s=d.querySelector('summary .n');s.textContent=n+' 項已調整';s.classList.toggle('on',n>0);});
+ /* 依情境停用 */
+ const dis=(k,v)=>{const r=document.querySelector(`.row[data-row="${k}"]`);if(r){r.style.opacity=v?.4:1;r.style.pointerEvents=v?'none':'';}};
+ ['shMode','shB','shO','shA','shDir','haloB','haloA','ring'].forEach(k=>dis(k,!p.sh));
+ dis('A',!p.useA);dis('canvasColor',!p.canvas);dis('cardLW',!(p.card==='outline'||p.card==='top'||p.card==='head'));
+ document.querySelectorAll('.tpl').forEach(b=>b.classList.toggle('on',b.dataset.id===S.base));
+ document.documentElement.style.setProperty('--p','#'+p.P);
+}
+
+/* ---------- 預覽 ---------- */
+let model=null,raf=0;
+function schedule(){if(raf)return;raf=requestAnimationFrame(()=>{raf=0;render();persist();});}
+function render(){
+ model=D.buildModel(S.p);
+ $('#thumbs').innerHTML=model.slides.map((s,i)=>`<div class="th${i===S.slide?' on':''}" data-i="${i}"><div>${D.toSvg(s,{id:'t'+i})}</div><span>${String(i+1).padStart(2,'0')}　${s.title}</span></div>`).join('');
+ showSlide();
+ const L=D.langOf(S.p);
+ $('#chips').innerHTML=[['卡片',L.card],['標籤',L.tag],['編號',L.badge],['分隔',L.sep],['連接線',L.conn]].map(c=>`<span><b>${c[0]}</b>${c[1]||''}</span>`).join('');
+ const w=model.warns.length;
+ $('#status').innerHTML=`<span>預覽與匯出使用同一份幾何模型</span><span>・投影片 16:9 白底</span><span>・陰影：${S.p.sh?`卡片 ${S.p.shB}pt／大圓光暈 ${S.p.haloB}pt`:'關閉（強調卡除外）'}</span><span class="${w?'bad':'ok'}" title="${w?model.warns.join('\n').replace(/"/g,'&quot;'):''}">${w?`⚠ ${w} 則排版警告（文字可能換行或溢出，滑鼠移上查看）`:'✓ 無文字溢出警告'}</span>`;
+ $('#dot').style.background='#'+S.p.P;
+ window.__studio=Object.assign(window.__studio||{},{renders:((window.__studio||{}).renders||0)+1,warns:w});
+}
+function showSlide(){
+ const sl=model.slides[S.slide];
+ $('#big').innerHTML=D.toSvg(sl,{id:'big'})+'<button class="nav l" data-d="-1">‹</button><button class="nav r" data-d="1">›</button>';
+ document.querySelectorAll('.th').forEach(t=>t.classList.toggle('on',+t.dataset.i===S.slide));
+ const on=document.querySelector('.th.on');if(on&&on.scrollIntoView)on.scrollIntoView({block:'nearest',inline:'nearest'});
+ $('#sTitle').innerHTML=`${String(S.slide+1).padStart(2,'0')}／${model.slides.length}　${sl.title}<small>${presetOf(S.base).zh}${isModified()?'（已微調）':''}</small>`;
+}
+function isModified(){const T=templateParams(S.base);return Object.keys(T).some(k=>String(T[k])!==String(S.p[k]));}
+function go(i){S.slide=(i+model.slides.length)%model.slides.length;showSlide();persist();}
+$('#thumbs').onclick=e=>{const t=e.target.closest('.th');if(t)go(+t.dataset.i);};
+$('#big').onclick=e=>{const b=e.target.closest('.nav');if(b)go(S.slide+ +b.dataset.d);};
+document.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key==='ArrowRight')go(S.slide+1);if(e.key==='ArrowLeft')go(S.slide-1);});
+
+/* ---------- 下載／存取 ---------- */
+function saveBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);}
+const fileBase=()=>'kit-'+S.base+(isModified()?'-custom':'');
+async function download(one){
+ const btn=one?$('#bOne'):$('#bAll');btn.disabled=true;const old=btn.textContent;btn.textContent='產生中…';
+ try{const key=D.SLIDES[S.slide][0];
+  const r=await D.exportPptx({PptxGenJS:window.PptxGenJS,JSZip:window.JSZip},S.p,one?{only:[key]}:{});
+  saveBlob(r.data,fileBase()+(one?'-'+String(S.slide+1).padStart(2,'0')+'-'+key:'')+'.pptx');
+  window.__studio.lastExport={slides:r.model.slides.length,patched:r.patched,size:r.data.size};
+  toast(`已產生 ${r.model.slides.length} 頁 .pptx（${r.patched} 個形狀套用柔和陰影）`);}
+ catch(err){console.error(err);toast('匯出失敗：'+err.message);}
+ finally{btn.disabled=false;btn.textContent=old;}}
+$('#bAll').onclick=()=>download(false);
+$('#bOne').onclick=()=>download(true);
+$('#bSave').onclick=()=>{const T=templateParams(S.base);const diff={};Object.keys(S.p).forEach(k=>{if(String(T[k])!==String(S.p[k]))diff[k]=S.p[k];});
+ saveBlob(new Blob([JSON.stringify({app:'ppt-style-studio',version:4,base:S.base,changed:diff,params:S.p},null,1)],{type:'application/json'}),fileBase()+'.json');toast('設定已存成 JSON');};
+$('#bLoad').onclick=()=>$('#fLoad').click();
+$('#fLoad').onchange=async e=>{const f=e.target.files[0];if(!f)return;
+ try{const j=JSON.parse(await f.text());const base=presetOf(j.base).id;S.base=base;S.p=Object.assign(templateParams(base),j.params||j.changed||{});syncPanel();schedule();toast('已載入設定：'+f.name);}
+ catch(err){toast('無法讀取設定檔：'+err.message);}e.target.value='';};
+$('#bReset').onclick=()=>{S.p=templateParams(S.base);syncPanel();schedule();toast('已重設為「'+presetOf(S.base).zh+'」預設值');};
+
+buildTemplates();buildGroups();syncPanel();
+(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(render);
+render();
+window.__studioApi={S,render,syncPanel,templateParams};
+})();
+</script></body></html>
