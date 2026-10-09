@@ -13,7 +13,7 @@ const BASE={
  ink:'3A3A3A',t2:'595959',mute:'8C8C8C',line:'BFBFBF',l2:'D9D9D9',fill:'F2F2F2',
  canvas:false,canvasColor:'F5F5F5',
  r:.1,colR:'full',colStyle:'fill',
- sh:false,shMode:'drop',shB:7,shO:2,shA:.25,shDir:90,haloB:16,haloA:.32,ring:false,
+ sh:false,shFit:true,shMode:'drop',shB:7,shO:2,shA:.25,shDir:90,haloB:16,haloA:.32,ring:false,
  card:'outline',cardLW:1.25,cardLine:'D9D9D9',headColor:'P',bandStyle:'fill',cornerTag:true,ribbonTone:'p',
  tag:'pill',badge:'circle',sep:'tri',chain:'chev',circle:'ring3',circleLW:3,sym:'outlineP',mark:'none',bar:'under',bracket:false,titleColor:'P',
  footRule:false,
@@ -86,7 +86,14 @@ function buildModel(params,opt){
  const warns=[],slides=[];let cur=null,sno=0;
  const warn=(k,t)=>warns.push(`[${st.id||'custom'} #${sno}] ${k}: ${String(t).replace(/\n/g,'/').slice(0,30)}`);
  const rr=(w,h,r)=>r==='full'?Math.min(w,h)/2:Math.min(r||0,Math.min(w,h)/2);
- function shadowSpec(type){
+ /* 陰影隨尺寸收斂（v5.1）：參數以舊版頁面（卡片、大圓）為基準；比基準小的圖形（總表的小圓、小方塊）按比例縮小模糊與距離，
+    避免 16pt 光暈套在 0.6" 小圓上變成一團灰霧。基準＝舊版各類陰影的最小尺寸，所以舊頁面輸出與 v4 完全相同。shFit:false＝v5 原樣。 */
+ const SH_REF={halo:2.6,card:.44,small:.28};
+ function fitShadow(s,type,w,h){if(!st.shFit||!(w>0&&h>0))return s;const ref=SH_REF[type]||SH_REF.card;const k=Math.max(.42,Math.min(1,Math.min(w,h)/ref));if(k>=1)return s;
+  const r=v=>Math.round(v*100)/100;
+  return Object.assign({},s,{blur:r(Math.max(2,s.blur*k)),dist:r(s.dist*Math.max(.6,k)),alpha:r(s.alpha*(type==='halo'?.8+.2*k:1)),scale:Math.round((1+(s.scale-1)*k)*10000)/10000});}
+ function shadowSpec(type,w,h){const t=type===true||type===1?'card':type;return fitShadow(shadowSpec0(t),t==='halo'?'halo':t==='small'?'small':'card',w,h);}
+ function shadowSpec0(type){
   if(type==='halo')return{blur:st.haloB,dist:Math.min(st.shO,2),dir:90,alpha:st.haloA,scale:1.02,color:'000000',kind:'halo'};
   if(type==='small')return{blur:Math.max(3,st.shB*.6),dist:Math.min(st.shO,1.5),dir:st.shDir,alpha:Math.min(.35,st.shA+.04),scale:1,color:'000000',kind:'drop'};
   if(st.shMode==='halo')return{blur:st.shB*1.5,dist:Math.min(st.shO,1),dir:90,alpha:st.shA,scale:1.01,color:'000000',kind:'halo'};
@@ -107,7 +114,7 @@ function buildModel(params,opt){
  function el(kind,x,y,w,h,o){o=o||{};const it={t:'sp',kind,x,y,w,h,name:o.name};
   if(kind){it.fill=o.fill||null;it.ft=o.ft||0;it.line=o.line||null;it.lw=o.lw||1;it.dash=o.dash||'solid';if(o.line){it.head=o.head||null;it.tail=o.tail||null;it.hs=o.hs||'med';}}
   if(o.adj!=null&&o.adj>0)it.adj=o.adj;
-  if(o.sh&&(st.sh||o.force))it.sh=shadowSpec(o.sh===true||o.sh===1?'card':o.sh);
+  if(o.sh&&(st.sh||o.force))it.sh=shadowSpec(o.sh===true||o.sh===1?'card':o.sh,w,h);
   if(o.points)it.points=o.points;
   if(o.text!=null&&o.text!==''){const R=runsOf(o.text,o);it.runs=R.out;
    it.tx={align:o.align||'center',valign:o.valign||'middle',margin:o.margin!=null?o.margin:(kind?3:0),lsp:o.lsp||1,font:o.font||F,size:o.size||14,color:o.color||G.ink,bold:!!o.bold,cs:o.cs};
@@ -677,7 +684,22 @@ async function patchZip(zip,model){let n=0;
    n++;return blk.replace(/<a:effectLst>[\s\S]*?<\/a:effectLst>/,effectXml(it.sh));});
   x=groupXml(x,model.slides[i]);
   zip.file(f,x);}
+ await fixOoxml(zip);
  return n;}
+/* OOXML 結構修正（PptxGenJS 3.12 已知缺陷；不修的話嚴格驗證不過，部分 PowerPoint 版本可能拒開）：
+   1) 多段 run 的段落會重複輸出 <a:pPr>（只允許一個且須在最前）→ 移除後續的
+   2) presentation.xml 的 notesMasterIdLst 位置錯（須緊接 sldMasterIdLst 之後）
+   3) [Content_Types].xml 宣告了不存在的 slideMaster2..N → 移除 */
+function fixParas(x){return x.replace(/<a:p>([\s\S]*?)<\/a:p>/g,(all,inner)=>{let first=true;
+  const out=inner.replace(/<a:pPr\b[^>]*?\/>|<a:pPr\b[^>]*>[\s\S]*?<\/a:pPr>/g,(m,off)=>{if(first&&off===0){first=false;return m;}first=false;return '';});
+  return '<a:p>'+out+'</a:p>';});}
+async function fixOoxml(zip){
+ for(const f of Object.keys(zip.files).filter(f=>/^ppt\/(slides|slideLayouts|slideMasters|notesSlides|notesMasters)\/[^/]+\.xml$/.test(f))){
+  const x=await zip.file(f).async('string');const y=fixParas(x);if(y!==x)zip.file(f,y);}
+ const pf=zip.file('ppt/presentation.xml');if(pf){let x=await pf.async('string');const m=x.match(/<p:notesMasterIdLst>[\s\S]*?<\/p:notesMasterIdLst>/);
+  if(m){x=x.replace(m[0],'');x=x.replace('</p:sldMasterIdLst>','</p:sldMasterIdLst>'+m[0]);zip.file('ppt/presentation.xml',x);}}
+ const cf=zip.file('[Content_Types].xml');if(cf){let x=await cf.async('string');
+  x=x.replace(/<Override PartName="\/([^"]+)"[^>]*\/>/g,(m,part)=>zip.file(part)?m:'');zip.file('[Content_Types].xml',x);}}
 async function exportPptx(env,params,opt){opt=opt||{};const model=opt.model||buildModel(params,{only:opt.only});
  const pptx=new env.PptxGenJS();toPptx(pptx,model);
  const buf=await pptx.write({outputType:'arraybuffer'});const zip=await env.JSZip.loadAsync(buf);const patched=await patchZip(zip,model);

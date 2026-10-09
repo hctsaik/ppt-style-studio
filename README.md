@@ -117,6 +117,15 @@ v3 的陰影全部是 PptxGenJS 預設：模糊 5pt、距離 2pt、濃度 22%、
 PptxGenJS 無法寫出 algn／sx／sy，因此匯出後會用 JSZip 解開 pptx、逐一改寫每個形狀的 `<a:outerShdw>`（`rotWithShape="0"`），
 再重新壓縮。形狀仍是原生、可編輯；在 PowerPoint「格式 › 圖形效果 › 陰影」中可以看到並修改這些數值。
 
+**v5.1 陰影質感回復**：比對 v4（9faee6c）與 v5（d139647）後，舊有頁面（卡片、圓形、流程…）的 `<a:outerShdw>` 數值與 LibreOffice 渲染完全相同；
+質感變差來自 v5 新增的「元件總表／常見組合」——16pt 大圓光暈直接套在 0.62 吋小圓上（模糊約占直徑 35%，成一團灰霧），
+7pt 卡片投影套在 0.38 吋小方塊上，而且工作室一打開就是這一頁。v5.1 起陰影「隨尺寸收斂」：比舊頁最小尺寸還小的圖形，
+模糊與距離按比例縮小（下限 42%），小圓光暈濃度略降；舊頁輸出與 v4 逐位元相同。工作室「陰影」區的「小元件收斂」可關閉（＝v5 原樣）。
+比對圖：`render/shadow-compare-navy.png`、`render/shadow-zoom-navy.png`。
+
+**OOXML 驗證**：匯出後另做三項結構修正（PptxGenJS 3.12 的已知缺陷）：段落內重複的 `<a:pPr>`、presentation.xml 中 `notesMasterIdLst` 的順序、
+`[Content_Types].xml` 中不存在的 slideMaster 宣告。修正後 `office validate`（Transitional XSD＋OPC＋id 檢查）全數通過。
+
 ## 四、程式架構與指令
 - `deck.js`：**唯一的參數化核心**。`params → buildModel()`（幾何模型）→ ① `toSvg()` 即時預覽 ② `toPptx()`＋`patchZip()` 匯出。瀏覽器與 Node 共用。
   `Deck.BASE` 是全部參數與預設值；`Deck.PRESETS` 是 9 個範本（只覆寫差異）。

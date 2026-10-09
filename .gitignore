@@ -21,9 +21,12 @@ render/*
 !render/studio-mystyles.png
 !render/studio-patterns.png
 !render/studio-investor-catalog.png
+!render/shadow-compare-navy.png
+!render/shadow-zoom-navy.png
 # 其他暫存
 *.pdf
 *.zip
 *.map
 .DS_Store
 Thumbs.db
+review/
