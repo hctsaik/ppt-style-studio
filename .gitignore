@@ -63,6 +63,13 @@ render/*
 !render/fixB-investor-warning.png
 !render/fixB-sem-panel.png
 !render/fixB-counts-panel.png
+!render/mobile-before.png
+!render/mobile-catalog.png
+!render/mobile-settings.png
+!render/mobile-element.png
+!render/mobile-icons.png
+!render/mobile-table.png
+!render/mobile-tray.png
 # 其他暫存
 *.pdf
 *.zip

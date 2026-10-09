@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%226%22 fill=%22%231F4E79%22/%3E%3C/svg%3E">
-<!-- PPT Style Studio 單檔版（自動產生於 2026-10-09 13:12，請勿手改；來源：studio.html + icons.js + deck.js + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
+<!-- PPT Style Studio 單檔版（自動產生於 2026-10-09 15:24，請勿手改；來源：studio.html + icons.js + deck.js + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
 <title>PPT Style Studio · 圖解元件客製工作室</title>
 <style>
 :root{--ink:#3A3A3A;--t2:#595959;--mu:#8C8C8C;--line:#E4E4E4;--fill:#F6F6F6;--p:#1F4E79}
@@ -226,24 +226,94 @@ main{display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff
 .fatal{position:fixed;inset:0;background:#fff;display:flex;align-items:center;justify-content:center;z-index:99;padding:30px}
 .fatal div{max-width:640px;border:1px solid #E4E4E4;border-left:5px solid #C0504D;border-radius:10px;padding:26px 30px;box-shadow:0 6px 24px #0000000f}
 .fatal h2{margin:0 0 10px;font-size:20px;color:#C0504D}.fatal p{margin:8px 0;font-size:15px;line-height:1.7;color:#3A3A3A}.fatal small{color:#8C8C8C;font-size:12px}
+/* ===== v10 手機／平板（≤900px）：單欄、設定改為下方抽屜、工具列固定在底部、觸控不靠 hover／雙擊 ===== */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.monly,.pclose{display:none}
+.inapp{display:none}
+@media (hover:none) and (pointer:coarse){.nav{opacity:.6}.eladd{display:none!important}.ic:hover .iadd{display:none}.ic:hover{border-color:transparent;background:#fff}.el:hover .hit{fill-opacity:0;stroke:none}.el.sel .hit{fill-opacity:.08;stroke:#2E75B6}}
+@media (max-width:900px){
+ html,body{height:100%}body{height:100vh;height:100dvh;touch-action:manipulation}
+ header{flex-wrap:wrap;gap:6px 6px;padding:7px 10px 6px;white-space:normal}
+ header h1{font-size:15px;gap:6px}header h1 small,header h1 .hs{display:none}
+ header .tabs{order:9;flex:1 1 100%;margin:0}header .tabs button{flex:1;padding:6px 4px;font-size:13px}
+ header .btn{padding:6px 9px;font-size:12.5px}
+ #exWrap{display:none!important}
+ .monly{display:inline-block}.more .menu .monly{display:block}
+ .wrap{grid-template-columns:1fr}
+ aside{position:fixed;left:0;right:0;bottom:0;height:56vh;height:clamp(40dvh,calc(100dvh - 56.25vw - 150px),70dvh);z-index:40;background:#fff;border:0;border-top:1px solid #D6D6D6;border-radius:14px 14px 0 0;box-shadow:0 -8px 30px #00000033;transform:translateY(105%);transition:transform .22s ease,visibility .22s;padding:0 14px calc(30px + env(safe-area-inset-bottom));visibility:hidden}
+ body.pan aside{transform:none;visibility:visible}
+ .pclose{display:flex;position:sticky;top:0;z-index:2;background:#fff;align-items:center;gap:8px;padding:8px 0 8px;margin-bottom:4px;border-bottom:1px solid var(--line)}
+ .pclose b{font-size:14px}.pclose small{color:var(--mu);font-size:11px;flex:1}.pclose button{border:1px solid #D6D6D6;background:#fff;border-radius:8px;padding:6px 14px;font-weight:700;color:var(--p)}
+ .pclose:before{content:"";position:absolute;left:50%;top:3px;width:36px;height:4px;margin-left:-18px;border-radius:9px;background:#D9D9D9}
+ .row{grid-template-columns:96px 1fr;min-height:36px}.row select{height:34px}.seg button{padding:6px 10px;font-size:12.5px}.tg{width:40px;height:23px}.tg span:before{width:19px;height:19px}.tg input:checked+span:before{transform:translateX(17px)}
+ summary{padding:12px 2px}
+ .view{overflow-y:auto;-webkit-overflow-scrolling:touch}
+ #vIcons{overflow:hidden}
+ .bar{padding:8px 10px 4px;gap:6px;flex-wrap:wrap}.bar h2{font-size:13.5px;flex:1;min-width:0}.bar h2 small{display:block;margin:0;font-size:11px}
+ .chips{display:none}
+ .zoomb{display:inline-block;border:1px solid #D6D6D6;background:#fff;border-radius:7px;padding:5px 9px;font-size:12px}
+ .stage{flex:none;padding:4px 10px;display:block}
+ .slide{width:100%;height:auto;max-height:none;margin:0 auto}
+ .stage.zoom{overflow-x:auto;-webkit-overflow-scrolling:touch}.stage.zoom .slide{width:200%;max-width:none}
+ .nav{width:36px;height:36px;font-size:18px}
+ .foot{padding:6px 10px calc(76px + env(safe-area-inset-bottom))}
+ .foot>div:first-child{flex-wrap:wrap;gap:4px 10px!important}.status{flex-wrap:wrap;gap:4px 10px}.hint2{margin-left:0;flex:1 1 100%}
+ .thumbs{gap:8px;scroll-snap-type:x proximity}.th{width:112px;scroll-snap-align:start}
+ .ebar,.ibar2{position:fixed;left:8px!important;right:8px;top:auto!important;bottom:calc(62px + env(safe-area-inset-bottom));z-index:30;flex-wrap:wrap;white-space:normal;justify-content:center;gap:6px;padding:8px;border-radius:12px;box-shadow:0 6px 24px #00000038;font-size:12.5px}
+ .ebar b,.ibar2 b{flex:1 1 100%;text-align:center;max-width:none;margin:0}.ebar small,.ibar2 small{flex:1 1 100%;text-align:center;margin:0!important}
+ .ebar button,.ibar2 button{padding:7px 11px;font-size:13px}
+ .ecnt button{padding:5px 11px!important}
+ .ibar{padding:8px 10px;gap:6px 10px}.ibar input[type=search]{flex:1 1 100%;width:auto;font-size:16px;padding:7px 10px}
+ .ibar .seg button{padding:5px 8px}.ibar #iInfo{display:none}
+ .icats{flex-wrap:nowrap;overflow-x:auto;padding:6px 10px;-webkit-overflow-scrolling:touch}.icats button{padding:5px 11px}
+ .igrid{padding:4px 10px calc(150px + env(safe-area-inset-bottom))}
+ .icells{grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:4px}
+ .ic{padding:8px 2px 5px}.ic svg,.ic i{width:38px;height:38px}
+ .tv{padding:8px 10px calc(80px + env(safe-area-inset-bottom));overflow-y:auto}
+ .tbar{flex-wrap:wrap;gap:6px}.tbar kbd{display:none}.tauto{order:9;flex:1 1 100%;margin:0;white-space:normal}
+ .tedit{grid-template-columns:1fr}#tIn{font-size:14px;height:120px}
+ .tprev{max-width:100%}
+ .tmenu{max-width:calc(100vw - 24px);min-width:0}
+ .tfoot{padding-right:0;gap:8px}.tfoot>label{flex:1 1 100%}.tfoot input[type=text],.tfoot #tUnit{width:auto;flex:1;min-width:0;font-size:16px}
+ .tadv-b{width:min(380px,calc(100vw - 24px))}
+ .traybtn{right:10px;bottom:calc(12px + env(safe-area-inset-bottom));padding:9px 14px}
+ .tray{inset:0;width:auto;max-width:none;max-height:none;border:0;border-radius:0;z-index:60;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex}
+ .tray .trh{position:sticky;top:0;background:#fff;z-index:2;padding-top:calc(10px + env(safe-area-inset-top))}.trh button{font-size:20px;padding:4px 10px}
+ .tray .trl{flex:none;max-height:none;overflow:visible}
+ .tri .tb button{padding:5px 9px;font-size:14px}
+ .cmp .fr input[type=text]{font-size:16px}
+ .tray .trf{position:sticky;bottom:0;background:#fff;padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+ .lbed{left:8px;right:8px;top:56px;width:auto;max-height:calc(100dvh - 80px)}#lbList textarea{font-size:16px}
+ .toast{max-width:calc(100vw - 24px);bottom:calc(120px + env(safe-area-inset-bottom));width:max-content;box-sizing:border-box}
+ .mine .save input{font-size:16px}
+ .inapp{display:block;flex:1 1 100%;order:10;background:#FFF6E5;color:#7A4A00;border-radius:7px;padding:6px 9px;font-size:12px}.inapp[hidden]{display:none}.inapp a{color:#1F4E79;font-weight:700}
+}
+@media (max-width:900px) and (orientation:landscape) and (max-height:520px){
+ .slide{width:auto;height:calc(100dvh - 150px);max-width:100%}
+ aside{height:86dvh}
+}
 </style></head><body>
 <header>
- <h1><i id="dot"></i>PPT Style Studio <small>精緻圖解元件・客製工作室（背景永遠白色）</small></h1>
+ <h1><i id="dot"></i>PPT <span class="hs">Style </span>Studio <small>精緻圖解元件・客製工作室（背景永遠白色）</small></h1>
  <nav class="tabs" id="tabs"><button data-tab="slides" class="on">投影片元件</button><button data-tab="icons">圖示庫</button><button data-tab="table">表格</button></nav>
  <span class="sp"></span>
+ <button class="btn monly" id="bPanel" aria-expanded="false" aria-controls="panel">⚙ 設定</button>
  <label class="hx" id="exWrap" title="12–14 頁是主題式範例版面（三圓架構、框架流程、能力地圖），不是基本元件；預設不放進預覽與整份 .pptx"><input type="checkbox" id="bEx"> 含範例頁</label>
  <button class="btn" id="bOne">下載本頁 .pptx</button>
  <button class="btn pri" id="bAll">下載整份 .pptx</button>
  <div class="more"><button class="btn" id="bMore" aria-haspopup="true" aria-expanded="false" title="重設／儲存／載入設定">⋯</button>
   <div class="menu" id="mMore" hidden>
+   <button id="bExM" class="monly" title="12–14 頁主題式範例版面">☐ 含範例頁（12–14）</button>
    <button id="bReset" title="捨棄所有微調，回到目前範本的預設值">↺ 重設為範本</button>
    <button id="bSave" title="把目前設定存成 JSON 檔">儲存設定 JSON</button>
    <button id="bLoad" title="載入先前存的 JSON 設定">載入設定 JSON…</button>
   </div></div>
  <input type="file" id="fLoad" accept=".json,application/json" hidden>
+ <div class="inapp" id="inApp" hidden></div>
 </header>
 <div class="wrap">
  <aside id="panel">
+  <div class="pclose"><b>風格設定</b><small>改了即時套用到上方預覽</small><button id="bPanelX">完成</button></div>
   <div class="cap">範本</div>
   <div class="tpls" id="tpls"></div>
   <div class="cap">我的風格</div>
@@ -257,7 +327,7 @@ main{display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff
  </aside>
  <main>
   <section class="view" id="vSlides">
-  <div class="bar"><h2 id="sTitle"></h2><div class="chips" id="chips"></div></div>
+  <div class="bar"><h2 id="sTitle"></h2><div class="chips" id="chips"></div><button class="zoomb monly" id="bZoom" aria-pressed="false">🔍 放大</button></div>
   <div class="stage"><div class="slide" id="big"></div></div>
   <div class="foot">
    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><div class="status" id="status" style="margin:0"></div><span class="hint2 fsn" id="fsNote"></span><label class="wprev" title="只影響預覽：拿掉淺灰畫布面板，看元件放在白色投影片上的真實樣子（單一元件、待選素材匯出本來就是白底）"><input type="checkbox" id="wPrev"> 白底預覽</label><span class="hint2" id="elHint"></span></div>
@@ -5006,6 +5076,7 @@ if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 if(window.__studioFatal)return;
 const D=window.Deck,LS_KEY='ppt-studio-v4';
 const $=s=>document.querySelector(s);
+const TOUCH=!!(window.matchMedia&&matchMedia('(hover:none) and (pointer:coarse)').matches);   // 手機／平板：沒有 hover、雙擊會被當成縮放 → 一律用工具列按鈕
 const clone=o=>JSON.parse(JSON.stringify(o));
 const presetOf=id=>D.PRESETS.find(p=>p.id===id)||D.PRESETS[0];
 function templateParams(id){const p=Object.assign(clone(D.BASE),clone(presetOf(id)));delete p.desc;delete p.ref;return p;}
@@ -5205,7 +5276,7 @@ function showSlide(){
  {const n=D.smallRuns(sl,10);const fe=$('#fsNote');if(fe){fe.textContent=n?`ⓘ 本頁 ${n} 段字小於 10pt`:'';fe.title=n?'投影時可能偏小。單一元件與待選素材可在「字型與字級 › 最小字級」設定 10／12／14pt，匯出時整個元件等比放大。':'';}}
  document.querySelectorAll('.th').forEach(t=>t.classList.toggle('on',+t.dataset.i===S.slide));
  const on=document.querySelector('.th.on');if(on&&on.scrollIntoView)on.scrollIntoView({block:'nearest',inline:'nearest'});
- $('#sTitle').innerHTML=`${String(S.slide+1).padStart(2,'0')}／${model.slides.length}　${sl.title}<small>${S.mine?'我的風格：'+escH(S.mine):presetOf(S.base).zh}${isModified()&&!S.mine?'（已微調）':''}</small>`;$('#elHint').textContent=sl.groups&&sl.groups.length?`👆 點一下＝選取（工具列：複製／下載／＋待選）；雙擊或 ⊕＝加入待選素材（本頁 ${sl.groups.length} 個）`:'';
+ $('#sTitle').innerHTML=`${String(S.slide+1).padStart(2,'0')}／${model.slides.length}　${sl.title}<small>${S.mine?'我的風格：'+escH(S.mine):presetOf(S.base).zh}${isModified()&&!S.mine?'（已微調）':''}</small>`;$('#elHint').textContent=sl.groups&&sl.groups.length?(TOUCH?`👆 點元件＝選取 → 下方工具列：＋待選／下載 .pptx／SVG／PNG（本頁 ${sl.groups.length} 個）`:`👆 點一下＝選取（工具列：複製／下載／＋待選）；雙擊或 ⊕＝加入待選素材（本頁 ${sl.groups.length} 個）`):'';
 }
 function isModified(){const T=templateParams(S.base);return Object.keys(T).some(k=>String(T[k])!==String(S.p[k]));}
 function go(i){S.slide=(i+model.slides.length)%model.slides.length;showSlide();persist();}
@@ -5262,7 +5333,11 @@ async function copyEl(f){const name=SEL.name;
 document.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key==='ArrowRight')go(S.slide+1);if(e.key==='ArrowLeft')go(S.slide-1);});
 
 /* ---------- 下載／存取 ---------- */
-function saveBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);}
+function saveBlob(blob,name){const url=URL.createObjectURL(blob);const a=document.createElement('a');
+ // iOS Safari 13+／Android Chrome 支援 <a download>；iOS 會先跳「下載？」確認框，blob URL 太早釋放會下載失敗 → 保留 60 秒
+ if(!('download' in a)){const w=window.open(url,'_blank');if(!w)location.href=url;setTimeout(()=>URL.revokeObjectURL(url),60000);return;}
+ a.href=url;a.download=name;a.rel='noopener';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},60000);
+ if(TOUCH&&!saveBlob.tip&&/\.pptx$/i.test(name)&&(saveBlob.tip=1))setTimeout(()=>toast(`已下載 <b>${escH(name)}</b>。iPhone：「檔案 › 下載項目」點開 → 分享 → PowerPoint；Android：通知列或「下載」資料夾。`,6500,true),1800);}
 const fileBase=()=>'kit-'+S.base+(isModified()?'-custom':'');
 async function download(one){
  const btn=one?$('#bOne'):$('#bAll');btn.disabled=true;const old=btn.textContent;btn.textContent='產生中…';
@@ -5391,7 +5466,7 @@ function placeIBar(){const t=document.querySelector(`.ic[data-id="${ISEL}"]`);if
 $('#iGrid').onclick=e=>{const t=e.target.closest('.ic');if(!t){clearISel();return;}
  if(e.target.closest('.iadd')){addTray({kind:'icon',icon:{id:t.dataset.id,variant:S.p.icVar||'line'},name:I.BY[t.dataset.id].zh});return;}
  document.querySelectorAll('.ic.sel').forEach(x=>x.classList.remove('sel'));t.classList.add('sel');ISEL=t.dataset.id;placeIBar();};   // 點一下＝選取（複製改按工具列）
-$('#iGrid').ondblclick=e=>{const t=e.target.closest('.ic');if(t&&!e.target.closest('.iadd'))addTray({kind:'icon',icon:{id:t.dataset.id,variant:S.p.icVar||'line'},name:I.BY[t.dataset.id].zh});};
+$('#iGrid').ondblclick=e=>{if(TOUCH)return;const t=e.target.closest('.ic');if(t&&!e.target.closest('.iadd'))addTray({kind:'icon',icon:{id:t.dataset.id,variant:S.p.icVar||'line'},name:I.BY[t.dataset.id].zh});};
 let ISPY=0;$('#iGrid').onscroll=()=>{if(ISEL)placeIBar();if(!ISPY)ISPY=requestAnimationFrame(()=>{ISPY=0;spy();});};
 $('#ibar2').onclick=e=>{const b=e.target.closest('button');if(b)iconAction(b.dataset.a);};
 function svgPng(svg,px){return new Promise((res,rej)=>{const img=new Image();const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
@@ -5482,7 +5557,7 @@ function buildTableUI(){
  $('#tPasteBtn').onclick=async()=>{try{const items=await navigator.clipboard.read();for(const it of items){if(it.types.includes('text/plain')){const t=await(await it.getType('text/plain')).text();if(/\t/.test(t)){loadData(parseTSV(t));return;}}
    if(it.types.includes('text/html')){const r=parseHtmlTable(await(await it.getType('text/html')).text());if(r){loadData(r);return;}}}
    const t=await navigator.clipboard.readText();loadData(parseTSV(t));}
-  catch(err){try{const t=await navigator.clipboard.readText();loadData(parseTSV(t));}catch(e2){toast('瀏覽器不允許讀取剪貼簿：請直接在這一頁按 <b>Ctrl+V</b>。',4500,true);}}};
+  catch(err){try{const t=await navigator.clipboard.readText();loadData(parseTSV(t));}catch(e2){toast(TOUCH?'瀏覽器不允許讀取剪貼簿：請按「<b>編輯資料</b>」，在文字框長按 →「貼上」。':'瀏覽器不允許讀取剪貼簿：請直接在這一頁按 <b>Ctrl+V</b>。',5000,true);}}};
  // 在表格分頁任何地方按 Ctrl+V（輸入框除外）＝貼上資料
  document.addEventListener('paste',e=>{if(S.tab!=='table')return;const a=e.target;if(a&&(a.closest('input,textarea,[contenteditable="true"]')))return;
   const html=e.clipboardData.getData('text/html'),txt=e.clipboardData.getData('text/plain');let rows=null;
@@ -5513,7 +5588,7 @@ function buildTableUI(){
  document.addEventListener('click',e=>{if(!e.target.closest('#tMenu')&&!e.target.closest('.tov'))closeTMenu();if(!e.target.closest('#tAdv'))$('#tAdv').open=false;});
  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTMenu();});
  $('#tCopy').onclick=copyTable;$('#tPptx').onclick=downloadTable;$('#tTray').onclick=()=>{if(!T.rows.length)return;addTray({kind:'table',table:clone(T),name:T.title||'表格'});};
- $('#tPrev').ondblclick=e=>{if(T.rows.length)$('#tTray').click();};}
+ $('#tPrev').ondblclick=e=>{if(!TOUCH&&T.rows.length)$('#tTray').click();};}
 let TMENU=null;
 function closeTMenu(){TMENU=null;$('#tMenu').hidden=true;}
 function openTMenu(r,c,cellEl){const tb=TM&&TM.slides[0].table;if(!tb)return;TMENU={r,c};const h0=tb.h0,rows=T.rows;
@@ -5592,7 +5667,7 @@ function addTray(it){const e=Object.assign({uid:Date.now().toString(36)+Math.ran
  toast(`已加入待選素材：<b>${escH(e.name)}</b>（${escH(e.style)}）・共 ${a.length} 項`,2600,true);window.__studio.trayCount=a.length;}
 function renderTray(){const a=loadTray();$('#trayN').textContent=a.length;
  $('#trayList').innerHTML=a.length?a.map((e,i)=>`<div class="tri" draggable="true" data-i="${i}"><div class="tn">${e.thumb||''}</div><div class="tt"><i style="background:#${(e.params||{}).P||'999'}"></i>${i+1}. ${escH(e.name)}<small>${escH(e.style||'')}｜${{el:'元件',icon:'圖示',table:'表格'}[e.kind]||''}${e.labels?'｜已改字':''}</small></div><div class="tb"><button data-a="up" title="往前">↑</button><button data-a="dn" title="往後">↓</button><button data-a="rm" title="移除">✕</button></div></div>`).join('')
-  :'<div class="tempty">還沒有素材。<br>在投影片的任何元件、圖示庫的圖示、或表格預覽上<b>雙擊</b>，就會加入這裡（保留當時的風格）。</div>';
+  :(TOUCH?'<div class="tempty">還沒有素材。<br>點選投影片元件或圖示，在下方工具列按<b>「＋待選」</b>；表格頁按「＋待選」。每項保留當時的風格。</div>':'<div class="tempty">還沒有素材。<br>在投影片的任何元件、圖示庫的圖示、或表格預覽上<b>雙擊</b>，就會加入這裡（保留當時的風格）。</div>');
  $('#trayPptx').disabled=!a.length;$('#trayClear').disabled=!a.length;window.__studio.trayCount=a.length;$('#cmp').hidden=!a.length;if(!$('#tray').hidden)renderCompose();}
 $('#trayBtn').onclick=()=>{$('#tray').hidden=!$('#tray').hidden;if(!$('#tray').hidden){renderTray();renderCompose();}};
 $('#trayClose').onclick=()=>{$('#tray').hidden=true;};
@@ -5610,7 +5685,7 @@ $('#trayPptx').onclick=async()=>{const a=loadTray();if(!a.length)return;const b=
   toast(`已下載一頁 .pptx：${model.tray.n} 項素材${model.tray.scale<1?`（整體縮放 ×${model.tray.scale} 才放得下）`:''}，各自保留加入時的風格，原生可編輯${model.tray.skipped.length?`；${model.tray.skipped.length} 項無法重建已略過`:''}。`,5000);}
  catch(err){console.error(err);toast('匯出失敗：'+err.message);}finally{b.disabled=false;b.textContent=old;}};
 function trayEl(gi){const sl=model.slides[S.slide];const gr=sl.groups[gi];if(!gr)return;const lk=sl.key+':'+gi;const it={kind:'el',key:sl.key,gi,name:gr.full||gr.name};if(S.labels&&S.labels[lk])it.labels={[lk]:clone(S.labels[lk])};addTray(it);}
-$('#big').addEventListener('dblclick',e=>{const g=e.target.closest('.el');if(!g)return;e.preventDefault();trayEl(+g.dataset.g);});
+$('#big').addEventListener('dblclick',e=>{if(TOUCH)return;const g=e.target.closest('.el');if(!g)return;e.preventDefault();trayEl(+g.dataset.g);});
 // 滑過元件時右上角出現 ⊕（一鍵加入待選素材）
 $('#big').addEventListener('mouseover',e=>{const g=e.target.closest('.el');const b=$('#elAdd');if(!b)return;if(!g){if(!e.target.closest('#elAdd'))b.hidden=true;return;}
  const sl=model.slides[S.slide];const gr=sl.groups[+g.dataset.g];if(!gr)return;const big=$('#big'),k=big.clientWidth/((model.W||D.W)*72);
@@ -5663,6 +5738,22 @@ $('#mMore').onclick=()=>{$('#mMore').hidden=true;$('#bMore').setAttribute('aria-
 document.addEventListener('click',e=>{if(!e.target.closest('.more')){$('#mMore').hidden=true;$('#bMore').setAttribute('aria-expanded','false');}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#mMore').hidden=true;});
 
+/* ---------- v10 手機／觸控 ---------- */
+const MQ=window.matchMedia?matchMedia('(max-width:900px)'):{matches:false};
+function setPanel(on){document.body.classList.toggle('pan',on);$('#bPanel').setAttribute('aria-expanded',String(on));$('#bPanel').classList.toggle('pri',on);}
+$('#bPanel').onclick=()=>setPanel(!document.body.classList.contains('pan'));
+$('#bPanelX').onclick=()=>setPanel(false);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')setPanel(false);});
+function mLabels(){const m=MQ.matches;if(!$('#bOne').disabled)$('#bOne').textContent=m?'⬇ 本頁':'下載本頁 .pptx';if(!$('#bAll').disabled)$('#bAll').textContent=m?'⬇ 整份':'下載整份 .pptx';
+ $('#bExM').textContent=(S.examples?'☑':'☐')+' 含範例頁（12–14）';if(!m){setPanel(false);const st=document.querySelector('.stage');if(st.classList.contains('zoom'))$('#bZoom').click();}}
+if(MQ.addEventListener)MQ.addEventListener('change',mLabels);else if(MQ.addListener)MQ.addListener(mLabels);
+$('#bExM').onclick=()=>{const c=$('#bEx');c.checked=!c.checked;c.onchange({target:c});mLabels();};
+$('#bZoom').onclick=()=>{const st=document.querySelector('.stage');const on=!st.classList.contains('zoom');st.classList.toggle('zoom',on);$('#bZoom').textContent=on?'↔ 全幅':'🔍 放大';$('#bZoom').setAttribute('aria-pressed',String(on));if(SEL)selectEl(SEL.gi);};
+if(TOUCH){$('#trayBtn').title='待選素材：選取元件後按工具列「＋待選」加入';const t=document.querySelector('.trh small');if(t)t.textContent='選取元件或圖示後按工具列「＋待選」加入；每項保留加入當時的風格。用 ↑↓ 調整順序。';}
+{const ua=navigator.userAgent||'';if(/\bLine\/|FBAN|FBAV|Instagram|MicroMessenger/i.test(ua)){const b=$('#inApp');let u='';try{const x=new URL(location.href);x.searchParams.set('openExternalBrowser','1');u=x.href;}catch(e){}
+ b.innerHTML=`你在 App 內建瀏覽器開啟，<b>下載 .pptx 可能無法使用</b>。`+(/\bLine\//i.test(ua)&&u?`<a href="${escH(u)}">改用 Safari／Chrome 開啟</a>`:'請點右上角「⋯」→「在瀏覽器中開啟」。');b.hidden=false;}}
+window.__studio.mobile={mq:MQ.matches,touch:TOUCH};
+mLabels();
 buildTemplates();buildGroups();syncPanel();renderMine();setTab(S.tab||'slides');
 (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(render);
 render();
