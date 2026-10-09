@@ -53,6 +53,16 @@ render/*
 !render/fixA-header-menu.png
 !render/fixA-badges-connectors.png
 !render/fixA-fontwarn.png
+!render/fixB-composer-ui.png
+!render/fixB-composer-lo.png
+!render/fixB-flex-navy-lo.png
+!render/fixB-rca-navy-lo.png
+!render/fixB-counts6-investor-lo.png
+!render/fixB-stepper.png
+!render/fixB-labels.png
+!render/fixB-investor-warning.png
+!render/fixB-sem-panel.png
+!render/fixB-counts-panel.png
 # 其他暫存
 *.pdf
 *.zip
