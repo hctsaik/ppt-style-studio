@@ -1,17 +1,18 @@
 {
   "name": "ppt-style-studio",
   "version": "1.0.0",
-  "description": "精緻圖解元件庫 · PPT Style Studio v4",
+  "description": "精緻圖解元件庫 · PPT Style Studio",
   "main": "index.js",
   "scripts": {
     "gen": "node gen.js",
-    "review": "bash review.sh"
+    "review": "bash review.sh",
+    "test": "node tools/test.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "pptxgenjs": "^3.12.0",
-    "jszip": "^3.10.1"
+    "pptxgenjs": "3.12.0",
+    "jszip": "3.10.2"
   }
 }

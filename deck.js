@@ -7,6 +7,8 @@ const W=13.333,H=7.5,PT=72;
 const ICONS=(root&&root.Icons)||(typeof require==='function'?(function(){try{return require('./icons.js');}catch(e){return null;}})():null);
 function mix(a,b,t){const p=s=>[0,2,4].map(i=>parseInt(s.substr(i,2),16));const A=p(a),B=p(b);return A.map((v,i)=>Math.round(v*(1-t)+B[i]*t).toString(16).padStart(2,'0')).join('').toUpperCase();}
 const clone=o=>JSON.parse(JSON.stringify(o));
+// XML 不允許的控制字元（U+0000–U+0008、U+000B、U+000C、U+000E–U+001F、U+FFFE/FFFF）：留著會讓 .pptx 需要「修復」→ 所有文字進 model 前先去掉
+const stripCtl=s=>String(s==null?'':s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]/g,'');
 
 /* ============ 參數：預設值＋ 8 個範本 ============ */
 const BASE={
@@ -18,7 +20,7 @@ const BASE={
  card:'outline',cardLW:1.25,cardLine:'D9D9D9',headColor:'P',bandStyle:'fill',cornerTag:true,ribbonTone:'p',
  tag:'pill',badge:'circle',sep:'tri',chain:'chev',circle:'ring3',circleLW:3,sym:'outlineP',mark:'none',bar:'under',bracket:false,titleColor:'P',
  footRule:false,
- cnW:1.25,cnC:'7F7F7F',cnDash:'solid',cnHead:'triangle',cnTail:'none',cnHs:'lg',
+ cnW:1.25,cnC:'7F7F7F',cnDash:'solid',cnHead:'triangle',cnTail:'none',cnHs:'med',
  tFont:'Microsoft JhengHei',bFont:'Microsoft JhengHei',nFont:'',tSize:36,tBold:true,lSize:16,lBold:true,nSize:10.5,
  icColor:'P',icVar:'line',icSW:0,
  tbDense:'normal',tbHiColor:'auto',tbHiMode:'auto',tbNeg:false,tbStatus:true
@@ -104,7 +106,7 @@ function buildModel(params,opt){
  /* ---------- 基本圖元：全部寫入 model ---------- */
  function runsOf(text,o){const items=typeof text==='string'?text.split('\n').map((t,i,a)=>({t,br:i<a.length-1})):text;
   const out=[],paras=[[]];
-  items.forEach((r,i)=>{const size=r.s||o.size||14;const ro={size,font:r.f||o.font||F,bold:r.b!=null?!!r.b:!!o.bold,color:r.c||o.color||G.ink};
+  items.forEach((r,i)=>{r=Object.assign({},r,{t:stripCtl(r.t)});const size=r.s||o.size||14;const ro={size,font:r.f||o.font||F,bold:r.b!=null?!!r.b:!!o.bold,color:r.c||o.color||G.ink};
    if(r.cs!=null)ro.cs=r.cs;const brk=r.br&&i<items.length-1;if(brk)ro.br=true;
    out.push({t:r.t,o:ro});paras[paras.length-1].push({t:r.t,size});if(brk)paras.push([]);});
   return{out,paras};}
@@ -118,7 +120,7 @@ function buildModel(params,opt){
   if(kind){it.fill=o.fill||null;it.ft=o.ft||0;it.line=o.line||null;it.lw=o.lw||1;it.dash=o.dash||'solid';if(o.line){it.head=o.head||null;it.tail=o.tail||null;it.hs=o.hs||'med';}}
   if(o.adj!=null&&o.adj>0)it.adj=o.adj;
   if(o.sh&&(st.sh||o.force))it.sh=shadowSpec(o.sh===true||o.sh===1?'card':o.sh,w,h);
-  if(o.points)it.points=o.points;if(o.doc)it.doc=1;if(o.cap)it.cap=o.cap;
+  if(o.points)it.points=o.points;if(o.sites)it.sites=o.sites;if(o.bgMatch)it.bgMatch=1;if(it.name)it.name=stripCtl(it.name).replace(/[<>&"]/g,'');if(o.doc)it.doc=1;if(o.cap)it.cap=o.cap;
   if(o.text!=null&&o.text!==''){const R=runsOf(o.text,o);it.runs=R.out;
    it.tx={align:o.align||'center',valign:o.valign||'middle',margin:o.margin!=null?o.margin:(kind?3:0),lsp:o.lsp||1,font:o.font||F,size:o.size||14,color:o.color||G.ink,bold:!!o.bold,cs:o.cs};
    if(!o.nolint)lint(R.paras,w,h,o);}
@@ -137,17 +139,20 @@ function buildModel(params,opt){
   if(pts.length===2){ln(pts[0][0],pts[0][1],pts[1][0],pts[1][1],sty);return cur.items[cur.items.length-1];}
   return path(pts,{line:sty.c,lw:sty.w,dash:sty.dash,head:sty.head,hs:sty.hs,tail:sty.tail,name:'連接線'});}
  /* ---------- 黏著連接線（v5.2）：端點＝圖形的連接點；匯出時轉成 <p:cxnSp> 並寫入 stCxn／endCxn，PowerPoint 中移動圖形線會跟著走 ----------
-    連接點編號依 OOXML 預設圖形定義：rect／roundRect／diamond／can：0 上 1 左 2 下 3 右；ellipse：0 上 2 左 4 下 6 右；
-    parallelogram：0 上 2 右（斜邊中點）4 下 5 左（斜邊中點）；文件在 pptx 中改用預設圖形 flowChartDocument（與預覽的自訂路徑同形）：0 上 1 左 2 下 3 右。 */
+    連接點編號依 OOXML 預設圖形定義：rect／roundRect／diamond：0 上 1 左 2 下 3 右；ellipse：0 上 2 左 4 下 6 右；
+    parallelogram：0 上 2 右（斜邊中點）4 下 5 左（斜邊中點）；文件在 pptx 中改用預設圖形 flowChartDocument（與預覽的自訂路徑同形）：0 上 1 左 2 下 3 右。
+    can（資料庫圓柱）有 5 個連接點：0＝上蓋內緣、1 上 2 左 3 下 4 右 → 程式裡一樣寫 0 上 1 左 2 下 3 右，匯出時自動 +1（CAN_IDX）。
+    自訂圖形可帶 sites（[[x,y,方向角]]，相對圖形左上角）：匯出時寫進 <a:cxnLst>（LibreOffice 不認自訂連接點，目前沒有元件使用；分流棒改用 3 段原生方形）。 */
+ const CAN_IDX=[1,2,3,4];
  const SITE_DIR={rect:['v','h','v','h'],roundRect:['v','h','v','h'],diamond:['v','h','v','h'],can:['v','h','v','h'],custGeom:['v','h','v','h'],
   ellipse:['v',null,'h',null,'v',null,'h',null],parallelogram:['v',null,'h',null,'v','h']};
- function siteXY(it,i){const x=it.x,y=it.y,w=it.w,h=it.h,a=it.adj||0;
+ function siteXY(it,i){const x=it.x,y=it.y,w=it.w,h=it.h,a=it.adj||0;if(it.sites){const s=it.sites[i];return[x+s[0],y+s[1]];}
   if(it.kind==='ellipse')return[[x+w/2,y],null,[x,y+h/2],null,[x+w/2,y+h],null,[x+w,y+h/2]][i];
   if(it.kind==='parallelogram'){const d=Math.min(a,w);return[[x+w/2,y],null,[x+w-d/2,y+h/2],null,[x+w/2,y+h],[x+d/2,y+h/2]][i];}
-  if(it.kind==='custGeom'&&it.doc)return[[x+w/2,y],[x,y+h/2],[x+w/2,y+h*20320/21600],[x+w,y+h/2]][i];
+  if(it.kind==='custGeom'&&it.doc)return[[x+w/2,y],[x,y+h/2],[x+w/2,y+h*20172/21600],[x+w,y+h/2]][i];
   return[[x+w/2,y],[x,y+h/2],[x+w/2,y+h],[x+w,y+h/2]][i];}
  function link(a,sa,b,sb,o){o=o||{};const A=Array.isArray(a)?a:siteXY(a,sa),B=Array.isArray(b)?b:siteXY(b,sb);
-  const da=Array.isArray(a)?(o.dirA||'h'):(SITE_DIR[a.kind]||[])[sa],db=Array.isArray(b)?(o.dirB||'h'):(SITE_DIR[b.kind]||[])[sb];
+  const sd=(it,i)=>it.sites?(Math.abs(it.sites[i][2]%180)===90?'v':'h'):(SITE_DIR[it.kind]||[])[i];const da=Array.isArray(a)?(o.dirA||'h'):sd(a,sa),db=Array.isArray(b)?(o.dirB||'h'):sd(b,sb);
   let pts;const eq=(p,q)=>Math.abs(p-q)<.004;
   if(o.via)pts=[A].concat(o.via).concat([B]);
   else if(eq(A[0],B[0])||eq(A[1],B[1]))pts=[A,B];
@@ -155,7 +160,7 @@ function buildModel(params,opt){
   else if(da==='v'&&db==='v'){const my=o.mid!=null?o.mid:(A[1]+B[1])/2;pts=[A,[A[0],my],[B[0],my],B];}
   else if(da==='h')pts=[A,[B[0],A[1]],B];else pts=[A,[A[0],B[1]],B];
   const it=conn(pts,Object.assign({tail:false},o.style||{}));
-  it.cx={};if(!Array.isArray(a))it.cx.a=[cur.items.indexOf(a),sa];if(!Array.isArray(b))it.cx.b=[cur.items.indexOf(b),sb];
+  const ix=(it,i)=>it.kind==='can'?CAN_IDX[i]:i;it.cx={};if(!Array.isArray(a))it.cx.a=[cur.items.indexOf(a),ix(a,sa)];if(!Array.isArray(b))it.cx.b=[cur.items.indexOf(b),ix(b,sb)];
   return it;}
  function curve(p0,c1,c2,p1,o){o=Object.assign(CN(),o||{});const all=[p0,c1,c2,p1];const x0=Math.min(...all.map(p=>p[0])),y0=Math.min(...all.map(p=>p[1]));
   const w=Math.max(...all.map(p=>p[0]))-x0,h=Math.max(...all.map(p=>p[1]))-y0;const q=p=>({x:p[0]-x0,y:p[1]-y0});
@@ -169,7 +174,7 @@ function buildModel(params,opt){
  function table(x,y,colW,rowH,cells,o){o=o||{};const w=colW.reduce((a,b)=>a+b,0),h=rowH.reduce((a,b)=>a+b,0);
   const C=cells.map(r=>r.map(c=>{c=typeof c==='string'?{t:c}:c;const size=c.size||o.size||10;
    const runs=runsOf(c.t==null?'':c.t,{size,color:c.color||G.ink,bold:!!c.bold,font:c.font||F}).out;
-   return{runs,fill:c.fill||null,align:c.align||o.align||'center',size,color:c.color||G.ink,bold:!!c.bold,mL:o.mL!=null?o.mL:4,mT:o.mT!=null?o.mT:1,bT:c.bT||null,bB:c.bB||null};}));
+   return{runs,fill:c.fill||null,align:c.align||o.align||'center',size,color:c.color||G.ink,bold:!!c.bold,font:c.font||F,mL:o.mL!=null?o.mL:4,mT:o.mT!=null?o.mT:1,bT:c.bT||null,bB:c.bB||null};}));
   const it={t:'tbl',x,y,w,h,colW:colW.slice(),rowH:rowH.slice(),cells:C,name:o.name||'表格'};cur.items.push(it);return it;}
  /* 圖示（v7）：Material Symbols＝一個填色自訂圖形（多段子路徑、無外框）；tint／solid 變化另加一個底圓。回傳 {bg,glyph} */
  const ICC=c=>({P,PD,A:HASA?A:P,g:G.t2,ink:G.ink}[c]||P);
@@ -220,16 +225,16 @@ function buildModel(params,opt){
   box(x,y,w,h,{fill:L.fill,line:L.line,lw:L.lw,dash:L.dash,r:tagR(h),text:t,size,color:L.c,bold,margin:[2,2,0,0],sh,name:'標籤'});return w;}
 
  /* ---------- 編號 ---------- */
- function badge(cx,cy,n,o){o=o||{};const d=o.d||.42,size=o.size||Math.round(d*30),t=String(n);const W2='FFFFFF';
+ function badge(cx,cy,n,o){o=o||{};const d=o.d||.42,size=o.size||Math.round(d*30),t=String(n);const W2='FFFFFF';const RG=q=>o.ring&&!q.line?Object.assign(q,{line:W2,lw:1.5}):q;   // ring：貼在卡片角落時加白環，與卡片框線分開
   switch(st.badge){
    case 'ring':circ(cx,cy,d,{fill:o.alt?A:P,line:W2,lw:1.75,sh:'small',text:t,size,bold:1,color:W2,margin:0,name:'編號'});break;
-   case 'rsq':box(cx-d/2,cy-d/2,d,d,{fill:o.alt?A:P,r:.06,text:t,size,bold:1,color:o.alt&&HASA?G.ink:W2,margin:0,name:'編號'});break;
-   case 'pill':{const w=Math.max(d*1.25,tw(t,size*.8)+.2),h=d*.68;box(cx-w/2,cy-h/2,w,h,{fill:o.alt?PTn:P,r:'full',text:t,size:Math.round(size*.8),bold:1,color:o.alt?P:W2,margin:0,name:'編號'});break;}
-   case 'circle':circ(cx,cy,d,{fill:o.alt?A:P,text:t,size,bold:1,color:W2,margin:0,name:'編號'});break;
+   case 'rsq':box(cx-d/2,cy-d/2,d,d,RG({fill:o.alt?A:P,r:.06,text:t,size,bold:1,color:o.alt&&HASA?G.ink:W2,margin:0,name:'編號'}));break;
+   case 'pill':{const w=Math.max(d*1.25,tw(t,size*.8)+.2),h=d*.68;box(cx-w/2,cy-h/2,w,h,RG({fill:o.alt?PTn:P,r:'full',text:t,size:Math.round(size*.8),bold:1,color:o.alt?P:W2,margin:0,name:'編號'}));break;}
+   case 'circle':circ(cx,cy,d,RG({fill:o.alt?A:P,text:t,size,bold:1,color:W2,margin:0,name:'編號'}));break;
    case 'oring':circ(cx,cy,d,{fill:W2,line:o.alt?G.ink:P,lw:.75,text:t,size,color:o.alt?G.ink:P,font:FL,margin:0,name:'編號'});break;
-   case 'square':box(cx-d/2,cy-d/2,d,d,{fill:o.alt?A:P,text:t,size,color:W2,font:st.nFont||'Georgia',margin:0,name:'編號'});break;
-   case 'halo':circ(cx,cy,d*1.32,{fill:o.alt?mix(A,'FFFFFF',.75):PTn});circ(cx,cy,d,{fill:o.alt?A:P,text:t,size,bold:1,color:W2,margin:0,name:'編號'});break;
-   case 'odot':circ(cx,cy,d,{fill:o.alt?A:P,text:t,size,bold:1,color:W2,margin:0,name:'編號'});if(d>=.4&&!o.nodot)circ(cx+d*.36,cy-d*.36,d*.3,{fill:A,line:W2,lw:1});break;
+   case 'square':box(cx-d/2,cy-d/2,d,d,RG({fill:o.alt?A:P,text:t,size,color:W2,font:st.nFont||'Georgia',margin:0,name:'編號'}));break;
+   case 'halo':circ(cx,cy,d*1.32,{fill:o.alt?mix(A,'FFFFFF',.75):PTn});circ(cx,cy,d,RG({fill:o.alt?A:P,text:t,size,bold:1,color:W2,margin:0,name:'編號'}));break;
+   case 'odot':circ(cx,cy,d,RG({fill:o.alt?A:P,text:t,size,bold:1,color:W2,margin:0,name:'編號'}));if(d>=.4&&!o.nodot)circ(cx+d*.36,cy-d*.36,d*.3,{fill:A,line:W2,lw:1});break;
    case 'enc':{const num=parseInt(t,10);const g=num>=1&&num<=20&&String(num)===t.replace(/^0/,'')?String.fromCodePoint(0x245F+num):t;
     if(g!==t)txt(cx-d/2,cy-d/2,d,d,g,{size:Math.round(d*46),color:o.alt?A:P,align:'center',name:'編號'});
     else circ(cx,cy,d,{fill:'FFFFFF',line:o.alt?A:P,lw:1.25,text:t,size,bold:1,color:o.alt?A:P,margin:0,name:'編號'});break;}}}
@@ -430,7 +435,7 @@ function buildModel(params,opt){
    cell(5,'淺色／灰階標籤',(x,y,w,h,mx,my)=>{const a=tagW('輔助',11,.3),b=tagW('灰階',11,.3);let xx=mx-(a+b+.08)/2;tag(xx,my-.15,'輔助',{tone:'a',h:.3,size:11});tag(xx+a+.08,my-.15,'灰階',{tone:'g',h:.3,size:11});});
    cell(6,'小圓點',(x,y,w,h,mx,my)=>{[P,A,G.line].forEach((c,j)=>circ(mx-.3+j*.3,my,.15,{fill:c,name:'圓點'}));});};
   R[6]=()=>{
-   cell(0,'虛線群組框',(x,y,w,h)=>{box(x,y+.06,w,h-.06,{line:G.mute,lw:.75,dash:'dash',r:PR,name:'群組框'});box(x+.1,y-.03,.62,.18,{fill:st.canvas?st.canvasColor:'FFFFFF',text:'群組 A',size:8,color:G.t2,margin:0,name:'群組名稱'});});
+   cell(0,'虛線群組框',(x,y,w,h)=>{box(x,y+.06,w,h-.06,{line:G.mute,lw:.75,dash:'dash',r:PR,name:'群組框'});box(x+.1,y-.03,.62,.18,{fill:st.canvas?st.canvasColor:'FFFFFF',bgMatch:1,text:'群組 A',size:8,color:G.t2,margin:0,name:'群組名稱'});});
    cell(1,'淺灰面板',(x,y,w,h)=>box(x,y,w,h,{fill:GF,r:PR,name:'淺灰面板'}));
    cell(2,'本風格卡片',(x,y,w,h)=>cardBase(x,y,w,h));
    cell(3,'卡片＋陰影',(x,y,w,h)=>cardBase(x,y,w,h,{force:1}));
@@ -454,7 +459,7 @@ function buildModel(params,opt){
   const A2=(pts,o)=>conn(pts,Object.assign({tail:false},o||{}));
   const combos=[
    ['三步驟流程','Linear Process',(x,y)=>{const w=.74,g=(cw-3*w)/2,yy=y+.62;
-     const ns=['步驟一','步驟二','步驟三'].map((t,i)=>{const xi=x+i*(w+g);const n=N(xi,yy,w,t,i===2?{strong:1}:{});badge(xi+w/2,yy-.3,bnum(i+1),{d:.26,size:9,nodot:1});return n;});
+     const ns=['步驟一','步驟二','步驟三'].map((t,i)=>{const xi=x+i*(w+g);const n=N(xi,yy,w,t,i===2?{strong:1}:{});badge(xi+.02,yy+.02,bnum(i+1),{ring:1,d:.26,size:9,nodot:1});return n;});
      link(ns[0],3,ns[1],1);link(ns[1],3,ns[2],1);}],
    ['判斷分岔（是／否）','Decision Branch',(x,y)=>{const yy=y+.24,cy=yy+nh/2,dx=x+.98,dw=.84,dh=.64,dcy=cy;
      const a=N(x,yy,.72,'檢查');const d=sym('dec',dx,dcy-dh/2,dw,dh,'通過？',{size:fs-1});link(a,3,d,1);
@@ -473,13 +478,14 @@ function buildModel(params,opt){
      const xa=x+hw+.14,xb=xa+w+.3,xc=x+cw-w-.08;
      const a=N(xa,c1-nh/2,w,'填寫'),b=N(xb,c2-nh/2,w,'審核'),c=N(xc,c1-nh/2,w,'歸檔',{strong:1});
      link(a,3,b,0);link(b,3,c,2);}],
-   ['平行分流／合流','Parallel Split / Merge',(x,y)=>{const ca=y+.38,cb=y+1.3,cm=(ca+cb)/2,bw=.07,w=.74;
-     const xs=x+.66,xj=x+cw-.86;
-     const s0=N(x,cm-nh/2,.56,'開始');const sp=box(xs+.1,ca-.28,bw,cb-ca+.56,{fill:P,name:'分流'});
-     const xA=xs+.38;const na=N(xA,ca-nh/2,w,'作業 A'),nb=N(xA,cb-nh/2,w,'作業 B');
-     const mg=box(xj-.2,ca-.28,bw,cb-ca+.56,{fill:P,name:'合流'});const e=N(x+cw-.62,cm-nh/2,.62,'彙整',{strong:1});
-     link(s0,3,sp,1);link([xs+.1+bw,ca],0,na,1);link([xs+.1+bw,cb],0,nb,1);   // 分流棒的上下分支不在連接點上：只黏終點
-     link(na,3,[xj-.2,ca],0);link(nb,3,[xj-.2,cb],0);link(mg,3,e,1);}],
+   ['平行分流／合流','Parallel Split / Merge',(x,y)=>{const ca=y+.38,cb=y+1.3,cm=(ca+cb)/2,bw=.045,sw0=.5,ew=.56,g1=.22,g2=.26,w=Math.max(.6,cw-sw0-ew-2*g1-2*g2-2*bw);
+     // 分流／合流棒＝3 段相接的細長方形（上段中心＝分支 A、下段中心＝分支 B、中段中心＝主線）→ 每條連接線兩端都黏在原生連接點上；線長至少 0.22"
+     const d=.28,o=.006,bar=(bx,nm)=>[box(bx,ca-d,bw,2*d+o,{fill:P,name:nm,r:0}),box(bx,cm-(cb-ca)/2+d-o,bw,(cb-ca)-2*d+2*o,{fill:P,name:nm,r:0}),box(bx,cb-d-o,bw,2*d+o,{fill:P,name:nm,r:0})];
+     const s0=N(x,cm-nh/2,sw0,'開始');const xs=x+sw0+g1;const sp=bar(xs,'分流');
+     const xA=xs+bw+g2;const na=N(xA,ca-nh/2,w,'作業 A'),nb=N(xA,cb-nh/2,w,'作業 B');
+     const xj=xA+w+g2;const mg=bar(xj,'合流');const e=N(x+cw-ew,cm-nh/2,ew,'彙整',{strong:1});
+     link(s0,3,sp[1],1);link(sp[0],3,na,1);link(sp[2],3,nb,1);
+     link(na,3,mg[0],1);link(nb,3,mg[2],1);link(mg[1],3,e,1);}],
    ['輸入→處理→輸出','Input / Process / Output',(x,y)=>{const ww=[.82,.7,.82],g=(cw-ww[0]-ww[1]-ww[2])/2,yy=y+.5;let xi=x;
      const ns=[['io','輸入'],['proc','處理'],['doc','報表']].map(([k,t],i)=>{const n=sym(k,xi,k==='doc'?yy-.05:yy,ww[i],k==='doc'?.52:nh,t,{size:fs,strong:i===1});
       lab(xi-.05,yy+.6,ww[i]+.1,['資料來源','整理運算','產出結果'][i],{color:G.mute});xi+=ww[i]+g;return n;});
@@ -759,7 +765,9 @@ function buildModel(params,opt){
     只畫橫線（表頭底線＋細分隔線），數字靠右、同寬，強調只用一種顏色。預覽、匯出、HTML 複製共用這份 model。 */
  function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==null?'':c).trim()!==''));if(!raw.length)return;
   const nC=Math.max(...raw.map(r=>r.length));const rows=raw.map(r=>{const a=r.map(c=>String(c==null?'':c).replace(/\r/g,'').trim());while(a.length<nC)a.push('');return a;});
-  const AU=tableAuto(rows);const head=T.header==null||T.header==='auto'?AU.head:!!T.header,h0=head?1:0;
+  let AU=tableAuto(rows);const head=T.header==null||T.header==='auto'?AU.head:!!T.header,h0=head?1:0;
+  // 一張投影片最多 25 列資料（PowerPoint 有最小列高，再多就會超出投影片）：多的不放，並提示拆表
+  const MAXR=25;if(rows.length-h0>MAXR){const n=rows.length-h0;rows.length=h0+MAXR;AU=tableAuto(rows);warn('表格列數過多',`共 ${n} 列，只放前 ${MAXR} 列；請拆成多張表或先摘要`);}
   const lookId=TABLE_LOOKS.some(l=>l[0]===st.tbLook)?st.tbLook:(st.tbPanel?'panel':'clean');
   const dense=st.tbDense==='compact';
   const LK={
@@ -785,14 +793,21 @@ function buildModel(params,opt){
   AU.section.forEach((s,ri)=>{if(s)colW[0]=Math.max(colW[0],Math.min(measureW(rows[ri][0],fs,1)+2*pad/72,colW[0]*1.6));});
   const frame=(LK.panel?.26:LK.card?.22:0)*k;
   const maxW=W-2*X0-2*frame,minW=Math.min(maxW,(nC>=5?8.6:nC>=3?7:5.2)*k);let sum=colW.reduce((a,b)=>a+b,0);
+  // 單欄最多佔表格可用寬度的 45%：一格很長的中文說明會換行，不會把其他欄擠扁
+  {const cap=.45*maxW;if(nC>1&&colW.some(w=>w>cap)){colW=colW.map(w=>Math.min(w,cap));sum=colW.reduce((a,b)=>a+b,0);}}
   if(sum<minW){const ex=minW-sum;const rest=nC>1?nC-1:0;colW=colW.map((w,c)=>w+(nC===1?ex:c===0?ex*.3:ex*.7/rest));}
   else if(sum>maxW){const f=maxW/sum;colW=colW.map(w=>w*f);fs*=Math.max(.72,f);hfs*=Math.max(.72,f);pad*=Math.max(.72,f);if(f<.85)warn('表格太寬','字級已縮小，或請減少欄位');}
   const lines=t=>String(t).split('\n').length;
-  let rowH=rows.map((r,ri)=>{const base=ri<h0?rh*1.05:AU.section[ri]?rh*.95:rh;return Math.max(base,Math.max(...r.map(lines))*(ri<h0?hfs:fs)*1.25/72+.14*k);});
+  const wrapN=(t,size,b,cw)=>String(t).split('\n').reduce((a,l)=>a+Math.max(1,Math.ceil(tw(l,size)*(b?1.07:1)/Math.max(.2,cw-2*pad/72-.04))),0);
+  const cellN=(r,ri)=>Math.max(...r.map((t,c)=>wrapN(t,ri<h0?hfs:fs,ri<h0||bold.has(ri),colW[c])));
+  let rowH=rows.map((r,ri)=>{const base=ri<h0?rh*1.05:AU.section[ri]?rh*.95:rh;return Math.max(base,cellN(r,ri)*(ri<h0?hfs:fs)*1.25/72+.14*k);});
   const tW=colW.reduce((a,b)=>a+b,0);
   const titH=T.title?.5*k+.16*k:0,unitH=T.unit?.28*k:0,noteN=T.note?lines(T.note):0,noteH=noteN?noteN*.19*k+.14*k:0;
   let tH=rowH.reduce((a,b)=>a+b,0);const avail=H-.8-titH-unitH-noteH-2*frame;
-  if(tH>avail){const f=avail/tH;rowH=rowH.map(h=>h*f);fs*=Math.max(.7,f);hfs*=Math.max(.7,f);tH=avail;if(f<.8)warn('表格太高','列高與字級已縮小，或請減少列數');}
+  if(tH>avail){const f=avail/tH;fs*=Math.max(.7,f);hfs*=Math.max(.7,f);
+   // 列高下限＝字級需要的高度（PowerPoint 不會讓列比文字矮，硬壓只會讓表格超出投影片）
+   rowH=rowH.map((h,ri)=>Math.max(h*f,cellN(rows[ri],ri)*(ri<h0?hfs:fs)*1.2/72+2*Math.max(1,2*k)/72));tH=rowH.reduce((a,b)=>a+b,0);
+   if(tH>avail+.01)warn('表格太高',`字級已縮到最小仍放不下（約超出 ${(tH-avail).toFixed(1)} 吋）；請減少列數或拆成多張表`);else if(f<.8)warn('表格太高','列高與字級已縮小，或請減少列數');}
   const blockH=titH+unitH+tH+noteH+2*frame;const top=Math.max(.4,(H-blockH)/2);
   const tx=(W-tW)/2;let y=top;
   if(T.title){txt(tx-frame,y,tW+2*frame,.5*k,T.title,{size:20*k,bold:1,color:titleColor,font:st.tFont,name:'表格標題',valign:'bottom'});y+=titH;}
@@ -821,7 +836,7 @@ function buildModel(params,opt){
    if(hi.type==='col'&&hi.i>=0&&hi.i<nC){const x=tx+colW.slice(0,hi.i).reduce((a,b)=>a+b,0);box(x+.01*k,ty-.04*k,colW[hi.i]-.02*k,tH+.08*k,{line:HC,lw:1.75*k,r:.07*k,name:'強調框'});}
    if(hi.type==='row'&&hi.i>=0&&hi.i<rows.length){const yy=ty+rowH.slice(0,hi.i).reduce((a,b)=>a+b,0);box(tx-.05*k,yy+.01*k,tW+.1*k,rowH[hi.i]-.02*k,{line:HC,lw:1.75*k,r:.07*k,name:'強調框'});}}
   cur.table={tx,ty,tW,tH,colW,rowH,h0,nC,nR:rows.length,look:lookId,hiMode,colNum:AU.numC,hi:hiMode==='box'&&(hi.type==='col'||hi.type==='row')?Object.assign({color:HC},hi):null,unit:T.unit||'',note:T.note||'',title:T.title||'',font:F,nf};}
- SLIDES.forEach(([k,zh],i)=>{if(opt.only&&!opt.only.includes(k))return;sno=i+1;cur={key:k,title:zh,no:i+1,items:[],groups:[]};slides.push(cur);canvas();SL[k]();footer();});
+ SLIDES.forEach(([k,zh],i)=>{if(opt.only&&!opt.only.includes(k))return;if(!opt.only&&opt.examples===false&&/^ex\d/.test(k))return;/* 12–14 範例頁（主題式版面）：studio 預設不含，勾「含範例頁」才加 */sno=i+1;cur={key:k,title:zh,no:i+1,items:[],groups:[]};slides.push(cur);canvas();SL[k]();footer();});
  const k=SIZE_K[st.size]||1;if(k!==1)slides.forEach(sl=>scaleSlide(sl,k));
  return{slides,warns,params:st,W:W*k,H:H*k,k};}
 /* ---------- S／M／L 元件尺寸（v5.2）：整頁幾何、字級、線寬、陰影一起等比縮放，投影片也同比例（仍是 16:9）。
@@ -851,6 +866,7 @@ function scaleSlide(sl,k){const r2=v=>Math.round(v*k*2)/2,f=v=>v*k,r100=v=>Math.
   if(it.t==='tbl'){it.colW=it.colW.map(f);it.rowH=it.rowH.map(f);
    it.cells.forEach(r=>r.forEach(c=>{runs(c.runs);c.size=r2(c.size);c.mL=Math.max(1,r100(c.mL));c.mT=Math.max(1,r100(c.mT));   /* PptxGenJS：表格 margin[0]<1 會被當成英吋 → 下限 1pt */['bT','bB'].forEach(b=>{if(c[b])c[b]=Object.assign({},c[b],{w:r100(c[b].w)});});}));return;}
   if(it.adj)it.adj=f(it.adj);if(it.lw)it.lw=r100(it.lw);
+  if(it.sites)it.sites=it.sites.map(q=>[f(q[0]),f(q[1]),q[2]]);
   if(it.points)it.points.forEach(p=>{if(p.close)return;p.x=f(p.x);p.y=f(p.y);const c=p.curve;if(c){['x1','y1','x2','y2','hR','wR'].forEach(q=>{if(c[q]!=null)c[q]=f(c[q]);});}});
   if(it.sh)it.sh=Object.assign({},it.sh,{blur:r100(it.sh.blur),dist:r100(it.sh.dist)});
   if(it.runs){runs(it.runs);it.tx.size=r2(it.tx.size);it.tx.margin=Array.isArray(it.tx.margin)?it.tx.margin.map(r100):r100(it.tx.margin);if(it.tx.cs)it.tx.cs=r100(it.tx.cs);}});
@@ -925,7 +941,7 @@ function groupXml(x,slide){const G=(slide.groups||[]).filter(g=>g.to>g.from);if(
  const byId={};blocks.forEach((b,i)=>byId[b.id]=i);
  const jobs=[];G.forEach((g,gi)=>{const i0=byId[g.from+2],i1=byId[g.to+2];if(i0==null||i1==null||i1-i0!==g.to-g.from)return;
   for(let k=i0;k<=i1;k++)if(blocks[k].id!==g.from+2+(k-i0)||blocks[k].tbl)return;jobs.push({g,gi,s:blocks[i0].s,e:blocks[i1].e});});
- jobs.sort((a,b)=>b.s-a.s).forEach(j=>{const g=j.g;const nm=String(g.name||'元件').replace(/[<>&"]/g,'');
+ jobs.sort((a,b)=>b.s-a.s).forEach(j=>{const g=j.g;const nm=stripCtl(g.name||'元件').replace(/[<>&"]/g,'');
   const o=`<a:off x="${E(g.x)}" y="${E(g.y)}"/><a:ext cx="${E(g.w)}" cy="${E(g.h)}"/><a:chOff x="${E(g.x)}" y="${E(g.y)}"/><a:chExt cx="${E(g.w)}" cy="${E(g.h)}"/>`;
   x=x.slice(0,j.s)+`<p:grpSp><p:nvGrpSpPr><p:cNvPr id="${5000+j.gi}" name="${nm}"/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm>${o}</a:xfrm></p:grpSpPr>`+x.slice(j.s,j.e)+'</p:grpSp>'+x.slice(j.e);});
  return x;}
@@ -947,13 +963,48 @@ async function patchZip(zip,model){let n=0,svgN=0;const cst={ok:0,both:0,one:0,f
     x=x.replace(/<p:pic>[\s\S]*?<\/p:pic>/g,blk=>{if(!new RegExp(`<p:cNvPr id="${k+2}"`).test(blk))return blk;
      return blk.replace(/<a:blip r:embed="(rId\d+)"\s*(?:\/>|>\s*<\/a:blip>)/,(m0,r)=>`<a:blip r:embed="${r}"><a:extLst><a:ext uri="{96DAC541-7B7A-43D3-8B79-37D633B846F1}"><asvg:svgBlip xmlns:asvg="http://schemas.microsoft.com/office/drawing/2016/SVG/main" r:embed="${rid}"/></a:ext></a:extLst></a:blip>`);});});
    zip.file(rf,rels);}
+  x=x.replace(/<p:sp>[\s\S]*?<\/p:sp>/g,blk=>{const m=blk.match(/<p:cNvPr id="(\d+)"/);if(!m)return blk;const it=items[+m[1]-2];if(!it||!it.sites)return blk;
+   const E=v=>Math.round(v*914400);return blk.replace(/<a:cxnLst>\s*<\/a:cxnLst>|<a:cxnLst\s*\/>/,'<a:cxnLst>'+it.sites.map(q=>`<a:cxn ang="${Math.round(((q[2]%360)+360)%360*60000)}"><a:pos x="${E(q[0])}" y="${E(q[1])}"/></a:cxn>`).join('')+'</a:cxnLst>');});
   x=connectXml(x,model.slides[i],cst);
   x=groupXml(x,model.slides[i]);
   zip.file(f,x);}
  model.connectors=cst;model.svgPics=svgN;
  if(svgN){const cf=zip.file('[Content_Types].xml');let x=await cf.async('string');if(!/Extension="svg"/i.test(x))x=x.replace(/(<Types\b[^>]*>)/,'$1<Default Extension="svg" ContentType="image/svg+xml"/>');zip.file('[Content_Types].xml',x);}
  await fixOoxml(zip);
+ await fontFix(zip,model);
  return n;}
+/* 繁中字型／語言（Windows PowerPoint 實際使用時的關鍵；LibreOffice 預覽看不出來）：
+   1) <a:ea> 永遠是中文字型（Arial／Georgia 這類只有拉丁字的字型 → 改用內文字型），charset -122（簡中 GB2312）→ -120（繁中 Big5）
+   2) lang="en-US" → lang="zh-TW" altLang="en-US"：中文不再出現拼字紅線、標點／斷行依繁中規則
+   3) 段落結尾的 endParaRPr 沿用最後一個 run 的字級／字型／顏色：清空後重打字、或在空白表格儲存格打字，格式與旁邊一致
+   4) 佈景主題字型：標題／內文的 latin＋ea＋Hant 都設成本風格字型 → 在 PowerPoint 新增文字方塊時預設就是同一套字（不是 Calibri／新細明體） */
+const CJK_FACE=/^(Microsoft JhengHei( Light)?|PMingLiU|Noto Sans TC|Noto Serif TC|微軟正黑體|新細明體|標楷體|DFKai-SB)$/;
+function cjkFaces(p){p=p||BASE;const b=CJK_FACE.test(p.bFont)?p.bFont:'Microsoft JhengHei';const t=CJK_FACE.test(p.tFont)?p.tFont:b;return{body:b,title:t};}
+function fontFixXml(x,cjk){
+ x=x.replace(/<a:ea typeface="([^"]*)"([^>]*)\/>/g,(m,face,rest)=>`<a:ea typeface="${CJK_FACE.test(face)?face:cjk}"${/charset=/.test(rest)?rest.replace(/charset="-?\d+"/,'charset="-120"'):rest}/>`);
+ x=x.replace(/<a:(rPr|endParaRPr|defRPr) lang="en-US"(?! altLang)/g,'<a:$1 lang="zh-TW" altLang="en-US"');
+ x=x.replace(/<a:p>([\s\S]*?)<\/a:p>/g,(all,inner)=>{if(!/<a:endParaRPr\b/.test(inner))return all;const runs=[...inner.matchAll(/<a:rPr ([^>]*)>([\s\S]*?)<\/a:rPr>/g)];if(!runs.length)return all;const last=runs[runs.length-1];
+  const attrs=last[1].replace(/\s*dirty="0"/,'').replace(/\s*err="1"/,'');
+  return '<a:p>'+inner.replace(/<a:endParaRPr\b[^>]*\/>|<a:endParaRPr\b[^>]*>[\s\S]*?<\/a:endParaRPr>/,`<a:endParaRPr ${attrs} dirty="0">${last[2]}</a:endParaRPr>`)+'</a:p>';});
+ return x;}
+// 空白表格儲存格：PptxGenJS 只寫 <a:endParaRPr lang sz/>（沒有字型、顏色）→ 補上與該格相同的字級／字型／顏色
+function emptyCellRPr(c,cjk){const f=c.font||cjk,ea=CJK_FACE.test(f)?f:cjk;
+ return `<a:endParaRPr lang="zh-TW" altLang="en-US" sz="${Math.round((c.size||10)*100)}"${c.bold?' b="1"':''} dirty="0"><a:solidFill><a:srgbClr val="${c.color||'3A3A3A'}"/></a:solidFill><a:latin typeface="${f}" charset="0"/><a:ea typeface="${ea}" charset="-120"/><a:cs typeface="${f}" charset="0"/></a:endParaRPr>`;}
+async function fontFix(zip,model){const F=cjkFaces(model&&model.params),cjk=F.body;
+ const files=Object.keys(zip.files).filter(f=>/^ppt\/(slides|slideLayouts|slideMasters|notesSlides|notesMasters)\/[^/]+\.xml$/.test(f));
+ for(const f of files){let x=await zip.file(f).async('string');
+  const m=f.match(/^ppt\/slides\/slide(\d+)\.xml$/);
+  if(m&&model&&model.slides[+m[1]-1]){const tbls=model.slides[+m[1]-1].items.filter(it=>it.t==='tbl');let ti=0;
+   x=x.replace(/<a:tbl>[\s\S]*?<\/a:tbl>/g,tx=>{const tb=tbls[ti++];if(!tb)return tx;const flat=[].concat(...tb.cells);let ci=0;
+    return tx.replace(/<a:tc>[\s\S]*?<\/a:tc>/g,tc=>{const c=flat[ci++];if(!c||/<a:r>/.test(tc))return tc;
+     const r0=(c.runs&&c.runs[0]&&c.runs[0].o)||{};return tc.replace(/<a:endParaRPr\b[^>]*\/>/,emptyCellRPr({size:r0.size||c.size,font:r0.font||c.font,color:r0.color||c.color,bold:r0.bold},cjk));});});}
+  const y=fontFixXml(x,cjk);if(y!==x)zip.file(f,y);}
+ const tf=zip.file('ppt/theme/theme1.xml');if(tf){let t=await tf.async('string');
+  t=t.replace(/<a:majorFont><a:latin typeface="[^"]*"( panose="[^"]*")?\/><a:ea typeface="[^"]*"\/>/,`<a:majorFont><a:latin typeface="${F.title}"/><a:ea typeface="${F.title}"/>`)
+   .replace(/<a:minorFont><a:latin typeface="[^"]*"( panose="[^"]*")?\/><a:ea typeface="[^"]*"\/>/,`<a:minorFont><a:latin typeface="${cjk}"/><a:ea typeface="${cjk}"/>`);
+  let k=0;t=t.replace(/<a:font script="Hant" typeface="[^"]*"\/>/g,()=>`<a:font script="Hant" typeface="${k++===0?F.title:cjk}"/>`);
+  zip.file('ppt/theme/theme1.xml',t);}
+ const pf=zip.file('ppt/presentation.xml');if(pf){const x=await pf.async('string');const y=x.replace(/<a:defRPr lang="en-US"(?! altLang)/g,'<a:defRPr lang="zh-TW" altLang="en-US"');if(y!==x)zip.file('ppt/presentation.xml',y);}}
 /* OOXML 結構修正（PptxGenJS 3.12 已知缺陷；不修的話嚴格驗證不過，部分 PowerPoint 版本可能拒開）：
    1) 多段 run 的段落會重複輸出 <a:pPr>（只允許一個且須在最前）→ 移除後續的
    2) presentation.xml 的 notesMasterIdLst 位置錯（須緊接 sldMasterIdLst 之後）
@@ -968,7 +1019,7 @@ async function fixOoxml(zip){
   if(m){x=x.replace(m[0],'');x=x.replace('</p:sldMasterIdLst>','</p:sldMasterIdLst>'+m[0]);zip.file('ppt/presentation.xml',x);}}
  const cf=zip.file('[Content_Types].xml');if(cf){let x=await cf.async('string');
   x=x.replace(/<Override PartName="\/([^"]+)"[^>]*\/>/g,(m,part)=>zip.file(part)?m:'');zip.file('[Content_Types].xml',x);}}
-async function exportPptx(env,params,opt){opt=opt||{};const model=opt.model||buildModel(params,{only:opt.only});
+async function exportPptx(env,params,opt){opt=opt||{};const model=opt.model||buildModel(params,{only:opt.only,examples:opt.examples});
  const pptx=new env.PptxGenJS();toPptx(pptx,model);
  const buf=await pptx.write({outputType:'arraybuffer'});const zip=await env.JSZip.loadAsync(buf);const patched=await patchZip(zip,model);
  const data=await zip.generateAsync({type:opt.type||'blob',compression:'DEFLATE',mimeType:'application/vnd.openxmlformats-officedocument.presentationml.presentation'});
@@ -978,7 +1029,9 @@ async function exportPptx(env,params,opt){opt=opt||{};const model=opt.model||bui
 function elementModel(params,key,gi){const m=buildModel(params,{only:[key]});const sl=m.slides[0];const g=sl.groups[gi];if(!g)throw new Error('找不到元件 '+gi);
  const dx=(W-g.w)/2-g.x,dy=(H-g.h)/2-g.y;
  const n=g.to-g.from+1;const items=clone(sl.items.slice(g.from,g.to+1)).map(it=>{if(it.t==='ln'){it.x1+=dx;it.x2+=dx;it.y1+=dy;it.y2+=dy;}else{it.x+=dx;it.y+=dy;}
-  if(it.cx){['a','b'].forEach(k=>{if(!it.cx[k])return;const j=it.cx[k][0]-g.from;if(j<0||j>=n)delete it.cx[k];else it.cx[k]=[j,it.cx[k][1]];});}return it;});
+  if(it.cx){['a','b'].forEach(k=>{if(!it.cx[k])return;const j=it.cx[k][0]-g.from;if(j<0||j>=n)delete it.cx[k];else it.cx[k]=[j,it.cx[k][1]];});}
+  if(it.bgMatch)it.fill='FFFFFF';   // 單獨匯出＝白色投影片：遮線用的底色改白（不帶畫布灰）
+  return it;});
  return{slides:[{key:key+'-'+gi,title:g.name,no:1,items,groups:[Object.assign({},g,{from:0,to:items.length-1,x:g.x+dx,y:g.y+dy})]}],warns:[],params:m.params,element:g};}
 async function exportElement(env,params,key,gi,opt){const model=elementModel(params,key,gi);return exportPptx(env,params,Object.assign({},opt||{},{model}));}
 
@@ -1132,6 +1185,20 @@ function tableHtml(model){const sl=model.slides[0];const tb=sl.items.find(i=>i.t
    const css=`${c.fill?`background:#${c.fill};`:''}color:#${c.color};font-size:${c.size}pt;font-weight:${c.bold?700:400};text-align:${c.align};vertical-align:middle;padding:${c.mT}pt ${c.mL}pt;font-family:${fstack(f).replace(/"/g,"'")};`+bd('top',c.bT)+bd('bottom',c.bB)+hb;
    h+=`<td style="${css}">${esc(c.runs.map(x=>x.t+(x.o.br?'\n':'')).join('')).replace(/\n/g,'<br>')}</td>`;});h+='</tr>';});
  return h+'</table>';}
-const api={W,H,BASE,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,trayModel,tableAuto,statusOf,TABLE_LOOKS,langOf,FONT_STACK};
+/* 參數驗證（匯入 JSON、localStorage、待選素材快照）：只收 BASE 有的鍵（＋zh／tbLook／tbPanel），顏色必須是 6 碼 hex，數字必須是有限值（可給範圍），
+   列舉值必須在清單內（enums 由 studio 的選項表提供）；不合格的值改回 fallback（範本預設）。擋住 "/><img onerror=…> 這類注入。 */
+function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=enums||{};ranges=ranges||{};const out=clone(fallback);if(!p||typeof p!=='object')return out;
+ Object.keys(p).forEach(k=>{const v=p[k],d=fallback[k];
+  if(k==='zh'){out.zh=stripCtl(v).replace(/[<>&"]/g,'').slice(0,40);return;}
+  if(k==='tbLook'){if(TABLE_LOOKS.some(l=>l[0]===v))out.tbLook=v;return;}
+  if(k==='tbPanel'){out.tbPanel=!!v;return;}
+  if(!(k in BASE))return;
+  if(enums[k]){if(enums[k].some(o=>String(o)===String(v)))out[k]=typeof d==='number'?+v:v;return;}
+  if(typeof BASE[k]==='boolean'){out[k]=!!v;return;}
+  if(typeof BASE[k]==='number'){const n=+v;if(!Number.isFinite(n))return;const r=ranges[k];out[k]=r?Math.min(r[1],Math.max(r[0],n)):n;return;}
+  if(typeof BASE[k]==='string'&&/^[0-9A-F]{6}$/i.test(BASE[k])){const h=String(v).replace('#','');if(/^[0-9A-F]{6}$/i.test(h))out[k]=h.toUpperCase();return;}
+  if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
+ return out;}
+const api={W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,trayModel,tableAuto,statusOf,TABLE_LOOKS,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);

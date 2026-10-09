@@ -24,7 +24,7 @@
 
 S／M／L 對照（上：整頁；下：同一個 PDCA 元件下載後放在標準 13.33 吋投影片）：![](render/size-compare-navy.png)
 
-| 點元件即複製 | 我的風格 |
+| 元件工具列（v9 起：按「複製」才複製） | 我的風格 |
 |---|---|
 | ![](render/copy-toast.png) | ![](render/studio-mystyles.png) |
 
@@ -35,6 +35,43 @@ S／M／L 對照（上：整頁；下：同一個 PDCA 元件下載後放在標�
 陰影修正前後（v3 → v4 → 即時預覽）：![](render/compare-navy-ex1.png)
 
 ![9 種範本總覽](render/overview.png)
+
+## v9 修正（評審意見 #1、2、6–13、16）
+
+| 項目 | 改了什麼 |
+|---|---|
+| 字型與語言 | 每段文字都標 `lang="zh-TW"`，中文字型同時寫進 `latin／ea／cs`（`charset="-120"`），佈景主題的標題／內文字型也改成同一套；空白儲存格與段落結尾（`endParaRPr`）也帶字型 → PowerPoint 新打的字、空格輸入的字不會跑成新細明體或 Calibri。選 Noto Sans TC 時面板會提醒「不是 Windows 內建字型」。 |
+| 點選與複製 | **單擊只選取**；工具列有「複製」與「＋待選」兩個按鈕；滑鼠移到元件右上角出現 ⊕ 直接加入待選；**雙擊＝加入待選（永遠不複製）**；同時出現兩個提示時以待選提示為準。圖示庫同樣：單擊選取、右上 ＋ 加入待選。 |
+| 表格貼上 | 貼上新資料會清掉範例的標題／單位／註解（自己打過的會保留）；CSV 正確處理引號、逗號、`"1,234"` 千分位；控制字元一律去掉。 |
+| 連接線 | 平行分流／合流的分流棒改成 3 段相接的細長方形，四條連接線**兩端都黏著**、線長是實際距離；圓柱（資料庫）用 1–4 號連接點。 |
+| 匯入資料安全 | 文字中的 XML 非法控制字元（`\u0000` 等）在匯出前清除；匯入 JSON、我的風格、待選素材快照、localStorage 都經過 `sanitizeParams()`（顏色必須 6 碼 hex、數字有範圍、列舉值必須在清單內），擋掉 `"/><img onerror=…>` 之類的注入。 |
+| 頂列 | 不再換行（1280 寬也是一行）；重設／儲存／載入收進 **⋯** 選單；窄螢幕隱藏副標。 |
+| 測試 | `npm test`：9 種風格 M＋表格／待選素材／單一元件測試檔 → `office validate`（嚴格 OOXML）＋`tools/check_pptx.py`（字型、lang、連接線兩端、id 等 PowerPoint 挑剔點），任何一項失敗即 exit 1。PowerPoint 365 人工檢查清單見下方。 |
+| 函式庫 | 改用 `pptxgen.min.js`（PptxGenJS **3.12.0**）＋`jszip.min.js`（**3.10.2**），與 Node 版完全同版（package.json 鎖定），瀏覽器匯出的投影片 XML 與 `gen.js` 逐字相同；少 96 KB。 |
+| 單一元件匯出 | 群組名稱等「遮線用底色」在單獨匯出時改成白色（投影片是白的，不帶畫布灰）；預覽右上有「**白底預覽**」切換，可看元件放在白色投影片上的樣子。 |
+| 編號徽章與箭頭 | 三步驟流程的編號徽章改成壓在卡片左上角（帶白環），不再懸空；連接線箭頭改為 sm／med 兩級，預設 med。 |
+| 範例頁與表格上限 | 12–14 範例頁（主題式版面）改成**預設不含**，頂列「含範例頁」打勾才加入；表格最多 25 列（超過會提示並只放前 25 列），單欄最寬 45%（長文字欄自動換行並加高列高）；`studio.html` 的 `<script src>` 帶 `?v=雜湊`，改版後瀏覽器不會拿到舊的 deck.js。 |
+
+![](render/fixA-header-1280-before.png)
+![](render/fixA-header-1280.png)
+
+上：修正前（1280 寬換行）；下：修正後。
+
+![](render/fixA-toolbar.png) ![](render/fixA-hover-add.png)
+
+![](render/fixA-badges-connectors.png)
+
+### PowerPoint 365（Windows）人工檢查清單
+自動測試無法代替 PowerPoint 本身。每次大改後，請在 Windows PowerPoint 365 開啟 `out/test/` 的檔案，逐項確認：
+1. 開啟時**沒有**「PowerPoint 發現內容有問題／修復」對話框（kit-*.pptx、table-*.pptx、tray.pptx、element*.pptx）。
+2. 在任一文字方塊結尾按 Enter 繼續打中文：字型仍是微軟正黑體（不是新細明體）；校訂語言顯示「中文（台灣）」。
+3. 在表格空白儲存格打字：字型是微軟正黑體。
+4. 02 頁拖動「作業 A」：兩條連接線跟著走（兩端都黏著）；拖動分流棒時三段一起移動（同一群組）。
+5. 02 頁三步驟流程：編號徽章壓在卡片左上角、箭頭大小適中。
+6. 陰影柔和、無黑邊；群組可整組複製貼到別的簡報（尺寸不變）。
+7. table-big.pptx：只有 25 列、長文字欄會換行、表格沒有超出投影片。
+8. element-catalog.pptx：群組名稱標籤的底色是白色。
+9. 取消群組／重新群組正常；選取窗格中的名稱是中文且沒有亂碼。
 
 ## v8 新功能：圖示庫擴充到 521 個（Material Symbols Rounded）
 
@@ -76,7 +113,7 @@ S／M／L 對照（上：整頁；下：同一個 PDCA 元件下載後放在標�
 - **檔案大小**：三種字重的路徑都保留官方形狀，座標整數化（960 網格 → 24 網格誤差 ≤ 0.0125，像素比對最大差 2%）後以相對座標重寫，再 DEFLATE＋base64 內嵌，
   載入時用 `icons.js` 內 40 行的同步解壓器解開（約 30–90 ms，不需要網路）。`icons.js` 約 410 KB；**單檔版 `PPT-Style-Studio.html` 約 1.09 MB**（v7 是 0.96 MB；不壓縮會是 ~1.9 MB）。
 - **簡報 04 頁維持精選 118 個**（v7 那一套，一頁放得下且字還看得清楚）；標題寫「精選 118 個（Studio 共 521 個）」。其餘 403 個在工作室的圖示庫裡複製／下載／加入待選素材。
-- 其他功能不變：顏色／樣式／粗細、點一下複製 SVG＋透明 PNG、SVG／PNG／.pptx 下載、全部下載 ZIP（現在是 521 個 SVG＋521 個 PNG，約 12 秒、2.3 MB，按鈕會顯示進度）、雙擊加入待選素材。
+- 其他功能不變：顏色／樣式／粗細、點選後按「複製」放入 SVG＋透明 PNG、SVG／PNG／.pptx 下載、全部下載 ZIP（現在是 521 個 SVG＋521 個 PNG，約 12 秒、2.3 MB，按鈕會顯示進度）、雙擊加入待選素材。
 - 重新產生：`python3 tools/select_icons.py <metadata 檔> <svg-400/rounded 目錄> && node tools/make_icons.js node_modules`。
 
 | 跳到「品質與檢測」 | 搜尋「chart」 |
@@ -96,7 +133,7 @@ S／M／L 全部跟著左側風格；三種樣式：單色、淺色圓底、深�
 - **為什麼選 Rounded**：工作室的線條是圓頭線端、卡片多為圓角，Rounded 的圓弧轉角與它一致；Outlined 的直角轉折放在圓角卡片裡會顯得硬。
   全部只用一種（不混用 Outlined／Sharp），同一格線、同一字重，整張投影片的圖示看起來是一套。舊版 Lucide 線條圖示已整組換掉（避免兩種視覺風格混在一起）。
 - Material Symbols 是「填色外框」字形：匯出成 PowerPoint 時是**一個填色自訂圖案**（可改填滿色），不是線條；粗細用官方三個字重的路徑切換，不是拉線寬。
-- **點一下就複製**（SVG 向量＋透明 PNG）並出現工具列：SVG、PNG 2×／4×（透明背景）、**.pptx 圖片**（SVG＋PNG 備援，PowerPoint 365／2019 以上可右鍵「轉換成圖案」）、
+- **點一下選取**並出現工具列（v9 起按「複製」才放入 SVG 向量＋透明 PNG；右上 ＋ 或雙擊＝加入待選）：SVG、PNG 2×／4×（透明背景）、**.pptx 圖片**（SVG＋PNG 備援，PowerPoint 365／2019 以上可右鍵「轉換成圖案」）、
   **.pptx 圖案**（原生可編輯圖案）、＋待選。![](render/studio-icon-toolbar.png)
 - **全部下載 ZIP**：`svg/` 118 個 SVG＋`png@2x/` 118 個透明 PNG＋`LICENSE-material-symbols.txt`（Apache 2.0 全文）。
 - 簡報 **04 圖示庫** 頁：118 個圖示（原生圖案、每個是群組）＋「圖示＋文字」組合（圖示＋流程方塊、淺色圓底＋說明、深色圓底＋卡片、數字＋圖示、圖示流程＋黏著連接線）。
@@ -146,7 +183,7 @@ S／M／L 全部跟著左側風格；三種樣式：單色、淺色圓底、深�
 
 ## 一、客製工作室怎麼用
 - **單檔版 `PPT-Style-Studio.html`**：所有程式（PptxGenJS、deck.js）都已內嵌，可單獨複製到任何資料夾、或在壓縮檔裡直接雙擊開啟。
-- **開發版 `ppt-style-studio/studio.html`**：需要旁邊的 `deck.js` 與 `pptxgen.bundle.js`，**請先把整個壓縮檔解壓縮**再開啟；
+- **開發版 `ppt-style-studio/studio.html`**：需要旁邊的 `icons.js`、`deck.js`、`jszip.min.js`、`pptxgen.min.js`，**請先把整個壓縮檔解壓縮**再開啟；
   若缺檔，頁面會顯示提示而不是空白。修改 `studio.html`／`deck.js` 後，執行 `python3 tools/build_single.py` 重建單檔版。
 
 1. 雙擊 `studio.html`（或 `index.html`，會自動跳轉）。完全離線、免安裝；建議用 Chrome／Edge。
@@ -166,14 +203,14 @@ S／M／L 全部跟著左側風格；三種樣式：單色、淺色圓底、深�
    - **字型與字級**：標題／內文字型（微軟正黑體、微軟正黑體 Light、新細明體、Noto Sans TC、Arial）、數字字型、標題／標籤／註解字級與粗細。
    - 每個被改過的項目旁會出現小圓點，群組標題顯示「N 項已調整」。
    - **沒有「背景色」選項**：背景固定白色，這是設計規則。
-3. **中間：即時預覽**。大圖＋下方 14 張縮圖（開啟時預設顯示 01 元件總表）（點縮圖或用鍵盤 ← → 換頁）。預覽與匯出使用**同一份幾何模型**，
+3. **中間：即時預覽**。大圖＋下方 11 張縮圖（勾選頂列「含範例頁」會加上 12–14 範例頁）（開啟時預設顯示 01 元件總表）（點縮圖或用鍵盤 ← → 換頁）。預覽與匯出使用**同一份幾何模型**，
    包含柔和陰影與光暈；下方狀態列會顯示文字可能換行／溢出的警告。
 4. **右上：**
-   - 「下載整份 .pptx」：在瀏覽器內直接產生 14 頁簡報（含陰影、群組與黏著連接線的 XML 修補）。
+   - 「下載整份 .pptx」：在瀏覽器內直接產生 11 頁簡報（含範例頁時 14 頁）（含陰影、群組與黏著連接線的 XML 修補）。
    - 「下載本頁 .pptx」：只輸出目前這一頁。
    - 「儲存設定 JSON」／「載入設定」：保存、分享自己的風格；JSON 內含 `changed`（與範本不同的項目）與完整 `params`。
    - 「↺ 重設為範本」：捨棄微調。瀏覽器會自動記住上次的設定（localStorage）。
-5. **單一元件複製**（大圖上的每個元件、每個常見組合都可以點）：滑鼠移上去會出現藍色虛線框，**點一下就複製**，並跳出小工具列：
+5. **單一元件複製**（大圖上的每個元件、每個常見組合都可以點）：滑鼠移上去會出現藍色虛線框與右上角 ⊕（加入待選），**點一下選取**並跳出小工具列（v9 起單擊不再自動複製；雙擊＝加入待選）：
    - **複製**：同時放入 **SVG 向量**與 **PNG** 兩種格式（瀏覽器不支援 SVG 剪貼簿時只放 PNG）。
      PowerPoint 365／2019 以上（Windows）按 Ctrl+V 會貼成「SVG 圖形」，**右鍵 → 轉換成圖案**（或「圖形格式 › 轉換成圖案」）後就變成可編輯的形狀與文字方塊；
      為了相容，複製的 SVG 已把箭頭畫成實體三角形、去掉模糊陰影、背景透明。貼到不支援 SVG 的程式（舊版 Office、LINE、Word 2016 以前）會得到 PNG 圖片。
@@ -220,7 +257,7 @@ S／M／L 全部跟著左側風格；三種樣式：單色、淺色圓底、深�
 
 **02 常見組合 Common Patterns**（純流程圖語意，沒有金字塔／循環這類主題模板）：三步驟流程、判斷分岔（是／否）、例外退回路徑、
 審核迴圈、泳道（雙道）、平行分流／合流、輸入→處理→輸出、前後對照。每一組在 pptx 中是一個**群組**（`<p:grpSp>`，名稱＝組合名），
-點一下整組就能複製；組合名稱與底線放在群組外。
+點一下整組選取，按「複製」或下載；組合名稱與底線放在群組外。
 
 **03 常見組合（二） Common Patterns II**：
 | 組合 | 內容 |
@@ -232,7 +269,7 @@ S／M／L 全部跟著左側風格；三種樣式：單色、淺色圓底、深�
 | KPI 數字卡 | 三張卡：指標名稱、大數字＋單位、▲▼ 變化與比較基準 |
 | PDCA 循環 | 流程圖畫法：Plan／Do／Check／Act 四個圓角方塊（字母＋中英標題＋一句說明），黏著連接線依序連成迴圈，中央小標籤「PDCA 持續改善」；不是插圖式的循環圖 |
 除了兩個含表格的組合以外，每組都是一個 `<p:grpSp>` 群組（PowerPoint 不允許表格放進群組，所以 RACI 的表格與膠囊標記是並排的獨立物件；
-在工作室中點一下照樣可以整組複製／下載）。
+在工作室中點一下照樣可以整組選取、複製／下載）。
 
 **黏著連接線（v5.2）**：02、03 常見組合、04 圖示流程、09 連接線與箭頭、10 流程圖符號中，連接兩個圖形的線在 pptx 裡是真正的 PowerPoint 連接線
 （`<p:cxnSp>`＋`<a:stCxn>`／`<a:endCxn>` 指向圖形 id 與連接點），**在 PowerPoint 裡移動方塊，線會跟著走**。
@@ -269,14 +306,16 @@ PptxGenJS 無法寫出 algn／sx／sy，因此匯出後會用 JSZip 解開 pptx�
   `Deck.BASE` 是全部參數與預設值；`Deck.PRESETS` 是 9 個範本（只覆寫差異）。
   元件群組：buildModel 以 `grp()` 記錄每個元件的圖形範圍（`slide.groups`）→ 預覽可點選、`elementSvg()` 產生單一元件 SVG、
   `exportElement()` 匯出單一元件 pptx、`groupXml()` 在 pptx 中包成 `<p:grpSp>`。
-- `studio.html`：客製工作室（純前端、無建置步驟），需要旁邊的 `icons.js`、`deck.js`、`pptxgen.bundle.js`；`index.html` 跳轉到 studio。
-- `PPT-Style-Studio.html`：單檔版，由 `python3 tools/build_single.py` 從 studio.html＋icons.js＋deck.js＋pptxgen.bundle.js 產生。
-- `pptxgen.bundle.js`：PptxGenJS 3.12（內含 JSZip），離線使用。
+- `studio.html`：客製工作室（純前端、無建置步驟），需要旁邊的 `icons.js`、`deck.js`、`jszip.min.js`、`pptxgen.min.js`（`<script src=…?v=雜湊>` 由 `tools/stamp_version.py` 蓋版本戳記，避免瀏覽器快取到舊版）；`index.html` 跳轉到 studio。
+- `PPT-Style-Studio.html`：單檔版，由 `python3 tools/build_single.py` 從 studio.html＋jszip.min.js＋pptxgen.min.js＋icons.js＋deck.js 產生。
+- `pptxgen.min.js`＋`jszip.min.js`：PptxGenJS 3.12.0 與 JSZip 3.10.2（package.json 鎖定確切版本；與 Node 版 gen.js 用的是同一版，輸出逐字相同）。
 - `gen.js`：`node gen.js [id…]` 產生 `out/kit-*.pptx`；`node gen.js --params 我的設定.json out/my.pptx` 用 studio 存下的 JSON 產生簡報。
 - `review.sh`：`bash review.sh [id…]` → pptx → LibreOffice PDF → `render/<id>-NN.png` 與總表 `render/sheet_<id>.png`。
 - `tools/previews.py`：產生 `render/overview.png`；`tools/sheet_slide.py 01 out.png`：把所有風格的同一頁拼成總表；`tools/fonts.conf`：只在渲染時把微軟正黑體／新細明體／Noto Sans TC 對應到 Noto CJK。
 
 重新產生：`npm i && bash review.sh && python3 tools/previews.py`
+
+測試：`npm test`（約 10 秒；需要 `office` CLI 與 python3）。改了任何 .js 之後：`python3 tools/stamp_version.py && python3 tools/build_single.py`。
 
 ## 五、已知限制
 - 預覽是 SVG 近似：字型寬度、行高、OOXML 內建形狀的文字區與 PowerPoint 會有 1–2% 差異；字型若電腦上沒有安裝會以 Noto／系統字替代。

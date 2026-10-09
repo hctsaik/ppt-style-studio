@@ -3,6 +3,7 @@ node_modules/
 # 舊版備份與舊輸出
 old/
 out/old/
+out/test/
 # 網頁預覽圖（tools/previews.py 可重建）
 preview/
 # 渲染暫存（bash review.sh 可重建）；只保留 README 用的幾張截圖
@@ -45,6 +46,13 @@ render/*
 !render/studio-icons-500.png
 !render/studio-icons-chips.png
 !render/studio-icons-search.png
+!render/fixA-header-1280-before.png
+!render/fixA-header-1280.png
+!render/fixA-toolbar.png
+!render/fixA-hover-add.png
+!render/fixA-header-menu.png
+!render/fixA-badges-connectors.png
+!render/fixA-fontwarn.png
 # 其他暫存
 *.pdf
 *.zip
