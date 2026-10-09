@@ -1,0 +1,93 @@
+# 補充中文關鍵字（工作簡報常用詞 → 圖示）：id|關鍵字（空白分隔）
+verified|良率 良品 合格 品質
+task_alt|良率 達成 KPI
+percent|良率 比率 達成率 KPI
+trending_up|成長 良率提升 營收成長 KPI
+trending_down|衰退 不良率
+query_stats|良率分析 數據分析 預測
+monitoring|良率監控 製程監控 管制圖
+cancel|不良 NG 報廢
+dangerous|不良 報廢 危害
+speed|產能 效率 速度 產出
+precision_manufacturing|製程 產能 設備
+manufacturing|製程 生產 產能
+conveyor_belt|產能 產出 生產線
+factory|產能 製程 晶圓廠
+memory|半導體 IC 封裝
+developer_board|PCB 封裝 測試板
+frame_inspect|檢驗 AOI 量測 測試
+biotech|檢驗 顯微 分析 缺陷
+science|測試 實驗 研發 化學
+experiment|測試 研發 化學品
+straighten|量測 尺寸 CD
+blur_on|潔淨室 無塵室 微粒 粉塵
+air|潔淨室 無塵室 氣流
+grid_view|晶圓圖 wafer map 晶粒
+layers|薄膜 堆疊 光罩 製程層
+filter_alt|蝕刻 過濾 篩選
+light_mode|黃光 曝光 微影
+thermostat|溫度 壓力 製程參數
+device_thermostat|溫度 量測
+gas_meter|氣體 壓力 特氣
+propane_tank|氣體 特氣 壓力
+attach_money|成本 營收 費用
+savings|成本 降低成本 cost down 節省
+payments|成本 費用 支出
+paid|毛利 利潤 營收
+account_balance_wallet|預算 成本 經費
+request_quote|報價 訂單 採購單
+receipt_long|訂單 帳單 單據
+shopping_cart|採購 訂單 供應商
+local_shipping|交期 出貨 供應鏈 供應商
+inventory_2|庫存 存貨 供應鏈
+warehouse|庫存 倉庫 供應鏈
+handshake|供應商 客戶 合約 協作 夥伴
+real_estate_agent|客戶 業務
+groups|客戶 人力 協作
+group|人力 協作 團隊合作
+person_search|招募 人力
+badge|人力 人資 HR
+school|教育 訓練 培訓
+gavel|合約 法務 決策 裁決
+history_edu|合約 簽約 簽署
+description|合約 報告 SOP
+article|報告 週報 月報
+summarize|報告 摘要 結論
+fact_check|審核 檢驗 稽核
+approval_delegation|審核 核准 決策
+rule|SOP 規範 準則
+checklist|SOP 檢核 清單
+alt_route|決策 選擇 方案
+call_split|決策 分歧 選擇
+balance|決策 權衡 取捨
+lightbulb|創新 點子 研發
+emoji_objects|創新 靈感
+rocket_launch|創新 新產品 上市
+track_changes|目標 KPI 追蹤
+target|KPI 目標 達標
+schedule|交期 時程 延遲
+hourglass_empty|延遲 交期 等待
+timer|cycle time 週期 交期
+pending_actions|延遲 待辦 追蹤
+troubleshoot|解決 問題分析 根因
+build|解決 修復 改善
+autorenew|改善 PDCA 持續改善
+forum|協作 溝通 會議
+chat|溝通 協作
+workspaces|協作 群組 工作區
+share|協作 分享 溝通
+verified_user|專利 智財 認證
+license|專利 證書 認證 ISO
+policy|專利 智財 法規 合規
+smart_toy|機器人 AI 自動化
+neurology|機器學習 深度學習 大腦
+model_training|機器學習 預測 AI
+data_exploration|預測 資料分析
+show_chart|預測 趨勢 折線
+dashboard|KPI 儀表板 戰情室
+leaderboard|KPI 排名 績效
+co2|碳排 碳足跡 淨零 ESG
+eco|ESG 永續 淨零 碳排
+energy_savings_leaf|ESG 淨零 綠能
+water_drop|用水 水資源 純水
+bolt|電力 用電 能源

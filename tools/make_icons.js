@@ -1,25 +1,15 @@
-// 產生 icons.js 的圖示資料區塊（v7：Google Material Symbols Rounded，Apache License 2.0）
+// 產生 icons.js 的圖示資料區塊（v8：約 500 個 Google Material Symbols Rounded，Apache License 2.0）
 // 來源：google/material-design-icons 的 Material Symbols SVG（npm 套件 @material-symbols/svg-300／400／500，同一份官方 SVG 的打包）
+// 挑選：tools/select_icons.py 讀 tools/icon_list.txt（人工分類、中文名稱、中文關鍵字）＋ Google Fonts 圖示 metadata 的 popularity → tools/icon_selected.json
 // 用法：npm i @material-symbols/svg-300 @material-symbols/svg-400 @material-symbols/svg-500 && node tools/make_icons.js [node_modules 路徑]
-const fs=require('fs'),path=require('path');
+// 壓縮：三種字重的路徑各自整數化（960 網格取整數 → 24 網格誤差 ≤ 0.0125）後以相對座標重寫，再 raw DEFLATE ＋ base64 內嵌；icons.js 載入時同步解壓
+const fs=require('fs'),path=require('path'),zlib=require('zlib');
 const NM=process.argv[2]||path.join(process.cwd(),'node_modules');
 const WEIGHTS=[300,400,500];
 const ver=JSON.parse(fs.readFileSync(path.join(NM,'@material-symbols/svg-400/package.json'),'utf8')).version;
-// [類別, [[Material 名稱, 中文, English, 額外關鍵字]]]；名稱前加 * ＝自繪（Material 沒有對應圖示）
-const LIST=[
- ['人員與組織',[['person','人員','Person','使用者 user 個人'],['group','團隊','Team','小組 成員 members'],['groups','部門','Department','組織 群組 people'],['account_tree','組織架構','Org chart','架構 階層 hierarchy tree'],['badge','員工','Employee','識別證 ID 職員'],['handshake','合作','Partnership','夥伴 協議 deal'],['engineering','工程師','Engineer','工程 技術 安全帽'],['support_agent','客服','Support','支援 服務 helpdesk'],['school','訓練','Training','教育 學習 課程']]],
- ['製造與設備',[['factory','工廠','Fab','廠房 晶圓廠 plant fab'],['precision_manufacturing','機台','Equipment','設備 自動化 機械手臂 robot tool'],['conveyor_belt','產線','Production line','輸送帶 生產 line'],['*wafer','晶圓','Wafer','wafer 矽晶圓 半導體 die'],['memory','晶片','Chip','IC 晶片 半導體 semiconductor cpu'],['developer_board','電路板','PCB','板子 封裝 board'],['frame_inspect','檢測','Inspection','量測 AOI 檢查 inspect metrology'],['biotech','顯微分析','Microscope','顯微鏡 分析 FA'],['science','實驗','Experiment','研發 R&D lab'],['build','維修','Maintenance','保養 PM 扳手 repair'],['inventory_2','庫存','Inventory','物料 箱子 stock'],['warehouse','倉儲','Warehouse','倉庫 存放'],['local_shipping','物流','Logistics','運輸 出貨 卡車 truck'],['package_2','包裝','Package','物料 封裝 box']]],
- ['資料與 IT',[['database','資料庫','Database','DB 資料'],['cloud','雲端','Cloud','cloud 雲'],['dns','伺服器','Server','主機 server'],['lan','網路','Network','網路 拓樸 LAN'],['computer','電腦','Computer','PC 桌機'],['code','程式','Code','開發 程式碼 software'],['api','API','API','介面 整合'],['smart_toy','AI 機器人','AI bot','AI 聊天 機器人 bot'],['neurology','AI','AI','人工智慧 大腦 brain 模型'],['deployed_code','模組','Module','部署 元件 package']]],
- ['分析與圖表',[['analytics','分析','Analytics','數據 統計'],['bar_chart','長條圖','Bar chart','圖表 chart'],['leaderboard','排名','Ranking','排行 比較'],['monitoring','監控','Monitoring','趨勢 監測 SPC'],['query_stats','數據查詢','Data query','分析 搜尋 統計'],['trending_up','上升','Trend up','成長 增加 growth'],['trending_down','下降','Trend down','衰退 減少'],['pie_chart','占比','Share','比例 圓餅圖'],['table_chart','表格','Table','表單 資料表'],['dashboard','儀表板','Dashboard','看板 總覽'],['timeline','時間軸','Timeline','進程 歷程']]],
- ['狀態',[['check_circle','完成','Done','OK 通過 確認 pass'],['task_alt','達成','Achieved','完成 勾選'],['cancel','錯誤','Error','失敗 取消 NG fail'],['warning','警示','Warning','風險 注意 risk'],['error','異常','Alert','警告 問題 issue'],['info','資訊','Info','說明 提示'],['help','問題','Question','疑問 FAQ'],['priority_high','緊急','Urgent','重要 優先'],['block','阻擋','Blocked','禁止 停止 stop'],['pending','進行中','In progress','處理中 等待'],['verified','已驗證','Verified','認證 合格 qualified'],['notifications','通知','Notification','提醒 鈴'],['bug_report','問題追蹤','Bug','缺陷 defect bug']]],
- ['時間',[['schedule','時間','Time','時鐘 clock'],['timer','計時','Timer','碼表 cycle time'],['hourglass_empty','等待','Waiting','沙漏 queue'],['calendar_month','行事曆','Calendar','日期 月曆'],['event','事件','Event','日期 會議'],['event_available','已排程','Scheduled','完成 預約']]],
- ['文件',[['description','文件','Document','檔案 doc'],['article','報告','Report','文章 report'],['assignment','任務','Assignment','工作 交辦 task'],['assignment_turned_in','已交付','Delivered','完成 任務'],['checklist','檢核表','Checklist','清單 SOP'],['fact_check','查核','Review','稽核 審查'],['folder','資料夾','Folder','歸檔 檔案'],['edit_note','筆記','Notes','紀錄 會議記錄 memo'],['menu_book','手冊','Manual','規範 SOP 書']]],
- ['工具與思考',[['settings','設定','Settings','齒輪 配置'],['tune','參數','Parameters','調整 recipe'],['filter_alt','篩選','Filter','過濾 漏斗 funnel'],['search','搜尋','Search','查詢 找'],['lightbulb','想法','Idea','創意 點子'],['target','目標','Target','靶 goal'],['flag','里程碑','Milestone','旗子 milestone'],['trophy','成果','Achievement','獎盃 冠軍 award'],['star','重點','Highlight','星 重要'],['psychology','思考','Thinking','腦 策略'],['rocket_launch','啟動','Launch','火箭 開始 kickoff'],['speed','效能','Performance','速度 儀表'],['bolt','快速','Fast','電力 閃電 power']]],
- ['安全',[['lock','鎖定','Lock','權限 保密 access'],['security','資安','Security','盾 防護'],['verified_user','認證','Certified','合規 授權'],['key','金鑰','Key','鑰匙 密碼'],['policy','稽核','Audit','政策 法規 compliance']]],
- ['流程與連結',[['swap_horiz','交換','Swap','對調 交接'],['sync','同步','Sync','更新 循環'],['autorenew','循環','Cycle','持續改善 PDCA 迴圈 loop'],['route','路徑','Route','路線 流程'],['alt_route','分流','Branch','分支 替代'],['call_split','分歧','Split','分開 fork'],['merge','合併','Merge','整合 匯流'],['hub','樞紐','Hub','中心 連結 平台']]],
- ['財務',[['payments','付款','Payment','費用 支付'],['attach_money','金額','Money','錢 營收 revenue'],['savings','節省','Savings','省錢 撲滿 cost down'],['paid','收益','Profit','獲利 利潤'],['account_balance','財務','Finance','銀行 會計'],['request_quote','報價','Quotation','估價 預算 budget']]],
- ['溝通',[['mail','郵件','Mail','email 信件'],['chat','訊息','Chat','對話 聊天'],['forum','討論','Discussion','會議 意見'],['campaign','公告','Announcement','宣傳 廣播'],['call','電話','Phone','通話 聯絡'],['videocam','視訊','Video call','會議 meeting']]],
- ['其他',[['public','全球','Global','世界 國際'],['location_on','地點','Location','位置 據點 site'],['apartment','辦公室','Office','大樓 總部'],['eco','環保','ESG','永續 綠色 葉子'],['recycling','回收','Recycling','循環 再利用'],['energy_savings_leaf','節能','Energy saving','能源 省電'],['thermostat','溫度','Temperature','溫控'],['water_drop','用水','Water','水資源 化學品']]]];
+const SEL=JSON.parse(fs.readFileSync(path.join(__dirname,'icon_selected.json'),'utf8')).icons;
+// 簡報第 04 頁（圖示總覽）只放精選的這一組（v7 原本的 118 個，一頁放得下）；其餘只在 Studio 圖示庫
+const TOP=JSON.parse(fs.readFileSync(path.join(__dirname,'icon_top.json'),'utf8'));
 // 自訂：晶圓（Material 沒有晶圓）。960 網格、與 Material 同樣的線寬（300/400/500 ≈ 40/60/72）
 function wafer(w){const t={300:40,400:60,500:72}[w];const C=480,R=400,F=372,a=Math.sqrt(R*R-F*F),ri=R-t,fi=F-t,ai=Math.sqrt(ri*ri-fi*fi);const r=v=>Math.round(v*10)/10;
  // 外圈（底部小平邊＝晶圓定位邊）＋內圈反向（挖空）＋ 2×2 晶粒；各字重晶粒相同，只有外圈粗細跟字重
@@ -29,13 +19,54 @@ function wafer(w){const t={300:40,400:60,500:72}[w];const C=480,R=400,F=372,a=Ma
  return d;}
 // 座標四捨五入到 0.1（960 網格 → 24 網格誤差 < 0.003），只處理小數，整數與指令不動
 function round1(d){return d.replace(/\d*\.\d+/g,(x,i,all)=>{let v=(+x).toFixed(1);if(v.endsWith('.0')&&all[i+x.length]!=='.')v=v.slice(0,-2);if(/[\d.]/.test(all[i-1]||''))v=v.startsWith('0.')?v.slice(1):' '+v;return v;});}
-const out=[];const seen=new Set();
-LIST.forEach(([cat,items])=>items.forEach(([name,zh,en,kw])=>{let id=name,src='material',d={};
- if(name[0]==='*'){id=name.slice(1);src='custom';WEIGHTS.forEach(w=>d[w]=wafer(w));}
- else WEIGHTS.forEach(w=>{const s=fs.readFileSync(path.join(NM,`@material-symbols/svg-${w}/rounded/${name}.svg`),'utf8');const m=s.match(/<path d="([^"]+)"/g);if(!m||m.length!==1)throw new Error('path? '+name);
-  d[w]=m[0].slice(9,-1).replace(/M(-?[\d.]+)(-?[\d.]+)h(-?[\d.]+)(-?[\d.]+)Z/g,(a,x,y,h1,h2)=>(Math.abs(+h1+ +h2)<1e-9?'':a));d[w]=round1(d[w]);});  // 去掉退化的 0 面積子路徑
- if(seen.has(id)){id=id+'_2';}seen.add(id);
- out.push([id,zh,en,cat,src,kw||'',WEIGHTS.map(w=>d[w])]);}));
-const js='const ICON_SRC='+JSON.stringify({material:ver,style:'Rounded',weights:WEIGHTS,count:out.length})+';\nconst ICON_DATA='+JSON.stringify(out).replace(/\],\[/g,'],\n[')+';';
+function quant(d){const segs=[];// own parser keeping Q/T as Q
+ let i=0,cmd='',cx=0,cy=0,sx=0,sy=0,lq=null,lc=null;const out=[];
+ const num=()=>{const m=/^[\s,]*([-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?)/.exec(d.slice(i));if(!m)throw new Error('num '+d.slice(i,i+10));i+=m[0].length;return +m[1];};
+ const more=()=>/^[\s,]*[-+.\d]/.test(d.slice(i));
+ while(i<d.length){const m=/^[\s,]*([a-zA-Z])/.exec(d.slice(i));if(m){cmd=m[1];i+=m[0].length;}else if(!more())break;
+  const rel=cmd===cmd.toLowerCase(),C=cmd.toUpperCase();const X=v=>rel?cx+v:v,Y=v=>rel?cy+v:v;
+  if(C==='Z'){out.push(['Z']);cx=sx;cy=sy;lq=lc=null;continue;}
+  do{switch(C){
+   case 'M':{const x=X(num()),y=Y(num());out.push(['M',x,y]);cx=sx=x;cy=sy=y;cmd=rel?'l':'L';lq=lc=null;break;}
+   case 'L':{const x=X(num()),y=Y(num());out.push(['L',x,y]);cx=x;cy=y;lq=lc=null;break;}
+   case 'H':{const x=rel?cx+num():num();out.push(['L',x,cy]);cx=x;lq=lc=null;break;}
+   case 'V':{const y=rel?cy+num():num();out.push(['L',cx,y]);cy=y;lq=lc=null;break;}
+   case 'C':{const a=X(num()),b=Y(num()),c=X(num()),e=Y(num()),x=X(num()),y=Y(num());out.push(['C',a,b,c,e,x,y]);lc=[c,e];lq=null;cx=x;cy=y;break;}
+   case 'S':{const r=lc?[2*cx-lc[0],2*cy-lc[1]]:[cx,cy];const c=X(num()),e=Y(num()),x=X(num()),y=Y(num());out.push(['C',r[0],r[1],c,e,x,y]);lc=[c,e];lq=null;cx=x;cy=y;break;}
+   case 'Q':{const a=X(num()),b=Y(num()),x=X(num()),y=Y(num());out.push(['Q',a,b,x,y]);lq=[a,b];lc=null;cx=x;cy=y;break;}
+   case 'T':{const r=lq?[2*cx-lq[0],2*cy-lq[1]]:[cx,cy];const x=X(num()),y=Y(num());out.push(['Q',r[0],r[1],x,y]);lq=r;lc=null;cx=x;cy=y;break;}
+   case 'A':throw new Error('arc');
+   default:throw new Error('cmd '+cmd);}}while(C!=='M'&&more()&&false);
+ }
+ // serialize: relative, integer coords from rounded absolutes
+ let px=0,py=0,spx=0,spy=0,s='',last='';const R=Math.round;
+ const join=a=>a.map((v,k)=>(k&&v>=0?' ':'')+v).join('').replace(/ -/g,'-');
+ for(const g of out){const op=g[0];if(op==='Z'){s+='z';last='z';px=spx;py=spy;continue;}
+  const P=g.slice(1).map(R);const rel=P.map((v,k)=>v-(k%2?py:px));
+  let c=op.toLowerCase();let args=rel;
+  if(op==='M'){c='M';args=P;} // absolute moves keep accuracy simple
+  if(op==='L'){if(rel[0]===0&&rel[1]===0)continue;if(rel[1]===0){c='h';args=[rel[0]];}else if(rel[0]===0){c='v';args=[rel[1]];}}
+  const body=join(args);s+=(c===last&&c!=='M'?(args[0]>=0?' ':''):c)+body;last=c;if(op==='M'){spx=P[0];spy=P[1];}
+  px=P[P.length-2];py=P[P.length-1];}
+ return s;}
+
+const meta=[],paths=[];const cats=[];
+SEL.forEach(i=>{const T=TOP[i.id];if(!cats.find(c=>c[0]===i.cat))cats.push([i.cat,i.catEn]);
+ const en=T?T.en:i.id.split('_').map((w,k)=>k?w:w[0].toUpperCase()+w.slice(1)).join(' ');
+ const kw=[...new Set([...(i.kw||'').split(/\s+/),...(T?T.kw.split(/\s+/):[]),...i.en.split(/\s+/)].filter(Boolean))].join(' ');
+ meta.push([i.id,T&&T.zh||i.zh,en,i.cat,i.custom?'custom':'material',kw,T?1:0]);
+ WEIGHTS.forEach(w=>{let d;
+  if(i.custom)d=wafer(w);
+  else{const s=fs.readFileSync(path.join(NM,`@material-symbols/svg-${w}/rounded/${i.id}.svg`),'utf8');const m=s.match(/<path d="([^"]+)"/g);if(!m||m.length!==1)throw new Error('path? '+i.id);
+   d=quant(m[0].slice(9,-1)).replace(/M(-?\d+)\s?(-?\d+)h(-?\d+)\s?h?\s?(-?\d+)z/g,(a,x,y,h1,h2)=>(+h1+ +h2===0?'':a));}  // 去掉退化的 0 面積子路徑
+  if(/[\n|]/.test(d))throw new Error('bad path');paths.push(d);});});
+const raw=Buffer.from(paths.join('\n'));const z=zlib.deflateRawSync(raw,{level:9});
+const b64=z.toString('base64').replace(/.{1,120}/g,'$&\\\n');
+const js='const ICON_SRC='+JSON.stringify({material:ver,style:'Rounded',weights:WEIGHTS,count:meta.length,top:meta.filter(m=>m[6]).length})+';\n'+
+ 'const ICON_CATS='+JSON.stringify(cats)+';\n'+
+ '// [id, 中文, English, 類別, 來源, 中英關鍵字, 精選(第 04 頁)]\nconst ICON_DATA=['+meta.map(m=>JSON.stringify(m)).join(',\n')+'];\n'+
+ '// 路徑：每個圖示 300／400／500 三行（換行分隔）→ raw DEFLATE → base64\nconst ICON_PATHS_Z="'+b64.replace(/\\\n$/,'')+'";';
 const f=path.join(__dirname,'..','icons.js');let s=fs.readFileSync(f,'utf8');
-s=s.replace(/\/\*DATA\*\/[\s\S]*?\/\*END\*\//,'/*DATA*/\n'+js+'\n/*END*/');fs.writeFileSync(f,s);console.log('icons:',out.length,'material',ver,'bytes',js.length);
+s=s.replace(/\/\*DATA\*\/[\s\S]*?\/\*END\*\//,()=>'/*DATA*/\n'+js+'\n/*END*/');fs.writeFileSync(f,s);
+console.log('icons:',meta.length,'top',meta.filter(m=>m[6]).length,'material',ver,'paths raw',raw.length,'deflate',z.length,'data bytes',Buffer.byteLength(js));
+module.exports={quant};

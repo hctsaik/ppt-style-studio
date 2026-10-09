@@ -42,6 +42,9 @@ render/*
 !render/icons-all-styles.png
 !render/icons-navy-lo.png
 !render/tray-onepage-lo.png
+!render/studio-icons-500.png
+!render/studio-icons-chips.png
+!render/studio-icons-search.png
 # 其他暫存
 *.pdf
 *.zip

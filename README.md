@@ -36,6 +36,53 @@ S／M／L 對照（上：整頁；下：同一個 PDCA 元件下載後放在標�
 
 ![9 種範本總覽](render/overview.png)
 
+## v8 新功能：圖示庫擴充到 521 個（Material Symbols Rounded）
+
+**520 個 Google Material Symbols（Rounded，字重 300／400／500，與 v7 同一套）＋ 1 個自繪「晶圓」，分 18 類**，每個都有自然的中文名稱與中英搜尋關鍵字。
+
+![](render/studio-icons-500.png)
+
+- **怎麼挑的**：
+  1. 先依 Google Fonts 圖示 metadata（`fonts.google.com/metadata/icons`）的 **popularity** 排序（Rounded 共 3,925 個）；
+  2. 從前 ~1,000 名中人工挑出跟半導體／製造／商業／IT 工作簡報相關的，寫進 [`tools/icon_list.txt`](tools/icon_list.txt)（分類、中文名稱、中文關鍵字），去掉寵物、餐飲、運動、遊戲、表情等消費／趣味類；
+  3. [`tools/select_icons.py`](tools/select_icons.py) 每類依熱門度取前 N 個（上限見程式），製造／品質／半導體相關的（晶圓、機台、產線、檢測、晶片、閥門、氣瓶、潔淨室微粒…）不受上限；
+     英文關鍵字取自 metadata tags，另外 [`tools/icon_kw_extra.txt`](tools/icon_kw_extra.txt) 補上工作常用詞（良率、成本、交期、供應商、KPI、製程、專利、審核、蝕刻、無塵室…）。
+- **分類**（上方膠囊可直接跳到該類，捲動時會標示目前類別；搜尋時顯示各類命中數）：
+
+| 類別 | English | 數量 |
+|---|---|---:|
+| 人員與組織 | People | 30 |
+| 製造與設備 | Manufacturing | 43 |
+| 品質與檢測 | Quality | 30 |
+| 資料與 IT | Data & IT | 42 |
+| 分析與圖表 | Analytics | 32 |
+| 狀態與警示 | Status | 34 |
+| 時間與排程 | Time | 22 |
+| 文件與檔案 | Documents | 36 |
+| 任務與專案 | Projects | 30 |
+| 想法與策略 | Ideas | 18 |
+| 工具與設定 | Settings | 20 |
+| 安全與權限 | Security | 18 |
+| 流程與方向 | Flow | 30 |
+| 財務與商業 | Business | 30 |
+| 溝通與會議 | Communication | 28 |
+| 物流與地點 | Logistics | 24 |
+| 能源與環境 | Energy & ESG | 24 |
+| 操作與介面 | Actions | 30 |
+| **合計** | | **521** |
+
+- **搜尋**：中英、多個字（空白分隔＝都要符合）；名稱完全／開頭符合的排前面，命中最多的分類排第一。每次搜尋 < 0.1 ms（預先建好索引）。找不到時給建議詞。
+- **效能**：圖示按鈕一次建好，但 SVG 只畫捲到附近的分類（IntersectionObserver）；換顏色／樣式／粗細只重畫看得到的分類。
+- **檔案大小**：三種字重的路徑都保留官方形狀，座標整數化（960 網格 → 24 網格誤差 ≤ 0.0125，像素比對最大差 2%）後以相對座標重寫，再 DEFLATE＋base64 內嵌，
+  載入時用 `icons.js` 內 40 行的同步解壓器解開（約 30–90 ms，不需要網路）。`icons.js` 約 410 KB；**單檔版 `PPT-Style-Studio.html` 約 1.09 MB**（v7 是 0.96 MB；不壓縮會是 ~1.9 MB）。
+- **簡報 04 頁維持精選 118 個**（v7 那一套，一頁放得下且字還看得清楚）；標題寫「精選 118 個（Studio 共 521 個）」。其餘 403 個在工作室的圖示庫裡複製／下載／加入待選素材。
+- 其他功能不變：顏色／樣式／粗細、點一下複製 SVG＋透明 PNG、SVG／PNG／.pptx 下載、全部下載 ZIP（現在是 521 個 SVG＋521 個 PNG，約 12 秒、2.3 MB，按鈕會顯示進度）、雙擊加入待選素材。
+- 重新產生：`python3 tools/select_icons.py <metadata 檔> <svg-400/rounded 目錄> && node tools/make_icons.js node_modules`。
+
+| 跳到「品質與檢測」 | 搜尋「chart」 |
+|---|---|
+| ![](render/studio-icons-chips.png) | ![](render/studio-icons-search.png) |
+
 ## v7 新功能：Material Symbols 圖示庫・重新設計的表格（＋v6 待選素材）
 
 **圖示庫（上方「圖示庫」分頁）**：**118 個 Google Material Symbols（Rounded 圓角版）**＋ 1 個自繪「晶圓」，分 13 類（人員與組織、製造與設備、資料與 IT、分析與圖表、狀態、時間、文件、工具與思考、安全、流程與連結、財務、溝通、其他）。
@@ -55,7 +102,7 @@ S／M／L 全部跟著左側風格；三種樣式：單色、淺色圓底、深�
 - 簡報 **04 圖示庫** 頁：118 個圖示（原生圖案、每個是群組）＋「圖示＋文字」組合（圖示＋流程方塊、淺色圓底＋說明、深色圓底＋卡片、數字＋圖示、圖示流程＋黏著連接線）。
   ![](render/icons-all-styles.png)
 - 授權：Material Symbols © Google LLC，**Apache License 2.0**（[google/material-design-icons](https://github.com/google/material-design-icons)、[fonts.google.com/icons](https://fonts.google.com/icons)）；
-  全文在 [`LICENSE-material-symbols.txt`](LICENSE-material-symbols.txt)、`icons.js` 與 ZIP。路徑未修改（只把座標四捨五入到 0.1／960、去掉 0 面積子路徑）。
+  全文在 [`LICENSE-material-symbols.txt`](LICENSE-material-symbols.txt)、`icons.js` 與 ZIP。路徑形狀未修改（v8 起座標整數化到 960 網格、去掉 0 面積子路徑）。
   「晶圓」是自繪（Material 沒有晶圓；依同樣的 960 網格與三種字重畫外圈＋定位平邊＋2×2 晶粒）；舊的自繪「機台」改用 Material 的 `precision_manufacturing`。
   重新產生：`npm i @material-symbols/svg-300 @material-symbols/svg-400 @material-symbols/svg-500 && node tools/make_icons.js node_modules`。完全離線。
 
@@ -92,7 +139,7 @@ S／M／L 全部跟著左側風格；三種樣式：單色、淺色圓底、深�
 ③ 強調要在預覽上點格子，再從選單選類型，最多 2 種、有優先序規則，很難猜；沒有法說會那種「紅色圓角框框住一欄」與灰色圓角底板；
 ④ 另一個 repo＋Vite 建置，兩套工具要分開維護。工作室版本（v7）：貼上即完成、外觀縮圖、點表格強調，樣式直接用工作室風格。建議停用舊網站。
 
-## 關於（v7）
+## 關於（v8）
 
 商務圖解風格的 PowerPoint 元件庫＋**線上客製工作室**。**投影片背景永遠是白色**（可選擇加一塊極淺灰畫布面板），
 所有元素都是 PowerPoint 原生、可編輯的圖形與文字（只有圖示的「.pptx 圖片」下載是 SVG＋PNG 圖片）。
@@ -216,7 +263,7 @@ PptxGenJS 無法寫出 algn／sx／sy，因此匯出後會用 JSZip 解開 pptx�
 對 9 種風格 × S／M／L 的整份 pptx，以及工作室下載的單頁／單一元件 pptx 全數通過。
 
 ## 四、程式架構與指令
-- `icons.js`：118 個 Material Symbols Rounded 圖示（字重 300／400／500）的路徑、中英關鍵字與 SVG／PowerPoint 幾何轉換（Apache 2.0 授權全文在檔內）；由 `tools/make_icons.js` 產生。
+- `icons.js`：521 個 Material Symbols Rounded 圖示（字重 300／400／500，路徑整數化＋DEFLATE 壓縮內嵌）、中英關鍵字、分類與 SVG／PowerPoint 幾何轉換（Apache 2.0 授權全文在檔內）；由 `tools/select_icons.py`＋`tools/make_icons.js` 產生。
 - `deck.js` 的 `userTable()`／`tableAuto()`：表格外觀與自動判斷；`TABLE_LOOKS` 是 6 種外觀。
 - `deck.js`：**唯一的參數化核心**。`params → buildModel()`（幾何模型）→ ① `toSvg()` 即時預覽 ② `toPptx()`＋`patchZip()` 匯出。瀏覽器與 Node 共用。
   `Deck.BASE` 是全部參數與預設值；`Deck.PRESETS` 是 9 個範本（只覆寫差異）。
@@ -247,6 +294,7 @@ PptxGenJS 無法寫出 algn／sx／sy，因此匯出後會用 JSZip 解開 pptx�
 - 法說會紅只參考版面語言（顏色、標題、面板、頁尾細線），不含任何公司標誌或名稱。
 - 範例文字均為通用佔位文字，請替換成自己的內容。
 - **圖示**：「.pptx 圖片」的「轉換成圖案」需要 PowerPoint 365／2019 以上；舊版只會看到 PNG。複製 SVG 到剪貼簿需要 Chrome／Edge 124 以上（否則只放 PNG）。
+  v8 圖示庫有 521 個，但簡報 04 頁只放精選 118 個；圖示的中文名稱與分類是人工整理，少數圖示可能有更貼切的說法，可用中英關鍵字搜尋。熱門度資料是 Google Fonts 的整體使用量，不代表半導體業的使用頻率。
   簡報內的 04 頁與「.pptx 圖案」是原生填色自訂圖案，可改顏色；粗細要在工作室換字重後重新匯出（PowerPoint 裡不能拉線寬）。
 - **表格**：PowerPoint 表格不能放進群組，所以「灰底面板」「外框卡片」的底板與「圓角框」強調是和表格並排的獨立物件（一起框選即可移動）；
   「複製到 PowerPoint」（HTML）帶得過去的是顏色、粗體、框線、淡色強調；底板與圓角框只在「下載 .pptx」裡（圓角框在 HTML 會變成儲存格框線）。

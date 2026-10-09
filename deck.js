@@ -550,11 +550,11 @@ function buildModel(params,opt){
    ln(x,y+.34,x+cw,y+.34,{c:G.l2,w:.5});
    grp(zh,()=>fn(x,y+lh));});};
  /* ---------- 04 圖示庫：Material Symbols 圖示（每個都是可單獨複製的原生圖案）＋圖示＋文字的常用組合 ---------- */
- SL.icons=()=>{title('圖示庫 Icon Library',(ICONS?ICONS.LIST.length:0)+' 個 Material Symbols 圖示：顏色、粗細跟著風格；每個都是可編輯的 PowerPoint 圖案');
+ SL.icons=()=>{const TOPI=ICONS?(ICONS.TOP||ICONS.LIST):[];title('圖示庫 Icon Library','精選 '+TOPI.length+' 個 Material Symbols（Studio 共 '+(ICONS?ICONS.LIST.length:0)+' 個）：顏色、粗細跟著風格；每個都是可編輯圖案');
   if(!ICONS)return;const NC=20,cw=CW/NC,s=.33,pitch=.585,y0=1.8,W2='FFFFFF',PR=st.r>0?Math.min(st.r,.1):0;const cs=Math.max(7.5,Math.min(8.5,st.nSize-3));
-  ICONS.LIST.forEach((ic,i)=>{const c=i%NC,r=Math.floor(i/NC);const cx=X0+(c+.5)*cw,y=y0+r*pitch;
+  TOPI.forEach((ic,i)=>{const c=i%NC,r=Math.floor(i/NC);const cx=X0+(c+.5)*cw,y=y0+r*pitch;
    grp(ic.zh,()=>icon(ic.id,cx-s/2,y,s));txt(cx-cw/2-.02,y+s+.03,cw+.04,.18,ic.zh,{size:cs,color:G.t2,align:'center',name:'圖說'});});
-  const ys=y0+Math.ceil(ICONS.LIST.length/NC)*pitch+.02;ln(X0,ys-.06,X1,ys-.06,{c:G.l2,w:.5});
+  const ys=y0+Math.ceil(TOPI.length/NC)*pitch+.02;ln(X0,ys-.06,X1,ys-.06,{c:G.l2,w:.5});
   const dx=mark(X0,ys+.13);txt(X0+dx,ys,6,.28,[{t:'圖示＋文字組合',s:LS(11.5),b:st.lBold,c:G.ink},{t:'  Icon + Label',s:8,c:G.mute,f:nf}],{name:'小節'});
   const yb=Math.min(ys+.36,(st.canvas?6.82:6.92)-.8),hb=.74,gap=.16;const ws=[2.15,2.15,2.3,2.05];const w5=CW-ws.reduce((a,b)=>a+b,0)-4*gap;let xb=X0;
   const place=(w,name,fn)=>{const x=xb;grp(name,()=>fn(x,w));xb+=w+gap;};

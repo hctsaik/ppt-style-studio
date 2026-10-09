@@ -1,0 +1,791 @@
+# 圖示清單（v8）：類別標題行以 "## 中文｜English" 開頭；每行 "material_name|中文名稱|中文關鍵字（空白分隔）"
+# 英文關鍵字由 Google Fonts metadata 的 tags 自動補上；名稱前加 * ＝自繪
+## 人員與組織｜People
+person|人員|使用者 個人 員工
+group|團隊|小組 成員
+groups|部門|組織 群組 全員
+groups_2|跨部門|團隊 協作
+groups_3|社群|群組 大家
+diversity_3|多元團隊|協作 共融
+person_add|新增成員|加入 招募
+person_remove|移除成員|離職 刪除
+person_search|找人才|招募 搜尋
+person_check|已確認人員|核准 簽核
+person_pin|負責人|指派 owner
+account_circle|帳號|使用者 頭像
+account_box|個人資料|名片 profile
+manage_accounts|帳號管理|權限 設定
+supervisor_account|主管|上司 管理
+supervised_user_circle|管理員|督導
+admin_panel_settings|系統管理員|admin 權限
+badge|員工證|識別證 ID
+contact_page|聯絡資料|名片 通訊錄
+contacts|通訊錄|聯絡人
+account_tree|組織架構|階層 樹狀
+engineering|工程師|技術 安全帽
+support_agent|客服|支援 服務台
+school|訓練|教育 學習 課程
+co_present|簡報者|講師 發表
+record_voice_over|發言|主講 簡報
+handshake|合作|夥伴 協議
+partner_exchange|夥伴交流|合作 對接
+volunteer_activism|關懷|志工 CSR
+emoji_people|人員舉手|參與 回饋
+self_improvement|自我成長|培訓 冥想
+psychology|思考|心理 腦力
+how_to_reg|報到|登記 註冊
+assignment_ind|人員指派|職務 任命
+work|職務|工作 公事包
+work_history|工作經歷|年資 履歷
+business_center|事業群|商務 BU
+diversity_1|多元共融|DEI
+accessibility_new|人體|人員 姿勢
+elderly|資深人員|長者
+family_restroom|家庭|員工福利
+## 製造與設備｜Manufacturing
+factory|工廠|晶圓廠 廠房 fab
+*wafer|晶圓|矽晶圓 半導體 die
+memory|晶片|IC 半導體 封裝
+memory_alt|記憶體|DRAM 模組
+developer_board|電路板|PCB 基板
+precision_manufacturing|機台|設備 機械手臂 自動化
+manufacturing|製造|齒輪 生產
+conveyor_belt|產線|輸送帶 生產線
+forklift|堆高機|搬運 物流
+construction|施工|工程 建置
+build|維修|保養 PM 扳手
+handyman|工具|維護 修理
+home_repair_service|工具箱|維修 保養
+build_circle|維修中|保養 停機
+hardware|五金|零件 螺絲
+settings_input_component|接頭|零件 端子
+valve|閥門|管路 流量
+heat_pump|熱交換|冷卻 空調
+mode_fan|風扇|散熱 排氣
+air|氣流|潔淨室 風
+ac_unit|冷卻|低溫 冷凍
+thermostat|溫度|溫控 熱
+device_thermostat|溫度計|溫度 量測
+water_drop|用水|水 化學品
+waves|液體|流體 波動
+oil_barrel|化學桶|原料 油
+propane_tank|氣瓶|特殊氣體 鋼瓶
+gas_meter|氣體表|流量計
+electric_meter|電表|用電
+inventory_2|庫存|物料 箱
+package_2|包裝|物料 封裝
+inventory|盤點|庫存 清單
+category|分類|品項 類別
+widgets|零組件|元件 模組
+deployed_code|模組|元件 3D
+view_in_ar|立體|3D 模型
+token|晶粒|元件 晶格
+grid_view|晶圓圖|格狀 map
+apps|陣列|格子 網格
+blur_on|微粒|粒子 汙染
+straighten|尺寸|量測 尺
+square_foot|面積|量測 尺規
+scale|秤重|重量 量測
+## 品質與檢測｜Quality
+verified|已驗證|認證 合格
+license|證照|授權 認證 證書
+task_alt|達成|完成 勾選
+fact_check|查核|稽核 審查
+rule|規範|檢查 標準
+checklist|檢核表|SOP 清單
+grading|評分|分級 評等
+frame_inspect|檢測|量測 AOI 檢查
+biotech|顯微分析|顯微鏡 FA
+science|實驗|研發 R&D
+experiment|試驗|實驗 燒瓶
+labs|實驗室|化學 lab
+troubleshoot|問題分析|除錯 診斷
+bug_report|缺陷|問題追蹤 defect
+search_check|檢查完成|確認 查驗
+zoom_in|放大檢查|細看 detail
+center_focus_strong|對焦|焦點 檢測
+filter_center_focus|聚焦|重點 中心
+visibility|檢視|看 觀察
+visibility_off|隱藏|不顯示
+preview|預覽|檢視
+workspace_premium|品質獎章|優良 認證
+military_tech|榮譽|獎章 表揚
+trophy|成果|獎盃 冠軍
+star|重點|星 重要
+star_half|半星|評分
+stars|優等|評價
+thumb_up|讚|認同 好評
+thumb_down|不讚|反對 差評
+thumbs_up_down|評價|好壞 回饋
+recommend|推薦|建議 讚
+reviews|評論|意見 回饋
+rate_review|評審|審查 回饋
+health_and_safety|安全衛生|EHS 工安
+safety_check|安全檢查|稽核 工安
+masks|口罩|防護 潔淨室
+medical_services|醫護|急救 健康
+## 資料與 IT｜Data & IT
+database|資料庫|DB 資料
+storage|儲存空間|硬碟 容量
+dataset|資料集|資料 表格
+dataset_linked|資料連結|整合 資料
+data_object|資料物件|JSON 程式
+data_exploration|資料探勘|分析 探索
+data_usage|使用量|資料 用量
+dns|伺服器|主機 server
+cloud|雲端|cloud 雲
+cloud_upload|上傳雲端|備份 上傳
+cloud_download|從雲端下載|下載
+cloud_sync|雲端同步|同步
+cloud_done|雲端完成|已同步
+cloud_off|離線|斷線 雲端
+backup|備份|上傳 保存
+computer|電腦|PC 桌機
+desktop_windows|桌上型電腦|螢幕 PC
+laptop_mac|筆電|電腦 laptop
+laptop_windows|筆記型電腦|電腦
+monitor|螢幕|顯示器
+tv|電視|顯示 看板
+devices|多裝置|手機 電腦
+devices_other|周邊裝置|設備
+mobile|手機|行動 mobile
+tablet|平板|行動裝置
+keyboard|鍵盤|輸入
+mouse|滑鼠|輸入
+print|列印|印表機
+terminal|終端機|指令 CLI
+code|程式碼|開發 程式
+code_blocks|程式區塊|開發
+integration_instructions|整合程式|開發 API
+api|API|介面 整合
+webhook|Webhook|串接 通知
+html|HTML|網頁
+javascript|JavaScript|程式
+css|CSS|網頁樣式
+web|網頁|網站
+web_asset|網頁元件|視窗
+smart_toy|AI 機器人|聊天機器人 bot
+robot_2|機器人|自動化 bot
+neurology|AI|人工智慧 大腦 模型
+network_intelligence|智慧網路|AI 網路
+model_training|模型訓練|AI 機器學習
+auto_awesome|AI 生成|智慧 魔法
+memory|晶片|IC
+schema|資料架構|結構 schema
+table|表格|資料表 試算表
+table_view|表格檢視|資料表
+table_rows|資料列|列
+view_column|欄|資料欄
+hub|樞紐|中心 平台
+lan|區域網路|網路 拓樸
+router|路由器|網路
+wifi|無線網路|Wi-Fi
+wifi_off|無網路|斷線
+bluetooth|藍牙|無線
+cell_tower|基地台|通訊 5G
+sensors|感測器|訊號 IoT
+satellite_alt|衛星|通訊
+qr_code|QR Code|條碼 掃描
+qr_code_scanner|掃描|QR 讀碼
+barcode|條碼|標籤 追溯
+barcode_scanner|條碼掃描|讀碼 追溯
+nfc|NFC|感應
+sd_card|記憶卡|儲存
+usb|USB|連接埠
+cable|線材|電纜
+install_desktop|安裝|軟體
+system_update_alt|系統更新|下載 更新
+update|更新|版本
+sync|同步|更新
+## 分析與圖表｜Analytics
+analytics|分析|數據 統計
+monitoring|監控|趨勢 SPC
+query_stats|數據查詢|分析 搜尋
+insights|洞察|趨勢 發現
+bar_chart|長條圖|圖表 柱狀
+stacked_bar_chart|堆疊長條圖|圖表
+leaderboard|排名|排行 比較
+show_chart|折線圖|趨勢 曲線
+stacked_line_chart|多折線圖|趨勢
+multiline_chart|多線圖|趨勢 比較
+area_chart|面積圖|圖表
+pie_chart|圓餅圖|占比 比例
+donut_large|甜甜圈圖|占比
+donut_small|小甜甜圈圖|占比
+bubble_chart|泡泡圖|分布
+scatter_plot|散佈圖|相關 分布
+candlestick_chart|K 線圖|股價 價格
+waterfall_chart|瀑布圖|增減 財務
+table_chart|表格圖|資料表
+insert_chart|插入圖表|報表
+add_chart|新增圖表|報表
+trending_up|上升|成長 增加
+trending_down|下降|衰退 減少
+trending_flat|持平|穩定
+timeline|時間軸|趨勢 歷程
+ssid_chart|波形|訊號 趨勢
+finance_mode|財務分析|績效
+browse_activity|活動分析|監控
+data_thresholding|門檻|管制界限 閾值
+equalizer|均衡|指標 長條
+signal_cellular_alt|訊號強度|等級 長條
+speed|效能|速度 儀表
+dashboard|儀表板|看板 總覽
+space_dashboard|版面|儀表板
+team_dashboard|團隊看板|儀表板
+monitor_heart|健康監測|生命徵象 監控
+percent|百分比|比例 %
+functions|公式|函數 計算
+calculate|計算|計算機
+123|數字|編號
+## 狀態與警示｜Status
+check_circle|完成|OK 通過 確認
+check|勾選|確認 正確
+done_all|全部完成|完成
+cancel|錯誤|失敗 取消 NG
+close|叉號|關閉 不
+block|阻擋|禁止 停止
+do_not_disturb_on|禁止|停止 禁止
+warning|警示|風險 注意
+error|異常|錯誤 警告
+report|問題回報|異常 警告
+dangerous|危險|錯誤 嚴重
+emergency_home|緊急|警報
+crisis_alert|危機|目標 警報
+priority_high|緊急|重要 驚嘆號
+exclamation|驚嘆號|注意
+notification_important|重要通知|警示
+info|資訊|說明 提示
+help|問題|疑問 FAQ
+question_mark|問號|疑問
+contact_support|求助|支援 問題
+live_help|線上協助|支援
+pending|進行中|處理中 等待
+hourglass_empty|等待|沙漏 排隊
+hourglass_top|即將開始|等待
+hourglass_bottom|即將結束|等待
+running_with_errors|執行異常|錯誤 執行中
+sync_problem|同步失敗|錯誤
+gpp_maybe|待確認|安全 疑慮
+gpp_bad|未通過|安全 失敗
+release_alert|新發布|新 公告
+fiber_new|新|新功能
+circle|圓點|狀態燈
+radio_button_checked|已選|選取
+radio_button_unchecked|未選|空白
+check_box|已勾選|核取
+check_box_outline_blank|未勾選|空白 核取
+indeterminate_check_box|部分完成|核取
+toggle_on|開關開啟|開關 啟用
+toggle_off|開關關閉|開關 停用
+power_settings_new|電源|開關 啟動
+notifications|通知|提醒 鈴
+notifications_active|通知中|提醒
+notifications_off|關閉通知|靜音
+lightbulb_circle|提示|燈號
+traffic|紅綠燈|燈號 狀態
+## 時間與排程｜Time
+schedule|時間|時鐘
+alarm|鬧鐘|提醒
+timer|計時|碼表 cycle time
+av_timer|計時器|儀表
+timelapse|進度時間|週期
+history|歷史|紀錄 回溯
+history_toggle_off|歷程|紀錄
+update_disabled|停止更新|凍結
+more_time|延長時間|加時
+alarm_on|已設提醒|鬧鐘
+calendar_month|行事曆|日期 月曆
+calendar_today|今天|日期
+today|當日|日期
+event|事件|會議 日期
+event_available|已排程|預約 完成
+event_busy|無法出席|衝突
+event_note|行程備註|日程
+event_upcoming|即將到來|行程
+event_repeat|週期事件|重複
+edit_calendar|編輯行程|排程
+calendar_add_on|新增行程|排程
+date_range|期間|區間
+schedule_send|排程寄送|定時
+pending_actions|待辦|進行中 任務
+update|更新時間|最新
+restart_alt|重新開始|重置
+nest_clock_farsight_analog|時鐘|時間
+avg_time|平均時間|週期 時間
+acute|時效|急件 時間
+## 文件與檔案｜Documents
+description|文件|檔案 doc
+article|報告|文章 報表
+docs|文件集|Google 文件
+draft|草稿|初稿
+note_add|新增文件|建立
+post_add|新增文章|發文
+edit_note|筆記|紀錄 會議記錄
+edit_document|編輯文件|修改
+sticky_note_2|便利貼|備忘
+notes|備註|文字
+text_snippet|文字片段|摘要
+summarize|摘要|總結 重點
+subject|主旨|內文
+assignment|任務|交辦 工作
+assignment_turned_in|已交付|完成 任務
+assignment_late|逾期|延遲 任務
+receipt_long|單據|收據 清單
+receipt|收據|發票
+request_quote|報價單|估價 預算
+picture_as_pdf|PDF|文件 匯出
+folder|資料夾|檔案 歸檔
+folder_open|開啟資料夾|檔案
+folder_shared|共用資料夾|分享
+folder_copy|資料夾複本|檔案
+create_new_folder|新增資料夾|檔案
+topic|主題|資料夾 議題
+file_copy|檔案複本|複製
+file_open|開啟檔案|檔案
+file_present|附件檔案|檔案
+upload_file|上傳檔案|上傳
+find_in_page|頁內搜尋|查找
+plagiarism|比對|搜尋 文件
+document_scanner|掃描文件|掃描器
+content_paste|貼上|剪貼簿
+content_paste_search|剪貼簿搜尋|查找
+content_copy|複製|拷貝
+library_books|資料庫文件|書 圖書館
+menu_book|手冊|規範 SOP
+book|書|手冊
+auto_stories|閱讀|書 學習
+import_contacts|手冊開啟|書
+history_edu|記錄|歷史 筆
+newspaper|新聞|報導
+feed|動態|訊息 新聞
+list_alt|清單|列表
+format_list_bulleted|條列|項目符號
+format_list_numbered|編號清單|步驟
+format_quote|引言|引用
+title|標題|文字
+text_fields|文字欄位|輸入
+translate|翻譯|語言
+g_translate|Google 翻譯|翻譯
+attach_file|附件|迴紋針
+attachment|附加檔案|附件
+archive|封存|歸檔
+unarchive|取出封存|還原
+inbox|收件匣|待處理
+drafts|草稿匣|信件
+approval|核准|蓋章 簽核
+approval_delegation|授權核准|委任 簽核
+gavel|裁決|法務 規範
+policy|政策|法規 合規
+## 任務與專案｜Projects
+task|任務清單|工作
+add_task|新增任務|待辦
+checklist_rtl|檢核清單|待辦
+playlist_add_check|清單完成|待辦
+list|列表|清單
+view_list|清單檢視|列表
+view_kanban|看板|Kanban 專案
+view_timeline|甘特圖|時程 專案
+view_agenda|議程|行程
+flag|里程碑|旗子 milestone
+flag_circle|目標旗|里程碑
+sports_score|終點|目標 完成
+tour|導覽|旗 參訪
+emoji_flags|旗幟|標記
+bookmark|書籤|標記 收藏
+bookmarks|書籤集|收藏
+bookmark_added|已加書籤|標記
+label|標籤|分類 tag
+label_important|重要標籤|優先
+sell|價格標籤|售價 tag
+new_label|新標籤|分類
+tag|井字號|tag 標籤
+low_priority|低優先|順序
+priority|優先|重要
+stairs|階段|階梯 步驟
+step|步驟|階段
+start|開始|啟動
+next_plan|下一步|計畫
+model_training|改善循環|PDCA 訓練
+autorenew|循環|持續改善 PDCA
+cycle|循環|週期 迴圈
+published_with_changes|版本更新|改版
+change_circle|變更|修改
+difference|差異比較|比對
+compare|比較|對照
+compare_arrows|對比|比較 交換
+balance|權衡|平衡 天秤
+flag_2|里程碑旗|旗標 milestone
+target|目標|靶 goal
+track_changes|追蹤|目標 變更
+ads_click|點擊|目標 轉換
+adjust|調整|目標 中心
+my_location|定位|目標 位置
+## 想法與策略｜Ideas
+lightbulb|想法|創意 點子
+emoji_objects|靈感|燈泡 創意
+tips_and_updates|小技巧|提示 建議
+psychology_alt|思考中|疑問 腦
+rocket_launch|啟動|火箭 開始 kickoff
+rocket|火箭|快速 成長
+bolt|快速|閃電 效率
+electric_bolt|電力|閃電 能源
+all_inclusive|無限|持續
+extension|擴充|拼圖 整合
+interests|興趣|類別
+explore|探索|方向 指南針
+travel_explore|全球探索|搜尋 國際
+lens_blur|聚焦|模糊
+architecture|架構|設計 規劃
+design_services|設計|規劃
+draw|繪圖|設計
+brush|筆刷|美化
+palette|配色|調色盤
+style|樣式|風格
+layers|圖層|堆疊 層次
+stacks|堆疊|層 結構
+workspaces|工作區|群組
+diamond|價值|鑽石 核心
+celebration|慶祝|成功 活動
+editor_choice|首選|推薦 獎章
+handshake|協議|合作
+## 工具與設定｜Settings
+settings|設定|齒輪 配置
+settings_applications|應用設定|配置
+tune|參數|調整 recipe
+discover_tune|微調|參數
+display_settings|顯示設定|螢幕
+filter_alt|篩選|過濾 漏斗
+filter_list|篩選清單|過濾
+filter_alt_off|取消篩選|過濾
+sort|排序|順序
+search|搜尋|查詢 找
+manage_search|進階搜尋|查詢
+saved_search|已存搜尋|查詢
+search_off|查無結果|搜尋
+zoom_out|縮小|檢視
+zoom_out_map|全覽|放大
+fit_screen|適合畫面|縮放
+open_in_full|放大|展開
+close_fullscreen|縮小視窗|收合
+fullscreen|全螢幕|放大
+aspect_ratio|比例|尺寸
+crop|裁切|剪裁
+crop_free|框選|取景
+select_all|全選|選取
+tab|分頁|頁籤
+toc|目錄|大綱
+apps_outage|應用程式|格狀
+dashboard_customize|自訂看板|儀表板
+app_registration|應用註冊|設定
+extension_off|停用擴充|外掛
+power|電源插頭|供電
+## 安全與權限｜Security
+lock|鎖定|權限 保密
+lock_open|解鎖|開放
+lock_person|人員權限|存取
+lock_clock|定時鎖|時效
+lock_reset|重設密碼|密碼
+security|資安|盾 防護
+shield|防護|保護
+shield_person|人員保護|隱私
+verified_user|認證|合規 授權
+gpp_good|安全通過|資安
+key|金鑰|鑰匙 密碼
+vpn_key|VPN 金鑰|連線
+password|密碼|登入
+fingerprint|指紋|身分驗證
+encrypted|加密|資安
+privacy_tip|隱私|個資
+vpn_lock|VPN|安全連線
+admin_panel_settings|管理權限|admin
+remove_moderator|移除權限|撤銷
+no_accounts|禁止帳號|停權
+login|登入|進入
+logout|登出|離開
+local_police|警衛|保全
+assured_workload|合規|機構 法遵
+## 流程與方向｜Flow
+arrow_forward|向右|下一步 箭頭
+arrow_back|向左|上一步 箭頭
+arrow_upward|向上|增加 箭頭
+arrow_downward|向下|減少 箭頭
+north_east|右上|成長 箭頭
+south_east|右下|下降 箭頭
+arrow_outward|外連|箭頭
+arrow_right_alt|長箭頭|流程
+double_arrow|雙箭頭|前進
+keyboard_double_arrow_right|快轉|前進
+east|東|向右
+trending_flat|平移|箭頭
+swap_horiz|交換|對調 交接
+swap_vert|上下交換|對調
+sync_alt|雙向|往返
+import_export|匯入匯出|上下
+compare_arrows|雙向箭頭|對比
+alt_route|分流|分支 替代
+call_split|分歧|分開 fork
+merge|合併|整合 匯流
+fork_right|右分岔|分支
+fork_left|左分岔|分支
+route|路徑|路線 流程
+conversion_path|轉換路徑|流程
+polyline|折線|路徑
+timeline|流程時間軸|步驟
+subdirectory_arrow_right|子項目|縮排
+redo|重做|前進
+undo|復原|返回
+replay|重播|重來
+refresh|重新整理|更新
+loop|迴圈|循環
+repeat|重複|循環
+shuffle|隨機|打散
+move_up|上移|排序
+move_down|下移|排序
+vertical_align_top|置頂|上
+vertical_align_bottom|置底|下
+open_with|移動|拖曳
+pan_tool|暫停手勢|停止
+back_hand|停手|手 暫停
+front_hand|舉手|提問
+touch_app|手指點選|操作
+ads_click|點選|目標
+input|輸入|進入
+output|輸出|產出
+login|輸入端|進入
+exit_to_app|離開|出口
+low_priority|往下排|順序
+device_hub|中樞|分配
+## 財務與商業｜Business
+payments|付款|費用 支付
+attach_money|金額|錢 營收 revenue
+paid|收益|獲利 利潤
+savings|節省|撲滿 cost down
+account_balance|財務|銀行 會計
+account_balance_wallet|預算|錢包
+wallet|錢包|資金
+credit_card|信用卡|支付
+credit_score|信用評分|評等
+money|現金|鈔票
+money_off|成本降低|省錢
+price_check|價格確認|核價
+price_change|價格變動|漲跌
+currency_exchange|匯率|換匯 外幣
+euro|歐元|EUR
+currency_yen|日圓|JPY
+currency_yuan|人民幣|CNY
+toll|代幣|硬幣
+point_of_sale|收銀|銷售 POS
+local_atm|提款|現金
+shopping_cart|採購|購物車
+shopping_cart_checkout|結帳|下單
+add_shopping_cart|加入採購|下單
+shopping_bag|購物|銷售
+storefront|商店|通路 門市
+store|店面|零售
+sell|銷售|價格
+loyalty|客戶忠誠|會員
+redeem|兌換|禮物
+card_membership|會員卡|方案
+real_estate_agent|業務|仲介 交易
+business_center|商務|公事包
+work|業務工作|公事包
+corporate_fare|企業|公司 總部
+domain|公司|大樓 網域
+apartment|辦公室|大樓 總部
+location_city|城市|據點
+home_work|居家辦公|遠端
+store_mall_directory|商場|據點
+campaign|行銷|宣傳 廣播
+production_quantity_limits|數量限制|產能 庫存
+receipt_long|帳單|明細
+calculate|成本計算|試算
+work_outline|工作|公事包
+## 溝通與會議｜Communication
+mail|郵件|email 信件
+mark_email_read|已讀郵件|信件
+mark_email_unread|未讀郵件|信件
+forward_to_inbox|轉寄|郵件
+outgoing_mail|寄出|郵件
+alternate_email|電子郵件|@
+send|傳送|送出
+chat|訊息|對話 聊天
+chat_bubble|對話框|訊息
+forum|討論|會議 意見
+comment|留言|評論
+mode_comment|評論|留言
+add_comment|新增留言|評論
+feedback|回饋|意見
+sms|簡訊|訊息
+question_answer|問答|Q&A
+call|電話|通話 聯絡
+phone_in_talk|通話中|電話
+phone_enabled|電話聯絡|撥號
+call_end|掛斷|結束
+videocam|視訊|會議 meeting
+video_call|視訊會議|線上會議
+meeting_room|會議室|開會
+groups|全員會議|部門
+campaign|公告|宣傳 廣播
+podcasts|廣播|Podcast
+mic|麥克風|發言 錄音
+headset_mic|耳麥|客服 會議
+headphones|耳機|聆聽
+share|分享|共享 傳送
+ios_share|匯出分享|上傳
+link|連結|網址
+link_off|斷開連結|取消連結
+connect_without_contact|遠距交流|連線
+3p|對話對象|聯絡人
+reply|回覆|回應
+reply_all|全部回覆|郵件
+forward|轉傳|轉寄
+contact_mail|聯絡郵件|名片
+contact_phone|聯絡電話|名片
+language|語言|全球 網站
+## 物流與地點｜Logistics
+local_shipping|物流|運輸 出貨 卡車
+airport_shuttle|接駁|運輸
+flight|航運|空運 飛機
+flight_takeoff|出貨|空運 起飛
+flight_land|到貨|空運 降落
+directions_boat|海運|船 貨櫃
+train|鐵路|運輸 火車
+directions_car|車輛|汽車 交通
+directions_bus|巴士|通勤 交通
+electric_car|電動車|EV 交通
+two_wheeler|機車|交通
+pedal_bike|自行車|交通
+directions_walk|步行|走路
+directions_run|跑步|快速
+warehouse|倉儲|倉庫 存放
+moving|搬遷|搬運
+local_post_office|郵寄|郵局
+package|包裹|貨物
+move_to_inbox|入庫|收貨
+outbox|出庫|出貨
+public|全球|世界 國際
+language|國際|全球
+travel_explore|全球搜尋|國際
+map|地圖|位置
+location_on|地點|位置 據點 site
+pin_drop|標記地點|位置
+my_location|目前位置|定位
+near_me|導航|方向
+navigation|導引|方向
+explore|指南針|方向
+signpost|路標|方向
+directions|路線|方向
+home|首頁|家
+house|房屋|住家
+cottage|小屋|住宅
+location_home|住家位置|家
+home_pin|據點|地點
+other_houses|園區|建物
+holiday_village|宿舍|園區
+hotel|飯店|住宿 出差
+luggage|出差|行李 旅行
+airplane_ticket|機票|出差
+local_hospital|醫院|醫療
+local_cafe|咖啡|休息
+restaurant|餐廳|用餐
+## 能源與環境｜Energy & ESG
+eco|環保|ESG 永續 綠色
+energy_savings_leaf|節能|省電 能源
+nest_eco_leaf|綠能葉|永續
+recycling|回收|循環 再利用
+compost|堆肥|廢棄物
+delete_sweep|清除|廢棄
+solar_power|太陽能|再生能源
+wind_power|風力|再生能源
+power|電力|插頭 能源
+electrical_services|電氣|配電
+bolt|用電|閃電
+battery_full|電池|電量 滿
+battery_charging_full|充電|電池
+battery_5_bar|電量|電池
+ev_station|充電站|EV
+water|水資源|海 波浪
+forest|森林|碳匯 樹
+park|樹木|綠化
+nature|自然|植物
+grass|草地|綠化
+potted_plant|盆栽|植物 成長
+agriculture|農業|種植
+co2|二氧化碳|碳排 CO2
+air_purifier|空氣淨化|潔淨室
+sunny|晴天|太陽
+partly_cloudy_day|多雲|天氣
+rainy|下雨|天氣
+thunderstorm|雷雨|風險 天氣
+cyclone|颱風|天災
+flood|淹水|天災
+local_fire_department|消防|火災
+fire_extinguisher|滅火器|消防
+emergency|急救|醫療
+## 操作與介面｜Actions
+add|新增|加號 +
+add_circle|新增項目|加號
+add_box|加入|方塊
+remove|減少|減號 -
+remove_circle|移除|減號
+edit|編輯|修改 筆
+edit_square|編輯框|修改
+border_color|標註|筆 畫線
+delete|刪除|垃圾桶
+delete_forever|永久刪除|清除
+restore_from_trash|還原|垃圾桶
+save|儲存|存檔
+save_as|另存新檔|存檔
+download|下載|存檔
+upload|上傳|送出
+downloading|下載中|進度
+download_done|下載完成|完成
+file_download|下載檔案|下載
+open_in_new|開新視窗|外部連結
+open_in_browser|瀏覽器開啟|網頁
+launch|開啟|啟動
+publish|發布|上傳
+cached|快取|重新整理
+done_outline|完成框|勾選
+more_horiz|更多|省略
+more_vert|選單|更多
+menu|功能表|選單 三條線
+expand_circle_down|展開|向下
+chevron_right|下一個|右
+chevron_left|上一個|左
+unfold_more|展開全部|上下
+unfold_less|收合全部|上下
+drag_indicator|拖曳|移動
+drag_handle|拖曳把手|移動
+dark_mode|深色模式|夜間
+light_mode|淺色模式|白天
+contrast|對比|明暗
+image|圖片|照片
+photo_camera|相機|照片 拍攝
+camera|攝影機|影像 AOI
+photo_library|相簿|圖片
+add_photo_alternate|新增圖片|上傳
+image_search|以圖搜尋|影像辨識
+movie|影片|影像
+smart_display|影片播放|影片
+play_arrow|播放|開始
+play_circle|播放鈕|開始
+pause|暫停|停
+pause_circle|暫停鈕|停
+stop|停止|終止
+stop_circle|停止鈕|終止
+skip_next|跳下一個|跳過
+skip_previous|上一個|返回
+fast_forward|快轉|加速
+fast_rewind|倒轉|回顧
+slideshow|簡報|投影片
+present_to_all|投影|簡報
+cast|投放|投影
+fullscreen_exit|離開全螢幕|縮小
+keyboard_return|換行|返回
+highlight|標示|重點
+format_paint|格式複製|刷子
+format_bold|粗體|文字
+format_color_fill|填色|顏色
+text_format|文字格式|字型
