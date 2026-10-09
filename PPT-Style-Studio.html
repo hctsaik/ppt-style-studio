@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%226%22 fill=%22%231F4E79%22/%3E%3C/svg%3E">
-<!-- PPT Style Studio 單檔版（自動產生於 2026-10-09 10:18，請勿手改；來源：studio.html + deck.js + pptxgen.bundle.js，以 tools/build_single.py 重建） -->
+<!-- PPT Style Studio 單檔版（自動產生於 2026-10-09 10:34，請勿手改；來源：studio.html + deck.js + pptxgen.bundle.js，以 tools/build_single.py 重建） -->
 <title>PPT Style Studio · 圖解元件客製工作室</title>
 <style>
 :root{--ink:#3A3A3A;--t2:#595959;--mu:#8C8C8C;--line:#E4E4E4;--fill:#F6F6F6;--p:#1F4E79}
@@ -168,7 +168,7 @@ const BASE={
  ink:'3A3A3A',t2:'595959',mute:'8C8C8C',line:'BFBFBF',l2:'D9D9D9',fill:'F2F2F2',
  canvas:false,canvasColor:'F5F5F5',
  r:.1,colR:'full',colStyle:'fill',
- sh:false,shFit:true,shMode:'drop',shB:7,shO:2,shA:.25,shDir:90,haloB:16,haloA:.32,ring:false,
+ size:'M',sh:false,shFit:true,shMode:'drop',shB:7,shO:2,shA:.25,shDir:90,haloB:16,haloA:.32,ring:false,
  card:'outline',cardLW:1.25,cardLine:'D9D9D9',headColor:'P',bandStyle:'fill',cornerTag:true,ribbonTone:'p',
  tag:'pill',badge:'circle',sep:'tri',chain:'chev',circle:'ring3',circleLW:3,sym:'outlineP',mark:'none',bar:'under',bracket:false,titleColor:'P',
  footRule:false,
@@ -219,7 +219,7 @@ const LANG_OF={card:{outline:'白底外框',gray:'淺灰實心',soft:'白底無�
  chain:{chev:'漸層 V 形箭號',hex:'六角形鏈',gray:'灰卡＋▶',outline:'細框方塊',hairchev:'空心線框 V 形',home:'五邊形箭號',pill:'膠囊鏈',block:'區塊 V 形'}};
 function langOf(p){return{card:LANG_OF.card[p.card]+(p.card==='outline'?' '+p.cardLW+'pt':'')+(p.sh?'＋陰影':''),tag:LANG_OF.tag[p.tag],badge:LANG_OF.badge[p.badge],sep:LANG_OF.sep[p.sep],
  conn:p.cnW+'pt '+({solid:'實線',sysDot:'點線',sysDash:'虛線',dash:'長虛線'}[p.cnDash]||'')+({triangle:'＋三角箭頭',arrow:'＋開放箭頭',stealth:'＋燕尾箭頭',oval:'＋圓點',none:''}[p.cnHead]||''),chain:LANG_OF.chain[p.chain]};}
-const SLIDES=[['catalog','元件總表'],['patterns','常見組合'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
+const SLIDES=[['catalog','元件總表'],['patterns','常見組合'],['patterns2','常見組合（二）'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
 
 /* ---------- 文字寬度估算（Node 端排版檢查用；瀏覽器預覽改用 canvas 實測） ---------- */
 function tw(str,size){let u=0;for(const ch of String(str)){const c=ch.codePointAt(0);
@@ -270,7 +270,7 @@ function buildModel(params,opt){
   if(kind){it.fill=o.fill||null;it.ft=o.ft||0;it.line=o.line||null;it.lw=o.lw||1;it.dash=o.dash||'solid';if(o.line){it.head=o.head||null;it.tail=o.tail||null;it.hs=o.hs||'med';}}
   if(o.adj!=null&&o.adj>0)it.adj=o.adj;
   if(o.sh&&(st.sh||o.force))it.sh=shadowSpec(o.sh===true||o.sh===1?'card':o.sh,w,h);
-  if(o.points)it.points=o.points;
+  if(o.points)it.points=o.points;if(o.doc)it.doc=1;
   if(o.text!=null&&o.text!==''){const R=runsOf(o.text,o);it.runs=R.out;
    it.tx={align:o.align||'center',valign:o.valign||'middle',margin:o.margin!=null?o.margin:(kind?3:0),lsp:o.lsp||1,font:o.font||F,size:o.size||14,color:o.color||G.ink,bold:!!o.bold,cs:o.cs};
    if(!o.nolint)lint(R.paras,w,h,o);}
@@ -286,8 +286,29 @@ function buildModel(params,opt){
   return el('custGeom',x0,y0,w,h,Object.assign({},o,{points}));}
  const CN=()=>({c:st.cnC,w:st.cnW,dash:st.cnDash,head:st.cnHead==='none'?null:st.cnHead,tail:st.cnTail==='none'?null:st.cnTail,hs:st.cnHs});
  function conn(pts,o){o=Object.assign(CN(),o||{});const sty={c:o.c,w:o.w,dash:o.dash,head:o.head===false?null:o.head,hs:o.hs,tail:o.tail===false?null:o.tail};
-  if(pts.length===2)return ln(pts[0][0],pts[0][1],pts[1][0],pts[1][1],sty);
-  path(pts,{line:sty.c,lw:sty.w,dash:sty.dash,head:sty.head,hs:sty.hs,tail:sty.tail,name:'連接線'});}
+  if(pts.length===2){ln(pts[0][0],pts[0][1],pts[1][0],pts[1][1],sty);return cur.items[cur.items.length-1];}
+  return path(pts,{line:sty.c,lw:sty.w,dash:sty.dash,head:sty.head,hs:sty.hs,tail:sty.tail,name:'連接線'});}
+ /* ---------- 黏著連接線（v5.2）：端點＝圖形的連接點；匯出時轉成 <p:cxnSp> 並寫入 stCxn／endCxn，PowerPoint 中移動圖形線會跟著走 ----------
+    連接點編號依 OOXML 預設圖形定義：rect／roundRect／diamond／can：0 上 1 左 2 下 3 右；ellipse：0 上 2 左 4 下 6 右；
+    parallelogram：0 上 2 右（斜邊中點）4 下 5 左（斜邊中點）；文件在 pptx 中改用預設圖形 flowChartDocument（與預覽的自訂路徑同形）：0 上 1 左 2 下 3 右。 */
+ const SITE_DIR={rect:['v','h','v','h'],roundRect:['v','h','v','h'],diamond:['v','h','v','h'],can:['v','h','v','h'],custGeom:['v','h','v','h'],
+  ellipse:['v',null,'h',null,'v',null,'h',null],parallelogram:['v',null,'h',null,'v','h']};
+ function siteXY(it,i){const x=it.x,y=it.y,w=it.w,h=it.h,a=it.adj||0;
+  if(it.kind==='ellipse')return[[x+w/2,y],null,[x,y+h/2],null,[x+w/2,y+h],null,[x+w,y+h/2]][i];
+  if(it.kind==='parallelogram'){const d=Math.min(a,w);return[[x+w/2,y],null,[x+w-d/2,y+h/2],null,[x+w/2,y+h],[x+d/2,y+h/2]][i];}
+  if(it.kind==='custGeom'&&it.doc)return[[x+w/2,y],[x,y+h/2],[x+w/2,y+h*20320/21600],[x+w,y+h/2]][i];
+  return[[x+w/2,y],[x,y+h/2],[x+w/2,y+h],[x+w,y+h/2]][i];}
+ function link(a,sa,b,sb,o){o=o||{};const A=Array.isArray(a)?a:siteXY(a,sa),B=Array.isArray(b)?b:siteXY(b,sb);
+  const da=Array.isArray(a)?(o.dirA||'h'):(SITE_DIR[a.kind]||[])[sa],db=Array.isArray(b)?(o.dirB||'h'):(SITE_DIR[b.kind]||[])[sb];
+  let pts;const eq=(p,q)=>Math.abs(p-q)<.004;
+  if(o.via)pts=[A].concat(o.via).concat([B]);
+  else if(eq(A[0],B[0])||eq(A[1],B[1]))pts=[A,B];
+  else if(da==='h'&&db==='h'){const mx=o.mid!=null?o.mid:(A[0]+B[0])/2;pts=[A,[mx,A[1]],[mx,B[1]],B];}
+  else if(da==='v'&&db==='v'){const my=o.mid!=null?o.mid:(A[1]+B[1])/2;pts=[A,[A[0],my],[B[0],my],B];}
+  else if(da==='h')pts=[A,[B[0],A[1]],B];else pts=[A,[A[0],B[1]],B];
+  const it=conn(pts,Object.assign({tail:false},o.style||{}));
+  it.cx={};if(!Array.isArray(a))it.cx.a=[cur.items.indexOf(a),sa];if(!Array.isArray(b))it.cx.b=[cur.items.indexOf(b),sb];
+  return it;}
  function curve(p0,c1,c2,p1,o){o=Object.assign(CN(),o||{});const all=[p0,c1,c2,p1];const x0=Math.min(...all.map(p=>p[0])),y0=Math.min(...all.map(p=>p[1]));
   const w=Math.max(...all.map(p=>p[0]))-x0,h=Math.max(...all.map(p=>p[1]))-y0;const q=p=>({x:p[0]-x0,y:p[1]-y0});
   el('custGeom',x0,y0,Math.max(w,.01),Math.max(h,.01),{line:o.c,lw:o.w,dash:o.dash==='solid'?'sysDash':o.dash,head:o.head,hs:o.hs,tail:o.tail===false?null:o.tail,name:'曲線箭頭',
@@ -296,6 +317,12 @@ function buildModel(params,opt){
  function topRound(x,y,w,h,r,o){const R=Math.min(r,h,w/2);if(R<.005)return box(x,y,w,h,o);
   el('custGeom',x,y,w,h,Object.assign({},o,{points:[{x:0,y:h},{x:0,y:R},{x:R,y:0,curve:{type:'arc',hR:R,wR:R,stAng:180,swAng:90}},{x:w-R,y:0},{x:w,y:R,curve:{type:'arc',hR:R,wR:R,stAng:270,swAng:90}},{x:w,y:h},{close:true}]}));}
 
+ /* 原生表格：cells[r][c]={t,fill,color,bold,size,align,bT,bB}（bT／bB＝{c,w} 上／下框線；只畫橫線，較精緻） */
+ function table(x,y,colW,rowH,cells,o){o=o||{};const w=colW.reduce((a,b)=>a+b,0),h=rowH.reduce((a,b)=>a+b,0);
+  const C=cells.map(r=>r.map(c=>{c=typeof c==='string'?{t:c}:c;const size=c.size||o.size||10;
+   const runs=runsOf(c.t==null?'':c.t,{size,color:c.color||G.ink,bold:!!c.bold,font:c.font||F}).out;
+   return{runs,fill:c.fill||null,align:c.align||o.align||'center',size,color:c.color||G.ink,bold:!!c.bold,mL:o.mL!=null?o.mL:4,mT:1,bT:c.bT||null,bB:c.bB||null};}));
+  const it={t:'tbl',x,y,w,h,colW:colW.slice(),rowH:rowH.slice(),cells:C,name:o.name||'表格'};cur.items.push(it);return it;}
  /* ---------- 版面骨架 ---------- */
  function canvas(){if(st.canvas)box(.25,.25,W-.5,H-.5,{fill:st.canvasColor,r:.06,name:'畫布面板'});}
  function footer(){const y=st.canvas?6.9:7.0;if(st.footRule)ln(.4,y-.05,W-.4,y-.05,{c:P,w:1.25});
@@ -449,12 +476,12 @@ function buildModel(params,opt){
  function sym(kind,x,y,w,h,t,o){o=o||{};const L=symLook(o.strong,o.alt);const size=o.size||LS(14);
   const base={fill:L.fill,line:L.line,lw:L.lw,dash:L.dash,sh:L.sh?'small':0,text:t,size,bold:st.tBold&&st.lBold,color:L.c};
   switch(kind){
-   case 'term':box(x,y,w,h,Object.assign(base,{r:'full',name:'開始／結束'}));break;
-   case 'proc':box(x,y,w,h,Object.assign(base,{r:st.r>0?(st.sym==='soft'?st.r:Math.min(st.r,.12)):0,name:'處理'}));break;
-   case 'dec':el('diamond',x,y,w,h,Object.assign(base,{inner:.62,margin:0,name:'判斷'}));break;
-   case 'io':el('parallelogram',x,y,w,h,Object.assign(base,{adj:h*.42,inner:.8,name:'輸入輸出'}));break;
-   case 'doc':el('custGeom',x,y,w,h,Object.assign(base,{margin:[3,3,h*.2*72,0],innerH:.8,name:'文件',points:[{x:0,y:0},{x:w,y:0},{x:w,y:h*.802},{x:0,y:h*.934,curve:{type:'cubic',x1:w*.5,y1:h*.802,x2:w*.5,y2:h*1.1075}},{close:true}]}));break;
-   case 'db':el('can',x,y,w,h,Object.assign(base,{adj:h*.13,margin:[2,2,0,0],name:'資料庫'}));break;}}
+   case 'term':return box(x,y,w,h,Object.assign(base,{r:'full',name:'開始／結束'}));break;
+   case 'proc':return box(x,y,w,h,Object.assign(base,{r:st.r>0?(st.sym==='soft'?st.r:Math.min(st.r,.12)):0,name:'處理'}));break;
+   case 'dec':return el('diamond',x,y,w,h,Object.assign(base,{inner:.62,margin:0,name:'判斷'}));break;
+   case 'io':return el('parallelogram',x,y,w,h,Object.assign(base,{adj:h*.42,inner:.8,name:'輸入輸出'}));break;
+   case 'doc':return el('custGeom',x,y,w,h,Object.assign(base,{doc:1,margin:[3,3,h*.2*72,0],innerH:.8,name:'文件',points:[{x:0,y:0},{x:w,y:0},{x:w,y:h*.802},{x:0,y:h*.934,curve:{type:'cubic',x1:w*.5,y1:h*.802,x2:w*.5,y2:h*1.1075}},{close:true}]}));break;
+   case 'db':return el('can',x,y,w,h,Object.assign(base,{adj:h*.13,margin:[2,2,0,0],name:'資料庫'}));break;}}
  const node=(x,y,w,h,t,o)=>sym('proc',x,y,w,h,t,Object.assign({size:LS(13)},o||{}));
 
  /* ---------- 寬欄透明條、漸隱大箭頭 ---------- */
@@ -572,42 +599,97 @@ function buildModel(params,opt){
   const A2=(pts,o)=>conn(pts,Object.assign({tail:false},o||{}));
   const combos=[
    ['三步驟流程','Linear Process',(x,y)=>{const w=.74,g=(cw-3*w)/2,yy=y+.62;
-     ['步驟一','步驟二','步驟三'].forEach((t,i)=>{const xi=x+i*(w+g);N(xi,yy,w,t,i===2?{strong:1}:{});badge(xi+w/2,yy-.3,bnum(i+1),{d:.26,size:9,nodot:1});if(i<2)A2([[xi+w,yy+nh/2],[xi+w+g,yy+nh/2]]);});}],
+     const ns=['步驟一','步驟二','步驟三'].map((t,i)=>{const xi=x+i*(w+g);const n=N(xi,yy,w,t,i===2?{strong:1}:{});badge(xi+w/2,yy-.3,bnum(i+1),{d:.26,size:9,nodot:1});return n;});
+     link(ns[0],3,ns[1],1);link(ns[1],3,ns[2],1);}],
    ['判斷分岔（是／否）','Decision Branch',(x,y)=>{const yy=y+.24,cy=yy+nh/2,dx=x+.98,dw=.84,dh=.64,dcy=cy;
-     N(x,yy,.72,'檢查');A2([[x+.72,cy],[dx,cy]]);
-     sym('dec',dx,dcy-dh/2,dw,dh,'通過？',{size:fs-1});
-     N(x+cw-.74,yy,.74,'執行',{strong:1});A2([[dx+dw,cy],[x+cw-.74,cy]]);lab(dx+dw,cy-.24,.4,'是');
-     N(dx+dw/2-.37,y+1.26,.74,'修正');A2([[dx+dw/2,dcy+dh/2],[dx+dw/2,y+1.26]]);lab(dx+dw/2+.02,dcy+dh/2+.04,.3,'否',{align:'left'});}],
+     const a=N(x,yy,.72,'檢查');const d=sym('dec',dx,dcy-dh/2,dw,dh,'通過？',{size:fs-1});link(a,3,d,1);
+     const e=N(x+cw-.74,yy,.74,'執行',{strong:1});link(d,3,e,1);lab(dx+dw,cy-.24,.4,'是');
+     const f=N(dx+dw/2-.37,y+1.26,.74,'修正');link(d,2,f,0);lab(dx+dw/2+.02,dcy+dh/2+.04,.3,'否',{align:'left'});}],
    ['例外退回路徑','Exception Return',(x,y)=>{const w=.74,g=(cw-3*w)/2,yy=y+.36,c=i=>x+i*(w+g)+w/2;
-     ['受理','審查','完成'].forEach((t,i)=>{N(x+i*(w+g),yy,w,t,i===2?{strong:1}:{});if(i<2)A2([[x+i*(w+g)+w,yy+nh/2],[x+(i+1)*(w+g),yy+nh/2]]);});
-     const ly=yy+nh+.42;conn([[c(1),yy+nh],[c(1),ly],[c(0),ly],[c(0),yy+nh]],{c:AL,w:Math.max(1.25,st.cnW),dash:'sysDash',head:'triangle',hs:'med',tail:false});
+     const ns=['受理','審查','完成'].map((t,i)=>N(x+i*(w+g),yy,w,t,i===2?{strong:1}:{}));link(ns[0],3,ns[1],1);link(ns[1],3,ns[2],1);
+     const ly=yy+nh+.42;link(ns[1],2,ns[0],2,{via:[[c(1),ly],[c(0),ly]],style:{c:AL,w:Math.max(1.25,st.cnW),dash:'sysDash',head:'triangle',hs:'med'}});
      lab(c(0),ly+.04,c(1)-c(0),'例外：退回補件',{color:ALd});}],
    ['審核迴圈','Approval Loop',(x,y)=>{const yy=y+.78,cy=yy+nh/2,dw=.74,dh=.6,dx=x+1.0,kw=.62;
-     N(x,yy,.8,'提出申請');A2([[x+.8,cy],[dx,cy]]);sym('dec',dx,cy-dh/2,dw,dh,'審核',{size:fs-1});
-     N(x+cw-kw,yy,kw,'核准',{strong:1});A2([[dx+dw,cy],[x+cw-kw,cy]]);lab(dx+dw,cy-.24,x+cw-kw-dx-dw,'通過');
-     const ly=y+.24;A2([[dx+dw/2,cy-dh/2],[dx+dw/2,ly],[x+.4,ly],[x+.4,yy]]);lab(x+.42,ly-.22,dx+dw/2-x-.42,'退回修改後重送');}],
+     const a=N(x,yy,.8,'提出申請');const d=sym('dec',dx,cy-dh/2,dw,dh,'審核',{size:fs-1});link(a,3,d,1);
+     const k=N(x+cw-kw,yy,kw,'核准',{strong:1});link(d,3,k,1);lab(dx+dw,cy-.24,x+cw-kw-dx-dw,'通過');
+     const ly=y+.24;link(d,0,a,0,{via:[[dx+dw/2,ly],[x+.4,ly]]});lab(x+.42,ly-.22,dx+dw/2-x-.42,'退回修改後重送');}],
    ['泳道（雙道）','Swimlane',(x,y)=>{const lh2=.8,hw=.46,l1=y+.04,l2=l1+lh2+.06,c1=l1+lh2/2,c2=l2+lh2/2,w=.7;
      [[l1,'申\n請\n人'],[l2,'主\n管']].forEach(([ly,t])=>{box(x,ly,cw,lh2,{fill:'FFFFFF',line:G.l2,lw:.75,name:'泳道'});box(x,ly,hw,lh2,{fill:GF,text:t,size:8.5,bold:1,color:G.t2,margin:0,lsp:.95,name:'泳道標題'});});
      const xa=x+hw+.14,xb=xa+w+.3,xc=x+cw-w-.08;
-     N(xa,c1-nh/2,w,'填寫');N(xb,c2-nh/2,w,'審核');N(xc,c1-nh/2,w,'歸檔',{strong:1});
-     A2([[xa+w,c1],[xb+w/2,c1],[xb+w/2,c2-nh/2]]);A2([[xb+w,c2],[xc+w/2,c2],[xc+w/2,c1+nh/2]]);}],
+     const a=N(xa,c1-nh/2,w,'填寫'),b=N(xb,c2-nh/2,w,'審核'),c=N(xc,c1-nh/2,w,'歸檔',{strong:1});
+     link(a,3,b,0);link(b,3,c,2);}],
    ['平行分流／合流','Parallel Split / Merge',(x,y)=>{const ca=y+.38,cb=y+1.3,cm=(ca+cb)/2,bw=.07,w=.74;
      const xs=x+.66,xj=x+cw-.86;
-     N(x,cm-nh/2,.56,'開始');box(xs+.1,ca-.28,bw,cb-ca+.56,{fill:P,name:'分流'});
-     const xA=xs+.38;N(xA,ca-nh/2,w,'作業 A');N(xA,cb-nh/2,w,'作業 B');
-     box(xj-.2,ca-.28,bw,cb-ca+.56,{fill:P,name:'合流'});N(x+cw-.62,cm-nh/2,.62,'彙整',{strong:1});
-     A2([[x+.56,cm],[xs+.1,cm]]);A2([[xs+.1+bw,ca],[xA,ca]]);A2([[xs+.1+bw,cb],[xA,cb]]);
-     A2([[xA+w,ca],[xj-.2,ca]]);A2([[xA+w,cb],[xj-.2,cb]]);A2([[xj-.2+bw,cm],[x+cw-.62,cm]]);}],
+     const s0=N(x,cm-nh/2,.56,'開始');const sp=box(xs+.1,ca-.28,bw,cb-ca+.56,{fill:P,name:'分流'});
+     const xA=xs+.38;const na=N(xA,ca-nh/2,w,'作業 A'),nb=N(xA,cb-nh/2,w,'作業 B');
+     const mg=box(xj-.2,ca-.28,bw,cb-ca+.56,{fill:P,name:'合流'});const e=N(x+cw-.62,cm-nh/2,.62,'彙整',{strong:1});
+     link(s0,3,sp,1);link([xs+.1+bw,ca],0,na,1);link([xs+.1+bw,cb],0,nb,1);   // 分流棒的上下分支不在連接點上：只黏終點
+     link(na,3,[xj-.2,ca],0);link(nb,3,[xj-.2,cb],0);link(mg,3,e,1);}],
    ['輸入→處理→輸出','Input / Process / Output',(x,y)=>{const ww=[.82,.7,.82],g=(cw-ww[0]-ww[1]-ww[2])/2,yy=y+.5;let xi=x;
-     [['io','輸入'],['proc','處理'],['doc','報表']].forEach(([k,t],i)=>{sym(k,xi,yy,ww[i],k==='doc'?.52:nh,t,{size:fs,strong:i===1});
-      lab(xi-.05,yy+.6,ww[i]+.1,['資料來源','整理運算','產出結果'][i],{color:G.mute});
-      if(i<2)A2([[xi+ww[i]+(k==='io'?-.06:0),yy+nh/2],[xi+ww[i]+g+(i===1?0:.06),yy+nh/2]]);xi+=ww[i]+g;});}],
+     const ns=[['io','輸入'],['proc','處理'],['doc','報表']].map(([k,t],i)=>{const n=sym(k,xi,k==='doc'?yy-.05:yy,ww[i],k==='doc'?.52:nh,t,{size:fs,strong:i===1});
+      lab(xi-.05,yy+.6,ww[i]+.1,['資料來源','整理運算','產出結果'][i],{color:G.mute});xi+=ww[i]+g;return n;});
+     link(ns[0],2,ns[1],1);link(ns[1],3,ns[2],1);}],
    ['前後對照','Before / After',(x,y)=>{const w=1.18,h=1.3,yy=y+.2,xb=x+cw-w;
      cardBase(x,yy,w,h);txt(x+.14,yy+.12,w-.28,.3,[{t:'現況 ',b:1,c:G.t2},{t:'Before',s:8,c:G.mute,f:nf}],{size:LS(11),name:'卡片標題'});
      txt(x+.14,yy+.48,w-.28,.7,'流程分散\n交接常出錯',{size:9.5,color:G.t2,valign:'top',lsp:1.2,name:'卡片內文'});
      sep(x+cw/2,yy+h/2);
      box(xb,yy,w,h,{fill:'FFFFFF',line:P,lw:1.75,r:st.r,sh:1,name:'強調卡片'});txt(xb+.14,yy+.12,w-.28,.3,[{t:'改善後 ',b:1,c:P},{t:'After',s:8,c:G.mute,f:nf}],{size:LS(11),name:'卡片標題'});
      txt(xb+.14,yy+.48,w-.28,.7,'單一窗口\n進度一目了然',{size:9.5,color:G.ink,valign:'top',lsp:1.2,name:'卡片內文'});}]];
+  combos.forEach(([zh,en,fn],i)=>{const col=i%NCOL,row=Math.floor(i/NCOL);const x=X0+col*(cw+GAPc),y=row?rows2:y0;
+   const dx=mark(x,y+.14);txt(x+dx,y,cw-dx,.3,[{t:zh,s:LS(11.5),b:st.lBold,c:G.ink},{t:'  '+en,s:8,c:G.mute,f:nf}],{name:'組合名稱'});
+   ln(x,y+.34,x+cw,y+.34,{c:G.l2,w:.5});
+   grp(zh,()=>fn(x,y+lh));});};
+ /* ---------- 03 常見組合（二）：表格、比較、數字卡、PDCA；每組在 pptx 中是一個群組（含表格者除外：PowerPoint 不允許表格入群組） ---------- */
+ SL.patterns2=()=>{title('常見組合（二）Common Patterns II','分工表、前後對照、問題對策、方案比較、KPI 數字卡與 PDCA：整組複製即可使用');
+  const NCOL=3,GAPc=.34,cw=(CW-(NCOL-1)*GAPc)/NCOL,lh=.4,ch=1.86,rowGap=.24;
+  const y0=1.9,rows2=y0+lh+ch+rowGap;const fs=Math.min(LS(10),11.5);const W2='FFFFFF';
+  const bHead={c:P,w:1.25},bRow={c:G.l2,w:.5};
+  const combos=[
+   ['責任分工 RACI','RACI Matrix',(x,y)=>{const roles=['PM','設計','工程','業務'],tasks=['需求定義','方案設計','開發測試','上線推廣'];
+     const M=[['A','C','C','R'],['A','R','C','I'],['A','C','R','I'],['A','I','C','R']];
+     const c0=1.16,cr=(cw-c0)/4,rh0=.32,rh=.34;
+     const head=[{t:'工作項目',bold:1,color:G.t2,align:'left',size:fs-1,bB:bHead}].concat(roles.map(r=>({t:r,bold:1,color:G.ink,size:fs-1,bB:bHead})));
+     const body=tasks.map(t=>[{t,color:G.ink,align:'left',size:fs-.5,bB:bRow}].concat(roles.map(()=>({t:'',bB:bRow}))));
+     table(x,y,[c0,cr,cr,cr,cr],[rh0,rh,rh,rh,rh],[head].concat(body),{name:'RACI 表格'});
+     const look={R:{fill:P,c:W2},A:{fill:HASA?A:PD,c:HASA&&lum(A)>.55?G.ink:W2},C:{fill:PTn,c:PD},I:{fill:W2,line:G.line,c:G.t2}};
+     M.forEach((row,i)=>row.forEach((k,j)=>{const L=look[k],cx=x+c0+cr*(j+.5),cy=y+rh0+rh*(i+.5),pw=.34,ph=.21;
+      box(cx-pw/2,cy-ph/2,pw,ph,{fill:L.fill,line:L.line,lw:.75,r:'full',text:k,size:8,bold:1,color:L.c,margin:0,font:nf,name:'RACI 標記'});}));
+     const ly=y+rh0+4*rh+.08;let lx=x;[['R','執行'],['A','當責'],['C','諮詢'],['I','知會']].forEach(([k,t])=>{const L=look[k];
+      box(lx,ly+.02,.22,.16,{fill:L.fill,line:L.line,lw:.5,r:'full',text:k,size:6.5,bold:1,color:L.c,margin:0,font:nf,name:'圖例'});
+      txt(lx+.26,ly,.6,.2,t,{size:8,color:G.t2,name:'圖例'});lx+=.86;});}],
+   ['改善前後對照表','Before / After Table',(x,y)=>{const c0=1.0,c1=(cw-c0)/2,rh0=.34,rh=.36;
+     const rows=[['交期','10 天','6 天'],['不良率','3.2%','1.1%'],['人力','5 人','3 人'],['客訴','8 件／月','2 件／月']];
+     const head=[{t:'項目',bold:1,color:G.t2,align:'left',size:fs-1,bB:bHead},{t:'改善前 Before',bold:1,color:G.t2,size:fs-1,fill:GF,bB:{c:G.line,w:1.25}},{t:'改善後 After',bold:1,color:W2,size:fs-1,fill:P,bB:bHead}];
+     const body=rows.map(r=>[{t:r[0],color:G.ink,align:'left',size:fs-.5,bB:bRow},{t:r[1],color:G.mute,size:fs,bB:bRow,font:nf},{t:r[2],color:P,bold:1,size:fs+1,bB:bRow,font:nf}]);
+     table(x,y,[c0,c1,c1],[rh0,rh,rh,rh,rh],[head].concat(body),{name:'前後對照表'});
+     note(x,y+rh0+4*rh+.06,cw,'※ 改善後一欄以主色粗體標示',{size:8,h:.2});}],
+   ['問題 → 原因 → 對策','Problem / Cause / Countermeasure',(x,y)=>{const bw=1.02,g=(cw-3*bw)/2,bh=1.16,yy=y+.22;
+     const sh=symLook(false).sh?'small':0;
+     const spec=[['問題','Problem','交期常延誤\n客戶抱怨增加',{fill:W2,line:AL,lw:1.5,c:ALd}],['原因','Cause','需求變更頻繁\n排程未同步',{fill:GF,c:G.ink}],['對策','Countermeasure','需求凍結點\n每週排程會議',{fill:P,c:W2}]];
+     const B=spec.map(([zh,en,body,L],i)=>box(x+i*(bw+g),yy,bw,bh,{fill:L.fill,line:L.line,lw:L.lw,r:st.r>0?Math.min(st.r,.12):0,sh,valign:'top',align:'left',margin:[7,5,4,8],lsp:1.15,size:fs-1.5,
+      text:[{t:zh,s:fs+1.5,b:1,c:L.c===W2?W2:(i===0?ALd:G.ink),br:1},{t:en,s:7,c:L.c===W2?mix(P,'FFFFFF',.7):G.mute,f:nf,br:1}].concat(body.split('\n').map((t,k,a)=>({t,s:fs-1.5,c:L.c===W2?W2:G.t2,br:k<a.length-1?1:0}))),name:zh}));
+     link(B[0],3,B[1],1);link(B[1],3,B[2],1);}],
+   ['三方案比較','3-Column Comparison',(x,y)=>{const g=.12,w=(cw-2*g)/3,h=1.8,yy=y+.06,hh=.4;
+     const opts=[['方案 A','Option A',['成本：低','時程：2 週','擴充：有限']],['方案 B','Option B',['成本：中','時程：4 週','擴充：佳']],['方案 C','Option C',['成本：高','時程：8 週','擴充：最佳']]];
+     opts.forEach(([zh,en,rows],i)=>{const xi=x+i*(w+g),hi=i===1;
+      if(hi){box(xi,yy,w,h,{fill:W2,line:P,lw:1.75,r:st.r>0?Math.min(st.r,.12):0,sh:1,name:'推薦方案'});topRound(xi,yy,w,hh,st.r>0?Math.min(st.r,.12):0,{fill:P,name:'表頭'});}
+      else{box(xi,yy,w,h,{fill:W2,line:G.l2,lw:1,r:st.r>0?Math.min(st.r,.12):0,name:'方案'});box(xi+.001,yy+.001,w-.002,hh,{fill:GF,r:0,name:'表頭底'});}
+      txt(xi,yy,w,hh,[{t:zh,s:fs+.5,b:1,c:hi?W2:G.ink,br:1},{t:en,s:7,c:hi?mix(P,'FFFFFF',.7):G.mute,f:nf}],{align:'center',lsp:.95,name:'方案名稱'});
+      rows.forEach((r,j)=>{const ry=yy+hh+.14+j*.36;const [k,v]=r.split('：');
+       txt(xi+.12,ry,w-.24,.18,k,{size:7.5,color:G.mute,name:'項目'});txt(xi+.12,ry+.15,w-.24,.2,v,{size:fs-.5,bold:hi?1:0,color:hi?P:G.ink,name:'內容'});});
+      if(hi)tag(xi+w/2,yy+h-.08,'推薦',{tone:'a',size:8,h:.22,anchor:'center'});});}],
+   ['KPI 數字卡','KPI Cards',(x,y)=>{const g=.14,w=(cw-2*g)/3,h=1.36,yy=y+.22;
+     const K=[['準時交貨率','98.6','%','▲ 2.1 pt',1],['平均交期','6.2','天','▼ 1.8 天',1],['客訴件數','2','件／月','▼ 75%',1]];
+     K.forEach(([l,v,u,d,good],i)=>{const xi=x+i*(w+g);cardBase(xi,yy,w,h,{});box(xi+.14,yy+.16,.24,.04,{fill:i===0?P:G.line,name:'色條'});
+      txt(xi+.14,yy+.26,w-.2,.22,l,{size:8.5,color:G.t2,name:'指標名稱'});
+      txt(xi+.12,yy+.5,w-.18,.46,[{t:v,s:24,b:1,c:i===0?P:G.ink,f:nf},{t:' '+u,s:9,c:G.t2}],{valign:'bottom',name:'數值'});
+      txt(xi+.14,yy+1.0,w-.2,.2,[{t:d,s:8,b:1,c:good?P:ALd},{t:'  較上季',s:7,c:G.mute}],{name:'變化'});});}],
+   ['PDCA 循環','PDCA Cycle',(x,y)=>{const bw=1.44,bh=.68,vg=.44,yy=y+.06,xr=x+cw-bw,yb=yy+bh+vg;const L=symLook(false);
+     const S=[['P','計畫','Plan','設定目標與做法',x,yy],['D','執行','Do','依計畫小步執行',xr,yy],['C','查核','Check','量測結果與差異',xr,yb],['A','行動','Act','標準化並修正',x,yb]];
+     const B=S.map(([k,zh,en,t,bx,by])=>box(bx,by,bw,bh,{fill:L.fill===P?W2:L.fill,line:L.line||(L.fill===P?P:null),lw:L.lw||1.5,dash:L.dash,r:st.r>0?Math.min(st.r,.12):0,sh:L.sh?'small':0,align:'left',valign:'middle',margin:[8,4,0,0],lsp:1.08,size:fs-1.5,
+      text:[{t:k,s:15,b:1,c:P,f:nf},{t:'  '+zh+' ',s:fs+.5,b:1,c:G.ink},{t:en,s:7.5,c:G.mute,f:nf,br:1},{t:t,s:fs-1.5,c:G.t2}],name:'PDCA '+en}));
+     link(B[0],3,B[1],1);link(B[1],2,B[2],0);link(B[2],1,B[3],3);link(B[3],0,B[0],2);
+     const cx=x+cw/2,cy=yy+bh+vg/2;box(cx-.5,cy-.13,1.0,.26,{fill:W2,line:G.l2,lw:.75,r:'full',text:[{t:'PDCA',s:8,b:1,c:P,f:nf},{t:'  持續改善',s:7.5,c:G.t2}],size:8,margin:0,name:'中心標籤'});}]];
   combos.forEach(([zh,en,fn],i)=>{const col=i%NCOL,row=Math.floor(i/NCOL);const x=X0+col*(cw+GAPc),y=row?rows2:y0;
    const dx=mark(x,y+.14);txt(x+dx,y,cw-dx,.3,[{t:zh,s:LS(11.5),b:st.lBold,c:G.ink},{t:'  '+en,s:8,c:G.mute,f:nf}],{name:'組合名稱'});
    ln(x,y+.34,x+cw,y+.34,{c:G.l2,w:.5});
@@ -680,22 +762,22 @@ function buildModel(params,opt){
   ['界定範圍','產出方案','落實計畫','回顧改善'].forEach((t,i)=>txt(RX+i*cd.step,5.62,cd.iw,.3,t,{size:11,color:G.t2,align:'center'}));
   note(RX,6.3,RW,'※ 流程鏈以 3–5 個步驟為佳，重點步驟可用強調色');};
 
- SL.conn=()=>{title('連接線與箭頭','細直線、折線、點狀線、曲線、▶ 小三角與區塊箭號');
+ SL.conn=()=>{title('連接線與箭頭','細直線、折線、點狀線、曲線、▶ 小三角與區塊箭號');const TL=st.cnTail==='none'?false:st.cnTail;
   const cw=(CW-3*.32)/4,cx=i=>X0+i*(cw+.32);
   const cells=['細直線 Straight','折線 Elbow','點狀線 Dotted','曲線 Curved','▶ 小三角分隔','▶▶▶ 點狀箭號','區塊箭號 Chevron','分支 Branch'];
   cells.forEach((l,i)=>{const r=Math.floor(i/4),c=i%4,x=cx(c),y=1.95+r*2.35;section(x,y,cw,l);
    const nw=.9,nh=.46,top=y+.75,mid=y+1.35;
    switch(i){
-    case 0:node(x,mid-nh/2,nw,nh,'A');node(x+cw-nw,mid-nh/2,nw,nh,'B');conn([[x+nw+.06,mid],[x+cw-nw-.06,mid]],{dash:'solid'});break;
-    case 1:node(x,top,nw,nh,'A');node(x+cw-nw,top+1.0,nw,nh,'B');conn([[x+nw+.06,top+nh/2],[x+cw/2,top+nh/2],[x+cw/2,top+1.0+nh/2],[x+cw-nw-.06,top+1.0+nh/2]]);break;
-    case 2:node(x,mid-nh/2,nw,nh,'A');node(x+cw-nw,mid-nh/2,nw,nh,'B');conn([[x+nw+.06,mid],[x+cw-nw-.06,mid]],{dash:'sysDot',w:Math.max(1.25,st.cnW)});break;
+    case 0:{const a=node(x,mid-nh/2,nw,nh,'A'),b=node(x+cw-nw,mid-nh/2,nw,nh,'B');link(a,3,b,1,{style:{dash:'solid',tail:TL}});break;}
+    case 1:{const a=node(x,top,nw,nh,'A'),b=node(x+cw-nw,top+1.0,nw,nh,'B');link(a,3,b,1,{style:{tail:TL}});break;}
+    case 2:{const a=node(x,mid-nh/2,nw,nh,'A'),b=node(x+cw-nw,mid-nh/2,nw,nh,'B');link(a,3,b,1,{style:{dash:'sysDot',w:Math.max(1.25,st.cnW),tail:TL}});break;}
     case 3:node(x,top+.85,nw,nh,'A');node(x+cw-nw,top+.85,nw,nh,'B');curve([x+nw/2,top+.79],[x+nw/2,top-.05],[x+cw-nw/2,top-.05],[x+cw-nw/2,top+.79]);break;
     case 4:{const ws=['輸入','處理','輸出'];const gw=(cw-3*.62)/2;ws.forEach((t,j)=>{const xx=x+j*(.62+gw);txt(xx,mid-.2,.62,.4,t,{size:13,bold:1,color:G.ink,align:'center'});if(j<2)sep(xx+.62+gw/2,mid);});break;}
     case 5:node(x,mid-nh/2,nw,nh,'A');node(x+cw-nw,mid-nh/2,nw,nh,'B');sep(x+cw/2,mid,{kind:'dots',k:1.2});break;
     case 6:{const n=3,bw=(cw+2*.18)/3,ol=st.chain==='hairchev';for(let j=0;j<n;j++)el(j?'chevron':'homePlate',x+j*(bw-.18+.04),mid-.27,bw,.54,{fill:ol?'FFFFFF':(j===2&&HASA?A:mix(P,'FFFFFF',j*.25)),line:ol?P:null,lw:.75,adj:.18,text:['一','二','三'][j],size:13,bold:1,color:ol?P:'FFFFFF',margin:[2,2,0,0],name:'區塊箭號'});break;}
-    case 7:{const t1=mid-.42-nh/2,t2=mid+.42-nh/2;node(x,mid-nh/2,nw,nh,'A');node(x+cw-nw,t1,nw,nh,'B1');node(x+cw-nw,t2,nw,nh,'B2');const jx=x+nw+(cw-2*nw)/2;
-     conn([[x+nw+.06,mid],[jx,mid]],{head:false,tail:false});conn([[jx,mid],[jx,t1+nh/2],[x+cw-nw-.06,t1+nh/2]],{tail:false});conn([[jx,mid],[jx,t2+nh/2],[x+cw-nw-.06,t2+nh/2]],{tail:false});break;}}});
-  note(X0,6.5,CW,'※ 連接線為獨立線條，移動圖形後需手動調整；建議先排好圖形再拉線');};
+    case 7:{const t1=mid-.42-nh/2,t2=mid+.42-nh/2;const a=node(x,mid-nh/2,nw,nh,'A'),b1=node(x+cw-nw,t1,nw,nh,'B1'),b2=node(x+cw-nw,t2,nw,nh,'B2');const jx=x+nw+(cw-2*nw)/2;
+     link(a,3,b1,1,{mid:jx});link(a,3,b2,1,{mid:jx});break;}}});
+  note(X0,6.5,CW,'※ 直線、折線、點狀線、分支在 pptx 中是「黏著連接線」：移動圖形，線會跟著走（曲線為一般線條）');};
 
  SL.flow=()=>{title('流程圖符號','開始／結束、處理、判斷、輸入輸出、文件、資料庫');
   const items=[['term','開始','開始／結束','Terminator',1.5,.62],['proc','處理','處理','Process',1.6,.72],['dec','判斷','判斷','Decision',1.5,1.0],['io','輸入','輸入／輸出','Input / Output',1.7,.72],['doc','文件','文件','Document',1.5,.85],['db','資料庫','資料庫','Database',1.1,1.0]];
@@ -703,13 +785,13 @@ function buildModel(params,opt){
    txt(cx-cw/2,3.42,cw,.52,[{t:zh,s:12,b:1,c:G.ink,br:1},{t:en,s:9,c:G.mute,f:nf}],{align:'center'});});
   section(X0,4.12,CW,'基本流程範例');
   const cy=5.15;const ws=[1.25,1.8,1.7,1.6,1.6,1.25];const g=(CW-ws.reduce((a,b)=>a+b))/5;const xs=[];let xx=X0;ws.forEach(w=>{xs.push(xx);xx+=w+g;});
-  sym('term',xs[0],cy-.3,ws[0],.6,'開始',{strong:1});sym('io',xs[1],cy-.34,ws[1],.68,'輸入需求');
-  sym('dec',xs[2],cy-.5,ws[2],1.0,'是否可行？',{alt:1,size:LS(13)});sym('proc',xs[3],cy-.34,ws[3],.68,'執行處理');
-  sym('doc',xs[4],cy-.4,ws[4],.8,'產出報告');sym('term',xs[5],cy-.3,ws[5],.6,'結束',{strong:1});
-  const ga=.07;for(let i=0;i<5;i++){const x1=xs[i]+ws[i]+ga-(i===1?.12:0),x2=xs[i+1]-ga+(i===0?.1:0);conn([[x1,cy],[x2,cy]],{tail:false});}
+  const S=[sym('term',xs[0],cy-.3,ws[0],.6,'開始',{strong:1}),sym('io',xs[1],cy-.34,ws[1],.68,'輸入需求'),
+  sym('dec',xs[2],cy-.5,ws[2],1.0,'是否可行？',{alt:1,size:LS(13)}),sym('proc',xs[3],cy-.34,ws[3],.68,'執行處理'),
+  sym('doc',xs[4],cy-.4,ws[4],.8,'產出報告'),sym('term',xs[5],cy-.3,ws[5],.6,'結束',{strong:1})];
+  link(S[0],3,S[1],5);link(S[1],2,S[2],1);link(S[2],3,S[3],1);link(S[3],3,S[4],1);link(S[4],3,S[5],1);
   txt(xs[2]+ws[2]+.02,cy-.42,g,.3,'是',{size:11,bold:1,color:G.t2,align:'center'});
-  const dbx=xs[3]+ws[3]/2;sym('db',dbx-.5,5.92,1.0,.82,'資料庫',{size:LS(12)});conn([[dbx,cy+.4],[dbx,5.86]],{tail:'triangle',dash:'sysDash'});
-  const dx=xs[2]+ws[2]/2,ix=xs[1]+ws[1]/2;conn([[dx,cy+.56],[dx,6.4],[ix,6.4],[ix,cy+.4]],{tail:false});
+  const dbx=xs[3]+ws[3]/2;const db=sym('db',dbx-.5,5.92,1.0,.82,'資料庫',{size:LS(12)});link(S[3],2,db,0,{style:{tail:'triangle',dash:'sysDash'}});
+  const dx=xs[2]+ws[2]/2,ix=xs[1]+ws[1]/2;link(S[2],2,S[1],4,{via:[[dx,6.4],[ix,6.4]]});
   txt(dx+.1,cy+.62,.5,.3,'否',{size:11,bold:1,color:G.t2});};
 
  SL.struct=()=>{title('結構元件','樹狀分支、十字矩陣與半透明寬欄條');
@@ -793,7 +875,24 @@ function buildModel(params,opt){
   txt(11.35,1.92,1.4,.3,'情境限定',{size:10,bold:1,color:G.t2,align:'right'});txt(11.35,6.55,1.4,.3,'跨域通用',{size:10,bold:1,color:A,align:'right'});};
 
  SLIDES.forEach(([k,zh],i)=>{if(opt.only&&!opt.only.includes(k))return;sno=i+1;cur={key:k,title:zh,no:i+1,items:[],groups:[]};slides.push(cur);canvas();SL[k]();footer();});
- return{slides,warns,params:st};}
+ const k=SIZE_K[st.size]||1;if(k!==1)slides.forEach(sl=>scaleSlide(sl,k));
+ return{slides,warns,params:st,W:W*k,H:H*k,k};}
+/* ---------- S／M／L 元件尺寸（v5.2）：整頁幾何、字級、線寬、陰影一起等比縮放，投影片也同比例（仍是 16:9）。
+   所以每一頁都放得下；把元件複製到標準 13.33×7.5 吋簡報時，實際大小就是 ×0.8／×1／×1.25。 ---------- */
+const SIZE_K={S:.8,M:1,L:1.25};
+function scaleSlide(sl,k){const r2=v=>Math.round(v*k*2)/2,f=v=>v*k,r100=v=>Math.round(v*k*100)/100;
+ const runs=rs=>rs&&rs.forEach(r=>{r.o.size=r2(r.o.size);if(r.o.cs)r.o.cs=r100(r.o.cs);});
+ sl.items.forEach(it=>{
+  if(it.t==='ln'){it.x1=f(it.x1);it.y1=f(it.y1);it.x2=f(it.x2);it.y2=f(it.y2);it.w=r100(it.w);return;}
+  it.x=f(it.x);it.y=f(it.y);it.w=f(it.w);it.h=f(it.h);
+  if(it.t==='tbl'){it.colW=it.colW.map(f);it.rowH=it.rowH.map(f);
+   it.cells.forEach(r=>r.forEach(c=>{runs(c.runs);c.size=r2(c.size);c.mL=Math.max(1,r100(c.mL));c.mT=Math.max(1,r100(c.mT));   /* PptxGenJS：表格 margin[0]<1 會被當成英吋 → 下限 1pt */['bT','bB'].forEach(b=>{if(c[b])c[b]=Object.assign({},c[b],{w:r100(c[b].w)});});}));return;}
+  if(it.adj)it.adj=f(it.adj);if(it.lw)it.lw=r100(it.lw);
+  if(it.points)it.points.forEach(p=>{if(p.close)return;p.x=f(p.x);p.y=f(p.y);const c=p.curve;if(c){['x1','y1','x2','y2','hR','wR'].forEach(q=>{if(c[q]!=null)c[q]=f(c[q]);});}});
+  if(it.sh)it.sh=Object.assign({},it.sh,{blur:r100(it.sh.blur),dist:r100(it.sh.dist)});
+  if(it.runs){runs(it.runs);it.tx.size=r2(it.tx.size);it.tx.margin=Array.isArray(it.tx.margin)?it.tx.margin.map(r100):r100(it.tx.margin);if(it.tx.cs)it.tx.cs=r100(it.tx.cs);}});
+ (sl.groups||[]).forEach(g=>{g.x=f(g.x);g.y=f(g.y);g.w=f(g.w);g.h=f(g.h);});
+ sl.W=W*k;sl.H=H*k;sl.k=k;}
 
 /* ================= PptxGenJS 匯出 ================= */
 function lum(h){const v=[0,2,4].map(i=>parseInt(h.substr(i,2),16)/255);return .2126*v[0]+.7152*v[1]+.0722*v[2];}
@@ -803,42 +902,80 @@ function bboxOf(items){let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
  return{x:x0,y:y0,w:Math.max(x1-x0,.01),h:Math.max(y1-y0,.01)};}
 function ahType(t,sz){return t?(sz&&sz!=='med'?`${t}" w="${sz}" len="${sz}`:t):undefined;}
 function toPptx(pptx,model){
- pptx.layout='LAYOUT_WIDE';pptx.title='精緻圖解元件庫 · '+(model.params.zh||'自訂風格');pptx.author='PPT Style Studio';
+ if(model.W&&Math.abs(model.W-W)>.001){pptx.defineLayout({name:'KIT_'+model.k,width:model.W,height:model.H});pptx.layout='KIT_'+model.k;}else pptx.layout='LAYOUT_WIDE';pptx.title='精緻圖解元件庫 · '+(model.params.zh||'自訂風格');pptx.author='PPT Style Studio';
  model.slides.forEach(sl=>{const s=pptx.addSlide();s.background={color:'FFFFFF'};
   sl.items.forEach(it=>{
+   if(it.t==='tbl'){const bd=b=>b?{type:'solid',pt:b.w,color:b.c}:{type:'none'};
+    const rows=it.cells.map(r=>r.map(c=>({text:c.runs.map(rn=>({text:rn.t,options:Object.assign({fontSize:rn.o.size,fontFace:rn.o.font,bold:rn.o.bold,color:rn.o.color},rn.o.br?{breakLine:true}:{})})),
+     options:Object.assign({align:c.align,valign:'middle',margin:[c.mT,c.mL,c.mT,c.mL],border:[bd(c.bT),{type:'none'},bd(c.bB),{type:'none'}]},c.fill?{fill:{color:c.fill}}:{})})));
+    s.addTable(rows,{x:it.x,y:it.y,w:it.w,colW:it.colW,rowH:it.rowH,autoPage:false});return;}
    if(it.t==='ln'){const L={color:it.color,width:it.w,dashType:it.dash};if(it.head)L.endArrowType=ahType(it.head,it.hs);if(it.tail)L.beginArrowType=ahType(it.tail,it.hs);
     s.addShape('line',{x:Math.min(it.x1,it.x2),y:Math.min(it.y1,it.y2),w:Math.abs(it.x2-it.x1),h:Math.abs(it.y2-it.y1),flipH:it.x2<it.x1,flipV:it.y2<it.y1,line:L,objectName:'線條'});return;}
    const p={x:it.x,y:it.y,w:it.w,h:it.h};if(it.name)p.objectName=it.name;
-   if(it.kind){p.shape=it.kind;p.fill=it.fill?{color:it.fill,transparency:it.ft||0}:{type:'none'};
+   if(it.kind){p.shape=it.doc?'flowChartDocument':it.kind;p.fill=it.fill?{color:it.fill,transparency:it.ft||0}:{type:'none'};
     p.line=it.line?{color:it.line,width:it.lw,dashType:it.dash}:{type:'none'};if(it.line&&it.head)p.line.endArrowType=ahType(it.head,it.hs);if(it.line&&it.tail)p.line.beginArrowType=ahType(it.tail,it.hs);}
-   if(it.adj)p.rectRadius=it.adj;if(it.points)p.points=it.points;
+   if(it.adj)p.rectRadius=it.adj;if(it.points&&!it.doc)p.points=it.points;
    if(it.sh)p.shadow={type:'outer',blur:it.sh.blur,offset:it.sh.dist,angle:it.sh.dir,color:it.sh.color,opacity:it.sh.alpha};
    let runs='';
    if(it.runs){const T=it.tx;runs=it.runs.map(r=>{const o={fontSize:r.o.size,fontFace:r.o.font,bold:r.o.bold,color:r.o.color};if(r.o.cs!=null)o.charSpacing=r.o.cs;if(r.o.br)o.breakLine=true;return{text:r.t,options:o};});
-    Object.assign(p,{align:T.align,valign:T.valign,margin:T.margin,fontFace:T.font,fontSize:T.size,color:T.color,bold:T.bold});if(T.lsp&&T.lsp!==1)p.lineSpacingMultiple=T.lsp;}
+    Object.assign(p,{align:T.align,valign:T.valign,margin:it.doc&&Array.isArray(T.margin)?[T.margin[0],T.margin[1],0,T.margin[3]]:T.margin,fontFace:T.font,fontSize:T.size,color:T.color,bold:T.bold});if(T.lsp&&T.lsp!==1)p.lineSpacingMultiple=T.lsp;}
    s.addText(runs,p);});});
  return pptx;}
 /* 陰影修補：PptxGenJS 固定寫 algn="bl"、無 sx/sy；這裡依 model 逐一改寫成正確的 outerShdw（光暈置中、放大、柔和） */
 function effectXml(sh){const e=v=>Math.round(v*12700);const sc=Math.round((sh.scale||1)*100000);
  return `<a:effectLst><a:outerShdw blurRad="${e(sh.blur)}" dist="${e(sh.dist)}" dir="${Math.round(sh.dir*60000)}" sx="${sc}" sy="${sc}" algn="ctr" rotWithShape="0"><a:srgbClr val="${sh.color}"><a:alpha val="${Math.round(sh.alpha*100000)}"/></a:srgbClr></a:outerShdw></a:effectLst>`;}
+/* ---------- 黏著連接線：model 折線 → OOXML 連接線幾何（straightConnector1／bentConnector2／bentConnector3＋rot／flip） ---------- */
+function connGeom(pts){const n=pts.length;if(n<2||n>4)return null;const eps=.003;
+ const S=pts[0],E=pts[n-1];const C=[(S[0]+E[0])/2,(S[1]+E[1])/2];
+ const R=(v,deg)=>{const t=deg*Math.PI/180,c=Math.round(Math.cos(t)),s=Math.round(Math.sin(t));return[v[0]*c-v[1]*s,v[0]*s+v[1]*c];};
+ for(const rot of n===2?[0]:[0,90,180,270]){
+  const d=R([E[0]-S[0],E[1]-S[1]],-rot);const w=Math.abs(d[0]),h=Math.abs(d[1]);const fH=d[0]<-1e-9,fV=d[1]<-1e-9;
+  const toW=(px,py)=>{const qx=fH?w-px:px,qy=fV?h-py:py;const r=R([qx-w/2,qy-h/2],rot);return[C[0]+r[0],C[1]+r[1]];};
+  const near=(a,b)=>Math.abs(a[0]-b[0])<eps&&Math.abs(a[1]-b[1])<eps;
+  if(n===2)return{prst:'straightConnector1',rot:0,fH,fV,w,h,C};
+  if(n===3){if(near(toW(w,0),pts[1]))return{prst:'bentConnector2',rot,fH,fV,w,h,C};continue;}
+  if(w<1e-6)continue;
+  const rel=R([pts[1][0]-C[0],pts[1][1]-C[1]],-rot);const qx=rel[0]+w/2;const px=fH?w-qx:qx;const a=px/w;
+  if(near(toW(a*w,0),pts[1])&&near(toW(a*w,h),pts[2]))return{prst:'bentConnector3',rot,fH,fV,w,h,C,adj:Math.round(a*100000)};}
+ return null;}
+function cxnXml(blk,it,cxnId){const ofs=it.t==='ln'?null:[it.x,it.y];
+ let pts=it.t==='ln'?[[it.x1,it.y1],[it.x2,it.y2]]:it.points.filter(p=>!p.close&&!p.curve).map(p=>[p.x+ofs[0],p.y+ofs[1]]);
+ if(it.t!=='ln'&&it.points.some(p=>p.curve))return null;
+ let g=connGeom(pts);
+ if(!g&&pts.length===4){const L=pts[3],Q=pts[2];const dx=Math.sign(L[0]-Q[0]),dy=Math.sign(L[1]-Q[1]);   // U 形且起訖同高：終點沿最後一段縮 0.006"
+  const p2=pts.slice();p2[3]=[L[0]-dx*.006,L[1]-dy*.006];g=connGeom(p2);}
+ if(!g)return null;
+ const E=v=>Math.round(v*914400);const lnM=blk.match(/<a:ln\b[^>]*\/>|<a:ln\b[^>]*>[\s\S]*?<\/a:ln>/);if(!lnM)return null;
+ let nm=(blk.match(/<p:cNvPr id="\d+" name="([^"]*)"/)||[])[1]||'連接線';if(nm==='線條')nm='連接線';
+ const c=it.cx||{};const st=c.a?`<a:stCxn id="${c.a[0]+2}" idx="${c.a[1]}"/>`:'',en=c.b?`<a:endCxn id="${c.b[0]+2}" idx="${c.b[1]}"/>`:'';
+ const xf=`<a:xfrm${g.rot?` rot="${g.rot*60000}"`:''}${g.fH?' flipH="1"':''}${g.fV?' flipV="1"':''}><a:off x="${E(g.C[0]-g.w/2)}" y="${E(g.C[1]-g.h/2)}"/><a:ext cx="${E(g.w)}" cy="${E(g.h)}"/></a:xfrm>`;
+ const av=g.prst==='bentConnector3'?`<a:avLst><a:gd name="adj1" fmla="val ${g.adj}"/></a:avLst>`:'<a:avLst/>';
+ return `<p:cxnSp><p:nvCxnSpPr><p:cNvPr id="${cxnId}" name="${nm}"/><p:cNvCxnSpPr>${st}${en}</p:cNvCxnSpPr><p:nvPr/></p:nvCxnSpPr><p:spPr>${xf}<a:prstGeom prst="${g.prst}">${av}</a:prstGeom>${lnM[0]}</p:spPr></p:cxnSp>`;}
+function connectXml(x,slide,stat){const items=slide.items;
+ return x.replace(/<p:sp>[\s\S]*?<\/p:sp>/g,blk=>{const m=blk.match(/<p:cNvPr id="(\d+)"/);if(!m)return blk;const it=items[+m[1]-2];if(!it)return blk;
+  if(!it.cx)return blk;const y=cxnXml(blk,it,+m[1]);if(!y){stat.fail++;return blk;}stat.ok++;if(it.cx.a&&it.cx.b)stat.both++;else stat.one++;return y;});}
 /* 群組修補：PptxGenJS 不支援群組；把同一元件的連續 <p:sp> 包進 <p:grpSp>（子座標＝原座標，可直接複製整組） */
 function groupXml(x,slide){const G=(slide.groups||[]).filter(g=>g.to>g.from);if(!G.length)return x;
- const E=v=>Math.round(v*914400);const blocks=[];const re=/<p:sp>[\s\S]*?<\/p:sp>/g;let m;
- while((m=re.exec(x))){const id=(m[0].match(/<p:cNvPr id="(\d+)"/)||[])[1];blocks.push({id:+id,s:m.index,e:m.index+m[0].length});}
+ const E=v=>Math.round(v*914400);const blocks=[];const re=/<p:(sp|cxnSp|graphicFrame)>[\s\S]*?<\/p:\1>/g;let m;
+ while((m=re.exec(x))){const id=(m[0].match(/<p:cNvPr id="(\d+)"/)||[])[1];blocks.push({id:+id,s:m.index,e:m.index+m[0].length,tbl:m[1]==='graphicFrame'});}
  const byId={};blocks.forEach((b,i)=>byId[b.id]=i);
  const jobs=[];G.forEach((g,gi)=>{const i0=byId[g.from+2],i1=byId[g.to+2];if(i0==null||i1==null||i1-i0!==g.to-g.from)return;
-  for(let k=i0;k<=i1;k++)if(blocks[k].id!==g.from+2+(k-i0))return;jobs.push({g,gi,s:blocks[i0].s,e:blocks[i1].e});});
+  for(let k=i0;k<=i1;k++)if(blocks[k].id!==g.from+2+(k-i0)||blocks[k].tbl)return;jobs.push({g,gi,s:blocks[i0].s,e:blocks[i1].e});});
  jobs.sort((a,b)=>b.s-a.s).forEach(j=>{const g=j.g;const nm=String(g.name||'元件').replace(/[<>&"]/g,'');
   const o=`<a:off x="${E(g.x)}" y="${E(g.y)}"/><a:ext cx="${E(g.w)}" cy="${E(g.h)}"/><a:chOff x="${E(g.x)}" y="${E(g.y)}"/><a:chExt cx="${E(g.w)}" cy="${E(g.h)}"/>`;
   x=x.slice(0,j.s)+`<p:grpSp><p:nvGrpSpPr><p:cNvPr id="${5000+j.gi}" name="${nm}"/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm>${o}</a:xfrm></p:grpSpPr>`+x.slice(j.s,j.e)+'</p:grpSp>'+x.slice(j.e);});
  return x;}
-async function patchZip(zip,model){let n=0;
+async function patchZip(zip,model){let n=0;const cst={ok:0,both:0,one:0,fail:0};
  for(let i=0;i<model.slides.length;i++){const f='ppt/slides/slide'+(i+1)+'.xml';const file=zip.file(f);if(!file)continue;const items=model.slides[i].items;
   let x=await file.async('string');
+  {const tIdx=items.map((it,k)=>it.t==='tbl'?k:-1).filter(k=>k>=0);let ti=0;   // PptxGenJS 表格 id 與其他圖形重複 → 改成 index+2
+   x=x.replace(/<p:graphicFrame><p:nvGraphicFramePr><p:cNvPr id="\d+"/g,m0=>tIdx[ti]!=null?`<p:graphicFrame><p:nvGraphicFramePr><p:cNvPr id="${tIdx[ti++]+2}"`:m0);}
   x=x.replace(/<p:sp>[\s\S]*?<\/p:sp>/g,blk=>{const m=blk.match(/<p:cNvPr id="(\d+)"/);if(!m)return blk;const it=items[+m[1]-2];if(!it||!it.sh)return blk;
    n++;return blk.replace(/<a:effectLst>[\s\S]*?<\/a:effectLst>/,effectXml(it.sh));});
+  x=connectXml(x,model.slides[i],cst);
   x=groupXml(x,model.slides[i]);
   zip.file(f,x);}
+ model.connectors=cst;
  await fixOoxml(zip);
  return n;}
 /* OOXML 結構修正（PptxGenJS 3.12 已知缺陷；不修的話嚴格驗證不過，部分 PowerPoint 版本可能拒開）：
@@ -864,7 +1001,8 @@ async function exportPptx(env,params,opt){opt=opt||{};const model=opt.model||bui
 /* 單一元件：取出某頁某群組的圖形，置中到一張新投影片 */
 function elementModel(params,key,gi){const m=buildModel(params,{only:[key]});const sl=m.slides[0];const g=sl.groups[gi];if(!g)throw new Error('找不到元件 '+gi);
  const dx=(W-g.w)/2-g.x,dy=(H-g.h)/2-g.y;
- const items=clone(sl.items.slice(g.from,g.to+1)).map(it=>{if(it.t==='ln'){it.x1+=dx;it.x2+=dx;it.y1+=dy;it.y2+=dy;}else{it.x+=dx;it.y+=dy;}return it;});
+ const n=g.to-g.from+1;const items=clone(sl.items.slice(g.from,g.to+1)).map(it=>{if(it.t==='ln'){it.x1+=dx;it.x2+=dx;it.y1+=dy;it.y2+=dy;}else{it.x+=dx;it.y+=dy;}
+  if(it.cx){['a','b'].forEach(k=>{if(!it.cx[k])return;const j=it.cx[k][0]-g.from;if(j<0||j>=n)delete it.cx[k];else it.cx[k]=[j,it.cx[k][1]];});}return it;});
  return{slides:[{key:key+'-'+gi,title:g.name,no:1,items,groups:[Object.assign({},g,{from:0,to:items.length-1,x:g.x+dx,y:g.y+dy})]}],warns:[],params:m.params,element:g};}
 async function exportElement(env,params,key,gi,opt){const model=elementModel(params,key,gi);return exportPptx(env,params,Object.assign({},opt||{},{model}));}
 
@@ -931,6 +1069,15 @@ function headShape(tx,ty,fx,fy,type,sz,color,w){const f={sm:2,med:3,lg:5}[sz]||3
   case 'arrow':return `<polyline points="${P([[1,1],[9,5],[1,9]])}" fill="none" stroke="#${color}" stroke-width="${(1.6*k).toFixed(2)}"/>`;
   case 'oval':{const c=T(5,5);return `<circle cx="${c[0]}" cy="${c[1]}" r="${(4.2*k).toFixed(2)}" fill="#${color}"/>`;}
   default:return '';}}
+/* 表格 → 預覽用的儲存格矩形＋框線（pptx 端是原生 <a:tbl>） */
+function tblItems(it){const out=[],lines=[];let yy=it.y;
+ it.cells.forEach((r,ri)=>{let xx=it.x;const rh=it.rowH[ri];
+  r.forEach((c,ci)=>{const cw=it.colW[ci];
+   out.push({t:'sp',kind:'rect',x:xx,y:yy,w:cw,h:rh,fill:c.fill,line:null,lw:0,runs:c.runs,tx:{align:c.align,valign:'middle',margin:[c.mL,c.mL,c.mT,c.mT],lsp:1,size:c.size,font:F0(c),color:c.color,bold:c.bold}});
+   if(c.bT)lines.push({t:'ln',x1:xx,y1:yy,x2:xx+cw,y2:yy,color:c.bT.c,w:c.bT.w,dash:'solid'});
+   if(c.bB)lines.push({t:'ln',x1:xx,y1:yy+rh,x2:xx+cw,y2:yy+rh,color:c.bB.c,w:c.bB.w,dash:'solid'});xx+=cw;});yy+=rh;});
+ return out.concat(lines);}
+const F0=c=>(c.runs[0]&&c.runs[0].o.font)||'Microsoft JhengHei';
 function toSvg(slide,opt){opt=opt||{};const id=(opt.id||'s')+'_';const defs={},parts=[];let fi=0,mi=0;const flat=!!opt.flat;
  const marker=(type,sz,color)=>{const k='m'+type+sz+color;if(defs[k])return defs[k].id;const mid=id+'m'+(mi++);const f={sm:2,med:3,lg:5}[sz]||3;
   const shp={triangle:`<path d="M0,0L10,5L0,10Z" fill="#${color}"/>`,arrow:`<path d="M1,1L9,5L1,9" fill="none" stroke="#${color}" stroke-width="1.6"/>`,stealth:`<path d="M0,0L10,5L0,10L3,5Z" fill="#${color}"/>`,oval:`<circle cx="5" cy="5" r="4.2" fill="#${color}"/>`,diamond:`<path d="M5,0L10,5L5,10L0,5Z" fill="#${color}"/>`}[type]||'';
@@ -939,11 +1086,11 @@ function toSvg(slide,opt){opt=opt||{};const id=(opt.id||'s')+'_';const defs={},p
   const dx=sh.dist*Math.cos(sh.dir*Math.PI/180),dy=sh.dist*Math.sin(sh.dir*Math.PI/180);
   defs[k]={id:fid,xml:`<filter id="${fid}" x="-60%" y="-60%" width="220%" height="220%" color-interpolation-filters="sRGB">${dil>.05?`<feMorphology in="SourceAlpha" operator="dilate" radius="${dil.toFixed(2)}" result="d"/>`:''}<feGaussianBlur in="${dil>.05?'d':'SourceAlpha'}" stdDeviation="${(sh.blur/2).toFixed(2)}"/><feOffset dx="${dx.toFixed(2)}" dy="${dy.toFixed(2)}" result="o"/><feFlood flood-color="#${sh.color}" flood-opacity="${sh.alpha}"/><feComposite in2="o" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>`};return fid;};
  const mk=(head,tail,hs,c)=>flat?'':`${head?` marker-end="url(#${marker(head,hs,c)})"`:''}${tail?` marker-start="url(#${marker(tail,hs,c)})"`:''}`;
- slide.items.forEach((it,idx)=>{const body=[];
+ function one(it){const body=[];
   if(it.t==='ln'){const x1=it.x1*PT,y1=it.y1*PT,x2=it.x2*PT,y2=it.y2*PT;
    body.push(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#${it.color}" stroke-width="${it.w}" fill="none"${it.dash&&it.dash!=='solid'?` stroke-dasharray="${dashArr(it.dash,it.w)}"`:''}${mk(it.head,it.tail,it.hs,it.color)}/>`);
    if(flat){if(it.head)body.push(headShape(x2,y2,x1,y1,it.head,it.hs,it.color,it.w));if(it.tail)body.push(headShape(x1,y1,x2,y2,it.tail,it.hs,it.color,it.w));}
-   parts[idx]=body.join('');return;}
+   return body.join('');}
   if(it.kind){const d=svgShapePath(it);const f=it.sh&&!flat?` filter="url(#${filt(it.sh,Math.min(it.w,it.h)*PT)})"`:'';
    const fill=it.fill?`fill="#${it.fill}"${it.ft?` fill-opacity="${(1-it.ft/100).toFixed(3)}"`:''}`:'fill="none"';
    const stroke=it.line?` stroke="#${it.line}" stroke-width="${it.lw}"${it.dash&&it.dash!=='solid'?` stroke-dasharray="${dashArr(it.dash,it.lw)}"`:''}${mk(it.head,it.tail,it.hs,it.line)}`:'';
@@ -954,14 +1101,15 @@ function toSvg(slide,opt){opt=opt||{};const id=(opt.id||'s')+'_';const defs={},p
    if(it.kind==='can'){const x=it.x*PT,y=it.y*PT,w=it.w*PT,e=(it.adj||0)*PT/2;body.push(`<ellipse cx="${x+w/2}" cy="${y+e}" rx="${w/2}" ry="${e}" fill="${it.fill?'#'+mix(it.fill,'FFFFFF',.25):'none'}"${it.line?` stroke="#${it.line}" stroke-width="${it.lw}"`:''}/>`);}}
   if(it.runs){layoutText(it).forEach(l=>{if(!l.runs.length)return;
    body.push(`<text x="${l.x.toFixed(2)}" y="${l.base.toFixed(2)}" xml:space="preserve">${l.runs.map(r=>`<tspan font-family="${esc(flat?(r.o.font+', '+fstack(r.o.font)).replace(/'/g,''):fstack(r.o.font))}" font-size="${r.o.size}" font-weight="${fweight(r.o.font,r.o.bold)}" fill="#${r.o.color}"${r.o.cs?` letter-spacing="${r.o.cs}"`:''}>${esc(r.t)}</tspan>`).join('')}</text>`);});}
-  parts[idx]=body.join('');});
+  return body.join('');}
+ slide.items.forEach((it,idx)=>{parts[idx]=it.t==='tbl'?tblItems(it).map(one).join(''):one(it);});
  /* 互動模式：每個群組包成 <g class="el">，最上層加一個透明命中框 */
  let out=parts;
  if(opt.interactive&&slide.groups&&slide.groups.length){out=parts.slice();const pad=4;
   slide.groups.forEach((g,gi)=>{const x=g.x*PT-pad,y=g.y*PT-pad,w=g.w*PT+2*pad,h=g.h*PT+2*pad;
    out[g.from]=`<g class="el" data-g="${gi}" data-name="${esc(g.name)}">`+out[g.from];
    out[g.to]=out[g.to]+`<rect class="hit" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="4"/></g>`;});}
- const vb=opt.viewBox||`0 0 ${W*PT} ${H*PT}`;
+ const vb=opt.viewBox||`0 0 ${(slide.W||W)*PT} ${(slide.H||H)*PT}`;
  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" ${opt.attrs||''}><defs>${Object.values(defs).map(d=>d.xml).join('')}</defs>${opt.bg===false?'':'<rect width="100%" height="100%" fill="#FFFFFF"/>'}${out.join('')}</svg>`;}
 /* 單一元件 SVG：只取群組內的圖形，裁切到外框（含留白）；flat=剪貼簿相容版（無濾鏡、箭頭實體化、透明背景） */
 function elementSvg(slide,gi,opt){opt=opt||{};const g=slide.groups[gi];const pad=(opt.pad!=null?opt.pad:6);
@@ -1013,6 +1161,9 @@ const GREYS=[['中性灰',{ink:'3A3A3A',t2:'595959',mute:'8C8C8C',line:'BFBFBF',
  ['深黑',{ink:'222222',t2:'444444',mute:'7F7F7F',line:'B3B3B3',l2:'D4D4D4',fill:'F0F0F0'}]];
 const CANVAS=['F5F5F5','F4F4F1','F2F3F5','F7F7F7','F3F5F4'];
 const G=[
+ {t:'元件尺寸 S／M／L',open:true,rows:[
+  {k:'size',l:'尺寸',type:'seg',opts:[['S','S 小 ×0.8'],['M','M 標準'],['L','L 大 ×1.25']]},
+  {hintText:'圖形、字級、線寬、陰影一起等比縮放；投影片同比例（仍是 16:9），每頁都放得下。複製或「下載此元件」貼進一般 13.33 吋簡報時，元件就是 0.8／1／1.25 倍大。'}]},
  {t:'色彩',open:true,rows:[
   {html:'palettes'},
   {k:'P',l:'主色',type:'color'},{k:'PD',l:'深主色',type:'color'},{k:'PT',l:'淺主色',type:'color'},
@@ -1116,7 +1267,7 @@ function buildGroups(){
   else S.p[k]=t.value;
   syncPanel(t);schedule();});
  P.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
-  if(b.dataset.v!=null){const k=b.parentNode.dataset.seg;const opt=G.flatMap(g=>g.rows).find(r=>r.k===k).opts.find(o=>String(o[0])===b.dataset.v);S.p[k]=opt[0];}
+  if(b.dataset.v!=null){const k=b.parentNode.dataset.seg;const opt=G.flatMap(g=>g.rows).find(r=>r.k===k).opts.find(o=>String(o[0])===b.dataset.v);S.p[k]=opt[0];if(k==='size'){const K={S:.8,M:1,L:1.25}[opt[0]];toast(`元件尺寸 ${opt[0]}：圖形、字級、線寬、陰影 ×${K}；投影片 ${(13.333*K).toFixed(2)}×${(7.5*K).toFixed(2)} 吋（16:9）。預覽縮放到視窗所以看起來一樣，貼進標準 13.33 吋簡報時就是 ×${K} 大。`,4200);}}
   else if(b.dataset.grey!=null){Object.assign(S.p,GREYS[+b.dataset.grey][1]);}
   else return;syncPanel();schedule();});
  P.addEventListener('click',e=>{const pal=e.target.closest('.pal');if(!pal)return;const p=PALETTES[+pal.dataset.pal];
@@ -1154,14 +1305,14 @@ function render(){
  const L=D.langOf(S.p);
  $('#chips').innerHTML=[['卡片',L.card],['標籤',L.tag],['編號',L.badge],['分隔',L.sep],['連接線',L.conn]].map(c=>`<span><b>${c[0]}</b>${c[1]||''}</span>`).join('');
  const w=model.warns.length;
- $('#status').innerHTML=`<span>預覽與匯出使用同一份幾何模型</span><span>・投影片 16:9 白底</span><span>・陰影：${S.p.sh?`卡片 ${S.p.shB}pt／大圓光暈 ${S.p.haloB}pt`:'關閉（強調卡除外）'}</span><span class="${w?'bad':'ok'}" title="${w?model.warns.join('\n').replace(/"/g,'&quot;'):''}">${w?`⚠ ${w} 則排版警告（文字可能換行或溢出，滑鼠移上查看）`:'✓ 無文字溢出警告'}</span>`;
+ const K=model.k||1;$('#status').innerHTML=`<span>預覽與匯出使用同一份幾何模型</span><span>・投影片 16:9 白底${K!==1?`（${(model.W).toFixed(2)}×${(model.H).toFixed(2)} 吋）`:''}</span><span>・元件尺寸 <b>${S.p.size||'M'}</b>${K!==1?' ×'+K:''}</span><span>・陰影：${S.p.sh?`卡片 ${S.p.shB}pt／大圓光暈 ${S.p.haloB}pt`:'關閉（強調卡除外）'}</span><span class="${w?'bad':'ok'}" title="${w?model.warns.join('\n').replace(/"/g,'&quot;'):''}">${w?`⚠ ${w} 則排版警告（文字可能換行或溢出，滑鼠移上查看）`:'✓ 無文字溢出警告'}</span>`;
  $('#dot').style.background='#'+S.p.P;
  window.__studio=Object.assign(window.__studio||{},{renders:((window.__studio||{}).renders||0)+1,warns:w});
 }
 function showSlide(){
  const sl=model.slides[S.slide];
  $('#big').innerHTML=D.toSvg(sl,{id:'big',interactive:true})+'<button class="nav l" data-d="-1">‹</button><button class="nav r" data-d="1">›</button>'+
-  '<div class="ebar" id="ebar"><b id="eName"></b><button class="pri" data-a="copy" title="再複製一次到剪貼簿">複製</button><button data-a="pptx" title="只含這個元件的 1 頁 .pptx，原生可編輯圖形">下載此元件 .pptx</button><button data-a="svg">SVG</button><button data-a="png">PNG</button><button data-a="x" title="關閉">✕</button></div>';
+  '<div class="ebar" id="ebar"><b id="eName"></b><small id="eDim" style="color:#8C8C8C;margin-right:4px" title="元件實際尺寸（依 S／M／L）"></small><button class="pri" data-a="copy" title="再複製一次到剪貼簿">複製</button><button data-a="pptx" title="只含這個元件的 1 頁 .pptx，原生可編輯圖形">下載此元件 .pptx</button><button data-a="svg">SVG</button><button data-a="png">PNG</button><button data-a="x" title="關閉">✕</button></div>';
  SEL=null;
  document.querySelectorAll('.th').forEach(t=>t.classList.toggle('on',+t.dataset.i===S.slide));
  const on=document.querySelector('.th.on');if(on&&on.scrollIntoView)on.scrollIntoView({block:'nearest',inline:'nearest'});
@@ -1181,7 +1332,7 @@ const escH=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 function clearSel(){SEL=null;document.querySelectorAll('#big .el.sel').forEach(x=>x.classList.remove('sel'));const b=$('#ebar');if(b)b.classList.remove('on');}
 function selectEl(gi){clearSel();const sl=model.slides[S.slide];const g=sl.groups[gi];if(!g)return;SEL={gi,key:sl.key,name:g.name};
  const el=document.querySelector(`#big .el[data-g="${gi}"]`);if(el)el.classList.add('sel');
- const bar=$('#ebar'),big=$('#big'),k=big.clientWidth/(D.W*72);$('#eName').textContent=g.name;bar.classList.add('on');
+ const bar=$('#ebar'),big=$('#big'),k=big.clientWidth/((model.W||D.W)*72);$('#eName').textContent=g.name;$('#eDim').textContent=`${(g.w*2.54).toFixed(1)}×${(g.h*2.54).toFixed(1)} cm`;bar.classList.add('on');
  let x=(g.x*72)*k,y=(g.y+g.h)*72*k+8;const bw=bar.offsetWidth,bh=bar.offsetHeight;
  if(y+bh>big.clientHeight-4)y=g.y*72*k-bh-8;x=Math.max(4,Math.min(x,big.clientWidth-bw-4));bar.style.left=x+'px';bar.style.top=Math.max(4,y)+'px';}
 function svgToPng(svg,wpt,hpt,scale){return new Promise((res,rej)=>{const img=new Image();const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));

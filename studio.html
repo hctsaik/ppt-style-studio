@@ -184,6 +184,9 @@ const GREYS=[['中性灰',{ink:'3A3A3A',t2:'595959',mute:'8C8C8C',line:'BFBFBF',
  ['深黑',{ink:'222222',t2:'444444',mute:'7F7F7F',line:'B3B3B3',l2:'D4D4D4',fill:'F0F0F0'}]];
 const CANVAS=['F5F5F5','F4F4F1','F2F3F5','F7F7F7','F3F5F4'];
 const G=[
+ {t:'元件尺寸 S／M／L',open:true,rows:[
+  {k:'size',l:'尺寸',type:'seg',opts:[['S','S 小 ×0.8'],['M','M 標準'],['L','L 大 ×1.25']]},
+  {hintText:'圖形、字級、線寬、陰影一起等比縮放；投影片同比例（仍是 16:9），每頁都放得下。複製或「下載此元件」貼進一般 13.33 吋簡報時，元件就是 0.8／1／1.25 倍大。'}]},
  {t:'色彩',open:true,rows:[
   {html:'palettes'},
   {k:'P',l:'主色',type:'color'},{k:'PD',l:'深主色',type:'color'},{k:'PT',l:'淺主色',type:'color'},
@@ -287,7 +290,7 @@ function buildGroups(){
   else S.p[k]=t.value;
   syncPanel(t);schedule();});
  P.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
-  if(b.dataset.v!=null){const k=b.parentNode.dataset.seg;const opt=G.flatMap(g=>g.rows).find(r=>r.k===k).opts.find(o=>String(o[0])===b.dataset.v);S.p[k]=opt[0];}
+  if(b.dataset.v!=null){const k=b.parentNode.dataset.seg;const opt=G.flatMap(g=>g.rows).find(r=>r.k===k).opts.find(o=>String(o[0])===b.dataset.v);S.p[k]=opt[0];if(k==='size'){const K={S:.8,M:1,L:1.25}[opt[0]];toast(`元件尺寸 ${opt[0]}：圖形、字級、線寬、陰影 ×${K}；投影片 ${(13.333*K).toFixed(2)}×${(7.5*K).toFixed(2)} 吋（16:9）。預覽縮放到視窗所以看起來一樣，貼進標準 13.33 吋簡報時就是 ×${K} 大。`,4200);}}
   else if(b.dataset.grey!=null){Object.assign(S.p,GREYS[+b.dataset.grey][1]);}
   else return;syncPanel();schedule();});
  P.addEventListener('click',e=>{const pal=e.target.closest('.pal');if(!pal)return;const p=PALETTES[+pal.dataset.pal];
@@ -325,14 +328,14 @@ function render(){
  const L=D.langOf(S.p);
  $('#chips').innerHTML=[['卡片',L.card],['標籤',L.tag],['編號',L.badge],['分隔',L.sep],['連接線',L.conn]].map(c=>`<span><b>${c[0]}</b>${c[1]||''}</span>`).join('');
  const w=model.warns.length;
- $('#status').innerHTML=`<span>預覽與匯出使用同一份幾何模型</span><span>・投影片 16:9 白底</span><span>・陰影：${S.p.sh?`卡片 ${S.p.shB}pt／大圓光暈 ${S.p.haloB}pt`:'關閉（強調卡除外）'}</span><span class="${w?'bad':'ok'}" title="${w?model.warns.join('\n').replace(/"/g,'&quot;'):''}">${w?`⚠ ${w} 則排版警告（文字可能換行或溢出，滑鼠移上查看）`:'✓ 無文字溢出警告'}</span>`;
+ const K=model.k||1;$('#status').innerHTML=`<span>預覽與匯出使用同一份幾何模型</span><span>・投影片 16:9 白底${K!==1?`（${(model.W).toFixed(2)}×${(model.H).toFixed(2)} 吋）`:''}</span><span>・元件尺寸 <b>${S.p.size||'M'}</b>${K!==1?' ×'+K:''}</span><span>・陰影：${S.p.sh?`卡片 ${S.p.shB}pt／大圓光暈 ${S.p.haloB}pt`:'關閉（強調卡除外）'}</span><span class="${w?'bad':'ok'}" title="${w?model.warns.join('\n').replace(/"/g,'&quot;'):''}">${w?`⚠ ${w} 則排版警告（文字可能換行或溢出，滑鼠移上查看）`:'✓ 無文字溢出警告'}</span>`;
  $('#dot').style.background='#'+S.p.P;
  window.__studio=Object.assign(window.__studio||{},{renders:((window.__studio||{}).renders||0)+1,warns:w});
 }
 function showSlide(){
  const sl=model.slides[S.slide];
  $('#big').innerHTML=D.toSvg(sl,{id:'big',interactive:true})+'<button class="nav l" data-d="-1">‹</button><button class="nav r" data-d="1">›</button>'+
-  '<div class="ebar" id="ebar"><b id="eName"></b><button class="pri" data-a="copy" title="再複製一次到剪貼簿">複製</button><button data-a="pptx" title="只含這個元件的 1 頁 .pptx，原生可編輯圖形">下載此元件 .pptx</button><button data-a="svg">SVG</button><button data-a="png">PNG</button><button data-a="x" title="關閉">✕</button></div>';
+  '<div class="ebar" id="ebar"><b id="eName"></b><small id="eDim" style="color:#8C8C8C;margin-right:4px" title="元件實際尺寸（依 S／M／L）"></small><button class="pri" data-a="copy" title="再複製一次到剪貼簿">複製</button><button data-a="pptx" title="只含這個元件的 1 頁 .pptx，原生可編輯圖形">下載此元件 .pptx</button><button data-a="svg">SVG</button><button data-a="png">PNG</button><button data-a="x" title="關閉">✕</button></div>';
  SEL=null;
  document.querySelectorAll('.th').forEach(t=>t.classList.toggle('on',+t.dataset.i===S.slide));
  const on=document.querySelector('.th.on');if(on&&on.scrollIntoView)on.scrollIntoView({block:'nearest',inline:'nearest'});
@@ -352,7 +355,7 @@ const escH=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 function clearSel(){SEL=null;document.querySelectorAll('#big .el.sel').forEach(x=>x.classList.remove('sel'));const b=$('#ebar');if(b)b.classList.remove('on');}
 function selectEl(gi){clearSel();const sl=model.slides[S.slide];const g=sl.groups[gi];if(!g)return;SEL={gi,key:sl.key,name:g.name};
  const el=document.querySelector(`#big .el[data-g="${gi}"]`);if(el)el.classList.add('sel');
- const bar=$('#ebar'),big=$('#big'),k=big.clientWidth/(D.W*72);$('#eName').textContent=g.name;bar.classList.add('on');
+ const bar=$('#ebar'),big=$('#big'),k=big.clientWidth/((model.W||D.W)*72);$('#eName').textContent=g.name;$('#eDim').textContent=`${(g.w*2.54).toFixed(1)}×${(g.h*2.54).toFixed(1)} cm`;bar.classList.add('on');
  let x=(g.x*72)*k,y=(g.y+g.h)*72*k+8;const bw=bar.offsetWidth,bh=bar.offsetHeight;
  if(y+bh>big.clientHeight-4)y=g.y*72*k-bh-8;x=Math.max(4,Math.min(x,big.clientWidth-bw-4));bar.style.left=x+'px';bar.style.top=Math.max(4,y)+'px';}
 function svgToPng(svg,wpt,hpt,scale){return new Promise((res,rej)=>{const img=new Image();const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));

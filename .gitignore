@@ -23,6 +23,12 @@ render/*
 !render/studio-investor-catalog.png
 !render/shadow-compare-navy.png
 !render/shadow-zoom-navy.png
+!render/patterns2-all-styles.png
+!render/patterns2-navy-lo.png
+!render/studio-patterns2.png
+!render/studio-pdca-selected.png
+!render/studio-size-L.png
+!render/size-compare-navy.png
 # 其他暫存
 *.pdf
 *.zip
