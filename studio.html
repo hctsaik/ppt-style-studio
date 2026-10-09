@@ -81,7 +81,30 @@ main{display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff
 .th.on div{border-color:var(--p);box-shadow:0 0 0 2px var(--p)}
 .th span{display:block;font-size:11px;color:var(--t2);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .th.on span{color:var(--p);font-weight:700}
-.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:#333;color:#fff;padding:8px 16px;border-radius:8px;font-size:12.5px;opacity:0;transition:.25s;pointer-events:none;z-index:9}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:#333;color:#fff;padding:9px 16px;border-radius:8px;font-size:12.5px;line-height:1.6;opacity:0;transition:.25s;pointer-events:none;z-index:9;max-width:760px}
+.toast b{color:#FFE08A}
+.el{cursor:copy}.el .hit{fill:#2E75B6;fill-opacity:0;stroke:none;pointer-events:all}
+.el:hover .hit{fill-opacity:.06;stroke:#2E75B6;stroke-width:1;stroke-dasharray:3 2}
+.el.sel .hit{fill-opacity:.08;stroke:#2E75B6;stroke-width:1.6;stroke-dasharray:none}
+.ebar{position:absolute;z-index:5;display:none;align-items:center;gap:4px;background:#fff;border:1px solid #D6D6D6;border-radius:8px;box-shadow:0 4px 14px #0000001f;padding:4px 5px;font-size:11.5px;white-space:nowrap}
+.ebar.on{display:flex}.ebar b{font-weight:700;color:var(--ink);margin:0 4px;max-width:150px;overflow:hidden;text-overflow:ellipsis}
+.ebar button{border:1px solid #DADADA;background:#fff;border-radius:6px;padding:3px 8px;cursor:pointer;font-size:11.5px}
+.ebar button:hover{border-color:#999}.ebar button.pri{background:var(--p);border-color:var(--p);color:#fff;font-weight:700}
+.hint2{font-size:11px;color:#2E75B6;margin-left:auto}
+.mine{margin-bottom:10px}
+.mine .save{display:flex;gap:5px;margin-bottom:6px}
+.mine .save input{flex:1;min-width:0;padding:5px 7px;border:1px solid #DADADA;border-radius:6px}
+.mlist{display:flex;flex-direction:column;gap:4px}
+.mi{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:7px;padding:5px 6px}
+.mi.on{border-color:var(--p);box-shadow:0 0 0 1px var(--p) inset}
+.mi .dots{display:flex;gap:2px;flex:none}.mi .dots i{width:9px;height:9px;border-radius:50%}
+.mi .nm{flex:1;min-width:0;font-weight:700;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.mi .nm small{display:block;font-weight:400;color:var(--mu);font-size:10px}
+.mi button{border:none;background:none;color:var(--t2);cursor:pointer;padding:2px 4px;font-size:11px;border-radius:4px}
+.mi button:hover{background:#F0F0F0;color:var(--ink)}
+.mi button.ap{color:var(--p);font-weight:700}
+.mempty{font-size:11px;color:var(--mu);padding:4px 2px}
+.mfoot{display:flex;gap:6px;margin-top:6px}.mfoot button{flex:1}
 .toast.on{opacity:1;transform:translateX(-50%)}
 .fatal{position:fixed;inset:0;background:#fff;display:flex;align-items:center;justify-content:center;z-index:99;padding:30px}
 .fatal div{max-width:640px;border:1px solid #E4E4E4;border-left:5px solid #C0504D;border-radius:10px;padding:26px 30px;box-shadow:0 6px 24px #0000000f}
@@ -101,13 +124,20 @@ main{display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff
  <aside id="panel">
   <div class="cap">範本</div>
   <div class="tpls" id="tpls"></div>
+  <div class="cap">我的風格</div>
+  <div class="mine" id="mine">
+   <div class="save"><input id="mName" maxlength="24" placeholder="為目前設定命名，例如：部門月報"><button class="btn pri" id="mSave">＋ 儲存</button></div>
+   <div class="mlist" id="mList"></div>
+   <div class="mfoot"><button class="btn" id="mExportAll">匯出全部 JSON</button><button class="btn" id="mImport">匯入 JSON…</button></div>
+   <input type="file" id="mFile" accept=".json,application/json" hidden multiple>
+  </div>
   <div id="groups"></div>
  </aside>
  <main>
   <div class="bar"><h2 id="sTitle"></h2><div class="chips" id="chips"></div></div>
   <div class="stage"><div class="slide" id="big"></div></div>
   <div class="foot">
-   <div class="status" id="status"></div>
+   <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><div class="status" id="status" style="margin:0"></div><span class="hint2" id="elHint"></span></div>
    <div class="thumbs" id="thumbs"></div>
   </div>
  </main>
@@ -165,10 +195,11 @@ const G=[
  {t:'畫布與標題',rows:[
   {hintText:'投影片背景固定為白色；可選擇在白底上加一塊淺灰畫布面板。'},
   {k:'canvas',l:'淺灰畫布',type:'toggle'},{k:'canvasColor',l:'畫布色',type:'seg',opts:CANVAS.map(c=>[c,'<i style="display:inline-block;width:14px;height:12px;border:1px solid #ccc;background:#'+c+';vertical-align:middle"></i>'])},
-  {k:'bar',l:'標題裝飾',type:'select',opts:[['under','下方短色條'],['banner','左側色塊'],['rule','細分隔線'],['vbar','左側直條'],['over','上方細線'],['gold','強調色細線'],['pill','膠囊色條'],['dot','圓點']]},
+  {k:'bar',l:'標題裝飾',type:'select',opts:[['under','下方短色條'],['banner','左側色塊'],['rule','細分隔線'],['vbar','左側直條'],['over','上方細線'],['gold','強調色細線'],['pill','膠囊色條'],['dot','圓點'],['plain','無裝飾（純標題）']]},
+  {k:'footRule',l:'頁尾細線',type:'toggle'},
   {k:'titleColor',l:'標題顏色',type:'seg',opts:[['P','主色'],['PD','深主色'],['ink','文字灰']]},
   {k:'bracket',l:'中英括號標',type:'toggle'},
-  {k:'mark',l:'小節標記',type:'seg',opts:[['bar','色條'],['vbar','直條'],['sq','方塊'],['dot','圓點'],['none','無']]}]},
+  {k:'mark',l:'小節標記',type:'seg',opts:[['bar','色條'],['vbar','直條'],['sq','方塊'],['psq','主色方塊'],['dot','圓點'],['none','無']]}]},
  {t:'形狀與圓角',rows:[
   {k:'r',l:'卡片圓角',type:'range',min:0,max:.3,step:.01,fmt:v=>(v*72).toFixed(0)+' pt'},
   {k:'colR',l:'欄條圓角',type:'seg',opts:[['full','全圓'],['small','小圓角'],['square','直角']]},
@@ -176,7 +207,7 @@ const G=[
   {k:'chain',l:'流程鏈',type:'select',opts:[['chev','漸層 V 形箭號'],['hex','六角形鏈'],['gray','灰卡＋▶'],['outline','細框方塊'],['hairchev','空心 V 形'],['home','五邊形箭號'],['pill','膠囊鏈'],['block','區塊 V 形']]},
   {k:'circle',l:'大圓樣式',type:'select',opts:[['ring3','白底粗外框'],['thick','粗灰框'],['gray','淺灰實心'],['thin','細框'],['hair','髮絲線'],['double','雙圈'],['soft','白底＋陰影'],['heavy','粗主色框']]},
   {k:'circleLW',l:'大圓框線',type:'range',min:.5,max:6,step:.25,fmt:v=>v+' pt'},
-  {k:'sym',l:'流程圖符號',type:'select',opts:[['outlineP','主色外框'],['thick','粗灰框'],['gray','淺灰實心'],['thin','細框'],['hair','髮絲線'],['square','直角'],['soft','柔和陰影'],['heavy','實心主色']]}]},
+  {k:'sym',l:'流程圖符號',type:'select',opts:[['outlineP','主色外框'],['thick','粗灰框'],['gray','淺灰實心'],['thin','細框'],['hair','髮絲線'],['square','直角'],['soft','柔和陰影'],['heavy','實心主色'],['redbox','灰底＋主色框強調']]}]},
  {t:'卡片',rows:[
   {k:'card',l:'卡片樣式',type:'select',opts:[['outline','白底外框'],['gray','淺灰實心'],['soft','白底無框（靠陰影）'],['head','實心表頭色帶'],['top','頂邊色條']]},
   {k:'cardLW',l:'外框粗細',type:'range',min:.5,max:3,step:.25,fmt:v=>v+' pt'},
@@ -221,15 +252,15 @@ const G=[
 
 /* ---------- 狀態 ---------- */
 let S={base:'navy',p:templateParams('navy'),slide:0,autoTone:true};
-try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=s.base;S.p=Object.assign(templateParams(s.base),s.p);S.slide=0;/* 每次開啟都先顯示 01 元件總表 */S.autoTone=s.autoTone!==false;}}catch(e){}
-const persist=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify({base:S.base,p:S.p,slide:S.slide,autoTone:S.autoTone}));}catch(e){}};
+try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=s.base;S.p=Object.assign(templateParams(s.base),s.p);S.slide=0;/* 每次開啟都先顯示 01 元件總表 */S.mine=s.mine||null;S.autoTone=s.autoTone!==false;}}catch(e){}
+const persist=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify({base:S.base,p:S.p,slide:S.slide,autoTone:S.autoTone,mine:S.mine||null}));}catch(e){}};
 const hex=v=>String(v||'').replace('#','').toUpperCase();
-const toast=(t)=>{const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>e.classList.remove('on'),2200);};
+const toast=(t,ms,html)=>{const e=$('#toast');if(html)e.innerHTML=t;else e.textContent=t;e.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>e.classList.remove('on'),ms||2200);window.__lastToast=e.textContent;};
 
 /* ---------- 建立左側面板 ---------- */
 function buildTemplates(){
  $('#tpls').innerHTML=D.PRESETS.map(p=>{const tp=templateParams(p.id);return `<button class="tpl" data-id="${p.id}" style="--c:#${tp.P};--a:#${tp.useA?tp.A:tp.P}" title="${p.desc}"><b><em></em><u></u>${p.zh}</b><span>${p.en}・${p.ref}</span></button>`;}).join('');
- $('#tpls').onclick=e=>{const b=e.target.closest('.tpl');if(!b)return;S.base=b.dataset.id;S.p=templateParams(S.base);syncPanel();schedule();toast('已套用範本：'+presetOf(S.base).zh);};
+ $('#tpls').onclick=e=>{const b=e.target.closest('.tpl');if(!b)return;S.mine=null;S.base=b.dataset.id;S.p=templateParams(S.base);syncPanel();schedule();toast('已套用範本：'+presetOf(S.base).zh);};
 }
 function rowHtml(r){
  if(r.html==='palettes')return `<div class="hint">配色組合（主色＋強調色，深／淺主色自動推算）</div><div class="sw">${PALETTES.map((p,i)=>`<div class="pal" data-pal="${i}" title="${p[0]}"><i style="background:#${p[1]}"></i><i style="background:#${D.mix(p[1],'FFFFFF',.85)}"></i><i style="background:#${p[2]}"></i></div>`).join('')}</div>`;
@@ -299,15 +330,60 @@ function render(){
 }
 function showSlide(){
  const sl=model.slides[S.slide];
- $('#big').innerHTML=D.toSvg(sl,{id:'big'})+'<button class="nav l" data-d="-1">‹</button><button class="nav r" data-d="1">›</button>';
+ $('#big').innerHTML=D.toSvg(sl,{id:'big',interactive:true})+'<button class="nav l" data-d="-1">‹</button><button class="nav r" data-d="1">›</button>'+
+  '<div class="ebar" id="ebar"><b id="eName"></b><button class="pri" data-a="copy" title="再複製一次到剪貼簿">複製</button><button data-a="pptx" title="只含這個元件的 1 頁 .pptx，原生可編輯圖形">下載此元件 .pptx</button><button data-a="svg">SVG</button><button data-a="png">PNG</button><button data-a="x" title="關閉">✕</button></div>';
+ SEL=null;
  document.querySelectorAll('.th').forEach(t=>t.classList.toggle('on',+t.dataset.i===S.slide));
  const on=document.querySelector('.th.on');if(on&&on.scrollIntoView)on.scrollIntoView({block:'nearest',inline:'nearest'});
- $('#sTitle').innerHTML=`${String(S.slide+1).padStart(2,'0')}／${model.slides.length}　${sl.title}<small>${presetOf(S.base).zh}${isModified()?'（已微調）':''}</small>`;
+ $('#sTitle').innerHTML=`${String(S.slide+1).padStart(2,'0')}／${model.slides.length}　${sl.title}<small>${S.mine?'我的風格：'+escH(S.mine):presetOf(S.base).zh}${isModified()&&!S.mine?'（已微調）':''}</small>`;$('#elHint').textContent=sl.groups&&sl.groups.length?`👆 點大圖中的任一元件即可複製／單獨下載（本頁 ${sl.groups.length} 個）`:'';
 }
 function isModified(){const T=templateParams(S.base);return Object.keys(T).some(k=>String(T[k])!==String(S.p[k]));}
 function go(i){S.slide=(i+model.slides.length)%model.slides.length;showSlide();persist();}
 $('#thumbs').onclick=e=>{const t=e.target.closest('.th');if(t)go(+t.dataset.i);};
-$('#big').onclick=e=>{const b=e.target.closest('.nav');if(b)go(S.slide+ +b.dataset.d);};
+$('#big').onclick=e=>{const b=e.target.closest('.nav');if(b){go(S.slide+ +b.dataset.d);return;}
+ const a=e.target.closest('.ebar button');if(a){elAction(a.dataset.a);return;}
+ const g=e.target.closest('.el');if(g){selectEl(+g.dataset.g);elAction('copy');return;}
+ if(!e.target.closest('.ebar'))clearSel();};
+
+/* ================= 單一元件：選取、複製、下載 ================= */
+let SEL=null;
+const escH=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function clearSel(){SEL=null;document.querySelectorAll('#big .el.sel').forEach(x=>x.classList.remove('sel'));const b=$('#ebar');if(b)b.classList.remove('on');}
+function selectEl(gi){clearSel();const sl=model.slides[S.slide];const g=sl.groups[gi];if(!g)return;SEL={gi,key:sl.key,name:g.name};
+ const el=document.querySelector(`#big .el[data-g="${gi}"]`);if(el)el.classList.add('sel');
+ const bar=$('#ebar'),big=$('#big'),k=big.clientWidth/(D.W*72);$('#eName').textContent=g.name;bar.classList.add('on');
+ let x=(g.x*72)*k,y=(g.y+g.h)*72*k+8;const bw=bar.offsetWidth,bh=bar.offsetHeight;
+ if(y+bh>big.clientHeight-4)y=g.y*72*k-bh-8;x=Math.max(4,Math.min(x,big.clientWidth-bw-4));bar.style.left=x+'px';bar.style.top=Math.max(4,y)+'px';}
+function svgToPng(svg,wpt,hpt,scale){return new Promise((res,rej)=>{const img=new Image();const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
+ img.onload=()=>{try{const c=document.createElement('canvas');c.width=Math.round(wpt*4/3*scale);c.height=Math.round(hpt*4/3*scale);const x=c.getContext('2d');x.drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);c.toBlob(b=>b?res(b):rej(new Error('PNG 轉換失敗')),'image/png');}catch(err){rej(err);}};
+ img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('SVG 無法繪製'));};img.src=url;});}
+function elFiles(){const sl=model.slides[S.slide];const gi=SEL.gi;
+ const vec=D.elementSvg(sl,gi,{flat:true,bg:false,pad:3,id:'v'});        // 剪貼簿／下載用：無濾鏡、箭頭實體化、透明背景
+ const look=D.elementSvg(sl,gi,{flat:false,bg:false,pad:4,id:'l'});      // PNG 用：含柔和陰影
+ return{vec,look,png:()=>svgToPng(look.svg,look.w,look.h,3)};}
+const safeName=t=>String(t).replace(/[\\/:*?"<>|\s]+/g,'_');
+async function elAction(a){if(!SEL)return;const f=elFiles();const base=fileBase()+'-'+SEL.key+'-'+safeName(SEL.name);
+ if(a==='x'){clearSel();return;}
+ if(a==='svg'){saveBlob(new Blob([f.vec.svg],{type:'image/svg+xml'}),base+'.svg');toast('已下載 SVG：PowerPoint「插入 › 圖片」後，右鍵「轉換成圖案」即可編輯。');return;}
+ if(a==='png'){try{saveBlob(await f.png(),base+'.png');toast('已下載 PNG（含陰影的圖片，不可編輯）。');}catch(err){toast('PNG 產生失敗：'+err.message);}return;}
+ if(a==='pptx'){try{const r=await D.exportElement({PptxGenJS:window.PptxGenJS,JSZip:window.JSZip},S.p,SEL.key,SEL.gi);saveBlob(r.data,base+'.pptx');
+   window.__studio.lastElement={name:SEL.name,items:r.model.slides[0].items.length,patched:r.patched,size:r.data.size};
+   toast(`已下載「${SEL.name}」單一元件 .pptx（${r.model.slides[0].items.length} 個原生圖形${r.model.slides[0].items.length>1?'、已群組':''}${r.patched?'、含柔和陰影':''}）。開啟後選取 → Ctrl+C → 貼到你的簡報。`,5000);}
+  catch(err){console.error(err);toast('匯出失敗：'+err.message);}return;}
+ if(a==='copy'){const r=await copyEl(f);window.__studio.lastCopy=r;}}
+async function copyEl(f){const name=SEL.name;
+ const fail=why=>{toast(`無法寫入剪貼簿（${why}）。請改用工具列的「<b>下載此元件 .pptx</b>」（原生可編輯）或「SVG／PNG」。`,6000,true);return{ok:false,why};};
+ if(!window.isSecureContext)return fail('此頁不是安全來源');
+ if(!navigator.clipboard||!navigator.clipboard.write||!window.ClipboardItem)return fail('瀏覽器不支援圖片剪貼簿');
+ const svgOK=typeof ClipboardItem.supports==='function'&&ClipboardItem.supports('image/svg+xml');
+ const data={'image/png':f.png()};if(svgOK)data['image/svg+xml']=new Blob([f.vec.svg],{type:'image/svg+xml'});
+ try{await navigator.clipboard.write([new ClipboardItem(data)]);}
+ catch(err){if(svgOK){try{await navigator.clipboard.write([new ClipboardItem({'image/png':f.png()})]);toast(`已複製「${escH(name)}」為 <b>PNG 圖片</b>（不可編輯）。要可編輯圖形請按「下載此元件 .pptx」。`,6000,true);return{ok:true,types:['image/png']};}catch(e2){return fail(e2.message||e2.name);}}
+  return fail(err.message||err.name);}
+ if(svgOK)toast(`已複製「${escH(name)}」（<b>SVG 向量＋PNG</b>）。PowerPoint 365／2019 以上：Ctrl+V 貼上 → 右鍵「<b>轉換成圖案</b>」即成可編輯圖形（陰影不會帶過去）。要 100% 原生圖形與陰影，請按「下載此元件 .pptx」。`,7000,true);
+ else toast(`已複製「${escH(name)}」為 <b>PNG 圖片</b>（此瀏覽器不支援 SVG 剪貼簿，貼上後不可編輯）。要可編輯圖形請按「下載此元件 .pptx」。`,6000,true);
+ return{ok:true,types:Object.keys(data)};}
+
 document.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key==='ArrowRight')go(S.slide+1);if(e.key==='ArrowLeft')go(S.slide-1);});
 
 /* ---------- 下載／存取 ---------- */
@@ -328,11 +404,54 @@ $('#bSave').onclick=()=>{const T=templateParams(S.base);const diff={};Object.key
  saveBlob(new Blob([JSON.stringify({app:'ppt-style-studio',version:4,base:S.base,changed:diff,params:S.p},null,1)],{type:'application/json'}),fileBase()+'.json');toast('設定已存成 JSON');};
 $('#bLoad').onclick=()=>$('#fLoad').click();
 $('#fLoad').onchange=async e=>{const f=e.target.files[0];if(!f)return;
- try{const j=JSON.parse(await f.text());const base=presetOf(j.base).id;S.base=base;S.p=Object.assign(templateParams(base),j.params||j.changed||{});syncPanel();schedule();toast('已載入設定：'+f.name);}
+ try{const j=JSON.parse(await f.text());if(j.type==='my-styles'){const n=importMine(j,f.name);toast(`已匯入 ${n} 個「我的風格」`);e.target.value='';return;}
+  S.mine=null;const base=presetOf(j.base).id;S.base=base;S.p=Object.assign(templateParams(base),j.params||j.changed||{});syncPanel();schedule();toast('已載入設定：'+f.name);}
  catch(err){toast('無法讀取設定檔：'+err.message);}e.target.value='';};
-$('#bReset').onclick=()=>{S.p=templateParams(S.base);syncPanel();schedule();toast('已重設為「'+presetOf(S.base).zh+'」預設值');};
+$('#bReset').onclick=()=>{S.mine=null;S.p=templateParams(S.base);syncPanel();schedule();toast('已重設為「'+presetOf(S.base).zh+'」預設值');};
 
-buildTemplates();buildGroups();syncPanel();
+/* ================= 我的風格（localStorage） ================= */
+const MKEY='ppt-studio-mystyles';
+const loadMine=()=>{try{const a=JSON.parse(localStorage.getItem(MKEY)||'[]');return Array.isArray(a)?a:[];}catch(e){return[];}};
+const storeMine=a=>{try{localStorage.setItem(MKEY,JSON.stringify(a));return true;}catch(e){toast('瀏覽器不允許儲存（localStorage 無法使用）：'+e.message,5000);return false;}};
+function diffOf(base,p){const T=templateParams(base);const d={};Object.keys(p).forEach(k=>{if(String(T[k])!==String(p[k]))d[k]=p[k];});return d;}
+function entryOf(name){const p=Object.assign({},S.p,{zh:name});return{app:'ppt-style-studio',version:4,name,base:S.base,saved:new Date().toISOString(),changed:diffOf(S.base,p),params:p};}
+function uniqueName(n,list){let k=n,i=2;while(list.some(x=>x.name===k))k=n+' ('+(i++)+')';return k;}
+function renderMine(){const a=loadMine();
+ $('#mList').innerHTML=a.length?a.map((m,i)=>{const p=Object.assign(templateParams(presetOf(m.base).id),m.params||m.changed||{});
+  return `<div class="mi${S.mine===m.name?' on':''}" data-i="${i}"><span class="dots"><i style="background:#${p.P}"></i><i style="background:#${p.useA?p.A:p.PT}"></i><i style="background:#${p.ink}"></i></span>
+   <span class="nm" data-a="apply" title="套用">${escH(m.name)}<small>以「${escH(presetOf(m.base).zh)}」為基礎</small></span>
+   <button class="ap" data-a="apply">套用</button><button data-a="ren">改名</button><button data-a="exp">匯出</button><button data-a="del">刪除</button></div>`;}).join('')
+  :'<div class="mempty">還沒有自訂風格。調整好後在上方命名並按「＋ 儲存」。</div>';}
+function applyMine(m){const base=presetOf(m.base).id;S.base=base;S.p=Object.assign(templateParams(base),m.params||m.changed||{});S.mine=m.name;syncPanel();schedule();renderMine();toast('已套用我的風格：'+m.name);}
+function importMine(j,fname){const list=loadMine();let n=0;
+ const items=j.type==='my-styles'?(j.styles||[]):[j];
+ items.forEach(it=>{if(!it||!(it.params||it.changed))return;const base=presetOf(it.base).id;
+  const nm0=String(it.name||(it.params&&it.params.zh)||String(fname||'匯入的風格').replace(/\.json$/i,'')).slice(0,24);
+  const p0=Object.assign(templateParams(base),it.params||it.changed);p0.zh=nm0;const sig=JSON.stringify(diffOf(base,p0));
+  if(list.some(x=>x.name===nm0&&x.base===base&&JSON.stringify(x.changed)===sig))return;   // 完全相同的就不重複匯入
+  const name=uniqueName(nm0,list);
+  const p=Object.assign(templateParams(base),it.params||it.changed);p.zh=name;
+  list.push({app:'ppt-style-studio',version:4,name,base,saved:it.saved||new Date().toISOString(),changed:diffOf(base,p),params:p});n++;});
+ if(n)storeMine(list);renderMine();return n;}
+$('#mSave').onclick=()=>{const list=loadMine();let name=$('#mName').value.trim();if(!name)name='我的風格 '+(list.length+1);
+ const ex=list.findIndex(x=>x.name===name);const e=entryOf(name);
+ if(ex>=0){if(!confirm(`「${name}」已存在，要覆蓋嗎？`))return;list[ex]=e;}else list.push(e);
+ if(!storeMine(list))return;S.mine=name;S.p.zh=name;$('#mName').value='';renderMine();schedule();toast('已儲存為我的風格：'+name);};
+$('#mName').onkeydown=e=>{if(e.key==='Enter')$('#mSave').click();};
+$('#mList').onclick=e=>{const b=e.target.closest('[data-a]');if(!b)return;const row=b.closest('.mi');const i=+row.dataset.i;const list=loadMine();const m=list[i];if(!m)return;
+ const a=b.dataset.a;
+ if(a==='apply')applyMine(m);
+ else if(a==='ren'){const n=prompt('新名稱',m.name);if(!n||!n.trim()||n.trim()===m.name)return;const nn=uniqueName(n.trim().slice(0,24),list);
+  if(S.mine===m.name){S.mine=nn;S.p.zh=nn;}m.name=nn;m.params=Object.assign({},m.params,{zh:nn});m.changed=Object.assign({},m.changed,{zh:nn});storeMine(list);renderMine();schedule();toast('已改名為：'+nn);}
+ else if(a==='del'){if(!confirm(`刪除「${m.name}」？`))return;list.splice(i,1);storeMine(list);if(S.mine===m.name)S.mine=null;renderMine();schedule();toast('已刪除：'+m.name);}
+ else if(a==='exp'){saveBlob(new Blob([JSON.stringify(m,null,1)],{type:'application/json'}),'我的風格-'+safeName(m.name)+'.json');toast('已匯出「'+m.name+'」（可分享給同事，用「匯入 JSON…」載入）');}};
+$('#mExportAll').onclick=()=>{const list=loadMine();if(!list.length){toast('目前沒有「我的風格」可以匯出');return;}
+ saveBlob(new Blob([JSON.stringify({app:'ppt-style-studio',version:4,type:'my-styles',exported:new Date().toISOString(),styles:list},null,1)],{type:'application/json'}),'我的風格-全部-'+list.length+'個.json');toast(`已匯出 ${list.length} 個我的風格`);};
+$('#mImport').onclick=()=>$('#mFile').click();
+$('#mFile').onchange=async e=>{let n=0;for(const f of e.target.files){try{n+=importMine(JSON.parse(await f.text()),f.name);}catch(err){toast('無法讀取 '+f.name+'：'+err.message,4000);}}
+ if(n)toast(`已匯入 ${n} 個我的風格`);e.target.value='';};
+
+buildTemplates();buildGroups();syncPanel();renderMine();
 (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(render);
 render();
 window.__studioApi={S,render,syncPanel,templateParams};

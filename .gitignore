@@ -12,9 +12,15 @@ render/*
 !render/studio-2.png
 !render/compare-navy-ex1.png
 !render/overview.png
-!render/studio-catalog-navy.png
 !render/catalog-all-styles.png
 !render/catalog-navy-lo.png
+!render/patterns-all-styles.png
+!render/patterns-navy-lo.png
+!render/catalog-investor-lo.png
+!render/copy-toast.png
+!render/studio-mystyles.png
+!render/studio-patterns.png
+!render/studio-investor-catalog.png
 # 其他暫存
 *.pdf
 *.zip

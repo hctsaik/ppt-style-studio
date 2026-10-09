@@ -16,6 +16,7 @@ const BASE={
  sh:false,shMode:'drop',shB:7,shO:2,shA:.25,shDir:90,haloB:16,haloA:.32,ring:false,
  card:'outline',cardLW:1.25,cardLine:'D9D9D9',headColor:'P',bandStyle:'fill',cornerTag:true,ribbonTone:'p',
  tag:'pill',badge:'circle',sep:'tri',chain:'chev',circle:'ring3',circleLW:3,sym:'outlineP',mark:'none',bar:'under',bracket:false,titleColor:'P',
+ footRule:false,
  cnW:1.25,cnC:'7F7F7F',cnDash:'solid',cnHead:'triangle',cnTail:'none',cnHs:'lg',
  tFont:'Microsoft JhengHei',bFont:'Microsoft JhengHei',nFont:'',tSize:36,tBold:true,lSize:16,lBold:true,nSize:10.5
 };
@@ -50,7 +51,11 @@ const PRESETS=[
  {id:'charcoal',zh:'炭灰橘點',en:'Charcoal Dot',ref:'延伸',desc:'炭灰實心表頭卡、2pt 粗線，橘色圓點標記重點，區塊 V 形箭號，粗黑標題＋橘點',
   P:'3A3A3A',PD:'2B2B2B',PT:'EDEDED',A:'F07F2D',r:.05,
   card:'head',headColor:'ink',ribbonTone:'a',tag:'dot',badge:'odot',sep:'block',chain:'block',circle:'heavy',circleLW:2.75,sym:'heavy',mark:'dot',bar:'dot',titleColor:'ink',
-  cnW:2,cnC:'3A3A3A',cnHs:'med',tSize:38,colR:'small'}
+  cnW:2,cnC:'3A3A3A',cnHs:'med',tSize:38,colR:'small'},
+ {id:'investor',zh:'法說會紅',en:'Investor Red',ref:'參考：法說會',desc:'純白底、左上大號粗體紅標題、淺灰大圓角面板承載內容，紅色外框框出重點，底部細紅線＋灰色小字頁尾，藍色僅作次要強調',
+  P:'E60012',PD:'B3000E',PT:'FCE4E6',A:'1F3FBF',r:.14,fill:'E8E8E8',l2:'D4D4D4',
+  card:'gray',headColor:'ink',cardLine:'D4D4D4',ribbonTone:'p',tag:'round',badge:'circle',sep:'tri',chain:'gray',circle:'gray',sym:'redbox',mark:'psq',bar:'plain',titleColor:'P',footRule:true,
+  cnW:1.25,cnC:'595959',cnHs:'med',tSize:36,nFont:'Arial',colR:'small'}
 ].map(p=>Object.assign(clone(BASE),p));
 const LANG_OF={card:{outline:'白底外框',gray:'淺灰實心',soft:'白底無框＋陰影',head:'實心表頭色帶',top:'頂邊色條'},
  tag:{pill:'全圓角膠囊',round:'小圓角方籤',square:'直角實心',outline:'空心線框',soft:'淡色底膠囊',dot:'圓點方籤'},
@@ -59,7 +64,7 @@ const LANG_OF={card:{outline:'白底外框',gray:'淺灰實心',soft:'白底無�
  chain:{chev:'漸層 V 形箭號',hex:'六角形鏈',gray:'灰卡＋▶',outline:'細框方塊',hairchev:'空心線框 V 形',home:'五邊形箭號',pill:'膠囊鏈',block:'區塊 V 形'}};
 function langOf(p){return{card:LANG_OF.card[p.card]+(p.card==='outline'?' '+p.cardLW+'pt':'')+(p.sh?'＋陰影':''),tag:LANG_OF.tag[p.tag],badge:LANG_OF.badge[p.badge],sep:LANG_OF.sep[p.sep],
  conn:p.cnW+'pt '+({solid:'實線',sysDot:'點線',sysDash:'虛線',dash:'長虛線'}[p.cnDash]||'')+({triangle:'＋三角箭頭',arrow:'＋開放箭頭',stealth:'＋燕尾箭頭',oval:'＋圓點',none:''}[p.cnHead]||''),chain:LANG_OF.chain[p.chain]};}
-const SLIDES=[['catalog','元件總表'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
+const SLIDES=[['catalog','元件總表'],['patterns','常見組合'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
 
 /* ---------- 文字寬度估算（Node 端排版檢查用；瀏覽器預覽改用 canvas 實測） ---------- */
 function tw(str,size){let u=0;for(const ch of String(str)){const c=ch.codePointAt(0);
@@ -131,7 +136,7 @@ function buildModel(params,opt){
 
  /* ---------- 版面骨架 ---------- */
  function canvas(){if(st.canvas)box(.25,.25,W-.5,H-.5,{fill:st.canvasColor,r:.06,name:'畫布面板'});}
- function footer(){const y=st.canvas?6.9:7.0;
+ function footer(){const y=st.canvas?6.9:7.0;if(st.footRule)ln(.4,y-.05,W-.4,y-.05,{c:P,w:1.25});
   txt(.6,y,6,.24,[{t:st.zh||'自訂風格',b:1,c:G.t2},{t:'｜精緻圖解元件庫',c:G.mute}],{size:9});
   txt(W-.6-1.5,y,1.5,.24,String(sno).padStart(2,'0')+' / '+String(SLIDES.length).padStart(2,'0'),{size:9,color:G.mute,align:'right',font:nf});}
  function title(t,sub){const T=st.bracket?'《'+t+'》':t;const ts=st.tSize;
@@ -144,9 +149,10 @@ function buildModel(params,opt){
    case 'over':box(.6,.42,.5,.035,{fill:P});tt(.6,.56,11);txt(.6,1.3,11,.34,sub,{size:14,color:G.mute,font:FL});break;
    case 'gold':tt(.6,.38,11);box(.6,1.16,.9,.025,{fill:A});txt(.6,1.27,11,.34,sub,{size:14,color:G.t2,cs:1});break;
    case 'pill':tt(.6,.42,11);box(.6,1.27,.45,.1,{fill:P,r:'full'});txt(1.17,1.13,11,.38,sub,{size:16,color:subC,font:FL});break;
+   case 'plain':tt(.5,.34,11.5);txt(.52,1.06,11,.36,sub,{size:15,color:G.t2});break;
    case 'dot':{tt(.6,.4,11);const nLat=(T.match(/[A-Za-z]/g)||[]).length;const dx=.6+tw(T,ts)+nLat*ts/72*.07+.08;circ(dx+.08,.4+.36+ts/150,.16,{fill:A});txt(.6,1.12,11,.38,sub,{size:15,color:subC});box(.6,1.6,.5,.06,{fill:A});break;}}}
  function mark(x,yc){switch(st.mark){case 'bar':box(x,yc-.11,.05,.22,{fill:P});return .17;case 'vbar':box(x,yc-.11,.05,.22,{fill:A});return .17;
-   case 'sq':box(x,yc-.055,.11,.11,{fill:A});return .22;case 'dot':circ(x+.055,yc,.11,{fill:A});return .22;default:return 0;}}
+   case 'sq':box(x,yc-.055,.11,.11,{fill:A});return .22;case 'psq':box(x,yc-.055,.11,.11,{fill:P});return .22;case 'dot':circ(x+.055,yc,.11,{fill:A});return .22;default:return 0;}}
  function section(x,y,w,t){const dx=mark(x,y+.16);txt(x+dx,y,w-dx,.32,t,{size:LS(13),bold:st.lBold,color:G.ink});ln(x,y+.42,x+w,y+.42,{c:G.l2,w:.75});}
  function note(x,y,w,t,o){txt(x,y,w,(o&&o.h)||.28,t,Object.assign({size:st.nSize,color:G.mute,wrap:o&&o.wrap},o||{}));}
 
@@ -154,7 +160,7 @@ function buildModel(params,opt){
  function tagLook(tone){const W2='FFFFFF';
   switch(st.tag){
    case 'pill':return{p:{fill:P,c:W2},a:HASA?{fill:A,c:W2}:{fill:PTn,c:P},g:{fill:GF,c:G.ink},o:{line:P,lw:1,c:P,fill:W2}}[tone];
-   case 'round':return{p:{fill:P,c:W2},a:{fill:A,c:HASA?G.ink:W2},g:{fill:mix(GF,'000000',.03),c:G.ink},o:{line:G.line,lw:1.25,c:G.t2,fill:W2}}[tone];
+   case 'round':return{p:{fill:P,c:W2},a:{fill:A,c:HASA&&lum(A)>.5?G.ink:W2},g:{fill:mix(GF,'000000',.03),c:G.ink},o:{line:G.line,lw:1.25,c:G.t2,fill:W2}}[tone];
    case 'square':return{p:{fill:P,c:W2},a:{fill:A,c:W2},g:{fill:mix(GF,'000000',.05),c:G.ink},o:{line:P,lw:.75,c:P,fill:W2}}[tone];
    case 'outline':return{p:{line:P,lw:.75,c:P},a:{line:G.ink,lw:.75,c:G.ink},g:{line:G.l1,lw:.75,c:G.t2},o:{line:P,lw:.75,c:P,dash:'dash'}}[tone];
    case 'soft':return{p:{fill:PTn,c:P},a:HASA?{fill:mix(A,'FFFFFF',.78),c:mix(A,'000000',.45)}:{fill:P,c:W2},g:{fill:GF,c:G.t2},o:{fill:P,c:W2}}[tone];
@@ -276,7 +282,8 @@ function buildModel(params,opt){
    case 'hair':return strong?{fill:W2,line:P,lw:1.25,c:P}:alt?{fill:W2,line:P,lw:.75,c:G.ink,dash:'dash'}:{fill:W2,line:G.l1,lw:.75,c:G.ink};
    case 'square':return strong?{fill:P,c:W2}:alt?{fill:PTn,line:P,lw:.75,c:PD}:{fill:W2,line:G.l1,lw:.75,c:G.ink};
    case 'soft':return strong?{fill:P,c:W2,sh:1}:alt?{fill:HASA?mix(A,'FFFFFF',.75):PTn,c:G.ink,sh:1}:{fill:PTn,c:PD};
-   case 'heavy':return strong?{fill:P,c:W2}:alt?{fill:W2,line:A,lw:2,c:G.ink}:{fill:GF,line:P,lw:2,c:G.ink};}}
+   case 'heavy':return strong?{fill:P,c:W2}:alt?{fill:W2,line:A,lw:2,c:G.ink}:{fill:GF,line:P,lw:2,c:G.ink};
+   case 'redbox':return strong?{fill:W2,line:P,lw:2.25,c:P}:alt?{fill:W2,line:G.line,lw:1,c:G.ink}:{fill:GF,c:G.ink};}}
  function sym(kind,x,y,w,h,t,o){o=o||{};const L=symLook(o.strong,o.alt);const size=o.size||LS(14);
   const base={fill:L.fill,line:L.line,lw:L.lw,dash:L.dash,sh:L.sh?'small':0,text:t,size,bold:st.tBold&&st.lBold,color:L.c};
   switch(kind){
@@ -301,17 +308,21 @@ function buildModel(params,opt){
   path([[x,y+hh],[x+w/2,y],[x+w,y+hh]],{close:true,fill:color,ft:100-a});
   path([[x,y+h-hh],[x+w,y+h-hh],[x+w/2,y+h]],{close:true,fill:color,ft:Math.round(100*Math.pow(1-a/100,n))});}
 
+ /* ---------- 元件群組：記錄 items 範圍 → pptx 群組、預覽可點選複製 ---------- */
+ function grp(name,fn){const a=cur.items.length;fn();const b=cur.items.length-1;if(b<a)return;
+  const bb=bboxOf(cur.items.slice(a,b+1));cur.groups.push(Object.assign({name,from:a,to:b},bb));}
+ const hue=h=>{const [r,g,b]=[0,2,4].map(i=>parseInt(h.substr(i,2),16)/255);const mx=Math.max(r,g,b),mn=Math.min(r,g,b);if(mx-mn<.12)return -1;
+  let H=mx===r?((g-b)/(mx-mn))%6:mx===g?(b-r)/(mx-mn)+2:(r-g)/(mx-mn)+4;return (H*60+360)%360;};
+ const satOf=h=>{const v=[0,2,4].map(i=>parseInt(h.substr(i,2),16));return (Math.max(...v)-Math.min(...v))/Math.max(1,Math.max(...v));};
+ const hp=hue(P),ha=HASA?hue(A):-1;
+ const AL=hp>=0&&(hp<=15||hp>=345)&&satOf(P)>.7?P:(ha>=0&&(ha<=40||ha>=340)&&satOf(A)>.6?A:'C0504D');   // 警示色：主色是紅→主色；暖色強調色→強調色；否則克制的磚紅
+ const ALt=mix(AL,'FFFFFF',.86),ALd=mix(AL,'000000',.25);
  /* ================= 投影片 ================= */
  const X0=.6,X1=W-.6,CW=X1-X0;const lang=langOf(st);
  const SL={};
 
  /* ---------- 01 元件總表：每一列一個類別，每格一個可直接複製的獨立圖形，圖說另為文字框 ---------- */
  SL.catalog=()=>{title('元件總表 Element Catalog','一頁看完本風格的所有元件變化：挑好樣式，直接複製圖形使用');
-  const hue=h=>{const [r,g,b]=[0,2,4].map(i=>parseInt(h.substr(i,2),16)/255);const mx=Math.max(r,g,b),mn=Math.min(r,g,b);if(mx-mn<.12)return -1;
-   let H=mx===r?((g-b)/(mx-mn))%6:mx===g?(b-r)/(mx-mn)+2:(r-g)/(mx-mn)+4;return (H*60+360)%360;};
-  const ha=HASA?hue(A):-1;const sat=(()=>{const v=[0,2,4].map(i=>parseInt(A.substr(i,2),16));return (Math.max(...v)-Math.min(...v))/Math.max(1,Math.max(...v));})();
-  const AL=ha>=0&&(ha<=40||ha>=340)&&sat>.6?A:'C0504D';   // 警示色：暖色強調色沿用，否則用克制的磚紅
-  const ALt=mix(AL,'FFFFFF',.86),ALd=mix(AL,'000000',.25);
   const LX=X0,CX0=X0+1.42,NC=7,CWc=(X1-CX0)/NC,SW=Math.min(1.2,CWc-.3);
   const fs=Math.min(LS(11.5),13),PR=st.r>0?Math.min(st.r,.1):0;
   const rows=[['流程方塊','Process',.42],['判斷菱形','Decision',.52],['開始／結束','Start / End',.38],['箭頭與連接線','Arrows',.4],['例外與警示','Exception',.44],['圓形・編號・標籤','Circle / Badge / Tag',.62],['容器與群組','Container',.46]];
@@ -320,7 +331,7 @@ function buildModel(params,opt){
   const cx=i=>CX0+(i+.5)*CWc;
   let rowY,rowH;
   const cap=(i,t)=>txt(cx(i)-CWc/2+.03,rowY+rowH+.035,CWc-.06,capH,t,{size:Math.max(7.5,st.nSize-2),color:G.mute,align:'center',name:'圖說'});
-  const cell=(i,t,fn)=>{fn(cx(i)-SW/2,rowY,SW,rowH,cx(i),rowY+rowH/2);cap(i,t);};
+  const cell=(i,t,fn)=>{grp(t,()=>fn(cx(i)-SW/2,rowY,SW,rowH,cx(i),rowY+rowH/2));cap(i,t);};
   const R={};
   R[0]=()=>{const b=(x,y,w,h,o)=>box(x,y,w,h,Object.assign({r:PR,size:fs,margin:[2,2,0,0],name:'流程方塊'},o));
    cell(0,'無陰影・外框',(x,y,w,h)=>b(x,y,w,h,{fill:'FFFFFF',line:G.line,lw:1,text:'處理步驟',color:G.ink}));
@@ -389,6 +400,56 @@ function buildModel(params,opt){
    y+=rowH+capH+gap;
    if(i<rows.length-1)ln(LX,y-gap/2,X1,y-gap/2,{c:mix(G.l2,'FFFFFF',.45),w:.5});});
   ln(CX0-.12,1.9-.04,CX0-.12,y-gap,{c:mix(G.l2,'FFFFFF',.3),w:.5});};
+
+ /* ---------- 02 常見組合：已排好、已連線的小流程，每組在 pptx 中是一個群組 ---------- */
+ SL.patterns=()=>{title('常見組合 Common Patterns','已排好、已連線的流程小組合：整組複製即可使用（純流程圖語意）');
+  const NCOL=4,GAPc=.22,cw=(CW-(NCOL-1)*GAPc)/NCOL,lh=.4,ch=1.86,rowGap=.26;
+  const y0=1.9,rows2=y0+lh+ch+rowGap;const fs=Math.min(LS(10.5),12),nh=.42;
+  const N=(x,y,w,t,o)=>sym('proc',x,y,w,nh,t,Object.assign({size:fs},o||{}));
+  const lab=(x,y,w,t,o)=>txt(x,y,w,.2,t,Object.assign({size:8.5,color:G.t2,align:'center',name:'標註'},o||{}));
+  const A2=(pts,o)=>conn(pts,Object.assign({tail:false},o||{}));
+  const combos=[
+   ['三步驟流程','Linear Process',(x,y)=>{const w=.74,g=(cw-3*w)/2,yy=y+.62;
+     ['步驟一','步驟二','步驟三'].forEach((t,i)=>{const xi=x+i*(w+g);N(xi,yy,w,t,i===2?{strong:1}:{});badge(xi+w/2,yy-.3,bnum(i+1),{d:.26,size:9,nodot:1});if(i<2)A2([[xi+w,yy+nh/2],[xi+w+g,yy+nh/2]]);});}],
+   ['判斷分岔（是／否）','Decision Branch',(x,y)=>{const yy=y+.24,cy=yy+nh/2,dx=x+.98,dw=.84,dh=.64,dcy=cy;
+     N(x,yy,.72,'檢查');A2([[x+.72,cy],[dx,cy]]);
+     sym('dec',dx,dcy-dh/2,dw,dh,'通過？',{size:fs-1});
+     N(x+cw-.74,yy,.74,'執行',{strong:1});A2([[dx+dw,cy],[x+cw-.74,cy]]);lab(dx+dw,cy-.24,.4,'是');
+     N(dx+dw/2-.37,y+1.26,.74,'修正');A2([[dx+dw/2,dcy+dh/2],[dx+dw/2,y+1.26]]);lab(dx+dw/2+.02,dcy+dh/2+.04,.3,'否',{align:'left'});}],
+   ['例外退回路徑','Exception Return',(x,y)=>{const w=.74,g=(cw-3*w)/2,yy=y+.36,c=i=>x+i*(w+g)+w/2;
+     ['受理','審查','完成'].forEach((t,i)=>{N(x+i*(w+g),yy,w,t,i===2?{strong:1}:{});if(i<2)A2([[x+i*(w+g)+w,yy+nh/2],[x+(i+1)*(w+g),yy+nh/2]]);});
+     const ly=yy+nh+.42;conn([[c(1),yy+nh],[c(1),ly],[c(0),ly],[c(0),yy+nh]],{c:AL,w:Math.max(1.25,st.cnW),dash:'sysDash',head:'triangle',hs:'med',tail:false});
+     lab(c(0),ly+.04,c(1)-c(0),'例外：退回補件',{color:ALd});}],
+   ['審核迴圈','Approval Loop',(x,y)=>{const yy=y+.78,cy=yy+nh/2,dw=.74,dh=.6,dx=x+1.0,kw=.62;
+     N(x,yy,.8,'提出申請');A2([[x+.8,cy],[dx,cy]]);sym('dec',dx,cy-dh/2,dw,dh,'審核',{size:fs-1});
+     N(x+cw-kw,yy,kw,'核准',{strong:1});A2([[dx+dw,cy],[x+cw-kw,cy]]);lab(dx+dw,cy-.24,x+cw-kw-dx-dw,'通過');
+     const ly=y+.24;A2([[dx+dw/2,cy-dh/2],[dx+dw/2,ly],[x+.4,ly],[x+.4,yy]]);lab(x+.42,ly-.22,dx+dw/2-x-.42,'退回修改後重送');}],
+   ['泳道（雙道）','Swimlane',(x,y)=>{const lh2=.8,hw=.46,l1=y+.04,l2=l1+lh2+.06,c1=l1+lh2/2,c2=l2+lh2/2,w=.7;
+     [[l1,'申\n請\n人'],[l2,'主\n管']].forEach(([ly,t])=>{box(x,ly,cw,lh2,{fill:'FFFFFF',line:G.l2,lw:.75,name:'泳道'});box(x,ly,hw,lh2,{fill:GF,text:t,size:8.5,bold:1,color:G.t2,margin:0,lsp:.95,name:'泳道標題'});});
+     const xa=x+hw+.14,xb=xa+w+.3,xc=x+cw-w-.08;
+     N(xa,c1-nh/2,w,'填寫');N(xb,c2-nh/2,w,'審核');N(xc,c1-nh/2,w,'歸檔',{strong:1});
+     A2([[xa+w,c1],[xb+w/2,c1],[xb+w/2,c2-nh/2]]);A2([[xb+w,c2],[xc+w/2,c2],[xc+w/2,c1+nh/2]]);}],
+   ['平行分流／合流','Parallel Split / Merge',(x,y)=>{const ca=y+.38,cb=y+1.3,cm=(ca+cb)/2,bw=.07,w=.74;
+     const xs=x+.66,xj=x+cw-.86;
+     N(x,cm-nh/2,.56,'開始');box(xs+.1,ca-.28,bw,cb-ca+.56,{fill:P,name:'分流'});
+     const xA=xs+.38;N(xA,ca-nh/2,w,'作業 A');N(xA,cb-nh/2,w,'作業 B');
+     box(xj-.2,ca-.28,bw,cb-ca+.56,{fill:P,name:'合流'});N(x+cw-.62,cm-nh/2,.62,'彙整',{strong:1});
+     A2([[x+.56,cm],[xs+.1,cm]]);A2([[xs+.1+bw,ca],[xA,ca]]);A2([[xs+.1+bw,cb],[xA,cb]]);
+     A2([[xA+w,ca],[xj-.2,ca]]);A2([[xA+w,cb],[xj-.2,cb]]);A2([[xj-.2+bw,cm],[x+cw-.62,cm]]);}],
+   ['輸入→處理→輸出','Input / Process / Output',(x,y)=>{const ww=[.82,.7,.82],g=(cw-ww[0]-ww[1]-ww[2])/2,yy=y+.5;let xi=x;
+     [['io','輸入'],['proc','處理'],['doc','報表']].forEach(([k,t],i)=>{sym(k,xi,yy,ww[i],k==='doc'?.52:nh,t,{size:fs,strong:i===1});
+      lab(xi-.05,yy+.6,ww[i]+.1,['資料來源','整理運算','產出結果'][i],{color:G.mute});
+      if(i<2)A2([[xi+ww[i]+(k==='io'?-.06:0),yy+nh/2],[xi+ww[i]+g+(i===1?0:.06),yy+nh/2]]);xi+=ww[i]+g;});}],
+   ['前後對照','Before / After',(x,y)=>{const w=1.18,h=1.3,yy=y+.2,xb=x+cw-w;
+     cardBase(x,yy,w,h);txt(x+.14,yy+.12,w-.28,.3,[{t:'現況 ',b:1,c:G.t2},{t:'Before',s:8,c:G.mute,f:nf}],{size:LS(11),name:'卡片標題'});
+     txt(x+.14,yy+.48,w-.28,.7,'流程分散\n交接常出錯',{size:9.5,color:G.t2,valign:'top',lsp:1.2,name:'卡片內文'});
+     sep(x+cw/2,yy+h/2);
+     box(xb,yy,w,h,{fill:'FFFFFF',line:P,lw:1.75,r:st.r,sh:1,name:'強調卡片'});txt(xb+.14,yy+.12,w-.28,.3,[{t:'改善後 ',b:1,c:P},{t:'After',s:8,c:G.mute,f:nf}],{size:LS(11),name:'卡片標題'});
+     txt(xb+.14,yy+.48,w-.28,.7,'單一窗口\n進度一目了然',{size:9.5,color:G.ink,valign:'top',lsp:1.2,name:'卡片內文'});}]];
+  combos.forEach(([zh,en,fn],i)=>{const col=i%NCOL,row=Math.floor(i/NCOL);const x=X0+col*(cw+GAPc),y=row?rows2:y0;
+   const dx=mark(x,y+.14);txt(x+dx,y,cw-dx,.3,[{t:zh,s:LS(11.5),b:st.lBold,c:G.ink},{t:'  '+en,s:8,c:G.mute,f:nf}],{name:'組合名稱'});
+   ln(x,y+.34,x+cw,y+.34,{c:G.l2,w:.5});
+   grp(zh,()=>fn(x,y+lh));});};
  SL.guide=()=>{title('風格規範','色彩、字級與元件語言一覽'+(st.desc?'：'+st.desc.split('，')[0]:''));
   section(X0,1.95,5.5,'色彩 Palette');
   const sw=[[P,'主色'],[PD,'深色'],[PTn,'淺色']].concat(HASA?[[A,'輔助色']]:[]).concat([[G.ink,'文字'],[G.mute,'註解'],[G.line,'框線'],[G.fill,'底色']]);
@@ -569,10 +630,15 @@ function buildModel(params,opt){
   fadeBar(12.3,2.25,.38,4.25,G.l1);
   txt(11.35,1.92,1.4,.3,'情境限定',{size:10,bold:1,color:G.t2,align:'right'});txt(11.35,6.55,1.4,.3,'跨域通用',{size:10,bold:1,color:A,align:'right'});};
 
- SLIDES.forEach(([k,zh],i)=>{if(opt.only&&!opt.only.includes(k))return;sno=i+1;cur={key:k,title:zh,no:i+1,items:[]};slides.push(cur);canvas();SL[k]();footer();});
+ SLIDES.forEach(([k,zh],i)=>{if(opt.only&&!opt.only.includes(k))return;sno=i+1;cur={key:k,title:zh,no:i+1,items:[],groups:[]};slides.push(cur);canvas();SL[k]();footer();});
  return{slides,warns,params:st};}
 
 /* ================= PptxGenJS 匯出 ================= */
+function lum(h){const v=[0,2,4].map(i=>parseInt(h.substr(i,2),16)/255);return .2126*v[0]+.7152*v[1]+.0722*v[2];}
+function bboxOf(items){let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+ items.forEach(it=>{if(it.t==='ln'){x0=Math.min(x0,it.x1,it.x2);x1=Math.max(x1,it.x1,it.x2);y0=Math.min(y0,it.y1,it.y2);y1=Math.max(y1,it.y1,it.y2);}
+  else{x0=Math.min(x0,it.x);y0=Math.min(y0,it.y);x1=Math.max(x1,it.x+it.w);y1=Math.max(y1,it.y+it.h);}});
+ return{x:x0,y:y0,w:Math.max(x1-x0,.01),h:Math.max(y1-y0,.01)};}
 function ahType(t,sz){return t?(sz&&sz!=='med'?`${t}" w="${sz}" len="${sz}`:t):undefined;}
 function toPptx(pptx,model){
  pptx.layout='LAYOUT_WIDE';pptx.title='精緻圖解元件庫 · '+(model.params.zh||'自訂風格');pptx.author='PPT Style Studio';
@@ -593,18 +659,37 @@ function toPptx(pptx,model){
 /* 陰影修補：PptxGenJS 固定寫 algn="bl"、無 sx/sy；這裡依 model 逐一改寫成正確的 outerShdw（光暈置中、放大、柔和） */
 function effectXml(sh){const e=v=>Math.round(v*12700);const sc=Math.round((sh.scale||1)*100000);
  return `<a:effectLst><a:outerShdw blurRad="${e(sh.blur)}" dist="${e(sh.dist)}" dir="${Math.round(sh.dir*60000)}" sx="${sc}" sy="${sc}" algn="ctr" rotWithShape="0"><a:srgbClr val="${sh.color}"><a:alpha val="${Math.round(sh.alpha*100000)}"/></a:srgbClr></a:outerShdw></a:effectLst>`;}
+/* 群組修補：PptxGenJS 不支援群組；把同一元件的連續 <p:sp> 包進 <p:grpSp>（子座標＝原座標，可直接複製整組） */
+function groupXml(x,slide){const G=(slide.groups||[]).filter(g=>g.to>g.from);if(!G.length)return x;
+ const E=v=>Math.round(v*914400);const blocks=[];const re=/<p:sp>[\s\S]*?<\/p:sp>/g;let m;
+ while((m=re.exec(x))){const id=(m[0].match(/<p:cNvPr id="(\d+)"/)||[])[1];blocks.push({id:+id,s:m.index,e:m.index+m[0].length});}
+ const byId={};blocks.forEach((b,i)=>byId[b.id]=i);
+ const jobs=[];G.forEach((g,gi)=>{const i0=byId[g.from+2],i1=byId[g.to+2];if(i0==null||i1==null||i1-i0!==g.to-g.from)return;
+  for(let k=i0;k<=i1;k++)if(blocks[k].id!==g.from+2+(k-i0))return;jobs.push({g,gi,s:blocks[i0].s,e:blocks[i1].e});});
+ jobs.sort((a,b)=>b.s-a.s).forEach(j=>{const g=j.g;const nm=String(g.name||'元件').replace(/[<>&"]/g,'');
+  const o=`<a:off x="${E(g.x)}" y="${E(g.y)}"/><a:ext cx="${E(g.w)}" cy="${E(g.h)}"/><a:chOff x="${E(g.x)}" y="${E(g.y)}"/><a:chExt cx="${E(g.w)}" cy="${E(g.h)}"/>`;
+  x=x.slice(0,j.s)+`<p:grpSp><p:nvGrpSpPr><p:cNvPr id="${5000+j.gi}" name="${nm}"/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm>${o}</a:xfrm></p:grpSpPr>`+x.slice(j.s,j.e)+'</p:grpSp>'+x.slice(j.e);});
+ return x;}
 async function patchZip(zip,model){let n=0;
  for(let i=0;i<model.slides.length;i++){const f='ppt/slides/slide'+(i+1)+'.xml';const file=zip.file(f);if(!file)continue;const items=model.slides[i].items;
   let x=await file.async('string');
   x=x.replace(/<p:sp>[\s\S]*?<\/p:sp>/g,blk=>{const m=blk.match(/<p:cNvPr id="(\d+)"/);if(!m)return blk;const it=items[+m[1]-2];if(!it||!it.sh)return blk;
    n++;return blk.replace(/<a:effectLst>[\s\S]*?<\/a:effectLst>/,effectXml(it.sh));});
+  x=groupXml(x,model.slides[i]);
   zip.file(f,x);}
  return n;}
-async function exportPptx(env,params,opt){opt=opt||{};const model=buildModel(params,{only:opt.only});
+async function exportPptx(env,params,opt){opt=opt||{};const model=opt.model||buildModel(params,{only:opt.only});
  const pptx=new env.PptxGenJS();toPptx(pptx,model);
  const buf=await pptx.write({outputType:'arraybuffer'});const zip=await env.JSZip.loadAsync(buf);const patched=await patchZip(zip,model);
  const data=await zip.generateAsync({type:opt.type||'blob',compression:'DEFLATE',mimeType:'application/vnd.openxmlformats-officedocument.presentationml.presentation'});
  return{data,model,patched};}
+
+/* 單一元件：取出某頁某群組的圖形，置中到一張新投影片 */
+function elementModel(params,key,gi){const m=buildModel(params,{only:[key]});const sl=m.slides[0];const g=sl.groups[gi];if(!g)throw new Error('找不到元件 '+gi);
+ const dx=(W-g.w)/2-g.x,dy=(H-g.h)/2-g.y;
+ const items=clone(sl.items.slice(g.from,g.to+1)).map(it=>{if(it.t==='ln'){it.x1+=dx;it.x2+=dx;it.y1+=dy;it.y2+=dy;}else{it.x+=dx;it.y+=dy;}return it;});
+ return{slides:[{key:key+'-'+gi,title:g.name,no:1,items,groups:[Object.assign({},g,{from:0,to:items.length-1,x:g.x+dx,y:g.y+dy})]}],warns:[],params:m.params,element:g};}
+async function exportElement(env,params,key,gi,opt){const model=elementModel(params,key,gi);return exportPptx(env,params,Object.assign({},opt||{},{model}));}
 
 /* ================= SVG 預覽（與匯出共用同一份 model） ================= */
 const FONT_STACK={'Microsoft JhengHei':"'Microsoft JhengHei','微軟正黑體','Noto Sans CJK TC','Noto Sans TC','PingFang TC',sans-serif",
@@ -660,26 +745,53 @@ function svgShapePath(it){const x=it.x*PT,y=it.y*PT,w=it.w*PT,h=it.h*PT,R=x+w,B=
     else d+=(i===0?'M':'L')+X(p.x)+','+Y(p.y);px=p.x;py=p.y;});return d;}}
  return '';}
 function dashArr(d,w){w=Math.max(w,.5);return{sysDot:`${w},${w}`,sysDash:`${3*w},${w}`,dash:`${4*w},${3*w}`,lgDash:`${8*w},${3*w}`}[d]||'';}
-function toSvg(slide,opt){opt=opt||{};const id=(opt.id||'s')+'_';const defs={},body=[];let fi=0,mi=0;
+/* 平面箭頭（給剪貼簿 SVG 用：Office 對 <marker> 支援不穩，改畫成實體三角形） */
+function headShape(tx,ty,fx,fy,type,sz,color,w){const f={sm:2,med:3,lg:5}[sz]||3,k=f*Math.max(w,.5)/10;const ang=Math.atan2(ty-fy,tx-fx);
+ const T=(px,py)=>{const X=(px-10)*k,Y=(py-5)*k;return[(tx+X*Math.cos(ang)-Y*Math.sin(ang)).toFixed(2),(ty+X*Math.sin(ang)+Y*Math.cos(ang)).toFixed(2)];};
+ const P=pts=>pts.map(p=>T(p[0],p[1]).join(',')).join(' ');
+ switch(type){case 'triangle':return `<polygon points="${P([[0,0],[10,5],[0,10]])}" fill="#${color}"/>`;
+  case 'stealth':return `<polygon points="${P([[0,0],[10,5],[0,10],[3,5]])}" fill="#${color}"/>`;
+  case 'arrow':return `<polyline points="${P([[1,1],[9,5],[1,9]])}" fill="none" stroke="#${color}" stroke-width="${(1.6*k).toFixed(2)}"/>`;
+  case 'oval':{const c=T(5,5);return `<circle cx="${c[0]}" cy="${c[1]}" r="${(4.2*k).toFixed(2)}" fill="#${color}"/>`;}
+  default:return '';}}
+function toSvg(slide,opt){opt=opt||{};const id=(opt.id||'s')+'_';const defs={},parts=[];let fi=0,mi=0;const flat=!!opt.flat;
  const marker=(type,sz,color)=>{const k='m'+type+sz+color;if(defs[k])return defs[k].id;const mid=id+'m'+(mi++);const f={sm:2,med:3,lg:5}[sz]||3;
   const shp={triangle:`<path d="M0,0L10,5L0,10Z" fill="#${color}"/>`,arrow:`<path d="M1,1L9,5L1,9" fill="none" stroke="#${color}" stroke-width="1.6"/>`,stealth:`<path d="M0,0L10,5L0,10L3,5Z" fill="#${color}"/>`,oval:`<circle cx="5" cy="5" r="4.2" fill="#${color}"/>`,diamond:`<path d="M5,0L10,5L5,10L0,5Z" fill="#${color}"/>`}[type]||'';
   defs[k]={id:mid,xml:`<marker id="${mid}" viewBox="0 0 10 10" refX="${type==='oval'||type==='diamond'?5:9}" refY="5" markerWidth="${f}" markerHeight="${f}" orient="auto-start-reverse" markerUnits="strokeWidth">${shp}</marker>`};return mid;};
  const filt=(sh,size)=>{const dil=((sh.scale||1)-1)*size/2;const k='f'+[sh.blur,sh.dist,sh.dir,sh.alpha,dil.toFixed(1)].join('_');if(defs[k])return defs[k].id;const fid=id+'f'+(fi++);
   const dx=sh.dist*Math.cos(sh.dir*Math.PI/180),dy=sh.dist*Math.sin(sh.dir*Math.PI/180);
   defs[k]={id:fid,xml:`<filter id="${fid}" x="-60%" y="-60%" width="220%" height="220%" color-interpolation-filters="sRGB">${dil>.05?`<feMorphology in="SourceAlpha" operator="dilate" radius="${dil.toFixed(2)}" result="d"/>`:''}<feGaussianBlur in="${dil>.05?'d':'SourceAlpha'}" stdDeviation="${(sh.blur/2).toFixed(2)}"/><feOffset dx="${dx.toFixed(2)}" dy="${dy.toFixed(2)}" result="o"/><feFlood flood-color="#${sh.color}" flood-opacity="${sh.alpha}"/><feComposite in2="o" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>`};return fid;};
- const strokeAttrs=(c,w,dash,head,tail,hs)=>`stroke="#${c}" stroke-width="${w}" fill="none"${dash&&dash!=='solid'?` stroke-dasharray="${dashArr(dash,w)}"`:''}${head?` marker-end="url(#${marker(head,hs,c)})"`:''}${tail?` marker-start="url(#${marker(tail,hs,c)})"`:''}`;
- slide.items.forEach(it=>{
-  if(it.t==='ln'){body.push(`<line x1="${it.x1*PT}" y1="${it.y1*PT}" x2="${it.x2*PT}" y2="${it.y2*PT}" ${strokeAttrs(it.color,it.w,it.dash,it.head,it.tail,it.hs)}/>`);return;}
-  if(it.kind){const d=svgShapePath(it);const f=it.sh?` filter="url(#${filt(it.sh,Math.min(it.w,it.h)*PT)})"`:'';
+ const mk=(head,tail,hs,c)=>flat?'':`${head?` marker-end="url(#${marker(head,hs,c)})"`:''}${tail?` marker-start="url(#${marker(tail,hs,c)})"`:''}`;
+ slide.items.forEach((it,idx)=>{const body=[];
+  if(it.t==='ln'){const x1=it.x1*PT,y1=it.y1*PT,x2=it.x2*PT,y2=it.y2*PT;
+   body.push(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#${it.color}" stroke-width="${it.w}" fill="none"${it.dash&&it.dash!=='solid'?` stroke-dasharray="${dashArr(it.dash,it.w)}"`:''}${mk(it.head,it.tail,it.hs,it.color)}/>`);
+   if(flat){if(it.head)body.push(headShape(x2,y2,x1,y1,it.head,it.hs,it.color,it.w));if(it.tail)body.push(headShape(x1,y1,x2,y2,it.tail,it.hs,it.color,it.w));}
+   parts[idx]=body.join('');return;}
+  if(it.kind){const d=svgShapePath(it);const f=it.sh&&!flat?` filter="url(#${filt(it.sh,Math.min(it.w,it.h)*PT)})"`:'';
    const fill=it.fill?`fill="#${it.fill}"${it.ft?` fill-opacity="${(1-it.ft/100).toFixed(3)}"`:''}`:'fill="none"';
-   const stroke=it.line?` stroke="#${it.line}" stroke-width="${it.lw}"${it.dash&&it.dash!=='solid'?` stroke-dasharray="${dashArr(it.dash,it.lw)}"`:''}${it.head?` marker-end="url(#${marker(it.head,it.hs,it.line)})"`:''}${it.tail?` marker-start="url(#${marker(it.tail,it.hs,it.line)})"`:''}`:'';
+   const stroke=it.line?` stroke="#${it.line}" stroke-width="${it.lw}"${it.dash&&it.dash!=='solid'?` stroke-dasharray="${dashArr(it.dash,it.lw)}"`:''}${mk(it.head,it.tail,it.hs,it.line)}`:'';
    body.push(`<path d="${d}" ${fill}${stroke}${f} stroke-linejoin="miter"/>`);
+   if(flat&&it.line&&(it.head||it.tail)&&it.points){const X=v=>(it.x+v)*PT,Y=v=>(it.y+v)*PT;const pts=it.points.filter(q=>!q.close);
+    if(it.head){const L=pts[pts.length-1],Q=L.curve&&L.curve.type==='cubic'?{x:L.curve.x2,y:L.curve.y2}:pts[pts.length-2];body.push(headShape(X(L.x),Y(L.y),X(Q.x),Y(Q.y),it.head,it.hs,it.line,it.lw));}
+    if(it.tail){const F=pts[0],Q=pts[1].curve&&pts[1].curve.type==='cubic'?{x:pts[1].curve.x1,y:pts[1].curve.y1}:pts[1];body.push(headShape(X(F.x),Y(F.y),X(Q.x),Y(Q.y),it.tail,it.hs,it.line,it.lw));}}
    if(it.kind==='can'){const x=it.x*PT,y=it.y*PT,w=it.w*PT,e=(it.adj||0)*PT/2;body.push(`<ellipse cx="${x+w/2}" cy="${y+e}" rx="${w/2}" ry="${e}" fill="${it.fill?'#'+mix(it.fill,'FFFFFF',.25):'none'}"${it.line?` stroke="#${it.line}" stroke-width="${it.lw}"`:''}/>`);}}
   if(it.runs){layoutText(it).forEach(l=>{if(!l.runs.length)return;
-   body.push(`<text x="${l.x.toFixed(2)}" y="${l.base.toFixed(2)}" xml:space="preserve">${l.runs.map(r=>`<tspan font-family="${esc(fstack(r.o.font))}" font-size="${r.o.size}" font-weight="${fweight(r.o.font,r.o.bold)}" fill="#${r.o.color}"${r.o.cs?` letter-spacing="${r.o.cs}"`:''}>${esc(r.t)}</tspan>`).join('')}</text>`);});}});
- const vb=`0 0 ${W*PT} ${H*PT}`;
- return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" ${opt.attrs||''}><defs>${Object.values(defs).map(d=>d.xml).join('')}</defs><rect width="100%" height="100%" fill="#FFFFFF"/>${body.join('')}</svg>`;}
-
-const api={W,H,BASE,PRESETS,STYLES:PRESETS,SLIDES,mix,buildModel,toPptx,patchZip,effectXml,exportPptx,toSvg,langOf,FONT_STACK};
+   body.push(`<text x="${l.x.toFixed(2)}" y="${l.base.toFixed(2)}" xml:space="preserve">${l.runs.map(r=>`<tspan font-family="${esc(flat?(r.o.font+', '+fstack(r.o.font)).replace(/'/g,''):fstack(r.o.font))}" font-size="${r.o.size}" font-weight="${fweight(r.o.font,r.o.bold)}" fill="#${r.o.color}"${r.o.cs?` letter-spacing="${r.o.cs}"`:''}>${esc(r.t)}</tspan>`).join('')}</text>`);});}
+  parts[idx]=body.join('');});
+ /* 互動模式：每個群組包成 <g class="el">，最上層加一個透明命中框 */
+ let out=parts;
+ if(opt.interactive&&slide.groups&&slide.groups.length){out=parts.slice();const pad=4;
+  slide.groups.forEach((g,gi)=>{const x=g.x*PT-pad,y=g.y*PT-pad,w=g.w*PT+2*pad,h=g.h*PT+2*pad;
+   out[g.from]=`<g class="el" data-g="${gi}" data-name="${esc(g.name)}">`+out[g.from];
+   out[g.to]=out[g.to]+`<rect class="hit" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="4"/></g>`;});}
+ const vb=opt.viewBox||`0 0 ${W*PT} ${H*PT}`;
+ return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" ${opt.attrs||''}><defs>${Object.values(defs).map(d=>d.xml).join('')}</defs>${opt.bg===false?'':'<rect width="100%" height="100%" fill="#FFFFFF"/>'}${out.join('')}</svg>`;}
+/* 單一元件 SVG：只取群組內的圖形，裁切到外框（含留白）；flat=剪貼簿相容版（無濾鏡、箭頭實體化、透明背景） */
+function elementSvg(slide,gi,opt){opt=opt||{};const g=slide.groups[gi];const pad=(opt.pad!=null?opt.pad:6);
+ const items=slide.items.slice(g.from,g.to+1);const hasSh=items.some(i=>i.sh);const m=pad+(hasSh&&!opt.flat?16:0);
+ const x=g.x*PT-m,y=g.y*PT-m,w=g.w*PT+2*m,h=g.h*PT+2*m;
+ const svg=toSvg({items},{id:opt.id||'e',flat:opt.flat,bg:opt.bg,viewBox:`${x.toFixed(2)} ${y.toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)}`,attrs:`width="${(w*(opt.scale||1)).toFixed(1)}pt" height="${(h*(opt.scale||1)).toFixed(1)}pt"`.replace(/pt"/g,opt.px?'"':'pt"')});
+ return{svg,w,h,name:g.name};}
+const api={W,H,BASE,PRESETS,STYLES:PRESETS,SLIDES,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);

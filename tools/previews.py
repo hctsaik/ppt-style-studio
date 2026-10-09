@@ -10,7 +10,7 @@ for id_,zh,en in ids:
     im=Image.open(f).convert('RGB');im=im.resize((1200,675),Image.LANCZOS)
     im.save('preview/'+os.path.basename(f)[:-4]+'.jpg',quality=86,optimize=True)
 # overview：每個風格取一張代表頁
-rep={'navy':'09','green':'05','frame':'10','iceberg':'11','wire':'08','wine':'02','teal':'07','charcoal':'03'}
+rep={'navy':'10','green':'06','frame':'11','iceberg':'12','wire':'09','wine':'03','teal':'08','charcoal':'04','investor':'10'}
 font=ImageFont.truetype('/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc',30,index=3)
 font2=ImageFont.truetype('/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',22,index=3)
 tw,th=960,540;pad=36;cap=64;cols=2;rows=(len(ids)+1)//2
