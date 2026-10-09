@@ -29,6 +29,11 @@ render/*
 !render/studio-pdca-selected.png
 !render/studio-size-L.png
 !render/size-compare-navy.png
+!render/export-icon-lo.png
+!render/table-preview-vs-pptx.png
+!render/table-before-after.png
+!render/table-before-v6.png
+!render/studio-table-menu.png
 !render/studio-icons-navy.png
 !render/studio-icons-wine.png
 !render/studio-icon-toolbar.png
@@ -36,8 +41,6 @@ render/*
 !render/studio-tray.png
 !render/icons-all-styles.png
 !render/icons-navy-lo.png
-!render/table-navy-lo.png
-!render/export-table-icon-lo.png
 !render/tray-onepage-lo.png
 # 其他暫存
 *.pdf
@@ -45,4 +48,6 @@ render/*
 *.map
 .DS_Store
 Thumbs.db
-review/
+review/*
+!review/table-redesign.md
+!review/table-mocks/

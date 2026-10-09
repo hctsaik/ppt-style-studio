@@ -122,25 +122,49 @@ main{display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff
 .ibar2{position:absolute;z-index:6;display:none;align-items:center;gap:4px;background:#fff;border:1px solid #D6D6D6;border-radius:8px;box-shadow:0 4px 14px #0000001f;padding:4px 5px;font-size:11.5px;white-space:nowrap}
 .ibar2.on{display:flex}.ibar2 b{margin:0 4px}.ibar2 button{border:1px solid #DADADA;background:#fff;border-radius:6px;padding:3px 8px;cursor:pointer;font-size:11.5px}
 .ibar2 button:hover{border-color:#999}.ibar2 button.pri{background:var(--p);border-color:var(--p);color:#fff;font-weight:700}
-.tview{flex:1;display:grid;grid-template-columns:410px 1fr;min-height:0}
-.tleft{overflow-y:auto;padding:10px 18px 90px;border-right:1px solid var(--line)}
-.tright{display:flex;flex-direction:column;min-width:0;min-height:0;padding:12px 22px 70px}
-.step{font-size:13.5px;font-weight:800;margin:12px 0 6px;display:flex;align-items:center;gap:8px}
-.step i{width:21px;height:21px;border-radius:50%;background:var(--p);color:#fff;font-style:normal;display:inline-flex;align-items:center;justify-content:center;font-size:11.5px}
-#tIn{width:100%;height:118px;font:11.5px/1.45 Consolas,"Noto Sans Mono",monospace;border:1px dashed #C9C9C9;border-radius:8px;padding:7px 9px;resize:vertical;white-space:pre;tab-size:12}
-#tIn:focus{outline:none;border-color:var(--p);border-style:solid}
-.tline{display:flex;align-items:center;gap:6px;margin:6px 0;flex-wrap:wrap}
-.tgrid{overflow:auto;max-height:240px;border:1px solid var(--line);border-radius:7px;margin-top:6px}
+.tv{flex:1;display:flex;flex-direction:column;min-height:0;padding:10px 20px 64px;gap:8px;overflow:auto}
+.tbar{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.tbar>.btn{flex:0 0 auto;white-space:nowrap}
+.tbar kbd{font:10.5px Consolas,monospace;background:#F1F1F1;border:1px solid #DDD;border-radius:4px;padding:0 4px;margin-left:4px;color:#666}
+.tbar select.btn{padding-right:22px;width:104px;flex:0 0 auto}
+.tedit[hidden],.tmenu[hidden]{display:none!important}
+.tauto{flex:1 1 0;min-width:0;font-size:11.5px;color:#6B6B6B;margin-left:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tauto b{color:#2E7D4F;font-weight:700;margin-right:4px}
+.tedit{display:grid;grid-template-columns:minmax(260px,1fr) 1.4fr;gap:12px;background:#FAFAFA;border:1px solid var(--line);border-radius:8px;padding:10px}
+#tIn{width:100%;height:150px;font:11.5px/1.45 Consolas,"Noto Sans Mono",monospace;border:1px solid #D5D5D5;border-radius:6px;padding:7px 9px;resize:vertical;white-space:pre;tab-size:12}
+.tline{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}
+.tgrid{overflow:auto;max-height:150px;border:1px solid var(--line);border-radius:6px;background:#fff}
 .tgrid table{border-collapse:collapse;font-size:11.5px}.tgrid td{border:1px solid #E6E6E6;padding:2px 6px;min-width:46px;max-width:150px;white-space:pre-wrap;outline:none}
 .tgrid tr:first-child td{background:#F6F6F6;font-weight:700}.tgrid td:focus{box-shadow:0 0 0 2px var(--p) inset}
-.tleft .row{grid-template-columns:96px 1fr}
-.tleft input[type=text],.tleft textarea.sm{width:100%;padding:4px 7px;border:1px solid #DADADA;border-radius:6px;font-family:inherit;font-size:12px}
-.tleft textarea.sm{height:44px;resize:vertical}
-.chipsel{display:flex;flex-wrap:wrap;gap:4px}.chipsel button{border:1px solid #DADADA;background:#fff;border-radius:99px;padding:2px 9px;cursor:pointer;font-size:11.5px}
-.chipsel button.on{border-color:var(--p);background:#F3F6FA;color:var(--p);font-weight:700}
-.tact{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-.tprev{width:100%;max-width:calc((100vh - 250px)*16/9);aspect-ratio:16/9;border:1px solid #E2E2E2;border-radius:4px;box-shadow:0 4px 18px #00000012;background:#fff;overflow:hidden;cursor:copy}
+.tlooks{flex:0 0 auto;display:flex;gap:8px;overflow-x:auto;padding:2px 2px 4px}
+.tlook{flex:0 0 auto;width:148px;border:1px solid #E2E2E2;border-radius:8px;background:#fff;cursor:pointer;padding:0;font-family:inherit;text-align:left;overflow:hidden;transition:border-color .12s,box-shadow .12s}
+.tlook:hover{border-color:#B9B9B9;box-shadow:0 2px 8px #0000000F}
+.tlook.on{border-color:var(--p);box-shadow:0 0 0 1.5px var(--p)}
+.tlook .th{height:74px;display:flex;align-items:center;justify-content:center;padding:4px 6px;border-bottom:1px solid #F0F0F0}
+.tlook .th svg{width:100%;height:100%}
+.tlook .nm{display:block;font-size:11.5px;padding:4px 8px;color:#444}.tlook.on .nm{color:var(--p);font-weight:700}
+.tstage{position:relative;flex:0 0 auto;display:flex;align-items:flex-start;justify-content:center}
+.tprev{position:relative;width:100%;max-width:calc((100vh - 300px)*16/9);aspect-ratio:16/9;border:1px solid #E2E2E2;border-radius:4px;box-shadow:0 4px 18px #00000012;background:#fff;overflow:hidden}
 .tprev svg{display:block;width:100%;height:100%}
+.tov{position:absolute;inset:0}
+.tov i{position:absolute;cursor:pointer;border-radius:2px}
+.tov i.h{background:rgba(31,78,121,.07);outline:1px dashed rgba(31,78,121,.55)}
+.tempty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#777;border:2px dashed #D3D3D3;border-radius:4px;margin:14px}
+.tempty b{font-size:20px;color:#444}.tempty .tline{justify-content:center}
+.tmenu{position:absolute;z-index:6;background:#fff;border:1px solid #D0D0D0;border-radius:9px;box-shadow:0 8px 26px #00000024;padding:7px;display:flex;flex-direction:column;gap:6px;min-width:210px;font-size:12.5px}
+.tmenu .mh{font-size:11.5px;color:#777;padding:0 2px}.tmenu .mh b{color:#333}
+.tmenu .mr{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.tmenu button{border:1px solid #D5D5D5;background:#fff;border-radius:6px;padding:4px 9px;cursor:pointer;font:inherit}
+.tmenu button:hover{border-color:#999}.tmenu button.on{border-color:var(--p);background:#EEF3F8;color:var(--p);font-weight:700}
+.tmenu hr{border:0;border-top:1px solid #EEE;margin:1px 0}
+.tfoot{flex:0 0 auto;padding-right:130px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:12px;color:#555}
+.tfoot>label{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.tfoot input[type=text]{width:180px;padding:5px 8px;border:1px solid #DADADA;border-radius:6px;font:inherit;font-size:12.5px}
+.tfoot label.wide{flex:1 1 200px}.tfoot label.wide input{width:100%}.tfoot #tUnit{width:220px}
+.tadv{position:relative}.tadv summary{cursor:pointer;color:var(--p);font-weight:700;list-style:none;padding:5px 8px;border:1px solid #DADADA;border-radius:6px}
+.tadv summary::-webkit-details-marker{display:none}.tadv summary::before{content:none!important;display:none!important}.tadv summary::after{content:' ▾'}.tadv[open] summary::after{content:' ▴'}
+.tadv-b{position:absolute;bottom:34px;left:0;z-index:7;width:380px;background:#fff;border:1px solid #D5D5D5;border-radius:9px;box-shadow:0 8px 26px #00000024;padding:10px 12px}
+.tadv-b .row{grid-template-columns:110px 1fr}
 .traybtn{position:fixed;right:18px;bottom:16px;z-index:8;background:var(--p);color:#fff;border:0;border-radius:99px;padding:9px 16px;font-weight:700;font-size:13px;box-shadow:0 4px 14px #00000030;cursor:pointer;font-family:inherit}
 .traybtn b{background:#fff;color:var(--p);border-radius:99px;padding:0 8px;margin-left:7px}
 .traybtn.bump{animation:bump .45s}@keyframes bump{30%{transform:scale(1.12)}60%{transform:scale(.97)}}
@@ -197,45 +221,47 @@ main{display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff
   </section>
   <section class="view" id="vIcons" hidden>
    <div class="ibar">
-    <input type="search" id="iSearch" placeholder="搜尋圖示：晶圓、AI、wafer…">
+    <input type="search" id="iSearch" placeholder="搜尋（中英）：晶圓、機台、風險、chart…">
     <span><span class="lb">顏色</span><span class="seg" id="iColor" style="display:inline-flex"></span></span>
     <span><span class="lb">樣式</span><span class="seg" id="iVar" style="display:inline-flex"></span></span>
-    <span class="rng"><span class="lb">線寬</span><input type="range" id="iSW" min="0" max="3" step="0.25"><output id="iSWo" style="width:auto;min-width:76px;text-align:left;font-size:11.5px;white-space:nowrap"></output></span>
+    <span><span class="lb">粗細</span><span class="seg" id="iWt" style="display:inline-flex"></span></span>
     <span class="sp" style="flex:1"></span>
     <span class="hint" id="iInfo" style="margin:0"></span>
     <button class="btn" id="iZip" title="目前顏色／樣式的全部圖示：透明 PNG（2×）＋ SVG">全部下載 ZIP</button>
    </div>
    <div class="igrid" id="iGrid"></div>
-   <div class="ibar2" id="ibar2"><b id="iName"></b><small id="iDim" style="color:#8C8C8C;margin-right:4px"></small><button class="pri" data-a="copy" title="SVG 向量＋透明 PNG">複製</button><button data-a="svg">SVG</button><button data-a="png2">PNG 2×</button><button data-a="png4">PNG 4×</button><button data-a="pic" title="1 頁 .pptx：SVG 向量圖片（PNG 備援），PowerPoint 365 可右鍵「轉換成圖案」">.pptx 圖片</button><button data-a="shape" title="1 頁 .pptx：原生自訂圖案，直接可改顏色、線寬">.pptx 圖案</button><button data-a="tray" title="加入待選素材（保留目前風格）">＋待選</button><button data-a="x">✕</button></div>
+   <div class="ibar2" id="ibar2"><b id="iName"></b><small id="iDim" style="color:#8C8C8C;margin-right:4px"></small><button class="pri" data-a="copy" title="SVG 向量＋透明 PNG">複製</button><button data-a="svg">SVG</button><button data-a="png2">PNG 2×</button><button data-a="png4">PNG 4×</button><button data-a="pic" title="1 頁 .pptx：SVG 向量圖片（PNG 備援），PowerPoint 365 可右鍵「轉換成圖案」">.pptx 圖片</button><button data-a="shape" title="1 頁 .pptx：原生自訂圖案（填色外框），直接可改顏色">.pptx 圖案</button><button data-a="tray" title="加入待選素材（保留目前風格）">＋待選</button><button data-a="x">✕</button></div>
   </section>
   <section class="view" id="vTable" hidden>
-   <div class="tview">
-    <div class="tleft">
-     <div class="step"><i>1</i>貼上資料</div>
-     <div class="hint">在 Excel／Google 試算表選取儲存格 → Ctrl+C → 點下面空白框 → Ctrl+V。第一列當表頭。</div>
-     <textarea id="tIn" spellcheck="false" placeholder="在這裡貼上（Tab 分隔）"></textarea>
-     <div class="tline"><button class="btn" id="tSample">範例：損益表</button><button class="btn" id="tClear">清除</button><span class="hint" id="tInfo" style="margin:0"></span></div>
-     <details id="tGridBox"><summary style="padding:6px 2px;font-size:12.5px">直接在小表格裡修改</summary>
-      <div class="tgrid" id="tGrid"></div>
-      <div class="tline"><button class="btn" data-g="r+">＋列</button><button class="btn" data-g="c+">＋欄</button><button class="btn" data-g="r-">－列</button><button class="btn" data-g="c-">－欄</button></div></details>
-     <div class="step"><i>2</i>選樣式（顏色跟著左側風格）</div>
-     <div class="row"><label>標題</label><input type="text" id="tTitle" placeholder="可留白"></div>
-     <div class="row"><label>單位</label><input type="text" id="tUnit" placeholder="例如：單位：新台幣十億元"></div>
-     <div class="row"><label>註腳</label><textarea class="sm" id="tNote" placeholder="資料來源、附註（可多行）"></textarea></div>
-     <div class="row"><label>表頭</label><div class="seg" data-tb="tbHead"></div></div>
-     <div class="row"><label>灰色圓角底板</label><label class="tg"><input type="checkbox" data-tbk="tbPanel"><span></span></label></div>
-     <div class="row"><label>斑馬紋</label><label class="tg"><input type="checkbox" data-tbk="tbZebra"><span></span></label></div>
-     <div class="row"><label>數字靠右</label><label class="tg"><input type="checkbox" data-tbk="tbNumR"><span></span></label></div>
-     <div class="row"><label>密度</label><div class="seg" data-tb="tbDense"></div></div>
-     <div class="row"><label>框選強調</label><select id="tHi" style="width:100%;padding:4px 6px;border:1px solid #DADADA;border-radius:6px;height:28px"></select></div>
-     <div class="row"><label>框線顏色</label><div class="seg" data-tb="tbHiColor"></div></div>
-     <div class="row" style="align-items:flex-start;padding-top:5px"><label>粗體重點列</label><div class="chipsel" id="tBold"></div></div>
-     <div class="hint">尺寸跟著左側「元件尺寸 S／M／L」：字級、列高、線寬一起縮放。</div>
+   <div class="tv">
+    <div class="tbar">
+     <button class="btn" id="tPasteBtn" title="讀取剪貼簿（或直接在這一頁任何地方按 Ctrl+V）">📋 貼上 <kbd>Ctrl+V</kbd></button>
+     <select id="tSample" class="btn" title="載入範例資料"><option value="">範例…</option><option value="fin">財務摘要（損益表）</option><option value="cmp">方案比較</option><option value="status">專案進度（狀態）</option><option value="kpi">KPI 表</option></select>
+     <button class="btn" id="tEditBtn" aria-expanded="false">編輯資料</button>
+     <span class="tauto" id="tAuto"></span>
+     <button class="btn pri" id="tCopy" title="HTML 表格：在 PowerPoint 按 Ctrl+V 即成原生表格">複製到 PowerPoint</button>
+     <button class="btn" id="tPptx" title="1 頁 .pptx：原生表格（每格可編輯）＋底板／強調框">下載 .pptx</button>
+     <button class="btn" id="tTray" title="加入待選素材（保留目前風格與資料）">＋待選</button>
     </div>
-    <div class="tright">
-     <div class="step" style="margin-top:0"><i>3</i>複製或下載</div>
-     <div class="tact"><button class="btn pri" id="tCopy" title="HTML 表格：在 PowerPoint 按 Ctrl+V 即成原生表格">複製表格（貼到 PowerPoint）</button><button class="btn" id="tPptx" title="1 頁 .pptx：原生表格＋底板＋強調框，全部可編輯">下載 .pptx</button><button class="btn" id="tTray" title="加入待選素材（保留目前風格與資料）">＋待選素材</button><span class="hint" id="tMsg" style="margin:0"></span></div>
-     <div class="tprev" id="tPrev" title="預覽＝匯出（同一份模型）；雙擊加入待選素材"></div>
+    <div class="tedit" id="tEdit" hidden>
+     <div class="tedit-l"><div class="hint" style="margin:0 0 4px">Tab 分隔文字（Excel 複製來的就是）；改這裡會保留強調與粗體設定。</div><textarea id="tIn" spellcheck="false"></textarea></div>
+     <div class="tedit-r"><div class="tgrid" id="tGrid"></div><div class="tline"><button class="btn" data-g="r+">＋列</button><button class="btn" data-g="c+">＋欄</button><button class="btn" data-g="r-">－列</button><button class="btn" data-g="c-">－欄</button><button class="btn" id="tClear">清空</button></div></div>
+    </div>
+    <div class="tlooks" id="tLooks"></div>
+    <div class="tstage"><div class="tprev" id="tPrev"></div><div class="tmenu" id="tMenu" hidden></div></div>
+    <div class="tfoot">
+     <label>標題<input type="text" id="tTitle" placeholder="可留白"></label>
+     <label>單位<input type="text" id="tUnit" placeholder="例：單位：新台幣十億元"></label>
+     <label class="wide">註腳<input type="text" id="tNote" placeholder="資料來源、附註（用 \n 換行）"></label>
+     <details class="tadv" id="tAdv"><summary>進階</summary><div class="tadv-b">
+      <div class="row"><label>密度</label><div class="seg" data-tb="tbDense"></div></div>
+      <div class="row"><label>強調方式</label><div class="seg" data-tb="tbHiMode"></div></div>
+      <div class="row"><label>強調顏色</label><div class="seg" data-tb="tbHiColor"></div></div>
+      <div class="row"><label>狀態文字上色</label><label class="tg"><input type="checkbox" data-tbk="tbStatus"><span></span></label></div>
+      <div class="row"><label>負數紅字</label><label class="tg"><input type="checkbox" data-tbk="tbNeg"><span></span></label></div>
+      <div class="row"><label>第一列是表頭</label><div class="seg" id="tHead"><button data-v="auto">自動</button><button data-v="1">是</button><button data-v="0">否</button></div></div>
+      <div class="hint">尺寸跟著左側「元件尺寸 S／M／L」；顏色、字型跟著左側風格；這些設定也會存進「我的風格」。</div></div></details>
+     <span class="hint" id="tMsg" style="margin:0 0 0 auto"></span>
     </div>
    </div>
   </section>
@@ -577,25 +603,26 @@ function renderExtra(){if(S.tab==='icons')renderIcons();else if(S.tab==='table')
 /* ---------- 圖示庫 ---------- */
 const IC_COLORS=[['P','主色'],['PD','深主色'],['A','強調色'],['g','灰']];
 function iconLook(p){p=p||S.p;const fg0={P:p.P,PD:p.PD,A:p.useA?p.A:p.P,g:p.t2}[p.icColor]||p.P;const v=p.icVar||'line';
- return{variant:v,sw:I.strokeOf(p),fg:v==='solid'?'FFFFFF':fg0,bg:v==='solid'?fg0:D.mix(fg0,'FFFFFF',.86),fg0};}
-const icSvg=(id,px,p)=>{const L=iconLook(p);return I.svg(id,{variant:L.variant,sw:L.sw,fg:L.fg,bg:L.bg,px,title:I.BY[id].zh});};
+ return{variant:v,wt:I.weightOf(p),fg:v==='solid'?'FFFFFF':fg0,bg:v==='solid'?fg0:D.mix(fg0,'FFFFFF',.86),fg0};}
+const icSvg=(id,px,p)=>{const L=iconLook(p);return I.svg(id,{variant:L.variant,wt:L.wt,fg:L.fg,bg:L.bg,px,title:I.BY[id].zh});};
 const icPx=()=>Math.round(64*SK());
 function buildIconBar(){
  $('#iColor').innerHTML=IC_COLORS.map(c=>`<button data-v="${c[0]}">${c[1]}</button>`).join('');
  $('#iVar').innerHTML=I.VARIANTS.map(v=>`<button data-v="${v[0]}">${v[1]}</button>`).join('');
  $('#iColor').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.p.icColor=b.dataset.v;schedule();};
  $('#iVar').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.p.icVar=b.dataset.v;schedule();};
- $('#iSW').oninput=e=>{S.p.icSW=+e.target.value;schedule();};
+ $('#iWt').innerHTML=[[0,'跟風格'],[300,'細 300'],[400,'標準 400'],[500,'粗 500']].map(c=>`<button data-v="${c[0]}">${c[1]}</button>`).join('');
+ $('#iWt').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.p.icSW=+b.dataset.v;schedule();};
  $('#iSearch').oninput=()=>renderIcons();}
 let ISEL=null;
 function renderIcons(){const L=iconLook();const q=$('#iSearch').value.trim().toLowerCase();
  $('#iColor').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===(S.p.icColor||'P')));
  $('#iVar').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===(S.p.icVar||'line')));
- $('#iSW').value=+S.p.icSW||0;$('#iSWo').textContent=+S.p.icSW>0?S.p.icSW+'（手動）':'跟風格 '+I.strokeOf(S.p);
- const hit=i=>!q||(i.zh+' '+i.en+' '+i.id+' '+i.cat).toLowerCase().includes(q);let n=0;
+ const wsel=I.WEIGHTS.includes(+S.p.icSW)?+S.p.icSW:0;$('#iWt').querySelectorAll('button').forEach(b=>{b.classList.toggle('on',+b.dataset.v===wsel);if(+b.dataset.v===0)b.textContent='跟風格（'+I.weightOf(Object.assign({},S.p,{icSW:0}))+'）';});
+ const hits=new Set(I.search(q).map(i=>i.id));const hit=i=>hits.has(i.id);let n=0;
  $('#iGrid').innerHTML=I.CATS.map(c=>{const list=I.LIST.filter(i=>i.cat===c&&hit(i));n+=list.length;if(!list.length)return '';
-  return `<div class="icat">${c}</div><div class="icells">${list.map(i=>`<button class="ic${ISEL===i.id?' sel':''}" data-id="${i.id}" title="${escH(i.zh+' '+i.en)}｜點一下複製・雙擊加入待選素材">${I.svg(i.id,{variant:L.variant,sw:L.sw,fg:L.fg,bg:L.bg})}<span>${escH(i.zh)}</span></button>`).join('')}</div>`;}).join('')+
-  `<p class="hint" style="margin-top:22px">圖示 58 個來自 <b>Lucide</b>（ISC 授權，© Lucide Icons and Contributors）＋ 2 個自繪（晶圓、機台）；24 網格、圓頭線端。ZIP 內附授權文字。</p>`;
+  return `<div class="icat">${c}</div><div class="icells">${list.map(i=>`<button class="ic${ISEL===i.id?' sel':''}" data-id="${i.id}" title="${escH(i.zh+' '+i.en)}｜點一下複製・雙擊加入待選素材">${I.svg(i.id,{variant:L.variant,wt:L.wt,fg:L.fg,bg:L.bg})}<span>${escH(i.zh)}</span></button>`).join('')}</div>`;}).join('')+
+  `<p class="hint" style="margin-top:22px">圖示 ${I.LIST.length-1} 個來自 Google <b>Material Symbols Rounded</b>（Apache License 2.0，© Google LLC，fonts.google.com/icons）＋ 1 個自繪（晶圓）；24 網格、字重 300／400／500。ZIP 內附授權全文。</p>`;
  $('#iInfo').textContent=`${n} 個・匯出 ${(0.6*SK()*2.54).toFixed(2)} cm／PNG ${icPx()*2}–${icPx()*4} px（元件尺寸 ${S.p.size||'M'}）`;
  if(ISEL&&!document.querySelector(`.ic[data-id="${ISEL}"]`))clearISel();else if(ISEL)placeIBar();}
 function clearISel(){ISEL=null;$('#ibar2').classList.remove('on');document.querySelectorAll('.ic.sel').forEach(x=>x.classList.remove('sel'));}
@@ -633,15 +660,25 @@ async function iconAction(a){if(!ISEL)return;const id=ISEL,ic=I.BY[id],base='ico
 $('#iZip').onclick=async()=>{const b=$('#iZip');b.disabled=true;const old=b.textContent;b.textContent='打包中…';
  try{const z=new window.JSZip();const px=icPx();const tag=(S.p.icColor||'P')+'-'+(S.p.icVar||'line');
   for(const ic of I.LIST){const nm=ic.zh.replace(/[\\/:*?"<>|\s]+/g,'_')+'_'+ic.id;const svg=icSvg(ic.id,px);z.file('svg/'+nm+'.svg',svg);z.file('png@2x/'+nm+'.png',await svgPng(icSvg(ic.id,px*2),px*2));}
-  z.file('LICENSE-icons.txt',I.LICENSE+'\n');z.file('README.txt',`PPT Style Studio 圖示（${I.LIST.length} 個）\n顏色：${tag}｜線寬 ${I.strokeOf(S.p)}（24 網格）｜PNG ${px*2}px 透明背景\n風格：${S.mine||presetOf(S.base).zh}\n`);
+  z.file('LICENSE-material-symbols.txt',I.LICENSE+'\n');z.file('README.txt',`PPT Style Studio 圖示（${I.LIST.length} 個）\n顏色：${tag}｜Material Symbols Rounded 字重 ${I.weightOf(S.p)}｜PNG ${px*2}px 透明背景\n風格：${S.mine||presetOf(S.base).zh}\n`);
   const blob=await z.generateAsync({type:'blob',compression:'DEFLATE'});saveBlob(blob,`icons-${S.base}-${tag}.zip`);window.__studio.lastZip={files:Object.keys(z.files).length,size:blob.size};
   toast(`已下載 ZIP：${I.LIST.length} 個 SVG＋${I.LIST.length} 個透明 PNG（${px*2}px）`);}
  catch(err){console.error(err);toast('ZIP 失敗：'+err.message);}finally{b.disabled=false;b.textContent=old;}};
 
-/* ---------- 表格 ---------- */
+/* ---------- 表格（v7：貼上即完成；點表格直接強調；外觀縮圖用自己的資料畫） ---------- */
 const TKEY='ppt-studio-table';
-const SAMPLE_T={title:'損益表摘要（示意）',unit:'單位：新台幣十億元（每股盈餘除外）',note:'註：範例數字僅供版面示意；ppts＝百分點。',hi:{type:'col',i:1},bold:[5,6],header:true,
- rows:[['','3Q25','2Q25','3Q24','QoQ','YoY'],['營業收入淨額','989.9','933.8','759.7','+6.0%','+30.3%'],['毛利率','59.5%','58.6%','57.8%','+0.9 ppts','+1.7 ppts'],['營業費用','(88.2)','(85.5)','(75.6)','+3.2%','+16.7%'],['營業利益率','50.6%','49.6%','47.5%','+1.0 ppts','+3.1 ppts'],['稅後淨利','452.3','398.3','325.3','+13.6%','+39.0%'],['每股盈餘（元）','17.44','15.36','12.54','+13.6%','+39.1%']]};
+const T_SAMPLES={
+ fin:{title:'損益表摘要（示意）',unit:'單位：新台幣十億元（每股盈餘除外）',note:'註：範例數字僅供版面示意；ppts＝百分點。',hi:{type:'col',i:1},
+  rows:[['','3Q25','2Q25','3Q24','QoQ','YoY'],['營業收入淨額','989.9','933.8','759.7','+6.0%','+30.3%'],['毛利率','59.5%','58.6%','57.8%','+0.9 ppts','+1.7 ppts'],['營業費用','(88.2)','(85.5)','(75.6)','+3.2%','+16.7%'],['營業利益率','50.6%','49.6%','47.5%','+1.0 ppts','+3.1 ppts'],['稅後淨利','452.3','398.3','325.3','+13.6%','+39.0%'],['每股盈餘（元）','17.44','15.36','12.54','+13.6%','+39.1%']],bold:[5,6]},
+ cmp:{title:'導入方案比較（示意）',unit:'',note:'● 佳　◎ 普通　○ 弱',hi:{type:'col',i:3},
+  rows:[['','方案 A：自建','方案 B：外包','方案 C：雲端'],['導入成本','高','中','低'],['上線時間','6 個月','3 個月','1 個月'],['客製彈性','●','◎','○'],['資料安全','●','○','◎'],['維運人力','3 人','1 人','0.5 人']]},
+ status:{title:'專案進度（示意）',unit:'更新：10/09',note:'',hi:{type:'none'},
+  rows:[['項目','負責人','預計完成','狀態','備註'],['新機台驗收','王小明','10/15','完成','提前 3 天'],['製程參數最佳化','陳美玲','10/31','進行中','DOE 第 2 輪'],['AOI 誤判改善','林志豪','11/15','風險','資料量不足'],['SPC 管制圖上線','張家瑋','11/30','進行中',''],['教育訓練','李怡君','12/05','未開始','']]},
+ kpi:{title:'月度 KPI（示意）',unit:'統計至 9 月',note:'',hi:{type:'col',i:2},
+  rows:[['指標','目標','實際','達成率','與上月'],['生產',' ',' ',' ',' '],['良率','98.5%','98.9%','100.4%','▲ 0.3'],['產出（千片）','120','113','94.2%','▼ 4.1'],['品質',' ',' ',' ',' '],['Cycle time（天）','45','43','104.7%','▲ 1.5'],['客訴件數','2','1','達成','—']]}};
+T_SAMPLES.kpi.rows.forEach(r=>r.forEach((c,i)=>{if(c===' ')r[i]='';}));
+const SAMPLE_T=T_SAMPLES.fin;
+const newT=(rows,keep)=>{const A=D.tableAuto(rows);return{rows,title:keep?keep.title:'',unit:keep?keep.unit:'',note:keep?keep.note:'',hi:{type:'none'},bold:A.key,align:{},header:'auto'};};
 let T=(()=>{try{const t=JSON.parse(localStorage.getItem(TKEY)||'null');if(t&&Array.isArray(t.rows))return t;}catch(e){}return clone(SAMPLE_T);})();
 const saveT=()=>{try{localStorage.setItem(TKEY,JSON.stringify(T));}catch(e){}};
 function parseTSV(s){s=String(s||'').replace(/\r\n?/g,'\n');if(!/\t/.test(s)&&/,/.test(s))return s.split('\n').filter(l=>l.trim()).map(l=>l.split(',').map(c=>c.trim()));
@@ -651,52 +688,113 @@ function parseTSV(s){s=String(s||'').replace(/\r\n?/g,'\n');if(!/\t/.test(s)&&/,
   if(ch==='"'&&cell===''){q=true;continue;}
   if(ch==='\t'){row.push(cell);cell='';}else if(ch==='\n'){row.push(cell);rows.push(row);row=[];cell='';}else cell+=ch;}
  if(cell!==''||row.length){row.push(cell);rows.push(row);}
- return rows.filter(r=>r.some(c=>String(c).trim()!==''));}
+ return rows.map(r=>r.map(c=>String(c).trim())).filter(r=>r.some(c=>c!==''));}
+// 從 HTML 剪貼簿（Google 試算表、網頁表格）取表格
+function parseHtmlTable(html){try{const d=new DOMParser().parseFromString(html,'text/html');const t=d.querySelector('table');if(!t)return null;
+ return [...t.rows].map(tr=>[...tr.cells].map(td=>td.innerText!=null&&td.innerText!==''?td.innerText.trim():td.textContent.trim())).filter(r=>r.some(c=>c));}catch(e){return null;}}
 const toTSV=rows=>rows.map(r=>r.map(c=>/[\t\n"]/.test(c)?'"'+String(c).replace(/"/g,'""')+'"':c).join('\t')).join('\n');
-const TB_OPTS={tbHead:[['line','細線（法說會）'],['P','主色底'],['PD','深色底'],['PT','淺主色底']],tbDense:[['normal','標準'],['compact','緊湊']],tbHiColor:[['alert','紅'],['P','主色'],['A','強調色']]};
+const TB_OPTS={tbDense:[['normal','標準'],['compact','緊湊']],tbHiMode:[['auto','跟外觀'],['fill','淡色底'],['box','圓角框']],tbHiColor:[['auto','自動'],['P','主色'],['A','強調色'],['alert','紅']]};
+function loadData(rows,how){if(!rows||!rows.length||!rows.some(r=>r.length>1||r[0])){toast('剪貼簿裡沒有表格資料：請在 Excel 選取儲存格後按 Ctrl+C。',4000);return;}
+ const keep=T.rows&&T.rows.length?T:null;T=newT(rows,keep);fixT();saveT();syncTableUI();renderTable();
+ const A=D.tableAuto(T.rows);toast(`已${how||'貼上'} ${T.rows.length} 列 × ${A.nC} 欄 → 已自動排版。點表格的欄或列可強調。`,3500);}
 function buildTableUI(){
  document.querySelectorAll('[data-tb]').forEach(el=>{const k=el.dataset.tb;el.innerHTML=TB_OPTS[k].map(o=>`<button data-v="${o[0]}">${o[1]}</button>`).join('');
   el.onclick=e=>{const b=e.target.closest('button');if(!b)return;S.p[k]=b.dataset.v;schedule();};});
  document.querySelectorAll('[data-tbk]').forEach(el=>{el.onchange=()=>{S.p[el.dataset.tbk]=el.checked;schedule();};});
- $('#tIn').addEventListener('input',()=>{const r=parseTSV($('#tIn').value);T.rows=r;fixT();saveT();renderGrid();renderTable();});
- $('#tSample').onclick=()=>{T=clone(SAMPLE_T);saveT();syncTableUI();renderTable();toast('已載入範例：損益表（示意數字）');};
- $('#tClear').onclick=()=>{T={rows:[],title:'',unit:'',note:'',bold:[],hi:{type:'none'},header:true};saveT();syncTableUI();renderTable();$('#tIn').focus();};
- [['tTitle','title'],['tUnit','unit'],['tNote','note']].forEach(([id,k])=>$('#'+id).oninput=e=>{T[k]=e.target.value;saveT();renderTable();});
- $('#tHi').onchange=e=>{const v=e.target.value.split(':');T.hi={type:v[0],i:+v[1]||0};saveT();renderTable();};
- $('#tBold').onclick=e=>{const b=e.target.closest('button');if(!b)return;const r=+b.dataset.r;const s2=new Set(T.bold||[]);s2.has(r)?s2.delete(r):s2.add(r);T.bold=[...s2].sort((a,b)=>a-b);saveT();b.classList.toggle('on');renderTable();};
- $('#tGridBox').addEventListener('click',e=>{const b=e.target.closest('button[data-g]');if(!b)return;const g=b.dataset.g,nC=Math.max(1,...T.rows.map(r=>r.length));
-  if(g==='r+')T.rows.push(Array(nC).fill(''));if(g==='c+')T.rows.forEach(r=>r.push(''));if(g==='r-'&&T.rows.length>1)T.rows.pop();if(g==='c-'&&nC>1)T.rows.forEach(r=>r.length=Math.min(r.length,nC-1));
-  fixT();saveT();syncTableUI();renderTable();});
+ $('#tHead').onclick=e=>{const b=e.target.closest('button');if(!b)return;T.header=b.dataset.v==='auto'?'auto':b.dataset.v==='1';saveT();renderTable();};
+ $('#tIn').addEventListener('input',()=>{T.rows=parseTSV($('#tIn').value);fixT();saveT();renderGrid();renderTable();});
+ $('#tSample').onchange=e=>{const k=e.target.value;e.target.value='';if(!k)return;T=clone(T_SAMPLES[k]);if(!T.bold)T.bold=D.tableAuto(T.rows).key;T.align={};T.header='auto';saveT();syncTableUI();renderTable();toast('已載入範例（數字為示意）',2200);};
+ $('#tClear').onclick=()=>{T={rows:[],title:'',unit:'',note:'',bold:[],hi:{type:'none'},align:{},header:'auto'};saveT();syncTableUI();renderTable();};
+ $('#tEditBtn').onclick=()=>{const ed=$('#tEdit');ed.hidden=!ed.hidden;$('#tEditBtn').setAttribute('aria-expanded',String(!ed.hidden));$('#tEditBtn').classList.toggle('on',!ed.hidden);if(!ed.hidden){syncTableUI();$('#tIn').focus();}};
+ $('#tPasteBtn').onclick=async()=>{try{const items=await navigator.clipboard.read();for(const it of items){if(it.types.includes('text/plain')){const t=await(await it.getType('text/plain')).text();if(/\t/.test(t)){loadData(parseTSV(t));return;}}
+   if(it.types.includes('text/html')){const r=parseHtmlTable(await(await it.getType('text/html')).text());if(r){loadData(r);return;}}}
+   const t=await navigator.clipboard.readText();loadData(parseTSV(t));}
+  catch(err){try{const t=await navigator.clipboard.readText();loadData(parseTSV(t));}catch(e2){toast('瀏覽器不允許讀取剪貼簿：請直接在這一頁按 <b>Ctrl+V</b>。',4500,true);}}};
+ // 在表格分頁任何地方按 Ctrl+V（輸入框除外）＝貼上資料
+ document.addEventListener('paste',e=>{if(S.tab!=='table')return;const a=e.target;if(a&&(a.closest('input,textarea,[contenteditable="true"]')))return;
+  const html=e.clipboardData.getData('text/html'),txt=e.clipboardData.getData('text/plain');let rows=null;
+  if(/\t/.test(txt))rows=parseTSV(txt);else if(html)rows=parseHtmlTable(html);if(!rows&&txt)rows=parseTSV(txt);
+  if(rows){e.preventDefault();loadData(rows);}});
+ [['tTitle','title'],['tUnit','unit'],['tNote','note']].forEach(([id,k])=>$('#'+id).oninput=e=>{T[k]=k==='note'?e.target.value.replace(/\\n/g,'\n'):e.target.value;saveT();renderTable(true);});
  $('#tGrid').addEventListener('input',e=>{const td=e.target.closest('td');if(!td)return;T.rows[+td.dataset.r][+td.dataset.c]=td.innerText.replace(/\n$/,'');saveT();$('#tIn').value=toTSV(T.rows);renderTable(true);});
  $('#tGrid').addEventListener('paste',e=>{const td=e.target.closest('td');if(!td)return;const t=e.clipboardData.getData('text/plain');if(!/[\t\n]/.test(t))return;e.preventDefault();
   const r0=+td.dataset.r,c0=+td.dataset.c;parseTSV(t).forEach((row,i)=>row.forEach((v,j)=>{while(T.rows.length<=r0+i)T.rows.push([]);const R=T.rows[r0+i];while(R.length<=c0+j)R.push('');R[c0+j]=v;}));
   fixT();saveT();syncTableUI();renderTable();});
- $('#tCopy').onclick=copyTable;$('#tPptx').onclick=downloadTable;$('#tTray').onclick=()=>addTray({kind:'table',table:clone(T),name:T.title||'表格'});
- $('#tPrev').ondblclick=()=>$('#tTray').click();}
-function fixT(){const nC=Math.max(0,...T.rows.map(r=>r.length));T.rows.forEach(r=>{while(r.length<nC)r.push('');});
- if(T.hi&&T.hi.type==='col'&&T.hi.i>=nC)T.hi={type:'none'};if(T.hi&&T.hi.type==='row'&&T.hi.i>=T.rows.length)T.hi={type:'none'};T.bold=(T.bold||[]).filter(r=>r<T.rows.length);}
+ $('#tEdit').addEventListener('click',e=>{const b=e.target.closest('button[data-g]');if(!b)return;const g=b.dataset.g,nC=Math.max(1,...T.rows.map(r=>r.length));
+  if(g==='r+')T.rows.push(Array(nC).fill(''));if(g==='c+')T.rows.forEach(r=>r.push(''));if(g==='r-'&&T.rows.length>1)T.rows.pop();if(g==='c-'&&nC>1)T.rows.forEach(r=>r.length=Math.min(r.length,nC-1));
+  fixT();saveT();syncTableUI();renderTable();});
+ $('#tLooks').onclick=e=>{const b=e.target.closest('.tlook');if(!b)return;S.p.tbLook=b.dataset.v;schedule();};
+ // 預覽上的點選：表頭＝欄；第一欄＝列；其他格＝欄與列
+ const ov=()=>$('#tPrev .tov');
+ $('#tPrev').addEventListener('mouseover',e=>{const c=e.target.closest('.tov i');if(!c||!ov())return;const r=+c.dataset.r,k=+c.dataset.c,h0=TM&&TM.slides[0].table?TM.slides[0].table.h0:1;
+  ov().querySelectorAll('i').forEach(x=>x.classList.toggle('h',r<h0?+x.dataset.c===k:k===0?+x.dataset.r===r:(+x.dataset.r===r&&+x.dataset.c===k)));});
+ $('#tPrev').addEventListener('mouseleave',()=>{if(ov())ov().querySelectorAll('i.h').forEach(x=>x.classList.remove('h'));});
+ $('#tPrev').addEventListener('click',e=>{const c=e.target.closest('.tov i');if(!c){closeTMenu();return;}e.stopPropagation();openTMenu(+c.dataset.r,+c.dataset.c,c);});
+ $('#tMenu').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;e.stopPropagation();const a=b.dataset.a,i=+b.dataset.i;
+  if(a==='hiC'||a==='hiR'){const ty=a==='hiC'?'col':'row';T.hi=T.hi&&T.hi.type===ty&&T.hi.i===i?{type:'none'}:{type:ty,i};}
+  if(a==='bold'){const s2=new Set(T.bold||[]);s2.has(i)?s2.delete(i):s2.add(i);T.bold=[...s2].sort((x,y)=>x-y);}
+  if(a==='al'){T.align=Object.assign({},T.align);if(T.align[i]===b.dataset.v)delete T.align[i];else T.align[i]=b.dataset.v;}
+  if(a==='clr')T.hi={type:'none'};
+  if(a==='x'){closeTMenu();return;}
+  saveT();renderTable(true);if(TMENU)openTMenu(TMENU.r,TMENU.c);});
+ document.addEventListener('click',e=>{if(!e.target.closest('#tMenu')&&!e.target.closest('.tov'))closeTMenu();if(!e.target.closest('#tAdv'))$('#tAdv').open=false;});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTMenu();});
+ $('#tCopy').onclick=copyTable;$('#tPptx').onclick=downloadTable;$('#tTray').onclick=()=>{if(!T.rows.length)return;addTray({kind:'table',table:clone(T),name:T.title||'表格'});};
+ $('#tPrev').ondblclick=e=>{if(T.rows.length)$('#tTray').click();};}
+let TMENU=null;
+function closeTMenu(){TMENU=null;$('#tMenu').hidden=true;}
+function openTMenu(r,c,cellEl){const tb=TM&&TM.slides[0].table;if(!tb)return;TMENU={r,c};const h0=tb.h0,rows=T.rows;
+ const colName=(h0?rows[0][c]:'')||`第 ${c+1} 欄`,rowName=rows[r]&&rows[r][0]||`第 ${r+1} 列`;
+ const hiC=T.hi&&T.hi.type==='col'&&T.hi.i===c,hiR=T.hi&&T.hi.type==='row'&&T.hi.i===r,isB=(T.bold||[]).includes(r);
+ const auto=c===0?'left':tb.colNum[c]?'right':'left';const al=(T.align||{})[c]||'';
+ const colPart=`<div class="mh">欄：<b>${escH(colName.slice(0,16))}</b></div><div class="mr"><button data-a="hiC" data-i="${c}" class="${hiC?'on':''}">★ 強調此欄</button><span class="seg" style="display:inline-flex">${[['left','左'],['center','中'],['right','右']].map(([v,z])=>`<button data-a="al" data-i="${c}" data-v="${v}" class="${(al||auto)===v?'on':''}">${z}</button>`).join('')}</span></div>`;
+ const rowPart=`<div class="mh">列：<b>${escH(rowName.slice(0,16))}</b></div><div class="mr"><button data-a="hiR" data-i="${r}" class="${hiR?'on':''}">★ 強調此列</button><button data-a="bold" data-i="${r}" class="${isB?'on':''}"><b>B</b> 粗體</button></div>`;
+ const parts=r<h0?[colPart]:c===0?[rowPart]:[colPart,rowPart];
+ const m=$('#tMenu');m.innerHTML=parts.join('<hr>')+(T.hi&&T.hi.type!=='none'?`<hr><div class="mr"><button data-a="clr">清除強調</button><button data-a="x" style="margin-left:auto">✕</button></div>`:`<div class="mr" style="justify-content:flex-end"><button data-a="x">✕</button></div>`);m.hidden=false;
+ const st=$('.tstage').getBoundingClientRect();const el=cellEl||$(`#tPrev .tov i[data-r="${r}"][data-c="${c}"]`);if(!el)return;const cr=el.getBoundingClientRect();
+ let x=cr.left-st.left,y=cr.bottom-st.top+6;if(y+m.offsetHeight>st.height-4)y=cr.top-st.top-m.offsetHeight-6;x=Math.max(4,Math.min(x,st.width-m.offsetWidth-4));m.style.left=x+'px';m.style.top=y+'px';}
+function fixT(){const nC=Math.max(0,...T.rows.map(r=>r.length));T.rows.forEach(r=>{while(r.length<nC)r.push('');});if(!T.hi)T.hi={type:'none'};
+ if(T.hi.type==='col'&&T.hi.i>=nC)T.hi={type:'none'};if(T.hi.type==='row'&&T.hi.i>=T.rows.length)T.hi={type:'none'};if(Array.isArray(T.bold))T.bold=T.bold.filter(r=>r<T.rows.length);}
 function renderGrid(){$('#tGrid').innerHTML='<table>'+T.rows.map((r,i)=>'<tr>'+r.map((c,j)=>`<td contenteditable="true" data-r="${i}" data-c="${j}">${escH(c)}</td>`).join('')+'</tr>').join('')+'</table>';}
-function syncTableUI(){fixT();$('#tIn').value=toTSV(T.rows);$('#tTitle').value=T.title||'';$('#tUnit').value=T.unit||'';$('#tNote').value=T.note||'';renderGrid();renderTableOpts();}
-function renderTableOpts(){const nC=Math.max(0,...T.rows.map(r=>r.length));const head=T.rows[0]||[];
- document.querySelectorAll('[data-tb]').forEach(el=>el.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===String(S.p[el.dataset.tb]))));
- document.querySelectorAll('[data-tbk]').forEach(el=>{el.checked=!!S.p[el.dataset.tbk];});
- const opts=[['none:0','無']].concat(Array.from({length:Math.max(0,nC-1)},(_,j)=>[`col:${j+1}`,'欄：'+(head[j+1]||'第 '+(j+2)+' 欄')])).concat(T.rows.slice(1).map((r,i)=>[`row:${i+1}`,'列：'+(r[0]||'第 '+(i+2)+' 列')]));
- const cur=T.hi&&T.hi.type!=='none'?T.hi.type+':'+T.hi.i:'none:0';$('#tHi').innerHTML=opts.map(o=>`<option value="${o[0]}"${o[0]===cur?' selected':''}>${escH(o[1])}</option>`).join('');
- const bs=new Set(T.bold||[]);$('#tBold').innerHTML=T.rows.slice(1).map((r,i)=>`<button data-r="${i+1}" class="${bs.has(i+1)?'on':''}">${escH((r[0]||'第 '+(i+2)+' 列').slice(0,10))}</button>`).join('')||'<span class="hint">（貼上資料後出現）</span>';}
-let TM=null;
-function renderTable(light){if(!light)renderTableOpts();const nR=T.rows.length,nC=Math.max(0,...T.rows.map(r=>r.length));$('#tInfo').textContent=nR?`${nR} 列 × ${nC} 欄`:'';
- if(!nR){TM=null;$('#tPrev').innerHTML='<div style="display:flex;height:100%;align-items:center;justify-content:center;color:#8C8C8C">← 先貼上資料，或按「範例：損益表」</div>';$('#tMsg').textContent='';return;}
- TM=D.buildModel(S.p,{table:T});$('#tPrev').innerHTML=D.toSvg(TM.slides[0],{id:'tp'});
- $('#tMsg').textContent=(TM.warns.length?'⚠ '+TM.warns.map(w=>w.replace(/^\[[^\]]*\]\s*/,'')).join('；')+'　':'')+`元件尺寸 ${S.p.size||'M'}`;window.__studio.table={rows:nR,cols:nC,warns:TM.warns.length};}
+function syncTableUI(){fixT();$('#tIn').value=toTSV(T.rows);$('#tTitle').value=T.title||'';$('#tUnit').value=T.unit||'';$('#tNote').value=(T.note||'').replace(/\n/g,'\\n');if(!$('#tEdit').hidden)renderGrid();renderTableOpts();}
+function renderTableOpts(){
+ document.querySelectorAll('[data-tb]').forEach(el=>el.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===String(S.p[el.dataset.tb]||TB_OPTS[el.dataset.tb][0][0]))));
+ document.querySelectorAll('[data-tbk]').forEach(el=>{el.checked=S.p[el.dataset.tbk]!==false&&(el.dataset.tbk==='tbStatus'||!!S.p[el.dataset.tbk]);});
+ const hv=T.header==null||T.header==='auto'?'auto':T.header?'1':'0';$('#tHead').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===hv));}
+const lookOf=p=>D.TABLE_LOOKS.some(l=>l[0]===p.tbLook)?p.tbLook:(p.tbPanel?'panel':'clean');
+let TM=null,TLKEY='';
+function cropSvg(sl,id,pad){const b={x0:1e9,y0:1e9,x1:-1e9,y1:-1e9};sl.items.forEach(it=>{if(it.t==='ln')return;b.x0=Math.min(b.x0,it.x);b.y0=Math.min(b.y0,it.y);b.x1=Math.max(b.x1,it.x+it.w);b.y1=Math.max(b.y1,it.y+it.h);});
+ pad=pad||.12;return D.toSvg({items:sl.items},{id,flat:true,viewBox:`${((b.x0-pad)*72).toFixed(1)} ${((b.y0-pad)*72).toFixed(1)} ${((b.x1-b.x0+2*pad)*72).toFixed(1)} ${((b.y1-b.y0+2*pad)*72).toFixed(1)}`});}
+function renderLooks(){const key=JSON.stringify([T.rows,T.hi,T.bold,T.align,T.header,T.title,S.p]);if(key===TLKEY)return;TLKEY=key;
+ const cur=lookOf(S.p);const Tl=Object.assign({},T,{title:'',unit:'',note:'',rows:T.rows.slice(0,7)});
+ $('#tLooks').innerHTML=D.TABLE_LOOKS.map(([k,zh])=>{let s='';try{const m=D.buildModel(Object.assign({},S.p,{tbLook:k,size:'M'}),{table:Tl});s=cropSvg(m.slides[0],'lk'+k,.1);}catch(e){}
+  return `<button class="tlook${k===cur?' on':''}" data-v="${k}" title="外觀：${zh}"><span class="th">${s}</span><span class="nm">${zh}</span></button>`;}).join('');}
+function renderTable(light){renderTableOpts();const nR=T.rows.length,nC=Math.max(0,...T.rows.map(r=>r.length));
+ if(!nR){TM=null;closeTMenu();$('#tLooks').innerHTML='';TLKEY='';$('#tAuto').innerHTML='';
+  $('#tPrev').innerHTML=`<div class="tempty"><b>在這一頁按 Ctrl+V 貼上 Excel 表格</b><span>從 Excel／Google 試算表選取儲存格 → Ctrl+C → 回到這裡 Ctrl+V（不用點任何框）</span><div class="tline">${[['fin','財務摘要'],['cmp','方案比較'],['status','專案進度'],['kpi','KPI 表']].map(([k,z])=>`<button class="btn" data-sample="${k}">範例：${z}</button>`).join('')}</div></div>`;
+  $('#tPrev').querySelectorAll('[data-sample]').forEach(b=>b.onclick=e=>{e.stopPropagation();$('#tSample').value=b.dataset.sample;$('#tSample').onchange({target:$('#tSample')});});
+  $('#tMsg').textContent='';window.__studio.table={rows:0,cols:0};return;}
+ TM=D.buildModel(S.p,{table:T});const sl=TM.slides[0],tb=sl.table;
+ const W=D.W,H=D.H,pc=(v,t)=>(v/t*100).toFixed(3)+'%';let ov='';
+ if(tb){let y=tb.ty;tb.rowH.forEach((h,r)=>{let x=tb.tx;tb.colW.forEach((w,c)=>{ov+=`<i data-r="${r}" data-c="${c}" style="left:${pc(x,W)};top:${pc(y,H)};width:${pc(w,W)};height:${pc(h,H)}" title="${r<tb.h0?'點：這一欄':c===0?'點：這一列':'點：這一欄／列'}"></i>`;x+=w;});y+=h;});}
+ $('#tPrev').innerHTML=D.toSvg(sl,{id:'tp'})+`<div class="tov">${ov}</div>`;
+ const A=D.tableAuto(T.rows.map(r=>r.map(c=>String(c))));const nNum=A.numC.filter(Boolean).length,nSt=A.statC.filter(Boolean).length,nSec=A.section.filter(Boolean).length;
+ const hd=T.header==null||T.header==='auto'?A.head:!!T.header;
+ $('#tAuto').innerHTML=`<b>✓ 自動排版</b>${nR} 列 × ${nC} 欄・${hd?'第 1 列＝表頭':'無表頭'}${nNum?`・${nNum} 個數字欄靠右同寬`:''}${nSt?`・狀態欄上色`:''}${nSec?`・${nSec} 個小節列`:''}${(T.bold||[]).length?`・${T.bold.length} 列粗體`:''}`;
+ if(!light)renderLooks();else{TLKEY='';clearTimeout(renderTable._t);renderTable._t=setTimeout(renderLooks,350);}
+ $('#tLooks').querySelectorAll('.tlook').forEach(b=>b.classList.toggle('on',b.dataset.v===lookOf(S.p)));
+ if(TMENU&&$('#tMenu').hidden===false){}
+ $('#tMsg').textContent=(TM.warns.length?'⚠ '+TM.warns.map(w=>w.replace(/^\[[^\]]*\]\s*/,'')).join('；')+'　':'')+`點表格的欄／列可強調、粗體、對齊・元件尺寸 ${S.p.size||'M'}`;
+ window.__studio.table={rows:nR,cols:nC,warns:TM.warns.length,look:lookOf(S.p),auto:{head:hd,num:nNum,status:nSt,section:nSec},hi:T.hi,cells:tb?tb.colW.length*tb.rowH.length:0};}
 async function copyTable(){if(!TM)return;const html=D.tableHtml(TM),txt=toTSV(T.rows);window.__studio.lastTableHtml=html;
  try{await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([txt],{type:'text/plain'})})]);window.__studio.lastTableCopy={ok:true};}
  catch(err){const d=document.createElement('div');d.contentEditable='true';d.innerHTML=html;d.style.cssText='position:fixed;left:-9999px';document.body.appendChild(d);
   const r=document.createRange();r.selectNodeContents(d);const sel=getSelection();sel.removeAllRanges();sel.addRange(r);const ok=document.execCommand('copy');d.remove();window.__studio.lastTableCopy={ok,fallback:true};
   if(!ok){toast('瀏覽器不允許存取剪貼簿，請改用「下載 .pptx」。',5000);return;}}
- toast('已複製表格 → 到 PowerPoint 按 <b>Ctrl+V</b> 即成原生表格（顏色、粗體、框線都在）。灰色底板與圓角強調框只在「下載 .pptx」裡。',6000,true);}
+ toast('已複製 → 到 PowerPoint 按 <b>Ctrl+V</b> 即成原生表格（顏色、粗體、框線、淡色強調都在）。'+(lookOf(S.p)==='panel'||lookOf(S.p)==='card'?'底板／外框只在「下載 .pptx」裡。':''),6000,true);}
 async function downloadTable(){if(!TM)return;const b=$('#tPptx');b.disabled=true;
  try{const model=D.buildModel(S.p,{table:T});const r=await D.exportPptx(ENV(),S.p,{model});saveBlob(r.data,'table-'+S.base+'-'+safeName(T.title||'表格')+'.pptx');window.__studio.lastTablePptx={size:r.data.size};
-  toast('已下載 .pptx：原生表格（每格可編輯）＋底板＋強調框。',4000);}catch(err){console.error(err);toast('匯出失敗：'+err.message);}finally{b.disabled=false;}}
+  toast('已下載 .pptx：原生表格（每格可編輯）。',3500);}catch(err){console.error(err);toast('匯出失敗：'+err.message);}finally{b.disabled=false;}}
 
 /* ================= 待選素材（每項＝加入當時的完整風格快照） ================= */
 const TRKEY='ppt-studio-tray';
@@ -704,7 +802,7 @@ const loadTray=()=>{try{const a=JSON.parse(localStorage.getItem(TRKEY)||'[]');re
 const storeTray=a=>{try{localStorage.setItem(TRKEY,JSON.stringify(a));return true;}catch(e){toast('無法儲存待選素材（瀏覽器空間不足）：'+e.message,5000);return false;}};
 let trayN=0;
 function trayThumb(e){const id='tr'+(++trayN)+Date.now().toString(36);
- try{if(e.kind==='icon')return I.svg(e.icon.id,Object.assign({variant:e.icon.variant},(()=>{const L=iconLook(e.params);return{sw:L.sw,fg:L.fg,bg:L.bg};})()));
+ try{if(e.kind==='icon')return I.svg(e.icon.id,Object.assign({variant:e.icon.variant},(()=>{const L=iconLook(e.params);return{wt:L.wt,fg:L.fg,bg:L.bg};})()));
   const m=D.trayModel([e]);const sl=m.slides[0];const g=sl.groups[0];const pad=6;
   return D.toSvg({items:sl.items},{id,flat:true,bg:false,viewBox:`${(g.x*72-pad).toFixed(1)} ${(g.y*72-pad).toFixed(1)} ${(g.w*72+2*pad).toFixed(1)} ${(g.h*72+2*pad).toFixed(1)}`});}
  catch(err){return '';}}
