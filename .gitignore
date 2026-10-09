@@ -70,6 +70,14 @@ render/*
 !render/mobile-icons.png
 !render/mobile-table.png
 !render/mobile-tray.png
+!render/v10-table-marks-ui.png
+!render/v10-table-marks-pptx.png
+!render/v10-table-marks-panel-investor.png
+!render/v10-annot-slide.png
+!render/v10-annot-slide-investor.png
+!render/v10-annot-over-chart.png
+!render/v10-catalog-annot-row.png
+!render/v10-mobile-table-marks.png
 # 其他暫存
 *.pdf
 *.zip

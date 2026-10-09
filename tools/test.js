@@ -30,6 +30,27 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
  {const e0=D.elementModel(nav,'patterns',0),e1=D.elementModel(Object.assign({},nav,{minFont:12}),'patterns',0);ok(e1.element.scale>1&&e1.element.minSize>=12&&e1.element.w>e0.element.w*0||D.minFontOf(e1.slides[0].items)>=12,`最小字級 12：三步驟流程放大 ×${e1.element.scale}，最小字 ${e1.element.minSize}pt`);await save('minfont-element.pptx',nav,{model:e1});}
  {const inv=D.PRESETS.find(p=>p.id==='investor');const m=D.buildModel(inv,{only:['catalog']});ok(m.sem.warn!==inv.P,`法說會紅：警示色 ${m.sem.warn} ≠ 主色 ${inv.P}`);
   const k=D.buildModel(nav,{only:['patterns2']}).slides[0];const runs=[].concat(...k.items.filter(i=>i.name==='變化').map(i=>i.runs));ok(runs.some(r=>r.o.color==='2E7D4F')&&runs.some(r=>r.o.color==='C0504D'),'KPI ▲▼ 依越高／越低越好上色（良＝綠、不良＝紅）');}
+ // v10：表格多重強調＋條件規則（6 外觀 × 9 風格）、標註元件（單一元件／S／L／最小字級／改字／待選）
+ {const Y={title:'批次良率',rows:[['Lot','站點','Yield%','Defect'],['A1','CMP','95.2%','12'],['A2','CMP','88.1%','31'],['A3','Etch','(86.4%)','40'],['A4','Litho','93.7%','15']],
+   his:[{type:'col',i:2,color:'auto'},{type:'row',i:3,color:'alert'},{type:'cell',r:1,c:3,color:'A'},{type:'col',i:1}],rules:[{c:2,op:'<',v:90,tone:'warn',style:'fill'},{c:3,op:'>=',v:30,tone:'warn',style:'box'},{c:3,op:'=',v:12,tone:'good',style:'text'}]};
+  let bad=0,n=0;for(const st of D.PRESETS)for(const [lk] of D.TABLE_LOOKS){const m=D.buildModel(Object.assign({},st,{tbLook:lk}),{table:Y});const t=m.slides[0].table;n++;
+   if(m.warns.length||t.his.length!==3||t.ruleHits!==5||!/border:1\.5pt solid/.test(D.tableHtml(m)))bad++;
+   if(st.id==='navy'||st.id==='investor')await save(`table-marks-${st.id}-${lk}.pptx`,st,{model:m});}
+  ok(!bad,`表格強調 3 個（第 4 個忽略）＋條件 3 條：${n} 種組合都正確（符合 5 格、HTML 有框線）`);
+  const tm=D.tableMarks({his:[{type:'col',i:99},{type:'x'},{type:'cell',r:'1',c:1,color:'<b>'}],rules:[{c:1,op:'DROP',v:'abc',tone:'x',style:'y'}]},3,3);
+  ok(tm.his.length===1&&tm.his[0].color==='auto'&&tm.rules[0].op==='<'&&!Number.isFinite(tm.rules[0].v)&&tm.rules[0].tone==='warn','tableMarks 擋掉非法強調／規則');
+  ok(D.tNumVal('(86.2)')===-86.2&&D.tNumVal('▼ 4.1')===-4.1&&D.tNumVal('98.5%')===98.5&&D.tNumVal('1,234')===1234&&Number.isNaN(D.tNumVal('OK')),'數值解析：括號負數、▼、%、千分位');
+  ok(D.buildModel(nav,{table:{rows:Y.rows,hi:{type:'col',i:1}}}).slides[0].table.his.length===1,'舊版 T.hi 仍可用');
+  const tr=D.trayModel([{kind:'table',params:nav,table:Y,name:'良率'},{kind:'el',params:wine,key:'annot',gi:3,name:'標註'}]);await save('tray-marks.pptx',nav,{model:tr});ok(tr.tray.n===2,'待選素材：表格（含強調／條件）＋標註');}
+ {const am=D.buildModel(nav,{only:['annot','catalog']});const an=am.slides.find(x=>x.key==='annot'),ca=am.slides.find(x=>x.key==='catalog');const names=an.groups.map(g=>g.name);
+  ok(['強調框（實線）','強調框（虛線）','圈選','編號釘 ①②③','對話框','箭頭＋標籤','括號（橫）','括號（直）','旗標＋日期'].every(k=>names.includes(k))&&ca.groups.filter(g=>/^標註・/.test(g.full||'')).length===7,`標註頁 ${an.groups.length} 組、元件總表標註列 7 格`);
+  const gi=an.groups.findIndex(g=>g.name==='對話框');const L={[`annot:${gi}`]:{}};const g=an.groups[gi];const ti=an.items.slice(g.from,g.to+1).findIndex(it=>it.runs&&it.runs.length);L[`annot:${gi}`][ti]={from:D.textOf(an.items[g.from+ti]),to:'良率連 6 批上升'};
+  const e1=D.elementModel(Object.assign({},nav,{minFont:14,size:'L'}),'annot',gi,{labels:L});ok(D.textOf(e1.slides[0].items.find(it=>it.runs&&it.runs.length))==='良率連 6 批上升'&&e1.element.minSize>=14,`標註對話框：改字＋L＋最小字 14（×${e1.element.scale}）`);
+  await save('annot-element.pptx',nav,{model:e1});
+  const fill=an.items.filter(it=>it.t==='sp'&&/強調框|圈選/.test(it.name||''));ok(fill.length>=4&&fill.every(it=>!it.fill),'強調框／圈選是透明底（無填色）');
+  const inv=D.PRESETS.find(p=>p.id==='investor');const ai=D.buildModel(inv,{only:['annot']}).slides[0].items.find(it=>it.name==='強調框');ok(ai&&ai.line!==inv.P,'法說會紅：標註預設警示色（不是主色紅）');
+  const ap=D.buildModel(Object.assign({},nav,{anC:'P'}),{only:['annot']}).slides[0].items.find(it=>it.name==='強調框');ok(ap&&ap.line===nav.P,'標註顏色＝主色');
+  for(const sz of ['S','L'])await save(`annot-${sz}.pptx`,Object.assign({},wine,{size:sz}),{only:['annot','catalog']});}
  console.log('嚴格 OOXML 驗證（office validate）＋ check_pptx.py…');
  for(const f of files){let v=0;try{cp.execFileSync('office',['validate',f],{stdio:'pipe'});}catch(e){v=1;}ok(!v,'office validate '+path.basename(f));}
  try{const r=cp.execFileSync('python3',[path.join(__dirname,'check_pptx.py'),...files],{encoding:'utf8'});ok(true,'check_pptx.py：全部 clean');}catch(e){console.log(e.stdout);ok(false,'check_pptx.py 有問題');}

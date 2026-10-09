@@ -25,7 +25,9 @@ const BASE={
  icColor:'P',icVar:'line',icSW:0,
  tbDense:'normal',tbHiColor:'auto',tbHiMode:'auto',tbNeg:false,tbStatus:true,
  /* v9：可調數量（04／05 頁）、語意色（與品牌色分開）、最小字級（單一元件／待選素材匯出時放大幾何） */
- nLin:4,nLane:3,nPcc:3,nWhy:5,nCause:4,semWarn:'',semGood:'2E7D4F',semBad:'C0504D',minFont:0
+ nLin:4,nLane:3,nPcc:3,nWhy:5,nCause:4,semWarn:'',semGood:'2E7D4F',semBad:'C0504D',minFont:0,
+ /* v10 標註顏色：alert＝警示色（預設）／P 主色／A 強調色／ink 深灰 */
+ anC:'alert'
 };
 const PRESETS=[
  {id:'navy',zh:'商務深藍卡片',en:'Navy Card',ref:'參考圖 2',desc:'淺灰畫布＋白色大外框圓與柔和光暈，深藍膠囊白字，▶ 小三角分隔',
@@ -71,7 +73,7 @@ const LANG_OF={card:{outline:'白底外框',gray:'淺灰實心',soft:'白底無�
  chain:{chev:'漸層 V 形箭號',hex:'六角形鏈',gray:'灰卡＋▶',outline:'細框方塊',hairchev:'空心線框 V 形',home:'五邊形箭號',pill:'膠囊鏈',block:'區塊 V 形'}};
 function langOf(p){return{card:LANG_OF.card[p.card]+(p.card==='outline'?' '+p.cardLW+'pt':'')+(p.sh?'＋陰影':''),tag:LANG_OF.tag[p.tag],badge:LANG_OF.badge[p.badge],sep:LANG_OF.sep[p.sep],
  conn:p.cnW+'pt '+({solid:'實線',sysDot:'點線',sysDash:'虛線',dash:'長虛線'}[p.cnDash]||'')+({triangle:'＋三角箭頭',arrow:'＋開放箭頭',stealth:'＋燕尾箭頭',oval:'＋圓點',none:''}[p.cnHead]||''),chain:LANG_OF.chain[p.chain]};}
-const SLIDES=[['catalog','元件總表'],['patterns','常見組合'],['patterns2','常見組合（二）'],['flex','可調數量'],['rca','原因分析'],['icons','圖示庫'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
+const SLIDES=[['catalog','元件總表'],['patterns','常見組合'],['patterns2','常見組合（二）'],['flex','可調數量'],['rca','原因分析'],['annot','標註'],['icons','圖示庫'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
 
 /* ---------- 文字寬度估算（Node 端排版檢查用；瀏覽器預覽改用 canvas 實測） ---------- */
 function tw(str,size){let u=0;for(const ch of String(str)){const c=ch.codePointAt(0);
@@ -371,6 +373,42 @@ function buildModel(params,opt){
  const AL=/^[0-9A-F]{6}$/i.test(st.semWarn||'')?st.semWarn.toUpperCase():(hp>=0&&(hp<=20||hp>=330)&&satOf(P)>.45?'C27C0E':(ha>=0&&(ha<=40||ha>=340)&&satOf(A)>.6&&Math.abs(ha-hp)>25?A:'C0504D'));
  const GOOD=/^[0-9A-F]{6}$/i.test(st.semGood||'')?st.semGood:'2E7D4F',BAD=/^[0-9A-F]{6}$/i.test(st.semBad||'')?st.semBad:'C0504D';
  const ALt=mix(AL,'FFFFFF',.86),ALd=mix(AL,'000000',.25);
+ /* ---------- v10 標註（Annotation）：疊在貼上的 SPC 管制圖／晶圓圖／截圖上。只有線框（透明底），文字泡泡與旗標才有底色；預設警示色 ---------- */
+ const AC={alert:AL,P,A:HASA?A:PD,ink:G.ink}[st.anC]||AL,ACd=mix(AC,'000000',.22),anLW=Math.max(1.75,Math.min(3,st.cnW*1.4));
+ const AN={
+  box:(x,y,w,h,o)=>{o=o||{};return box(x,y,w,h,{line:AC,lw:o.lw||anLW,dash:o.dash?'dash':'solid',r:Math.min(.1,Math.min(w,h)*.22),name:o.dash?'強調框（虛線）':'強調框'});},
+  ring:(cx,cy,w,h)=>oval(cx-w/2,cy-h/2,w,h,{line:AC,lw:anLW,name:'圈選'}),
+  /* 編號釘：圓形編號（白字）＋引線＋目標點 */
+  pin:(n,px,py,bx,by,o)=>{o=o||{};const d=o.d||.3;const L=Math.hypot(px-bx,py-by);
+   if(L>d/2+.02){const ux=(px-bx)/L,uy=(py-by)/L;ln(bx+ux*d/2,by+uy*d/2,px,py,{c:AC,w:1.25});}
+   circ(px,py,o.dot||.08,{fill:AC,name:'標註點'});
+   return circ(bx,by,d,{fill:AC,line:'FFFFFF',lw:1.25,text:String(n),size:Math.max(7,Math.round(d*34)),bold:1,color:'FFFFFF',margin:0,font:nf,name:'編號釘'});},
+  /* 對話框：圓角泡泡（白底＋標註色外框）＋指向目標的尖角；文字是泡泡上的文字框（改字、PowerPoint 編輯都方便） */
+  callout:(x,y,w,h,t,tx,ty,o)=>{o=o||{};const r=Math.min(.08,h/3),pw=Math.min(.2,w/4),up=ty<y;
+   const b1=Math.max(x+r+.02,Math.min(tx-pw/2,x+w-r-.02-pw)),b2=b1+pw;
+   const x0=Math.min(x,tx),y0=Math.min(y,ty),x1=Math.max(x+w,tx),y1=Math.max(y+h,ty);const X=v=>v-x0,Y=v=>v-y0;
+   const A=(px,py,s0)=>({x:X(px),y:Y(py),curve:{type:'arc',hR:r,wR:r,stAng:s0,swAng:90}});
+   const pts=[{x:X(x+r),y:Y(y)}];
+   if(up)pts.push({x:X(b1),y:Y(y)},{x:X(tx),y:Y(ty)},{x:X(b2),y:Y(y)});
+   pts.push({x:X(x+w-r),y:Y(y)},A(x+w,y+r,270),{x:X(x+w),y:Y(y+h-r)},A(x+w-r,y+h,0));
+   if(!up)pts.push({x:X(b2),y:Y(y+h)},{x:X(tx),y:Y(ty)},{x:X(b1),y:Y(y+h)});
+   pts.push({x:X(x+r),y:Y(y+h)},A(x,y+h-r,90),{x:X(x),y:Y(y+r)},A(x+r,y,180),{close:true});
+   el('custGeom',x0,y0,x1-x0,y1-y0,{fill:'FFFFFF',line:AC,lw:1.5,points:pts,name:'對話框'});
+   return txt(x+.06,y,w-.12,h,t,{size:o.size||11,color:o.color||G.ink,bold:o.bold!=null?o.bold:1,align:'center',valign:'middle',wrap:1,name:'標註文字'});},
+  /* 括號：橫向（開口朝上，標籤在下）／直向（開口朝左，標籤在右） */
+  bracket:(x,y,len,t,o)=>{o=o||{};const d=o.d||.1,size=o.size||10;
+   if(o.v){path([[x,y],[x+d,y],[x+d,y+len],[x,y+len]],{line:AC,lw:1.5,name:'括號'});ln(x+d,y+len/2,x+d+.08,y+len/2,{c:AC,w:1.5});
+    return txt(x+d+.14,y+len/2-.16,o.w||1.2,.32,t,{size,bold:1,color:ACd,valign:'middle',name:'括號標籤'});}
+   path([[x,y],[x,y+d],[x+len,y+d],[x+len,y]],{line:AC,lw:1.5,name:'括號'});ln(x+len/2,y+d,x+len/2,y+d+.08,{c:AC,w:1.5});
+   const tw0=Math.max(len,tw(t,size)+.1);return txt(x+len/2-tw0/2,y+d+.1,tw0,size/72*1.5,t,{size,bold:1,color:ACd,align:'center',name:'括號標籤'});},
+  /* 旗標：從資料點拉起的旗桿＋標註色旗面（例：Excursion start 10/02） */
+  flag:(x,yb,yt,t,o)=>{o=o||{};const size=o.size||10,h=size/72*1.75+.06,w=tw(t,size)*1.04+.24;
+   ln(x,yb,x,yt,{c:AC,w:1.5});circ(x,yb,.1,{fill:AC,line:'FFFFFF',lw:1,name:'標註點'});
+   return box(x,yt,w,h,{fill:AC,r:Math.min(.05,st.r||0),text:t,size,bold:1,color:'FFFFFF',align:'left',margin:[6,4,0,0],name:'旗標'});},
+  /* 箭頭＋標籤 */
+  arrow:(lx,ly,t,px,py,o)=>{o=o||{};const size=o.size||11,w=tw(t,size)*1.04+.12,h=size/72*1.6;const lb=txt(lx,ly,w,h,t,{size,bold:1,color:ACd,align:'center',valign:'middle',name:'箭頭標籤'});
+   const cx=lx+w/2,cy=ly+h/2,dx=px-cx,dy=py-cy;const k=Math.min(Math.abs(dx)>1e-6?(w/2+.04)/Math.abs(dx):1e9,Math.abs(dy)>1e-6?(h/2+.04)/Math.abs(dy):1e9);
+   ln(cx+dx*k,cy+dy*k,px,py,{c:AC,w:anLW*.85,head:'triangle',hs:'med'});return lb;}};
  /* ================= 投影片 ================= */
  const X0=.6,X1=W-.6,CW=X1-X0;const lang=langOf(st);
  const SL={};
@@ -379,9 +417,11 @@ function buildModel(params,opt){
  SL.catalog=()=>{title('元件總表 Element Catalog','一頁看完本風格的所有元件變化：挑好樣式，直接複製圖形使用');
   const LX=X0,CX0=X0+1.42,NC=7,CWc=(X1-CX0)/NC,SW=Math.min(1.2,CWc-.3);
   const fs=Math.min(LS(11.5),13),PR=st.r>0?Math.min(st.r,.1):0;
-  const rows=[['流程方塊','Process',.42],['判斷菱形','Decision',.52],['開始／結束','Start / End',.38],['箭頭與連接線','Arrows',.4],['例外與警示','Exception',.44],['圓形・編號・標籤','Circle / Badge / Tag',.62],['容器與群組','Container',.46]];
-  const capH=.17,gap=.11;let y=1.9;const total=rows.reduce((a,r)=>a+r[2]+capH+gap,0)-gap;
-  const yEnd=(st.canvas?6.82:6.92);if(y+total>yEnd)y=yEnd-total;
+  const rows=[['流程方塊','Process',.42],['判斷菱形','Decision',.52],['開始／結束','Start / End',.38],['箭頭與連接線','Arrows',.4],['例外與警示','Exception',.44],['圓形・編號・標籤','Circle / Badge / Tag',.62],['容器與群組','Container',.46],['標註','Annotation',.44]];
+  /* v10 多了「標註」列：放不下時先縮列距，再等比縮列高（上緣不超過 1.76，避開副標題） */
+  let capH=.17,gap=.11,f=1;let y=1.9;const sumH=rows.reduce((a,r)=>a+r[2],0);const tot=()=>sumH*f+rows.length*(capH+gap)-gap;
+  const yEnd=(st.canvas?6.82:6.92);if(y+tot()>yEnd){y=1.76;if(y+tot()>yEnd){capH=.16;gap=.06;}if(y+tot()>yEnd)f=Math.max(.8,(yEnd-y-rows.length*(capH+gap)+gap)/sumH);}
+  const total=tot();if(y+total>yEnd)y=Math.max(1.7,yEnd-total);
   const cx=i=>CX0+(i+.5)*CWc;
   let rowY,rowH;
   const cap=(i,t)=>txt(cx(i)-CWc/2+.03,rowY+rowH+.035,CWc-.06,capH,t,{size:Math.max(7.5,st.nSize-2),color:G.mute,align:'center',name:'圖說'});
@@ -447,7 +487,15 @@ function buildModel(params,opt){
    cell(4,'表頭色帶卡',(x,y,w,h)=>{box(x,y,w,h,{fill:'FFFFFF',line:G.l2,lw:.75,r:PR,name:'卡片'});topRound(x,y,w,.16,rr(w,h,PR),{fill:P,name:'表頭'});});
    cell(5,'頂邊／側邊色條',(x,y,w,h)=>{box(x,y,w,h,{fill:'FFFFFF',line:G.l2,lw:.75,name:'卡片'});box(x,y,.06,h,{fill:A,name:'側邊色條'});});
    cell(6,'半透明寬欄條',(x,y,w,h,mx,my)=>{const cw=.34;colBar(mx-cw-.06,y,cw,h);colBar(mx+.06,y,cw,h);});};
-  rows.forEach((r,i)=>{rowY=y;rowH=r[2];rowZh=r[0];
+  R[7]=()=>{
+   cell(0,'強調框（實線）',(x,y,w,h)=>AN.box(x+.06,y+.02,w-.12,h-.04));
+   cell(1,'強調框（虛線）',(x,y,w,h)=>AN.box(x+.06,y+.02,w-.12,h-.04,{dash:1}));
+   cell(2,'圈選',(x,y,w,h,mx,my)=>AN.ring(mx,my,Math.min(w*.62,.8),h));
+   cell(3,'編號釘＋引線',(x,y,w,h,mx,my)=>{const d=Math.min(.26,h*.6);AN.pin(1,mx-.18,my+h*.3,mx-.42,y+d/2,{d,dot:.07});AN.pin(2,mx+.38,my+h*.3,mx+.14,y+d/2,{d,dot:.07});});
+   cell(4,'對話框',(x,y,w,h,mx,my)=>AN.callout(x+.02,y,w-.04,h*.66,'連續上升',x+w*.3,y+h,{size:Math.min(9.5,fs-1)}));
+   cell(5,'括號＋標籤',(x,y,w,h,mx,my)=>AN.bracket(x+.12,y+.02,w-.24,'PM 後 3 天',{d:.09,size:8}));
+   cell(6,'旗標＋日期',(x,y,w,h,mx,my)=>AN.flag(x+.12,y+h-.05,y,'Excursion 10/02',{size:7.5}));};
+  rows.forEach((r,i)=>{rowY=y;rowH=r[2]*f;rowZh=r[0];
    const lcy=y+(rowH+capH)/2;
    txt(LX,lcy-.22,1.32,.44,[{t:r[0],s:10.5,b:1,c:G.t2,br:1},{t:r[1],s:8,c:G.mute,f:nf}],{lsp:1.05,valign:'middle',name:'類別'});
    R[i]();
@@ -608,6 +656,42 @@ function buildModel(params,opt){
     const ph=Math.max(.7,Math.min(1.1,tot)),pb=box(prx,y0+tot/2-ph/2,prw,ph,{fill:W2,line:AL,lw:1.75,r:PR,lsp:1.1,text:[{t:'問題',s:fs+1.5,b:1,c:ALd,br:1},{t:'不良率上升',s:fs-.5,c:G.ink}],name:'問題'});
     /* 排除的虛線先畫、確認的實線後畫 → 共用的匯流段是實線 */cs.forEach((c,i)=>{if(!C[i][2])link(c,3,pb,1,{style:{c:G.line,dash:'sysDash'}});});cs.forEach((c,i)=>{if(C[i][2])link(c,3,pb,1);});
     note(x,bottom+.12,w0,'確認＝已用數據驗證；排除＝已查證非主因（虛線）。標籤文字可在工作室「改字」或 PowerPoint 中修改',{size:8,h:.22});},{count:'nCause'});}};
+/* ---------- 06 標註（v10）：左＝疊在灰色示意圖表上的用法，右＝每個標註元件（各自一個群組、透明底、預設警示色） ---------- */
+ SL.annot=()=>{title('標註 Annotation','疊在 SPC 管制圖、晶圓圖、截圖上：透明底、原生可編輯；顏色見左側「語意色 › 標註顏色」');
+  const W2='FFFFFF';const lx=X0,lw=7.55,ty0=1.9;head2(lx,ty0,lw,'疊在圖表上（灰色＝你貼上的圖，示意）','Over a pasted chart');
+  const cx=lx,cy=ty0+.5,cw=lw,ch=6.78-cy;
+  /* 示意圖表（灰階，代表貼上的截圖） */
+  const px0=cx+.62,px1=cx+cw-.3,py0=cy+.5,py1=cy+ch-.55,N=26,vy=v=>py1-(v/10)*(py1-py0),vx=i=>px0+i*(px1-px0)/(N-1);
+  const V=[4.6,5.3,4.4,5.6,4.9,3.8,5.2,4.7,5.5,4.3,5.0,4.8,4.2,4.9,5.4,5.9,6.4,6.9,7.4,6.1,8.9,5.6,4.4,5.1,4.6,5.3];
+  grp('圖表佔位（示意）',()=>{box(cx,cy,cw,ch,{fill:mix(G.fill,'FFFFFF',.35),line:G.l2,lw:.75,name:'圖表佔位'});
+   txt(cx+.15,cy+.08,4,.24,'SPC 管制圖（示意）｜請換成你的圖',{size:8.5,color:G.mute,name:'佔位說明'});
+   ln(px0,py0-.1,px0,py1,{c:'A6A6A6',w:.75});ln(px0,py1,px1+.1,py1,{c:'A6A6A6',w:.75});
+   [[8,'UCL'],[5,'CL'],[2,'LCL']].forEach(([v,t])=>{ln(px0,vy(v),px1,vy(v),{c:v===5?'8C8C8C':'A6A6A6',w:.75,dash:v===5?'solid':'sysDash'});txt(px0-.55,vy(v)-.1,.5,.2,t,{size:7.5,color:G.mute,align:'right',font:nf,name:'管制線'});});
+   path(V.map((v,i)=>[vx(i),vy(v)]),{line:'8C8C8C',lw:1.25,name:'資料線'});V.forEach((v,i)=>circ(vx(i),vy(v),.07,{fill:'7F7F7F',name:'資料點'}));
+   txt(px0,py1+.06,px1-px0,.2,'Lot 1 → 26',{size:7.5,color:G.mute,align:'center',font:nf,name:'X 軸'});});
+  const ys=V.slice(13,19).map(vy);
+  grp('強調框（虛線）',()=>AN.box(vx(13)-.14,Math.min(...ys)-.2,vx(18)-vx(13)+.28,Math.max(...ys)-Math.min(...ys)+.4,{dash:1}));
+  const bxB=Math.max(...ys)+.2;grp('對話框',()=>AN.callout(vx(13)-.05,vy(2.9),1.75,.4,'連續 6 點上升',vx(15.5),bxB+.03,{size:11}));
+  grp('圈選',()=>AN.ring(vx(20),vy(V[20]),.42,.42));
+  grp('箭頭＋標籤',()=>AN.arrow(vx(22)+.05,vy(9.6)-.12,'超出 UCL',vx(20)+.2,vy(V[20])-.12,{size:10.5}));
+  grp('旗標＋日期',()=>AN.flag(vx(13),vy(V[13]),vy(9.7),'Excursion start 10/02',{size:9.5}));
+  grp('編號釘 ①',()=>AN.pin(1,vx(5),vy(V[5]),vx(5)-.3,vy(V[5])+.5));
+  grp('編號釘 ②',()=>AN.pin(2,vx(23),vy(V[23]),vx(23)+.35,vy(V[23])+.55));
+  grp('括號（橫）',()=>AN.bracket(vx(21)-.08,vy(2.6),vx(25)-vx(21)+.16,'PM 後恢復',{size:9.5}));
+  /* 右側：每個元件一格 */
+  const rx=lx+lw+.4,rw=X1-rx;head2(rx,ty0,rw,'標註元件','Annotation Kit');
+  const gw=(rw-.2)/2,gh=.54,capH=.2,top=ty0+.5,pitch=gh+capH+.1;
+  const at=(i,zh,fn)=>{const c=i%2,r=Math.floor(i/2),x=rx+c*(gw+.2),y=top+r*pitch;grp(zh,()=>fn(x,y,gw,gh,x+gw/2,y+gh/2));txt(x,y+gh+.03,gw,capH,zh,{size:Math.max(7.5,st.nSize-2),color:G.mute,align:'center',name:'圖說'});};
+  at(0,'強調框（實線）',(x,y,w,h)=>AN.box(x+.15,y+.04,w-.3,h-.08));
+  at(1,'強調框（虛線）',(x,y,w,h)=>AN.box(x+.15,y+.04,w-.3,h-.08,{dash:1}));
+  at(2,'圈選',(x,y,w,h,mx,my)=>AN.ring(mx,my,1.05,h));
+  at(3,'編號釘 ①②③',(x,y,w,h,mx,my)=>[0,1,2].forEach(j=>AN.pin(j+1,x+.32+j*.55,y+h-.08,x+.2+j*.55,y+.15,{d:.28,dot:.07})));
+  at(4,'對話框',(x,y,w,h)=>AN.callout(x+.1,y,w-.2,h*.62,'良率掉 3%',x+.4,y+h,{size:10.5}));
+  at(5,'箭頭＋標籤',(x,y,w,h,mx,my)=>AN.arrow(x+.08,y+.04,'異常點',x+w-.25,y+h-.06,{size:10.5}));
+  at(6,'括號（橫）',(x,y,w,h)=>AN.bracket(x+.2,y+.06,w-.4,'PM 後 3 天',{size:9.5}));
+  at(7,'括號（直）',(x,y,w,h)=>AN.bracket(x+.25,y+.02,h-.04,'Chamber B',{v:1,size:9.5,w:w-.6}));
+  at(8,'旗標＋日期',(x,y,w,h)=>AN.flag(x+.2,y+h-.06,y,'Excursion start 10/02',{size:9}));
+  at(9,'深色數值標籤',(x,y,w,h,mx,my)=>box(mx-.45,my-.16,.9,.32,{fill:AC,r:Math.min(.16,st.r>0?.16:0),text:'86.4%',size:11,bold:1,color:W2,font:nf,margin:0,name:'數值標籤'}));};
  /* ---------- 待選素材組版（v9）：只有標題／副標／註解，沿用本風格的標題處理；不加頁尾、不加畫布（白底） ---------- */
  SL.compose=()=>{const C=opt.compose||{};const t=stripCtl(C.title||'').trim(),sub=stripCtl(C.sub||'').trim(),f=stripCtl(C.foot||'').trim();
   if(t){let ts=st.tSize;while(ts>20&&tw(t,ts)>11.4)ts-=1;cur.tsz=ts;title(t,sub);}
@@ -842,7 +926,13 @@ function buildModel(params,opt){
   const ST={good:GOOD,prog:'B7791F',risk:BAD,mark:P,weak:G.mute};
   const bold=new Set((Array.isArray(T.bold)?T.bold:AU.key).map(Number));const al=T.align||{};
   const colAl=Array.from({length:nC},(_,c)=>al[c]||(c===0?'left':AU.numC[c]?'right':AU.statC[c]?'center':'left'));
-  const isHiC=c=>T.hi&&T.hi.type==='col'&&T.hi.i===c,isHiR=r=>T.hi&&T.hi.type==='row'&&T.hi.i===r;
+  const MK=tableMarks(T,nC,rows.length);const HCof=c=>c==='alert'?AL:c==='A'?(HASA?A:PD):c==='P'?P:HC;
+  const his=MK.his.map(h=>Object.assign({},h,{C:HCof(h.color)}));
+  const hiCol=c=>his.find(h=>h.type==='col'&&h.i===c),hiRow=r=>his.find(h=>h.type==='row'&&h.i===r),hiCell=(r,c)=>his.find(h=>h.type==='cell'&&h.r===r&&h.c===c);
+  const isHiC=c=>!!hiCol(c);
+  const TONE={warn:AL,good:GOOD,accent:HASA?A:PD};
+  const ruleOf=(ri,c)=>{if(ri<h0||AU.section[ri])return null;const v=tNumVal(rows[ri][c]);if(!Number.isFinite(v))return null;return MK.rules.find(R=>R.c===c&&ruleHit(R,v))||null;};
+  let ruleHits=0;const ruleBoxes=[];
   const measureW=(t,size,b)=>Math.max(...String(t).split('\n').map(l=>tw(l,size)*(b?1.07:1)));
   let colW=Array.from({length:nC},(_,c)=>Math.max(c===0?1.1*k:.7*k,...rows.map((r,ri)=>AU.section[ri]&&c===0?0:measureW(r[c],ri<h0?hfs:fs,ri<h0||bold.has(ri)||isHiC(c))))+2*pad/72+.06*k);
   const numIdx=colW.map((_,c)=>c).filter(c=>c>0&&(AU.numC[c]||AU.statC[c]));
@@ -876,7 +966,9 @@ function buildModel(params,opt){
   const ty=y;const bw=b=>b?{c:b.c,w:b.w*k}:null;
   const cells=rows.map((r,ri)=>r.map((t,c)=>{const align=colAl[c];const isN=AU.numC[c]&&ri>=h0;const font=isN?nf:F;
    if(ri<h0){const o={t,bold:1,size:hfs,align,font:F,color:LK.hdr.color,fill:LK.hdr.fill||null,bB:bw(LK.hdr.bB)};
-    if(hiMode==='fill'&&isHiC(c)){if(LK.hdr.fill){o.fill=HC===LK.hdr.fill?mix(HC,'000000',.25):HC;o.color='FFFFFF';}else{o.fill=HT;o.color=HC;}}
+    const hc=hiCol(c),hx=hiCell(ri,c);
+    if(hiMode==='fill'&&hc){const C=hc.C;if(LK.hdr.fill){o.fill=C===LK.hdr.fill?mix(C,'000000',.25):C;o.color='FFFFFF';}else{o.fill=mix(C,'FFFFFF',.88);o.color=C;}}
+    if(hiMode==='fill'&&hx){o.fill=LK.hdr.fill?mix(hx.C,'000000',.2):mix(hx.C,'FFFFFF',.8);o.color=LK.hdr.fill?'FFFFFF':hx.C;}
     return o;}
    const last=ri===rows.length-1,key=bold.has(ri),sec=AU.section[ri];
    const o={t,size:fs,align,font,bold:key||sec,color:sec?PD:G.ink,fill:null,bB:bw(last?(LK.last||LK.row):LK.row)};
@@ -884,15 +976,23 @@ function buildModel(params,opt){
    if(key&&LK.key&&ri>h0)o.bT=bw(LK.key);
    const s=st.tbStatus===false?null:statusOf(t);if(s){o.color=ST[s];o.bold=true;if(s==='good'||s==='prog'||s==='risk')o.fill=mix(ST[s],'FFFFFF',.88);}
    if(isN&&st.tbNeg&&/^[\s(（]*[-−▼]|^\s*[(（]/.test(t))o.color=BAD;
-   if(hiMode==='fill'&&(isHiC(c)||isHiR(ri))){if(!s)o.fill=HT;o.bold=true;}
+   if(hiMode==='fill'){const hx=hiCell(ri,c),h=hx||hiRow(ri)||hiCol(c);if(h){if(!s)o.fill=mix(h.C,'FFFFFF',hx?.8:.88);o.bold=true;if(hx&&!s)o.color=mix(h.C,'000000',.15);}}
+   const R=ruleOf(ri,c);if(R){ruleHits++;const C=TONE[R.tone];o.bold=true;
+    if(R.style==='fill'){o.fill=mix(C,'FFFFFF',.84);o.color=mix(C,'000000',.22);}
+    else if(R.style==='text')o.color=C;
+    else ruleBoxes.push({r:ri,c,color:C});}
    return o;}));
   const tb=table(tx,ty,colW,rowH,cells,{mL:pad,mT:Math.max(1,2*k),name:'表格'});
   if(T.note)txt(tx,ty+tH+.1*k,tW,noteN*.19*k,T.note,{size:8.5*k,color:G.mute,valign:'top',wrap:1,lsp:1,name:'註腳'});
-  const hi=T.hi||{};
-  if(hiMode==='box'){
-   if(hi.type==='col'&&hi.i>=0&&hi.i<nC){const x=tx+colW.slice(0,hi.i).reduce((a,b)=>a+b,0);box(x+.01*k,ty-.04*k,colW[hi.i]-.02*k,tH+.08*k,{line:HC,lw:1.75*k,r:.07*k,name:'強調框'});}
-   if(hi.type==='row'&&hi.i>=0&&hi.i<rows.length){const yy=ty+rowH.slice(0,hi.i).reduce((a,b)=>a+b,0);box(tx-.05*k,yy+.01*k,tW+.1*k,rowH[hi.i]-.02*k,{line:HC,lw:1.75*k,r:.07*k,name:'強調框'});}}
-  cur.table={tx,ty,tW,tH,colW,rowH,h0,nC,nR:rows.length,look:lookId,hiMode,colNum:AU.numC,hi:hiMode==='box'&&(hi.type==='col'||hi.type==='row')?Object.assign({color:HC},hi):null,unit:T.unit||'',note:T.note||'',title:T.title||'',font:F,nf};}
+  const cx0=c=>tx+colW.slice(0,c).reduce((a,b)=>a+b,0),ry0=r=>ty+rowH.slice(0,r).reduce((a,b)=>a+b,0);const boxes=[];
+  if(hiMode==='box')his.forEach(h=>{
+   if(h.type==='col')box(cx0(h.i)+.01*k,ty-.04*k,colW[h.i]-.02*k,tH+.08*k,{line:h.C,lw:1.75*k,r:.07*k,name:'強調框'});
+   else if(h.type==='row')box(tx-.05*k,ry0(h.i)+.01*k,tW+.1*k,rowH[h.i]-.02*k,{line:h.C,lw:1.75*k,r:.07*k,name:'強調框'});
+   else box(cx0(h.c)+.025*k,ry0(h.r)+.025*k,colW[h.c]-.05*k,rowH[h.r]-.05*k,{line:h.C,lw:1.75*k,r:.06*k,name:'強調框'});
+   boxes.push(Object.assign({color:h.C},h.type==='cell'?{type:'cell',r:h.r,c:h.c}:{type:h.type,i:h.i}));});
+  ruleBoxes.forEach(b=>{box(cx0(b.c)+.03*k,ry0(b.r)+.03*k,colW[b.c]-.06*k,rowH[b.r]-.06*k,{line:b.color,lw:1.5*k,r:.05*k,name:'條件框'});boxes.push({type:'cell',r:b.r,c:b.c,color:b.color,rule:1});});
+  const b0=boxes.find(b=>!b.rule&&b.type!=='cell');
+  cur.table={tx,ty,tW,tH,colW,rowH,h0,nC,nR:rows.length,look:lookId,hiMode,colNum:AU.numC,hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,unit:T.unit||'',note:T.note||'',title:T.title||'',font:F,nf};}
  if(opt.compose){sno=0;cur={key:'compose',title:'待選素材',no:1,items:[],groups:[]};slides.push(cur);SL.compose();}
  else SLIDES.forEach(([k,zh],i)=>{if(opt.only&&!opt.only.includes(k))return;if(!opt.only&&opt.examples===false&&/^ex\d/.test(k))return;/* 12–14 範例頁（主題式版面）：studio 預設不含，勾「含範例頁」才加 */sno=i+1;cur={key:k,title:zh,no:i+1,items:[],groups:[]};slides.push(cur);canvas();SL[k]();footer();if(opt.labels)applyLabels(cur,opt.labels);});
  const k=SIZE_K[st.size]||1;if(k!==1)slides.forEach(sl=>scaleSlide(sl,k));
@@ -904,6 +1004,22 @@ const TABLE_LOOKS=[['clean','細線'],['panel','灰底面板'],['band','主色�
 const T_NUM=/^[\s(（]*[-−+±▲▼△▽]?\s*(?:NT\$|US\$|\$|＄|€|¥)?\s*(?:\d{1,3}(?:,\d{3})+|\d+)?(?:\.\d+)?\s*(?:%|％|x|X|倍|ppts?|pts?|bps|[KkMmBb]|億|萬|元|天|週|日|h|hr|小時|件|台|片)?\s*[)）]?\s*$/;
 const tIsNum=t=>/\d/.test(t)&&T_NUM.test(t),tBlank=t=>/^\s*(|-|—|–|n\/a|NA|N\/A)\s*$/.test(t);
 const ST_RE={good:/^(✓|✔|☑|完成|已完成|達成|已達成|正常|通過|OK|Ok|ok|Done|DONE|Pass|PASS|On track|綠燈?)(\s|$|（|\()/,prog:/^(◐|進行中|執行中|處理中|In progress|WIP|黃燈?|待確認|規劃中)(\s|$|（|\()/,risk:/^(✗|✘|×|NG|風險|高風險|延遲|落後|異常|未達成?|Risk|Delay(ed)?|Fail|FAIL|紅燈?|卡關)(\s|$|（|\()/,mark:/^(●|◎)$/,weak:/^(○|△|－|未開始|待定|暫停|N\/A)(\s|$|（|\()/};
+/* v10 表格強調（最多 3 個：欄／列／單格，各自選色）＋條件規則（最多 3 條：數字欄 比較 值 → 上色）。
+   T.his=[{type:'col'|'row'|'cell',i,r,c,color:'auto'|'P'|'A'|'alert'}]；舊版 T.hi={type,i} 自動轉換。
+   T.rules=[{c,op:'<'|'<='|'>'|'>='|'=',v,tone:'warn'|'good'|'accent',style:'fill'|'text'|'box'}] */
+const HI_COLORS=['auto','P','A','alert'],RULE_OPS=['<','<=','>','>=','='],RULE_TONES=['warn','good','accent'],RULE_STYLES=['fill','text','box'];
+function tNumVal(t){t=String(t==null?'':t).trim();if(!tIsNum(t))return NaN;const m=t.replace(/[,，\s]/g,'').match(/\d+(?:\.\d+)?|\.\d+/);if(!m)return NaN;
+ const neg=/^[(（]/.test(t)||/^[(（]?\s*[-−▼▽]/.test(t);const v=parseFloat(m[0]);return neg?-v:v;}
+function ruleHit(R,v){if(!Number.isFinite(v)||!Number.isFinite(R.v))return false;switch(R.op){case '<':return v<R.v-1e-9;case '<=':return v<=R.v+1e-9;case '>':return v>R.v+1e-9;case '>=':return v>=R.v-1e-9;default:return Math.abs(v-R.v)<1e-9;}}
+function tableMarks(T,nC,nR){T=T||{};const int=v=>Number.isInteger(+v)?+v:-1;
+ let his=Array.isArray(T.his)?T.his:(T.hi&&(T.hi.type==='col'||T.hi.type==='row')?[T.hi]:[]);
+ his=his.filter(h=>h&&typeof h==='object').map(h=>{const type=['col','row','cell'].includes(h.type)?h.type:null,color=HI_COLORS.includes(h.color)?h.color:'auto';
+  return type==='cell'?{type,r:int(h.r),c:int(h.c),color}:{type,i:int(h.i),color};})
+  .filter(h=>h.type==='col'?h.i>=0&&h.i<nC:h.type==='row'?h.i>=0&&h.i<nR:h.type==='cell'?h.r>=0&&h.r<nR&&h.c>=0&&h.c<nC:false);
+ const seen=new Set();his=his.filter(h=>{const k=h.type+':'+(h.type==='cell'?h.r+','+h.c:h.i);if(seen.has(k))return false;seen.add(k);return true;}).slice(0,3);
+ const rules=(Array.isArray(T.rules)?T.rules:[]).filter(r=>r&&typeof r==='object').map(r=>({c:int(r.c),op:RULE_OPS.includes(r.op)?r.op:'<',v:r.v===''||r.v==null?NaN:+r.v,
+  tone:RULE_TONES.includes(r.tone)?r.tone:'warn',style:RULE_STYLES.includes(r.style)?r.style:'fill'})).filter(r=>r.c>=0&&r.c<nC).slice(0,3);
+ return{his,rules};}
 function statusOf(t){t=String(t||'').trim();if(!t||t.length>14)return null;for(const k in ST_RE)if(ST_RE[k].test(t))return k;return null;}
 function tableAuto(rows){const nC=Math.max(0,...rows.map(r=>r.length));const cell=(r,c)=>String((rows[r]||[])[c]==null?'':rows[r][c]).trim();
  const r0=Array.from({length:nC},(_,c)=>cell(0,c)).filter(t=>t);const head=rows.length>1&&r0.length>0&&r0.filter(tIsNum).length/r0.length<.34;const h0=head?1:0;
@@ -1294,14 +1410,16 @@ function trayModel(entries,opt){opt=opt||{};const C=opt.compose||{};const parts=
  return{slides:[{key:'tray',title:'待選素材',no:1,items,groups,frameN:frame?frame.items.length:0}],warns:[],params:Object.assign({},(parts[0]||{}).params||BASE,{zh:'待選素材'}),
   tray:{n:parts.length,skipped,scale:ks.length?Math.round(Math.min(...ks)*100)/100:1,layout,minSize,notes:warns,unify:!!C.unify}};}
 /* 表格 → 剪貼簿 HTML（貼到 PowerPoint 會成為原生表格；強調框改成該欄／列的外框線，灰色底板不帶過去） */
-function tableHtml(model){const sl=model.slides[0];const tb=sl.items.find(i=>i.t==='tbl');if(!tb)return '';const T=sl.table||{};const hi=T.hi;const n=tb.cells.length;
- const pt=v=>+(v*72).toFixed(1)+'pt';const HB=hi?`1.75pt solid #${hi.color}`:'';
+function tableHtml(model){const sl=model.slides[0];const tb=sl.items.find(i=>i.t==='tbl');if(!tb)return '';const T=sl.table||{};const BX=T.boxes||(T.hi?[T.hi]:[]);const n=tb.cells.length;
+ const pt=v=>+(v*72).toFixed(1)+'pt';
  let h=`<table style="border-collapse:collapse;table-layout:fixed;width:${pt(tb.w)};font-family:${fstack(T.font||'Microsoft JhengHei').replace(/"/g,"'")}">`;
  h+='<colgroup>'+tb.colW.map(w=>`<col style="width:${pt(w)}">`).join('')+'</colgroup>';
  tb.cells.forEach((r,ri)=>{h+=`<tr style="height:${pt(tb.rowH[ri])}">`;
   r.forEach((c,ci)=>{const f=(c.runs[0]&&c.runs[0].o.font)||T.font;const bd=(side,b)=>b?`border-${side}:${b.w}pt solid #${b.c};`:'';let hb='';
-   if(hi&&hi.type==='col'&&hi.i===ci)hb=`border-left:${HB};border-right:${HB};`+(ri===0?`border-top:${HB};`:'')+(ri===n-1?`border-bottom:${HB};`:'');
-   if(hi&&hi.type==='row'&&hi.i===ri)hb=`border-top:${HB};border-bottom:${HB};`+(ci===0?`border-left:${HB};`:'')+(ci===r.length-1?`border-right:${HB};`:'');
+   BX.forEach(b=>{const HB=`${b.rule?1.5:1.75}pt solid #${b.color}`;
+    if(b.type==='col'&&b.i===ci)hb+=`border-left:${HB};border-right:${HB};`+(ri===0?`border-top:${HB};`:'')+(ri===n-1?`border-bottom:${HB};`:'');
+    if(b.type==='row'&&b.i===ri)hb+=`border-top:${HB};border-bottom:${HB};`+(ci===0?`border-left:${HB};`:'')+(ci===r.length-1?`border-right:${HB};`:'');
+    if(b.type==='cell'&&b.r===ri&&b.c===ci)hb+=`border:${HB};`;});
    const css=`${c.fill?`background:#${c.fill};`:''}color:#${c.color};font-size:${c.size}pt;font-weight:${c.bold?700:400};text-align:${c.align};vertical-align:middle;padding:${c.mT}pt ${c.mL}pt;font-family:${fstack(f).replace(/"/g,"'")};`+bd('top',c.bT)+bd('bottom',c.bB)+hb;
    h+=`<td style="${css}">${esc(c.runs.map(x=>x.t+(x.o.br?'\n':'')).join('')).replace(/\n/g,'<br>')}</td>`;});h+='</tr>';});
  return h+'</table>';}
@@ -1320,6 +1438,6 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(typeof BASE[k]==='string'&&/^[0-9A-F]{6}$/i.test(BASE[k])){const h=String(v).replace('#','');if(/^[0-9A-F]{6}$/i.test(h))out[k]=h.toUpperCase();return;}
   if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
  return out;}
-const api={W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,langOf,FONT_STACK};
+const api={W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);
