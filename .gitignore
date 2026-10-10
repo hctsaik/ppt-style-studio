@@ -87,3 +87,5 @@ Thumbs.db
 review/*
 !review/table-redesign.md
 !review/table-mocks/
+tools/oxv/bin/
+tools/oxv/obj/

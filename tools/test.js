@@ -53,6 +53,10 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
   for(const sz of ['S','L'])await save(`annot-${sz}.pptx`,Object.assign({},wine,{size:sz}),{only:['annot','catalog']});}
  console.log('嚴格 OOXML 驗證（office validate）＋ check_pptx.py…');
  for(const f of files){let v=0;try{cp.execFileSync('office',['validate',f],{stdio:'pipe'});}catch(e){v=1;}ok(!v,'office validate '+path.basename(f));}
+ {let v=0;try{cp.execFileSync('python3',[path.join(__dirname,'check_zip.py'),...files],{stdio:'pipe'});}catch(e){v=1;console.log(String(e.stdout));}ok(!v,`封裝／id／連接線檢查（${files.length} 檔）`);}
+ {const dn=[process.env.DOTNET,path.join(require('os').homedir(),'.dotnet/dotnet')].find(x=>x&&fs.existsSync(x));const ox=path.join(__dirname,'oxv/bin/oxv.dll');
+  if(dn&&fs.existsSync(ox)){let v=0;try{cp.execFileSync(dn,[ox,...files],{stdio:'pipe'});}catch(e){v=1;console.log(String(e.stdout).split('\n').filter(l=>!/^OK/.test(l)).join('\n'));}ok(!v,`Open XML SDK（Microsoft365）驗證（${files.length} 檔）`);}
+  else console.log('  （略過 Open XML SDK：先 cd tools/oxv && dotnet build -c Release -o bin）');}
  try{const r=cp.execFileSync('python3',[path.join(__dirname,'check_pptx.py'),...files],{encoding:'utf8'});ok(true,'check_pptx.py：全部 clean');}catch(e){console.log(e.stdout);ok(false,'check_pptx.py 有問題');}
  console.log('其他檢查…');
  ok(D.stripCtl('a\u0000b\u000Bc\u001Fd\n\te')==='abcd\n\te','stripCtl 去掉 XML 不允許的控制字元、保留換行／Tab');
