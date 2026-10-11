@@ -86,6 +86,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    ok(c0.mL===0&&c0.mR===0&&c1.mL>8,'儲存格邊界：無＝0、大＞中（'+c1.mL+'pt）');
    ok(D.BASE.tbFont==='jh'&&it.cells[1][0].runs[0].o.font==='Microsoft JhengHei','預設表格字型＝微軟正黑體');
    ok(D.sanitizeParams(Object.assign({},nav,{tbPad:'l'}),nav).tbPad==='l','tbPad 參數保留');
+   {const mn=D.buildModel(Object.assign({},nav,{tbFont:'noto'}),{table:base});ok(mn.slides[0].items.find(i=>i.t==='tbl').cells[1][0].runs[0].o.font==='Microsoft JhengHei','舊設定 Noto Sans TC → 改用微軟正黑體');}
    const many=D.buildModel(nav,{table:Object.assign({},base,{his:[1,2,3,4,5].map(i=>({type:'row',i,kind:'focus'}))})});ok(many.slides[0].table.his.length===5,'重點可超過 3 個（'+many.slides[0].table.his.length+'）');
    const r=await D.exportPptx(env,nav,{type:'nodebuffer',model:hc});fs.writeFileSync(path.join(OUT,'tbl-hcol.pptx'),r.data);files.push(path.join(OUT,'tbl-hcol.pptx'));}
   // R8：壓力範例 12/16/20 列（長中文表頭與內文、% 與負數、多行註腳）× 4 外觀 × 3 密度 × S/M/L × 9 風格
