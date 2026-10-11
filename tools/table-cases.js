@@ -1,0 +1,8 @@
+const yieldT={title:'CVD-03 批次良率',unit:'10 月第 1 週・Yield 單位 %',note:'資料來源：MES；Yield < 90% 以紅字標示',rows:[['Lot','Station','Yield%','Defect (ea)','Status'],['A2401','CMP','95.2%','12','Pass'],['A2402','CMP','88.1%','31','Hold'],['A2403','Etch','91%','18','Pass'],['A2404','Etch','86.4%','40','Scrap'],['A2405','Litho','93.7%','15','Pass'],['A2406','Litho','89.5%','27','Review'],['Avg','','90.7%','23.8','']],rules:[{c:2,op:'<',v:90,tone:'warn',style:'text'}],his:[]};
+const plT={title:'損益表摘要',unit:'單位：新台幣十億元（每股盈餘除外）',note:'註：ppts＝百分點',hiStyle:'box',his:[{type:'col',i:1}],
+ rows:[['','3Q25','2Q25','3Q24','QoQ','YoY'],['營業收入淨額','989.9','933.8','759.7','+6.0%','+30.3%'],['毛利率','59.5%','58.6%','57.8%','+0.9 ppts','+1.7 ppts'],['營業費用','(88.2)','(85.5)','(75.6)','+3.2%','+16.7%'],['營業利益率','50.6%','49.6%','47.5%','+1.0 ppts','+3.1 ppts'],['稅後淨利','452.3','398.3','325.3','+13.6%','+39.0%'],['每股盈餘（元）','17.44','15.36','12.54','+13.6%','+39.1%']]};
+const stT={title:'Q4 專案進度',unit:'更新：10/09',note:'',rows:[['項目','負責人','預計完成','狀態','備註'],['新機台驗收','王小明','10/15','完成','提前 3 天'],['製程參數最佳化','陳美玲','10/31','進行中','DOE 第 2 輪'],['AOI 誤判改善','林志豪','11/15','風險','資料量不足'],['SPC 管制圖上線','張家瑋','11/30','進行中','已完成 60%'],['教育訓練','李怡君','12/05','未開始','']]};
+const dense=[['Tool','Chamber','WPH','Uptime%','MTBF (h)','Status']];const ST=['OK','OK','WIP','OK','NG','OK','Hold'];
+for(let i=0;i<20;i++)dense.push([`ETX-${String(i+1).padStart(2,'0')}`,'ABCD'[i%4],String(110+((i*37)%40)),(92+((i*13)%70)/10).toFixed(1)+'%',String(300+((i*71)%900)),ST[i%7]]);
+const denseT={title:'蝕刻機台週報（20 台）',unit:'W41',note:'Uptime < 95% 標紅',rows:dense,rules:[{c:3,op:'<',v:95,tone:'warn',style:'text'}]};
+module.exports={yield:yieldT,pl:plT,status:stT,dense:denseT};

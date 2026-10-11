@@ -30,18 +30,56 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
  {const e0=D.elementModel(nav,'patterns',0),e1=D.elementModel(Object.assign({},nav,{minFont:12}),'patterns',0);ok(e1.element.scale>1&&e1.element.minSize>=12&&e1.element.w>e0.element.w*0||D.minFontOf(e1.slides[0].items)>=12,`最小字級 12：三步驟流程放大 ×${e1.element.scale}，最小字 ${e1.element.minSize}pt`);await save('minfont-element.pptx',nav,{model:e1});}
  {const inv=D.PRESETS.find(p=>p.id==='investor');const m=D.buildModel(inv,{only:['catalog']});ok(m.sem.warn!==inv.P,`法說會紅：警示色 ${m.sem.warn} ≠ 主色 ${inv.P}`);
   const k=D.buildModel(nav,{only:['patterns2']}).slides[0];const runs=[].concat(...k.items.filter(i=>i.name==='變化').map(i=>i.runs));ok(runs.some(r=>r.o.color==='2E7D4F')&&runs.some(r=>r.o.color==='C0504D'),'KPI ▲▼ 依越高／越低越好上色（良＝綠、不良＝紅）');}
- // v10：表格多重強調＋條件規則（6 外觀 × 9 風格）、標註元件（單一元件／S／L／最小字級／改字／待選）
- {const Y={title:'批次良率',rows:[['Lot','站點','Yield%','Defect'],['A1','CMP','95.2%','12'],['A2','CMP','88.1%','31'],['A3','Etch','(86.4%)','40'],['A4','Litho','93.7%','15']],
+ // R1：表格重新設計（4 外觀 × 9 風格、單一強調色、狀態字精準比對、合計列、數字格式、門檻建議、貼上重設、舊快照相容）
+ {const Y={title:'批次良率',rows:[['Lot','站點','Yield%','Defect','Status'],['A1','CMP','95.2%','12','Pass'],['A2','CMP','88.1%','31','Hold'],['A3','Etch','(86.4%)','40','Scrap'],['A4','Litho','93.7%','15','已完成 60%']],
    his:[{type:'col',i:2,color:'auto'},{type:'row',i:3,color:'alert'},{type:'cell',r:1,c:3,color:'A'},{type:'col',i:1}],rules:[{c:2,op:'<',v:90,tone:'warn',style:'fill'},{c:3,op:'>=',v:30,tone:'warn',style:'box'},{c:3,op:'=',v:12,tone:'good',style:'text'}]};
-  let bad=0,n=0;for(const st of D.PRESETS)for(const [lk] of D.TABLE_LOOKS){const m=D.buildModel(Object.assign({},st,{tbLook:lk}),{table:Y});const t=m.slides[0].table;n++;
-   if(m.warns.length||t.his.length!==3||t.ruleHits!==5||!/border:1\.5pt solid/.test(D.tableHtml(m)))bad++;
-   if(st.id==='navy'||st.id==='investor')await save(`table-marks-${st.id}-${lk}.pptx`,st,{model:m});}
-  ok(!bad,`表格強調 3 個（第 4 個忽略）＋條件 3 條：${n} 種組合都正確（符合 5 格、HTML 有框線）`);
+  let bad=0,n=0;const why=[];for(const st of D.PRESETS)for(const [lk] of D.TABLE_LOOKS)for(const hs of ['fill','box','bold']){const m=D.buildModel(Object.assign({},st,{tbLook:lk}),{table:Object.assign({},Y,{hiStyle:hs})});const t=m.slides[0].table;n++;
+   const cells=m.slides[0].items.find(i=>i.t==='tbl').cells;const sizes=new Set();cells.forEach(r=>r.forEach(c=>c.runs.forEach(x=>{if(String(x.t).trim()&&x.t!=='●\u2002')sizes.add(x.o.size);})));
+   const lowC=[];cells.forEach(r=>r.forEach(c=>{if(String(c.runs.map(x=>x.t).join('')).trim()&&D.contrastOf(c.color,c.fill||'FFFFFF')<4.5)lowC.push(c.color+'/'+(c.fill||'FFFFFF'));}));
+   const colours=new Set(t.his.map(h=>h.C));
+   if(m.warns.length||t.his.length!==3||t.ruleHits!==5||!/border:1\.5pt solid/.test(D.tableHtml(m))||colours.size!==1||[...sizes].some(s=>s*2!==Math.round(s*2))||lowC.length){bad++;why.push(st.id+'/'+lk+'/'+hs+' '+m.warns.join()+' '+lowC.slice(0,2).join());}
+   if((st.id==='navy'||st.id==='investor')&&hs==='box')await save(`table-r1-${st.id}-${lk}.pptx`,st,{model:m});}
+  ok(!bad,`表格 R1：${n} 種組合（9 風格 × 4 外觀 × 3 重點樣式）都正確：3 個重點同一色、條件 5 格、字級為 0.5pt 倍數、文字對比 ≥ 4.5:1`+(bad?'｜'+why.slice(0,3).join('；'):''));
   const tm=D.tableMarks({his:[{type:'col',i:99},{type:'x'},{type:'cell',r:'1',c:1,color:'<b>'}],rules:[{c:1,op:'DROP',v:'abc',tone:'x',style:'y'}]},3,3);
   ok(tm.his.length===1&&tm.his[0].color==='auto'&&tm.rules[0].op==='<'&&!Number.isFinite(tm.rules[0].v)&&tm.rules[0].tone==='warn','tableMarks 擋掉非法強調／規則');
-  ok(D.tNumVal('(86.2)')===-86.2&&D.tNumVal('▼ 4.1')===-4.1&&D.tNumVal('98.5%')===98.5&&D.tNumVal('1,234')===1234&&Number.isNaN(D.tNumVal('OK')),'數值解析：括號負數、▼、%、千分位');
-  ok(D.buildModel(nav,{table:{rows:Y.rows,hi:{type:'col',i:1}}}).slides[0].table.his.length===1,'舊版 T.hi 仍可用');
-  const tr=D.trayModel([{kind:'table',params:nav,table:Y,name:'良率'},{kind:'el',params:wine,key:'annot',gi:3,name:'標註'}]);await save('tray-marks.pptx',nav,{model:tr});ok(tr.tray.n===2,'待選素材：表格（含強調／條件）＋標註');}
+  // 解析
+  ok(D.tNumVal('(86.2)')===-86.2&&D.tNumVal('▼ 4.1')===-4.1&&D.tNumVal('98.5%')===98.5&&D.tNumVal('1,234')===1234&&Number.isNaN(D.tNumVal('OK'))&&D.tNumVal('−3.5')===-3.5,'數值解析：括號負數、▼、%、千分位、U+2212');
+  {const a=D.tableAuto([['Lot','Yield','Status','備註'],['A1','95%','Pass','已完成 60%'],['A2','88%','hold','OK'],['A3','91%','Scrap','']]);
+   ok(a.head&&a.numC[1]&&a.statC[2]&&!a.statC[3]&&D.statusOf('Pass')==='good'&&D.statusOf('hold')==='prog'&&D.statusOf('Scrap')==='risk'&&D.statusOf('NG')==='risk'&&D.statusOf('WIP')==='prog'&&D.statusOf('已完成 60%')===null&&D.statusOf('Passed by QA')===null,'狀態字：英文 Pass／Hold／Scrap／NG／WIP、整格完全相同才算（「已完成 60%」不算）、只在狀態欄');
+   const m=D.buildModel(nav,{table:{rows:[['項目','狀態','備註'],['A','完成','已完成 60%'],['B','風險','OK 了']]}});const c=m.slides[0].items.find(i=>i.t==='tbl').cells;
+   ok(c[1][2].color===c[2][2].color&&c[1][2].runs.length===1&&c[1][1].runs[0].t==='●\u2002'&&!c[1][1].fill,'狀態欄＝小圓點＋上色文字、不填底；備註欄不上色');}
+  // 合計列
+  {const a=D.tableAuto([['','3Q25','2Q25'],['營收','989.9','933.8'],['毛利率','59.5%','58.6%'],['稅後淨利','452.3','398.3'],['EPS','17.44','15.36']]);ok(JSON.stringify(a.key)==='[3,4]','合計列：稅後淨利、EPS（毛利率不算）');
+   const b=D.tableAuto([['週','產出'],['W1','10'],['W2','12'],['週平均','11']]);const c=D.tableAuto([['Tool','WPH'],['A','1'],['Total','1']]);const d=D.tableAuto([['Tool','WPH'],['A','1'],['B','2']],{lastTotal:true});
+   ok(JSON.stringify(b.key)==='[3]'&&JSON.stringify(c.key)==='[2]'&&JSON.stringify(d.key)==='[2]','合計列：週平均、Total、勾「最後一列是合計」');
+   const m=D.buildModel(nav,{table:{rows:[['','3Q25','2Q25'],['營收','989.9','933.8'],['稅後淨利','452.3','398.3'],['EPS','17.44','15.36']]}});const cl=m.slides[0].items.find(i=>i.t==='tbl').cells;
+   ok(cl[2][1].bold&&cl[2][1].bT&&cl[3][1].bold&&!cl[3][1].bT,'合計列加粗＋上方一條線（連續合計只畫第一條）');}
+  // 數字格式
+  ok(D.tFmt('(1234.5)',{})==='\u22121,234.5'&&D.tFmt('-0.5%',{minus:'paren'})==='(0.5%)'&&D.tFmt('-2',{minus:'hyphen'})==='-2'&&D.tFmt('+6.0%',{})==='+6.0%'&&D.tFmt('▼ 4.1',{})==='▼ 4.1'&&D.tFmt('91%',{dec:1})==='91.0%'&&D.tFmt('0.952',{pct:1,dec:1})==='95.2%'&&D.tFmt('1234567',{thou:false})==='1234567'&&D.tFmt('+0.9 ppts',{})==='+0.9 ppts'&&D.tFmt('NT$1200',{})==='NT$1,200','數字格式：U+2212／-／( ) 負號、千分位、小數位、%、ppts、貨幣');
+  {const R=[['Lot','Yield'],['A','95.2%'],['B','91%'],['C','88.4%']];ok(D.tableColDec(R,1,1,D.tableAuto(R))===1&&D.tableColDec([['x','v'],['a','989.9'],['b','17.44'],['c','1.2'],['d','3']],1,1,null)===null,'同欄小數位：眾數 ≥60% 才補齊，只補不砍');
+   const m=D.buildModel(nav,{table:{rows:R}});ok(m.slides[0].items.find(i=>i.t==='tbl').cells[2][1].runs[0].t==='91.0%','預覽／匯出：91% → 91.0%');
+   const ft=m.slides[0].items.find(i=>i.t==='tbl').cells[1][1].font;ok(!/Georgia|Times/.test(D.buildModel(D.PRESETS.find(p=>p.nFont==='Georgia')||nav,{table:{rows:R}}).slides[0].items.find(i=>i.t==='tbl').cells[1][1].font),'數字一律無襯線（Georgia 風格的表格數字改 Arial）');}
+  // 門檻建議
+  {const s1=D.tableSuggest([['Lot','片數','Yield%','Defect'],['A','25','95.2%','12'],['B','25','88.1%','31'],['C','24','91.0%','18']]);ok(s1.rule.c===2&&s1.rule.v===90&&s1.rule.op==='<'&&s1.rule.style==='text','門檻預設：挑 Yield% 欄、門檻 90（不是第一個數字欄、不是平均）');
+   const s2=D.tableSuggest([['Tool','WPH','MTBF (h)'],['A','118','430'],['B','131','610'],['C','125','520']]);ok(Number.isInteger(s2.rule.v)&&s2.rule.v>0,'門檻預設：非 % 欄＝中位數取整 '+s2.rule.v);
+   const s3=D.tableSuggest([['','3Q25','2Q25','QoQ'],['營收','989.9','933.8','+6.0%'],['毛利率','59.5%','58.6%','+0.9 ppts']]);ok(s3.period===1&&(s3.rule.c!==3||s3.rule.v===0),'財報表：最新期別欄＝3Q25；變化欄門檻＝0');}
+  // 貼上重設
+  {const prev={rows:[['a','b'],['1','2']],title:'舊標題',unit:'單位：新台幣十億元（EPS 除外）',note:'舊註',his:[{type:'col',i:1}],rules:[{c:1,op:'<',v:1}],pin:false};
+   const n1=D.tableFromPaste([['項目','狀態'],['A','完成']],prev);ok(n1.title===''&&n1.unit===''&&n1.note===''&&!n1.his.length&&!n1.rules.length,'新貼上：標題／單位／註腳／重點／門檻全部重設');
+   const n2=D.tableFromPaste([['項目','狀態'],['A','完成']],Object.assign({},prev,{pin:true}));ok(n2.title==='舊標題'&&n2.unit==='','📌 釘住標題：只保留標題');
+   const n3=D.tableFromPaste([['','3Q25','2Q25'],['營收','989.9','933.8'],['淨利','452.3','398.3']],prev);ok(n3.his.length===1&&n3.his[0].i===1&&JSON.stringify(n3.bold)==='[2]','財報表貼上：自動把最新期別欄設為重點、合計列加粗');}
+  // 版面
+  {const m=D.buildModel(nav,{table:{title:'T',unit:'U',rows:[['a','b','c','d','e'],['1','2','3','4','5']]}}).slides[0].table;const m2=D.buildModel(nav,{table:{rows:[['a','b'],['1','2']]}}).slides[0].table;
+   ok(Math.abs(m.tW-12.133)<.02&&Math.abs(m.tx-.6)<.001&&Math.abs(m.ty-1.45)<.001&&Math.abs(m2.tW-6)<.02&&Math.abs(m2.tx-.6)<.001,`版面：≥5 欄滿版 12.13"、少欄最少 6"、靠左 x0.6、表格 y1.45（${m.tW.toFixed(2)}／${m2.tW.toFixed(2)}）`);
+   const cw=D.buildModel(nav,{table:{rows:[['a','b','c'],['1','2','3']],cw:[3,2,1]}}).slides[0].table;ok(Math.abs(cw.colW[0]-3)<.01&&Math.abs(cw.colW[2]-1)<.01,'拖曳欄寬：T.cw 生效');}
+  // 舊資料相容
+  {ok(D.buildModel(nav,{table:{rows:Y.rows,hi:{type:'col',i:1}}}).slides[0].table.his.length===1,'舊版 T.hi 仍可用');
+   const old=D.sanitizeParams(Object.assign({},nav,{tbLook:'panel'}),nav);const old2=D.sanitizeParams(Object.assign({},nav,{tbLook:'minimal'}),nav);const old3=D.sanitizeParams({P:nav.P,tbPanel:true},nav);
+   ok(old.tbLook==='card'&&old.tbCard==='grey'&&old2.tbLook==='clean'&&old3.tbLook==='card','舊外觀（灰底面板／極簡／tbPanel）自動轉成新外觀');
+   const tr=D.trayModel([{kind:'table',params:Object.assign({},nav,{tbLook:'panel',tbHiColor:'alert',tbHiMode:'box'}),table:Y,name:'良率（舊快照）'},{kind:'table',params:Object.assign({},nav,{tbLook:'minimal'}),table:{rows:[['a','b'],['1','2']]},name:'極簡'},{kind:'el',params:wine,key:'annot',gi:3,name:'標註'}]);await save('tray-marks.pptx',nav,{model:tr});ok(tr.tray.n===3,'待選素材：舊表格快照（灰底面板／極簡）仍可重建＋標註');}
+  // 四個驗收案例（LibreOffice 也會畫）
+  {const C=require('./table-cases.js');for(const [k,T] of Object.entries(C))for(const lk of ['clean','band','card','zebra']){const m=D.buildModel(Object.assign({},nav,{tbLook:lk}),{table:T});await save(`table-case-${k}-${lk}.pptx`,nav,{model:m});}}
+ }
  {const am=D.buildModel(nav,{only:['annot','catalog']});const an=am.slides.find(x=>x.key==='annot'),ca=am.slides.find(x=>x.key==='catalog');const names=an.groups.map(g=>g.name);
   ok(['強調框（實線）','強調框（虛線）','圈選','編號釘 ①②③','對話框','箭頭＋標籤','括號（橫）','括號（直）','旗標＋日期'].every(k=>names.includes(k))&&ca.groups.filter(g=>/^標註・/.test(g.full||'')).length===7,`標註頁 ${an.groups.length} 組、元件總表標註列 7 格`);
   const gi=an.groups.findIndex(g=>g.name==='對話框');const L={[`annot:${gi}`]:{}};const g=an.groups[gi];const ti=an.items.slice(g.from,g.to+1).findIndex(it=>it.runs&&it.runs.length);L[`annot:${gi}`][ti]={from:D.textOf(an.items[g.from+ti]),to:'良率連 6 批上升'};
