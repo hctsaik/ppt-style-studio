@@ -1160,7 +1160,11 @@ function tableTitleSuggest(T){const rows=(T.rows||[]).filter(r=>r&&r.some(c=>Str
  const nums=Array.from({length:nC},(_,c)=>c).filter(c=>A.numC[c]&&!CHG.test(hdr(c)));
  if(nums.length){const LOWBAD=/yield|良率|uptime|稼動|達成|合格|pass|oee|%/i;const c=nums.find(c=>LOWBAD.test(hdr(c)))??nums[0];const low=LOWBAD.test(hdr(c));
   let best=-1,bv=low?Infinity:-Infinity;for(let r=h0;r<rows.length;r++){if(A.section[r]||A.key.includes(r))continue;const v=tNumVal(cell(r,c));if(!Number.isFinite(v))continue;if(low?v<bv:v>bv){bv=v;best=r;}}
-  if(best>=0){const lab=[cell(best,0),nC>2&&!A.numC[1]&&1!==c?cell(best,1):''].filter(Boolean).join(' ');return `${hdr(c)||'數值'} ${low?'最低':'最高'}：${lab} ${cell(best,c)}`.replace(/\s+/g,' ').trim();}}
+  if(best>=0){const clean=h=>String(h).replace(/[（(][^）)]*[）)]/g,'').replace(/\s+/g,' ').trim();
+   const short=l=>{l=String(l).trim();if([...l].length<=10)return l;const tk=(l.match(/[A-Za-z0-9][A-Za-z0-9._\-]*/g)||[]).filter(t=>!/^\d{1,2}$/.test(t));return tk.length?tk.join(' '):[...l].slice(0,10).join('');};
+   let lab=short(cell(best,0));const l2=nC>2&&!A.numC[1]&&1!==c?short(cell(best,1)):'';const H=clean(hdr(c))||'數值',V=cell(best,c);
+   const VL=s=>[...s].reduce((n,ch)=>n+(/[\u0000-\u024f]/.test(ch)?.55:1),0);let out=`${H} ${low?'最低':'最高'}：${lab}${l2?' '+l2:''} ${V}`.replace(/\s+/g,' ').trim();if(VL(out)>24)out=`${H} ${low?'最低':'最高'}：${lab} ${V}`.replace(/\s+/g,' ').trim();
+   if(VL(out)>24)out=`${low?'最低':'最高'}：${lab} ${V}`;return out;}}
  return h0&&hdr(0)?`${hdr(0)} 一覽`:'';}
 function tableFromPaste(rows,prev){prev=prev||{};const S=tableSuggest(rows);const keepTitle=!!prev.pin&&!!prev.title;
  const his=S.period!=null&&S.kind==='number'?[{type:'col',i:S.period,color:'auto'}]:[];

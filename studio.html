@@ -239,7 +239,7 @@ body.tabT .wrap{grid-template-columns:1fr}body.tabT aside{display:none}body.tabT
 .tri .tt i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:-1px}
 .tri button{border:0;background:none;cursor:pointer;color:var(--t2);padding:2px 4px;border-radius:4px;font-size:12px}.tri button:hover{background:#EEE}
 .trmode button[aria-pressed="true"]{background:var(--p);color:#fff;border-color:var(--p)}.trmode button{min-height:44px;flex:1}
-.dsk{}@media (max-width:820px){.dsk{display:none!important}}
+.dsk{}.monly2{display:none}@media (max-width:820px){.dsk{display:none!important}.monly2{display:inline}}
 .trf{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}.trf .btn{flex:1}
 .tempty{color:var(--mu);font-size:12px;padding:14px 10px;line-height:1.7}
 /* v9 待選素材：兩欄大縮圖＋一頁組版 */
@@ -334,7 +334,8 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  .tsec select,.rul .it input,.tgrid td{font-size:16px}.tseg button{min-height:40px;font-size:13.5px}
  .tlooks{grid-template-columns:1fr 1fr}.tlook .tlth{height:96px}.tlook{min-height:0}
  body.tabT .traybtn{display:none}}
-@media (min-width:821px){body.tabT .traybtn{display:none}
+@media (min-width:821px){body.tabT .traybtn{display:none}}
+@media (max-width:820px){
  body.tabT .toast{top:auto;bottom:calc(46dvh + 12px)}
  .tlook .nm,.tlook .nm small{font-size:12px}
  .tmain{padding-bottom:calc(170px + env(safe-area-inset-bottom))}.tcanvas{min-height:0}
@@ -475,7 +476,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
       </div>
       <div class="tout" id="tOut" data-sec="out">
        <button class="btn pri" id="tCopy" title="HTML 表格：在 PowerPoint 按 Ctrl+V 即成原生表格">複製到 PowerPoint</button>
-       <div class="r"><button class="btn" id="tPptx" title="1 頁 .pptx：原生表格（每格可編輯）＋卡片／重點框">下載 .pptx</button><button class="btn" id="tTray" title="加入待選素材（保留目前風格與資料）">＋待選</button><button class="btn dsk" id="tTrayOpen" title="開啟待選素材">待選素材 <b id="tTrayN">0</b></button></div>
+       <div class="r"><button class="btn" id="tPptx" title="1 頁 .pptx：原生表格（每格可編輯）＋卡片／重點框">下載 .pptx</button><button class="btn" id="tTray" title="加入待選素材（保留目前風格與資料）">＋待選</button><button class="btn" id="tTrayOpen" title="開啟待選素材"><span class="dsk">待選素材 </span><span class="monly2">待選 </span><b id="tTrayN">0</b><span class="monly2"> ›</span></button></div>
        <div class="msg" id="tMsg" aria-live="polite"></div>
       </div>
      </div>
@@ -511,7 +512,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 <script src="jszip.min.js?v=978d62b5"></script>
 <script src="pptxgen.min.js?v=24808c08"></script>
 <script src="icons.js?v=f4423941"></script>
-<script src="deck.js?v=fb94752b"></script>
+<script src="deck.js?v=137be9a5"></script>
 <script>
 (function(){
  'use strict';
@@ -652,7 +653,7 @@ try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf
 const persist=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify({base:S.base,p:S.p,slide:S.slide,autoTone:S.autoTone,mine:S.mine||null,tab:S.tab||'slides',examples:!!S.examples,labels:S.labels||{}}));}catch(e){}};
 const hex=v=>String(v||'').replace('#','').toUpperCase();
 const toast=(t,ms,html)=>{const e=$('#toast');
- {const ti=document.querySelector('.tins');if(document.body.classList.contains('tabT')&&matchMedia('(max-width:820px)').matches&&ti){e.style.bottom=Math.round(innerHeight-ti.getBoundingClientRect().top+8)+'px';e.style.top='auto';}else{e.style.bottom='';e.style.top='';}}if(html)e.innerHTML=t;else e.textContent=t;e.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>e.classList.remove('on'),ms||2200);window.__lastToast=e.textContent;};
+ {const ti=document.querySelector('.tins');if(document.body.classList.contains('tabT')&&matchMedia('(max-width:820px)').matches&&ti){const tt=ti.querySelector('.tinsTabs');const tr=(tt||ti).getBoundingClientRect();e.style.bottom=Math.round(innerHeight-tr.bottom+4)+'px';e.style.top='auto';}else{e.style.bottom='';e.style.top='';}}if(html)e.innerHTML=t;else e.textContent=t;e.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>e.classList.remove('on'),ms||2200);window.__lastToast=e.textContent;};
 
 /* ---------- 建立左側面板 ---------- */
 function buildTemplates(){
@@ -1016,7 +1017,9 @@ function loadData(rows,how){
  const nC=Math.max(...rows.map(r=>r.length));
  if(rows.length<2||nC<2){toast(`這看起來不是表格（${rows.length} 列 × ${nC} 欄）：請在 Excel 選取<b>至少 2 列 × 2 欄</b>再複製；或在右側「資料」格子直接輸入。`,5500,true);return false;}
  T=D.tableFromPaste(rows,T);fixT();saveT();closeChip();renderAll();
+ const MOB=matchMedia('(max-width:820px)').matches;if(MOB){$('#tIns').classList.remove('open');requestAnimationFrame(()=>requestAnimationFrame(()=>{const c1=document.querySelector('#tPrev .tov .tc[data-r="1"][data-c="0"]')||document.querySelector('#tPrev .tov .tc');if(c1){c1.scrollIntoView({block:'center',inline:'start'});const sw=document.querySelector('.tstagew');if(sw)sw.scrollLeft=Math.max(0,sw.scrollLeft-40);}}));}
  const A=D.tableAuto(T.rows);const extra=[];if(T.his.length)extra.push('最新期別欄已設為重點');if(A.key.length)extra.push(`${A.key.length} 列合計已加粗`);
+ if(MOB){toast(`✓ 已${how||'貼上'} ${T.rows.length}×${A.nC}`,1800);return true;}
  toast(`已${how||'貼上'} ${T.rows.length} 列 × ${A.nC} 欄 → 已自動排版${extra.length?'（'+extra.join('、')+'）':''}。點欄、列或格可標示重點。`,4200);return true;}
 function fixT(){const nC=nCols();T.rows.forEach(r=>{while(r.length<nC)r.push('');});
  if(!Array.isArray(T.his))T.his=T.hi&&(T.hi.type==='col'||T.hi.type==='row')?[{type:T.hi.type,i:T.hi.i,color:'auto'}]:[];delete T.hi;

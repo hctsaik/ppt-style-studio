@@ -1,5 +1,5 @@
 const puppeteer=require('puppeteer-core');const fs=require('fs');const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const URL=process.argv[2]||'http://localhost:8765/studio.html';const OUT=process.argv[3]||'/tmp/r5/ui';fs.mkdirSync(OUT,{recursive:true});
+const URL=process.argv[2]||'http://localhost:8765/studio.html';const OUT=process.argv[3]||'/tmp/r6/ui';fs.mkdirSync(OUT,{recursive:true});
 const paste=(pg,txt)=>pg.evaluate(t=>{const dt=new DataTransfer();dt.setData('text/plain',t);document.body.dispatchEvent(new ClipboardEvent('paste',{clipboardData:dt,bubbles:true}));},txt);
 const PL="\t3Q25\t2Q25\t3Q24\tQoQ\tYoY\n營業收入淨額\t989.9\t933.8\t759.7\t+6.0%\t+30.3%\n毛利率\t59.5%\t58.6%\t57.8%\t+0.9 ppts\t+1.7 ppts\n營業費用\t(88.2)\t(85.5)\t(75.6)\t+3.2%\t+16.7%\n稅後淨利\t452.3\t398.3\t325.3\t+13.6%\t+39.0%\n每股盈餘（元）\t17.44\t15.36\t12.54\t+13.6%\t+39.1%";
 const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\t提前 3 天\nAOI 誤判改善\t林志豪\t風險\t資料量不足\nSPC 上線\t張家瑋\t進行中\t已完成 60%";
@@ -104,8 +104,15 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
   ck('mobile default zoom = 放大',await pg.evaluate(()=>document.querySelector('#tCanvas').classList.contains('z100')));
   {await paste(pg,'Lot\tStation\tYield%\tStatus\nA1\tCMP\t95.2%\tPass\nA2\tEtch\t86.4%\tHold\nA3\tLitho\t91%\tPass');await sleep(700);await pg.screenshot({path:`${OUT}/m-paste.png`});
    const ov=await pg.evaluate(()=>{const t=document.querySelector('#toast').getBoundingClientRect();const hit=s=>{const r=document.querySelector(s).getBoundingClientRect();return !(t.bottom<=r.top||t.top>=r.bottom||t.right<=r.left||t.left>=r.right);};const ti=document.querySelector('.tins').getBoundingClientRect();return{steps:hit('.tsteps'),looks:hit('#tLStrip'),above:t.bottom<=ti.top+1};});
-   ck('mobile paste toast above sheet, not over steps/looks '+JSON.stringify(ov),!ov.steps&&!ov.looks&&ov.above);
-   const vis=await pg.evaluate(()=>{const c=document.querySelector('#tPrev .tov .tc').getBoundingClientRect();return c.left>=-1&&c.left<innerWidth&&c.top>=0&&c.top<innerHeight;});ck('放大 zoom scrolls first cell into view',vis);}
+   ck('mobile paste toast not over steps/looks '+JSON.stringify(ov),!ov.steps&&!ov.looks);
+   const ov2=await pg.evaluate(()=>{const t=document.querySelector('#toast').getBoundingClientRect();const tb=window.__studio.table;const hit=r=>!(t.bottom<=r.top||t.top>=r.bottom||t.right<=r.left||t.left>=r.right);const cells=[...document.querySelectorAll('#tPrev .tov .tc')].map(c=>c.getBoundingClientRect()).filter(r=>r.bottom>0&&r.top<innerHeight);const ti=document.querySelector('#tPrev .tslot[data-k="title"]').getBoundingClientRect();
+     return{sheet:!document.querySelector('#tIns').classList.contains('open'),cells:cells.some(hit),title:hit(ti),short:document.querySelector('#toast').textContent.length<=16};});
+   ck('mobile paste: sheet collapsed, short toast, not over title/table '+JSON.stringify(ov2),ov2.sheet&&!ov2.cells&&!ov2.title&&ov2.short);
+   await pg.screenshot({path:`${OUT}/m-paste.png`});
+   const vis=await pg.evaluate(()=>{const c=document.querySelector('#tPrev .tov .tc[data-r="1"]').getBoundingClientRect();return c.left>=-1&&c.left<innerWidth&&c.top>=0&&c.top<innerHeight;});ck('放大 zoom scrolls table body into view',vis);
+   await pg.tap('#tTray');await sleep(400);const tb=await pg.evaluate(()=>{const b=document.querySelector('#tTrayOpen');const r=b.getBoundingClientRect();return{vis:!!b.offsetParent,h:r.height,txt:b.textContent.trim()};});ck('mobile 待選 N › button '+JSON.stringify(tb),tb.vis&&tb.h>=44&&/待選 1 ›/.test(tb.txt));
+   await pg.tap('#tTrayOpen');await sleep(500);const fs=await pg.evaluate(()=>{const t=document.querySelector('#tray');const r=t.getBoundingClientRect();return !t.hidden&&r.width>=innerWidth-1&&r.height>=innerHeight-1;});ck('mobile tray opens full-screen '+JSON.stringify(await pg.evaluate(()=>{const t=document.querySelector('#tray');const r=t.getBoundingClientRect();return [t.hidden,r.width,r.height,innerWidth,innerHeight];})),fs);await pg.screenshot({path:`${OUT}/m-tray.png`});
+   await pg.tap('#trayPptx');await sleep(1500);ck('mobile tray export works',await pg.evaluate(()=>!!(window.__studio.lastTray&&window.__studio.lastTray.size>10000)));await pg.tap('#trayClose');await sleep(300);}
   ck('mobile tray FAB hidden',await pg.evaluate(()=>getComputedStyle(document.querySelector('#trayBtn')).display==='none'));
   await pg.tap('#tPrev .tc[data-r="0"][data-c="2"]');await sleep(400);await pg.screenshot({path:`${OUT}/m-chip.png`});
   const sz=await pg.evaluate(()=>[...document.querySelectorAll('#tabs button,#vTable button,#vTable select')].filter(b=>b.offsetParent).map(b=>[b.textContent.trim().slice(0,6),Math.round(b.getBoundingClientRect().height)]));const small=sz.filter(x=>x[1]<44);ck('mobile tap targets ≥44 '+JSON.stringify(small),!small.length);

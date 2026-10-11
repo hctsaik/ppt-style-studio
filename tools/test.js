@@ -78,6 +78,10 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    ok(old.tbLook==='card'&&old.tbCard==='grey'&&old2.tbLook==='clean'&&old3.tbLook==='card','舊外觀（灰底面板／極簡／tbPanel）自動轉成新外觀');
    const tr=D.trayModel([{kind:'table',params:Object.assign({},nav,{tbLook:'panel',tbHiColor:'alert',tbHiMode:'box'}),table:Y,name:'良率（舊快照）'},{kind:'table',params:Object.assign({},nav,{tbLook:'minimal'}),table:{rows:[['a','b'],['1','2']]},name:'極簡'},{kind:'el',params:wine,key:'annot',gi:3,name:'標註'}]);await save('tray-marks.pptx',nav,{model:tr});ok(tr.tray.n===3,'待選素材：舊表格快照（灰底面板／極簡）仍可重建＋標註');}
   // 四個驗收案例（LibreOffice 也會畫）
+  // R6：建議標題去單位、縮短列名、≤ 約 24 字
+  {const C=require('./table-cases.js');const s=D.tableTitleSuggest(Object.assign({},C.stress,{rules:[],his:[]}));const VL=x=>[...x].reduce((n,ch)=>n+(/[\u0000-\u024f]/.test(ch)?.55:1),0);
+   ok(!/[（(]%[）)]/.test(s)&&/CVD-00 A/.test(s)&&VL(s)<=24,'建議標題：去掉（%）、列名縮成代碼、≤24 字（'+s+'）');
+   ok(['yield','pl','status','dense'].every(k=>VL(D.tableTitleSuggest(Object.assign({},C[k],{rules:[],his:[]})))<=30),'建議標題長度合理（4 種表）');}
   // R5：通用建議標題、標題不懸出、38% 錨點、警告優先
   {const C=require('./table-cases.js');const nv=D.PRESETS[0];const tb=(p,T)=>D.buildModel(Object.assign({},nv,p),{table:T}).slides[0];
    const sg=['yield','pl','status','dense','stress'].map(k=>D.tableTitleSuggest(Object.assign({},C[k],{rules:[],his:[]})));ok(sg.every(Boolean)&&/最低/.test(sg[4]),'每種表都有建議標題（'+sg[4]+'）');
