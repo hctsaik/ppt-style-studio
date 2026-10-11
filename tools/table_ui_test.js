@@ -1,5 +1,5 @@
 const puppeteer=require('puppeteer-core');const fs=require('fs');const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const URL=process.argv[2]||'http://localhost:8765/studio.html';const OUT=process.argv[3]||'/tmp/r7/ui';fs.mkdirSync(OUT,{recursive:true});
+const URL=process.argv[2]||'http://localhost:8765/studio.html';const OUT=process.argv[3]||'/tmp/r8/ui';fs.mkdirSync(OUT,{recursive:true});
 const paste=(pg,txt)=>pg.evaluate(t=>{const dt=new DataTransfer();dt.setData('text/plain',t);document.body.dispatchEvent(new ClipboardEvent('paste',{clipboardData:dt,bubbles:true}));},txt);
 const PL="\t3Q25\t2Q25\t3Q24\tQoQ\tYoY\n營業收入淨額\t989.9\t933.8\t759.7\t+6.0%\t+30.3%\n毛利率\t59.5%\t58.6%\t57.8%\t+0.9 ppts\t+1.7 ppts\n營業費用\t(88.2)\t(85.5)\t(75.6)\t+3.2%\t+16.7%\n稅後淨利\t452.3\t398.3\t325.3\t+13.6%\t+39.0%\n每股盈餘（元）\t17.44\t15.36\t12.54\t+13.6%\t+39.1%";
 const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\t提前 3 天\nAOI 誤判改善\t林志豪\t風險\t資料量不足\nSPC 上線\t張家瑋\t進行中\t已完成 60%";
@@ -69,7 +69,7 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
   await pg.screenshot({path:`${OUT}/d-paste-status.png`});
   // look switch
   await pg.click('.tsteps .stp[data-go="look"]');await sleep(200);ck('stepper switches section',await pg.evaluate(()=>document.querySelector('.tsec[data-sec="look"]').offsetHeight>0&&document.querySelector('.tsec[data-sec="data"]').offsetHeight===0));
-  await pg.click('.tlook[data-v="band"]');await sleep(600);ck('look band pressed',await pg.evaluate(()=>document.querySelector('.tlook[data-v="band"]').getAttribute('aria-pressed')==='true'&&window.__studio.table.look==='band'));
+  await pg.click('#tLStrip button[data-v="band"]');await sleep(600);ck('look band pressed',await pg.evaluate(()=>document.querySelector('#tLStrip button[data-v="band"]').getAttribute('aria-pressed')==='true'&&window.__studio.table.look==='band'));
   // R2: suggestion, canvas highlight list, undo/redo, width option, output bar visible
   await paste(pg,PL);await sleep(700);
   ck('suggested title shown',await pg.evaluate(()=>!!document.querySelector('.tsugb')));
@@ -97,9 +97,16 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
   await pg.click('#tPrev .tc[data-r="2"][data-c="3"]');await sleep(400);
   const cp=await pg.evaluate(()=>{const m=document.querySelector('#tChip').getBoundingClientRect();const rr=r=>{const e=document.querySelector(`#tPrev .tc[data-r="${r}"]`);return e?e.getBoundingClientRect():null;};const ov=[1,2,3].map(rr).filter(Boolean).some(r=>!(m.bottom<=r.top+1||m.top>=r.bottom-1));return{h:Math.round(m.height),ov,n:document.querySelectorAll('#tChip > button, #tChip .tseg > button').length};});
   ck('1440 chip one row, ≤6 buttons, not over rows 1–3 '+JSON.stringify(cp),cp.h<=60&&!cp.ov&&cp.n<=6);await pg.screenshot({path:`${OUT}/d-chip-status.png`});
+  for(const rr of [5,1]){await pg.click(`#tPrev .tc[data-r="${rr}"][data-c="1"]`);await sleep(350);
+   const o=await pg.evaluate(()=>{const m=document.querySelector('#tChip').getBoundingClientRect();return [...document.querySelectorAll('#tPrev .tc')].some(e=>{const r=e.getBoundingClientRect();return !(m.bottom<=r.top+1||m.top>=r.bottom-1||m.right<=r.left+1||m.left>=r.right-1);});});ck('docked toolbar never overlays any cell (row '+rr+')',!o);}
+  await pg.screenshot({path:`${OUT}/d-dock.png`});
+  ck('panel mirrors selection details',await pg.evaluate(()=>!!document.querySelector('#tSelPanel button[data-a="hs"]')));
   await pg.click('#tChip button[data-a="more"]');await sleep(300);ck('⋯ shows more actions',await pg.evaluate(()=>!!document.querySelector('#tChip button[data-a="hs"]')));
   await pg.keyboard.press('Escape');await sleep(200);
-  await pg.evaluate(()=>{const t=window.__studio;});
+  await pg.mouse.move(5,5);await sleep(250);const ph=await pg.evaluate(()=>{const el=document.querySelector('#tPrev .tslot.empty');const pin=document.querySelector('#tPrev .tpin');return {c:el?getComputedStyle(el,'::before').color:'none',b:el?getComputedStyle(el).borderTopColor:'',pin:pin?getComputedStyle(pin).opacity:'1'};});
+  ck('empty slot placeholder & pin invisible without hover '+JSON.stringify(ph),(ph.c==='none'||/rgba\(0, 0, 0, 0\)|transparent/.test(ph.c))&&ph.pin==='0');
+  await pg.click('#tCleanV');await sleep(250);await pg.screenshot({path:`${OUT}/d-clean.png`});ck('乾淨預覽 hides pin',await pg.evaluate(()=>{const p=document.querySelector('#tPrev .tpin');return !p||getComputedStyle(p).display==='none';}));await pg.click('#tCleanV');
+  ck('steps and tabs 1:1',await pg.evaluate(()=>{const a=[...document.querySelectorAll('.tsteps .stp')].map(b=>b.dataset.go+b.textContent.replace(/\d/g,'')),t=[...document.querySelectorAll('.tinsTabs button')].map(b=>b.dataset.t+b.textContent.replace(/[①②③④\s]/g,''));return JSON.stringify(a)===JSON.stringify(t);}));
   const sg=await pg.$('#tPrev .tsapply, #tLegend .tsugb');if(sg){await pg.evaluate(()=>{document.querySelector('#tPrev .tslot[data-k="title"]').textContent='';});}
   await pg.evaluate(()=>{const b=document.querySelector('#tLegend .tsugb')||document.querySelector('#tPrev .tsapply');if(b)b.click();});await sleep(300);
   const tov=await pg.evaluate(()=>{const t=document.querySelector('#toast').getBoundingClientRect(),l=document.querySelector('#tLStrip').getBoundingClientRect();return !(t.bottom<=l.top||t.top>=l.bottom||t.right<=l.left||t.left>=l.right);});ck('toast not over look buttons',!tov);
@@ -136,6 +143,7 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
    await pg.tap('#trayPptx');await sleep(1500);ck('mobile tray export works',await pg.evaluate(()=>!!(window.__studio.lastTray&&window.__studio.lastTray.size>10000)));await pg.tap('#trayClose');await sleep(300);}
   ck('mobile tray FAB hidden',await pg.evaluate(()=>getComputedStyle(document.querySelector('#trayBtn')).display==='none'));
   await pg.tap('#tPrev .tc[data-r="0"][data-c="2"]');await sleep(400);await pg.screenshot({path:`${OUT}/m-chip.png`});
+  {const o=await pg.evaluate(()=>{const m=document.querySelector('#tChip').getBoundingClientRect();return {h:Math.round(m.height),ov:[...document.querySelectorAll('#tPrev .tc')].some(e=>{const r=e.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight&&!(m.bottom<=r.top+1||m.top>=r.bottom-1||m.right<=r.left+1||m.left>=r.right-1)&&e.classList.contains('sel');})};});ck('mobile docked toolbar one row, not over selected cell '+JSON.stringify(o),o.h<=64&&!o.ov);}
   const sz=await pg.evaluate(()=>[...document.querySelectorAll('#tabs button,#vTable button,#vTable select')].filter(b=>b.offsetParent).map(b=>[b.textContent.trim().slice(0,6),Math.round(b.getBoundingClientRect().height)]));const small=sz.filter(x=>x[1]<44);ck('mobile tap targets ≥44 '+JSON.stringify(small),!small.length);
   ck('chip does not cover sheet tabs',await pg.evaluate(()=>{const a=document.querySelector('#tChip').getBoundingClientRect(),b=document.querySelector('.tinsTabs').getBoundingClientRect();return a.bottom<=b.top;}));
   const smallTxt=await pg.evaluate(()=>[...document.querySelectorAll('#vTable *')].filter(e=>e.offsetParent&&e.childNodes.length&&[...e.childNodes].some(n=>n.nodeType===3&&n.textContent.trim())&&!e.closest('svg')&&!e.closest('.tslots')).filter(e=>parseFloat(getComputedStyle(e).fontSize)<12).map(e=>e.className+':'+e.textContent.slice(0,10)));ck('mobile UI text ≥12px (small='+JSON.stringify(smallTxt)+')',!smallTxt.length);

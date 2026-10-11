@@ -78,6 +78,14 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    ok(old.tbLook==='card'&&old.tbCard==='grey'&&old2.tbLook==='clean'&&old3.tbLook==='card','舊外觀（灰底面板／極簡／tbPanel）自動轉成新外觀');
    const tr=D.trayModel([{kind:'table',params:Object.assign({},nav,{tbLook:'panel',tbHiColor:'alert',tbHiMode:'box'}),table:Y,name:'良率（舊快照）'},{kind:'table',params:Object.assign({},nav,{tbLook:'minimal'}),table:{rows:[['a','b'],['1','2']]},name:'極簡'},{kind:'el',params:wine,key:'annot',gi:3,name:'標註'}]);await save('tray-marks.pptx',nav,{model:tr});ok(tr.tray.n===3,'待選素材：舊表格快照（灰底面板／極簡）仍可重建＋標註');}
   // 四個驗收案例（LibreOffice 也會畫）
+  // R8：壓力範例 12/16/20 列（長中文表頭與內文、% 與負數、多行註腳）× 4 外觀 × 3 密度 × S/M/L × 9 風格
+  {const C=require('./table-cases.js');let bad=[];for(const st of D.PRESETS)for(const k of ['s12','s16','s20'])for(const lk of ['clean','band','card','zebra'])for(const dn of ['comfy','normal','dense'])for(const size of ['S','M','L']){const m=D.buildModel(Object.assign({},st,{tbLook:lk,tbDense:dn,size}),{table:C[k]});const tb=m.slides[0].table;const bot=Math.max(...m.slides[0].items.map(i=>i.y+i.h));
+    if(tb.orphans.length||tb.fs<10||bot>7.5-.15||tb.tx+tb.tW>13.333-.4||m.warns.some(w=>/放不下|太寬/.test(w)))bad.push(st.id+k+lk+dn+size);}
+   ok(!bad.length,`壓力範例：無孤字、無溢出、內文 ≥10pt（${bad.length} 失敗）${bad.slice(0,3).join(' ')}`);
+   // 編輯提示（placeholder／📌）不會進 pptx 或複製的 HTML
+   const em=D.buildModel(nav,{table:Object.assign({},C.yield,{title:'',unit:'',note:''})});const html=D.tableHtml(em);
+   const r=await D.exportPptx(env,nav,{type:'nodebuffer',model:em});const z=await JSZip.loadAsync(r.data);let xml='';for(const f of Object.keys(z.files).filter(f=>/^ppt\/slides\/slide\d+\.xml$/.test(f)))xml+=await z.file(f).async('string');
+   const PH=/點這裡輸入|單位／副標|註腳／資料來源|📌|data-ph|套用建議/;ok(!PH.test(xml)&&!PH.test(html),'空白標題／單位／註腳的提示文字與 📌 不會匯出到 pptx 或 HTML');}
   // R7：孤字／語意斷行／有空間就加寬
   {const C=require('./table-cases.js');let bad=[];for(const st of D.PRESETS)for(const k of Object.keys(C))for(const lk of ['clean','band','card','zebra'])for(const dn of ['comfy','normal','dense'])for(const size of ['S','M','L']){const tb=D.buildModel(Object.assign({},st,{tbLook:lk,tbDense:dn,size}),{table:C[k]}).slides[0].table;if(tb.orphans.length)bad.push(st.id+k+lk+dn+size+JSON.stringify(tb.orphans[0]));}
    ok(!bad.length,`所有範例×外觀×密度×尺寸×9 風格：無孤字、無自動折行（${bad.length}）${bad.slice(0,2).join(' ')}`);
