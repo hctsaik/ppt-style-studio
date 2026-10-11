@@ -1,5 +1,5 @@
 const puppeteer=require('puppeteer-core');const fs=require('fs');const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const URL=process.argv[2]||'http://localhost:8765/studio.html';const OUT=process.argv[3]||'/tmp/r4/ui';fs.mkdirSync(OUT,{recursive:true});
+const URL=process.argv[2]||'http://localhost:8765/studio.html';const OUT=process.argv[3]||'/tmp/r5/ui';fs.mkdirSync(OUT,{recursive:true});
 const paste=(pg,txt)=>pg.evaluate(t=>{const dt=new DataTransfer();dt.setData('text/plain',t);document.body.dispatchEvent(new ClipboardEvent('paste',{clipboardData:dt,bubbles:true}));},txt);
 const PL="\t3Q25\t2Q25\t3Q24\tQoQ\tYoY\n營業收入淨額\t989.9\t933.8\t759.7\t+6.0%\t+30.3%\n毛利率\t59.5%\t58.6%\t57.8%\t+0.9 ppts\t+1.7 ppts\n營業費用\t(88.2)\t(85.5)\t(75.6)\t+3.2%\t+16.7%\n稅後淨利\t452.3\t398.3\t325.3\t+13.6%\t+39.0%\n每股盈餘（元）\t17.44\t15.36\t12.54\t+13.6%\t+39.1%";
 const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\t提前 3 天\nAOI 誤判改善\t林志豪\t風險\t資料量不足\nSPC 上線\t張家瑋\t進行中\t已完成 60%";
@@ -44,6 +44,8 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
     const ok1=await pg.evaluate(()=>{const t=window.__studio.table;return t.colW&&t.colMinW&&t.colW.every((w,i)=>w>=t.colMinW[i]-.01);});ck('drag respects longest-word minimum',ok1);}
    const h2=await pg.$('#tPrev .tcw[data-c="0"]');const b2=await h2.boundingBox();await pg.mouse.click(b2.x+b2.width/2,b2.y+b2.height/2,{delay:30});await sleep(60);await pg.mouse.click(b2.x+b2.width/2,b2.y+b2.height/2,{delay:30,clickCount:2});await sleep(500);
    const af2=await pg.evaluate(()=>window.__studio.table.cw);ck('double-click auto-fit changes width '+JSON.stringify(af2),JSON.stringify(af2)!==JSON.stringify(after));}
+  ck('desktop: tray FAB docked into output bar',await pg.evaluate(()=>getComputedStyle(document.querySelector('#trayBtn')).display==='none'&&!!document.querySelector('#tTrayOpen').offsetParent));
+  await pg.click('#tTray');await sleep(300);await pg.click('#tTrayOpen');await sleep(300);await pg.click('#trayRestyle');await sleep(300);ck('tray 全部套用目前樣式',await pg.evaluate(()=>window.__studio.trayRestyled>=1));await pg.click('#trayClose');await sleep(200);
   // inspector sections
   await pg.click('.tsteps .stp[data-go="look"]');await sleep(500);await pg.screenshot({path:`${OUT}/d-insp-look.png`});
   await pg.click('.tsteps .stp[data-go="hi"]');await sleep(300);await pg.screenshot({path:`${OUT}/d-insp-hi.png`});
@@ -100,6 +102,10 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
   await pg.tap('.tinsTabs button[data-t="look"]');await sleep(500);await pg.screenshot({path:`${OUT}/m-look.png`});
   await pg.tap('.tinsTabs button[data-t="look"]');await sleep(300);
   ck('mobile default zoom = 放大',await pg.evaluate(()=>document.querySelector('#tCanvas').classList.contains('z100')));
+  {await paste(pg,'Lot\tStation\tYield%\tStatus\nA1\tCMP\t95.2%\tPass\nA2\tEtch\t86.4%\tHold\nA3\tLitho\t91%\tPass');await sleep(700);await pg.screenshot({path:`${OUT}/m-paste.png`});
+   const ov=await pg.evaluate(()=>{const t=document.querySelector('#toast').getBoundingClientRect();const hit=s=>{const r=document.querySelector(s).getBoundingClientRect();return !(t.bottom<=r.top||t.top>=r.bottom||t.right<=r.left||t.left>=r.right);};const ti=document.querySelector('.tins').getBoundingClientRect();return{steps:hit('.tsteps'),looks:hit('#tLStrip'),above:t.bottom<=ti.top+1};});
+   ck('mobile paste toast above sheet, not over steps/looks '+JSON.stringify(ov),!ov.steps&&!ov.looks&&ov.above);
+   const vis=await pg.evaluate(()=>{const c=document.querySelector('#tPrev .tov .tc').getBoundingClientRect();return c.left>=-1&&c.left<innerWidth&&c.top>=0&&c.top<innerHeight;});ck('放大 zoom scrolls first cell into view',vis);}
   ck('mobile tray FAB hidden',await pg.evaluate(()=>getComputedStyle(document.querySelector('#trayBtn')).display==='none'));
   await pg.tap('#tPrev .tc[data-r="0"][data-c="2"]');await sleep(400);await pg.screenshot({path:`${OUT}/m-chip.png`});
   const sz=await pg.evaluate(()=>[...document.querySelectorAll('#tabs button,#vTable button,#vTable select')].filter(b=>b.offsetParent).map(b=>[b.textContent.trim().slice(0,6),Math.round(b.getBoundingClientRect().height)]));const small=sz.filter(x=>x[1]<44);ck('mobile tap targets ≥44 '+JSON.stringify(small),!small.length);

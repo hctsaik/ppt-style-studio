@@ -78,6 +78,14 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    ok(old.tbLook==='card'&&old.tbCard==='grey'&&old2.tbLook==='clean'&&old3.tbLook==='card','舊外觀（灰底面板／極簡／tbPanel）自動轉成新外觀');
    const tr=D.trayModel([{kind:'table',params:Object.assign({},nav,{tbLook:'panel',tbHiColor:'alert',tbHiMode:'box'}),table:Y,name:'良率（舊快照）'},{kind:'table',params:Object.assign({},nav,{tbLook:'minimal'}),table:{rows:[['a','b'],['1','2']]},name:'極簡'},{kind:'el',params:wine,key:'annot',gi:3,name:'標註'}]);await save('tray-marks.pptx',nav,{model:tr});ok(tr.tray.n===3,'待選素材：舊表格快照（灰底面板／極簡）仍可重建＋標註');}
   // 四個驗收案例（LibreOffice 也會畫）
+  // R5：通用建議標題、標題不懸出、38% 錨點、警告優先
+  {const C=require('./table-cases.js');const nv=D.PRESETS[0];const tb=(p,T)=>D.buildModel(Object.assign({},nv,p),{table:T}).slides[0];
+   const sg=['yield','pl','status','dense','stress'].map(k=>D.tableTitleSuggest(Object.assign({},C[k],{rules:[],his:[]})));ok(sg.every(Boolean)&&/最低/.test(sg[4]),'每種表都有建議標題（'+sg[4]+'）');
+   ok(D.tableTitleSuggest({rows:[['機台','WK41 Yield'],['EQ-01','95.1%'],['EQ-02','86.9%']]})==='WK41 Yield 最低：EQ-02 86.9%','通用：Yield 最低：EQ-02 86.9%');
+   const dk=D.trayDeck([{kind:'table',table:Object.assign({},C.stress,{title:''}),params:nv}]);ok(!!dk.slides[0].items.find(i=>i.name==='表格標題'),'待選：沒有期別/狀態欄的表也拿到建議標題');
+   const LT='3Q25 稅後淨利 452.3，QoQ +13.6%、YoY +39.0%，營收與毛利率同步創新高';const s=tb({},Object.assign({},C.pl,{title:LT}));const ti=s.items.find(i=>i.name==='表格標題');ok(ti.x+ti.w<=s.table.tx+Math.max(s.table.tW,6.5)+.01&&ti.x>=s.table.tx-.01,'長標題不懸出表格（換行到表寬）');
+   const y=tb({},Object.assign({},C.yield,{title:''})).table,top=y.slots.title.y-.5,bot=7.5-.45-(y.ty+y.tH);ok(top>0&&top/(top+bot)>.3&&top/(top+bot)<.46,'置中＝上方留白約 38%（'+(top/(top+bot)).toFixed(2)+'）');
+   const w=tb({},Object.assign({},C.pl,{hiStyle:'fill',his:[{type:'col',i:1,kind:'rec'},{type:'col',i:2},{type:'row',i:3,kind:'warn'}]})).items.find(i=>i.t==='tbl').cells[3];ok(new Set(w.map(c=>c.fill)).size===1,'警告列跨重點/推薦欄：只用警告色、不疊色');}
   // R4：最小欄寬、水平置中、不必要的換行、圖例只列用到的、建議標題、底線、舒適密度
   {const C=require('./table-cases.js');const nv=D.PRESETS[0];const tb=(p,T)=>D.buildModel(Object.assign({},nv,p),{table:T}).slides[0];
    const t1=tb({},Object.assign({},C.yield,{cw:[1,.25,1,1,1]})).table;ok(t1.colW[1]>=t1.colMin[1]-.002&&t1.colMin[1]>.5,'拖曳欄寬：不小於最長字（'+t1.colMin[1].toFixed(2)+'"）');
