@@ -69,7 +69,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    const n2=D.tableFromPaste([['項目','狀態'],['A','完成']],Object.assign({},prev,{pin:true}));ok(n2.title==='舊標題'&&n2.unit==='','📌 釘住標題：只保留標題');
    const n3=D.tableFromPaste([['','3Q25','2Q25'],['營收','989.9','933.8'],['淨利','452.3','398.3']],prev);ok(n3.his.length===1&&n3.his[0].i===1&&JSON.stringify(n3.bold)==='[2]','財報表貼上：自動把最新期別欄設為重點、合計列加粗');}
   // 版面
-  {const R5=[['a','b','c','d','e'],['1','2','3','4','5']];const m=D.buildModel(Object.assign({},nav,{tbWidth:'fill'}),{table:{title:'T',unit:'U',rows:R5}}).slides[0].table;const m2=D.buildModel(nav,{table:{rows:[['a','b'],['1','2']]}}).slides[0].table;
+  {const R5=[['a','b','c','d','e'],['1','2','3','4','5']];const m=D.buildModel(Object.assign({},nav,{tbWidth:'fill'}),{table:{title:'T',unit:'U',rows:R5}}).slides[0].table;const m2=D.buildModel(Object.assign({},nav,{tbH:'left'}),{table:{rows:[['a','b'],['1','2']]}}).slides[0].table;
    ok(Math.abs(m.tW-12.133)<.02&&Math.abs(m.tx-.6)<.001&&m2.tW<9&&Math.abs(m2.tx-.6)<.001,`版面：填滿＝12.13" 靠左 x0.6；自動＝依內容寬、小表靠左對齊標題（${m.tW.toFixed(2)}／${m2.tW.toFixed(2)}）`);
    const cw=D.buildModel(nav,{table:{rows:[['a','b','c'],['1','2','3']],cw:[3,2,1]}}).slides[0].table;ok(Math.abs(cw.colW[0]/cw.colW[2]-3)<.01&&Math.abs(cw.colW[1]/cw.colW[2]-2)<.01,'拖曳欄寬：T.cw 生效');}
   // 舊資料相容
@@ -78,6 +78,16 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    ok(old.tbLook==='card'&&old.tbCard==='grey'&&old2.tbLook==='clean'&&old3.tbLook==='card','舊外觀（灰底面板／極簡／tbPanel）自動轉成新外觀');
    const tr=D.trayModel([{kind:'table',params:Object.assign({},nav,{tbLook:'panel',tbHiColor:'alert',tbHiMode:'box'}),table:Y,name:'良率（舊快照）'},{kind:'table',params:Object.assign({},nav,{tbLook:'minimal'}),table:{rows:[['a','b'],['1','2']]},name:'極簡'},{kind:'el',params:wine,key:'annot',gi:3,name:'標註'}]);await save('tray-marks.pptx',nav,{model:tr});ok(tr.tray.n===3,'待選素材：舊表格快照（灰底面板／極簡）仍可重建＋標註');}
   // 四個驗收案例（LibreOffice 也會畫）
+  // R4：最小欄寬、水平置中、不必要的換行、圖例只列用到的、建議標題、底線、舒適密度
+  {const C=require('./table-cases.js');const nv=D.PRESETS[0];const tb=(p,T)=>D.buildModel(Object.assign({},nv,p),{table:T}).slides[0];
+   const t1=tb({},Object.assign({},C.yield,{cw:[1,.25,1,1,1]})).table;ok(t1.colW[1]>=t1.colMin[1]-.002&&t1.colMin[1]>.5,'拖曳欄寬：不小於最長字（'+t1.colMin[1].toFixed(2)+'"）');
+   const c1=tb({},C.yield).table,l1=tb({tbH:'left'},C.yield).table;ok(Math.abs(c1.tx+c1.tW/2-13.333/2)<.6&&Math.abs(l1.tx-.6)<1e-6,'左右：預設置中、置左＝0.6"');
+   const s1=tb({},C.status);const cells=s1.items.find(i=>i.t==='tbl');const t2=s1.table;ok(t2.colW[4]>=t2.colMin[4]&&!t2.rowH.slice(1).some(h=>h>t2.rowH[1]*1.3),'有空間不換行（已完成 60% 一行）');
+   const g1=tb({},Object.assign({},C.pl,{his:[{type:'col',i:1,kind:'rec'},{type:'col',i:2}],legend:{rec:'建議方案',focus:'本季'}})).items.find(i=>i.name==='圖例');const gt=D.textOf(g1);ok(/建議方案/.test(gt)&&/本季/.test(gt)&&!/警告/.test(gt),'圖例：只列用到的意義、文字可改（'+gt.trim()+'）');
+   const dk=D.trayDeck([{kind:'table',table:Object.assign({},C.status,{title:''}),params:nv}]);const dk2=D.trayDeck([{kind:'table',table:Object.assign({},C.status,{title:''}),params:nv}],{sugTitle:false});
+   ok(!!dk.slides[0].items.find(i=>i.name==='表格標題')&&!dk2.slides[0].items.find(i=>i.name==='表格標題'),'待選匯出：沒標題時用建議標題（可關）');
+   const bd=tb({tbLook:'band'},Object.assign({},C.pl,{his:[{type:'col',i:1}]}));const hc=bd.items.find(i=>i.t==='tbl').cells[0][1];ok(hc.bB&&hc.bB.w===3&&hc.fill===bd.items.find(i=>i.t==='tbl').cells[0][3].fill,'主色表頭重點：3pt 強調色底線、不換填色');
+   const rc=tb({tbDense:'comfy'},C.status).table,rn=tb({tbDense:'normal'},C.status).table;const ratio=rc.rowH[1]/rn.rowH[1];ok(ratio>=1.3&&ratio<=1.55,'舒適列高 ≈ 1.4× 標準（'+ratio.toFixed(2)+'）');}
   // R3：待選每項一頁、區塊間距、推薦色、檔名、套用上次樣式、標題平衡
   {const C=require('./table-cases.js');const nv=D.PRESETS[0];
    const es=['yield','pl','status','stress'].map(k=>({kind:'table',table:C[k],params:nv}));es.push({kind:'el',key:'patterns',gi:0,params:nv});

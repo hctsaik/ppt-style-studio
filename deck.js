@@ -23,7 +23,7 @@ const BASE={
  cnW:1.25,cnC:'7F7F7F',cnDash:'solid',cnHead:'triangle',cnTail:'none',cnHs:'med',
  tFont:'Microsoft JhengHei',bFont:'Microsoft JhengHei',nFont:'',tSize:36,tBold:true,lSize:16,lBold:true,nSize:10.5,
  icColor:'P',icVar:'line',icSW:0,
- tbDense:'auto',tbHiColor:'auto',tbHiMode:'auto',tbNeg:false,tbStatus:true,tbLook:'clean',tbCard:'white',tbMinus:'auto',tbThou:true,tbWidth:'auto',tbV:'center',tbAuto:true,tbFont:'auto',tbTight:false,
+ tbDense:'auto',tbHiColor:'auto',tbHiMode:'auto',tbNeg:false,tbStatus:true,tbLook:'clean',tbCard:'white',tbMinus:'auto',tbThou:true,tbWidth:'auto',tbV:'center',tbH:'center',tbSugTitle:true,tbAuto:true,tbFont:'auto',tbTight:false,
  /* v9：可調數量（04／05 頁）、語意色（與品牌色分開）、最小字級（單一元件／待選素材匯出時放大幾何） */
  nLin:4,nLane:3,nPcc:3,nWhy:5,nCause:4,semWarn:'',semGood:'2E7D4F',semBad:'C0504D',minFont:0,
  /* v10 標註顏色：alert＝警示色（預設）／P 主色／A 強調色／ink 深灰 */
@@ -929,7 +929,7 @@ function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==
   let hiStyle=['fill','box','bold'].includes(T.hiStyle)?T.hiStyle:(st.tbHiMode==='fill'||st.tbHiMode==='box')?st.tbHiMode:LK.hi;
   if(lookId==='band'&&hiStyle==='box')hiStyle='fill';   // 主色表頭：重點＝表頭填強調色＋內文 6% 淡底，不再疊外框（避免壓在表頭色帶與合計底色上）
   // 密度：舒適／標準／密集＝字級、列高、左右邊距各自調整（不是等比縮放）；斑馬外觀預設密集
-  const DEN={comfy:{fs:14,hfs:12,rh:.42,hh:.44,pad:11},normal:{fs:13,hfs:11,rh:.34,hh:.38,pad:9},dense:{fs:11.5,hfs:10.5,rh:.28,hh:.32,pad:7}};
+  const DEN={comfy:{fs:14,hfs:12,rh:.48,hh:.48,pad:12},normal:{fs:13,hfs:11,rh:.34,hh:.38,pad:9},dense:{fs:11.5,hfs:10.5,rh:.28,hh:.32,pad:7}};
   const dn=DEN[st.tbDense==='compact'?'dense':st.tbDense]&&st.tbDense!=='normal'?DEN[st.tbDense==='compact'?'dense':st.tbDense]:(LK.dense?DEN.dense:DEN.normal);
   let fs=Math.max(10,sz(dn.fs)),hfs=Math.max(9.5,sz(dn.hfs));const tfs=sz(24),ufs=sz(12),nfs=sz(10);   // 內文最小 10ptconst tfs=sz(24),ufs=sz(12),nfs=sz(10);
   let rh=dn.rh*k,hh=Math.max(dn.hh,lookId==='band'?dn.hh+.02:0)*k;
@@ -959,7 +959,7 @@ function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==
    return AU.numC[c]?m+18*k/72+.06*k:m+padOf(c)/72+.06*k;});
   const numIdx=colW.map((_,c)=>c).filter(c=>c>0&&AU.numC[c]);
   if(numIdx.length>=2){const m=Math.max(...numIdx.map(c=>colW[c]));numIdx.forEach(c=>colW[c]=m);}
-  const X=.6,maxW=W-2*X-(LK.card?.5*k:0);
+  let X=.6;const maxW=W-2*X-(LK.card?.5*k:0);
   const wMode=['fill','compact'].includes(st.tbWidth)?st.tbWidth:'auto';
   const sum0=colW.reduce((a,b)=>a+b,0);
   // 自動：內容寬＋依欄數給一個舒服的最小寬（2 欄 4.5"、≤4 欄 6"、≤6 欄 7.5"、更多 10"），多出來的給第一欄（最多 36%；填滿 45%），再給文字欄；數字欄維持內容寬、靠在一起
@@ -967,7 +967,9 @@ function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==
   const colFit=colW.slice();
   const cap=(wMode==='fill'?.45:.36)*target;
   const uw=Array.isArray(T.cw)&&T.cw.length===nC&&T.cw.every(v=>+v>.2&&+v<12)?T.cw.map(v=>+v*k):null;
-  if(uw){colW=uw.slice();target=Math.min(maxW,colW.reduce((a,b)=>a+b,0));}
+  // 最小欄寬＝欄內最長「不可斷」字串（英數連續字；中文可逐字斷）＋邊距
+  const colMin=Array.from({length:nC},(_,c)=>{let m=0;rows.forEach((r,ri)=>{const b=ri<h0||bold.has(ri)||keySet.has(ri);String(r[c]||'').split(/[\s\n]+|(?=[\u3400-\u9fff\uff00-\uffef])|(?<=[\u3400-\u9fff\uff00-\uffef])/).forEach(tok=>{if(tok)m=Math.max(m,tw(tok,ri<h0?hfs:fs)*(b?1.08:1));});});return m+padOf(c)/72+.06*k;});
+  if(uw){colW=uw.map((v,c)=>Math.max(v,colMin[c]));target=Math.min(maxW,colW.reduce((a,b)=>a+b,0));}
   else{
    if(nC>1&&colW.some(w=>w>cap))colW=colW.map(w=>Math.min(w,Math.max(cap,1.2*k)));
    let ex=target-colW.reduce((a,b)=>a+b,0);
@@ -983,6 +985,9 @@ function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==
   const wrapN=(t,size,b,cw,c)=>String(t).split('\n').reduce((a,l)=>a+Math.max(1,Math.ceil(tw(l,size)*(b?1.08:1)/Math.max(.2,cw-padOf(c)/72-.03))),0);
   const cellN=(r,ri)=>Math.max(...r.map((t,c)=>wrapN(t,ri<h0?hfs:fs,ri<h0||bold.has(ri),colW[c],c)));
   const minH=(n,size)=>n*size*1.45/72+2.5/72;   // 1.45＝CJK 字型行高（Noto／正黑），上下邊距各 1pt
+  // 有空間就不要換行（例：已完成 60%）：文字欄若會折行而且還有剩餘寬度，加寬到一行放得下
+  if(!uw&&wMode!=='compact'){let spare=maxW-colW.reduce((a,b)=>a+b,0);colW.forEach((w,c)=>{if(AU.numC[c])return;let need=0;rows.forEach((r,ri)=>{if(ri<h0)return;const b=bold.has(ri)||keySet.has(ri);const tr=st.tbTight?0:(String(r[c]).match(/[\u3400-\u9fff][A-Za-z0-9]|[A-Za-z0-9][\u3400-\u9fff]/g)||[]).length;const mx=/[\u3400-\u9fff]/.test(r[c])&&/[A-Za-z0-9]/.test(r[c])?1.12:1;need=Math.max(need,measureW(r[c],fs,b)*(b?1.08:1)*mx+tr*fs*.3/72+padOf(c)/72+.05);/* 中英交界留自動間距 */});
+    if(need>w&&need-w<=spare+1e-6){spare-=need-w;colW[c]=need;}});}
   let rowH=rows.map((r,ri)=>{const base=ri<h0?hh:AU.section[ri]?rh*.95:rh;return Math.max(base,minH(cellN(r,ri),ri<h0?hfs:fs));});
   let tW=colW.reduce((a,b)=>a+b,0);
   const hasTop=true;   // 標題區固定保留（投影片順序一致；studio 畫布上可直接點來輸入）
@@ -999,14 +1004,16 @@ function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==
    rowH=rows.map((r,ri)=>{const base=ri<h0?hh:AU.section[ri]?rh*.95:rh;return Math.max(base,minH(cellN(r,ri),ri<h0?hfs:fs));});tH=rowH.reduce((a,b)=>a+b,0);}}
   // 太高：每次縮 0.5pt 並壓列高，內文最小 10pt（不縮成看不清的字）
   if(tH>avail){const fs0=fs;let g=1;
-   for(let it=0;it<20&&tH>avail+.01;it++){g=Math.max(.6,g*.95);if(fs>10)fs=Math.max(10,fs-.5);else padH=Math.max(4,padH*.85);if(hfs>9.5)hfs=Math.max(9.5,Math.min(hfs,fs)-(it%2?.5:0));
-    rowH=rows.map((r,ri)=>{const base=(ri<h0?hh:AU.section[ri]?rh*.95:rh)*g;return Math.max(base,minH(cellN(r,ri),ri<h0?hfs:fs));});tH=rowH.reduce((a,b)=>a+b,0);if(fs<=10&&g<=.6)break;}
+   for(let it=0;it<20&&tH>avail+.01;it++){g=Math.max(.5,g*.95);if(fs>10)fs=Math.max(10,fs-.5);else padH=Math.max(4,padH*.85);if(hfs>9.5)hfs=Math.max(9.5,Math.min(hfs,fs)-(it%2?.5:0));
+    rowH=rows.map((r,ri)=>{const base=(ri<h0?hh:AU.section[ri]?rh*.95:rh)*g;return Math.max(base,minH(cellN(r,ri),ri<h0?hfs:fs));});tH=rowH.reduce((a,b)=>a+b,0);if(fs<=10&&g<=.5)break;}
    if(tH>avail+.01)warn('表格太高',`內文已縮到 10pt 仍放不下（約超出 ${(tH-avail).toFixed(1)} 吋）；請減少列數或拆成多張表`);else if(fs<fs0)warn('表格較長',`已自動縮小列高與字級（內文 ${fs}pt）放進一頁`);}
   const vMode=st.tbV==='top'?'top':'center';
+  // 水平：置中（預設）＝整個區塊（表格與標題取較寬者）置中；置左＝對齊左邊界
+  if(st.tbH!=='left'){const tWid=ttl?Math.max(...ttl.split('\n').map(l=>tw(l,tfsT)*1.05)):0;const bw=Math.min(maxW,Math.max(tW,tWid));X=Math.max(.6+(LK.card?.25*k:0),(W-bw)/2);}
   const tx=X;   // 卡片外擴：表格文字與標題同一條左邊線
   const blockH=tH+2*frame+(noteH?noteH+.11*k:0);const off=vMode==='center'?Math.max(0,(H-.45-ty0-blockH)/2):0;const Y0=.5+off;
-  const slots={title:{x:X,y:Y0,w:Math.max(tW,TWm),h:titH,size:tfsT,font:st.tbFont==='noto'?'Noto Sans TC':st.tFont,color:G.ink,bold:1},unit:{x:X,y:Y0+titH+.02,w:Math.max(tW,8),h:.27*k,size:ufs,color:G.t2}};
-  if(T.title)txt(X,Y0,Math.max(tW,TWm),titH,ttl,{size:tfsT,bold:1,color:G.ink,font:slots.title.font,name:'表格標題',valign:'bottom'});
+  const TWs=W-.6-X;const slots={title:{x:X,y:Y0,w:Math.min(TWs,Math.max(tW,TWm)),h:titH,size:tfsT,font:st.tbFont==='noto'?'Noto Sans TC':st.tFont,color:G.ink,bold:1},unit:{x:X,y:Y0+titH+.02,w:Math.max(tW,8),h:.27*k,size:ufs,color:G.t2}};
+  if(T.title)txt(X,Y0,Math.min(TWs,Math.max(tW,TWm)),titH,ttl,{size:tfsT,bold:1,color:G.ink,font:slots.title.font,name:'表格標題',valign:'bottom'});
   if(T.unit)txt(X,slots.unit.y,Math.max(tW,6),slots.unit.h,T.unit,{size:ufs,color:G.t2,name:'單位',valign:'top'});
   const fy=ty0+off;const ty=fy+frame;
   if(LK.card){const o=grey?{fill:G.fill,r:.14*k,name:'灰色底板'}:{fill:'FFFFFF',line:G.line,lw:.75*k,r:.14*k,sh:'card',force:1,name:'卡片'};box(X-frame,fy,tW+2*frame,tH+2*frame,o);}
@@ -1017,7 +1024,7 @@ function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==
   const cells=rows.map((r,ri)=>r.map((t,c)=>{const align=colAl[c];const isN=isNumFont(ri,c);const font=isN?NF:TF;t=isN?t:tidy(t);const mL=c===0?padL0:padH;
    if(ri<h0){const o={t,bold:1,size:hfs,align,font:TF,color:LK.hdr.color,fill:LK.hdr.fill||null,bT:bw(LK.hdr.bT),bB:bw(LK.hdr.bB),mL,mR:padH};
     const hc=hiCol(c)||hiCell(ri,c);
-    if(hc){if(LK.hdr.fill){let f=hc.C!==EC?hc.C:(HASA?EC:mix(P,'000000',.3));for(let i=0;i<10&&contrastOf('FFFFFF',f)<4.5;i++)f=mix(f,'000000',.12);o.fill=f;o.color='FFFFFF';}else{if(hiStyle==='fill')o.fill=mix(hc.C,'FFFFFF',.9);o.color=ensureContrast(mix(hc.C,'000000',.18),o.fill||'FFFFFF',5);}}
+    if(hc){if(LK.hdr.fill){o.bB={c:hc.C,w:3};/* 主色表頭：重點欄只加 3pt 強調色底線 */}else{if(hiStyle==='fill')o.fill=mix(hc.C,'FFFFFF',.9);o.color=ensureContrast(mix(hc.C,'000000',.18),o.fill||'FFFFFF',5);}}
     o.color=cc(o.color,o.fill);return o;}
    const last=ri===rows.length-1,key=keySet.has(ri)||bold.has(ri),sec=AU.section[ri];
    const o={t,size:fs,align,font,bold:key||sec,color:sec?PD:G.ink,fill:null,bB:bw(last?(LK.last||LK.row):LK.row),mL,mR:padH};
@@ -1048,8 +1055,8 @@ function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==
   const noteY=ty+tH+frame+.11*k;
   // 圖例：用到 2 種以上意義時，在註腳列右側放小色塊（重點／推薦／警告）
   const kinds=[...new Set(his.map(h=>h.kind))];let legW=0;
-  if(kinds.length>=2){const KZ={focus:'重點',rec:'推薦',warn:'警告'};const runs=[];kinds.forEach(kd=>{const h=his.find(x=>x.kind===kd);runs.push({t:'■ ',c:h.C,s:nfs},{t:KZ[kd]+'　',c:G.t2,s:nfs});});
-   legW=Math.min(tW*.5,kinds.length*.62*k);txt(X+tW-legW,noteY,legW,nfs*1.35/72+.04,runs,{size:nfs,align:'right',valign:'top',name:'圖例'});}
+  if(kinds.length>=2){const LG=T.legend&&typeof T.legend==='object'?T.legend:{};const KZ={focus:String(LG.focus||'重點').slice(0,12),rec:String(LG.rec||'推薦').slice(0,12),warn:String(LG.warn||'警告').slice(0,12)};const runs=[];kinds.forEach(kd=>{const h=his.find(x=>x.kind===kd);runs.push({t:'■ ',c:h.C,s:nfs},{t:KZ[kd]+'　',c:G.t2,s:nfs});});
+   legW=Math.min(tW*.6,kinds.reduce((s,kd)=>s+tw('■ '+KZ[kd]+'　',nfs),0)+.1);txt(X+tW-legW,noteY,legW,nfs*1.35/72+.04,runs,{size:nfs,align:'right',valign:'top',name:'圖例'});}
   slots.note={x:X,y:noteY,w:legW?tW-legW:Math.max(tW,8),h:Math.max(noteH,.26*k),size:nfs,color:G.mute};
   if(T.note)txt(X,noteY,tW-legW,noteN*nfs*1.35/72+.04,T.note,{size:nfs,color:G.mute,valign:'top',wrap:1,lsp:1,name:'註腳'});
   const cx0=c=>tx+colW.slice(0,c).reduce((a,b)=>a+b,0),ry0=r=>ty+rowH.slice(0,r).reduce((a,b)=>a+b,0);const boxes=[];
@@ -1061,7 +1068,7 @@ function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==
    boxes.push(Object.assign({color:h.C,kind:h.kind},h.type==='cell'?{type:'cell',r:h.r,c:h.c}:{type:h.type,i:h.i}));});
   ruleBoxes.forEach(b=>{box(cx0(b.c)+ins,ry0(b.r)+ins,colW[b.c]-2*ins,rowH[b.r]-2*ins,{line:b.color,lw:blw,r:rad,name:'條件框'});boxes.push({type:'cell',r:b.r,c:b.c,color:b.color,rule:1});});
   const b0=boxes.find(b=>!b.rule&&b.type!=='cell');
-  cur.table={REC,k,colFit:colFit.map(v=>+v.toFixed(3)),tx,ty,tW,tH,colW,rowH,h0,nC,nR:rows.length,look:lookId,grey,hiMode:hiStyle,hiStyle,EC,colNum:AU.numC,colStat:AU.statC,key:[...keySet].sort((a,b)=>a-b),hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,
+  cur.table={colMin:colMin.map(v=>+v.toFixed(3)),REC,k,colFit:colFit.map(v=>+v.toFixed(3)),tx,ty,tW,tH,colW,rowH,h0,nC,nR:rows.length,look:lookId,grey,hiMode:hiStyle,hiStyle,EC,colNum:AU.numC,colStat:AU.statC,key:[...keySet].sort((a,b)=>a-b),hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,
    ruleCols:[...new Set(MK.rules.map(r=>r.c))],unit:T.unit||'',note:T.note||'',title:T.title||'',font:F,nf:NF,slots,fs,hfs,k};}
  if(opt.compose){sno=0;cur={key:'compose',title:'待選素材',no:1,items:[],groups:[]};slides.push(cur);SL.compose();}
  else SLIDES.forEach(([k,zh],i)=>{if(opt.only&&!opt.only.includes(k))return;if(!opt.only&&opt.examples===false&&/^ex\d/.test(k))return;/* 12–14 範例頁（主題式版面）：studio 預設不含，勾「含範例頁」才加 */sno=i+1;cur={key:k,title:zh,no:i+1,items:[],groups:[]};slides.push(cur);canvas();SL[k]();footer();if(opt.labels)applyLabels(cur,opt.labels);});
@@ -1525,7 +1532,7 @@ const TRAY_LAYOUTS=[['auto','自動排列'],['row','單列'],['grid2','兩欄格
 // 檔名：去標點、空白變 _、最多 20 字
 function shortName(t,n){n=n||20;let s=String(t||'').replace(/（示意）/g,'').replace(/[\\/:*?"<>|，。、；：！？「」『』（）【】《》,;:!?'()\[\]{}%+=#&@$^~`]+/g,' ').trim().replace(/\s+/g,'_');s=[...s].slice(0,n).join('').replace(/[_.\-]+$/,'');return s||'表格';}
 function trayDeck(entries,opt){opt=opt||{};const slides=[],skipped=[],warns=[];
- (entries||[]).forEach((e,i)=>{try{let sl;if(e.kind==='table'){const m=buildModel(e.params,{table:e.table});sl=m.slides[0];warns.push(...m.warns);}else sl=trayModel([e],{frame:opt.frame}).slides[0];
+ (entries||[]).forEach((e,i)=>{try{let sl;if(e.kind==='table'){const tb=Object.assign({},e.table);if(opt.sugTitle!==false&&!String(tb.title||'').trim()){const sg=tableTitleSuggest(tb);if(sg)tb.title=sg;}const m=buildModel(e.params,{table:tb});sl=m.slides[0];warns.push(...m.warns);}else sl=trayModel([e],{frame:opt.frame}).slides[0];
   if(!sl||!sl.items.length){skipped.push(i);return;}slides.push(sl);}catch(err){skipped.push(i);}});
  const params=opt.frame||((entries||[])[0]||{}).params||BASE;return{slides,warns,params,k:1,custom:true,tray:{n:slides.length,pages:slides.length,skipped,mode:'deck'}};}
 function trayModel(entries,opt){opt=opt||{};const C=opt.compose||{};const parts=[],skipped=[];

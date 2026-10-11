@@ -1,5 +1,5 @@
 const puppeteer=require('puppeteer-core');const fs=require('fs');const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const URL=process.argv[2]||'http://localhost:8765/studio.html';const OUT=process.argv[3]||'/tmp/r3/ui';fs.mkdirSync(OUT,{recursive:true});
+const URL=process.argv[2]||'http://localhost:8765/studio.html';const OUT=process.argv[3]||'/tmp/r4/ui';fs.mkdirSync(OUT,{recursive:true});
 const paste=(pg,txt)=>pg.evaluate(t=>{const dt=new DataTransfer();dt.setData('text/plain',t);document.body.dispatchEvent(new ClipboardEvent('paste',{clipboardData:dt,bubbles:true}));},txt);
 const PL="\t3Q25\t2Q25\t3Q24\tQoQ\tYoY\n營業收入淨額\t989.9\t933.8\t759.7\t+6.0%\t+30.3%\n毛利率\t59.5%\t58.6%\t57.8%\t+0.9 ppts\t+1.7 ppts\n營業費用\t(88.2)\t(85.5)\t(75.6)\t+3.2%\t+16.7%\n稅後淨利\t452.3\t398.3\t325.3\t+13.6%\t+39.0%\n每股盈餘（元）\t17.44\t15.36\t12.54\t+13.6%\t+39.1%";
 const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\t提前 3 天\nAOI 誤判改善\t林志豪\t風險\t資料量不足\nSPC 上線\t張家瑋\t進行中\t已完成 60%";
@@ -39,7 +39,9 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
    await pg.mouse.up();await sleep(500);const after=await pg.evaluate(()=>window.__studio.table.cw);
    ck('real mouse drag changes widths '+JSON.stringify(after),!!after&&JSON.stringify(after)!==JSON.stringify(before));
    ck('no stray guide after drag',await pg.evaluate(()=>!document.body.classList.contains('colresize')&&document.querySelector('#tCwTip').hidden));
-   await pg.screenshot({path:`${OUT}/d-drag.png`});
+   {const h3=await pg.$('#tPrev .tcw[data-c="0"]');const b3=await h3.boundingBox();const x3=b3.x+b3.width/2,y3=b3.y+b3.height/2;await pg.mouse.move(x3,y3);await pg.mouse.down();for(let i=1;i<=10;i++){await pg.mouse.move(x3+i*60,y3);await sleep(25);}
+    const tv=await pg.evaluate(()=>document.querySelector('#tCwTip').textContent);ck('readout shows minimum '+tv,/最小/.test(tv));await pg.screenshot({path:`${OUT}/d-drag.png`});await pg.mouse.up();await sleep(400);
+    const ok1=await pg.evaluate(()=>{const t=window.__studio.table;return t.colW&&t.colMinW&&t.colW.every((w,i)=>w>=t.colMinW[i]-.01);});ck('drag respects longest-word minimum',ok1);}
    const h2=await pg.$('#tPrev .tcw[data-c="0"]');const b2=await h2.boundingBox();await pg.mouse.click(b2.x+b2.width/2,b2.y+b2.height/2,{delay:30});await sleep(60);await pg.mouse.click(b2.x+b2.width/2,b2.y+b2.height/2,{delay:30,clickCount:2});await sleep(500);
    const af2=await pg.evaluate(()=>window.__studio.table.cw);ck('double-click auto-fit changes width '+JSON.stringify(af2),JSON.stringify(af2)!==JSON.stringify(after));}
   // inspector sections
@@ -70,6 +72,7 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
   await paste(pg,PL);await sleep(700);
   ck('suggested title shown',await pg.evaluate(()=>!!document.querySelector('.tsugb')));
   await pg.click('.tsugb');await sleep(400);const tt2=await pg.evaluate(()=>window.__studio.table.title);ck('apply suggested title: '+tt2,/3Q25/.test(tt2));
+  ck('visible 套用 button for suggested title',await pg.evaluate(()=>!!document.querySelector('#tPrev .tsapply')||!!window.__studio.table.title));
   ck('no overlay pill/badge on canvas',await pg.evaluate(()=>!document.querySelector('#tPrev .tsug,#tPrev .tbadge,#tPrev .thl')));
   ck('canvas highlight list',await pg.evaluate(()=>document.querySelectorAll('#tLegend [data-rmh]').length===1));
   await pg.click('#tLegend [data-rmh]');await sleep(400);ck('remove highlight from canvas',await pg.evaluate(()=>window.__studio.table.his.length===0));
@@ -88,8 +91,8 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
   await ctx.close();}
  // 1366x768 / 1440x900: canvas, look picker, copy button visible without scrolling
  for(const vp of [{width:1280,height:720},{width:1366,height:768},{width:1440,height:900}]){const ctx=await b.createBrowserContext();const pg=await ctx.newPage();await pg.setViewport(vp);await pg.goto(URL,{waitUntil:'networkidle0'});await sleep(500);await pg.click('#tabs button[data-tab="table"]');await sleep(800);
-  const v=await pg.evaluate(()=>{const vis=sel=>{const r=document.querySelector(sel).getBoundingClientRect();return r.width>0&&r.top>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;};const pr=document.querySelector('#tPrev').getBoundingClientRect(),cv=document.querySelector('#tCanvas').getBoundingClientRect();return{c:vis('#tPrev')&&pr.bottom<=cv.bottom+1&&pr.right<=cv.right+1,l:vis('#tLStrip'),b:vis('#tCopy')};});
-  ck(`${vp.width}x${vp.height}: whole slide ${v.c} looks ${v.l} copy ${v.b}`,v.c&&v.l&&v.b);if(vp.width===1366)await pg.screenshot({path:`${OUT}/d-1366.png`});await ctx.close();}
+  const v=await pg.evaluate(()=>{const vis=sel=>{const r=document.querySelector(sel).getBoundingClientRect();return r.width>0&&r.top>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;};const pr=document.querySelector('#tPrev').getBoundingClientRect(),cv=document.querySelector('#tCanvas').getBoundingClientRect();const fr=Math.max(pr.height/(innerHeight-cv.top-110),pr.width/(cv.width-40));return{f:+fr.toFixed(2),c:vis('#tPrev')&&pr.bottom<=cv.bottom+1&&pr.right<=cv.right+1&&fr>.8,l:vis('#tLStrip'),b:vis('#tCopy')};});
+  ck(`${vp.width}x${vp.height}: whole slide+fills ${v.c} (${v.f}) looks ${v.l} copy ${v.b}`,v.c&&v.l&&v.b);if(vp.width===1366)await pg.screenshot({path:`${OUT}/d-1366.png`});await ctx.close();}
  // mobile
  {const ctx=await b.createBrowserContext();const pg=await ctx.newPage();pg.on('pageerror',e=>errs.push('m: '+e.message));
   await pg.setViewport({width:390,height:844,deviceScaleFactor:2,isMobile:true,hasTouch:true});await pg.goto(URL,{waitUntil:'networkidle0'});await sleep(600);
