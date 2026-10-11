@@ -72,7 +72,7 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
   await pg.click('#tLStrip button[data-v="band"]');await sleep(600);ck('look band pressed',await pg.evaluate(()=>document.querySelector('#tLStrip button[data-v="band"]').getAttribute('aria-pressed')==='true'&&window.__studio.table.look==='band'));
   // R2: suggestion, canvas highlight list, undo/redo, width option, output bar visible
   await paste(pg,PL);await sleep(700);
-  ck('suggested title shown',await pg.evaluate(()=>!!document.querySelector('.tsugb')));
+  ck('R9b: no suggested-title / 套用 / 📌 buttons; suggestion kept as ghost text',await pg.evaluate(()=>!document.querySelector('.tsugb,.tsapply,.tpin,#tPrev button')&&!!document.querySelector('.tslot[data-k="title"]').dataset.ph));
   await pg.click('.tsugb');await sleep(400);const tt2=await pg.evaluate(()=>window.__studio.table.title);ck('apply suggested title: '+tt2,/3Q25/.test(tt2));
   ck('visible 套用 button for suggested title',await pg.evaluate(()=>!!document.querySelector('#tPrev .tsapply')||!!window.__studio.table.title));
   ck('no overlay pill/badge on canvas',await pg.evaluate(()=>!document.querySelector('#tPrev .tsug,#tPrev .tbadge,#tPrev .thl')));

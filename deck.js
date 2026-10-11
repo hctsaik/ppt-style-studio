@@ -945,12 +945,18 @@ function buildModel(params,opt){
     重點只用一種強調色（紅色只留給警示／條件），不疊色；文字對底色自動加深到 4.5:1。預覽、匯出、HTML 複製共用這份 model。 */
  function hueOf(x){const [r,g,b]=[0,2,4].map(i=>parseInt(x.slice(i,i+2),16)/255);const mx=Math.max(r,g,b),mn=Math.min(r,g,b),dd=mx-mn;if(!dd)return -1;let h=mx===r?((g-b)/dd)%6:mx===g?(b-r)/dd+2:(r-g)/dd+4;return (h*60+360)%360;}
 function hueD(a,b){const x=hueOf(a),y=hueOf(b);if(x<0||y<0)return 90;const d=Math.abs(x-y);return Math.min(d,360-d);}
-function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==null?'':c).trim()!==''));if(!raw.length)return;
+// 小表自動放大（列少自動放大 tbAuto）：表格太小時把字級／列高／欄寬一起放大，直到約佔內容寬 62% 或高度用完（內文最多 24pt）
+function userTable(T,k){const n0=cur.items.length,w0=warns.length;userTable0(T,k,1);if(st.tbAuto===false||!cur.table||(Array.isArray(T.cw)&&T.cw.length)||st.tbDense==='dense'||st.tbDense==='compact')return;   /* 手動拉過欄寬就不自動放大 */
+  const CW=W-1.2,fits=t=>t.ty+t.tH+(t.slots.note?t.slots.note.h+.1:0)<=H-.45&&t.tW<=CW+.01;let best=1;
+  for(let b=1.1;b<=2.6;b=+(b+.1).toFixed(2)){const prev=cur.table;const FCAP={comfy:24,dense:20}[st.tbDense]||22;if(prev.fs>=FCAP||(prev.tW>=.62*CW&&prev.tH>=.45*(H-1.5)))break;cur.items.length=n0;warns.length=w0;userTable0(T,k,b);const t=cur.table;
+   if(!fits(t)||t.fs>FCAP+.01||t.orphans.length>prev.orphans.length){cur.items.length=n0;warns.length=w0;userTable0(T,k,best);break;}best=b;}
+  cur.table.boost=best;}
+function userTable0(T,k,boost){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==null?'':c).trim()!==''));if(!raw.length)return;
   const nC=Math.max(...raw.map(r=>r.length));const src=raw.map(r=>{const a=r.map(c=>String(c==null?'':c).replace(/\r/g,'').trim());while(a.length<nC)a.push('');return a;});
   let AU=tableAuto(src,T);const head=T.header==null||T.header==='auto'?AU.head:!!T.header,h0=head?1:0;
   const MAXR=25;if(src.length-h0>MAXR){const n=src.length-h0;src.length=h0+MAXR;AU=tableAuto(src,T);warn('表格列數過多',`共 ${n} 列，只放前 ${MAXR} 列；請拆成多張表或先摘要`);}
   // 列數少→字大一點、列數多→維持（S／M／L 仍是基準）；tbAuto=false 關閉
-  if(st.tbAuto!==false){const nb=src.length-h0;k=Math.min(1.45,k*(nb<=5?1.3:nb<=9?1.15:1));if(nb>=12&&k>1)k=1;}   // 12 列以上 L 也不放大，避免縮字
+  if(st.tbAuto!==false){const nb=src.length-h0;k=Math.min(1.45,k*(nb<=5?1.3:nb<=9?1.15:1));if(nb>=12&&k>1)k=1;}if(boost>1)k*=boost;   // 12 列以上 L 也不放大，避免縮字
   const lookId=tableLookOf(st);const grey=st.tbLook==='panel'||st.tbCard==='grey'||(st.tbPanel&&!st.tbLook);
   const sz=v=>Math.round(v*k*2)/2;
   const TF=st.tbFont==='arial'?'Arial':(st.tbFont==='jh'||st.tbFont==='noto')?'Microsoft JhengHei':F;   // 表格文字字型（arial＝拉丁 Arial＋中文正黑：a:ea 會自動補成中文字型）
@@ -1015,6 +1021,7 @@ function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==
   const sum0=colW.reduce((a,b)=>a+b,0);
   // 自動：內容寬＋依欄數給一個舒服的最小寬（2 欄 4.5"、≤4 欄 6"、≤6 欄 7.5"、更多 10"），多出來的給第一欄（最多 36%；填滿 45%），再給文字欄；數字欄維持內容寬、靠在一起
   let target=wMode==='fill'?maxW:wMode==='compact'?Math.min(maxW,sum0):Math.min(maxW,Math.max(sum0,(nC<=2?4:nC<=4?5:nC<=6?6.5:9)*k));
+  if(boost>1&&wMode==='auto')target=Math.min(maxW,Math.max(target,.6*maxW));   // 小表放大時至少佔內容寬 60%
   const colFit=colW.slice();
   const cap=(wMode==='fill'?.45:.36)*target;
   const uw=Array.isArray(T.cw)&&T.cw.length===nC&&T.cw.every(v=>+v>.2&&+v<12)?T.cw.map(v=>+v*k):null;
@@ -1025,8 +1032,8 @@ function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==
    if(nC>1&&colW.some(w=>w>cap))colW=colW.map(w=>Math.min(w,Math.max(cap,1.2*k)));
    let ex=target-colW.reduce((a,b)=>a+b,0);
    if(ex>.001){if(nC===1)colW[0]+=ex;else{const g0=Math.min(ex,Math.max(0,(wMode==='auto'?Math.min(cap,colW[0]+.9*k):cap)-colW[0]));colW[0]+=g0;ex-=g0;
-    if(wMode==='auto')ex=0;   // 自動：文字欄＝max(內容, 表頭)＋邊距，多出的只給第一欄（stub），不再撐寬其他欄
-    const txtC=colW.map((_,c)=>c).filter(c=>c>0&&!AU.numC[c]);const grp=wMode==='fill'||!txtC.length?colW.map((_,c)=>c).filter(c=>c>0):txtC;
+    if(wMode==='auto'&&!(boost>1))ex=0;   // 自動：文字欄＝max(內容, 表頭)＋邊距，多出的只給第一欄（stub），不再撐寬其他欄
+    const txtC=colW.map((_,c)=>c).filter(c=>c>0&&!AU.numC[c]);const grp=wMode==='fill'||boost>1||!txtC.length?colW.map((_,c)=>c).filter(c=>c>0):txtC;
     if(ex>.001&&grp.length){const each=ex/grp.length;grp.forEach(c=>colW[c]+=each);}}}}
   colW=colW.map((w,c)=>Math.max(w,colMin[c]));   // 每欄至少＝最長不可斷字／表頭語意兩行寬
   // 太寬：先讓文字欄換行（每欄至少 1.3"），數字欄不動；還是放不下才縮字

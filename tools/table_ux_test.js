@@ -4,23 +4,25 @@ const ov=(a,b)=>!(a.right<=b.left+1||a.left>=b.right-1||a.bottom<=b.top+1||a.top
 (async()=>{const b=await P.launch({executablePath:'/usr/bin/google-chrome',args:['--no-sandbox']});
  const pg=await b.newPage();await pg.setViewport({width:1440,height:900});const errs=[];pg.on('pageerror',e=>errs.push(e.message));
  await pg.goto(URL,{waitUntil:'networkidle0'});await sl(400);await pg.click('#tabs button[data-tab="table"]');await sl(700);await pg.select('#tSample','status');await sl(700);
- const popInfo=()=>pg.evaluate(()=>{const p=document.querySelector('#tPop');const sel=document.querySelector('#tPrev .tc.sel');const a=p.getBoundingClientRect(),c=sel.getBoundingClientRect();return {hid:p.hidden,side:p.dataset.side,cov:!(a.right<=c.left+1||a.left>=c.right-1||a.bottom<=c.top+1||a.top>=c.bottom-1),scope:[...p.querySelectorAll('.pscope')].map(x=>x.textContent+(x.getAttribute('aria-pressed')==='true'?'*':'')),secs:[...p.querySelectorAll('.plab')].map(x=>x.textContent),inView:a.left>=0&&a.right<=innerWidth&&a.top>=0&&a.bottom<=innerHeight};});
- await pg.click('#tPrev .tc[data-r="2"][data-c="3"]');await sl(400);let i=await popInfo();ck('popup opens next to clicked cell, not covering it '+JSON.stringify(i),!i.hid&&!i.cov&&i.inView&&i.scope.length===3);
- for(const sc of ['col','row','cell']){await pg.click(`#tPop button[data-a="scope"][data-v="${sc}"]`);await sl(300);i=await popInfo();ck(`scope ${sc} pressed ${JSON.stringify(i.secs)}`,i.scope.some(x=>x.endsWith('*'))&&!i.cov);await pg.screenshot({path:`${OUT}/tbl-ux-pop-${sc}.png`});}
- await pg.hover('#tPop button[data-a="scope"][data-v="row"]');await sl(200);const nh=await pg.evaluate(()=>document.querySelectorAll('#tPrev .tc.scopehl').length);ck('hover 整列 previews the row ('+nh+' cells)',nh===5);
+ const popInfo=()=>pg.evaluate(()=>{const p=document.querySelector('#tSelPanel');const sel=document.querySelector('#tPrev .tc.sel');const a=p.getBoundingClientRect(),c=sel.getBoundingClientRect();return {hid:p.hidden,side:p.dataset.side,cov:!(a.right<=c.left+1||a.left>=c.right-1||a.bottom<=c.top+1||a.top>=c.bottom-1),scope:[...p.querySelectorAll('.pscope')].map(x=>x.textContent+(x.getAttribute('aria-pressed')==='true'?'*':'')),secs:[...p.querySelectorAll('.plab')].map(x=>x.textContent),inView:a.left>=0&&a.right<=innerWidth&&a.top>=0&&a.bottom<=innerHeight};});
+ await pg.click('#tPrev .tc[data-r="2"][data-c="3"]');await sl(400);let i=await popInfo();ck('click → ③重點 tab with scope menu in panel, no floating popup '+JSON.stringify(i),!i.hid&&!i.cov&&i.scope.length===3&&await pg.evaluate(()=>document.querySelector('#tPop').hidden&&document.querySelector('.tinsTabs button[data-t="hi"]').getAttribute('aria-pressed')==='true'&&!!document.querySelector('#tIns .tsec.on #tSelPanel')));
+ ck('no buttons on the slide canvas / legend',await pg.evaluate(()=>!document.querySelector('#tPrev button,#tLegend .tsugb')));
+ for(const sc of ['col','row','cell']){await pg.click(`#tSelPanel button[data-a="scope"][data-v="${sc}"]`);await sl(300);i=await popInfo();ck(`scope ${sc} pressed ${JSON.stringify(i.secs)}`,i.scope.some(x=>x.endsWith('*'))&&!i.cov);await pg.screenshot({path:`${OUT}/tbl-ux-pop-${sc}.png`});}
+ await pg.hover('#tSelPanel button[data-a="scope"][data-v="row"]');await sl(200);const nh=await pg.evaluate(()=>document.querySelectorAll('#tPrev .tc.scopehl').length);ck('hover 整列 previews the row ('+nh+' cells)',nh===5);
  await pg.screenshot({path:`${OUT}/tbl-ux-pop-hover.png`});
- await pg.click('#tPop button[data-a="scope"][data-v="col"]');await sl(200);await pg.click('#tPop button[data-a="star"][data-v="warn"]');await sl(500);
+ await pg.click('#tSelPanel button[data-a="scope"][data-v="col"]');await sl(200);await pg.click('#tSelPanel button[data-a="star"][data-v="warn"]');await sl(500);
  ck('★ action applies to column',await pg.evaluate(()=>JSON.parse(localStorage.getItem('ppt-studio-table')).his.some(h=>h.type==='col'&&h.i===3&&h.kind==='warn')));
  // bottom-right cell: popup flips
- await pg.keyboard.press('Escape');await sl(200);await pg.click('#tPrev .tc[data-r="5"][data-c="4"]');await sl(400);i=await popInfo();ck('bottom-right cell: popup flips and never covers ('+i.side+')',!i.hid&&!i.cov&&i.inView);
+ await pg.keyboard.press('Escape');await sl(200);await pg.click('#tPrev .tc[data-r="5"][data-c="4"]');await sl(400);i=await popInfo();ck('bottom-right cell: menu in panel',!i.hid&&!i.cov);
  // first column header via popup
- await pg.keyboard.press('Escape');await sl(200);await pg.click('#tPrev .tc[data-r="2"][data-c="0"]');await sl(300);await pg.click('#tPop button[data-a="scope"][data-v="col"]');await sl(300);
- ck('設為表頭 offered for first column',await pg.evaluate(()=>!!document.querySelector('#tPop button[data-a="hcol"]')));await pg.click('#tPop button[data-a="hcol"]');await sl(500);
+ await pg.keyboard.press('Escape');await sl(200);await pg.click('#tPrev .tc[data-r="2"][data-c="0"]');await sl(300);await pg.click('#tSelPanel button[data-a="scope"][data-v="col"]');await sl(300);
+ ck('設為表頭 offered for first column',await pg.evaluate(()=>!!document.querySelector('#tSelPanel button[data-a="hcol"]')));await pg.click('#tSelPanel button[data-a="hcol"]');await sl(500);
  ck('first column header toggle synced',await pg.evaluate(()=>document.querySelector('#tHCol').checked));
  await pg.keyboard.press('Escape');await sl(200);
  for(const t of ['data','look','hi','fmt']){await pg.click(`.tinsTabs button[data-t="${t}"]`);await sl(300);await pg.screenshot({path:`${OUT}/tbl-ux-panel-${t}.png`});}
  ck('panel has no duplicate selection controls',await pg.evaluate(()=>!document.querySelector('#tSelPanel button')));
  ck('font default 微軟正黑體',await pg.evaluate(()=>document.querySelector('[data-tp="tbFont"] button[aria-pressed="true"]').dataset.v)==='jh');
+ await pg.click('.tinsTabs button[data-t="look"]');await sl(300);ck('儲存格邊界 only once, in ②外觀',await pg.evaluate(()=>document.querySelectorAll('[data-tp="tbPad"]').length===1&&!!document.querySelector('.tsec[data-sec="look"] [data-tp="tbPad"]')));
  for(const v of ['none','l']){await pg.click(`[data-tp="tbPad"] button[data-v="${v}"]`);await sl(500);await pg.screenshot({path:`/tmp/ux/pad-${v}.png`,clip:await pg.evaluate(()=>{const r=document.querySelector('#tPrev').getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height};})});}
  await pg.click(`[data-tp="tbPad"] button[data-v="m"]`);
  ck('no page errors '+errs.join('|'),!errs.length);

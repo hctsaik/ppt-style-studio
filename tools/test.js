@@ -89,6 +89,11 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    {const mn=D.buildModel(Object.assign({},nav,{tbFont:'noto'}),{table:base});ok(mn.slides[0].items.find(i=>i.t==='tbl').cells[1][0].runs[0].o.font==='Microsoft JhengHei','舊設定 Noto Sans TC → 改用微軟正黑體');}
    const many=D.buildModel(nav,{table:Object.assign({},base,{his:[1,2,3,4,5].map(i=>({type:'row',i,kind:'focus'}))})});ok(many.slides[0].table.his.length===5,'重點可超過 3 個（'+many.slides[0].table.his.length+'）');
    const r=await D.exportPptx(env,nav,{type:'nodebuffer',model:hc});fs.writeFileSync(path.join(OUT,'tbl-hcol.pptx'),r.data);files.push(path.join(OUT,'tbl-hcol.pptx'));}
+  // R9b：小表自動放大（3×3）：內文 ≥20pt、寬 ≥55% 內容寬、無孤字、不出界；關閉 tbAuto 時維持原尺寸
+  {const T3={rows:[['','A','B','C'],['X','1','2','887'],['Y','3','7','66'],['Z','5','6','3']]};let bad=[];
+   for(const [lk] of D.TABLE_LOOKS)for(const sz of ['S','M','L']){const m=D.buildModel(Object.assign({},nav,{tbLook:lk,size:sz}),{table:T3});const t=m.slides[0].table;if(t.fs<20||t.fs>24||t.tW<.55*(D.W-1.2)||t.orphans.length||t.ty+t.tH>D.H-.45||m.warns.length)bad.push(lk+sz+':'+t.fs+'/'+t.tW.toFixed(1));}
+   ok(!bad.length,'小表自動放大：3×3 各外觀×S/M/L 內文 20–24pt、寬≥55%'+(bad.length?'｜'+bad.join(' '):''));
+   const off=D.buildModel(Object.assign({},nav,{tbAuto:false}),{table:T3}).slides[0].table;ok(off.fs<16&&!off.boost,'列少自動放大 關閉：不放大（'+off.fs+'pt）');}
   // R8：壓力範例 12/16/20 列（長中文表頭與內文、% 與負數、多行註腳）× 4 外觀 × 3 密度 × S/M/L × 9 風格
   {const C=require('./table-cases.js');let bad=[];for(const st of D.PRESETS)for(const k of ['s12','s16','s20'])for(const lk of ['clean','band','card','zebra'])for(const dn of ['comfy','normal','dense'])for(const size of ['S','M','L']){const m=D.buildModel(Object.assign({},st,{tbLook:lk,tbDense:dn,size}),{table:C[k]});const tb=m.slides[0].table;const bot=Math.max(...m.slides[0].items.map(i=>i.y+i.h));
     if(tb.orphans.length||tb.fs<10||bot>7.5-.15||tb.tx+tb.tW>13.333-.4||m.warns.some(w=>/放不下|太寬/.test(w)))bad.push(st.id+k+lk+dn+size);}

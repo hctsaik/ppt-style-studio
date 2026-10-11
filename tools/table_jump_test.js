@@ -12,9 +12,9 @@ const diff=(a,b)=>Object.keys(a).filter(k=>JSON.stringify(a[k])!==JSON.stringify
   await sl(900);
   const cell=await pg.evaluate(()=>{const c=document.querySelector('#tPrev .tc[data-r="2"][data-c="1"]');c.scrollIntoView({block:matchMedia('(max-width:900px)').matches?'start':'nearest'});return 1;});await sl(300);
   const clk=async s=>{if(mob)await pg.tap(s);else await pg.click(s);await sl(500);};
-  await clk('#tPrev .tc[data-r="2"][data-c="1"]');await clk('#tPop button[data-a="scope"][data-v="col"]');
+  await clk('#tPrev .tc[data-r="2"][data-c="1"]');await clk((mob?'#tPop':'#tSelPanel')+' button[data-a="scope"][data-v="col"]');
   const g0=await geo(pg);if(w===1440&&!samp&&!first&&hs==='fill')await pg.screenshot({path:OUT+'/tbl-jump-before.png'});
-  const acts=[];if(first){const [a,v]=first.split(':');acts.push(`#tPop button[data-a="${a}"][data-v="${v}"]`);}acts.push(`#tPop button[data-a="hs"][data-v="${hs}"]`);
+  const acts=[];if(first){const [a,v]=first.split(':');acts.push((mob?'#tPop':'#tSelPanel')+` button[data-a="${a}"][data-v="${v}"]`);}acts.push((mob?'#tPop':'#tSelPanel')+` button[data-a="hs"][data-v="${hs}"]`);
   for(const s of acts){if(!await pg.$(s))continue;await clk(s);await sl(700);const g1=await geo(pg);const d=diff(g0,g1);if(d.length){fail++;console.log(`FAIL ${w}x${h} ${samp||'sample'} ${first||'-'} ${s.match(/v="(\w+)"/)[1]}:`,d.map(k=>k+' '+JSON.stringify(g0[k])+'→'+JSON.stringify(g1[k])).join(' | '));}
    if(w===1440&&!samp&&!first&&hs==='fill')await pg.screenshot({path:OUT+'/tbl-jump-after.png'});}
   await pg.close();}
