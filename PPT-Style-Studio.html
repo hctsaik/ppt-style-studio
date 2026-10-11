@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%226%22 fill=%22%231F4E79%22/%3E%3C/svg%3E">
-<!-- PPT Style Studio 單檔版（自動產生於 2026-10-11 18:04，請勿手改；來源：studio.html + icons.js + deck.js + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
+<!-- PPT Style Studio 單檔版（自動產生於 2026-10-11 18:11，請勿手改；來源：studio.html + icons.js + deck.js + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
 <title>PPT Style Studio · 圖解元件客製工作室</title>
 <style>
 :root{--ink:#3A3A3A;--t2:#595959;--mu:#8C8C8C;--line:#E4E4E4;--fill:#F6F6F6;--p:#1F4E79}
@@ -4682,26 +4682,42 @@ function buildModel(params,opt){
   [['階段一','看','練'],['階段二','問','談'],['階段三','想','寫']].forEach(([l,a,b],i)=>{const yy=3.5+i*1.05;txt(CX,yy-.17,.9,.34,l,{size:11,color:G.t2});badge(b1+bwid/2,yy,a,{d:.46,size:13,nodot:1});badge(b2+bwid/2,yy,b,{d:.46,size:13,nodot:1});});};
 
  /* ---------- 版型｜As Was／To Be（參考法說會簡報版面）：上方三行重點句 20pt → 前後對照兩框 20pt → 左：四個行動方塊 18pt（6 字、兩行、內距 0）／右：原生表格（首列＋首欄為表頭） ---------- */
- SL.asis=()=>{title('銷售額倍增：As Was → To Be');
-  box(W-1.55,.28,.95,.5,{line:G.line,dash:'dash',text:'LOGO',size:10,color:G.t2,name:'Logo 位置（可換成公司標誌）'});
-  const lines=['鎖定高價值客群，銷售額由 2000 元提升到 4000 元','客戶數與客單價同步成長，回購率翻倍','四項行動依序推進，每月追蹤關鍵指標'];
-  const ly0=1.22,lstep=.46;
-  lines.forEach((t,i)=>{const y=ly0+i*lstep;circ(X0+.09,y+.21,.13,{fill:P,name:'項目符號'});txt(X0+.3,y,CW-.3,.42,t,{size:20,valign:'middle',name:'重點句 '+(i+1)});});
-  const cy=2.72,ch=.96,gw=.3,bw=(CW-gw)/2;
-  [['As Was','銷售額 2000 元',0],['To Be','銷售額 4000 元',1]].forEach(([lab,val,hi],i)=>{const x=X0+i*(bw+gw);
-   box(x,cy,bw,ch,{fill:hi?G.panel||'F7F7F7':'FFFFFF',line:hi?P:G.line,lw:hi?2:1.25,r:.08,text:[{t:lab,b:1,c:P,br:1},{t:val,b:1}],size:20,align:'left',valign:'middle',margin:[14,8,4,4],name:lab+' 對照框'});
-   box(x,cy,.1,ch,{fill:P,name:'強調色條'});});
-  // 箭頭：As Was → To Be
-  tri(X0+bw+.06,cy+ch/2-.12,.18,.24,{fill:P,name:'箭頭'});
-  const by=3.86,bh=.68,bg=.06,aw=1.3,half=(CW-gw)/2;
-  const acts=[['鎖客群','抓需求','聚焦高價值客群，停止低毛利通路'],['升方案','提單價','推出加值方案，客單價 20 → 25 元'],['拓通路','接線上','導入線上預約與會員系統，客戶數 +60%'],['顧回購','養忠誠','回購提醒與專屬服務，回購率 15% → 30%']];
-  acts.forEach(([a,b,desc],i)=>{const y=by+i*(bh+bg);const t=a+'\n'+b;
-   box(X0,y,aw,bh,{fill:i===0?P:G.panel||'F2F2F2',line:i===0?null:G.line,text:t,size:18,bold:1,color:i===0?'FFFFFF':G.ink,margin:0,align:'center',valign:'middle',name:'行動 '+(i+1)});
-   txt(X0+aw+.18,y,half-aw-.18,bh,desc,{size:14,color:G.t2,valign:'middle',name:'行動說明 '+(i+1)});});
-  const tx=X0+half+gw,tw0=half;const cw=[tw0*.36,tw0*.32,tw0*.32];const rh=[.5,.55,.55,.55,.55];
-  const H1={fill:P,color:'FFFFFF',bold:1,size:16},C1={fill:G.panel||'F2F2F2',bold:1,size:16,align:'left'},V={size:16};
-  const data=[['指標','As Was','To Be'],['銷售額','2000 元','4000 元'],['客戶數','100 人','160 人'],['客單價','20 元','25 元'],['回購率','15%','30%']];
-  table(tx,by,cw,rh,data.map((r,ri)=>r.map((c,ci)=>Object.assign({t:c},ri===0?H1:ci===0?C1:Object.assign({},V,ci===2?{bold:1,color:P}:{}),{bB:{c:G.line,w:.75}}))),{name:'As Was／To Be 對照表',mL:8});};
+ SL.asis=()=>{const V0=+opt.asisV||4,V=V0===4?2:V0;/* 定稿＝4：主色 To Be 卡（2）＋深色表頭（1），To Be 欄頭用主色 */title('銷售額倍增：As Was → To Be');
+  // 格線：左右邊界 0.6"、欄距 0.3"、左右 50/50；灰色結構＋主色只用在 To Be
+  const GUT=.3,HALF=(CW-GUT)/2,RAD=.09,SOFT=mix(P,'FFFFFF',.92),CARD=mix(G.fill||'F4F4F4','FFFFFF',.35),DARK=G.ink;
+  box(W-1.55,.3,.95,.46,{line:G.line,dash:'dash',text:'LOGO',size:9,color:G.mute,r:.06,name:'Logo 位置（可換成公司標誌）'});
+  // 1) 三行重點句（20pt，一行一句；灰色圓點）
+  ['鎖定高價值客群，銷售額由 2000 元提升到 4000 元','客戶數與客單價同步成長，回購率翻倍','四項行動依序推進，每月追蹤關鍵指標'].forEach((t,i)=>{const y=1.22+i*.4;
+   circ(X0+.08,y+.19,.1,{fill:G.g7,name:'項目符號'});txt(X0+.28,y,CW-.28,.38,t,{size:20,valign:'middle',name:'重點句 '+(i+1)});});
+  // 2) 主視覺：As Was（灰卡）→ To Be（主色卡）
+  const hy=2.58,hh=.82,AG=.62,cw=(CW-AG)/2;
+  const card=(x,lab,num,hi)=>{box(x,hy,cw,hh,{fill:hi?(V===2?P:SOFT):CARD,line:hi?(V===2?null:P):null,lw:1.5,r:RAD*1.4,sh:'card',force:1,name:lab+' 卡'});
+   const pw=1.55;box(x+.28,hy+(hh-.48)/2,pw,.48,{fill:hi?(V===2?'FFFFFF':P):DARK,r:.24,text:lab,size:20,bold:1,color:hi&&V===2?P:'FFFFFF',margin:0,name:lab+' 標籤'});
+   const fg=hi&&V===2?'FFFFFF':hi?P:G.t2;
+   txt(x+.28+pw+.25,hy,cw-pw-.8,hh,[{t:'銷售額 ',s:20,c:hi&&V===2?'FFFFFF':G.t2},{t:num,s:34,b:1,c:fg},{t:' 元',s:20,c:hi&&V===2?'FFFFFF':G.t2}],{size:20,valign:'middle',name:lab+' 數值'});};
+  card(X0,'As Was','2000',0);card(X0+cw+AG,'To Be','4000',1);
+  // 箭頭：圓形底＋粗 chevron
+  const ax=X0+cw+AG/2,ay=hy+hh/2;circ(ax,ay,.46,{fill:'FFFFFF',line:G.line,lw:1,name:'箭頭底'});
+  path([[ax-.07,ay-.12],[ax+.07,ay],[ax-.07,ay+.12]],{line:V===3?P:G.t2,lw:2.75,name:'箭頭'});
+  box(X0+CW-.98,hy-.2,.86,.38,{fill:V===2?DARK:P,r:.19,text:'×2',size:14,bold:1,color:'FFFFFF',margin:0,name:'倍數徽章'});
+  // 3) 下半：左＝四個行動（與表格逐列對齊）／右＝原生表格
+  const ty=3.62,hr=.38,rh=.66,nR=4,by=ty+hr;
+  box(X0,by,HALF,nR*rh,{fill:'FFFFFF',line:G.line,lw:.75,r:RAD,sh:'card',force:1,name:'行動清單卡'});
+  txt(X0,ty,HALF,hr,'四項行動',{size:14,bold:1,color:G.t2,valign:'middle',name:'行動標題'});
+  ln(X0,ty+hr,X0+HALF,ty+hr,{c:G.line,w:1});
+  [['鎖客群','抓需求','聚焦高價值客群，停掉低毛利通路'],['升方案','提單價','推出加值方案，客單價 20 → 25 元'],['拓通路','接線上','線上預約＋會員，客戶數 +60%'],['顧回購','養忠誠','回購提醒與專屬服務，回購率翻倍']].forEach(([a,b,ds],i)=>{
+   const y=by+i*rh,h=rh;if(i)ln(X0+.2,y,X0+HALF-.2,y,{c:G.line,w:.75});
+   circ(X0+.32,y+h/2,.34,{fill:DARK,text:String(i+1),size:13,bold:1,color:'FFFFFF',margin:0,name:'編號 '+(i+1)});
+   txt(X0+.62,y+(h-.56)/2,.86,.56,a+'\n'+b,{size:18,bold:1,lsp:.88,margin:0,valign:'middle',align:'left',name:'行動 '+(i+1)});
+   ln(X0+1.58,y+.12,X0+1.58,y+h-.12,{c:G.line,w:.75});
+   txt(X0+1.75,y,HALF-1.9,h,ds,{size:13,color:G.t2,valign:'middle',name:'行動說明 '+(i+1)});});
+  const tx=X0+HALF+GUT,cwT=[HALF*.34,HALF*.33,HALF*.33];const rows=[['指標','As Was','To Be'],['銷售額','2000 元','4000 元'],['客戶數','100 人','160 人'],['客單價','20 元','25 元'],['回購率','15%','30%']];
+  const hdrF=V0===1||V0===4?DARK:mix(G.fill||'F2F2F2',G.line,.4),hdrC=V0===1||V0===4?'FFFFFF':G.ink;
+  table(tx,ty,cwT,[hr,rh,rh,rh,rh],rows.map((r,ri)=>r.map((c,ci)=>{const toBe=ci===2;const o={t:c,size:16,bB:{c:G.line,w:.75}};
+   if(ri===0)Object.assign(o,{fill:toBe&&V!==1?P:hdrF,color:toBe&&V!==1?'FFFFFF':hdrC,bold:1,size:15,bB:null});
+   else if(ci===0)Object.assign(o,{bold:1,color:G.t2,align:'left',fill:mix(G.fill||'F4F4F4','FFFFFF',.5)});
+   else if(toBe)Object.assign(o,{bold:1,color:P,fill:SOFT});else Object.assign(o,{color:G.t2});
+   return o;})),{name:'As Was／To Be 對照表',mL:10});};
  SL.ex1=()=>{title('高效溝通：讓想法被看見','關鍵在於把資訊整理成對方能理解的結構');
   const R=1.3,cy=3.3,cxs=[X0+CW/6,X0+CW/2,X0+CW*5/6];
   [['Why','為何要重視\n溝通品質'],['How','溝通的\n三個關鍵'],['What','呈現的\n三個層次']].forEach(([b,t],i)=>bigCircle(cxs[i],cy,R,b,t));
