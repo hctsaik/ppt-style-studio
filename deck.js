@@ -73,7 +73,7 @@ const LANG_OF={card:{outline:'白底外框',gray:'淺灰實心',soft:'白底無�
  chain:{chev:'漸層 V 形箭號',hex:'六角形鏈',gray:'灰卡＋▶',outline:'細框方塊',hairchev:'空心線框 V 形',home:'五邊形箭號',pill:'膠囊鏈',block:'區塊 V 形'}};
 function langOf(p){return{card:LANG_OF.card[p.card]+(p.card==='outline'?' '+p.cardLW+'pt':'')+(p.sh?'＋陰影':''),tag:LANG_OF.tag[p.tag],badge:LANG_OF.badge[p.badge],sep:LANG_OF.sep[p.sep],
  conn:p.cnW+'pt '+({solid:'實線',sysDot:'點線',sysDash:'虛線',dash:'長虛線'}[p.cnDash]||'')+({triangle:'＋三角箭頭',arrow:'＋開放箭頭',stealth:'＋燕尾箭頭',oval:'＋圓點',none:''}[p.cnHead]||''),chain:LANG_OF.chain[p.chain]};}
-const SLIDES=[['catalog','元件總表'],['patterns','常見組合'],['patterns2','常見組合（二）'],['flex','可調數量'],['rca','原因分析'],['annot','標註'],['icons','圖示庫'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
+const SLIDES=[['catalog','元件總表'],['patterns','常見組合'],['patterns2','常見組合（二）'],['flex','可調數量'],['rca','原因分析'],['annot','標註'],['icons','圖示庫'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['asis','版型｜As Was／To Be'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
 
 /* ---------- 文字寬度估算（Node 端排版檢查用；瀏覽器預覽改用 canvas 實測） ---------- */
 function tw(str,size){let u=0;for(const ch of String(str)){const c=ch.codePointAt(0);
@@ -838,6 +838,27 @@ function buildModel(params,opt){
   colBar(b1,2.85,bwid,3.4);colBar(b2,2.85,bwid,3.4);
   [['階段一','看','練'],['階段二','問','談'],['階段三','想','寫']].forEach(([l,a,b],i)=>{const yy=3.5+i*1.05;txt(CX,yy-.17,.9,.34,l,{size:11,color:G.t2});badge(b1+bwid/2,yy,a,{d:.46,size:13,nodot:1});badge(b2+bwid/2,yy,b,{d:.46,size:13,nodot:1});});};
 
+ /* ---------- 版型｜As Was／To Be（參考法說會簡報版面）：上方三行重點句 20pt → 前後對照兩框 20pt → 左：四個行動方塊 18pt（6 字、兩行、內距 0）／右：原生表格（首列＋首欄為表頭） ---------- */
+ SL.asis=()=>{title('銷售額倍增：As Was → To Be');
+  box(W-1.55,.28,.95,.5,{line:G.line,dash:'dash',text:'LOGO',size:10,color:G.t2,name:'Logo 位置（可換成公司標誌）'});
+  const lines=['鎖定高價值客群，銷售額由 2000 元提升到 4000 元','客戶數與客單價同步成長，回購率翻倍','四項行動依序推進，每月追蹤關鍵指標'];
+  const ly0=1.22,lstep=.46;
+  lines.forEach((t,i)=>{const y=ly0+i*lstep;circ(X0+.09,y+.21,.13,{fill:P,name:'項目符號'});txt(X0+.3,y,CW-.3,.42,t,{size:20,valign:'middle',name:'重點句 '+(i+1)});});
+  const cy=2.72,ch=.96,gw=.3,bw=(CW-gw)/2;
+  [['As Was','銷售額 2000 元',0],['To Be','銷售額 4000 元',1]].forEach(([lab,val,hi],i)=>{const x=X0+i*(bw+gw);
+   box(x,cy,bw,ch,{fill:hi?G.panel||'F7F7F7':'FFFFFF',line:hi?P:G.line,lw:hi?2:1.25,r:.08,text:[{t:lab,b:1,c:P,br:1},{t:val,b:1}],size:20,align:'left',valign:'middle',margin:[14,8,4,4],name:lab+' 對照框'});
+   box(x,cy,.1,ch,{fill:P,name:'強調色條'});});
+  // 箭頭：As Was → To Be
+  tri(X0+bw+.06,cy+ch/2-.12,.18,.24,{fill:P,name:'箭頭'});
+  const by=3.86,bh=.68,bg=.06,aw=1.3,half=(CW-gw)/2;
+  const acts=[['鎖客群','抓需求','聚焦高價值客群，停止低毛利通路'],['升方案','提單價','推出加值方案，客單價 20 → 25 元'],['拓通路','接線上','導入線上預約與會員系統，客戶數 +60%'],['顧回購','養忠誠','回購提醒與專屬服務，回購率 15% → 30%']];
+  acts.forEach(([a,b,desc],i)=>{const y=by+i*(bh+bg);const t=a+'\n'+b;
+   box(X0,y,aw,bh,{fill:i===0?P:G.panel||'F2F2F2',line:i===0?null:G.line,text:t,size:18,bold:1,color:i===0?'FFFFFF':G.ink,margin:0,align:'center',valign:'middle',name:'行動 '+(i+1)});
+   txt(X0+aw+.18,y,half-aw-.18,bh,desc,{size:14,color:G.t2,valign:'middle',name:'行動說明 '+(i+1)});});
+  const tx=X0+half+gw,tw0=half;const cw=[tw0*.36,tw0*.32,tw0*.32];const rh=[.5,.55,.55,.55,.55];
+  const H1={fill:P,color:'FFFFFF',bold:1,size:16},C1={fill:G.panel||'F2F2F2',bold:1,size:16,align:'left'},V={size:16};
+  const data=[['指標','As Was','To Be'],['銷售額','2000 元','4000 元'],['客戶數','100 人','160 人'],['客單價','20 元','25 元'],['回購率','15%','30%']];
+  table(tx,by,cw,rh,data.map((r,ri)=>r.map((c,ci)=>Object.assign({t:c},ri===0?H1:ci===0?C1:Object.assign({},V,ci===2?{bold:1,color:P}:{}),{bB:{c:G.line,w:.75}}))),{name:'As Was／To Be 對照表',mL:8});};
  SL.ex1=()=>{title('高效溝通：讓想法被看見','關鍵在於把資訊整理成對方能理解的結構');
   const R=1.3,cy=3.3,cxs=[X0+CW/6,X0+CW/2,X0+CW*5/6];
   [['Why','為何要重視\n溝通品質'],['How','溝通的\n三個關鍵'],['What','呈現的\n三個層次']].forEach(([b,t],i)=>bigCircle(cxs[i],cy,R,b,t));
