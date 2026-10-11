@@ -78,11 +78,28 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    ok(old.tbLook==='card'&&old.tbCard==='grey'&&old2.tbLook==='clean'&&old3.tbLook==='card','舊外觀（灰底面板／極簡／tbPanel）自動轉成新外觀');
    const tr=D.trayModel([{kind:'table',params:Object.assign({},nav,{tbLook:'panel',tbHiColor:'alert',tbHiMode:'box'}),table:Y,name:'良率（舊快照）'},{kind:'table',params:Object.assign({},nav,{tbLook:'minimal'}),table:{rows:[['a','b'],['1','2']]},name:'極簡'},{kind:'el',params:wine,key:'annot',gi:3,name:'標註'}]);await save('tray-marks.pptx',nav,{model:tr});ok(tr.tray.n===3,'待選素材：舊表格快照（灰底面板／極簡）仍可重建＋標註');}
   // 四個驗收案例（LibreOffice 也會畫）
+  // R3：待選每項一頁、區塊間距、推薦色、檔名、套用上次樣式、標題平衡
+  {const C=require('./table-cases.js');const nv=D.PRESETS[0];
+   const es=['yield','pl','status','stress'].map(k=>({kind:'table',table:C[k],params:nv}));es.push({kind:'el',key:'patterns',gi:0,params:nv});
+   const dk=D.trayDeck(es);ok(dk.slides.length===5&&dk.tray.pages===5&&dk.slides.slice(0,4).every((s,i)=>Math.abs(s.table.tx-D.buildModel(nv,{table:es[i].table}).slides[0].table.tx)<1e-6),'待選：每項一頁（5 頁），表格位置與單張匯出一致');
+   await save('tray-deck.pptx',nv,{model:dk});
+   let gb=[];for(const v of ['top','center'])for(const c of ['yield','pl','status']){const t=D.buildModel(Object.assign({},nv,{tbV:v}),{table:C[c]}).slides[0].table;const u=t.slots.unit,gap=t.ty-(u.y+u.h)-(t.look==='card'?.25:0);const s=t.slots.title;
+     if(Math.abs(t.ty-(s.y+s.h+.3+.35*0+(C[c].unit?0:0)))>.6||gap<.2||gap>.5)gb.push(v+c+' gap'+gap.toFixed(2));if(v==='center'&&Math.abs((s.y-.5)-(7.5-.45-(t.ty+t.tH)-(t.slots.note?0:0)))>1.2)gb.push(v+c+' off');}
+   ok(!gb.length,'標題／單位／表格＝同一區塊（間距 0.2–0.5"），置中時整組移動'+(gb.length?'｜'+gb.join('；'):''));
+   let rb=[];for(const st of D.PRESETS){const t=D.buildModel(st,{table:Object.assign({},C.pl,{his:[{type:'col',i:1,kind:'rec'},{type:'col',i:2,kind:'focus'},{type:'row',i:3,kind:'warn'}]})}).slides[0].table;const [r,f,w]=t.his.map(h=>h.C);if(r===f||r===w||D.contrastOf(r,'FFFFFF')<3)rb.push(st.id);}
+   ok(!rb.length,'推薦色：9 風格都跟重點／警告不同色、白底對比 ≥ 3:1'+(rb.length?'｜'+rb.join():''));
+   const lg=D.buildModel(nv,{table:Object.assign({},C.pl,{his:[{type:'col',i:1,kind:'rec'},{type:'col',i:2}]})}).slides[0].items.find(i=>i.name==='圖例');ok(lg&&/推薦/.test(D.textOf(lg))&&/重點/.test(D.textOf(lg)),'兩種以上意義 → 註腳列有圖例');
+   const fn=D.shortName('3Q25 稅後淨利 452.3，QoQ +13.6%、YoY +39.0%');ok([...fn].length<=20&&!/[，、%+\s]/.test(fn),'檔名：去標點、≤ 20 字（'+fn+'）');
+   const prev=Object.assign({},C.yield,{keep:true,rules:[{c:2,op:'<',v:90,tone:'warn',style:'text'}],his:[{type:'col',i:2,kind:'rec'}],unit:'U',note:'N'});
+   const nx=D.tableFromPaste([['Lot','Yield%','Station'],['B1','80%','CMP']],prev);ok(nx.rules.length===1&&nx.rules[0].c===1&&nx.his[0].i===1&&nx.unit==='U','套用上次樣式：依欄名帶入門檻／重點／單位');
+   ok(!D.tableFromPaste([['Lot','Yield%'],['B1','80%']],Object.assign({},prev,{keep:false})).rules.length,'未勾選套用上次樣式：照常重設');
+   const lt=D.buildModel(nv,{table:Object.assign({},C.pl,{title:'3Q25 稅後淨利 452.3 億元，QoQ +13.6%、YoY +39.0%，營收與毛利率雙雙創下歷史新高，第四季展望持續樂觀'})}).slides[0].items.find(i=>i.name==='表格標題');const tl=D.textOf(lt).split('\n');
+   ok(tl.length===2&&lt.tx.size<=20&&Math.abs(D.tw(tl[0],20)-D.tw(tl[1],20))<=D.tw(tl[0],20)*.35&&!/[0-9.%]$/.test(tl[0])||tl.length===1,'長標題：降到 20pt 並平衡斷成兩行（寬 '+tl.map(x=>D.tw(x,20).toFixed(1)).join('/')+'"）');}
   {const C=require('./table-cases.js');const nv=D.PRESETS[0];const tb=(p,T)=>{const m=D.buildModel(Object.assign({},nv,p),{table:T});return {m,t:m.slides[0].table};};
    // 意義：重點／推薦＝強調色、警告＝紅；換外觀不變
    const T1=Object.assign({},C.yield,{his:[{type:'col',i:1,kind:'rec'},{type:'row',i:2,kind:'warn'},{type:'cell',r:3,c:3,kind:'focus'}]});let bad=0;
-   for(const lk of ['clean','band','card','zebra'])for(const hs of ['fill','box','bold']){const {t}=tb({tbLook:lk},Object.assign({},T1,{hiStyle:hs}));const h=t.his;if(!(h[0].C===h[2].C&&h[1].C!==h[0].C&&h[0].kind==='rec'))bad++;}
-   ok(!bad,'表格：推薦/重點＝強調色、警告＝紅，4 外觀 × 3 樣式都保持');
+   for(const lk of ['clean','band','card','zebra'])for(const hs of ['fill','box','bold']){const {t}=tb({tbLook:lk},Object.assign({},T1,{hiStyle:hs}));const h=t.his;if(!(h[0].C!==h[2].C&&h[1].C!==h[0].C&&h[1].C!==h[2].C&&h[0].kind==='rec'))bad++;}
+   ok(!bad,'表格：重點＝強調色、推薦＝綠/青、警告＝紅，4 外觀 × 3 樣式都保持');
    // 密度：字級、列高、邊距各自變
    const den=['comfy','normal','dense'].map(v=>tb({tbDense:v,tbLook:'clean'},C.status).t);
    ok(den[0].fs>den[1].fs&&den[1].fs>den[2].fs&&den[0].rowH[1]>den[2].rowH[1]&&den[0].rowH[1]/den[2].rowH[1]!==den[0].fs/den[2].fs,'表格：密度 舒適>標準>密集（字級、列高非等比）');
