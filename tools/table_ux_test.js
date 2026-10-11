@@ -19,7 +19,7 @@ const ov=(a,b)=>!(a.right<=b.left+1||a.left>=b.right-1||a.bottom<=b.top+1||a.top
  ck('設為表頭 offered for first column',await pg.evaluate(()=>!!document.querySelector('#tSelPanel button[data-a="hcol"]')));await pg.click('#tSelPanel button[data-a="hcol"]');await sl(500);
  ck('first column header toggle synced',await pg.evaluate(()=>document.querySelector('#tHCol').checked));
  await pg.keyboard.press('Escape');await sl(200);
- for(const t of ['data','look','hi','fmt']){await pg.click(`.tinsTabs button[data-t="${t}"]`);await sl(300);await pg.screenshot({path:`${OUT}/tbl-ux-panel-${t}.png`});}
+ for(const t of ['data','look','hi']){await pg.click(`.tinsTabs button[data-t="${t}"]`);await sl(300);await pg.screenshot({path:`${OUT}/tbl-ux-panel-${t}.png`});}
  ck('panel has no duplicate selection controls',await pg.evaluate(()=>!document.querySelector('#tSelPanel button')));
  ck('font default 微軟正黑體',await pg.evaluate(()=>document.querySelector('[data-tp="tbFont"] button[aria-pressed="true"]').dataset.v)==='jh');
  await pg.click('.tinsTabs button[data-t="look"]');await sl(300);ck('儲存格邊界 only once, in ②外觀',await pg.evaluate(()=>document.querySelectorAll('[data-tp="tbPad"]').length===1&&!!document.querySelector('.tsec[data-sec="look"] [data-tp="tbPad"]')));

@@ -49,7 +49,7 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
   // inspector sections
   await pg.click('.tsteps .stp[data-go="look"]');await sleep(500);await pg.screenshot({path:`${OUT}/d-insp-look.png`});
   await pg.click('.tsteps .stp[data-go="hi"]');await sleep(300);await pg.screenshot({path:`${OUT}/d-insp-hi.png`});
-  await pg.click('.tinsTabs button[data-t="fmt"]');await sleep(300);await pg.screenshot({path:`${OUT}/d-insp-fmt.png`});
+  ck('R10: only 3 tabs/steps (no ④格式)',await pg.evaluate(()=>document.querySelectorAll('.tinsTabs button').length===3&&document.querySelectorAll('.tsteps .stp').length===3&&!document.querySelector('[data-sec="fmt"]')&&!!document.querySelector('.tsec[data-sec="look"] #tCwReset')));
   // paste P&L -> reset title/rules/his ; period col highlighted
   await paste(pg,PL);await sleep(800);const t=await pg.evaluate(()=>window.__studio.table);
   ck('paste resets title/unit/note/rules',t.title===''&&t.unit===''&&t.note===''&&t.rules.length===0);

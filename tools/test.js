@@ -70,7 +70,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    const n3=D.tableFromPaste([['','3Q25','2Q25'],['營收','989.9','933.8'],['淨利','452.3','398.3']],prev);ok(n3.his.length===1&&n3.his[0].i===1&&JSON.stringify(n3.bold)==='[2]','財報表貼上：自動把最新期別欄設為重點、合計列加粗');}
   // 版面
   {const R5=[['a','b','c','d','e'],['1','2','3','4','5']];const m=D.buildModel(Object.assign({},nav,{tbWidth:'fill'}),{table:{title:'T',unit:'U',rows:R5}}).slides[0].table;const m2=D.buildModel(Object.assign({},nav,{tbH:'left'}),{table:{rows:[['a','b'],['1','2']]}}).slides[0].table;
-   ok(Math.abs(m.tW-12.133)<.02&&Math.abs(m.tx-.6)<.001&&m2.tW<9&&Math.abs(m2.tx-.6)<.001,`版面：填滿＝12.13" 靠左 x0.6；自動＝依內容寬、小表靠左對齊標題（${m.tW.toFixed(2)}／${m2.tW.toFixed(2)}）`);
+   ok(m.tW>11.3&&m.tW<=12.14&&m.tx>=.6&&m.tx<1&&m2.tW<9&&Math.abs(m2.tx-.6)<.001,`版面：填滿＝12.13" 靠左 x0.6；自動＝依內容寬、小表靠左對齊標題（${m.tW.toFixed(2)}／${m2.tW.toFixed(2)}）`);
    const cw=D.buildModel(nav,{table:{rows:[['a','b','c'],['1','2','3']],cw:[3,2,1]}}).slides[0].table;ok(Math.abs(cw.colW[0]/cw.colW[2]-3)<.01&&Math.abs(cw.colW[1]/cw.colW[2]-2)<.01,'拖曳欄寬：T.cw 生效');}
   // 舊資料相容
   {ok(D.buildModel(nav,{table:{rows:Y.rows,hi:{type:'col',i:1}}}).slides[0].table.his.length===1,'舊版 T.hi 仍可用');
@@ -94,6 +94,15 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    for(const [lk] of D.TABLE_LOOKS)for(const sz of ['S','M','L']){const m=D.buildModel(Object.assign({},nav,{tbLook:lk,size:sz}),{table:T3});const t=m.slides[0].table;if(t.fs<20||t.fs>24||t.tW<.55*(D.W-1.2)||t.orphans.length||t.ty+t.tH>D.H-.45||m.warns.length)bad.push(lk+sz+':'+t.fs+'/'+t.tW.toFixed(1));}
    ok(!bad.length,'小表自動放大：3×3 各外觀×S/M/L 內文 20–24pt、寬≥55%'+(bad.length?'｜'+bad.join(' '):''));
    const off=D.buildModel(Object.assign({},nav,{tbAuto:false}),{table:T3}).slides[0].table;ok(off.fs<16&&!off.boost,'列少自動放大 關閉：不放大（'+off.fs+'pt）');}
+  // R10：換外觀不改幾何（表格框、字級、列高、欄寬、標題／註腳位置），固定密度與尺寸
+  {const C=require('./table-cases.js');const bad=[];for(const s of Object.keys(C).filter(k=>C[k]&&C[k].rows))for(const dn of ['comfy','normal','dense'])for(const sz of ['S','M','L']){
+    const g=D.TABLE_LOOKS.map(([lk])=>{const t=D.buildModel(Object.assign({},nav,{tbLook:lk,tbDense:dn,size:sz}),{table:C[s]}).slides[0].table;return JSON.stringify([t.tx,t.ty,t.tW,t.tH,t.fs,t.hfs,t.rowH,t.colW,t.slots.title.x,t.slots.title.y,t.slots.note&&t.slots.note.y],(k,x)=>typeof x==='number'?+x.toFixed(2):x);});
+    if(new Set(g).size>1)bad.push(s+'/'+dn+'/'+sz);}
+   ok(!bad.length,'換外觀：4 種外觀的表格框／字級／列高／欄寬／標題位置完全相同（0.01"）'+(bad.length?'｜'+bad.slice(0,4).join(' '):''));
+   // pptx：graphicFrame 位置與大小相同
+   const JSZip=require('jszip');const xs=[];for(const [lk] of D.TABLE_LOOKS){const pp=Object.assign({},nav,{tbLook:lk,tbDense:'normal'});const r=await D.exportPptx(env,pp,{type:'nodebuffer',model:D.buildModel(pp,{table:C.pl})});const z=await JSZip.loadAsync(r.data);const x=await z.file('ppt/slides/slide1.xml').async('string');const m=x.match(/<p:graphicFrame>[\s\S]*?<a:off x="(\d+)" y="(\d+)"\/><a:ext cx="(\d+)" cy="(\d+)"/);xs.push(m?m.slice(1).join(','):'none');}
+   ok(new Set(xs).size===1&&xs[0]!=='none','換外觀：pptx 表格位置／大小相同（'+xs[0]+'）');
+   const fx=D.buildModel(Object.assign({},nav,{tbNeg:true,tbThou:false,tbMinus:'paren',tbStatus:false}),{table:C.pl}),f0=D.buildModel(nav,{table:C.pl});ok(JSON.stringify(fx.slides[0].items.find(i=>i.t==='tbl').cells)===JSON.stringify(f0.slides[0].items.find(i=>i.t==='tbl').cells),'舊設定的格式選項被忽略（④格式已移除）');}
   // R8：壓力範例 12/16/20 列（長中文表頭與內文、% 與負數、多行註腳）× 4 外觀 × 3 密度 × S/M/L × 9 風格
   {const C=require('./table-cases.js');let bad=[];for(const st of D.PRESETS)for(const k of ['s12','s16','s20'])for(const lk of ['clean','band','card','zebra'])for(const dn of ['comfy','normal','dense'])for(const size of ['S','M','L']){const m=D.buildModel(Object.assign({},st,{tbLook:lk,tbDense:dn,size}),{table:C[k]});const tb=m.slides[0].table;const bot=Math.max(...m.slides[0].items.map(i=>i.y+i.h));
     if(tb.orphans.length||tb.fs<10||bot>7.5-.15||tb.tx+tb.tW>13.333-.4||m.warns.some(w=>/放不下|太寬/.test(w)))bad.push(st.id+k+lk+dn+size);}

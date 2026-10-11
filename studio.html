@@ -437,8 +437,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
     <div class="tsteps" role="navigation" aria-label="表格步驟">
      <button class="stp" data-go="data"><i>1</i>資料</button><span class="arr">›</span>
      <button class="stp" data-go="look"><i>2</i>外觀</button><span class="arr">›</span>
-     <button class="stp" data-go="hi"><i>3</i>重點</button><span class="arr">›</span>
-     <button class="stp" data-go="fmt"><i>4</i>格式</button>
+     <button class="stp" data-go="hi"><i>3</i>重點</button>
      <span class="tauto" id="tAuto" aria-live="polite"></span>
      <button class="btn tub" id="tUndo" title="復原（Ctrl+Z）" aria-label="復原" disabled>↶</button><button class="btn tub" id="tRedo" title="重做（Ctrl+Shift+Z／Ctrl+Y）" aria-label="重做" disabled>↷</button>
      <button class="btn tub pri2" id="tPasteTop" title="讀取剪貼簿裡的 Excel 表格">📋 <span class="lgt">從剪貼簿</span>貼上</button>
@@ -451,7 +450,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
       <div class="tlegend" id="tLegend" aria-label="圖例與重點清單"></div><div class="tcwtip" id="tCwTip" hidden></div>
      </div>
      <div class="tins" id="tIns" aria-label="表格設定">
-      <div class="tinsTabs" role="tablist"><button data-t="data" aria-pressed="true">① 資料</button><button data-t="look" aria-pressed="false">② 外觀</button><button data-t="hi" aria-pressed="false">③ 重點</button><button data-t="fmt" aria-pressed="false">④ 格式</button></div>
+      <div class="tinsTabs" role="tablist"><button data-t="data" aria-pressed="true">① 資料</button><button data-t="look" aria-pressed="false">② 外觀</button><button data-t="hi" aria-pressed="false">③ 重點</button></div>
       <div class="tsecs">
        <section class="tsec on" data-sec="data"><h3><i>1</i>資料</h3>
         <div class="trow"><button class="btn" id="tPasteBtn" title="讀取剪貼簿（或直接在這一頁按 Ctrl+V）">📋 貼上</button>
@@ -474,7 +473,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
         <div class="trow"><label>風格</label><select id="tStyle" aria-label="風格（顏色、字型）"></select></div>
         <div class="trow"><label>尺寸</label><span class="tseg" data-tp="size"><button data-v="S">S</button><button data-v="M">M</button><button data-v="L">L</button></span><label class="ttg"><input type="checkbox" data-tk="tbAuto"> 列少自動放大</label></div>
         <div class="trow"><label>密度</label><span class="tseg" data-tp="tbDense"><button data-v="comfy">舒適</button><button data-v="normal">標準</button><button data-v="dense">密集</button></span></div>
-        <div class="trow"><label>寬度</label><span class="tseg" data-tp="tbWidth"><button data-v="auto">自動</button><button data-v="fill">填滿</button><button data-v="compact">緊湊</button></span></div>
+        <div class="trow"><label>寬度</label><span class="tseg" data-tp="tbWidth"><button data-v="auto">自動</button><button data-v="fill">填滿</button><button data-v="compact">緊湊</button></span><button class="btn" id="tCwReset" title="清除拖曳過的欄寬，回到自動">欄寬重設</button></div>
         <div class="trow"><label title="文字和格線之間的空白">儲存格邊界</label><span class="tseg" data-tp="tbPad"><button data-v="none" title="內距 0：最省空間">無</button><button data-v="s">小</button><button data-v="m">中</button><button data-v="l">大</button></span></div>
         <div class="trow"><label>上下</label><span class="tseg" data-tp="tbV"><button data-v="center">置中</button><button data-v="top">置頂</button></span></div>
         <div class="trow"><label>左右</label><span class="tseg" data-tp="tbH"><button data-v="center">置中</button><button data-v="left">置左</button></span></div>
@@ -488,14 +487,6 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
         <h4 class="tgh">圖例與樣式</h4><div class="trow tlgl"><label title="投影片上圖例顯示的文字">圖例文字</label><input id="tLgF" maxlength="12" placeholder="重點" aria-label="重點的圖例文字"><input id="tLgR" maxlength="12" placeholder="推薦" aria-label="推薦的圖例文字"><input id="tLgW" maxlength="12" placeholder="警告" aria-label="警告的圖例文字"></div>
         <div class="trow"><label>重點樣式</label><span class="tseg" id="tHiStyle"><button data-v="fill">淡底</button><button data-v="box">框起來</button><button data-v="bold">粗體字</button></span></div>
         <div class="rul" id="tRules" hidden></div>
-       </section>
-       <section class="tsec" data-sec="fmt"><h3><i>4</i>格式</h3>
-        <div class="trow"><label>負數</label><span class="tseg" data-tp="tbMinus"><button data-v="auto">同原始</button><button data-v="minus">−1.9</button><button data-v="hyphen">-1.9</button><button data-v="paren">(1.9)</button></span></div>
-        <div class="trow"><label></label><label class="ttg"><input type="checkbox" data-tk="tbNeg"> 負數紅字</label></div>
-        <div class="trow"><label>千分位</label><label class="ttg"><input type="checkbox" data-tk="tbThou"> 1,234</label></div>
-        <div class="trow"><label>狀態字</label><label class="ttg"><input type="checkbox" data-tk="tbStatus"> 上色（綠＝完成、黃＝進行、紅＝風險）</label></div>
-        <div class="trow"><label>欄寬</label><span class="hint" style="margin:0;flex:1">拖曳表格上的欄線調整</span><button class="btn" id="tCwReset">重設</button></div>
-        <div class="hint">對齊、重點：點表格任一格，在「③ 重點」調整。</div>
        </section>
       </div>
       <div class="tout" id="tOut" data-sec="out">
@@ -536,7 +527,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 <script src="jszip.min.js?v=978d62b5"></script>
 <script src="pptxgen.min.js?v=24808c08"></script>
 <script src="icons.js?v=f4423941"></script>
-<script src="deck.js?v=e4616966"></script>
+<script src="deck.js?v=a5052e40"></script>
 <script>
 (function(){
  'use strict';
@@ -1094,7 +1085,7 @@ function syncTableUI(){fixT();renderGrid();renderTableOpts();}
 function renderTableOpts(){const hv=T.header==null||T.header==='auto'?'auto':T.header?'1':'0';
  $('#tHead').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===hv)));$('#tLast').checked=!!T.lastTotal;{const tb0=TM&&TM.slides[0]&&TM.slides[0].table;if(tb0)$('#tHRow').checked=tb0.h0>0;$('#tHCol').checked=!!T.hcol;$('#tPinC').checked=!!T.pin;}
  if(S.p.tbFont==='noto')S.p.tbFont='jh';/* Noto 選項已移除 → 微軟正黑體 */
- document.querySelectorAll('[data-tp]').forEach(el=>{const k=el.dataset.tp;const v=String((k==='tbDense'&&(S.p[k]==='auto'||S.p[k]==='compact')?(S.p[k]==='compact'?'dense':''):S.p[k])||({tbCard:'white',size:'M',tbMinus:'auto',tbWidth:'auto',tbV:'center',tbH:'center',tbFont:'jh',tbPad:'m',tbDense:lookOf(S.p)==='zebra'?'dense':'normal'})[k]);el.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));});
+ document.querySelectorAll('[data-tp]').forEach(el=>{const k=el.dataset.tp;const v=String((k==='tbDense'&&(S.p[k]==='auto'||S.p[k]==='compact')?(S.p[k]==='compact'?'dense':''):S.p[k])||({tbCard:'white',size:'M',tbMinus:'auto',tbWidth:'auto',tbV:'center',tbH:'center',tbFont:'jh',tbPad:'m',tbDense:'normal'})[k]);el.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));});
  document.querySelectorAll('[data-tk]').forEach(el=>{const k=el.dataset.tk;el.checked=k==='tbNeg'||k==='tbTight'?!!S.p[k]:S.p[k]!==false;});
  $('#tCardRow').hidden=lookOf(S.p)!=='card';
  const ss=$('#tStyle');if(!ss.options.length)ss.innerHTML=D.PRESETS.map(p=>`<option value="${p.id}">${escH(p.zh)}</option>`).join('');ss.value=S.base;}

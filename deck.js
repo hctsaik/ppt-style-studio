@@ -945,13 +945,14 @@ function buildModel(params,opt){
     重點只用一種強調色（紅色只留給警示／條件），不疊色；文字對底色自動加深到 4.5:1。預覽、匯出、HTML 複製共用這份 model。 */
  function hueOf(x){const [r,g,b]=[0,2,4].map(i=>parseInt(x.slice(i,i+2),16)/255);const mx=Math.max(r,g,b),mn=Math.min(r,g,b),dd=mx-mn;if(!dd)return -1;let h=mx===r?((g-b)/dd)%6:mx===g?(b-r)/dd+2:(r-g)/dd+4;return (h*60+360)%360;}
 function hueD(a,b){const x=hueOf(a),y=hueOf(b);if(x<0||y<0)return 90;const d=Math.abs(x-y);return Math.min(d,360-d);}
+function stO_(){return st;}
 // 小表自動放大（列少自動放大 tbAuto）：表格太小時把字級／列高／欄寬一起放大，直到約佔內容寬 62% 或高度用完（內文最多 24pt）
 function userTable(T,k){const n0=cur.items.length,w0=warns.length;userTable0(T,k,1);if(st.tbAuto===false||!cur.table||(Array.isArray(T.cw)&&T.cw.length)||st.tbDense==='dense'||st.tbDense==='compact')return;   /* 手動拉過欄寬就不自動放大 */
   const CW=W-1.2,fits=t=>t.ty+t.tH+(t.slots.note?t.slots.note.h+.1:0)<=H-.45&&t.tW<=CW+.01;let best=1;
   for(let b=1.1;b<=2.6;b=+(b+.1).toFixed(2)){const prev=cur.table;const FCAP={comfy:24,dense:20}[st.tbDense]||22;if(prev.fs>=FCAP||(prev.tW>=.62*CW&&prev.tH>=.45*(H-1.5)))break;cur.items.length=n0;warns.length=w0;userTable0(T,k,b);const t=cur.table;
    if(!fits(t)||t.fs>FCAP+.01||t.orphans.length>prev.orphans.length){cur.items.length=n0;warns.length=w0;userTable0(T,k,best);break;}best=b;}
   cur.table.boost=best;}
-function userTable0(T,k,boost){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==null?'':c).trim()!==''));if(!raw.length)return;
+function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==null?'':c).trim()!==''));if(!raw.length)return;
   const nC=Math.max(...raw.map(r=>r.length));const src=raw.map(r=>{const a=r.map(c=>String(c==null?'':c).replace(/\r/g,'').trim());while(a.length<nC)a.push('');return a;});
   let AU=tableAuto(src,T);const head=T.header==null||T.header==='auto'?AU.head:!!T.header,h0=head?1:0;
   const MAXR=25;if(src.length-h0>MAXR){const n=src.length-h0;src.length=h0+MAXR;AU=tableAuto(src,T);warn('表格列數過多',`共 ${n} 列，只放前 ${MAXR} 列；請拆成多張表或先摘要`);}
@@ -973,9 +974,9 @@ function userTable0(T,k,boost){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>Str
   if(lookId==='band'&&hiStyle==='box')hiStyle='fill';   // 主色表頭：重點＝表頭填強調色＋內文 6% 淡底，不再疊外框（避免壓在表頭色帶與合計底色上）
   // 密度：舒適／標準／密集＝字級、列高、左右邊距各自調整（不是等比縮放）；斑馬外觀預設密集
   const DEN={comfy:{fs:14,hfs:12,rh:.48,hh:.48,pad:12},normal:{fs:13,hfs:11,rh:.34,hh:.38,pad:9},dense:{fs:11.5,hfs:10.5,rh:.28,hh:.32,pad:7}};
-  const dn=DEN[st.tbDense==='compact'?'dense':st.tbDense]&&st.tbDense!=='normal'?DEN[st.tbDense==='compact'?'dense':st.tbDense]:(LK.dense?DEN.dense:DEN.normal);
+  const dn=DEN[st.tbDense==='compact'?'dense':st.tbDense]&&st.tbDense!=='normal'?DEN[st.tbDense==='compact'?'dense':st.tbDense]:DEN.normal;   /* 密度與外觀脫鉤：斑馬不再強制密集 */
   let fs=Math.max(10,sz(dn.fs)),hfs=Math.max(9.5,sz(dn.hfs));const tfs=sz(24),ufs=sz(12),nfs=sz(10);   // 內文最小 10ptconst tfs=sz(24),ufs=sz(12),nfs=sz(10);
-  let rh=dn.rh*k,hh=Math.max(dn.hh,lookId==='band'?dn.hh+.02:0)*k;
+  let rh=dn.rh*k,hh=dn.hh*k;   /* 表頭高不隨外觀改變 */
   // 儲存格邊界：無／小／中（預設）／大
   const PADM={none:0,s:.5,m:1,l:1.7}[st.tbPad]??1;let padH=dn.pad*k*PADM;const padL0=LK.padL0?0:padH;
   const ST={good:GOOD,prog:'B7791F',risk:BAD,mark:P,weak:G.mute};
@@ -996,7 +997,7 @@ function userTable0(T,k,boost){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>Str
   // 欄寬：數字欄＝內容＋18pt、同寬；第一欄吸收剩餘；單欄最多 45%
   const isNumFont=(ri,c)=>ri>=h0&&AU.numC[c]&&!AU.section[ri];
   const measureW=(t,size,b)=>Math.max(...String(t).split('\n').map(l=>tw(l,size)*(b?1.08:1)));
-  const padOf=c=>(c===0?padL0:padH)+padH;
+  const padOf=c=>padH+padH;   /* 欄寬不隨外觀改變（細線／卡片首欄靠齊只改內距，不改欄寬） */
   // 中英混排寬度（含 PowerPoint／LibreOffice 的中英自動間距）
   const mw=(l,size,b)=>{l=String(l);const tr=st.tbTight?0:(l.match(/[\u3400-\u9fff][A-Za-z0-9]|[A-Za-z0-9][\u3400-\u9fff]/g)||[]).length;const mx=/[\u3400-\u9fff]/.test(l)&&/[A-Za-z0-9]/.test(l)?1.15:1.06;return tw(l,size)*(b?1.08:1)*mx+tr*size*.25/72;};
   // 語意斷行：優先在 ：/:/空白/（ 前/中英交界 斷；每行都放得下、不留 1–2 字孤行
@@ -1016,7 +1017,7 @@ function userTable0(T,k,boost){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>Str
    return m+Math.max(18*k,padOf(c))/72+.06*k;});
   const numIdx=colW.map((_,c)=>c).filter(c=>c>0&&AU.numC[c]);
   if(numIdx.length>=2){const m=Math.max(...numIdx.map(c=>colW[c]));numIdx.forEach(c=>colW[c]=m);}
-  let X=.6;const maxW=W-2*X-(LK.card?.5*k:0);
+  let X=.6;const GC=1;/* 版面幾何一律預留卡片外框，換外觀時表格大小與位置不變 */const maxW=W-2*X-(GC?.36*k:0);
   const wMode=['fill','compact'].includes(st.tbWidth)?st.tbWidth:'auto';
   const sum0=colW.reduce((a,b)=>a+b,0);
   // 自動：內容寬＋依欄數給一個舒服的最小寬（2 欄 4.5"、≤4 欄 6"、≤6 欄 7.5"、更多 10"），多出來的給第一欄（最多 36%；填滿 45%），再給文字欄；數字欄維持內容寬、靠在一起
@@ -1061,14 +1062,14 @@ function userTable0(T,k,boost){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>Str
   let tW=colW.reduce((a,b)=>a+b,0);
   const hasTop=true;   // 標題區固定保留（投影片順序一致；studio 畫布上可直接點來輸入）
   // 標題：一行放不下→先降到 20pt，還不行就平衡斷成兩行（在標點／空白處、靠近中間）
-  let tfsT=sz(24),ttl=String(T.title||'');const TWm=Math.min(maxW,Math.max(tW,6.5))+(LK.card?.5*k:0);/* 標題寬＝max(表寬,6.5)，再長就換行 */
+  let tfsT=sz(24),ttl=String(T.title||'');const TWm=Math.min(maxW,Math.max(tW,6.5));/* 標題寬＝max(表寬,6.5)，再長就換行 */
   if(ttl&&tw(ttl,tfsT)*1.05>TWm){tfsT=Math.min(sz(24),20);if(tw(ttl,tfsT)*1.05>TWm&&!/\n/.test(ttl)){const L=[...ttl];let best=-1,bs=1e9;for(let i=3;i<L.length-3;i++){const pre=L.slice(0,i).join(''),cost=Math.abs(tw(pre,tfsT)-tw(L.slice(i).join(''),tfsT))*(/[，、；：,;:\s）)]/.test(L[i-1])?.4:1)*(/[0-9A-Za-z.%+\-]/.test(L[i-1])&&/[0-9A-Za-z.%+\-]/.test(L[i])?6:1);if(cost<bs){bs=cost;best=i;}}if(best>0)ttl=L.slice(0,best).join('').replace(/\s+$/,'')+'\n'+L.slice(best).join('').replace(/^\s+/,'');}}
   const tLines=ttl?ttl.split('\n').length:1;
   const titH=Math.max(.5*k,tLines*tfsT*1.22/72+.06),unitH=T.unit?.3*k:0;const noteN=T.note?lines(T.note):0,noteH=noteN?noteN*nfs*1.35/72+.1*k:0;
   // 很長的表：先縮卡片內距與標題間距，再縮字
-  const est=rowH.reduce((a,b)=>a+b,0);const tall=est>H-.45-(.5+titH+(T.unit?unitH:.04)+.35)-noteH-(LK.card?.5*k:0)-.02;
+  const est=rowH.reduce((a,b)=>a+b,0);const tall=est>H-.45-(.5+titH+(T.unit?unitH:.04)+.35)-noteH-(GC?.5*k:0)-.02;
   if(tall)mpad=2/72;   // 很長的表：列內上下留白縮到 0.5pt
-  const frame=LK.card?(tall?.08:.25*k):0;
+  const frame=GC?(tall?.08:.18*k):0;
   const GAP=tall?.22:.35;const TOP=tall?.3:.5;const ty0=hasTop?TOP+titH+(T.unit?unitH:.04)+GAP:.6;   // 標題／單位／表格／註腳＝一個區塊，間距 0.35"
   let tH=rowH.reduce((a,b)=>a+b,0);const avail=H-(tall?.25:.45)-ty0-noteH-2*frame;
   // 太高而且還沒滿版：先把寬度給文字欄（少換行），再考慮縮字
@@ -1089,14 +1090,14 @@ function userTable0(T,k,boost){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>Str
    if(tH>avail+.01)warn('表格太高',`內文已縮到 10pt 仍放不下（約超出 ${(tH-avail).toFixed(1)} 吋）；請減少列數或拆成多張表`);else if(fs<fs0)warn('表格較長',`已自動縮小列高與字級（內文 ${fs}pt）放進一頁`);}
   const vMode=st.tbV==='top'?'top':'center';
   // 水平：置中（預設）＝整個區塊（表格與標題取較寬者）置中；置左＝對齊左邊界
-  if(st.tbH!=='left'){const tWid=ttl?Math.max(...ttl.split('\n').map(l=>tw(l,tfsT)*1.05)):0;const bw=Math.min(maxW,Math.max(tW,tWid));X=Math.max(.6+(LK.card?.25*k:0),(W-bw)/2);}
+  if(st.tbH!=='left'){const tWid=ttl?Math.max(...ttl.split('\n').map(l=>tw(l,tfsT)*1.05)):0;const bw=Math.min(maxW,Math.max(tW,tWid));X=Math.max(.6+(GC?.18*k:0),(W-bw)/2);}
   const tx=X;   // 卡片外擴：表格文字與標題同一條左邊線
-  const blockH=tH+2*frame+(noteH?noteH+.11*k:0);const off=vMode==='center'?Math.max(0,(H-.45-ty0-blockH)*.38):0;/* 視覺錨點：上方留白 38% */const Y0=TOP+off;
+  const blockH=tH+frame+(noteH?noteH+.11*k:0);const off=vMode==='center'?Math.max(0,(H-.45-ty0-blockH)*.38):0;/* 視覺錨點：上方留白 38% */const Y0=TOP+off;
   const TWs=W-.6-X;const slots={title:{x:X,y:Y0,w:Math.min(TWs,Math.max(tW,TWm)),h:titH,size:tfsT,font:(st.tbFont==='jh'||st.tbFont==='noto')?'Microsoft JhengHei':st.tFont,color:G.ink,bold:1},unit:{x:X,y:Y0+titH+.02,w:Math.max(tW,8),h:.27*k,size:ufs,color:G.t2}};
   if(T.title)txt(X,Y0,Math.min(TWs,Math.max(tW,TWm)),titH,ttl,{size:tfsT,bold:1,color:G.ink,font:slots.title.font,name:'表格標題',valign:'bottom'});
   if(T.unit)txt(X,slots.unit.y,Math.max(tW,6),slots.unit.h,T.unit,{size:ufs,color:G.t2,name:'單位',valign:'top'});
-  const fy=ty0+off;const ty=fy+frame;
-  if(LK.card){const o=grey?{fill:G.fill,r:.14*k,name:'灰色底板'}:{fill:'FFFFFF',line:G.line,lw:.75*k,r:.14*k,sh:'card',force:1,name:'卡片'};box(X-frame,fy,tW+2*frame,tH+2*frame,o);}
+  const fy=ty0+off;const ty=fy;   /* 卡片外框畫在表格外圍，不推移表格 */
+  if(LK.card){const o=grey?{fill:G.fill,r:.14*k,name:'灰色底板'}:{fill:'FFFFFF',line:G.line,lw:.75*k,r:.14*k,sh:'card',force:1,name:'卡片'};box(X-frame,ty-frame,tW+2*frame,tH+2*frame,o);}
   const bw=b=>b?{c:b.c,w:Math.max(.25,Math.round(b.w*k*4)/4)}:null;
   // 對比：文字對底色至少 4.5:1，不夠就加深
   const cc=(fg,bg)=>ensureContrast(fg,bg||'FFFFFF',4.5);
@@ -1161,7 +1162,9 @@ function userTable0(T,k,boost){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>Str
 /* ---------- S／M／L 元件尺寸（v5.2）：整頁幾何、字級、線寬、陰影一起等比縮放，投影片也同比例（仍是 16:9）。
    所以每一頁都放得下；把元件複製到標準 13.33×7.5 吋簡報時，實際大小就是 ×0.8／×1／×1.25。 ---------- */
 /* ---------- 表格：自動判斷（R1）——表頭、數字欄、狀態欄、小節列、合計列；外觀；數字格式；建議（重點欄、門檻） ---------- */
-const TABLE_LOOKS=[['clean','細線'],['band','主色表頭'],['card','卡片'],['zebra','斑馬密集']];
+const TABLE_LOOKS=[['clean','細線'],['band','主色表頭'],['card','卡片'],['zebra','斑馬']];
+/* ④格式 已移除：數字格式固定為 同原始負號、負數不標紅、千分位、狀態字上色（舊設定的其他值直接忽略） */
+function TBL_FIXED(s){return Object.assign({},s,{tbMinus:'auto',tbNeg:false,tbThou:true,tbStatus:true});}
 const TABLE_LOOK_ALIAS={minimal:'clean',panel:'card'};
 const tableLookOf=p=>{const v=TABLE_LOOK_ALIAS[p.tbLook]||p.tbLook;return TABLE_LOOKS.some(l=>l[0]===v)?v:(p.tbPanel?'card':'clean');};
 const tableNumFont=nf=>!nf||/Georgia|Times|Cambria|Garamond|Palatino|Book|serif|明體|Mincho|Song|宋/i.test(nf)?'Arial':nf;
