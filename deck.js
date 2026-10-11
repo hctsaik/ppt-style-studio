@@ -859,15 +859,15 @@ function buildModel(params,opt){
   box(X0+CW-.98,hy-.2,.86,.38,{fill:V===2?DARK:P,r:.19,text:'×2',size:14,bold:1,color:'FFFFFF',margin:0,name:'倍數徽章'});
   // 3) 下半：左＝四個行動（與表格逐列對齊）／右＝原生表格
   const ty=3.62,hr=.38,rh=.66,nR=4,by=ty+hr;
-  box(X0,by,HALF,nR*rh,{fill:'FFFFFF',line:G.line,lw:.75,r:RAD,sh:'card',force:1,name:'行動清單卡'});
-  txt(X0,ty,HALF,hr,'四項行動',{size:14,bold:1,color:G.t2,valign:'middle',name:'行動標題'});
-  ln(X0,ty+hr,X0+HALF,ty+hr,{c:G.line,w:1});
-  [['鎖客群','抓需求','聚焦高價值客群，停掉低毛利通路'],['升方案','提單價','推出加值方案，客單價 20 → 25 元'],['拓通路','接線上','線上預約＋會員，客戶數 +60%'],['顧回購','養忠誠','回購提醒與專屬服務，回購率翻倍']].forEach(([a,b,ds],i)=>{
-   const y=by+i*rh,h=rh;if(i)ln(X0+.2,y,X0+HALF-.2,y,{c:G.line,w:.75});
-   circ(X0+.32,y+h/2,.34,{fill:DARK,text:String(i+1),size:13,bold:1,color:'FFFFFF',margin:0,name:'編號 '+(i+1)});
-   txt(X0+.62,y+(h-.56)/2,.86,.56,a+'\n'+b,{size:18,bold:1,lsp:.88,margin:0,valign:'middle',align:'left',name:'行動 '+(i+1)});
-   ln(X0+1.58,y+.12,X0+1.58,y+h-.12,{c:G.line,w:.75});
-   txt(X0+1.75,y,HALF-1.9,h,ds,{size:13,color:G.t2,valign:'middle',name:'行動說明 '+(i+1)});});
+  // 左半：四張直式卡由左到右（與右側表格同頂同底）；第 3 張為強調
+  const cg=.14,cwd=(HALF-3*cg)/4,chh=hr+nR*rh;
+  [['鎖客群','抓需求','聚焦高價客群\n停低毛利通路'],['升方案','提單價','推出加值方案\n客單價 20→25'],['拓通路','接線上','導入線上預約\n客戶數 +60%'],['顧回購','養忠誠','回購提醒服務\n回購率翻倍']].forEach(([a,b,ds],i)=>{
+   const x=X0+i*(cwd+cg),hi=i===2;
+   box(x,ty,cwd,chh,{fill:hi?P:CARD,line:hi?null:G.line,lw:.75,r:RAD*1.4,sh:hi?'card':null,force:hi?1:0,name:'行動卡 '+(i+1)+(hi?'（強調）':'')});
+   circ(x+cwd/2,ty+.6,.44,{fill:hi?'FFFFFF':DARK,text:String(i+1),size:14,bold:1,color:hi?P:'FFFFFF',margin:0,name:'編號 '+(i+1)});
+   txt(x+(cwd-.86)/2,ty+1.08,.86,.64,a+'\n'+b,{size:18,bold:1,lsp:.9,margin:0,align:'center',valign:'middle',color:hi?'FFFFFF':G.ink,name:'行動 '+(i+1)});
+   ln(x+cwd/2-.22,ty+1.94,x+cwd/2+.22,ty+1.94,{c:hi?mix(P,'FFFFFF',.5):G.line,w:1.25});
+   txt(x+.08,ty+2.1,cwd-.16,.62,ds,{size:12.5,lsp:1.15,color:hi?'FFFFFF':G.t2,align:'center',valign:'top',name:'行動說明 '+(i+1)});});
   const tx=X0+HALF+GUT,cwT=[HALF*.34,HALF*.33,HALF*.33];const rows=[['指標','As Was','To Be'],['銷售額','2000 元','4000 元'],['客戶數','100 人','160 人'],['客單價','20 元','25 元'],['回購率','15%','30%']];
   const hdrF=V0===1||V0===4?DARK:mix(G.fill||'F2F2F2',G.line,.4),hdrC=V0===1||V0===4?'FFFFFF':G.ink;
   table(tx,ty,cwT,[hr,rh,rh,rh,rh],rows.map((r,ri)=>r.map((c,ci)=>{const toBe=ci===2;const o={t:c,size:16,bB:{c:G.line,w:.75}};
