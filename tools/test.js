@@ -37,9 +37,9 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    const cells=m.slides[0].items.find(i=>i.t==='tbl').cells;const sizes=new Set();cells.forEach(r=>r.forEach(c=>c.runs.forEach(x=>{if(String(x.t).trim()&&x.t!=='●\u2002')sizes.add(x.o.size);})));
    const lowC=[];cells.forEach(r=>r.forEach(c=>{if(String(c.runs.map(x=>x.t).join('')).trim()&&D.contrastOf(c.color,c.fill||'FFFFFF')<4.5)lowC.push(c.color+'/'+(c.fill||'FFFFFF'));}));
    const colours=new Set(t.his.map(h=>h.C));
-   if(m.warns.length||t.his.length!==3||t.ruleHits!==5||!/border:1\.5pt solid/.test(D.tableHtml(m))||colours.size!==1||[...sizes].some(s=>s*2!==Math.round(s*2))||lowC.length){bad++;why.push(st.id+'/'+lk+'/'+hs+' '+m.warns.join()+' '+lowC.slice(0,2).join());}
+   if(m.warns.length||t.his.length!==3||t.ruleHits!==5||!/border:1\.5pt solid/.test(D.tableHtml(m))||(t.his.filter(h=>h.kind!=='warn').some(h=>h.C!==t.his[0].C)||!t.his.some(h=>h.kind==='warn'&&h.C!==t.his[0].C))||[...sizes].some(s=>s*2!==Math.round(s*2))||lowC.length){bad++;why.push(st.id+'/'+lk+'/'+hs+' '+m.warns.join()+' '+lowC.slice(0,2).join());}
    if((st.id==='navy'||st.id==='investor')&&hs==='box')await save(`table-r1-${st.id}-${lk}.pptx`,st,{model:m});}
-  ok(!bad,`表格 R1：${n} 種組合（9 風格 × 4 外觀 × 3 重點樣式）都正確：3 個重點同一色、條件 5 格、字級為 0.5pt 倍數、文字對比 ≥ 4.5:1`+(bad?'｜'+why.slice(0,3).join('；'):''));
+  ok(!bad,`表格 R1：${n} 種組合（9 風格 × 4 外觀 × 3 重點樣式）都正確：重點同一強調色、警告另用紅、條件 5 格、字級為 0.5pt 倍數、文字對比 ≥ 4.5:1`+(bad?'｜'+why.slice(0,3).join('；'):''));
   const tm=D.tableMarks({his:[{type:'col',i:99},{type:'x'},{type:'cell',r:'1',c:1,color:'<b>'}],rules:[{c:1,op:'DROP',v:'abc',tone:'x',style:'y'}]},3,3);
   ok(tm.his.length===1&&tm.his[0].color==='auto'&&tm.rules[0].op==='<'&&!Number.isFinite(tm.rules[0].v)&&tm.rules[0].tone==='warn','tableMarks 擋掉非法強調／規則');
   // 解析
@@ -55,7 +55,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    const m=D.buildModel(nav,{table:{rows:[['','3Q25','2Q25'],['營收','989.9','933.8'],['稅後淨利','452.3','398.3'],['EPS','17.44','15.36']]}});const cl=m.slides[0].items.find(i=>i.t==='tbl').cells;
    ok(cl[2][1].bold&&cl[2][1].bT&&cl[3][1].bold&&!cl[3][1].bT,'合計列加粗＋上方一條線（連續合計只畫第一條）');}
   // 數字格式
-  ok(D.tFmt('(1234.5)',{})==='\u22121,234.5'&&D.tFmt('-0.5%',{minus:'paren'})==='(0.5%)'&&D.tFmt('-2',{minus:'hyphen'})==='-2'&&D.tFmt('+6.0%',{})==='+6.0%'&&D.tFmt('▼ 4.1',{})==='▼ 4.1'&&D.tFmt('91%',{dec:1})==='91.0%'&&D.tFmt('0.952',{pct:1,dec:1})==='95.2%'&&D.tFmt('1234567',{thou:false})==='1234567'&&D.tFmt('+0.9 ppts',{})==='+0.9 ppts'&&D.tFmt('NT$1200',{})==='NT$1,200','數字格式：U+2212／-／( ) 負號、千分位、小數位、%、ppts、貨幣');
+  ok(D.tFmt('(1234.5)',{})==='(1,234.5)'&&D.tFmt('(1234.5)',{minus:'minus'})==='\u22121,234.5'&&D.tFmt('-0.5%',{minus:'paren'})==='(0.5%)'&&D.tFmt('-2',{minus:'hyphen'})==='-2'&&D.tFmt('+6.0%',{})==='+6.0%'&&D.tFmt('▼ 4.1',{})==='▼ 4.1'&&D.tFmt('91%',{dec:1})==='91.0%'&&D.tFmt('0.952',{pct:1,dec:1})==='95.2%'&&D.tFmt('1234567',{thou:false})==='1234567'&&D.tFmt('+0.9 ppts',{})==='+0.9 ppts'&&D.tFmt('NT$1200',{})==='NT$1,200','數字格式：U+2212／-／( ) 負號（預設保留原樣）、千分位、小數位、%、ppts、貨幣');
   {const R=[['Lot','Yield'],['A','95.2%'],['B','91%'],['C','88.4%']];ok(D.tableColDec(R,1,1,D.tableAuto(R))===1&&D.tableColDec([['x','v'],['a','989.9'],['b','17.44'],['c','1.2'],['d','3']],1,1,null)===null,'同欄小數位：眾數 ≥60% 才補齊，只補不砍');
    const m=D.buildModel(nav,{table:{rows:R}});ok(m.slides[0].items.find(i=>i.t==='tbl').cells[2][1].runs[0].t==='91.0%','預覽／匯出：91% → 91.0%');
    const ft=m.slides[0].items.find(i=>i.t==='tbl').cells[1][1].font;ok(!/Georgia|Times/.test(D.buildModel(D.PRESETS.find(p=>p.nFont==='Georgia')||nav,{table:{rows:R}}).slides[0].items.find(i=>i.t==='tbl').cells[1][1].font),'數字一律無襯線（Georgia 風格的表格數字改 Arial）');}
@@ -69,15 +69,27 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    const n2=D.tableFromPaste([['項目','狀態'],['A','完成']],Object.assign({},prev,{pin:true}));ok(n2.title==='舊標題'&&n2.unit==='','📌 釘住標題：只保留標題');
    const n3=D.tableFromPaste([['','3Q25','2Q25'],['營收','989.9','933.8'],['淨利','452.3','398.3']],prev);ok(n3.his.length===1&&n3.his[0].i===1&&JSON.stringify(n3.bold)==='[2]','財報表貼上：自動把最新期別欄設為重點、合計列加粗');}
   // 版面
-  {const m=D.buildModel(nav,{table:{title:'T',unit:'U',rows:[['a','b','c','d','e'],['1','2','3','4','5']]}}).slides[0].table;const m2=D.buildModel(nav,{table:{rows:[['a','b'],['1','2']]}}).slides[0].table;
-   ok(Math.abs(m.tW-12.133)<.02&&Math.abs(m.tx-.6)<.001&&Math.abs(m.ty-1.45)<.001&&Math.abs(m2.tW-6)<.02&&Math.abs(m2.tx-.6)<.001,`版面：≥5 欄滿版 12.13"、少欄最少 6"、靠左 x0.6、表格 y1.45（${m.tW.toFixed(2)}／${m2.tW.toFixed(2)}）`);
-   const cw=D.buildModel(nav,{table:{rows:[['a','b','c'],['1','2','3']],cw:[3,2,1]}}).slides[0].table;ok(Math.abs(cw.colW[0]-3)<.01&&Math.abs(cw.colW[2]-1)<.01,'拖曳欄寬：T.cw 生效');}
+  {const R5=[['a','b','c','d','e'],['1','2','3','4','5']];const m=D.buildModel(Object.assign({},nav,{tbWidth:'fill'}),{table:{title:'T',unit:'U',rows:R5}}).slides[0].table;const m2=D.buildModel(nav,{table:{rows:[['a','b'],['1','2']]}}).slides[0].table;
+   ok(Math.abs(m.tW-12.133)<.02&&Math.abs(m.tx-.6)<.001&&m2.tW<9&&Math.abs(m2.tx-.6)<.001,`版面：填滿＝12.13" 靠左 x0.6；自動＝依內容寬、小表靠左對齊標題（${m.tW.toFixed(2)}／${m2.tW.toFixed(2)}）`);
+   const cw=D.buildModel(nav,{table:{rows:[['a','b','c'],['1','2','3']],cw:[3,2,1]}}).slides[0].table;ok(Math.abs(cw.colW[0]/cw.colW[2]-3)<.01&&Math.abs(cw.colW[1]/cw.colW[2]-2)<.01,'拖曳欄寬：T.cw 生效');}
   // 舊資料相容
   {ok(D.buildModel(nav,{table:{rows:Y.rows,hi:{type:'col',i:1}}}).slides[0].table.his.length===1,'舊版 T.hi 仍可用');
    const old=D.sanitizeParams(Object.assign({},nav,{tbLook:'panel'}),nav);const old2=D.sanitizeParams(Object.assign({},nav,{tbLook:'minimal'}),nav);const old3=D.sanitizeParams({P:nav.P,tbPanel:true},nav);
    ok(old.tbLook==='card'&&old.tbCard==='grey'&&old2.tbLook==='clean'&&old3.tbLook==='card','舊外觀（灰底面板／極簡／tbPanel）自動轉成新外觀');
    const tr=D.trayModel([{kind:'table',params:Object.assign({},nav,{tbLook:'panel',tbHiColor:'alert',tbHiMode:'box'}),table:Y,name:'良率（舊快照）'},{kind:'table',params:Object.assign({},nav,{tbLook:'minimal'}),table:{rows:[['a','b'],['1','2']]},name:'極簡'},{kind:'el',params:wine,key:'annot',gi:3,name:'標註'}]);await save('tray-marks.pptx',nav,{model:tr});ok(tr.tray.n===3,'待選素材：舊表格快照（灰底面板／極簡）仍可重建＋標註');}
   // 四個驗收案例（LibreOffice 也會畫）
+  {const C=require('./table-cases.js');const nv=D.PRESETS[0];const tb=(p,T)=>{const m=D.buildModel(Object.assign({},nv,p),{table:T});return {m,t:m.slides[0].table};};
+   // 意義：重點／推薦＝強調色、警告＝紅；換外觀不變
+   const T1=Object.assign({},C.yield,{his:[{type:'col',i:1,kind:'rec'},{type:'row',i:2,kind:'warn'},{type:'cell',r:3,c:3,kind:'focus'}]});let bad=0;
+   for(const lk of ['clean','band','card','zebra'])for(const hs of ['fill','box','bold']){const {t}=tb({tbLook:lk},Object.assign({},T1,{hiStyle:hs}));const h=t.his;if(!(h[0].C===h[2].C&&h[1].C!==h[0].C&&h[0].kind==='rec'))bad++;}
+   ok(!bad,'表格：推薦/重點＝強調色、警告＝紅，4 外觀 × 3 樣式都保持');
+   // 密度：字級、列高、邊距各自變
+   const den=['comfy','normal','dense'].map(v=>tb({tbDense:v,tbLook:'clean'},C.status).t);
+   ok(den[0].fs>den[1].fs&&den[1].fs>den[2].fs&&den[0].rowH[1]>den[2].rowH[1]&&den[0].rowH[1]/den[2].rowH[1]!==den[0].fs/den[2].fs,'表格：密度 舒適>標準>密集（字級、列高非等比）');
+   // 壓力：長中文表頭、空白、負數、百分比、14 列 → 不溢出、內文 ≥ 10pt
+   let sb=[];for(const lk of ['clean','band','card','zebra'])for(const dn of ['comfy','normal','dense'])for(const size of ['S','M','L']){const {m,t}=tb({tbLook:lk,tbDense:dn,size},C.stress);const bot=Math.max(...m.slides[0].items.map(i=>i.y+i.h));const right=Math.max(...m.slides[0].items.map(i=>i.x+i.w));
+    if(bot>7.5-.2||right>13.333-.3||t.fs<10||m.warns.some(w=>/放不下|太寬/.test(w)))sb.push(`${lk}/${dn}/${size} fs${t.fs} bot${bot.toFixed(2)}`);}
+   ok(!sb.length,'表格壓力測試 36 組：不溢出、內文 ≥ 10pt'+(sb.length?'｜'+sb.slice(0,4).join('；'):''));}
   {const C=require('./table-cases.js');for(const [k,T] of Object.entries(C))for(const lk of ['clean','band','card','zebra']){const m=D.buildModel(Object.assign({},nav,{tbLook:lk}),{table:T});await save(`table-case-${k}-${lk}.pptx`,nav,{model:m});}}
  }
  {const am=D.buildModel(nav,{only:['annot','catalog']});const an=am.slides.find(x=>x.key==='annot'),ca=am.slides.find(x=>x.key==='catalog');const names=an.groups.map(g=>g.name);

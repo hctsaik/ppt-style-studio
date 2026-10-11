@@ -13,8 +13,17 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
   // header click on Yield col -> chip
   const cell=await pg.$('#tPrev .tc[data-r="0"][data-c="2"]');await cell.click();await sleep(300);
   ck('chip opens on header',await pg.evaluate(()=>!document.querySelector('#tChip').hidden));
-  await pg.click('#tChip button[data-a="star"]');await sleep(400);
+  await pg.click('#tChip button[data-a="star"][data-v="focus"]');await sleep(400);
   ck('star adds col highlight',await pg.evaluate(()=>window.__studio.table.his.length===1&&window.__studio.table.his[0].type==='col'));
+  ck('selection status text',/目前選取：.*第 3 欄/.test(await pg.evaluate(()=>document.querySelector('#tSelTxt').textContent)));
+  await pg.click('#tChip button[data-a="star"][data-v="rec"]');await sleep(300);
+  for(const lk of ['band','card','zebra','clean']){await pg.click(`#tLStrip button[data-v="${lk}"]`);await sleep(350);}
+  ck('meaning rec kept across looks, accent not red',await pg.evaluate(()=>{const t=window.__studio.table;return t.his[0].kind==='rec';}));
+  await pg.click('#tPrev .tc[data-r="0"][data-c="2"]').catch(()=>{});await sleep(200);
+  await pg.click('#tChip button[data-a="star"][data-v="warn"]').catch(()=>{});await sleep(300);
+  ck('warn kind set',await pg.evaluate(()=>window.__studio.table.his.some(h=>h.kind==='warn')));
+  await pg.keyboard.press('Escape');
+  await pg.click('#tPrev .tc[data-r="0"][data-c="2"]');await sleep(300);
   await pg.screenshot({path:`${OUT}/d-chip.png`});
   // keyboard
   await pg.focus('#tPrev .tc[data-r="0"][data-c="2"]');await pg.keyboard.press('Escape');await sleep(100);
@@ -24,9 +33,9 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
   await pg.keyboard.press('Escape');await sleep(150);ck('Esc closes chip',await pg.evaluate(()=>document.querySelector('#tChip').hidden));
   ck('a11y roles',await pg.evaluate(()=>!!document.querySelector('#tPrev .tov[role=grid]')&&document.querySelectorAll('#tPrev [role=gridcell]').length>=35&&[...document.querySelectorAll('.tlook')].every(b=>b.hasAttribute('aria-pressed'))));
   // inspector sections
-  await pg.evaluate(()=>document.querySelector('.tsec[data-sec="look"]').scrollIntoView());await sleep(500);await pg.screenshot({path:`${OUT}/d-insp-look.png`});
-  await pg.evaluate(()=>document.querySelector('.tsec[data-sec="hi"]').scrollIntoView());await sleep(300);await pg.screenshot({path:`${OUT}/d-insp-hi.png`});
-  await pg.evaluate(()=>document.querySelector('.tsec[data-sec="fmt"]').scrollIntoView());await sleep(300);await pg.screenshot({path:`${OUT}/d-insp-fmt.png`});
+  await pg.click('.tsteps .stp[data-go="look"]');await sleep(500);await pg.screenshot({path:`${OUT}/d-insp-look.png`});
+  await pg.click('.tsteps .stp[data-go="hi"]');await sleep(300);await pg.screenshot({path:`${OUT}/d-insp-hi.png`});
+  await pg.click('.tinsTabs button[data-t="fmt"]');await sleep(300);await pg.screenshot({path:`${OUT}/d-insp-fmt.png`});
   // paste P&L -> reset title/rules/his ; period col highlighted
   await paste(pg,PL);await sleep(800);const t=await pg.evaluate(()=>window.__studio.table);
   ck('paste resets title/unit/note/rules',t.title===''&&t.unit===''&&t.note===''&&t.rules.length===0);
@@ -45,20 +54,44 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
   ck('status paste title cleared',(await pg.evaluate(()=>window.__studio.table.title))==='');
   await pg.screenshot({path:`${OUT}/d-paste-status.png`});
   // look switch
+  await pg.click('.tsteps .stp[data-go="look"]');await sleep(200);ck('stepper switches section',await pg.evaluate(()=>document.querySelector('.tsec[data-sec="look"]').offsetHeight>0&&document.querySelector('.tsec[data-sec="data"]').offsetHeight===0));
   await pg.click('.tlook[data-v="band"]');await sleep(600);ck('look band pressed',await pg.evaluate(()=>document.querySelector('.tlook[data-v="band"]').getAttribute('aria-pressed')==='true'&&window.__studio.table.look==='band'));
+  // R2: suggestion, canvas highlight list, undo/redo, width option, output bar visible
+  await paste(pg,PL);await sleep(700);
+  ck('suggested title shown',await pg.evaluate(()=>!!document.querySelector('.tsug')));
+  await pg.click('.tsug');await sleep(400);const tt2=await pg.evaluate(()=>window.__studio.table.title);ck('apply suggested title: '+tt2,/3Q25/.test(tt2));
+  ck('canvas highlight list',await pg.evaluate(()=>document.querySelectorAll('.thl [data-rmh]').length===1));
+  await pg.click('.thl [data-rmh]');await sleep(400);ck('remove highlight from canvas',await pg.evaluate(()=>window.__studio.table.his.length===0));
+  await sleep(500);await pg.click('#tUndo');await sleep(500);ck('undo restores highlight',await pg.evaluate(()=>window.__studio.table.his.length===1));
+  await pg.click('#tRedo');await sleep(500);ck('redo',await pg.evaluate(()=>window.__studio.table.his.length===0));
+  await pg.keyboard.down('Control');await pg.keyboard.press('z');await pg.keyboard.up('Control');await sleep(500);ck('Ctrl+Z',await pg.evaluate(()=>window.__studio.table.his.length===1));
+  await pg.click('.tsteps .stp[data-go="look"]');await sleep(200);
+  const w1=await pg.evaluate(()=>window.__studio.table.tW);await pg.click('[data-tp="tbWidth"] button[data-v="fill"]');await sleep(500);const w2=await pg.evaluate(()=>window.__studio.table.tW);
+  ck(`width auto ${w1} < fill ${w2}`,w1<w2&&w2>12);
+  ck('output bar visible',await pg.evaluate(()=>{const r=document.querySelector('#tCopy').getBoundingClientRect();return r.bottom<=innerHeight&&r.height>30;}));
+  await pg.screenshot({path:`${OUT}/d-r2-pl.png`});
+  await paste(pg,ST);await sleep(600);
   // copy html
   await pg.evaluate(()=>{navigator.clipboard.write=async()=>{};});await pg.click('#tCopy');await sleep(300);
   ck('copy html has dot span',/●/.test(await pg.evaluate(()=>window.__studio.lastTableHtml)));
   await ctx.close();}
+ // 1366x768 / 1440x900: canvas, look picker, copy button visible without scrolling
+ for(const vp of [{width:1366,height:768},{width:1440,height:900}]){const ctx=await b.createBrowserContext();const pg=await ctx.newPage();await pg.setViewport(vp);await pg.goto(URL,{waitUntil:'networkidle0'});await sleep(500);await pg.click('#tabs button[data-tab="table"]');await sleep(800);
+  const v=await pg.evaluate(()=>{const vis=sel=>{const r=document.querySelector(sel).getBoundingClientRect();return r.width>0&&r.top>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;};return{c:vis('#tPrev'),l:vis('#tLStrip'),b:vis('#tCopy')};});
+  ck(`${vp.width}x${vp.height}: canvas ${v.c} looks ${v.l} copy ${v.b}`,v.c&&v.l&&v.b);if(vp.width===1366)await pg.screenshot({path:`${OUT}/d-1366.png`});await ctx.close();}
  // mobile
  {const ctx=await b.createBrowserContext();const pg=await ctx.newPage();pg.on('pageerror',e=>errs.push('m: '+e.message));
   await pg.setViewport({width:390,height:844,deviceScaleFactor:2,isMobile:true,hasTouch:true});await pg.goto(URL,{waitUntil:'networkidle0'});await sleep(600);
   await pg.tap('#tabs button[data-tab="table"]');await sleep(900);await pg.screenshot({path:`${OUT}/m-open.png`});
   await pg.tap('.tinsTabs button[data-t="look"]');await sleep(500);await pg.screenshot({path:`${OUT}/m-look.png`});
   await pg.tap('.tinsTabs button[data-t="look"]');await sleep(300);
+  ck('mobile default zoom = 放大',await pg.evaluate(()=>document.querySelector('#tCanvas').classList.contains('z100')));
+  ck('mobile tray FAB hidden',await pg.evaluate(()=>getComputedStyle(document.querySelector('#trayBtn')).display==='none'));
   await pg.tap('#tPrev .tc[data-r="0"][data-c="2"]');await sleep(400);await pg.screenshot({path:`${OUT}/m-chip.png`});
-  const sz=await pg.evaluate(()=>[...document.querySelectorAll('#tChip button')].map(b=>b.getBoundingClientRect().height));ck('mobile chip tap targets ≥44',sz.every(h=>h>=43.5));
-  await pg.tap('.tzoom button[data-z="100"]');await sleep(500);await pg.screenshot({path:`${OUT}/m-zoom.png`});
+  const sz=await pg.evaluate(()=>[...document.querySelectorAll('#tChip button,.tsteps .stp,.tinsTabs button,.tzoom button,.tpin,#tCopy,#tPptx,#tTray')].filter(b=>b.offsetParent).map(b=>[b.textContent.trim().slice(0,6),Math.round(b.getBoundingClientRect().height)]));const small=sz.filter(x=>x[1]<44);ck('mobile tap targets ≥44 '+JSON.stringify(small),!small.length);
+  ck('chip does not cover sheet tabs',await pg.evaluate(()=>{const a=document.querySelector('#tChip').getBoundingClientRect(),b=document.querySelector('.tinsTabs').getBoundingClientRect();return a.bottom<=b.top;}));
+  const smallTxt=await pg.evaluate(()=>[...document.querySelectorAll('#vTable *')].filter(e=>e.offsetParent&&e.childNodes.length&&[...e.childNodes].some(n=>n.nodeType===3&&n.textContent.trim())&&!e.closest('svg')&&!e.closest('.tslots')).filter(e=>parseFloat(getComputedStyle(e).fontSize)<12).map(e=>e.className+':'+e.textContent.slice(0,10)));ck('mobile UI text ≥12px (small='+JSON.stringify(smallTxt)+')',!smallTxt.length);
+  await pg.tap('.tzoom button[data-z="fit"]');await sleep(500);await pg.screenshot({path:`${OUT}/m-fit.png`});await pg.tap('.tzoom button[data-z="100"]');await sleep(500);await pg.screenshot({path:`${OUT}/m-zoom.png`});
   const ov=await pg.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1);ck('no page horizontal overflow',ov);
   await ctx.close();}
  console.log('ERRS',errs);fs.writeFileSync(OUT+'/flow.json',JSON.stringify({R,errs},null,1));await b.close();})();

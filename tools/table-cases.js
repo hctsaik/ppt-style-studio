@@ -6,3 +6,7 @@ const dense=[['Tool','Chamber','WPH','Uptime%','MTBF (h)','Status']];const ST=['
 for(let i=0;i<20;i++)dense.push([`ETX-${String(i+1).padStart(2,'0')}`,'ABCD'[i%4],String(110+((i*37)%40)),(92+((i*13)%70)/10).toFixed(1)+'%',String(300+((i*71)%900)),ST[i%7]]);
 const denseT={title:'蝕刻機台週報（20 台）',unit:'W41',note:'Uptime < 95% 標紅',rows:dense,rules:[{c:3,op:'<',v:95,tone:'warn',style:'text'}]};
 module.exports={yield:yieldT,pl:plT,status:stT,dense:denseT};
+// 壓力測試：長中文表頭、空白格、負數、百分比、14 列
+const stress=[['製程站點與機台名稱（含腔體）','本週良率（%）','與上週相比之變化量（百分點）','缺陷數量（顆）','備註說明與後續處理方式']];
+for(let i=0;i<14;i++)stress.push([`第 ${i+1} 站 CVD-0${i%5} 腔體 ${'ABCD'[i%4]}`,i%5===3?'':(85+((i*7)%14)+.3).toFixed(1)+'%',i%3===0?`(${(i/10+.4).toFixed(1)})`:`+${(i/10).toFixed(1)}`,i%4===1?'—':String(10+i*13),i%2?'持續觀察，下週再確認腔體狀況與清機紀錄':'']);
+module.exports.stress={title:'各站點週良率與缺陷追蹤（長表頭壓力測試）',unit:'W41',note:'空白＝無資料',rows:stress,rules:[{c:1,op:'<',v:90,tone:'warn',style:'text'}]};
