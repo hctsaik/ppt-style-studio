@@ -913,7 +913,7 @@ function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==
   let AU=tableAuto(src,T);const head=T.header==null||T.header==='auto'?AU.head:!!T.header,h0=head?1:0;
   const MAXR=25;if(src.length-h0>MAXR){const n=src.length-h0;src.length=h0+MAXR;AU=tableAuto(src,T);warn('表格列數過多',`共 ${n} 列，只放前 ${MAXR} 列；請拆成多張表或先摘要`);}
   // 列數少→字大一點、列數多→維持（S／M／L 仍是基準）；tbAuto=false 關閉
-  if(st.tbAuto!==false){const nb=src.length-h0;k=Math.min(1.4,k*(nb<=5?1.2:nb<=9?1.1:1));if(nb>=12&&k>1)k=1;}   // 12 列以上 L 也不放大，避免縮字
+  if(st.tbAuto!==false){const nb=src.length-h0;k=Math.min(1.45,k*(nb<=5?1.3:nb<=9?1.15:1));if(nb>=12&&k>1)k=1;}   // 12 列以上 L 也不放大，避免縮字
   const lookId=tableLookOf(st);const grey=st.tbLook==='panel'||st.tbCard==='grey'||(st.tbPanel&&!st.tbLook);
   const sz=v=>Math.round(v*k*2)/2;
   const TF=st.tbFont==='noto'?'Noto Sans TC':st.tbFont==='arial'?'Arial':F;   // 表格文字字型（arial＝拉丁 Arial＋中文正黑：a:ea 會自動補成中文字型）
@@ -953,10 +953,19 @@ function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==
   const isNumFont=(ri,c)=>ri>=h0&&AU.numC[c]&&!AU.section[ri];
   const measureW=(t,size,b)=>Math.max(...String(t).split('\n').map(l=>tw(l,size)*(b?1.08:1)));
   const padOf=c=>(c===0?padL0:padH)+padH;
+  // 中英混排寬度（含 PowerPoint／LibreOffice 的中英自動間距）
+  const mw=(l,size,b)=>{l=String(l);const tr=st.tbTight?0:(l.match(/[\u3400-\u9fff][A-Za-z0-9]|[A-Za-z0-9][\u3400-\u9fff]/g)||[]).length;const mx=/[\u3400-\u9fff]/.test(l)&&/[A-Za-z0-9]/.test(l)?1.06:1;return tw(l,size)*(b?1.08:1)*mx+tr*size*.25/72;};
+  // 語意斷行：優先在 ：/:/空白/（ 前/中英交界 斷；每行都放得下、不留 1–2 字孤行
+  const semBreak=(t,size,b,av,dp=0)=>{t=String(t);if(/\n/.test(t)||mw(t,size,b)<=av||dp>8||t.length>160)return t;const L=[...t];const vis=s=>s.replace(/\s/g,'').length;
+   const cands=[];for(let i=1;i<L.length;i++){const a=L[i-1],z=L[i];let sc=0;if(/[：:；;，,、]/.test(a))sc=3;else if(/\s/.test(a)||/\s/.test(z))sc=2.5;else if(/[（(]/.test(z))sc=2.4;else if(/[)）]/.test(a))sc=2.2;else if(/[\u3400-\u9fff]/.test(a)!==/[\u3400-\u9fff]/.test(z)&&!/[\-./%]/.test(a+z))sc=1.6;else if(/[\u3400-\u9fff]/.test(a)&&/[\u3400-\u9fff]/.test(z))sc=.5;if(sc)cands.push({i,sc});}
+   let best=null;for(const {i,sc} of cands){const p1=L.slice(0,i).join('').replace(/\s+$/,''),p2=L.slice(i).join('').replace(/^\s+/,'');if(vis(p1)<2||vis(p2)<(sc>=2.2?2:3)&&vis(t)>4)continue;const w1=mw(p1,size,b),w2=mw(p2,size,b);
+    const fit=Math.max(w1,w2)<=av?0:1;const score=fit*100-sc*2+Math.abs(w1-w2)/Math.max(.1,av)*1.5+(w2>av?Math.ceil(w2/av):0);if(!best||score<best.s)best={s:score,p1,p2};}
+   if(!best)return t;const rest=mw(best.p2,size,b)>av?semBreak(best.p2,size,b,av,dp+1):best.p2;return best.p1+'\n'+rest;};
+  const sem2=(t,size,b)=>{const full=mw(t,size,b);let av=full/2;for(let i=0;i<60&&av<full;i++,av+=.03){const ls=semBreak(t,size,b,av).split('\n');if(ls.length<=2&&ls.every(l=>mw(l,size,b)<=av+1e-6))return av;}return full;};
   let colW=Array.from({length:nC},(_,c)=>{const body=Math.max(0,...rows.map((r,ri)=>ri<h0||AU.section[ri]&&c===0?0:measureW(r[c],fs,bold.has(ri)||keySet.has(ri))+(AU.statC[c]&&ri>=h0&&statusOf(r[c])?.14*k:0)));
    // 表頭可以換行（最多約 3 行）：長中文表頭不把數字欄撐寬
    const hw=h0?measureW(rows[0][c],hfs,1):0;const m=Math.max(body,/[\u3400-\u9fff]/.test(rows[0][c]||'')?Math.min(hw,Math.max(body,hw/3,.7*k)):hw);
-   return AU.numC[c]?m+18*k/72+.06*k:m+padOf(c)/72+.06*k;});
+   return m+Math.max(18*k,padOf(c))/72+.06*k;});
   const numIdx=colW.map((_,c)=>c).filter(c=>c>0&&AU.numC[c]);
   if(numIdx.length>=2){const m=Math.max(...numIdx.map(c=>colW[c]));numIdx.forEach(c=>colW[c]=m);}
   let X=.6;const maxW=W-2*X-(LK.card?.5*k:0);
@@ -968,7 +977,7 @@ function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==
   const cap=(wMode==='fill'?.45:.36)*target;
   const uw=Array.isArray(T.cw)&&T.cw.length===nC&&T.cw.every(v=>+v>.2&&+v<12)?T.cw.map(v=>+v*k):null;
   // 最小欄寬＝欄內最長「不可斷」字串（英數連續字；中文可逐字斷）＋邊距
-  const colMin=Array.from({length:nC},(_,c)=>{let m=0;rows.forEach((r,ri)=>{const b=ri<h0||bold.has(ri)||keySet.has(ri);String(r[c]||'').split(/[\s\n]+|(?=[\u3400-\u9fff\uff00-\uffef])|(?<=[\u3400-\u9fff\uff00-\uffef])/).forEach(tok=>{if(tok)m=Math.max(m,tw(tok,ri<h0?hfs:fs)*(b?1.08:1));});});return m+padOf(c)/72+.06*k;});
+  const colMin=Array.from({length:nC},(_,c)=>{let m=h0&&rows[0][c]?sem2(rows[0][c],hfs,1):0;rows.forEach((r,ri)=>{const b=ri<h0||bold.has(ri)||keySet.has(ri);String(r[c]||'').split(/[\s\n]+|(?=[\u3400-\u9fff\uff00-\uffef])|(?<=[\u3400-\u9fff\uff00-\uffef])/).forEach(tok=>{if(tok)m=Math.max(m,tw(tok,ri<h0?hfs:fs)*(b?1.08:1));});});return m+padOf(c)/72+.06*k;});
   if(uw){colW=uw.map((v,c)=>Math.max(v,colMin[c]));target=Math.min(maxW,colW.reduce((a,b)=>a+b,0));}
   else{
    if(nC>1&&colW.some(w=>w>cap))colW=colW.map(w=>Math.min(w,Math.max(cap,1.2*k)));
@@ -982,12 +991,19 @@ function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==
    for(let it=0;it<4;it++){sum=colW.reduce((a,b)=>a+b,0);if(sum<=maxW+.001)break;const flex=tc.filter(c=>colW[c]>mn+.001);if(!flex.length)break;const fsum=flex.reduce((a,c)=>a+colW[c]-mn,0);const need=sum-maxW;const f=Math.max(0,1-need/fsum);flex.forEach(c=>colW[c]=mn+(colW[c]-mn)*f);}}}
   {let sum=colW.reduce((a,b)=>a+b,0);if(sum>maxW+.001){const f=maxW/sum;colW=colW.map(w=>w*f);if(f<.82){fs=sz(Math.max(9,fs/k*Math.max(.8,f)));hfs=sz(Math.max(9,hfs/k*Math.max(.85,f)));warn('表格太寬','字級已縮小，或請減少欄位');}}}
   const lines=t=>String(t).split('\n').length;
-  const wrapN=(t,size,b,cw,c)=>String(t).split('\n').reduce((a,l)=>a+Math.max(1,Math.ceil(tw(l,size)*(b?1.08:1)/Math.max(.2,cw-padOf(c)/72-.03))),0);
+  const wrapN=(t,size,b,cw,c)=>String(t).split('\n').reduce((a,l)=>a+Math.max(1,Math.ceil(mw(l,size,b)/Math.max(.2,cw-padOf(c)/72-.03)-.02)),0);
   const cellN=(r,ri)=>Math.max(...r.map((t,c)=>wrapN(t,ri<h0?hfs:fs,ri<h0||bold.has(ri),colW[c],c)));
   const minH=(n,size)=>n*size*1.45/72+2.5/72;   // 1.45＝CJK 字型行高（Noto／正黑），上下邊距各 1pt
   // 有空間就不要換行（例：已完成 60%）：文字欄若會折行而且還有剩餘寬度，加寬到一行放得下
   if(!uw&&wMode!=='compact'){let spare=maxW-colW.reduce((a,b)=>a+b,0);colW.forEach((w,c)=>{if(AU.numC[c])return;let need=0;rows.forEach((r,ri)=>{if(ri<h0)return;const b=bold.has(ri)||keySet.has(ri);const tr=st.tbTight?0:(String(r[c]).match(/[\u3400-\u9fff][A-Za-z0-9]|[A-Za-z0-9][\u3400-\u9fff]/g)||[]).length;const mx=/[\u3400-\u9fff]/.test(r[c])&&/[A-Za-z0-9]/.test(r[c])?1.12:1;need=Math.max(need,measureW(r[c],fs,b)*(b?1.08:1)*mx+tr*fs*.3/72+padOf(c)/72+.05);/* 中英交界留自動間距 */});
     if(need>w&&need-w<=spare+1e-6){spare-=need-w;colW[c]=need;}});}
+  // 表頭也一樣：有空間就加寬到一行
+  if(!uw&&wMode!=='compact'&&h0){let spare=maxW-colW.reduce((a,b)=>a+b,0);colW.forEach((w,c)=>{const t0=rows[0][c];const full=mw(t0,hfs,1);const need=full+padOf(c)/72+.05;if(need>w&&need-w<=spare+1e-6){spare-=need-w;colW[c]=need;return;}
+    if(need>w){let av=Math.max(full/2,w-padOf(c)/72-.03);for(let i=0;i<40&&av<full;i++,av+=.04){const s=semBreak(t0,hfs,1,av);const ls=s.split('\n');if(ls.length<=2&&ls.every(l=>mw(l,hfs,1)<=av)&&!ls.some(l=>l.replace(/\s/g,'').length<=2))break;}
+     const n2=av+padOf(c)/72+.03;if(n2>w&&n2-w<=spare+1e-6){spare-=n2-w;colW[c]=n2;}}});
+   if(numIdx.length>=2){const m=Math.max(...numIdx.map(c=>colW[c]));const add=numIdx.reduce((a,c)=>a+m-colW[c],0);if(add<=spare+1e-6)numIdx.forEach(c=>colW[c]=m);}}
+  // 放不下才斷行：在語意點加明確換行（預覽與 pptx 一致）
+  rows.forEach((r,ri)=>r.forEach((t,c)=>{if(AU.numC[c]&&ri>=h0)return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri);const av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0);r[c]=semBreak(t,sz0,b,av);}));
   let rowH=rows.map((r,ri)=>{const base=ri<h0?hh:AU.section[ri]?rh*.95:rh;return Math.max(base,minH(cellN(r,ri),ri<h0?hfs:fs));});
   let tW=colW.reduce((a,b)=>a+b,0);
   const hasTop=true;   // 標題區固定保留（投影片順序一致；studio 畫布上可直接點來輸入）
@@ -996,9 +1012,11 @@ function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==
   if(ttl&&tw(ttl,tfsT)*1.05>TWm){tfsT=Math.min(sz(24),20);if(tw(ttl,tfsT)*1.05>TWm&&!/\n/.test(ttl)){const L=[...ttl];let best=-1,bs=1e9;for(let i=3;i<L.length-3;i++){const pre=L.slice(0,i).join(''),cost=Math.abs(tw(pre,tfsT)-tw(L.slice(i).join(''),tfsT))*(/[，、；：,;:\s）)]/.test(L[i-1])?.4:1)*(/[0-9A-Za-z.%+\-]/.test(L[i-1])&&/[0-9A-Za-z.%+\-]/.test(L[i])?6:1);if(cost<bs){bs=cost;best=i;}}if(best>0)ttl=L.slice(0,best).join('').replace(/\s+$/,'')+'\n'+L.slice(best).join('').replace(/^\s+/,'');}}
   const tLines=ttl?ttl.split('\n').length:1;
   const titH=Math.max(.5*k,tLines*tfsT*1.22/72+.06),unitH=T.unit?.3*k:0;const noteN=T.note?lines(T.note):0,noteH=noteN?noteN*nfs*1.35/72+.1*k:0;
-  const frame=LK.card?.25*k:0;
-  const GAP=.35;const ty0=hasTop?.5+titH+(T.unit?unitH:.04)+GAP:.6;   // 標題／單位／表格／註腳＝一個區塊，間距 0.35"
-  let tH=rowH.reduce((a,b)=>a+b,0);const avail=H-.45-ty0-noteH-2*frame;
+  // 很長的表：先縮卡片內距與標題間距，再縮字
+  const est=rowH.reduce((a,b)=>a+b,0);const tall=est>H-.45-(.5+titH+(T.unit?unitH:.04)+.35)-noteH-(LK.card?.5*k:0)-.02;
+  const frame=LK.card?(tall?.12:.25*k):0;
+  const GAP=tall?.22:.35;const ty0=hasTop?.5+titH+(T.unit?unitH:.04)+GAP:.6;   // 標題／單位／表格／註腳＝一個區塊，間距 0.35"
+  let tH=rowH.reduce((a,b)=>a+b,0);const avail=H-(tall?.32:.45)-ty0-noteH-2*frame;
   // 太高而且還沒滿版：先把寬度給文字欄（少換行），再考慮縮字
   if(tH>avail&&!uw&&tW<maxW-.05&&rows.some((r,ri)=>cellN(r,ri)>1)){const tc=colW.map((_,c)=>c).filter(c=>!AU.numC[c]);if(tc.length){const ex=maxW-tW;tc.forEach(c=>colW[c]+=ex/tc.length);tW=maxW;
    rowH=rows.map((r,ri)=>{const base=ri<h0?hh:AU.section[ri]?rh*.95:rh;return Math.max(base,minH(cellN(r,ri),ri<h0?hfs:fs));});tH=rowH.reduce((a,b)=>a+b,0);}}
@@ -1068,7 +1086,9 @@ function userTable(T,k){const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==
    boxes.push(Object.assign({color:h.C,kind:h.kind},h.type==='cell'?{type:'cell',r:h.r,c:h.c}:{type:h.type,i:h.i}));});
   ruleBoxes.forEach(b=>{box(cx0(b.c)+ins,ry0(b.r)+ins,colW[b.c]-2*ins,rowH[b.r]-2*ins,{line:b.color,lw:blw,r:rad,name:'條件框'});boxes.push({type:'cell',r:b.r,c:b.c,color:b.color,rule:1});});
   const b0=boxes.find(b=>!b.rule&&b.type!=='cell');
-  cur.table={colMin:colMin.map(v=>+v.toFixed(3)),REC,k,colFit:colFit.map(v=>+v.toFixed(3)),tx,ty,tW,tH,colW,rowH,h0,nC,nR:rows.length,look:lookId,grey,hiMode:hiStyle,hiStyle,EC,colNum:AU.numC,colStat:AU.statC,key:[...keySet].sort((a,b)=>a-b),hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,
+  const orphans=[];rows.forEach((r,ri)=>r.forEach((t,c)=>{const s=String(t);if(!s.trim())return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri);const av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0);const ls=s.split('\n');const vis=x=>x.replace(/\s/g,'').length;
+   if(ls.some(l=>mw(l,sz0,b)>av+.01))orphans.push({r:ri,c,t:s,why:'auto-wrap'});else if(ls.length>1&&vis(s)>4&&ls.some((l,i)=>vis(l)<=1||vis(l)<=2&&i>0&&!/[：:；;，,、)）\s]$/.test(ls[i-1])&&!/^[（(]/.test(l)))orphans.push({r:ri,c,t:s,why:'orphan'});}));
+  cur.table={orphans,colMin:colMin.map(v=>+v.toFixed(3)),REC,k,colFit:colFit.map(v=>+v.toFixed(3)),tx,ty,tW,tH,colW,rowH,h0,nC,nR:rows.length,look:lookId,grey,hiMode:hiStyle,hiStyle,EC,colNum:AU.numC,colStat:AU.statC,key:[...keySet].sort((a,b)=>a-b),hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,
    ruleCols:[...new Set(MK.rules.map(r=>r.c))],unit:T.unit||'',note:T.note||'',title:T.title||'',font:F,nf:NF,slots,fs,hfs,k};}
  if(opt.compose){sno=0;cur={key:'compose',title:'待選素材',no:1,items:[],groups:[]};slides.push(cur);SL.compose();}
  else SLIDES.forEach(([k,zh],i)=>{if(opt.only&&!opt.only.includes(k))return;if(!opt.only&&opt.examples===false&&/^ex\d/.test(k))return;/* 12–14 範例頁（主題式版面）：studio 預設不含，勾「含範例頁」才加 */sno=i+1;cur={key:k,title:zh,no:i+1,items:[],groups:[]};slides.push(cur);canvas();SL[k]();footer();if(opt.labels)applyLabels(cur,opt.labels);});
@@ -1151,7 +1171,9 @@ function tableTitleSuggest(T){const rows=(T.rows||[]).filter(r=>r&&r.some(c=>Str
  const R=MK.rules.find(x=>Number.isFinite(x.v));
  if(R){const hit=[];for(let r=h0;r<rows.length;r++){if(A.section[r]||A.key.includes(r))continue;const v=tNumVal(cell(r,R.c));if(Number.isFinite(v)&&ruleHit(R,v))hit.push(cell(r,0));}
   const op={'<':'<','<=':'≤','>':'>','>=':'≥','=':'='}[R.op];const pct=/%/.test(cell(h0,R.c))?'%':'';
-  return hit.length?`${hit.length} 筆 ${hdr(R.c)} ${op} ${R.v}${pct}：${hit.slice(0,3).join('、')}${hit.length>3?' 等':''}`:`全部 ${hdr(R.c)} 皆未 ${op} ${R.v}${pct}`;}
+  const H=hdr(R.c).replace(/[（(][^）)]*[）)]/g,'').trim();const wd=/</.test(R.op)?'低於':/>/.test(R.op)?'高於':'等於';
+  if(hit.length===1){let rr=-1;for(let r=h0;r<rows.length;r++){if(A.section[r]||A.key.includes(r))continue;const v=tNumVal(cell(r,R.c));if(Number.isFinite(v)&&ruleHit(R,v)){rr=r;break;}}return `${cell(rr,0)} ${H} ${cell(rr,R.c)}，${wd}門檻`.replace(/\s+/g,' ').trim();}
+  return hit.length?`${hit.length} 筆 ${H} ${wd} ${R.v}${pct}：${hit.slice(0,3).join('、')}${hit.length>3?' 等':''}`:`全部 ${H} 皆未${wd} ${R.v}${pct}`;}
  const sc=A.statC.findIndex(Boolean);
  if(sc>0){const n={good:0,prog:0,risk:0};for(let r=h0;r<rows.length;r++){const s=statusOf(cell(r,sc));if(s in n)n[s]++;}
   const parts=[];if(n.good)parts.push(`${n.good} 項完成`);if(n.prog)parts.push(`${n.prog} 項進行中`);if(n.risk)parts.push(`${n.risk} 項有風險`);

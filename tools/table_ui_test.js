@@ -1,5 +1,5 @@
 const puppeteer=require('puppeteer-core');const fs=require('fs');const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const URL=process.argv[2]||'http://localhost:8765/studio.html';const OUT=process.argv[3]||'/tmp/r6/ui';fs.mkdirSync(OUT,{recursive:true});
+const URL=process.argv[2]||'http://localhost:8765/studio.html';const OUT=process.argv[3]||'/tmp/r7/ui';fs.mkdirSync(OUT,{recursive:true});
 const paste=(pg,txt)=>pg.evaluate(t=>{const dt=new DataTransfer();dt.setData('text/plain',t);document.body.dispatchEvent(new ClipboardEvent('paste',{clipboardData:dt,bubbles:true}));},txt);
 const PL="\t3Q25\t2Q25\t3Q24\tQoQ\tYoY\n營業收入淨額\t989.9\t933.8\t759.7\t+6.0%\t+30.3%\n毛利率\t59.5%\t58.6%\t57.8%\t+0.9 ppts\t+1.7 ppts\n營業費用\t(88.2)\t(85.5)\t(75.6)\t+3.2%\t+16.7%\n稅後淨利\t452.3\t398.3\t325.3\t+13.6%\t+39.0%\n每股盈餘（元）\t17.44\t15.36\t12.54\t+13.6%\t+39.1%";
 const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\t提前 3 天\nAOI 誤判改善\t林志豪\t風險\t資料量不足\nSPC 上線\t張家瑋\t進行中\t已完成 60%";
@@ -91,6 +91,27 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
   await pg.evaluate(()=>{navigator.clipboard.write=async()=>{};});await pg.click('#tCopy');await sleep(300);
   ck('copy html has dot span',/●/.test(await pg.evaluate(()=>window.__studio.lastTableHtml)));
   await ctx.close();}
+ // R7：1440 工具列一行、不蓋鄰列；建議標題提示不蓋外觀鈕；表格近看；展開編輯
+ {const ctx=await b.createBrowserContext();const pg=await ctx.newPage();await pg.setViewport({width:1440,height:900});await pg.goto(URL,{waitUntil:'networkidle0'});await sleep(500);await pg.click('#tabs button[data-tab="table"]');await sleep(700);
+  await pg.select('#tSample','status').catch(()=>{});await sleep(700);
+  await pg.click('#tPrev .tc[data-r="2"][data-c="3"]');await sleep(400);
+  const cp=await pg.evaluate(()=>{const m=document.querySelector('#tChip').getBoundingClientRect();const rr=r=>{const e=document.querySelector(`#tPrev .tc[data-r="${r}"]`);return e?e.getBoundingClientRect():null;};const ov=[1,2,3].map(rr).filter(Boolean).some(r=>!(m.bottom<=r.top+1||m.top>=r.bottom-1));return{h:Math.round(m.height),ov,n:document.querySelectorAll('#tChip > button, #tChip .tseg > button').length};});
+  ck('1440 chip one row, ≤6 buttons, not over rows 1–3 '+JSON.stringify(cp),cp.h<=60&&!cp.ov&&cp.n<=6);await pg.screenshot({path:`${OUT}/d-chip-status.png`});
+  await pg.click('#tChip button[data-a="more"]');await sleep(300);ck('⋯ shows more actions',await pg.evaluate(()=>!!document.querySelector('#tChip button[data-a="hs"]')));
+  await pg.keyboard.press('Escape');await sleep(200);
+  await pg.evaluate(()=>{const t=window.__studio;});
+  const sg=await pg.$('#tPrev .tsapply, #tLegend .tsugb');if(sg){await pg.evaluate(()=>{document.querySelector('#tPrev .tslot[data-k="title"]').textContent='';});}
+  await pg.evaluate(()=>{const b=document.querySelector('#tLegend .tsugb')||document.querySelector('#tPrev .tsapply');if(b)b.click();});await sleep(300);
+  const tov=await pg.evaluate(()=>{const t=document.querySelector('#toast').getBoundingClientRect(),l=document.querySelector('#tLStrip').getBoundingClientRect();return !(t.bottom<=l.top||t.top>=l.bottom||t.right<=l.left||t.left>=l.right);});ck('toast not over look buttons',!tov);
+  await ctx.close();}
+ {const ctx=await b.createBrowserContext();const pg=await ctx.newPage();await pg.setViewport({width:1180,height:820});await pg.goto(URL,{waitUntil:'networkidle0'});await sleep(500);await pg.click('#tabs button[data-tab="table"]');await sleep(700);
+  await pg.select('#tSample','cmp').catch(()=>{});await sleep(700);await pg.screenshot({path:`${OUT}/d1180-full.png`});
+  await pg.click('#tView button[data-v="close"]');await sleep(600);const sc=await pg.evaluate(()=>window.__studio.closeScale);ck('表格近看 zooms the table block (×'+sc+')',sc>=1.3);await pg.screenshot({path:`${OUT}/d1180-close.png`});
+  await pg.click('#tPrev .tc[data-r="1"][data-c="1"]');await sleep(300);ck('cell click works in close-up',await pg.evaluate(()=>!document.querySelector('#tChip').hidden));await pg.keyboard.press('Escape');
+  await pg.click('#tView button[data-v="full"]');await sleep(300);
+  await pg.click('#tinsTabs button[data-t="data"], .tinsTabs button[data-t="data"]').catch(()=>{});await sleep(200);await pg.evaluate(()=>{document.querySelector('#tEdit').open=true;});await sleep(200);
+  await pg.click('#tWide');await sleep(400);const ww=await pg.evaluate(()=>document.querySelector('#tEdit').getBoundingClientRect().width);ck('展開編輯 gives a wide editor ('+Math.round(ww)+'px)',ww>=900);await pg.screenshot({path:`${OUT}/d-wide.png`});
+  await pg.click('#tWideDone');await sleep(300);ck('完成 returns to preview',await pg.evaluate(()=>!document.querySelector('#tEdit').classList.contains('wide')));await ctx.close();}
  // 1366x768 / 1440x900: canvas, look picker, copy button visible without scrolling
  for(const vp of [{width:1280,height:720},{width:1366,height:768},{width:1440,height:900}]){const ctx=await b.createBrowserContext();const pg=await ctx.newPage();await pg.setViewport(vp);await pg.goto(URL,{waitUntil:'networkidle0'});await sleep(500);await pg.click('#tabs button[data-tab="table"]');await sleep(800);
   const v=await pg.evaluate(()=>{const vis=sel=>{const r=document.querySelector(sel).getBoundingClientRect();return r.width>0&&r.top>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;};const pr=document.querySelector('#tPrev').getBoundingClientRect(),cv=document.querySelector('#tCanvas').getBoundingClientRect();const fr=Math.max(pr.height/(innerHeight-cv.top-110),pr.width/(cv.width-40));return{f:+fr.toFixed(2),c:vis('#tPrev')&&pr.bottom<=cv.bottom+1&&pr.right<=cv.right+1&&fr>.8,l:vis('#tLStrip'),b:vis('#tCopy')};});
