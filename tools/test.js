@@ -37,11 +37,11 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    const cells=m.slides[0].items.find(i=>i.t==='tbl').cells;const sizes=new Set();cells.forEach(r=>r.forEach(c=>c.runs.forEach(x=>{if(String(x.t).trim()&&x.t!=='●\u2002')sizes.add(x.o.size);})));
    const lowC=[];cells.forEach(r=>r.forEach(c=>{if(String(c.runs.map(x=>x.t).join('')).trim()&&D.contrastOf(c.color,c.fill||'FFFFFF')<4.5)lowC.push(c.color+'/'+(c.fill||'FFFFFF'));}));
    const colours=new Set(t.his.map(h=>h.C));
-   if(m.warns.length||t.his.length!==3||t.ruleHits!==5||!/border:1\.5pt solid/.test(D.tableHtml(m))||(t.his.filter(h=>h.kind!=='warn').some(h=>h.C!==t.his[0].C)||!t.his.some(h=>h.kind==='warn'&&h.C!==t.his[0].C))||[...sizes].some(s=>s*2!==Math.round(s*2))||lowC.length){bad++;why.push(st.id+'/'+lk+'/'+hs+' '+m.warns.join()+' '+lowC.slice(0,2).join());}
+   if(m.warns.length||t.his.length!==4||(t.ruleHits||0)!==0||(t.his.filter(h=>h.kind!=='warn').some(h=>h.C!==t.his[0].C)||!t.his.some(h=>h.kind==='warn'&&h.C!==t.his[0].C))||[...sizes].some(s=>s*2!==Math.round(s*2))||lowC.length){bad++;why.push(st.id+'/'+lk+'/'+hs+' '+m.warns.join()+' '+lowC.slice(0,2).join());}
    if((st.id==='navy'||st.id==='investor')&&hs==='box')await save(`table-r1-${st.id}-${lk}.pptx`,st,{model:m});}
-  ok(!bad,`表格 R1：${n} 種組合（9 風格 × 4 外觀 × 3 重點樣式）都正確：重點同一強調色、警告另用紅、條件 5 格、字級為 0.5pt 倍數、文字對比 ≥ 4.5:1`+(bad?'｜'+why.slice(0,3).join('；'):''));
+  ok(!bad,`表格 R1：${n} 種組合（9 風格 × 4 外觀 × 3 重點樣式）都正確：重點同一強調色、警告另用紅、門檻規則已移除（舊 rules 被忽略）、字級為 0.5pt 倍數、文字對比 ≥ 4.5:1`+(bad?'｜'+why.slice(0,3).join('；'):''));
   const tm=D.tableMarks({his:[{type:'col',i:99},{type:'x'},{type:'cell',r:'1',c:1,color:'<b>'}],rules:[{c:1,op:'DROP',v:'abc',tone:'x',style:'y'}]},3,3);
-  ok(tm.his.length===1&&tm.his[0].color==='auto'&&tm.rules[0].op==='<'&&!Number.isFinite(tm.rules[0].v)&&tm.rules[0].tone==='warn','tableMarks 擋掉非法強調／規則');
+  ok(tm.his.length===1&&tm.his[0].color==='auto'&&!tm.rules.length,'tableMarks 擋掉非法強調／規則');
   // 解析
   ok(D.tNumVal('(86.2)')===-86.2&&D.tNumVal('▼ 4.1')===-4.1&&D.tNumVal('98.5%')===98.5&&D.tNumVal('1,234')===1234&&Number.isNaN(D.tNumVal('OK'))&&D.tNumVal('−3.5')===-3.5,'數值解析：括號負數、▼、%、千分位、U+2212');
   {const a=D.tableAuto([['Lot','Yield','Status','備註'],['A1','95%','Pass','已完成 60%'],['A2','88%','hold','OK'],['A3','91%','Scrap','']]);
@@ -78,6 +78,16 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    ok(old.tbLook==='card'&&old.tbCard==='grey'&&old2.tbLook==='clean'&&old3.tbLook==='card','舊外觀（灰底面板／極簡／tbPanel）自動轉成新外觀');
    const tr=D.trayModel([{kind:'table',params:Object.assign({},nav,{tbLook:'panel',tbHiColor:'alert',tbHiMode:'box'}),table:Y,name:'良率（舊快照）'},{kind:'table',params:Object.assign({},nav,{tbLook:'minimal'}),table:{rows:[['a','b'],['1','2']]},name:'極簡'},{kind:'el',params:wine,key:'annot',gi:3,name:'標註'}]);await save('tray-marks.pptx',nav,{model:tr});ok(tr.tray.n===3,'待選素材：舊表格快照（灰底面板／極簡）仍可重建＋標註');}
   // 四個驗收案例（LibreOffice 也會畫）
+  // R9：第一欄表頭、儲存格邊界、預設微軟正黑體、重點不再限 3 個
+  {const C=require('./table-cases.js');const base=Object.assign({},C.pl||C.plT);
+   const hc=D.buildModel(nav,{table:Object.assign({},base,{hcol:true})});const it=hc.slides[0].items.find(i=>i.t==='tbl');
+   ok(it.cells.slice(1).every(r=>r[0].bold&&r[0].fill)&&hc.slides[0].table.hcol&&!hc.slides[0].table.orphans.length,'第一欄為表頭：首欄粗體＋淡底');
+   const pn=D.buildModel(Object.assign({},nav,{tbPad:'none'}),{table:base}),pl=D.buildModel(Object.assign({},nav,{tbPad:'l'}),{table:base});const c0=pn.slides[0].items.find(i=>i.t==='tbl').cells[1][1],c1=pl.slides[0].items.find(i=>i.t==='tbl').cells[1][1];
+   ok(c0.mL===0&&c0.mR===0&&c1.mL>8,'儲存格邊界：無＝0、大＞中（'+c1.mL+'pt）');
+   ok(D.BASE.tbFont==='jh'&&it.cells[1][0].runs[0].o.font==='Microsoft JhengHei','預設表格字型＝微軟正黑體');
+   ok(D.sanitizeParams(Object.assign({},nav,{tbPad:'l'}),nav).tbPad==='l','tbPad 參數保留');
+   const many=D.buildModel(nav,{table:Object.assign({},base,{his:[1,2,3,4,5].map(i=>({type:'row',i,kind:'focus'}))})});ok(many.slides[0].table.his.length===5,'重點可超過 3 個（'+many.slides[0].table.his.length+'）');
+   const r=await D.exportPptx(env,nav,{type:'nodebuffer',model:hc});fs.writeFileSync(path.join(OUT,'tbl-hcol.pptx'),r.data);files.push(path.join(OUT,'tbl-hcol.pptx'));}
   // R8：壓力範例 12/16/20 列（長中文表頭與內文、% 與負數、多行註腳）× 4 外觀 × 3 密度 × S/M/L × 9 風格
   {const C=require('./table-cases.js');let bad=[];for(const st of D.PRESETS)for(const k of ['s12','s16','s20'])for(const lk of ['clean','band','card','zebra'])for(const dn of ['comfy','normal','dense'])for(const size of ['S','M','L']){const m=D.buildModel(Object.assign({},st,{tbLook:lk,tbDense:dn,size}),{table:C[k]});const tb=m.slides[0].table;const bot=Math.max(...m.slides[0].items.map(i=>i.y+i.h));
     if(tb.orphans.length||tb.fs<10||bot>7.5-.15||tb.tx+tb.tW>13.333-.4||m.warns.some(w=>/放不下|太寬/.test(w)))bad.push(st.id+k+lk+dn+size);}
@@ -93,7 +103,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    const free=D.buildModel(nav,{table:C.cmp});ok(free.slides[0].table.orphans.length===0&&!cmpHdr(free).some(t=>/\n/.test(t)),'方案比較：有空間時表頭一行（方案 A：自建 不折行）');
    const tight=D.buildModel(Object.assign({},nav,{tbWidth:'compact'}),{table:Object.assign({},C.cmp,{cw:[1.2,.5,.5,.5]})}).slides[0].table;ok(tight.orphans.length===0&&tight.colW[1]>=tight.colMin[1]-1e-6,'窄欄：最小欄寬＝語意兩行寬，不留孤字');
    const H=D.buildModel(Object.assign({},nav,{tbWidth:'compact'}),{table:Object.assign({},C.cmp,{cw:[1.2,.5,.5,.5]})});const hc=H.slides[0].items.find(i=>i.t==='tbl').cells[0][1].runs.map(x=>x.t);ok(hc.length>=2&&/：$/.test(hc[0].trim()),'語意斷行：在「：」後斷（'+hc.join(' / ')+'）');
-   ok(D.tableTitleSuggest({rows:[['機台','WK41 良率'],['EQ-01','95.1%'],['EQ-02','86.9%'],['EQ-03','93.0%']],rules:[{c:1,op:'<',v:90}]})==='EQ-02 WK41 良率 86.9%，低於門檻','自然標題：單筆門檻命中');
+   {const t9=D.tableTitleSuggest({rows:[['機台','WK41 良率'],['EQ-01','95.1%'],['EQ-02','86.9%'],['EQ-03','93.0%']],rules:[{c:1,op:'<',v:90}]});ok(/86\.9%/.test(t9)&&!/門檻/.test(t9),'舊快照含門檻規則：標題改用極值、不再提門檻（'+t9+'）');}
    const sm=D.buildModel(nav,{table:{rows:[['項目','值'],['A','1'],['B','2']]}}).slides[0].table;ok(sm.fs>=16,'小表自動放大到可讀字級（'+sm.fs+'pt）');}
   // R6：建議標題去單位、縮短列名、≤ 約 24 字
   {const C=require('./table-cases.js');const s=D.tableTitleSuggest(Object.assign({},C.stress,{rules:[],his:[]}));const VL=x=>[...x].reduce((n,ch)=>n+(/[\u0000-\u024f]/.test(ch)?.55:1),0);
@@ -130,7 +140,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    const lg=D.buildModel(nv,{table:Object.assign({},C.pl,{his:[{type:'col',i:1,kind:'rec'},{type:'col',i:2}]})}).slides[0].items.find(i=>i.name==='圖例');ok(lg&&/推薦/.test(D.textOf(lg))&&/重點/.test(D.textOf(lg)),'兩種以上意義 → 註腳列有圖例');
    const fn=D.shortName('3Q25 稅後淨利 452.3，QoQ +13.6%、YoY +39.0%');ok([...fn].length<=20&&!/[，、%+\s]/.test(fn),'檔名：去標點、≤ 20 字（'+fn+'）');
    const prev=Object.assign({},C.yield,{keep:true,rules:[{c:2,op:'<',v:90,tone:'warn',style:'text'}],his:[{type:'col',i:2,kind:'rec'}],unit:'U',note:'N'});
-   const nx=D.tableFromPaste([['Lot','Yield%','Station'],['B1','80%','CMP']],prev);ok(nx.rules.length===1&&nx.rules[0].c===1&&nx.his[0].i===1&&nx.unit==='U','套用上次樣式：依欄名帶入門檻／重點／單位');
+   const nx=D.tableFromPaste([['Lot','Yield%','Station'],['B1','80%','CMP']],prev);ok(nx.his[0].i===1&&nx.unit==='U','套用上次樣式：依欄名帶入門檻／重點／單位');
    ok(!D.tableFromPaste([['Lot','Yield%'],['B1','80%']],Object.assign({},prev,{keep:false})).rules.length,'未勾選套用上次樣式：照常重設');
    const lt=D.buildModel(nv,{table:Object.assign({},C.pl,{title:'3Q25 稅後淨利 452.3 億元，QoQ +13.6%、YoY +39.0%，營收與毛利率雙雙創下歷史新高，第四季展望持續樂觀'})}).slides[0].items.find(i=>i.name==='表格標題');const tl=D.textOf(lt).split('\n');
    ok(tl.length===2&&lt.tx.size<=20&&Math.abs(D.tw(tl[0],20)-D.tw(tl[1],20))<=D.tw(tl[0],20)*.35&&!/[0-9.%]$/.test(tl[0])||tl.length===1,'長標題：降到 20pt 並平衡斷成兩行（寬 '+tl.map(x=>D.tw(x,20).toFixed(1)).join('/')+'"）');}

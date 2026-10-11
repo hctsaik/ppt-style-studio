@@ -100,7 +100,7 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
   for(const rr of [5,1]){await pg.click(`#tPrev .tc[data-r="${rr}"][data-c="1"]`);await sleep(350);
    const o=await pg.evaluate(()=>{const m=document.querySelector('#tChip').getBoundingClientRect();return [...document.querySelectorAll('#tPrev .tc')].some(e=>{const r=e.getBoundingClientRect();return !(m.bottom<=r.top+1||m.top>=r.bottom-1||m.right<=r.left+1||m.left>=r.right-1);});});ck('docked toolbar never overlays any cell (row '+rr+')',!o);}
   await pg.screenshot({path:`${OUT}/d-dock.png`});
-  ck('panel mirrors selection details',await pg.evaluate(()=>!!document.querySelector('#tSelPanel button[data-a="hs"]')));
+  ck('R9: panel has no duplicate selection controls; popup is primary',await pg.evaluate(()=>!document.querySelector('#tSelPanel button')&&!document.querySelector('#tPop').hidden));
   await pg.click('#tChip button[data-a="more"]');await sleep(300);ck('⋯ shows more actions',await pg.evaluate(()=>!!document.querySelector('#tChip button[data-a="hs"]')));
   await pg.keyboard.press('Escape');await sleep(200);
   await pg.mouse.move(5,5);await sleep(250);const ph=await pg.evaluate(()=>{const el=document.querySelector('#tPrev .tslot.empty');const pin=document.querySelector('#tPrev .tpin');return {c:el?getComputedStyle(el,'::before').color:'none',b:el?getComputedStyle(el).borderTopColor:'',pin:pin?getComputedStyle(pin).opacity:'1'};});
