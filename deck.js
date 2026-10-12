@@ -1187,6 +1187,7 @@ function tableAuto(rows,T){const nC=Math.max(0,...rows.map(r=>r.length));const c
  const statC=Array.from({length:nC},(_,c)=>c>0&&!numC[c]&&colStat(c,t=>!!statusOf(t)));
  const key=[];rows.forEach((r,ri)=>{if(ri>=h0&&!section[ri]&&T_SUM.test(cell(ri,0)))key.push(ri);});
  if(T&&T.lastTotal&&rows.length-1>=h0+1&&!key.includes(rows.length-1))key.push(rows.length-1);
+ if(T&&T.lastTotal===false&&key.includes(rows.length-1))key.splice(key.indexOf(rows.length-1),1);
  const kind=numC.filter(Boolean).length>=Math.max(1,(nC-1)/2)?'number':statC.some(Boolean)?'status':'text';
  return{nC,head,numC,statC,section,key,kind};}
 // 數字格式：拆成 前綴／正負／貨幣／數字／單位 → 依設定重組
@@ -1255,15 +1256,17 @@ function tableTitleSuggest(T){const rows=(T.rows||[]).filter(r=>r&&r.some(c=>Str
    const VL=s=>[...s].reduce((n,ch)=>n+(/[\u0000-\u024f]/.test(ch)?.55:1),0);let out=`${H} ${low?'最低':'最高'}：${lab}${l2?' '+l2:''} ${V}`.replace(/\s+/g,' ').trim();if(VL(out)>24)out=`${H} ${low?'最低':'最高'}：${lab} ${V}`.replace(/\s+/g,' ').trim();
    if(VL(out)>24)out=`${low?'最低':'最高'}：${lab} ${V}`;return out;}}
  return h0&&hdr(0)?`${hdr(0)} 一覽`:'';}
-function tableFromPaste(rows,prev){prev=prev||{};const S=tableSuggest(rows);const keepTitle=!!prev.pin&&!!prev.title;
- const his=S.period!=null&&S.kind==='number'?[{type:'col',i:S.period,color:'auto'}]:[];
- const out={rows,title:keepTitle?prev.title:'',pin:keepTitle,unit:'',note:'',his,rules:[],bold:S.auto.key,align:{},fmt:{},header:'auto',cw:null,hiStyle:prev.hiStyle||null,keep:!!prev.keep};
- // 套用上次樣式：依「欄名」把門檻、欄重點、欄格式、對齊、單位／註腳帶過來（欄名對不上的就不帶）
- if(prev.keep&&Array.isArray(prev.rows)&&prev.rows[0]){const oh=prev.rows[0].map(x=>String(x).trim()),nh=(rows[0]||[]).map(x=>String(x).trim());const map=c=>{const n=oh[c];if(!n)return -1;return nh.indexOf(n);};
+function tableFromPaste(rows,prev){prev=prev||{};const S=tableSuggest(rows);const keep=prev.keep!==false;const keepTitle=(keep||!!prev.pin)&&!!prev.title;
+ const his=S.period!=null&&S.kind==='number'?[{type:'col',i:S.period,color:'auto'}]:[];const nR=rows.length;
+ // 表頭／合計：自動判斷的結果直接寫進狀態（核取方塊＝唯一真相）
+ const out={rows,title:keepTitle?prev.title:'',pin:keepTitle&&!!prev.pin,unit:'',note:'',his,rules:[],bold:S.auto.key,align:{},fmt:{},header:!!S.auto.head,lastTotal:S.auto.key.includes(nR-1),hcol:!!prev.hcol,cw:null,hiStyle:prev.hiStyle||null,keep};
+ // 沿用目前樣式（預設開）：依「欄名」對應；欄名對不上但欄數相同時依位置對應
+ if(keep&&Array.isArray(prev.rows)&&prev.rows[0]){const oh=prev.rows[0].map(x=>String(x).trim()),nh=(rows[0]||[]).map(x=>String(x).trim());const same=oh.length===nh.length;
+  const map=c=>{const n=oh[c];const j=n?nh.indexOf(n):-1;if(j>=0)return j;return same&&c<nh.length?c:-1;};
   out.rules=(prev.rules||[]).map(r=>{const c=map(r.c);return c>0?Object.assign({},r,{c}):null;}).filter(Boolean);
   const hs=(prev.his||[]).filter(h=>h.type==='col').map(h=>{const i=map(h.i);return i>=0?Object.assign({},h,{i}):null;}).filter(Boolean);if(hs.length)out.his=hs;
   const mv=o=>{const r={};Object.entries(o||{}).forEach(([c,v])=>{const j=map(+c);if(j>=0)r[j]=v;});return r;};out.fmt=mv(prev.fmt);out.align=mv(prev.align);
-  out.unit=prev.unit||'';out.note=prev.note||'';}
+  out.unit=prev.unit||'';out.note=prev.note||'';if(prev.legend)out.legend=prev.legend;}
  return out;}
 /* v10 表格強調（最多 3 個：欄／列／單格，各自選色）＋條件規則（最多 3 條：數字欄 比較 值 → 上色）。
    T.his=[{type:'col'|'row'|'cell',i,r,c,color:'auto'|'P'|'A'|'alert'}]；舊版 T.hi={type,i} 自動轉換。

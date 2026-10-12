@@ -51,8 +51,9 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
   await pg.click('.tsteps .stp[data-go="hi"]');await sleep(300);await pg.screenshot({path:`${OUT}/d-insp-hi.png`});
   ck('R10: only 3 tabs/steps (no ④格式)',await pg.evaluate(()=>document.querySelectorAll('.tinsTabs button').length===3&&document.querySelectorAll('.tsteps .stp').length===3&&!document.querySelector('[data-sec="fmt"]')&&!!document.querySelector('.tsec[data-sec="look"] #tCwReset')));
   // paste P&L -> reset title/rules/his ; period col highlighted
+  ck('沿用目前樣式 預設勾選',await pg.evaluate(()=>document.querySelector('#tKeep').checked));await pg.evaluate(()=>{const k=document.querySelector('#tKeep');if(k.checked)k.click();});
   await paste(pg,PL);await sleep(800);const t=await pg.evaluate(()=>window.__studio.table);
-  ck('paste resets title/unit/note/rules',t.title===''&&t.unit===''&&t.note===''&&t.rules.length===0);
+  ck('paste (沿用 off) resets title/unit/note/rules',t.title===''&&t.unit===''&&t.note===''&&t.rules.length===0);
   ck('newest period auto-highlight (3Q25)',t.his.length===1&&t.his[0].i===1);
   ck('summary rows detected (淨利, EPS)',JSON.stringify(t.auto.key)==='[4,5]');
   await pg.screenshot({path:`${OUT}/d-paste-pl.png`});
@@ -73,7 +74,7 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
   // R2: suggestion, canvas highlight list, undo/redo, width option, output bar visible
   await paste(pg,PL);await sleep(700);
   ck('R9b: no suggested-title / 套用 / 📌 buttons; suggestion kept as ghost text',await pg.evaluate(()=>!document.querySelector('.tsugb,.tsapply,.tpin,#tPrev button')&&!!document.querySelector('.tslot[data-k="title"]').dataset.ph));
-  await pg.click('.tsugb');await sleep(400);const tt2=await pg.evaluate(()=>window.__studio.table.title);ck('apply suggested title: '+tt2,/3Q25/.test(tt2));
+  await pg.evaluate(()=>{const b=document.querySelector('.tsugb');if(b)b.click();});await sleep(400);const tt2=await pg.evaluate(()=>window.__studio.table.title);ck('apply suggested title: '+tt2,/3Q25/.test(tt2));
   ck('visible 套用 button for suggested title',await pg.evaluate(()=>!!document.querySelector('#tPrev .tsapply')||!!window.__studio.table.title));
   ck('no overlay pill/badge on canvas',await pg.evaluate(()=>!document.querySelector('#tPrev .tsug,#tPrev .tbadge,#tPrev .thl')));
   ck('canvas highlight list',await pg.evaluate(()=>document.querySelectorAll('#tLegend [data-rmh]').length===1));

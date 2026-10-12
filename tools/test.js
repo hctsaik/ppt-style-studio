@@ -65,9 +65,12 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    const s3=D.tableSuggest([['','3Q25','2Q25','QoQ'],['營收','989.9','933.8','+6.0%'],['毛利率','59.5%','58.6%','+0.9 ppts']]);ok(s3.period===1&&(s3.rule.c!==3||s3.rule.v===0),'財報表：最新期別欄＝3Q25；變化欄門檻＝0');}
   // 貼上重設
   {const prev={rows:[['a','b'],['1','2']],title:'舊標題',unit:'單位：新台幣十億元（EPS 除外）',note:'舊註',his:[{type:'col',i:1}],rules:[{c:1,op:'<',v:1}],pin:false};
-   const n1=D.tableFromPaste([['項目','狀態'],['A','完成']],prev);ok(n1.title===''&&n1.unit===''&&n1.note===''&&!n1.his.length&&!n1.rules.length,'新貼上：標題／單位／註腳／重點／門檻全部重設');
-   const n2=D.tableFromPaste([['項目','狀態'],['A','完成']],Object.assign({},prev,{pin:true}));ok(n2.title==='舊標題'&&n2.unit==='','📌 釘住標題：只保留標題');
-   const n3=D.tableFromPaste([['','3Q25','2Q25'],['營收','989.9','933.8'],['淨利','452.3','398.3']],prev);ok(n3.his.length===1&&n3.his[0].i===1&&JSON.stringify(n3.bold)==='[2]','財報表貼上：自動把最新期別欄設為重點、合計列加粗');}
+   const n1=D.tableFromPaste([['項目','狀態'],['A','完成']],Object.assign({},prev,{keep:false}));ok(n1.title===''&&n1.unit===''&&n1.note===''&&!n1.his.length&&!n1.rules.length,'關閉沿用目前樣式：標題／單位／註腳／重點／門檻全部重設');
+   const n2=D.tableFromPaste([['項目','狀態'],['A','完成']],Object.assign({},prev,{pin:true,keep:false}));ok(n2.title==='舊標題'&&n2.unit==='','📌 釘住標題：只保留標題');
+   const n0=D.tableFromPaste([['項目','狀態'],['A','完成']],prev);ok(n0.title==='舊標題'&&n0.unit===prev.unit&&n0.keep===true,'沿用目前樣式預設開：保留標題／單位');
+   const pa=[['2026 Q3 各廠良率','',''],['單位：%','',''],['廠區','7月','8月'],['F12','95.2','96.1'],['合計','93.1','94.2']];const n4=D.tableFromPaste(pa.map(r=>r.slice()),{});ok(JSON.stringify(n4.rows)===JSON.stringify(pa)&&n4.lastTotal===true&&JSON.stringify(n4.bold)==='[4]','貼上照原樣：不抽標題／單位列；合計自動偵測→lastTotal 勾起');
+   ok(D.tableAuto([['a','b'],['x','1'],['合計','2']],{lastTotal:false}).key.length===0,'取消勾「最後一列是合計」：不再自動加粗');
+   const n3=D.tableFromPaste([['','3Q25','2Q25'],['營收','989.9','933.8'],['淨利','452.3','398.3']],Object.assign({},prev,{keep:false}));ok(n3.his.length===1&&n3.his[0].i===1&&JSON.stringify(n3.bold)==='[2]','財報表貼上：自動把最新期別欄設為重點、合計列加粗');}
   // 版面
   {const R5=[['a','b','c','d','e'],['1','2','3','4','5']];const m=D.buildModel(Object.assign({},nav,{tbWidth:'fill'}),{table:{title:'T',unit:'U',rows:R5}}).slides[0].table;const m2=D.buildModel(Object.assign({},nav,{tbH:'left'}),{table:{rows:[['a','b'],['1','2']]}}).slides[0].table;
    ok(m.tW>11.3&&m.tW<=12.14&&m.tx>=.6&&m.tx<1&&m2.tW<9&&Math.abs(m2.tx-.6)<.001,`版面：填滿＝12.13" 靠左 x0.6；自動＝依內容寬、小表靠左對齊標題（${m.tW.toFixed(2)}／${m2.tW.toFixed(2)}）`);
@@ -155,8 +158,8 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    const lg=D.buildModel(nv,{table:Object.assign({},C.pl,{his:[{type:'col',i:1,kind:'rec'},{type:'col',i:2}]})}).slides[0].items.find(i=>i.name==='圖例');ok(lg&&/推薦/.test(D.textOf(lg))&&/重點/.test(D.textOf(lg)),'兩種以上意義 → 註腳列有圖例');
    const fn=D.shortName('3Q25 稅後淨利 452.3，QoQ +13.6%、YoY +39.0%');ok([...fn].length<=20&&!/[，、%+\s]/.test(fn),'檔名：去標點、≤ 20 字（'+fn+'）');
    const prev=Object.assign({},C.yield,{keep:true,rules:[{c:2,op:'<',v:90,tone:'warn',style:'text'}],his:[{type:'col',i:2,kind:'rec'}],unit:'U',note:'N'});
-   const nx=D.tableFromPaste([['Lot','Yield%','Station'],['B1','80%','CMP']],prev);ok(nx.his[0].i===1&&nx.unit==='U','套用上次樣式：依欄名帶入門檻／重點／單位');
-   ok(!D.tableFromPaste([['Lot','Yield%'],['B1','80%']],Object.assign({},prev,{keep:false})).rules.length,'未勾選套用上次樣式：照常重設');
+   const nx=D.tableFromPaste([['Lot','Yield%','Station'],['B1','80%','CMP']],prev);ok(nx.his[0].i===1&&nx.unit==='U','沿用目前樣式：依欄名帶入門檻／重點／單位');
+   ok(!D.tableFromPaste([['Lot','Yield%'],['B1','80%']],Object.assign({},prev,{keep:false})).rules.length,'關閉沿用目前樣式：照常重設');
    const lt=D.buildModel(nv,{table:Object.assign({},C.pl,{title:'3Q25 稅後淨利 452.3 億元，QoQ +13.6%、YoY +39.0%，營收與毛利率雙雙創下歷史新高，第四季展望持續樂觀'})}).slides[0].items.find(i=>i.name==='表格標題');const tl=D.textOf(lt).split('\n');
    ok(tl.length===2&&lt.tx.size<=20&&Math.abs(D.tw(tl[0],20)-D.tw(tl[1],20))<=D.tw(tl[0],20)*.35&&!/[0-9.%]$/.test(tl[0])||tl.length===1,'長標題：降到 20pt 並平衡斷成兩行（寬 '+tl.map(x=>D.tw(x,20).toFixed(1)).join('/')+'"）');}
   {const C=require('./table-cases.js');const nv=D.PRESETS[0];const tb=(p,T)=>{const m=D.buildModel(Object.assign({},nv,p),{table:T});return {m,t:m.slides[0].table};};
