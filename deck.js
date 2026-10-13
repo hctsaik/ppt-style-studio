@@ -73,7 +73,7 @@ const LANG_OF={card:{outline:'白底外框',gray:'淺灰實心',soft:'白底無�
  chain:{chev:'漸層 V 形箭號',hex:'六角形鏈',gray:'灰卡＋▶',outline:'細框方塊',hairchev:'空心線框 V 形',home:'五邊形箭號',pill:'膠囊鏈',block:'區塊 V 形'}};
 function langOf(p){return{card:LANG_OF.card[p.card]+(p.card==='outline'?' '+p.cardLW+'pt':'')+(p.sh?'＋陰影':''),tag:LANG_OF.tag[p.tag],badge:LANG_OF.badge[p.badge],sep:LANG_OF.sep[p.sep],
  conn:p.cnW+'pt '+({solid:'實線',sysDot:'點線',sysDash:'虛線',dash:'長虛線'}[p.cnDash]||'')+({triangle:'＋三角箭頭',arrow:'＋開放箭頭',stealth:'＋燕尾箭頭',oval:'＋圓點',none:''}[p.cnHead]||''),chain:LANG_OF.chain[p.chain]};}
-const SLIDES=[['catalog','元件總表'],['patterns','常見組合'],['patterns2','常見組合（二）'],['flex','可調數量'],['rca','原因分析'],['annot','標註'],['icons','圖示庫'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['asis','版型｜As Was／To Be'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
+const SLIDES=[['catalog','元件總表'],['patterns','常見組合'],['patterns2','常見組合（二）'],['flex','可調數量'],['rca','原因分析'],['annot','標註'],['icons','圖示庫'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['asis','版型｜As Was／To Be'],['labels','標籤元件'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
 
 /* ---------- 文字寬度估算（Node 端排版檢查用；瀏覽器預覽改用 canvas 實測） ---------- */
 function tw(str,size){let u=0;for(const ch of String(str)){const c=ch.codePointAt(0);
@@ -185,7 +185,7 @@ function buildModel(params,opt){
  function icon(id,x,y,s,o){o=o||{};if(!ICONS||!ICONS.BY[id])return{};const ic=ICONS.BY[id];const variant=o.variant||st.icVar||'line';
   const fg0=o.color||ICC(o.tone||st.icColor);const g=ICONS.geom(variant,ICONS.weightOf(st));let fg=fg0,bg=null;
   if(g.circle){bg=oval(x,y,s,s,{fill:variant==='solid'?fg0:mix(fg0,'FFFFFF',.86),name:'圖示底圓'});if(variant==='solid')fg='FFFFFF';}
-  const glyph=el('custGeom',x,y,s,s,{points:ICONS.points(id,s,g.k,g.off,g.wt),fill:fg,name:'圖示 '+ic.zh});
+  const glyph=el('custGeom',x,y,s,s,{points:ICONS.points(id,s,g.k,g.off,g.wt),fill:fg,name:'圖示 '+ic.zh});glyph.ic={id,variant,wt:ICONS.weightOf(st)};
   return{bg,glyph};}
  /* ---------- 版面骨架 ---------- */
  function canvas(){if(st.canvas)box(.25,.25,W-.5,H-.5,{fill:st.canvasColor,r:.06,name:'畫布面板'});}
@@ -770,6 +770,60 @@ function buildModel(params,opt){
   ['① 釐清目的','② 拆解結構','③ 重新組合','④ 檢查一致'].forEach((t,i)=>txt(cx[2],y0+.65+i*.42,1.8,.34,t,{size:14,color:i===0?G.ink:G.t2,bold:i===0}));
   ['過濾數據','確認關係','產出圖表'].forEach((t,i)=>txt(cx[2]+2.0,y0+.65+i*.42,1.79,.34,'①②③'[i]+' '+t,{size:12,color:G.t2}));
   note(cx[2],y0+2.45,cw,'※ 清單 3–5 項最易記',{h:.28});};
+
+ /* ---------- 標籤元件（v10）：左＝圖示或 1–3 字短字（01／重點／A），右＝標籤文字；全部原生圖形、文字可編輯、圖示可在「改字」換 ---------- */
+ SL.labels=()=>{title('標籤元件 Labels','左側放圖示或短字（01／重點／A），右側放標籤文字；選取後按「改字」換字或換圖示');
+  const W2='FFFFFF',PR=st.r>0?Math.min(st.r,.08):0,onC=c=>lum(c)>.55?G.ink:W2,AC=HASA?A:PD;
+  const cw=3.85,gx=(CW-3*cw)/2,cx=[0,1,2].map(i=>X0+i*(cw+gx)),ry=[2.0,3.12,4.24,5.36],h=.46,s=.46,LT=LS(13),cs=Math.max(7.5,st.nSize-2);
+  const cap=(x,y,t)=>txt(x,y+.56,cw,.22,t,{size:cs,color:G.mute,name:'圖說'});
+  const glyph=(id,x,y,d,c)=>icon(id,x,y,d,{variant:'line',color:c});
+  const lab=(x,y,w,t,o)=>box(x,y,w,h,Object.assign({text:t,size:LT,bold:st.lBold,color:G.ink,align:'left',margin:[10,6,0,0],name:'標籤文字'},o||{}));
+  const cell=(c,r,zh,fn)=>{const x=cx[c],y=ry[r];grp(zh.split('｜')[1].split(' ')[0],()=>fn(x,y));cap(x,y,zh);};
+  // A 方塊圖示＋灰條
+  cell(0,0,'A｜方塊圖示＋灰條 Icon block',(x,y)=>{lab(x+s-.02,y,2.75,[{t:'立即購買'},{t:'  BUY',s:Math.max(8,LS(9)),b:0,c:G.mute,f:nf}],{fill:GF,r:PR,margin:[11,6,0,0]});
+   box(x,y,s,h,{fill:P,r:PR,sh:'small',name:'圖示方塊'});glyph('shopping_cart',x+(s-.28)/2,y+(h-.28)/2,.28,W2);});
+  // B 方塊短字＋灰條
+  cell(0,1,'B｜方塊短字＋灰條 Number block',(x,y)=>{lab(x+s-.02,y,2.75,[{t:'市場分析'},{t:'  Market',s:Math.max(8,LS(9)),b:0,c:G.mute,f:nf}],{fill:GF,r:PR,margin:[11,6,0,0]});
+   box(x,y,s,h,{fill:P,r:PR,sh:'small',text:'01',size:LS(13),bold:1,color:W2,font:nf,margin:0,name:'短字方塊'});});
+  // C 深色膠囊＋圓形圖示徽章＋箭頭
+  cell(0,2,'C｜深色膠囊＋圖示徽章 Capsule',(x,y)=>{const w=3.0,d=.34;box(x,y,w,h,{fill:G.ink,r:'full',sh:'small',text:'重點摘要',size:LT,bold:1,color:W2,align:'left',margin:[(d+.2)*72,.36*72,0,0],name:'膠囊標籤'});
+   circ(x+.06+d/2,y+h/2,d,{fill:W2,name:'圖示徽章'});glyph('lightbulb',x+.06+(d-.22)/2,y+(h-.22)/2,.22,P);
+   el('chevron',x+w-.25,y+h/2-.075,.08,.15,{fill:mix(G.ink,'FFFFFF',.6),adj:.05,name:'箭頭'});});
+  // D 外框膠囊＋編號徽章
+  cell(0,3,'D｜外框膠囊＋編號 Numbered pill',(x,y)=>{const w=3.0,d=.34;box(x,y,w,h,{fill:W2,line:G.line,lw:1,r:'full',text:'對齊期待',size:LT,bold:st.lBold,color:G.ink,align:'left',margin:[(d+.2)*72,.36*72,0,0],name:'膠囊標籤'});
+   circ(x+.06+d/2,y+h/2,d,{fill:P,text:'1',size:LS(11),bold:1,color:W2,font:nf,margin:0,name:'編號徽章'});
+   el('chevron',x+w-.25,y+h/2-.075,.08,.15,{fill:G.mute,adj:.05,name:'箭頭'});});
+  // E 頁籤 Tab
+  cell(1,0,'E｜頁籤 Tab header',(x,y)=>{const tw1=1.62,tw2=1.12;ln(x,y+h,x+cw,y+h,{c:P,w:1.5});
+   topRound(x,y,tw1,h,Math.min(.08,PR||.06),{fill:P,name:'頁籤'});glyph('analytics',x+.12,y+(h-.26)/2,.26,W2);txt(x+.44,y,tw1-.5,h,'數據總覽',{size:LT,bold:1,color:W2,valign:'middle',name:'標籤文字'});
+   topRound(x+tw1+.06,y+.06,tw2,h-.06,Math.min(.08,PR||.06),{fill:GF,name:'頁籤'});txt(x+tw1+.06,y+.06,tw2,h-.06,'明細',{size:LS(12),color:G.t2,align:'center',valign:'middle',name:'標籤文字'});});
+  // F 箭頭旗標
+  cell(1,1,'F｜箭頭旗標 Arrow flag',(x,y)=>{const w=3.0,s2=.62;el('homePlate',x+s2-.02,y,w-s2+.02,h,{fill:P,adj:.2,text:'先做這一步',size:LT,bold:1,color:W2,align:'left',margin:[10,16,0,0],sh:'small',name:'標籤文字'});
+   box(x,y,s2,h,{fill:PD,r:PR,text:'重點',size:LS(12),bold:1,color:W2,margin:0,name:'短字方塊'});});
+  // G 缺口旗標
+  cell(1,2,'G｜缺口旗標 Notched ribbon',(x,y)=>{const w=3.0,n=.16,bx=x+s-.02;path([[bx,y],[x+w,y],[x+w-n,y+h/2],[x+w,y+h],[bx,y+h]],{close:true,fill:PTn,name:'旗標底'});
+   txt(bx+.14,y,w-s-.3,h,'里程碑 Milestone',{size:LT,bold:st.lBold,color:P,valign:'middle',name:'標籤文字'});
+   box(x,y,s,h,{fill:P,r:PR,name:'圖示方塊'});glyph('flag',x+(s-.28)/2,y+(h-.28)/2,.28,W2);});
+  // H 外框版
+  cell(1,3,'H｜外框版 Outlined',(x,y)=>{lab(x+s-.01,y,2.75,'持續改善',{fill:W2,line:G.line,lw:1,r:PR,margin:[11,6,0,0]});
+   box(x,y,s,h,{fill:W2,line:P,lw:1.25,r:PR,name:'圖示方塊'});glyph('autorenew',x+(s-.28)/2,y+(h-.28)/2,.28,P);});
+  // I 六角徽章標題
+  cell(2,0,'I｜六角徽章標題 Hex headline',(x,y)=>{el('hexagon',x,y-.02,.58,h+.04,{fill:AC,adj:.13,text:'A',size:LS(14),bold:1,color:onC(AC),font:nf,margin:0,name:'短字徽章'});
+   txt(x+.72,y-.04,cw-.75,.3,'方案一：導入自動化',{size:LT,bold:1,color:G.ink,name:'標籤文字'});ln(x+.72,y+.29,x+cw-.05,y+.29,{c:G.l2,w:.75});
+   txt(x+.72,y+.31,cw-.75,.2,'Option A · Automation',{size:Math.max(8,LS(9)),color:G.mute,font:nf,name:'英文副標'});});
+  // J 小尺寸 S：三個獨立小標籤
+  {const x0=cx[2],y=ry[1]+.08,hh=.3,ss=.3,sz=LS(10);let x=x0;
+   [['check_circle','完成','P'],['schedule','進行中','g'],['warning','風險','A']].forEach(([id,t,tn])=>{const w=ss+tw(t,sz)+.3,c=tn==='P'?P:tn==='A'?AC:G.t2;
+    grp('小標籤・'+t,()=>{box(x+ss-.02,y,w-ss+.02,hh,{fill:GF,r:PR?Math.min(PR,.05):0,text:t,size:sz,bold:1,color:G.ink,align:'left',margin:[7,4,0,0],name:'標籤文字'});
+     box(x,y,ss,hh,{fill:c,r:PR?Math.min(PR,.05):0,name:'圖示方塊'});glyph(id,x+.05,y+.05,.2,onC(c));});x+=w+.14;});
+   txt(x0,ry[1]+.56,cw,.22,'J｜小尺寸 Small chips（各自獨立）',{size:cs,color:G.mute,name:'圖說'});}
+  // K 直式清單（4 項，第 1 項強調）
+  {const x0=cx[2],y0=ry[2],ph=.5,gp=.13;grp('直式標籤清單',()=>{const items=[['01','釐清目的','Purpose'],['02','拆解結構','Structure'],['03','重新組合','Compose'],['04','檢查一致','Review']];
+    ln(x0+s/2,y0+h/2,x0+s/2,y0+3*(ph+gp)+h/2,{c:G.l2,w:.75});
+    items.forEach(([n,t,e],i)=>{const y=y0+i*(ph+gp),hi=i===0;lab(x0+s+.1,y,cw-s-.12,[{t},{t:'  '+e,s:Math.max(8,LS(9)),b:0,c:G.mute,f:nf}],{fill:hi?W2:GF,line:hi?P:null,lw:1,r:PR,sh:hi?'small':0});
+     box(x0,y,s,h,{fill:hi?P:G.ink,r:PR,text:n,size:LS(12),bold:1,color:W2,font:nf,margin:0,name:'短字方塊'});});});
+   txt(x0,y0+4*(ph+gp)-.08,cw,.22,'K｜直式清單 Stacked list（3–5 項）',{size:cs,color:G.mute,name:'圖說'});}
+ };
 
  SL.circles=()=>{title('圓形與流程鏈','大外框圓＋疊放小圓，以及三段式流程鏈');
   section(X0,1.95,5.6,'大圓＋疊圓 Circles');
@@ -1477,7 +1531,9 @@ function autoShrink(it){if(!it.runs||!it.runs.length||it.t!=='sp')return 1;const
    換行＝新段落；第 j 段沿用原本第 j 段第一個字串的格式（例如「問題」大字粗體＋英文小字＋內文）。不重排版面：放不下時字級自動縮小（最多到 60%）。 */
 function applyLabels(sl,labels){if(!labels||typeof labels!=='object')return 0;let n=0;
  Object.keys(labels).forEach(key=>{const [k,gs]=key.split(':');if(k!==sl.key&&k+'-'+gs!==sl.key)return;const g=k===sl.key?sl.groups[+gs]:sl.groups[0];if(!g)return;const L=labels[key]||{};
-  Object.keys(L).forEach(ix=>{const it=sl.items[g.from+(+ix)];const o=L[ix]||{};if(!it||!it.runs||g.from+(+ix)>g.to)return;if(o.from!=null&&textOf(it)!==o.from)return;
+  Object.keys(L).forEach(ix=>{const it=sl.items[g.from+(+ix)];const o=L[ix]||{};if(!it||g.from+(+ix)>g.to)return;
+   if(o.icon!=null){if(it.ic&&ICONS&&ICONS.BY[o.icon]&&(o.from==null||o.from===it.ic.id)){const q=ICONS.geom(it.ic.variant,it.ic.wt);it.points=ICONS.points(o.icon,it.w,q.k,q.off,q.wt);it.ic=Object.assign({},it.ic,{id:o.icon});it.name='圖示 '+ICONS.BY[o.icon].zh;it.edited=1;n++;}return;}
+   if(!it.runs)return;if(o.from!=null&&textOf(it)!==o.from)return;
    const to=stripCtl(o.to==null?'':o.to).slice(0,400);const paras=[[]];it.runs.forEach(r=>{paras[paras.length-1].push(r);if(r.o.br)paras.push([]);});
    const lines=to.split('\n');it.runs=lines.map((t,j)=>{const src=(paras[Math.min(j,paras.length-1)][0]||it.runs[0]).o;const ro=Object.assign({},src);delete ro.br;if(j<lines.length-1)ro.br=true;return{t,o:ro};});
    it.edited=1;autoShrink(it);n++;});});

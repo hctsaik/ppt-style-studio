@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%226%22 fill=%22%231F4E79%22/%3E%3C/svg%3E">
-<!-- PPT Style Studio 單檔版（自動產生於 2026-10-12 06:40，請勿手改；來源：studio.html + icons.js + deck.js + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
+<!-- PPT Style Studio 單檔版（自動產生於 2026-10-14 06:55，請勿手改；來源：studio.html + icons.js + deck.js + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
 <title>PPT Style Studio · 圖解元件客製工作室</title>
 <style>
 :root{--ink:#3A3A3A;--t2:#595959;--mu:#8C8C8C;--line:#E4E4E4;--fill:#F6F6F6;--p:#1F4E79}
@@ -286,6 +286,7 @@ body.tabT .wrap{grid-template-columns:1fr}body.tabT aside{display:none}body.tabT
 #lbList{overflow-y:auto;padding:8px 12px;display:flex;flex-direction:column;gap:7px}
 #lbList label{font-size:11px;color:var(--mu);display:block;margin-bottom:2px}
 #lbList textarea{width:100%;box-sizing:border-box;font-family:inherit;font-size:12.5px;line-height:1.45;border:1px solid #DADADA;border-radius:6px;padding:4px 6px;resize:vertical}
+#lbList .lbic{display:grid;grid-template-columns:28px 1fr;align-items:center;gap:4px}#lbList .lbic label{grid-column:1/3}#lbList .lbic input{font:inherit;font-size:12.5px;border:1px solid #DADADA;border-radius:6px;padding:4px 6px}#lbList .lbic input.chg{border-color:var(--p);background:#F7FAFD}
 #lbList textarea.chg{border-color:var(--p);background:#F7FAFD}
 .lbed .lbf{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}.lbed .lbf .btn{flex:1}
 .toast.on{opacity:1;transform:translateX(-50%)}
@@ -338,7 +339,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  /* 表格分頁（手機）：畫布滿版＋適合／100%；檢視器＝底部分頁；輸出列固定在底部；重點工具列貼底 */
  #bMore{min-width:44px;min-height:44px}.tsapply{min-height:44px;min-width:44px}
  #tabs button,.tsec .btn,.tsec .tseg button,.tgridc button,.tedit button,.tlegend button,.tlegend .tsugb,.trmode button,.ttg{min-height:44px}.tlegend button{min-width:44px}
- .tsteps{padding:4px 8px;gap:2px;overflow-x:auto}.tsteps .stp{padding:4px 6px;font-size:12.5px;min-height:44px}.tub{min-height:44px;min-width:44px}#tPasteTop .lgt{display:none}.tpin{min-width:44px;min-height:44px;font-size:16px}.thl{max-width:90%}.thl button{min-width:44px;min-height:44px}.tsteps .arr{display:none}.tauto{display:none}
+ .tsteps{padding:4px 8px;gap:2px;overflow-x:auto}.tsteps .stp{padding:4px 6px;font-size:12.5px;min-height:44px}.tub{min-height:44px;min-width:44px}.tpin{min-width:44px;min-height:44px;font-size:16px}.thl{max-width:90%}.thl button{min-width:44px;min-height:44px}.tsteps .arr{display:none}.tauto{display:none}
  .tmain{display:block;overflow-y:auto;-webkit-overflow-scrolling:touch;overflow-anchor:none}
  .tcanvas{padding:8px 8px 10px;overflow:visible;align-items:stretch}
  .tzoom{display:flex;gap:6px;justify-content:flex-end;align-self:stretch}.tzoom button{border:1px solid #D6D6D6;background:#fff;border-radius:7px;padding:8px 12px;font-size:13px;min-height:44px}.tlstrip button{min-height:44px;padding:6px 12px}.tzoom button[aria-pressed="true"]{border-color:var(--p);color:var(--p);font-weight:700}
@@ -376,6 +377,8 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  .slide{width:auto;height:calc(100dvh - 150px);max-width:100%}
  aside{height:86dvh}
 }
+.tdrop{display:none;border:2px dashed #b9c3d0;border-radius:10px;padding:22px 12px;text-align:center;color:#556;margin:6px 0 10px;background:#fff}.tdrop b{display:block;font-size:16px;color:#234;margin-bottom:6px}.tdrop span{font-size:12px}
+.tsec.empty .tdrop{display:block}.tsec.empty .tph{display:none}.tph{margin:0;flex:1}.tdrow{align-items:center}.tclr{margin-left:auto;color:#a33}
 </style></head><body><div class="tpop" id="tPop" role="dialog" aria-label="儲存格選單" hidden></div>
 
 <header>
@@ -383,12 +386,12 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  <nav class="tabs" id="tabs"><button data-tab="slides" class="on">投影片元件</button><button data-tab="icons">圖示庫</button><button data-tab="table">表格</button></nav>
  <span class="sp"></span>
  <button class="btn monly" id="bPanel" aria-expanded="false" aria-controls="panel">⚙ 設定</button>
- <label class="hx" id="exWrap" title="15–17 頁是主題式範例版面（三圓架構、框架流程、能力地圖），不是基本元件；預設不放進預覽與整份 .pptx"><input type="checkbox" id="bEx"> 含範例頁</label>
+ <label class="hx" id="exWrap" title="17–19 頁是主題式範例版面（三圓架構、框架流程、能力地圖），不是基本元件；預設不放進預覽與整份 .pptx"><input type="checkbox" id="bEx"> 含範例頁</label>
  <button class="btn" id="bOne">下載本頁 .pptx</button>
  <button class="btn pri" id="bAll">下載整份 .pptx</button>
  <div class="more"><button class="btn" id="bMore" aria-haspopup="true" aria-expanded="false" title="重設／儲存／載入設定">⋯</button>
   <div class="menu" id="mMore" hidden>
-   <button id="bExM" class="monly" title="15–17 頁主題式範例版面">☐ 含範例頁（15–17）</button>
+   <button id="bExM" class="monly" title="17–19 頁主題式範例版面">☐ 含範例頁（17–19）</button>
    <button id="bReset" title="捨棄所有微調，回到目前範本的預設值">↺ 重設為範本</button>
    <button id="bSave" title="把目前設定存成 JSON 檔">儲存設定 JSON</button>
    <button id="bLoad" title="載入先前存的 JSON 設定">載入設定 JSON…</button>
@@ -441,7 +444,6 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
      <button class="stp" data-go="hi"><i>3</i>重點</button>
      <span class="tauto" id="tAuto" aria-live="polite"></span>
      <button class="btn tub" id="tUndo" title="復原（Ctrl+Z）" aria-label="復原" disabled>↶</button><button class="btn tub" id="tRedo" title="重做（Ctrl+Shift+Z／Ctrl+Y）" aria-label="重做" disabled>↷</button>
-     <button class="btn tub pri2" id="tPasteTop" title="讀取剪貼簿裡的 Excel 表格">📋 <span class="lgt">從剪貼簿</span>貼上</button>
     </div>
     <div class="tmain">
      <div class="tcanvas" id="tCanvas">
@@ -454,16 +456,15 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
       <div class="tinsTabs" role="tablist"><button data-t="data" aria-pressed="true">① 資料</button><button data-t="look" aria-pressed="false">② 外觀</button><button data-t="hi" aria-pressed="false">③ 重點</button></div>
       <div class="tsecs">
        <section class="tsec on" data-sec="data"><h3><i>1</i>資料</h3>
-        <div class="trow"><button class="btn" id="tPasteBtn" title="讀取剪貼簿（或直接在這一頁按 Ctrl+V）">📋 貼上</button>
+        <div class="tdrop" id="tDrop"><b>Ctrl+V 貼上 Excel 表格</b><span>在 Excel 選取儲存格 → Ctrl+C → 回到這一頁按 Ctrl+V</span></div>
+        <div class="trow tdrow"><span class="hint tph"><b>Ctrl+V</b> 重新貼上（照原樣）</span><button class="btn" id="tUndoPaste" title="回到貼上之前的資料" hidden>↶ 還原上一份</button>
          <select id="tSample" aria-label="載入範例"><option value="">範例…</option><option value="yield">批次良率</option><option value="fin">損益表摘要</option><option value="status">專案進度</option><option value="cmp">方案比較</option><option value="kpi">月度 KPI</option></select>
-         <button class="btn" id="tClear">清空</button></div>
-        <div class="hint">在 Excel 選取儲存格 → Ctrl+C → 回到這一頁 <b>Ctrl+V</b>。新貼上的表會重設標題與重點（勾選「保留標題」可保留）。下面的格子可以直接改字、或貼上。</div>
+</div>
         <details class="tedit" id="tEdit"><summary id="tEditSum">編輯資料</summary>
         <div class="tgrid" id="tGrid"></div>
-        <div class="trow"><button class="btn" data-g="r+">＋列</button><button class="btn" data-g="c+">＋欄</button><button class="btn" data-g="r-">－列</button><button class="btn" data-g="c-">－欄</button><button class="btn" id="tWide" title="暫時用大畫面編輯同一份資料">⤢ 展開編輯</button><button class="btn pri" id="tWideDone">完成，回到預覽</button></div>
+        <div class="trow"><button class="btn" data-g="r+">＋列</button><button class="btn" data-g="c+">＋欄</button><button class="btn" data-g="r-">－列</button><button class="btn" data-g="c-">－欄</button><button class="btn" id="tWide" title="暫時用大畫面編輯同一份資料">⤢ 展開編輯</button><button class="btn pri" id="tWideDone">完成，回到預覽</button><button class="btn tclr" id="tClear">清空</button></div>
         </details>
-        <label class="ttg" title="下次貼上新資料時保留目前的標題"><input type="checkbox" id="tPinC"> 保留標題（貼上新表時不重設）</label>
-        <label class="ttg tkeep"><input type="checkbox" id="tKeep"> 套用上次樣式（貼上新表時沿用欄重點、對齊、單位／註腳）</label>
+        <label class="ttg tkeep" title="貼上新資料時保留標題、單位／註腳與欄樣式（依欄名，欄數相同時依位置）"><input type="checkbox" id="tKeep"> 沿用目前樣式</label>
         <h4 class="tgh">表頭</h4><div class="trow thdr"><label class="ttg" title="第一列當作欄名：粗體、表頭底色"><input type="checkbox" id="tHRow"> 第一列為表頭</label><label class="ttg" title="第一欄當作列名：粗體＋淡底"><input type="checkbox" id="tHCol"> 第一欄為表頭</label></div>
         <div class="trow" hidden><label>第一列</label><span class="tseg" id="tHead"><button data-v="auto">自動</button><button data-v="1">是表頭</button><button data-v="0">不是</button></span></div>
         <div class="trow"><label>最後一列</label><label class="ttg"><input type="checkbox" id="tLast"> 是合計（粗體＋上方線）</label></div>
@@ -3921,7 +3922,7 @@ const LANG_OF={card:{outline:'白底外框',gray:'淺灰實心',soft:'白底無�
  chain:{chev:'漸層 V 形箭號',hex:'六角形鏈',gray:'灰卡＋▶',outline:'細框方塊',hairchev:'空心線框 V 形',home:'五邊形箭號',pill:'膠囊鏈',block:'區塊 V 形'}};
 function langOf(p){return{card:LANG_OF.card[p.card]+(p.card==='outline'?' '+p.cardLW+'pt':'')+(p.sh?'＋陰影':''),tag:LANG_OF.tag[p.tag],badge:LANG_OF.badge[p.badge],sep:LANG_OF.sep[p.sep],
  conn:p.cnW+'pt '+({solid:'實線',sysDot:'點線',sysDash:'虛線',dash:'長虛線'}[p.cnDash]||'')+({triangle:'＋三角箭頭',arrow:'＋開放箭頭',stealth:'＋燕尾箭頭',oval:'＋圓點',none:''}[p.cnHead]||''),chain:LANG_OF.chain[p.chain]};}
-const SLIDES=[['catalog','元件總表'],['patterns','常見組合'],['patterns2','常見組合（二）'],['flex','可調數量'],['rca','原因分析'],['annot','標註'],['icons','圖示庫'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['asis','版型｜As Was／To Be'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
+const SLIDES=[['catalog','元件總表'],['patterns','常見組合'],['patterns2','常見組合（二）'],['flex','可調數量'],['rca','原因分析'],['annot','標註'],['icons','圖示庫'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['asis','版型｜As Was／To Be'],['labels','標籤元件'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
 
 /* ---------- 文字寬度估算（Node 端排版檢查用；瀏覽器預覽改用 canvas 實測） ---------- */
 function tw(str,size){let u=0;for(const ch of String(str)){const c=ch.codePointAt(0);
@@ -4033,7 +4034,7 @@ function buildModel(params,opt){
  function icon(id,x,y,s,o){o=o||{};if(!ICONS||!ICONS.BY[id])return{};const ic=ICONS.BY[id];const variant=o.variant||st.icVar||'line';
   const fg0=o.color||ICC(o.tone||st.icColor);const g=ICONS.geom(variant,ICONS.weightOf(st));let fg=fg0,bg=null;
   if(g.circle){bg=oval(x,y,s,s,{fill:variant==='solid'?fg0:mix(fg0,'FFFFFF',.86),name:'圖示底圓'});if(variant==='solid')fg='FFFFFF';}
-  const glyph=el('custGeom',x,y,s,s,{points:ICONS.points(id,s,g.k,g.off,g.wt),fill:fg,name:'圖示 '+ic.zh});
+  const glyph=el('custGeom',x,y,s,s,{points:ICONS.points(id,s,g.k,g.off,g.wt),fill:fg,name:'圖示 '+ic.zh});glyph.ic={id,variant,wt:ICONS.weightOf(st)};
   return{bg,glyph};}
  /* ---------- 版面骨架 ---------- */
  function canvas(){if(st.canvas)box(.25,.25,W-.5,H-.5,{fill:st.canvasColor,r:.06,name:'畫布面板'});}
@@ -4619,6 +4620,60 @@ function buildModel(params,opt){
   ['過濾數據','確認關係','產出圖表'].forEach((t,i)=>txt(cx[2]+2.0,y0+.65+i*.42,1.79,.34,'①②③'[i]+' '+t,{size:12,color:G.t2}));
   note(cx[2],y0+2.45,cw,'※ 清單 3–5 項最易記',{h:.28});};
 
+ /* ---------- 標籤元件（v10）：左＝圖示或 1–3 字短字（01／重點／A），右＝標籤文字；全部原生圖形、文字可編輯、圖示可在「改字」換 ---------- */
+ SL.labels=()=>{title('標籤元件 Labels','左側放圖示或短字（01／重點／A），右側放標籤文字；選取後按「改字」換字或換圖示');
+  const W2='FFFFFF',PR=st.r>0?Math.min(st.r,.08):0,onC=c=>lum(c)>.55?G.ink:W2,AC=HASA?A:PD;
+  const cw=3.85,gx=(CW-3*cw)/2,cx=[0,1,2].map(i=>X0+i*(cw+gx)),ry=[2.0,3.12,4.24,5.36],h=.46,s=.46,LT=LS(13),cs=Math.max(7.5,st.nSize-2);
+  const cap=(x,y,t)=>txt(x,y+.56,cw,.22,t,{size:cs,color:G.mute,name:'圖說'});
+  const glyph=(id,x,y,d,c)=>icon(id,x,y,d,{variant:'line',color:c});
+  const lab=(x,y,w,t,o)=>box(x,y,w,h,Object.assign({text:t,size:LT,bold:st.lBold,color:G.ink,align:'left',margin:[10,6,0,0],name:'標籤文字'},o||{}));
+  const cell=(c,r,zh,fn)=>{const x=cx[c],y=ry[r];grp(zh.split('｜')[1].split(' ')[0],()=>fn(x,y));cap(x,y,zh);};
+  // A 方塊圖示＋灰條
+  cell(0,0,'A｜方塊圖示＋灰條 Icon block',(x,y)=>{lab(x+s-.02,y,2.75,[{t:'立即購買'},{t:'  BUY',s:Math.max(8,LS(9)),b:0,c:G.mute,f:nf}],{fill:GF,r:PR,margin:[11,6,0,0]});
+   box(x,y,s,h,{fill:P,r:PR,sh:'small',name:'圖示方塊'});glyph('shopping_cart',x+(s-.28)/2,y+(h-.28)/2,.28,W2);});
+  // B 方塊短字＋灰條
+  cell(0,1,'B｜方塊短字＋灰條 Number block',(x,y)=>{lab(x+s-.02,y,2.75,[{t:'市場分析'},{t:'  Market',s:Math.max(8,LS(9)),b:0,c:G.mute,f:nf}],{fill:GF,r:PR,margin:[11,6,0,0]});
+   box(x,y,s,h,{fill:P,r:PR,sh:'small',text:'01',size:LS(13),bold:1,color:W2,font:nf,margin:0,name:'短字方塊'});});
+  // C 深色膠囊＋圓形圖示徽章＋箭頭
+  cell(0,2,'C｜深色膠囊＋圖示徽章 Capsule',(x,y)=>{const w=3.0,d=.34;box(x,y,w,h,{fill:G.ink,r:'full',sh:'small',text:'重點摘要',size:LT,bold:1,color:W2,align:'left',margin:[(d+.2)*72,.36*72,0,0],name:'膠囊標籤'});
+   circ(x+.06+d/2,y+h/2,d,{fill:W2,name:'圖示徽章'});glyph('lightbulb',x+.06+(d-.22)/2,y+(h-.22)/2,.22,P);
+   el('chevron',x+w-.25,y+h/2-.075,.08,.15,{fill:mix(G.ink,'FFFFFF',.6),adj:.05,name:'箭頭'});});
+  // D 外框膠囊＋編號徽章
+  cell(0,3,'D｜外框膠囊＋編號 Numbered pill',(x,y)=>{const w=3.0,d=.34;box(x,y,w,h,{fill:W2,line:G.line,lw:1,r:'full',text:'對齊期待',size:LT,bold:st.lBold,color:G.ink,align:'left',margin:[(d+.2)*72,.36*72,0,0],name:'膠囊標籤'});
+   circ(x+.06+d/2,y+h/2,d,{fill:P,text:'1',size:LS(11),bold:1,color:W2,font:nf,margin:0,name:'編號徽章'});
+   el('chevron',x+w-.25,y+h/2-.075,.08,.15,{fill:G.mute,adj:.05,name:'箭頭'});});
+  // E 頁籤 Tab
+  cell(1,0,'E｜頁籤 Tab header',(x,y)=>{const tw1=1.62,tw2=1.12;ln(x,y+h,x+cw,y+h,{c:P,w:1.5});
+   topRound(x,y,tw1,h,Math.min(.08,PR||.06),{fill:P,name:'頁籤'});glyph('analytics',x+.12,y+(h-.26)/2,.26,W2);txt(x+.44,y,tw1-.5,h,'數據總覽',{size:LT,bold:1,color:W2,valign:'middle',name:'標籤文字'});
+   topRound(x+tw1+.06,y+.06,tw2,h-.06,Math.min(.08,PR||.06),{fill:GF,name:'頁籤'});txt(x+tw1+.06,y+.06,tw2,h-.06,'明細',{size:LS(12),color:G.t2,align:'center',valign:'middle',name:'標籤文字'});});
+  // F 箭頭旗標
+  cell(1,1,'F｜箭頭旗標 Arrow flag',(x,y)=>{const w=3.0,s2=.62;el('homePlate',x+s2-.02,y,w-s2+.02,h,{fill:P,adj:.2,text:'先做這一步',size:LT,bold:1,color:W2,align:'left',margin:[10,16,0,0],sh:'small',name:'標籤文字'});
+   box(x,y,s2,h,{fill:PD,r:PR,text:'重點',size:LS(12),bold:1,color:W2,margin:0,name:'短字方塊'});});
+  // G 缺口旗標
+  cell(1,2,'G｜缺口旗標 Notched ribbon',(x,y)=>{const w=3.0,n=.16,bx=x+s-.02;path([[bx,y],[x+w,y],[x+w-n,y+h/2],[x+w,y+h],[bx,y+h]],{close:true,fill:PTn,name:'旗標底'});
+   txt(bx+.14,y,w-s-.3,h,'里程碑 Milestone',{size:LT,bold:st.lBold,color:P,valign:'middle',name:'標籤文字'});
+   box(x,y,s,h,{fill:P,r:PR,name:'圖示方塊'});glyph('flag',x+(s-.28)/2,y+(h-.28)/2,.28,W2);});
+  // H 外框版
+  cell(1,3,'H｜外框版 Outlined',(x,y)=>{lab(x+s-.01,y,2.75,'持續改善',{fill:W2,line:G.line,lw:1,r:PR,margin:[11,6,0,0]});
+   box(x,y,s,h,{fill:W2,line:P,lw:1.25,r:PR,name:'圖示方塊'});glyph('autorenew',x+(s-.28)/2,y+(h-.28)/2,.28,P);});
+  // I 六角徽章標題
+  cell(2,0,'I｜六角徽章標題 Hex headline',(x,y)=>{el('hexagon',x,y-.02,.58,h+.04,{fill:AC,adj:.13,text:'A',size:LS(14),bold:1,color:onC(AC),font:nf,margin:0,name:'短字徽章'});
+   txt(x+.72,y-.04,cw-.75,.3,'方案一：導入自動化',{size:LT,bold:1,color:G.ink,name:'標籤文字'});ln(x+.72,y+.29,x+cw-.05,y+.29,{c:G.l2,w:.75});
+   txt(x+.72,y+.31,cw-.75,.2,'Option A · Automation',{size:Math.max(8,LS(9)),color:G.mute,font:nf,name:'英文副標'});});
+  // J 小尺寸 S：三個獨立小標籤
+  {const x0=cx[2],y=ry[1]+.08,hh=.3,ss=.3,sz=LS(10);let x=x0;
+   [['check_circle','完成','P'],['schedule','進行中','g'],['warning','風險','A']].forEach(([id,t,tn])=>{const w=ss+tw(t,sz)+.3,c=tn==='P'?P:tn==='A'?AC:G.t2;
+    grp('小標籤・'+t,()=>{box(x+ss-.02,y,w-ss+.02,hh,{fill:GF,r:PR?Math.min(PR,.05):0,text:t,size:sz,bold:1,color:G.ink,align:'left',margin:[7,4,0,0],name:'標籤文字'});
+     box(x,y,ss,hh,{fill:c,r:PR?Math.min(PR,.05):0,name:'圖示方塊'});glyph(id,x+.05,y+.05,.2,onC(c));});x+=w+.14;});
+   txt(x0,ry[1]+.56,cw,.22,'J｜小尺寸 Small chips（各自獨立）',{size:cs,color:G.mute,name:'圖說'});}
+  // K 直式清單（4 項，第 1 項強調）
+  {const x0=cx[2],y0=ry[2],ph=.5,gp=.13;grp('直式標籤清單',()=>{const items=[['01','釐清目的','Purpose'],['02','拆解結構','Structure'],['03','重新組合','Compose'],['04','檢查一致','Review']];
+    ln(x0+s/2,y0+h/2,x0+s/2,y0+3*(ph+gp)+h/2,{c:G.l2,w:.75});
+    items.forEach(([n,t,e],i)=>{const y=y0+i*(ph+gp),hi=i===0;lab(x0+s+.1,y,cw-s-.12,[{t},{t:'  '+e,s:Math.max(8,LS(9)),b:0,c:G.mute,f:nf}],{fill:hi?W2:GF,line:hi?P:null,lw:1,r:PR,sh:hi?'small':0});
+     box(x0,y,s,h,{fill:hi?P:G.ink,r:PR,text:n,size:LS(12),bold:1,color:W2,font:nf,margin:0,name:'短字方塊'});});});
+   txt(x0,y0+4*(ph+gp)-.08,cw,.22,'K｜直式清單 Stacked list（3–5 項）',{size:cs,color:G.mute,name:'圖說'});}
+ };
+
  SL.circles=()=>{title('圓形與流程鏈','大外框圓＋疊放小圓，以及三段式流程鏈');
   section(X0,1.95,5.6,'大圓＋疊圓 Circles');
   const ccx=X0+2.8,ccy=3.95,R=1.38;bigCircle(ccx,ccy,R,'How','如何做到\n三個關鍵');
@@ -5035,6 +5090,7 @@ function tableAuto(rows,T){const nC=Math.max(0,...rows.map(r=>r.length));const c
  const statC=Array.from({length:nC},(_,c)=>c>0&&!numC[c]&&colStat(c,t=>!!statusOf(t)));
  const key=[];rows.forEach((r,ri)=>{if(ri>=h0&&!section[ri]&&T_SUM.test(cell(ri,0)))key.push(ri);});
  if(T&&T.lastTotal&&rows.length-1>=h0+1&&!key.includes(rows.length-1))key.push(rows.length-1);
+ if(T&&T.lastTotal===false&&key.includes(rows.length-1))key.splice(key.indexOf(rows.length-1),1);
  const kind=numC.filter(Boolean).length>=Math.max(1,(nC-1)/2)?'number':statC.some(Boolean)?'status':'text';
  return{nC,head,numC,statC,section,key,kind};}
 // 數字格式：拆成 前綴／正負／貨幣／數字／單位 → 依設定重組
@@ -5103,15 +5159,17 @@ function tableTitleSuggest(T){const rows=(T.rows||[]).filter(r=>r&&r.some(c=>Str
    const VL=s=>[...s].reduce((n,ch)=>n+(/[\u0000-\u024f]/.test(ch)?.55:1),0);let out=`${H} ${low?'最低':'最高'}：${lab}${l2?' '+l2:''} ${V}`.replace(/\s+/g,' ').trim();if(VL(out)>24)out=`${H} ${low?'最低':'最高'}：${lab} ${V}`.replace(/\s+/g,' ').trim();
    if(VL(out)>24)out=`${low?'最低':'最高'}：${lab} ${V}`;return out;}}
  return h0&&hdr(0)?`${hdr(0)} 一覽`:'';}
-function tableFromPaste(rows,prev){prev=prev||{};const S=tableSuggest(rows);const keepTitle=!!prev.pin&&!!prev.title;
- const his=S.period!=null&&S.kind==='number'?[{type:'col',i:S.period,color:'auto'}]:[];
- const out={rows,title:keepTitle?prev.title:'',pin:keepTitle,unit:'',note:'',his,rules:[],bold:S.auto.key,align:{},fmt:{},header:'auto',cw:null,hiStyle:prev.hiStyle||null,keep:!!prev.keep};
- // 套用上次樣式：依「欄名」把門檻、欄重點、欄格式、對齊、單位／註腳帶過來（欄名對不上的就不帶）
- if(prev.keep&&Array.isArray(prev.rows)&&prev.rows[0]){const oh=prev.rows[0].map(x=>String(x).trim()),nh=(rows[0]||[]).map(x=>String(x).trim());const map=c=>{const n=oh[c];if(!n)return -1;return nh.indexOf(n);};
+function tableFromPaste(rows,prev){prev=prev||{};const S=tableSuggest(rows);const keep=prev.keep!==false;const keepTitle=(keep||!!prev.pin)&&!!prev.title;
+ const his=S.period!=null&&S.kind==='number'?[{type:'col',i:S.period,color:'auto'}]:[];const nR=rows.length;
+ // 表頭／合計：自動判斷的結果直接寫進狀態（核取方塊＝唯一真相）
+ const out={rows,title:keepTitle?prev.title:'',pin:keepTitle&&!!prev.pin,unit:'',note:'',his,rules:[],bold:S.auto.key,align:{},fmt:{},header:!!S.auto.head,lastTotal:S.auto.key.includes(nR-1),hcol:!!prev.hcol,cw:null,hiStyle:prev.hiStyle||null,keep};
+ // 沿用目前樣式（預設開）：依「欄名」對應；欄名對不上但欄數相同時依位置對應
+ if(keep&&Array.isArray(prev.rows)&&prev.rows[0]){const oh=prev.rows[0].map(x=>String(x).trim()),nh=(rows[0]||[]).map(x=>String(x).trim());const same=oh.length===nh.length;
+  const map=c=>{const n=oh[c];const j=n?nh.indexOf(n):-1;if(j>=0)return j;return same&&c<nh.length?c:-1;};
   out.rules=(prev.rules||[]).map(r=>{const c=map(r.c);return c>0?Object.assign({},r,{c}):null;}).filter(Boolean);
   const hs=(prev.his||[]).filter(h=>h.type==='col').map(h=>{const i=map(h.i);return i>=0?Object.assign({},h,{i}):null;}).filter(Boolean);if(hs.length)out.his=hs;
   const mv=o=>{const r={};Object.entries(o||{}).forEach(([c,v])=>{const j=map(+c);if(j>=0)r[j]=v;});return r;};out.fmt=mv(prev.fmt);out.align=mv(prev.align);
-  out.unit=prev.unit||'';out.note=prev.note||'';}
+  out.unit=prev.unit||'';out.note=prev.note||'';if(prev.legend)out.legend=prev.legend;}
  return out;}
 /* v10 表格強調（最多 3 個：欄／列／單格，各自選色）＋條件規則（最多 3 條：數字欄 比較 值 → 上色）。
    T.his=[{type:'col'|'row'|'cell',i,r,c,color:'auto'|'P'|'A'|'alert'}]；舊版 T.hi={type,i} 自動轉換。
@@ -5322,7 +5380,9 @@ function autoShrink(it){if(!it.runs||!it.runs.length||it.t!=='sp')return 1;const
    換行＝新段落；第 j 段沿用原本第 j 段第一個字串的格式（例如「問題」大字粗體＋英文小字＋內文）。不重排版面：放不下時字級自動縮小（最多到 60%）。 */
 function applyLabels(sl,labels){if(!labels||typeof labels!=='object')return 0;let n=0;
  Object.keys(labels).forEach(key=>{const [k,gs]=key.split(':');if(k!==sl.key&&k+'-'+gs!==sl.key)return;const g=k===sl.key?sl.groups[+gs]:sl.groups[0];if(!g)return;const L=labels[key]||{};
-  Object.keys(L).forEach(ix=>{const it=sl.items[g.from+(+ix)];const o=L[ix]||{};if(!it||!it.runs||g.from+(+ix)>g.to)return;if(o.from!=null&&textOf(it)!==o.from)return;
+  Object.keys(L).forEach(ix=>{const it=sl.items[g.from+(+ix)];const o=L[ix]||{};if(!it||g.from+(+ix)>g.to)return;
+   if(o.icon!=null){if(it.ic&&ICONS&&ICONS.BY[o.icon]&&(o.from==null||o.from===it.ic.id)){const q=ICONS.geom(it.ic.variant,it.ic.wt);it.points=ICONS.points(o.icon,it.w,q.k,q.off,q.wt);it.ic=Object.assign({},it.ic,{id:o.icon});it.name='圖示 '+ICONS.BY[o.icon].zh;it.edited=1;n++;}return;}
+   if(!it.runs)return;if(o.from!=null&&textOf(it)!==o.from)return;
    const to=stripCtl(o.to==null?'':o.to).slice(0,400);const paras=[[]];it.runs.forEach(r=>{paras[paras.length-1].push(r);if(r.o.br)paras.push([]);});
    const lines=to.split('\n');it.runs=lines.map((t,j)=>{const src=(paras[Math.min(j,paras.length-1)][0]||it.runs[0]).o;const ro=Object.assign({},src);delete ro.br;if(j<lines.length-1)ro.br=true;return{t,o:ro};});
    it.edited=1;autoShrink(it);n++;});});
@@ -5695,7 +5755,7 @@ const cleanP=(p,base)=>D.sanitizeParams(p,templateParams(presetOf(base).id),ENUM
 let S={base:'navy',p:templateParams('navy'),slide:0,autoTone:true,labels:{}};
 /* 改字（v9）：{ '<頁>:<群組>': { '<第幾個圖形>': {from 原文, to 新文字} } } */
 function cleanLabels(o){const out={};if(!o||typeof o!=='object')return out;Object.keys(o).slice(0,200).forEach(k=>{if(!/^[\w-]+:\d+$/.test(k)||!o[k]||typeof o[k]!=='object')return;const L={};
- Object.keys(o[k]).slice(0,60).forEach(i=>{const v=o[k][i];if(/^\d+$/.test(i)&&v&&typeof v==='object'&&typeof v.to==='string')L[i]={from:typeof v.from==='string'?D.stripCtl(v.from).slice(0,400):null,to:D.stripCtl(v.to).slice(0,400)};});
+ Object.keys(o[k]).slice(0,60).forEach(i=>{const v=o[k][i];if(/^\d+$/.test(i)&&v&&typeof v==='object'&&typeof v.icon==='string'&&window.Icons&&window.Icons.BY[v.icon])L[i]={from:typeof v.from==='string'?v.from.slice(0,60):null,icon:v.icon};else if(/^\d+$/.test(i)&&v&&typeof v==='object'&&typeof v.to==='string')L[i]={from:typeof v.from==='string'?D.stripCtl(v.from).slice(0,400):null,to:D.stripCtl(v.to).slice(0,400)};});
  if(Object.keys(L).length)out[k]=L;});return out;}
 try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=presetOf(s.base).id;S.p=cleanP(s.p,S.base);S.slide=0;/* 每次開啟都先顯示 01 元件總表 */S.mine=s.mine?D.stripCtl(s.mine).slice(0,40):null;S.autoTone=s.autoTone!==false;S.tab=['slides','icons','table'].includes(s.tab)?s.tab:'slides';S.examples=!!s.examples;S.labels=cleanLabels(s.labels);}}catch(e){}
 const persist=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify({base:S.base,p:S.p,slide:S.slide,autoTone:S.autoTone,mine:S.mine||null,tab:S.tab||'slides',examples:!!S.examples,labels:S.labels||{}}));}catch(e){}};
@@ -5782,7 +5842,7 @@ function render(){
 function showSlide(){
  const sl=model.slides[S.slide];
  $('#big').innerHTML=D.toSvg(sl,{id:'big',interactive:true})+'<button class="nav l" data-d="-1">‹</button><button class="nav r" data-d="1">›</button>'+
-  '<button class="eladd" id="elAdd" hidden aria-label="加入待選素材">＋</button><div class="ebar" id="ebar"><b id="eName"></b><small id="eDim" style="color:#8C8C8C;margin-right:4px" title="元件實際尺寸（依 S／M／L）"></small><span class="ecnt" id="eCnt" hidden><button data-a="cnt-" title="減少一個">−</button><b id="eCntN"></b><button data-a="cnt+" title="增加一個">＋</button></span><button class="pri" data-a="copy" title="複製到剪貼簿（SVG 向量＋PNG）">複製</button><button data-a="tray" title="加入待選素材（保留目前風格）">＋待選</button><button data-a="lbl" title="修改這個元件的文字（不重排版面；放不下時字級自動縮小）">改字</button><button data-a="pptx" title="只含這個元件的 1 頁 .pptx，原生可編輯圖形">下載此元件 .pptx</button><button data-a="svg">SVG</button><button data-a="png">PNG</button><button data-a="x" title="關閉">✕</button></div>';
+  '<button class="eladd" id="elAdd" hidden aria-label="加入待選素材">＋</button><div class="ebar" id="ebar"><b id="eName"></b><small id="eDim" style="color:#8C8C8C;margin-right:4px" title="元件實際尺寸（依 S／M／L）"></small><span class="ecnt" id="eCnt" hidden><button data-a="cnt-" title="減少一個">−</button><b id="eCntN"></b><button data-a="cnt+" title="增加一個">＋</button></span><button class="pri" data-a="copy" title="複製到剪貼簿（SVG 向量＋PNG）">複製</button><button data-a="tray" title="加入待選素材（保留目前風格）">＋待選</button><button data-a="lbl" title="修改這個元件的文字；有圖示的元件（如標籤元件）也可在這裡換圖示（不重排版面；放不下時字級自動縮小）">改字</button><button data-a="pptx" title="只含這個元件的 1 頁 .pptx，原生可編輯圖形">下載此元件 .pptx</button><button data-a="svg">SVG</button><button data-a="png">PNG</button><button data-a="x" title="關閉">✕</button></div>';
  SEL=null;
  {const n=D.smallRuns(sl,10);const fe=$('#fsNote');if(fe){fe.textContent=n?`ⓘ 本頁 ${n} 段字小於 10pt`:'';fe.title=n?'投影時可能偏小。單一元件與待選素材可在「字型與字級 › 最小字級」設定 10／12／14pt，匯出時整個元件等比放大。':'';}}
  document.querySelectorAll('.th').forEach(t=>t.classList.toggle('on',+t.dataset.i===S.slide));
@@ -6060,11 +6120,12 @@ function parseHtmlTable(html){try{const d=new DOMParser().parseFromString(html,'
  return [...t.rows].map(tr=>[...tr.cells].map(td=>D.stripCtl(td.innerText!=null&&td.innerText!==''?td.innerText.trim():td.textContent.trim()))).filter(r=>r.some(c=>c));}catch(e){return null;}}
 const toTSV=rows=>rows.map(r=>r.map(c=>/[\t\n"]/.test(c)?'"'+String(c).replace(/"/g,'""')+'"':c).join('\t')).join('\n');
 const nCols=()=>Math.max(0,...T.rows.map(r=>r.length));
+let PREV_T=null;
 function loadData(rows,how){
  if(!rows||!rows.length||!rows.some(r=>r.some(c=>c))){toast('剪貼簿裡沒有表格資料：請在 Excel 選取儲存格後按 Ctrl+C，再回到這一頁按 Ctrl+V。',4500);return false;}
  const nC=Math.max(...rows.map(r=>r.length));
  if(rows.length<2||nC<2){toast(`這看起來不是表格（${rows.length} 列 × ${nC} 欄）：請在 Excel 選取<b>至少 2 列 × 2 欄</b>再複製；或在右側「資料」格子直接輸入。`,5500,true);return false;}
- T=D.tableFromPaste(rows,T);fixT();saveT();closeChip();renderAll();
+ PREV_T=T.rows&&T.rows.length?clone(T):null;T=D.tableFromPaste(rows,T);fixT();saveT();closeChip();renderAll();
  const MOB=matchMedia('(max-width:820px)').matches;if(MOB){$('#tIns').classList.remove('open');requestAnimationFrame(()=>requestAnimationFrame(()=>{const c1=document.querySelector('#tPrev .tov .tc[data-r="1"][data-c="0"]')||document.querySelector('#tPrev .tov .tc');if(c1){c1.scrollIntoView({block:'center',inline:'start'});const sw=document.querySelector('.tstagew');if(sw)sw.scrollLeft=Math.max(0,sw.scrollLeft-40);}}));}
  const A=D.tableAuto(T.rows);const extra=[];if(T.his.length)extra.push('最新期別欄已設為重點');if(A.key.length)extra.push(`${A.key.length} 列合計已加粗`);
  if(MOB){toast(`✓ 已${how||'貼上'} ${T.rows.length}×${A.nC}`,1800);return true;}
@@ -6108,7 +6169,7 @@ function renderHiPanel(){const tb=TM&&TM.slides[0].table;
  $('#tRules').innerHTML=rules+(numCols.length?`<div class="pre">${(T.rules||[]).length<3&&sg?`<button class="btn" data-a="pre" title="依數字欄自動建議">＋ ${escH(colName(sg.c))} ${OPS.find(o=>o[0]===sg.op)[1]} ${sg.v}${sg.v===90?'%':''} 標紅</button>`:''}<button class="btn" data-a="neg" aria-pressed="${negOn}">${negOn?'✓ ':'＋ '}負數紅字</button>${(T.rules||[]).length<3?'<button class="btn" data-a="addr">＋ 自訂門檻</button>':''}</div>`:'<div class="hint" style="margin:0">這張表沒有數字欄，無法設定門檻。</div>');}
 function ruleHitJS(R,v){switch(R.op){case '<':return v<R.v-1e-9;case '<=':return v<=R.v+1e-9;case '>':return v>R.v+1e-9;case '>=':return v>=R.v-1e-9;default:return Math.abs(v-R.v)<1e-9;}}
 function marksChanged(){saveT();renderTable(true);}
-function renderGrid(){{const kp=document.getElementById('tKeep');if(kp)kp.checked=!!T.keep;[['tLgF','focus'],['tLgR','rec'],['tLgW','warn']].forEach(([id,k])=>{const el=document.getElementById(id);if(el&&document.activeElement!==el)el.value=(T.legend&&T.legend[k])||'';});}const es=document.getElementById('tEditSum');if(es)es.textContent=T.rows.length?`編輯資料（${T.rows.length} 列 × ${nCols()} 欄）`:'編輯資料';const g=$('#tGrid');if(g.contains(document.activeElement))return;
+function renderGrid(){{const kp=document.getElementById('tKeep');if(kp)kp.checked=T.keep!==false;[['tLgF','focus'],['tLgR','rec'],['tLgW','warn']].forEach(([id,k])=>{const el=document.getElementById(id);if(el&&document.activeElement!==el)el.value=(T.legend&&T.legend[k])||'';});}const es=document.getElementById('tEditSum');if(es)es.textContent=T.rows.length?`編輯資料（${T.rows.length} 列 × ${nCols()} 欄）`:'編輯資料';const g=$('#tGrid');if(g.contains(document.activeElement))return;
  g.innerHTML=T.rows.length?'<table role="grid" aria-label="資料格（可直接改字或貼上）">'+T.rows.map((r,i)=>'<tr>'+r.map((c,j)=>`<td contenteditable="true" data-r="${i}" data-c="${j}" aria-label="第 ${i+1} 列第 ${j+1} 欄">${escH(c)}</td>`).join('')+'</tr>').join('')+'</table>':'<div class="tg0">還沒有資料：Ctrl+V 貼上，或選一個範例。</div>';}
 function renderLooks(){const key=JSON.stringify([T.rows.slice(0,7),T.his,T.rules,T.bold,T.header,T.hiStyle,T.fmt,S.p]);if(key===TLKEY)return;TLKEY=key;
  const cur=lookOf(S.p);const Tl=Object.assign({},T,{title:'',unit:'',note:'',cw:null,rows:T.rows.slice(0,5).map(r=>r.slice(0,4))});
@@ -6116,7 +6177,8 @@ function renderLooks(){const key=JSON.stringify([T.rows.slice(0,7),T.his,T.rules
   return `<button class="tlook" data-v="${k}" aria-pressed="${k===cur}" aria-label="外觀：${zh}"><span class="tlth">${s}</span><span class="nm">${zh}<small>${LOOK_DESC[k]}</small></span></button>`;}).join('');}
 function syncTableUI(){fixT();renderGrid();renderTableOpts();}
 function renderTableOpts(){const hv=T.header==null||T.header==='auto'?'auto':T.header?'1':'0';
- $('#tHead').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===hv)));$('#tLast').checked=!!T.lastTotal;{const tb0=TM&&TM.slides[0]&&TM.slides[0].table;if(tb0)$('#tHRow').checked=tb0.h0>0;$('#tHCol').checked=!!T.hcol;$('#tPinC').checked=!!T.pin;}
+ $('#tHead').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===hv)));{const AU=D.tableAuto(T.rows.map(r=>r.map(c=>String(c))),T);$('#tHRow').checked=T.header==null||T.header==='auto'?AU.head:!!T.header;$('#tLast').checked=T.lastTotal!=null?!!T.lastTotal:AU.key.includes(T.rows.length-1);$('#tHCol').checked=!!T.hcol;
+  const sec=document.querySelector('.tsec[data-sec="data"]');if(sec)sec.classList.toggle('empty',!T.rows.length);$('#tUndoPaste').hidden=!PREV_T;}
  if(S.p.tbFont==='noto')S.p.tbFont='jh';/* Noto 選項已移除 → 微軟正黑體 */
  document.querySelectorAll('[data-tp]').forEach(el=>{const k=el.dataset.tp;const v=String((k==='tbDense'&&(S.p[k]==='auto'||S.p[k]==='compact')?(S.p[k]==='compact'?'dense':''):S.p[k])||({tbCard:'white',size:'M',tbMinus:'auto',tbWidth:'auto',tbV:'center',tbH:'center',tbFont:'jh',tbPad:'m',tbDense:'normal'})[k]);el.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));});
  document.querySelectorAll('[data-tk]').forEach(el=>{const k=el.dataset.tk;el.checked=k==='tbNeg'||k==='tbTight'?!!S.p[k]:S.p[k]!==false;});
@@ -6258,10 +6320,7 @@ function buildTableUI(){
  $('#tLast').onchange=e=>{T.lastTotal=e.target.checked;const n=T.rows.length-1;if(Array.isArray(T.bold)){const s2=new Set(T.bold);e.target.checked?s2.add(n):s2.delete(n);T.bold=[...s2];}saveT();renderTable();};
  $('#tSample').onchange=e=>{const k=e.target.value;e.target.value='';if(!k)return;T=sampleOf(k);saveT();closeChip();renderAll();toast('已載入範例（數字為示意）',2200);};
  $('#tClear').onclick=()=>{if(T.rows.length&&!confirm('清空表格資料、標題與重點？'))return;T={rows:[],title:'',unit:'',note:'',bold:[],his:[],rules:[],align:{},fmt:{},header:'auto',cw:null};saveT();closeChip();renderAll();};
- $('#tPasteBtn').onclick=async()=>{try{const items=await navigator.clipboard.read();for(const it of items){if(it.types.includes('text/plain')){const t=await(await it.getType('text/plain')).text();if(/\t/.test(t)){loadData(parseTSV(t));return;}}
-   if(it.types.includes('text/html')){const r=parseHtmlTable(await(await it.getType('text/html')).text());if(r){loadData(r);return;}}}
-   const t=await navigator.clipboard.readText();loadData(parseTSV(t));}
-  catch(err){try{const t=await navigator.clipboard.readText();loadData(parseTSV(t));}catch(e2){toast(TOUCH?'瀏覽器不允許讀取剪貼簿：請在「資料」的格子長按 →「貼上」。':'瀏覽器不允許讀取剪貼簿：請直接在這一頁按 <b>Ctrl+V</b>。',5000,true);}}};
+ $('#tUndoPaste').onclick=()=>{if(!PREV_T)return;T=PREV_T;PREV_T=null;fixT();saveT();closeChip();renderAll();toast('已還原貼上前的資料',2000);};
  document.addEventListener('paste',e=>{if(S.tab!=='table')return;const a=e.target;if(a&&a.closest&&a.closest('input,textarea,[contenteditable="true"],[contenteditable="plaintext-only"]'))return;
   const html=e.clipboardData.getData('text/html'),txt=e.clipboardData.getData('text/plain');let rows=null;
   if(/\t/.test(txt))rows=parseTSV(txt);else if(html)rows=parseHtmlTable(html);if(!rows&&txt)rows=parseTSV(txt);
@@ -6308,8 +6367,7 @@ function buildTableUI(){
   if(e.target.closest('.tsugb')){T.title=SUG;saveT();renderTable(true);pushHist();toast('已套用建議標題：可直接在畫布上修改',2400);}});
  $('#tPrev').addEventListener('keydown',e=>{const el=e.target.closest&&e.target.closest('.tslot[data-k="title"]');if(el&&e.key==='Tab'&&!el.textContent.trim()&&SUG){e.preventDefault();T.title=SUG;saveT();renderTable(true);pushHist();}});
  [['tLgF','focus'],['tLgR','rec'],['tLgW','warn']].forEach(([id,k])=>{$('#'+id).addEventListener('input',e=>{T.legend=Object.assign({},T.legend||{});const v=e.target.value.trim();if(v)T.legend[k]=v;else delete T.legend[k];saveT();renderTable(true);});});
- $('#tPinC').onchange=e=>{T.pin=e.target.checked;saveT();};
- $('#tHRow').onchange=e=>{T.header=e.target.checked;saveT();renderTable();};
+  $('#tHRow').onchange=e=>{T.header=e.target.checked;saveT();renderTable();};
  $('#tHCol').onchange=e=>{T.hcol=e.target.checked;saveT();renderTable();};
  $('#tPop').addEventListener('click',e=>{const b=e.target.closest('button[data-a]');if(!b)return;e.stopPropagation();chipAct(b.dataset.a,b.dataset.v);});
  $('#tPop').addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();chipAct('x');}});
@@ -6323,7 +6381,7 @@ function buildTableUI(){
  $('#tCleanV').onchange=e=>{$('#tPrev').classList.toggle('cleanv',e.target.checked);closeChip();};
  $('#tView').onclick=e=>{const b=e.target.closest('button[data-v]');if(!b)return;TV=b.dataset.v;document.querySelectorAll('#tView button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===TV));renderTable(true);};
  $('#tKeep').onchange=e=>{T.keep=e.target.checked;saveT();};
- $('#tUndo').onclick=()=>histGo(-1);$('#tRedo').onclick=()=>histGo(1);$('#tPasteTop').onclick=()=>$('#tPasteBtn').click();
+ $('#tUndo').onclick=()=>histGo(-1);$('#tRedo').onclick=()=>histGo(1);
  document.addEventListener('keydown',e=>{if(S.tab!=='table'||!(e.ctrlKey||e.metaKey))return;const a=document.activeElement;if(a&&a.closest&&a.closest('input,textarea,select,[contenteditable="true"],[contenteditable="plaintext-only"]'))return;
   const k=e.key.toLowerCase();if(k==='z'&&!e.shiftKey){e.preventDefault();histGo(-1);}else if(k==='y'||(k==='z'&&e.shiftKey)){e.preventDefault();histGo(1);}});
  P.addEventListener('click',e=>{if(e.target.closest('.tchip')||e.target.closest('.tslot')||e.target.closest('.tcw'))return;if(e.target.closest('.tpin')){T.pin=!T.pin;saveT();renderTable(true);toast(T.pin?'📌 已釘住標題：下次貼上新資料會保留':'已取消釘住標題',2200);return;}
@@ -6457,20 +6515,23 @@ let LB=null;
 function openLabels(){if(!SEL)return;const raw=D.buildModel(S.p,{only:[SEL.key]}).slides[0];const g=raw.groups[SEL.gi];if(!g)return;const lk=SEL.key+':'+SEL.gi;const cur=(S.labels||{})[lk]||{};
  const rows=[];for(let i=g.from;i<=g.to&&rows.length<40;i++){const it=raw.items[i];if(!it.runs||!it.runs.length)continue;const orig=D.textOf(it);if(!orig.trim())continue;const ix=i-g.from;const L=cur[ix];
   rows.push({ix,orig,val:L&&L.from===orig?L.to:orig,name:it.name||'文字'});}
- LB={lk,gi:SEL.gi,rows};$('#lbName').textContent='改字：'+g.name;
- $('#lbList').innerHTML=rows.length?rows.map((r,j)=>`<div><label>${escH(r.name)}</label><textarea data-j="${j}" rows="${Math.min(5,r.val.split('\n').length)}" class="${r.val!==r.orig?'chg':''}">${escH(r.val)}</textarea></div>`).join(''):'<div class="hint">這個元件沒有可改的文字。</div>';
+ const ics=[];for(let i=g.from;i<=g.to&&ics.length<12;i++){const it=raw.items[i];if(!it.ic)continue;const ix=i-g.from,L=cur[ix];ics.push({ix,orig:it.ic.id,val:L&&L.icon&&L.from===it.ic.id?L.icon:it.ic.id});}
+ LB={lk,gi:SEL.gi,rows,ics};$('#lbName').textContent='改字：'+g.name;
+ $('#lbList').innerHTML=rows.length?rows.map((r,j)=>`<div><label>${escH(r.name)}</label><textarea data-j="${j}" rows="${Math.min(5,r.val.split('\n').length)}" class="${r.val!==r.orig?'chg':''}">${escH(r.val)}</textarea></div>`).join(''):(ics.length?'':'<div class="hint">這個元件沒有可改的文字。</div>');
+ if(ics.length){if(!$('#lbIcList')){const dl=document.createElement('datalist');dl.id='lbIcList';dl.innerHTML=I.LIST.map(ic=>`<option value="${ic.id}">${escH(ic.zh)}</option>`).join('');document.body.appendChild(dl);}
+  $('#lbList').insertAdjacentHTML('beforeend',ics.map((r,j)=>`<div class="lbic"><label>圖示 ${ics.length>1?j+1:''}（輸入中文或英文名稱搜尋圖示庫）</label><span class="lbicv">${icSvg(I.BY[r.val]?r.val:r.orig,22)}</span><input data-k="${j}" list="lbIcList" value="${escH(r.val)}" class="${r.val!==r.orig?'chg':''}" placeholder="例：star、目標"></div>`).join(''));}
  $('#lbEd').hidden=false;const t=$('#lbList textarea');if(t)t.focus();}
-$('#lbList').addEventListener('input',e=>{const t=e.target.closest('textarea');if(!t||!LB)return;t.classList.toggle('chg',t.value!==LB.rows[+t.dataset.j].orig);});
+$('#lbList').addEventListener('input',e=>{const q=e.target.closest('input[data-k]');if(q&&LB){const v=q.value.trim(),id=I.BY[v]?v:((I.LIST.find(ic=>ic.zh===v)||{}).id);if(id){q.dataset.id=id;q.previousElementSibling.innerHTML=icSvg(id,22);}q.classList.toggle('chg',(id||v)!==LB.ics[+q.dataset.k].orig);return;}const t=e.target.closest('textarea');if(!t||!LB)return;t.classList.toggle('chg',t.value!==LB.rows[+t.dataset.j].orig);});
 $('#lbCancel').onclick=()=>{$('#lbEd').hidden=true;LB=null;};
 $('#lbReset').onclick=()=>{if(!LB)return;delete S.labels[LB.lk];const gi=LB.gi;$('#lbEd').hidden=true;LB=null;render();persist();selectEl(gi);toast('已還原這個元件的文字');};
-$('#lbOk').onclick=()=>{if(!LB)return;const L={};document.querySelectorAll('#lbList textarea').forEach(t=>{const r=LB.rows[+t.dataset.j];const v=D.stripCtl(t.value).slice(0,400);if(v!==r.orig)L[r.ix]={from:r.orig,to:v};});
+$('#lbOk').onclick=()=>{if(!LB)return;const L={};document.querySelectorAll('#lbList textarea').forEach(t=>{const r=LB.rows[+t.dataset.j];const v=D.stripCtl(t.value).slice(0,400);if(v!==r.orig)L[r.ix]={from:r.orig,to:v};});document.querySelectorAll('#lbList input[data-k]').forEach(q=>{const r=LB.ics[+q.dataset.k];const v=q.value.trim();const id=q.dataset.id||(I.BY[v]?v:((I.LIST.find(ic=>ic.zh===v)||{}).id));if(id&&id!==r.orig)L[r.ix]={from:r.orig,icon:id};});
  S.labels=S.labels||{};if(Object.keys(L).length)S.labels[LB.lk]=L;else delete S.labels[LB.lk];const gi=LB.gi,n=Object.keys(L).length;$('#lbEd').hidden=true;LB=null;render();persist();selectEl(gi);
  const sl=model.slides[S.slide],g=sl.groups[gi];const shr=g?sl.items.slice(g.from,g.to+1).filter(it=>it.shrunk).length:0;
- window.__studio.lastLabels={n,shrunk:shr};toast(n?`已改 ${n} 段文字${shr?`；${shr} 段放不下，字級已自動縮小`:''}。下載、複製、＋待選都會帶這些文字。`:'沒有變更',3200);};
+ window.__studio.lastLabels={n,shrunk:shr};toast(n?`已改 ${n} 處（文字／圖示）${shr?`；${shr} 段放不下，字級已自動縮小`:''}。下載、複製、＋待選都會帶這些文字。`:'沒有變更',3200);};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#lbEd').hidden){$('#lbEd').hidden=true;LB=null;}});
 buildIconBar();buildTableUI();renderTray();
 $('#wPrev').onchange=e=>{S.whitePrev=e.target.checked;schedule();};
-$('#bEx').checked=!!S.examples;$('#bEx').onchange=e=>{S.examples=e.target.checked;schedule();toast(S.examples?'已加入 15–17 範例頁（預覽與整份 .pptx）':'已移除 15–17 範例頁',2000);};
+$('#bEx').checked=!!S.examples;$('#bEx').onchange=e=>{S.examples=e.target.checked;schedule();toast(S.examples?'已加入 17–19 範例頁（預覽與整份 .pptx）':'已移除 17–19 範例頁',2000);};
 $('#bMore').onclick=e=>{e.stopPropagation();const m=$('#mMore');m.hidden=!m.hidden;$('#bMore').setAttribute('aria-expanded',String(!m.hidden));};
 $('#mMore').onclick=()=>{$('#mMore').hidden=true;$('#bMore').setAttribute('aria-expanded','false');};
 document.addEventListener('click',e=>{if(!e.target.closest('.more')){$('#mMore').hidden=true;$('#bMore').setAttribute('aria-expanded','false');}});
@@ -6483,7 +6544,7 @@ $('#bPanel').onclick=()=>setPanel(!document.body.classList.contains('pan'));
 $('#bPanelX').onclick=()=>setPanel(false);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')setPanel(false);});
 function mLabels(){const m=MQ.matches;if(!$('#bOne').disabled)$('#bOne').textContent=m?'⬇ 本頁':'下載本頁 .pptx';if(!$('#bAll').disabled)$('#bAll').textContent=m?'⬇ 整份':'下載整份 .pptx';
- $('#bExM').textContent=(S.examples?'☑':'☐')+' 含範例頁（15–17）';if(!m){setPanel(false);const st=document.querySelector('.stage');if(st.classList.contains('zoom'))$('#bZoom').click();}}
+ $('#bExM').textContent=(S.examples?'☑':'☐')+' 含範例頁（17–19）';if(!m){setPanel(false);const st=document.querySelector('.stage');if(st.classList.contains('zoom'))$('#bZoom').click();}}
 if(MQ.addEventListener)MQ.addEventListener('change',mLabels);else if(MQ.addListener)MQ.addListener(mLabels);
 $('#bExM').onclick=()=>{const c=$('#bEx');c.checked=!c.checked;c.onchange({target:c});mLabels();};
 $('#bZoom').onclick=()=>{const st=document.querySelector('.stage');const on=!st.classList.contains('zoom');st.classList.toggle('zoom',on);$('#bZoom').textContent=on?'↔ 全幅':'🔍 放大';$('#bZoom').setAttribute('aria-pressed',String(on));if(SEL)selectEl(SEL.gi);};

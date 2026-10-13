@@ -30,6 +30,15 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
  {const e0=D.elementModel(nav,'patterns',0),e1=D.elementModel(Object.assign({},nav,{minFont:12}),'patterns',0);ok(e1.element.scale>1&&e1.element.minSize>=12&&e1.element.w>e0.element.w*0||D.minFontOf(e1.slides[0].items)>=12,`最小字級 12：三步驟流程放大 ×${e1.element.scale}，最小字 ${e1.element.minSize}pt`);await save('minfont-element.pptx',nav,{model:e1});}
  {const inv=D.PRESETS.find(p=>p.id==='investor');const m=D.buildModel(inv,{only:['catalog']});ok(m.sem.warn!==inv.P,`法說會紅：警示色 ${m.sem.warn} ≠ 主色 ${inv.P}`);
   const k=D.buildModel(nav,{only:['patterns2']}).slides[0];const runs=[].concat(...k.items.filter(i=>i.name==='變化').map(i=>i.runs));ok(runs.some(r=>r.o.color==='2E7D4F')&&runs.some(r=>r.o.color==='C0504D'),'KPI ▲▼ 依越高／越低越好上色（良＝綠、不良＝紅）');}
+ // v10：標籤元件（左＝圖示／短字、右＝文字）：9 風格無警告、≥11 個元件、圖示可換、單一元件 .pptx
+ {let bad=[];for(const st of D.PRESETS){const m=D.buildModel(st,{only:['labels']});const g=m.slides[0].groups;if(m.warns.length||g.length<11)bad.push(st.id+' '+g.length+' '+m.warns.join());}
+  ok(!bad.length,'標籤元件：9 風格各 '+D.buildModel(nav,{only:['labels']}).slides[0].groups.length+' 個元件、無排版警告'+(bad.length?'｜'+bad.join('；'):''));
+  const sl0=D.buildModel(nav,{only:['labels']}).slides[0],g0=sl0.groups[0];const gi=sl0.items.slice(g0.from,g0.to+1).findIndex(i=>i.ic);
+  const L={['labels:0']:{[gi]:{from:sl0.items[g0.from+gi].ic.id,icon:'star'}}};const em=D.elementModel(nav,'labels',0,{labels:L});const it=em.slides[0].items.find(i=>i.ic);
+  ok(gi>=0&&it.ic.id==='star'&&/^圖示 /.test(it.name)&&JSON.stringify(it.points)!==JSON.stringify(sl0.items[g0.from+gi].points),'標籤元件：改字面板換圖示（shopping_cart → star）');
+  ok(!D.buildModel(nav,{only:['labels'],labels:{'labels:0':{[gi]:{from:'other',icon:'star'}}}}).slides[0].items.some(i=>i.ic&&i.ic.id==='star'),'標籤元件：原圖示對不上就不換');
+  await save('labelcomp-element.pptx',nav,{model:em});await save('labelcomp-investor.pptx',D.PRESETS.find(p=>p.id==='investor'),{only:['labels']});
+  const K=D.buildModel(nav,{only:['labels']}).slides[0];const kg=K.groups.find(g=>g.name==='直式標籤清單');ok(kg&&K.items.slice(kg.from,kg.to+1).filter(i=>i.runs).length>=8,'直式清單：4 組短字＋文字皆可編輯');}
  // R1：表格重新設計（4 外觀 × 9 風格、單一強調色、狀態字精準比對、合計列、數字格式、門檻建議、貼上重設、舊快照相容）
  {const Y={title:'批次良率',rows:[['Lot','站點','Yield%','Defect','Status'],['A1','CMP','95.2%','12','Pass'],['A2','CMP','88.1%','31','Hold'],['A3','Etch','(86.4%)','40','Scrap'],['A4','Litho','93.7%','15','已完成 60%']],
    his:[{type:'col',i:2,color:'auto'},{type:'row',i:3,color:'alert'},{type:'cell',r:1,c:3,color:'A'},{type:'col',i:1}],rules:[{c:2,op:'<',v:90,tone:'warn',style:'fill'},{c:3,op:'>=',v:30,tone:'warn',style:'box'},{c:3,op:'=',v:12,tone:'good',style:'text'}]};

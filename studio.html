@@ -285,6 +285,7 @@ body.tabT .wrap{grid-template-columns:1fr}body.tabT aside{display:none}body.tabT
 #lbList{overflow-y:auto;padding:8px 12px;display:flex;flex-direction:column;gap:7px}
 #lbList label{font-size:11px;color:var(--mu);display:block;margin-bottom:2px}
 #lbList textarea{width:100%;box-sizing:border-box;font-family:inherit;font-size:12.5px;line-height:1.45;border:1px solid #DADADA;border-radius:6px;padding:4px 6px;resize:vertical}
+#lbList .lbic{display:grid;grid-template-columns:28px 1fr;align-items:center;gap:4px}#lbList .lbic label{grid-column:1/3}#lbList .lbic input{font:inherit;font-size:12.5px;border:1px solid #DADADA;border-radius:6px;padding:4px 6px}#lbList .lbic input.chg{border-color:var(--p);background:#F7FAFD}
 #lbList textarea.chg{border-color:var(--p);background:#F7FAFD}
 .lbed .lbf{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}.lbed .lbf .btn{flex:1}
 .toast.on{opacity:1;transform:translateX(-50%)}
@@ -384,12 +385,12 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  <nav class="tabs" id="tabs"><button data-tab="slides" class="on">投影片元件</button><button data-tab="icons">圖示庫</button><button data-tab="table">表格</button></nav>
  <span class="sp"></span>
  <button class="btn monly" id="bPanel" aria-expanded="false" aria-controls="panel">⚙ 設定</button>
- <label class="hx" id="exWrap" title="15–17 頁是主題式範例版面（三圓架構、框架流程、能力地圖），不是基本元件；預設不放進預覽與整份 .pptx"><input type="checkbox" id="bEx"> 含範例頁</label>
+ <label class="hx" id="exWrap" title="17–19 頁是主題式範例版面（三圓架構、框架流程、能力地圖），不是基本元件；預設不放進預覽與整份 .pptx"><input type="checkbox" id="bEx"> 含範例頁</label>
  <button class="btn" id="bOne">下載本頁 .pptx</button>
  <button class="btn pri" id="bAll">下載整份 .pptx</button>
  <div class="more"><button class="btn" id="bMore" aria-haspopup="true" aria-expanded="false" title="重設／儲存／載入設定">⋯</button>
   <div class="menu" id="mMore" hidden>
-   <button id="bExM" class="monly" title="15–17 頁主題式範例版面">☐ 含範例頁（15–17）</button>
+   <button id="bExM" class="monly" title="17–19 頁主題式範例版面">☐ 含範例頁（17–19）</button>
    <button id="bReset" title="捨棄所有微調，回到目前範本的預設值">↺ 重設為範本</button>
    <button id="bSave" title="把目前設定存成 JSON 檔">儲存設定 JSON</button>
    <button id="bLoad" title="載入先前存的 JSON 設定">載入設定 JSON…</button>
@@ -527,7 +528,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 <script src="jszip.min.js?v=978d62b5"></script>
 <script src="pptxgen.min.js?v=24808c08"></script>
 <script src="icons.js?v=f4423941"></script>
-<script src="deck.js?v=71ec6350"></script>
+<script src="deck.js?v=b6d7441d"></script>
 <script>
 (function(){
  'use strict';
@@ -662,7 +663,7 @@ const cleanP=(p,base)=>D.sanitizeParams(p,templateParams(presetOf(base).id),ENUM
 let S={base:'navy',p:templateParams('navy'),slide:0,autoTone:true,labels:{}};
 /* 改字（v9）：{ '<頁>:<群組>': { '<第幾個圖形>': {from 原文, to 新文字} } } */
 function cleanLabels(o){const out={};if(!o||typeof o!=='object')return out;Object.keys(o).slice(0,200).forEach(k=>{if(!/^[\w-]+:\d+$/.test(k)||!o[k]||typeof o[k]!=='object')return;const L={};
- Object.keys(o[k]).slice(0,60).forEach(i=>{const v=o[k][i];if(/^\d+$/.test(i)&&v&&typeof v==='object'&&typeof v.to==='string')L[i]={from:typeof v.from==='string'?D.stripCtl(v.from).slice(0,400):null,to:D.stripCtl(v.to).slice(0,400)};});
+ Object.keys(o[k]).slice(0,60).forEach(i=>{const v=o[k][i];if(/^\d+$/.test(i)&&v&&typeof v==='object'&&typeof v.icon==='string'&&window.Icons&&window.Icons.BY[v.icon])L[i]={from:typeof v.from==='string'?v.from.slice(0,60):null,icon:v.icon};else if(/^\d+$/.test(i)&&v&&typeof v==='object'&&typeof v.to==='string')L[i]={from:typeof v.from==='string'?D.stripCtl(v.from).slice(0,400):null,to:D.stripCtl(v.to).slice(0,400)};});
  if(Object.keys(L).length)out[k]=L;});return out;}
 try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=presetOf(s.base).id;S.p=cleanP(s.p,S.base);S.slide=0;/* 每次開啟都先顯示 01 元件總表 */S.mine=s.mine?D.stripCtl(s.mine).slice(0,40):null;S.autoTone=s.autoTone!==false;S.tab=['slides','icons','table'].includes(s.tab)?s.tab:'slides';S.examples=!!s.examples;S.labels=cleanLabels(s.labels);}}catch(e){}
 const persist=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify({base:S.base,p:S.p,slide:S.slide,autoTone:S.autoTone,mine:S.mine||null,tab:S.tab||'slides',examples:!!S.examples,labels:S.labels||{}}));}catch(e){}};
@@ -749,7 +750,7 @@ function render(){
 function showSlide(){
  const sl=model.slides[S.slide];
  $('#big').innerHTML=D.toSvg(sl,{id:'big',interactive:true})+'<button class="nav l" data-d="-1">‹</button><button class="nav r" data-d="1">›</button>'+
-  '<button class="eladd" id="elAdd" hidden aria-label="加入待選素材">＋</button><div class="ebar" id="ebar"><b id="eName"></b><small id="eDim" style="color:#8C8C8C;margin-right:4px" title="元件實際尺寸（依 S／M／L）"></small><span class="ecnt" id="eCnt" hidden><button data-a="cnt-" title="減少一個">−</button><b id="eCntN"></b><button data-a="cnt+" title="增加一個">＋</button></span><button class="pri" data-a="copy" title="複製到剪貼簿（SVG 向量＋PNG）">複製</button><button data-a="tray" title="加入待選素材（保留目前風格）">＋待選</button><button data-a="lbl" title="修改這個元件的文字（不重排版面；放不下時字級自動縮小）">改字</button><button data-a="pptx" title="只含這個元件的 1 頁 .pptx，原生可編輯圖形">下載此元件 .pptx</button><button data-a="svg">SVG</button><button data-a="png">PNG</button><button data-a="x" title="關閉">✕</button></div>';
+  '<button class="eladd" id="elAdd" hidden aria-label="加入待選素材">＋</button><div class="ebar" id="ebar"><b id="eName"></b><small id="eDim" style="color:#8C8C8C;margin-right:4px" title="元件實際尺寸（依 S／M／L）"></small><span class="ecnt" id="eCnt" hidden><button data-a="cnt-" title="減少一個">−</button><b id="eCntN"></b><button data-a="cnt+" title="增加一個">＋</button></span><button class="pri" data-a="copy" title="複製到剪貼簿（SVG 向量＋PNG）">複製</button><button data-a="tray" title="加入待選素材（保留目前風格）">＋待選</button><button data-a="lbl" title="修改這個元件的文字；有圖示的元件（如標籤元件）也可在這裡換圖示（不重排版面；放不下時字級自動縮小）">改字</button><button data-a="pptx" title="只含這個元件的 1 頁 .pptx，原生可編輯圖形">下載此元件 .pptx</button><button data-a="svg">SVG</button><button data-a="png">PNG</button><button data-a="x" title="關閉">✕</button></div>';
  SEL=null;
  {const n=D.smallRuns(sl,10);const fe=$('#fsNote');if(fe){fe.textContent=n?`ⓘ 本頁 ${n} 段字小於 10pt`:'';fe.title=n?'投影時可能偏小。單一元件與待選素材可在「字型與字級 › 最小字級」設定 10／12／14pt，匯出時整個元件等比放大。':'';}}
  document.querySelectorAll('.th').forEach(t=>t.classList.toggle('on',+t.dataset.i===S.slide));
@@ -1422,20 +1423,23 @@ let LB=null;
 function openLabels(){if(!SEL)return;const raw=D.buildModel(S.p,{only:[SEL.key]}).slides[0];const g=raw.groups[SEL.gi];if(!g)return;const lk=SEL.key+':'+SEL.gi;const cur=(S.labels||{})[lk]||{};
  const rows=[];for(let i=g.from;i<=g.to&&rows.length<40;i++){const it=raw.items[i];if(!it.runs||!it.runs.length)continue;const orig=D.textOf(it);if(!orig.trim())continue;const ix=i-g.from;const L=cur[ix];
   rows.push({ix,orig,val:L&&L.from===orig?L.to:orig,name:it.name||'文字'});}
- LB={lk,gi:SEL.gi,rows};$('#lbName').textContent='改字：'+g.name;
- $('#lbList').innerHTML=rows.length?rows.map((r,j)=>`<div><label>${escH(r.name)}</label><textarea data-j="${j}" rows="${Math.min(5,r.val.split('\n').length)}" class="${r.val!==r.orig?'chg':''}">${escH(r.val)}</textarea></div>`).join(''):'<div class="hint">這個元件沒有可改的文字。</div>';
+ const ics=[];for(let i=g.from;i<=g.to&&ics.length<12;i++){const it=raw.items[i];if(!it.ic)continue;const ix=i-g.from,L=cur[ix];ics.push({ix,orig:it.ic.id,val:L&&L.icon&&L.from===it.ic.id?L.icon:it.ic.id});}
+ LB={lk,gi:SEL.gi,rows,ics};$('#lbName').textContent='改字：'+g.name;
+ $('#lbList').innerHTML=rows.length?rows.map((r,j)=>`<div><label>${escH(r.name)}</label><textarea data-j="${j}" rows="${Math.min(5,r.val.split('\n').length)}" class="${r.val!==r.orig?'chg':''}">${escH(r.val)}</textarea></div>`).join(''):(ics.length?'':'<div class="hint">這個元件沒有可改的文字。</div>');
+ if(ics.length){if(!$('#lbIcList')){const dl=document.createElement('datalist');dl.id='lbIcList';dl.innerHTML=I.LIST.map(ic=>`<option value="${ic.id}">${escH(ic.zh)}</option>`).join('');document.body.appendChild(dl);}
+  $('#lbList').insertAdjacentHTML('beforeend',ics.map((r,j)=>`<div class="lbic"><label>圖示 ${ics.length>1?j+1:''}（輸入中文或英文名稱搜尋圖示庫）</label><span class="lbicv">${icSvg(I.BY[r.val]?r.val:r.orig,22)}</span><input data-k="${j}" list="lbIcList" value="${escH(r.val)}" class="${r.val!==r.orig?'chg':''}" placeholder="例：star、目標"></div>`).join(''));}
  $('#lbEd').hidden=false;const t=$('#lbList textarea');if(t)t.focus();}
-$('#lbList').addEventListener('input',e=>{const t=e.target.closest('textarea');if(!t||!LB)return;t.classList.toggle('chg',t.value!==LB.rows[+t.dataset.j].orig);});
+$('#lbList').addEventListener('input',e=>{const q=e.target.closest('input[data-k]');if(q&&LB){const v=q.value.trim(),id=I.BY[v]?v:((I.LIST.find(ic=>ic.zh===v)||{}).id);if(id){q.dataset.id=id;q.previousElementSibling.innerHTML=icSvg(id,22);}q.classList.toggle('chg',(id||v)!==LB.ics[+q.dataset.k].orig);return;}const t=e.target.closest('textarea');if(!t||!LB)return;t.classList.toggle('chg',t.value!==LB.rows[+t.dataset.j].orig);});
 $('#lbCancel').onclick=()=>{$('#lbEd').hidden=true;LB=null;};
 $('#lbReset').onclick=()=>{if(!LB)return;delete S.labels[LB.lk];const gi=LB.gi;$('#lbEd').hidden=true;LB=null;render();persist();selectEl(gi);toast('已還原這個元件的文字');};
-$('#lbOk').onclick=()=>{if(!LB)return;const L={};document.querySelectorAll('#lbList textarea').forEach(t=>{const r=LB.rows[+t.dataset.j];const v=D.stripCtl(t.value).slice(0,400);if(v!==r.orig)L[r.ix]={from:r.orig,to:v};});
+$('#lbOk').onclick=()=>{if(!LB)return;const L={};document.querySelectorAll('#lbList textarea').forEach(t=>{const r=LB.rows[+t.dataset.j];const v=D.stripCtl(t.value).slice(0,400);if(v!==r.orig)L[r.ix]={from:r.orig,to:v};});document.querySelectorAll('#lbList input[data-k]').forEach(q=>{const r=LB.ics[+q.dataset.k];const v=q.value.trim();const id=q.dataset.id||(I.BY[v]?v:((I.LIST.find(ic=>ic.zh===v)||{}).id));if(id&&id!==r.orig)L[r.ix]={from:r.orig,icon:id};});
  S.labels=S.labels||{};if(Object.keys(L).length)S.labels[LB.lk]=L;else delete S.labels[LB.lk];const gi=LB.gi,n=Object.keys(L).length;$('#lbEd').hidden=true;LB=null;render();persist();selectEl(gi);
  const sl=model.slides[S.slide],g=sl.groups[gi];const shr=g?sl.items.slice(g.from,g.to+1).filter(it=>it.shrunk).length:0;
- window.__studio.lastLabels={n,shrunk:shr};toast(n?`已改 ${n} 段文字${shr?`；${shr} 段放不下，字級已自動縮小`:''}。下載、複製、＋待選都會帶這些文字。`:'沒有變更',3200);};
+ window.__studio.lastLabels={n,shrunk:shr};toast(n?`已改 ${n} 處（文字／圖示）${shr?`；${shr} 段放不下，字級已自動縮小`:''}。下載、複製、＋待選都會帶這些文字。`:'沒有變更',3200);};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#lbEd').hidden){$('#lbEd').hidden=true;LB=null;}});
 buildIconBar();buildTableUI();renderTray();
 $('#wPrev').onchange=e=>{S.whitePrev=e.target.checked;schedule();};
-$('#bEx').checked=!!S.examples;$('#bEx').onchange=e=>{S.examples=e.target.checked;schedule();toast(S.examples?'已加入 15–17 範例頁（預覽與整份 .pptx）':'已移除 15–17 範例頁',2000);};
+$('#bEx').checked=!!S.examples;$('#bEx').onchange=e=>{S.examples=e.target.checked;schedule();toast(S.examples?'已加入 17–19 範例頁（預覽與整份 .pptx）':'已移除 17–19 範例頁',2000);};
 $('#bMore').onclick=e=>{e.stopPropagation();const m=$('#mMore');m.hidden=!m.hidden;$('#bMore').setAttribute('aria-expanded',String(!m.hidden));};
 $('#mMore').onclick=()=>{$('#mMore').hidden=true;$('#bMore').setAttribute('aria-expanded','false');};
 document.addEventListener('click',e=>{if(!e.target.closest('.more')){$('#mMore').hidden=true;$('#bMore').setAttribute('aria-expanded','false');}});
@@ -1448,7 +1452,7 @@ $('#bPanel').onclick=()=>setPanel(!document.body.classList.contains('pan'));
 $('#bPanelX').onclick=()=>setPanel(false);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')setPanel(false);});
 function mLabels(){const m=MQ.matches;if(!$('#bOne').disabled)$('#bOne').textContent=m?'⬇ 本頁':'下載本頁 .pptx';if(!$('#bAll').disabled)$('#bAll').textContent=m?'⬇ 整份':'下載整份 .pptx';
- $('#bExM').textContent=(S.examples?'☑':'☐')+' 含範例頁（15–17）';if(!m){setPanel(false);const st=document.querySelector('.stage');if(st.classList.contains('zoom'))$('#bZoom').click();}}
+ $('#bExM').textContent=(S.examples?'☑':'☐')+' 含範例頁（17–19）';if(!m){setPanel(false);const st=document.querySelector('.stage');if(st.classList.contains('zoom'))$('#bZoom').click();}}
 if(MQ.addEventListener)MQ.addEventListener('change',mLabels);else if(MQ.addListener)MQ.addListener(mLabels);
 $('#bExM').onclick=()=>{const c=$('#bEx');c.checked=!c.checked;c.onchange({target:c});mLabels();};
 $('#bZoom').onclick=()=>{const st=document.querySelector('.stage');const on=!st.classList.contains('zoom');st.classList.toggle('zoom',on);$('#bZoom').textContent=on?'↔ 全幅':'🔍 放大';$('#bZoom').setAttribute('aria-pressed',String(on));if(SEL)selectEl(SEL.gi);};
