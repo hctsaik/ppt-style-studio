@@ -20,11 +20,16 @@ def inline(m):
     name = m.group(1)
     return f'<script data-inlined="{name}">\n/* ==== 內嵌：{name} ==== */\n{js(name)}\n</script>'
 html = re.sub(r'<script src="([^"?]+\.js)(?:\?v=[\w]+)?"></script>', inline, html)
-if found != 4:
-    sys.exit(f'預期內嵌 4 個 script，實際 {found} 個')
+if found != 6:
+    sys.exit(f'預期內嵌 6 個 script，實際 {found} 個')
 if re.search(r'<(script|link|img)[^>]+(src|href)="(?!data:|https?:|#)[^"]+"', html):
     sys.exit('仍有外部相依檔，請檢查 studio.html')
+# Style Kit 分頁的下載檔（stylekit/*.pptx|potx|xml）在單檔版以 base64 內嵌，點下載時轉成 Blob
+import base64, json
+SKD = os.path.join(ROOT, 'stylekit')
+b64 = {f: base64.b64encode(open(os.path.join(SKD, f), 'rb').read()).decode() for f in sorted(os.listdir(SKD)) if re.search(r'\.(pptx|potx|xml)$', f)}
+html = html.replace('<script data-inlined="stylekit.js">', '<script>window.STYLEKIT_B64=' + json.dumps(b64) + ';</script>\n<script data-inlined="stylekit.js">', 1)
 stamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
-html = html.replace('<title>', f'<!-- PPT Style Studio 單檔版（自動產生於 {stamp}，請勿手改；來源：studio.html + icons.js + deck.js + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->\n<title>', 1)
+html = html.replace('<title>', f'<!-- PPT Style Studio 單檔版（自動產生於 {stamp}，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->\n<title>', 1)
 open(out, 'w', encoding='utf-8').write(html)
 print(f'寫入 {out}（{os.path.getsize(out)/1024:.0f} KB）')
