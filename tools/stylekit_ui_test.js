@@ -7,6 +7,7 @@ const URL=process.argv[2]||'http://localhost:8765/studio.html',SHOT=process.argv
  await pg.setViewport({width:1366,height:900});await pg.goto(URL,{waitUntil:'networkidle0'});await pg.evaluate(()=>localStorage.clear());await pg.reload({waitUntil:'networkidle0'});
  await pg.evaluate(()=>document.querySelector('#tabs button[data-tab="kit"]').click());await sl(400);
  ck('分頁「範本 Style Kit」顯示、13 個主題',await pg.evaluate(()=>!document.querySelector('#vKit').hidden&&document.querySelectorAll('#skThemes button').length===13));
+ ck('每套主題顯示主色對比值＋5 色對比表',await pg.evaluate(()=>[...document.querySelectorAll('#skThemes .skCr')].length===13&&/\d\.\d:1/.test(document.querySelector('#skThemes .skCr').textContent)&&document.querySelectorAll('#skCt span').length===5));
  for(const id of ['navy','investor','green','wine']){
   await pg.evaluate(id=>document.querySelector(`#skThemes button[data-sk="${id}"]`).click(),id);await sl(300);
   const r=await pg.evaluate(id=>{const t=StyleKit.themes.find(x=>x.id===id);const rgb=h=>'rgb('+[0,2,4].map(i=>parseInt(h.substr(i,2),16)).join(', ')+')';

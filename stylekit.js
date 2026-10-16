@@ -40,7 +40,7 @@ function href(f){const b=B64();if(!b||!b[f])return 'stylekit/'+f;if(urls[f])retu
  const bin=atob(b[f]),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
  const mime=/\.xml$/.test(f)?'application/xml':/\.potx$/.test(f)?'application/vnd.openxmlformats-officedocument.presentationml.template':'application/vnd.openxmlformats-officedocument.presentationml.presentation';
  return urls[f]=URL.createObjectURL(new Blob([u],{type:mime}));}
-const CSS=`#vKit{background:#fff;overflow:auto;padding:18px 22px 40px}#vKit .skW{max-width:1180px;margin:0 auto;color:#3A3A3A}
+const CSS=`#vKit .skCr{display:block;font-size:10px;color:#595959;font-weight:400}#vKit .skCt{display:flex;flex-wrap:wrap;gap:6px 18px;margin:4px 0 10px;font-size:12px;color:#333}#vKit .skCt b{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px;border:1px solid #ddd}#vKit .skCt em{font-style:normal;font-weight:600}#vKit .skCt .ok{color:#2E7D4F}#vKit .skCt .mid{color:#7A5A00}#vKit .skCt .no{color:#9A3A3A}#vKit{background:#fff;overflow:auto;padding:18px 22px 40px}#vKit .skW{max-width:1180px;margin:0 auto;color:#3A3A3A}
 #vKit h2{font-size:20px;margin:0 0 2px;color:#222}#vKit h2 small{font-size:12px;color:#8C8C8C;font-weight:400;margin-left:8px}
 #vKit .skLead{font-size:12.5px;color:#595959;margin:4px 0 14px;line-height:1.6}
 .skTh{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}.skTh button{border:1px solid #D9D9D9;background:#fff;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12.5px;display:flex;align-items:center;gap:6px;color:#3A3A3A}
@@ -59,12 +59,16 @@ const CSS=`#vKit{background:#fff;overflow:auto;padding:18px 22px 40px}#vKit .skW
 .skNote{font-size:11.5px;color:#8C8C8C;line-height:1.7;margin-top:16px}
 @media(max-width:820px){.skK{grid-template-columns:1fr}.skG{grid-template-columns:70px repeat(7,1fr);gap:5px}.skQ{height:30px;font-size:10px}.skCh{font-size:8.5px}.skRh small{display:none}.skRh{font-size:10px}}`;
 let cur=null;
+function skL(h){const c=[0,2,4].map(k=>parseInt(h.slice(k,k+2),16)/255).map(v=>v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4));return .2126*c[0]+.7152*c[1]+.0722*c[2];}
+function skCR(a,b){const x=skL(a),y=skL(b||'FFFFFF');return ((Math.max(x,y)+.05)/(Math.min(x,y)+.05)).toFixed(1);}
+function skCT(t){const R=[['主色 輔色1',t.sc.acc[0]],['強調 輔色2',t.sc.acc[1]],['深色 輔色5',t.sc.acc[4]],['說明 #595959','595959'],['淺色 H1',t.sc.hl[0]]];return '<div class="skCt" id="skCt">'+R.map(([n,c])=>{const r=+skCR(c);const ok=r>=4.5,mid=r>=3;return `<span><b style="background:#${c}"></b>${n} #${c}　<em class="${ok?'ok':mid?'mid':'no'}">${r}:1 ${ok?'✓ 可當字色':mid?'◐ 只用大字／圖形':'✕ 只當底色'}</em></span>`;}).join('')+'</div>';}
 function render(id,root){root=root||document.getElementById('vKit');if(!root||!T.length)return;const t=T.find(x=>x.id===id)||T.find(x=>x.id===cur)||T[0];cur=t.id;
  if(!document.getElementById('skCss')){const s=document.createElement('style');s.id='skCss';s.textContent=CSS;document.head.appendChild(s);}
  root.style.setProperty('--skP','#'+t.sc.acc[0]);const fn='PPT Template Style Kit - '+t.zh;
  root.innerHTML=`<div class="skW"><h2>PPT 範本 Style Kit<small>Template Style Kit · 快速樣式＋螢光筆，下載即用</small></h2>
  <p class="skLead">選一個主題 → 下面預覽就是 PowerPoint〔常用 › 繪圖 › 快速樣式〕會出現的 7×6 樣式與柔和螢光筆。確認後下載 .pptx：佈景主題色彩與 fmtScheme 已內嵌，每一頁的快速樣式都是這組顏色；內含 Style Kit 範例頁，可直接用格式刷取用。<br>Pick a theme → preview the real Quick Styles gallery &amp; soft highlighters → download a .pptx with the theme embedded.</p>
- <div class="skTh" id="skThemes" role="tablist">${T.map(x=>`<button data-sk="${x.id}" class="${x.id===t.id?'on':''}" role="tab" aria-selected="${x.id===t.id}"><i>${x.sc.acc.slice(0,3).map(c=>`<b style="background:#${c}"></b>`).join('')}</i>${esc(x.zh)}</button>`).join('')}</div>
+ <div class="skTh" id="skThemes" role="tablist">${T.map(x=>`<button data-sk="${x.id}" class="${x.id===t.id?'on':''}" role="tab" aria-selected="${x.id===t.id}"><i>${x.sc.acc.slice(0,3).map(c=>`<b style="background:#${c}"></b>`).join('')}</i>${esc(x.zh)}<small class="skCr">${skCR(x.sc.acc[0])}:1</small></button>`).join('')}</div>
+ <div class="skSec">對比值 Contrast<small>與白底比（WCAG）；文字需 ≥ 4.5:1</small></div>${skCT(t)}
  <div class="skDl" id="skDl"><a class="pri" id="skPptx" href="${href(t.id+'.pptx')}" download="${esc(fn)}.pptx">⬇ 下載 .pptx（${esc(t.zh)}）</a><a class="pri" id="skPotx" href="${href(t.id+'.potx')}" download="${esc(fn)}.potx">⬇ 範本 .potx（另存成我的範本）</a><button type="button" class="skApply" id="skApply">🎨 一鍵套用到元件庫（全部元件改成這組色）</button><a id="skXml" href="${href(t.id+'_colors.xml')}" download="${esc(fn)}.xml">色彩 .xml</a>
  <small>.pptx：直接開啟使用（4 頁：封面、內容、Style Kit 頁、快速樣式預覽頁）｜.potx：存成個人範本（%APPDATA%\\Microsoft\\Templates）｜.xml：只換色彩，放到 …\\Document Themes\\Theme Colors，套在公司範本上不動母片／Logo</small></div>
  <div class="skSec">快速樣式 Quick Styles<small>常用 › 繪圖 › 快速樣式（Home › Drawing › Quick Styles）· 7 欄 × 6 列</small></div>${gallery(t)}
