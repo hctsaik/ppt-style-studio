@@ -89,3 +89,5 @@ review/*
 !review/table-mocks/
 tools/oxv/bin/
 tools/oxv/obj/
+!render/restructure-overview.png
+!render/restructure-sidebar.png

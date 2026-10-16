@@ -1,0 +1,32 @@
+// 用法：python3 -m http.server 8765 & timeout 180 node tools/nav_ui_test.js [URL] [側欄截圖.png]
+// 重構（v11）：分組側欄、搜尋（同義詞）、hash 深連結、位置記憶（頁面 ID）、簡報食譜、工具選單、手機抽屜
+const puppeteer=require('puppeteer-core');const sl=ms=>new Promise(r=>setTimeout(r,ms));
+const URL=process.argv[2]||'http://localhost:8765/studio.html';let fail=0;const ck=(n,c)=>{console.log((c?'OK   ':'FAIL ')+n);if(!c)fail++;};
+(async()=>{const b=await puppeteer.launch({executablePath:process.env.CHROME||'/usr/bin/google-chrome',args:['--no-sandbox']});const pg=await b.newPage();
+ const errs=[];pg.on('pageerror',e=>errs.push(e.message));
+ await pg.setViewport({width:1440,height:900});await pg.goto(URL,{waitUntil:'networkidle0'});await pg.evaluate(()=>localStorage.clear());await pg.goto(URL,{waitUntil:'networkidle0'});
+ const st=()=>pg.evaluate(()=>({t:document.querySelector('#sTitle').innerText,h:location.hash,k:window.__studio.key}));
+ const g=await pg.evaluate(()=>({d:document.querySelectorAll('#pTree details').length,a:document.querySelectorAll('#pTree a').length}));ck(`側欄 ${g.d} 組、${g.a} 頁`,g.d===9&&g.a>=40);
+ let s=await st();ck('預設開在 00 總覽：'+s.t.split('\n')[0],s.k==='catalog'&&/^00/.test(s.t));
+ ck('總覽頁有 A–G 入口',await pg.evaluate(()=>document.querySelectorAll('#sTitle .gocards a').length>=7));
+ await pg.evaluate(()=>document.querySelector('#pTree a[data-k="kpi"]').click());await sl(400);s=await st();ck('點側欄 C1 → 標題「C1 … · NN/43」、hash '+s.h,/^C1 .*· \d\d\/\d+/.test(s.t)&&s.h==='#/C1/kpi');
+ await pg.type('#pSearch','VS');await sl(300);let r=await pg.evaluate(()=>[...document.querySelectorAll('#pRes a[data-i]')].map(a=>a.innerText));ck('搜尋「VS」（同義詞→對比）：'+r.length+' 筆',r.some(x=>/對比/.test(x)));
+ await pg.evaluate(()=>{const i=document.querySelector('#pSearch');i.value='指標';i.dispatchEvent(new Event('input'));});await sl(300);r=await pg.evaluate(()=>[...document.querySelectorAll('#pRes a[data-i]')].map(a=>a.innerText));ck('搜尋「指標」找到 KPI：'+r.length+' 筆',r.some(x=>/KPI/.test(x)));
+ await pg.evaluate(()=>{const i=document.querySelector('#pSearch');i.value='STAR';i.dispatchEvent(new Event('input'));});await sl(300);
+ await pg.evaluate(()=>{const a=[...document.querySelectorAll('#pRes a[data-i]')].find(a=>+a.dataset.gi>=0&&/^G3/.test(a.innerText));a.click();});await sl(500);s=await st();ck('點元件結果 → 跳頁並選取元件 ('+s.k+')',s.k==='star'&&await pg.evaluate(()=>!!(document.querySelector('#eName')||{}).textContent));
+ await pg.goto(URL.replace(/#.*$/,'')+'#/D1/cmp',{waitUntil:'networkidle0'});s=await st();ck('深連結 #/D1/cmp 直接開啟',s.k==='cmp');
+ await pg.evaluate(()=>{location.hash='#/G4/folio';});await sl(500);s=await st();ck('hashchange → G4 作品集',s.k==='folio');
+ await pg.goto(URL.replace(/#.*$/,''),{waitUntil:'networkidle0'});s=await st();ck('重新開啟記得頁面 ID（folio）',s.k==='folio');
+ await pg.goto(URL.replace(/#.*$/,'')+'#/Z9/nope',{waitUntil:'networkidle0'});s=await st();ck('不存在的頁 → 回到 00 總覽',s.k==='catalog');
+ await pg.evaluate(()=>document.querySelector('#bTools').click());const tm=await pg.evaluate(()=>({sw:!!document.querySelector('#mTools a[href*="swiffchart"]'),off:!!document.querySelector('#mTools a[href="PPT-Style-Studio.html"]'),kit:!!document.querySelector('#mTools [data-go="kit"]')}));ck('工具選單：SwiffChart、離線單檔、Style Kit '+JSON.stringify(tm),tm.sw&&tm.off&&tm.kit);
+ await pg.evaluate(()=>document.querySelector('#mTools [data-go="guide"]').click());await sl(300);const rc=await pg.evaluate(()=>document.querySelectorAll('.rcp').length);ck('簡報食譜 '+rc+' 套',rc>=8);
+ await pg.evaluate(()=>[...document.querySelectorAll('.rcp')].find(x=>/面試/.test(x.innerText)).querySelector('a[data-k]').click());await sl(500);s=await st();ck('食譜點頁碼 → 跳到 '+s.k,s.k==='profile'&&await pg.evaluate(()=>!document.querySelector('#vSlides').hidden));
+ await pg.evaluate(()=>document.querySelector('#pTree a[data-k="ex1"]').click());await sl(400);ck('範例頁預設顯示，且列出「本頁使用元件」連結',await pg.evaluate(()=>document.querySelectorAll('#sTitle .gocards a').length>=3));
+ await pg.evaluate(()=>document.querySelector('#pTree a[data-k="chart"]').click());await sl(400);ck('C4 圖表頁有 SwiffChart 連結',await pg.evaluate(()=>!!document.querySelector('#sTitle a.chartln')));
+ await pg.evaluate(()=>document.querySelector('#pTree a[data-k="patterns"]').click());await sl(500);
+ if(process.argv[3])await pg.screenshot({path:process.argv[3]});
+ await pg.setViewport({width:390,height:844,isMobile:true,hasTouch:true});await pg.reload({waitUntil:'networkidle0'});await sl(300);
+ await pg.evaluate(()=>document.querySelector('#bPanel').click());await sl(400);const mob=await pg.evaluate(()=>{const n=document.querySelector('#pTree');const r=n.getBoundingClientRect();return r.height>0&&r.top<innerHeight;});ck('手機：抽屜開啟可見頁面導覽',mob);
+ await pg.evaluate(()=>document.querySelector('#pTree a[data-k="skills"]').click());await sl(500);s=await st();ck('手機：點頁面後抽屜關閉並跳頁',s.k==='skills'&&await pg.evaluate(()=>!document.body.classList.contains('pan')));
+ ck('無 JS 錯誤 '+errs.join(';'),!errs.length);
+ await b.close();console.log(fail?'FAILS '+fail:'ALL OK');process.exit(fail?1:0);})();

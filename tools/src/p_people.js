@@ -1,0 +1,32 @@
+ /* B5 議程與章節 */
+ SL.agenda=()=>{title('議程與章節 Agenda & Sections','議程清單、側欄目錄、議程進度條、章節分隔（大編號＋本節重點）、頁首章節標籤、麵包屑：目前章節高亮');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(3,2,Y0,Y1);const AG=[['背景','Background'],['現況分析','Status'],['對策','Actions'],['時程','Timeline'],['結論','Summary']];
+  comp('A','議程清單','Agenda list',C[0],(x,y,w,h)=>{const rh=(h-.04)/5;AG.forEach(([t,e],i)=>{const yy=y+i*rh,now=i===1;if(now)box(x,yy+.02,w,rh-.04,{fill:TN(P,.88),r:'full',name:'目前章節底'});bdg(x+rh/2,yy+rh/2,.3,two(i+1),now?P:i<1?DARK:'E3E3E3',{color:now||i<1?W2:G.t2,size:10});
+   T(x+.5,yy,w-.6,rh,[{t,b:1},{t:'  '+e,s:10,b:0,c:G.mute,f:nf}],{size:Z(11.5),color:now?P:G.ink,wrap:0,name:'議程項目'});});});
+  comp('B','側欄目錄','Side TOC',C[1],(x,y,w,h)=>{box(x,y,1.5,h,{fill:'F7F7F7',r:.06,name:'側欄底'});AG.forEach(([t],i)=>{const yy=y+.12+i*.34,now=i===1;if(now)box(x,yy,.06,.28,{fill:P,name:'目前標記'});T(x+.18,yy,1.3,.28,t,{size:10.5,bold:now,color:now?P:G.t2,wrap:0,name:'目錄項'});});
+   T(x+1.7,y+.04,w-1.7,.3,'現況分析',{size:Z(14),bold:1,color:G.ink,name:'本頁標題'});T(x+1.7,y+.42,w-1.7,.9,'側欄常駐在每頁左側，\n讀者隨時知道位置。',{size:10.5,valign:'top',name:'說明'});});
+  comp('C','議程進度條','Agenda progress',C[2],(x,y,w,h)=>{const sw=w/5;AG.forEach(([t],i)=>{const f=i<1?DARK:i===1?P:'E6E6E6';box(x+i*sw+.02,y+.3,sw-.04,.12,{fill:f,r:'full',name:'進度段'});T(x+i*sw,y+.48,sw,.28,t,{size:10,color:i===1?P:G.t2,bold:i===1,align:'center',wrap:0,name:'章節'});});
+   pill(x+sw*1.5-.45,y-.04,.9,.26,'目前',P,{size:10});T(x,y+.9,w,.5,'放在頁首或頁尾一列，\n不佔版面',{size:10,color:G.mute,valign:'top',name:'說明'});});
+  comp('D','章節分隔（大編號）','Section divider',C[3],(x,y,w,h)=>{txt(x,y,1.2,1.0,'02',{size:Z(54),bold:1,color:P,font:nf,valign:'middle',name:'章節編號'});ln(x+1.3,y+.16,x+1.3,y+.9,{c:G.l2,w:1});
+   T(x+1.46,y+.06,w-1.46,.4,'現況分析',{size:Z(20),bold:1,color:G.ink,name:'章節名'});T(x+1.46,y+.5,w-1.46,.3,'Current status',{size:11,color:G.mute,font:nf,name:'英文'});
+   ln(x,y+1.06,x+w,y+1.06,{c:G.l2,w:.75});['良率三週回升','CMP 為主因','C 線待擴'].forEach((t,i)=>{const xx=x+i*w/3;bdg(xx+.14,y+1.36,.26,String(i+1),DARK,{size:10});T(xx+.32,y+1.22,w/3-.34,.28,t,{size:10.5,color:G.ink,wrap:0,name:'本節重點'});});});
+  comp('E','頁首章節標籤＋麵包屑','Section tag',C[4],(x,y,w,h)=>{box(x,y+.06,1.9,.32,{fill:DARK,r:'full',text:'現況分析',size:Z(11),bold:1,color:W2,align:'left',margin:[30,6,0,0],name:'章節標籤'});bdg(x+.18,y+.22,.26,'02',P,{size:10,line:W2,lw:1});T(x+2.0,y+.06,w-2.0,.32,'Status · 2／5',{size:10,color:G.mute,font:nf,name:'英文'});
+   let xx=x;const yy=y+.72;[['背景',0],['現況',1],['對策',0]].forEach(([t,on],i)=>{const ww=.9;box(xx,yy,ww,.28,{fill:on?P:'EDEDED',r:'full',text:t,size:10,bold:on,color:on?W2:G.mute,margin:0,name:'麵包屑'});xx+=ww;if(i<2){path([[xx+.08,yy+.07],[xx+.15,yy+.14],[xx+.08,yy+.21]],{line:G.l1,lw:1.25,name:'V 形箭頭'});xx+=.24;}});});
+  comp('F','章節頁（本節 3 重點）','Section page',C[5],(x,y,w,h)=>{box(x,y,w,h,{fill:'F7F7F7',r:.08,name:'章節底'});txt(x+.24,y+.12,1.0,.6,'03',{size:Z(34),bold:1,color:P,font:nf,valign:'middle',name:'章節編號'});T(x+1.2,y+.16,w-1.4,.36,'對策與時程',{size:Z(16),bold:1,color:G.ink,name:'章節名'});
+   T(x+1.2,y+.5,w-1.4,.26,'Actions & timeline',{size:10.5,color:G.mute,font:nf,name:'英文'});['三項對策的成本與效益','導入時程與里程碑','需要的決策與資源'].forEach((t,i)=>{const yy=y+.9+i*.32;circ(x+.36,yy+.13,.08,{fill:AC2,name:'項目符號'});T(x+.5,yy,w-.7,.28,t,{size:10.5,color:G.t2,wrap:0,name:'重點'});});});};
+ /* B6 人員與組織 */
+ SL.people=()=>{title('人員與組織 People & Team','人員卡（橫／直）、聯絡卡、團隊列、小型組織樹、窗口表：頭像可換成照片（右鍵→變更圖片）');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(3,2,Y0,Y1);
+  comp('A','人員卡（橫式）','Person card',C[0],(x,y,w,h)=>{card(x,y,w,h);av(x+.6,y+.62,.8,'CY');T(x+1.16,y+.2,w-1.3,.34,'陳怡君',{size:Z(14),bold:1,color:G.ink,name:'姓名'});T(x+1.16,y+.52,w-1.3,.28,'製程整合經理 PIE Manager',{size:10.5,name:'職稱'});
+   pill(x+1.16,y+.9,1.1,.28,'專案負責',P,{size:10});pill(x+2.36,y+.9,1.0,.28,'CMP',TN(P,.85),{size:10,color:PD});T(x+.24,y+1.34,w-.48,.3,'負責 B 線良率改善與擴線評估',{size:10.5,name:'職責'});});
+  comp('B','人員卡（直式）×3','Person tiles',C[1],(x,y,w,h)=>{const cw=(w-.24)/3;[['LW','林維','品保'],['HC','黃承','設備'],['SY','孫宇','製程']].forEach(([i0,n0,r0],i)=>{const xx=x+i*(cw+.12);card(xx,y,cw,h);av(xx+cw/2,y+.5,.62,i0,i===0?P:null);
+   T(xx,y+.9,cw,.3,n0,{size:Z(12),bold:1,color:G.ink,align:'center',name:'姓名'});T(xx,y+1.2,cw,.26,r0,{size:10.5,color:G.mute,align:'center',name:'職稱'});});});
+  comp('C','聯絡卡','Contact card',C[2],(x,y,w,h)=>{card(x,y,w,h);av(x+.5,y+.5,.6,'CY',P);T(x+.94,y+.2,w-1.1,.32,'陳怡君 Chen Yi-Chun',{size:Z(12.5),bold:1,color:G.ink,name:'姓名'});T(x+.94,y+.5,w-1.1,.26,'製程整合 · B 廠',{size:10.5,name:'單位'});
+   [['mail','yc.chen@example.com'],['call','分機 3721'],['location_on','B 廠 3F'] ].forEach(([ic,t],i)=>{const yy=y+.94+i*.24;icon(ic,x+.3,yy,.2,{color:G.t2});T(x+.6,yy-.04,w-.8,.26,t,{size:10,color:G.t2,font:nf,wrap:0,name:'聯絡方式'});});});
+  comp('D','團隊列 4 人','Team row',C[3],(x,y,w,h)=>{const cw=w/4;[['CY','陳怡君','PM'],['LW','林維','QA'],['HC','黃承','EE'],['SY','孫宇','PE']].forEach(([a,b,c],i)=>{const cx0=x+cw*i+cw/2;av(cx0,y+.4,.58,a,i===0?P:null);T(cx0-cw/2,y+.76,cw,.28,b,{size:11,bold:1,color:G.ink,align:'center',name:'姓名'});
+   pill(cx0-.3,y+1.08,.6,.26,c,i===0?DARK:'EDEDED',{size:10,font:nf,color:i===0?W2:G.t2});});});
+  comp('E','小型組織樹','Org tree',C[4],(x,y,w,h)=>{const bw=1.1,bh=.5;const top=box(x+w/2-bw/2,y,bw,bh,{fill:P,r:.08,text:[{t:'陳怡君',b:1,br:1},{t:'PM',s:10,f:nf}],size:Z(11),color:W2,lsp:.95,name:'主管'});const cw=(w-.3)/3;
+   const ch=[['林維','QA'],['黃承','EE'],['孫宇','PE']].map(([a,b],i)=>box(x+i*(cw+.15)+(cw-bw)/2,y+1.0,bw,bh,{fill:W2,line:G.l1,lw:1,r:.08,text:[{t:a,b:1,br:1},{t:b,s:10,c:G.mute,f:nf}],size:Z(11),color:G.ink,lsp:.95,name:'成員'}));ch.forEach(c=>link(top,2,c,0,{mid:y+.76}));});
+  comp('F','窗口對照表','Contact matrix',C[5],(x,y,w,h)=>{[['品質問題','林維','QA'],['設備異常','黃承','EE'],['製程變更','孫宇','PE'],['交期排程','陳怡君','PM']].forEach(([a,b,c],i)=>{const yy=y+i*.36;T(x,yy,1.3,.32,a,{size:10.5,color:G.t2,wrap:0,name:'事項'});chev(x+1.34,yy+.09,.14,G.l1,1.25);
+   box(x+1.6,yy+.03,1.3,.26,{fill:i===3?P:'F2F2F2',r:'full',text:b,size:10.5,bold:1,color:i===3?W2:G.ink,margin:0,name:'窗口'});T(x+3.0,yy,w-3.0,.32,c,{size:10,color:G.mute,font:nf,wrap:0,name:'部門'});if(i<3)ln(x,yy+.34,x+w,yy+.34,{c:'EDEDED',w:.5});});
+   T(x,y+1.48,w,.26,'RACI 分工表見 D4·2',{size:10,color:G.mute,name:'說明'});});};
