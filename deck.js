@@ -73,7 +73,7 @@ const LANG_OF={card:{outline:'白底外框',gray:'淺灰實心',soft:'白底無�
  chain:{chev:'漸層 V 形箭號',hex:'六角形鏈',gray:'灰卡＋▶',outline:'細框方塊',hairchev:'空心線框 V 形',home:'五邊形箭號',pill:'膠囊鏈',block:'區塊 V 形'}};
 function langOf(p){return{card:LANG_OF.card[p.card]+(p.card==='outline'?' '+p.cardLW+'pt':'')+(p.sh?'＋陰影':''),tag:LANG_OF.tag[p.tag],badge:LANG_OF.badge[p.badge],sep:LANG_OF.sep[p.sep],
  conn:p.cnW+'pt '+({solid:'實線',sysDot:'點線',sysDash:'虛線',dash:'長虛線'}[p.cnDash]||'')+({triangle:'＋三角箭頭',arrow:'＋開放箭頭',stealth:'＋燕尾箭頭',oval:'＋圓點',none:''}[p.cnHead]||''),chain:LANG_OF.chain[p.chain]};}
-const SLIDES=[['catalog','元件總表'],['patterns','常見組合'],['patterns2','常見組合（二）'],['flex','可調數量'],['rca','原因分析'],['annot','標註'],['icons','圖示庫'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['asis','版型｜As Was／To Be'],['labels','標籤元件'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
+const SLIDES=[['catalog','元件總表'],['patterns','常見組合'],['patterns2','常見組合（二）'],['flex','可調數量'],['rca','原因分析'],['annot','標註'],['icons','圖示庫'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['asis','版型｜As Was／To Be'],['labels','標籤元件'],['cmp','對比式排版'],['cmp2','對比式排版（二）'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
 
 /* ---------- 文字寬度估算（Node 端排版檢查用；瀏覽器預覽改用 canvas 實測） ---------- */
 function tw(str,size){let u=0;for(const ch of String(str)){const c=ch.codePointAt(0);
@@ -825,6 +825,122 @@ function buildModel(params,opt){
    txt(x0,y0+4*(ph+gp)-.08,cw,.22,'K｜直式清單 Stacked list（3–5 項）',{size:cs,color:G.mute,name:'圖說'});}
  };
 
+ /* ---------- 對比式排版（v11）：As Was → To Be 的基本元件；數字可在「改字」改，倍數／增減徽章（calc）依兩邊數字自動重算 ---------- */
+ const CMPK=()=>{const W2='FFFFFF',CARD=mix(G.fill||'F4F4F4','FFFFFF',.35),DARK=G.ink,RAD=st.r>0?Math.min(Math.max(st.r,.06),.12):0,onC=c=>lum(c)>.55?G.ink:W2,cs=Math.max(8,st.nSize-1.5);
+  const cw=5.85,cx=[X0,X1-cw];
+  const calc=(it,a,b,m,extra)=>{it.calc=Object.assign({a:cur.items.indexOf(a),b:cur.items.indexOf(b),m},extra||{});return it;};
+  const cap=(x,y,w,t)=>txt(x,y,w,.22,t,{size:cs,color:G.mute,name:'圖說'});
+  const pill=(x,y,w,h,t,fill,o)=>box(x,y,w,h,Object.assign({fill,r:'full',text:t,size:LS(11),bold:1,color:onC(fill),margin:0,name:'膠囊標籤'},o||{}));
+  const chev=(cx0,cy0,d,dir,c)=>{circ(cx0,cy0,d,{fill:W2,line:G.line,lw:1,sh:'small',name:'箭頭底'});const k=d*.22;
+   path(dir==='down'?[[cx0-k,cy0-k*.5],[cx0,cy0+k*.5],[cx0+k,cy0-k*.5]]:[[cx0-k*.5,cy0-k],[cx0+k*.5,cy0],[cx0-k*.5,cy0+k]],{line:c||G.t2,lw:2,name:'V 形箭頭'});};
+  const num=(x,y,w,h,n,u,c,o)=>{o=o||{};return txt(x,y,w,h,[{t:n,s:o.s||LS(24),b:1,c,f:nf},{t:u?' '+u:'',s:o.us||LS(12),b:0,c:o.uc||c}],{valign:'middle',align:o.align||'left',name:o.name||'數值'});};
+  const dbadge=(x,y,w,h,t,fill,o)=>box(x,y,w,h,Object.assign({fill,r:'full',text:t,size:LS(11),bold:1,color:onC(fill),font:nf,margin:0,line:W2,lw:1.5,name:'增減徽章'},o||{}));
+  return{W2,CARD,DARK,RAD,onC,cs,cw,cx,calc,cap,pill,chev,num,dbadge};};
+ SL.cmp=()=>{title('對比式排版 Compare','As Was → To Be 基本元件；選取 →「改字」改數字，倍數／增減徽章自動重算');
+  const {W2,CARD,DARK,RAD,onC,cw,cx,calc,cap,pill,chev,num,dbadge}=CMPK();
+  // A 橫向一列（同 As Was／To Be 頁）
+  {const x=cx[0],y=2.02,AG=.5,w=(cw-AG)/2,h=.86;let nA,nB;grp('橫向對比 As Was→To Be',()=>{
+    [[x,'As Was','2000',0],[x+w+AG,'To Be','4000',1]].forEach(([xx,lab,n,hi])=>{const f=hi?P:CARD,fg=hi?onC(P):G.t2;
+     box(xx,y,w,h,{fill:f,r:RAD*1.3,sh:'card',force:1,name:lab+' 卡'});pill(xx+.16,y+(h-.32)/2,.84,.32,lab,hi?W2:DARK,{color:hi?P:W2});
+     txt(xx+1.1,y+.1,w-1.2,.24,'銷售額',{size:LS(11),color:hi?mix(fg,P,.25):G.mute,name:'指標名稱'});const it=num(xx+1.1,y+.32,w-1.2,.44,n,'元',hi?fg:G.ink,{s:LS(22)});if(hi)nB=it;else nA=it;});
+    chev(x+w+AG/2,y+h/2,.36,'right');calc(dbadge(x+cw-.62,y-.15,.62,.3,'×2',DARK),nA,nB,'x');});
+   cap(x,y+h+.08,cw,'A｜橫向對比 Side by side（＋倍數徽章 ×2）');}
+  // B 多指標對照（每列 As Was｜To Be｜增減）
+  {const x=cx[0],y=3.32,c=[1.35,1.3,.42,1.3,1.0],xs=c.reduce((a,v,i)=>(a.push(a[i]+v),a),[x]),rh=.42,hh=.34,tw0=c.reduce((a,b)=>a+b,0);
+   grp('多指標對照',()=>{txt(x,y,c[0],hh,'指標 Metric',{size:LS(11),color:G.mute,valign:'middle',name:'欄頭'});
+    pill(xs[1]+.12,y+.02,c[1]-.24,hh-.04,'As Was',DARK);pill(xs[3]+.12,y+.02,c[3]-.24,hh-.04,'To Be',P);txt(xs[4],y,c[4],hh,'增減 Δ',{size:LS(11),color:G.mute,align:'center',valign:'middle',name:'欄頭'});
+    [['銷售額','2000','4000','元'],['客戶數','100','160','人'],['交期','10','7','天']].forEach(([m,a,b,u],i)=>{const yy=y+hh+.06+i*rh;ln(x,yy,x+tw0,yy,{c:G.l2,w:.75});
+     txt(x,yy,c[0],rh,m,{size:LS(12),bold:1,color:G.ink,valign:'middle',name:'指標名稱'});
+     const na=num(xs[1],yy,c[1],rh,a,u,G.t2,{s:LS(15),us:LS(10),align:'center',uc:G.mute}),nb=num(xs[3],yy,c[3],rh,b,u,P,{s:LS(15),us:LS(10),align:'center',uc:G.mute});
+     path([[xs[2]+c[2]/2-.04,yy+rh/2-.07],[xs[2]+c[2]/2+.04,yy+rh/2],[xs[2]+c[2]/2-.04,yy+rh/2+.07]],{line:G.l1,lw:1.5,name:'V 形箭頭'});
+     const up=+b>=+a,good=i<2?up:!up;const gc=good?GOOD:BAD;
+     calc(box(xs[4]+.17,yy+.08,c[4]-.34,rh-.16,{fill:mix(gc,'FFFFFF',.86),r:'full',text:(up?'+':'−')+Math.round(Math.abs(b-a)/a*100)+'%',size:LS(10.5),bold:1,color:gc,font:nf,margin:0,name:'增減徽章'}),na,nb,'pct');});
+    ln(x,y+hh+.06+3*rh,x+tw0,y+hh+.06+3*rh,{c:G.l2,w:.75});});
+   cap(x,y+hh+.12+3*rh,cw,'B｜多指標對照 Multi-metric（Δ 自動算 +100%／−30%）');}
+  // C 長條比較（長度依數值比例）
+  {const x=cx[0],y=5.42,lw=.95,bw=3.7,vw=cw-lw-bw,bh=.28;let na,nb,ba,bb;grp('長條比較',()=>{
+    txt(x,y,2.5,.26,'銷售額 Sales',{size:LS(11),bold:1,color:G.ink,valign:'middle',name:'指標名稱'});
+    [['As Was','2000',0],['To Be','4000',1]].forEach(([lab,n,hi],i)=>{const yy=y+.36+i*.44;pill(x,yy,lw-.12,bh,lab,hi?P:DARK);
+     box(x+lw,yy,bw,bh,{fill:GF,r:'full',name:'長條底'});const b=box(x+lw,yy,bw*(hi?1:.5),bh,{fill:hi?P:G.l1,r:'full',name:'長條'});
+     const t=num(x+lw+bw,yy-.06,vw,bh+.12,n,'',hi?P:G.t2,{s:LS(14),align:'right'});if(hi){nb=t;bb=b;}else{na=t;ba=b;}});
+    calc(ba,na,nb,'bar',{full:bw,side:'a'});calc(bb,na,nb,'bar',{full:bw,side:'b'});
+    calc(dbadge(x+cw-.62,y-.02,.62,.28,'×2',DARK),na,nb,'x');});
+   cap(x,y+1.22,cw,'C｜長條比較 Bar length（長度依數字比例）');}
+  // D 直式上下（下 V 形箭頭）
+  {const x=cx[1],y=2.02,h=.66,gp=.42;let nA,nB;grp('直式對比 上→下',()=>{
+    [[y,'As Was','導入前 Before','2000',0],[y+h+gp,'To Be','導入後 After','4000',1]].forEach(([yy,lab,sub,n,hi])=>{const f=hi?P:CARD,fg=hi?onC(P):G.ink;
+     box(x,yy,cw,h,{fill:f,r:RAD*1.3,sh:'card',force:1,name:lab+' 卡'});pill(x+.18,yy+(h-.32)/2,.9,.32,lab,hi?W2:DARK,{color:hi?P:W2});
+     txt(x+1.25,yy,2,h,[{t:'銷售額 ',s:LS(13),b:1,c:fg},{t:sub,s:LS(10),c:hi?mix(fg,P,.3):G.mute}],{valign:'middle',name:'指標名稱'});
+     const it=num(x+cw-2.1,yy,1.9,h,n,'元',hi?fg:G.t2,{s:LS(22),align:'right'});if(hi)nB=it;else nA=it;});
+    chev(x+cw/2,y+h+gp/2,.36,'down');calc(dbadge(x+cw-.62,y+h+gp-.15,.62,.3,'×2',DARK),nA,nB,'x');});
+   cap(x,y+2*h+gp+.08,cw,'D｜直式上下 Stacked（下 V 形箭頭）');}
+  // E 大數字分割（細分隔線＋增減箭頭）
+  {const x=cx[1],y=4.12,h=1.3,hw=cw/2;let nA,nB;grp('大數字分割',()=>{
+    ln(x+hw,y+.08,x+hw,y+h-.08,{c:G.line,w:.75});
+    [[x,'As Was','導入前','2000',0],[x+hw+.3,'To Be','導入後','4000',1]].forEach(([xx,lab,sub,n,hi])=>{
+     txt(xx,y,hw-.4,.26,[{t:lab,b:1,c:hi?P:G.t2,f:nf},{t:'  '+sub,c:G.mute}],{size:LS(11),name:'欄頭'});
+     const it=num(xx,y+.28,hw-.4,.66,n,'元',hi?P:G.t2,{s:LS(36),us:LS(14),uc:G.mute});if(hi)nB=it;else nA=it;});
+    chev(x+hw,y+h/2,.34,'right');
+    calc(txt(x+hw+.3,y+.98,hw-.4,.28,'▲ +100%',{size:LS(12),bold:1,color:GOOD,font:nf,name:'增減'}),nA,nB,'arrow');
+    txt(x,y+.98,hw-.4,.28,'銷售額（元）',{size:LS(11),color:G.mute,name:'指標名稱'});});
+   cap(x,y+h+.08,cw,'E｜大數字分割 Big number split（細分隔線＋▲▼ 增減）');}
+ };
+ SL.cmp2=()=>{title('對比式排版（二）Compare','三步驟、痛點對改善、降幅、VS 左右欄、時間軸、小尺寸');
+  const {W2,CARD,DARK,RAD,onC,cs,cw,cx,calc,cap,pill,chev,num,dbadge}=CMPK();
+  // F 三步驟 現況→改善→目標
+  {const x=cx[0],y=2.02,gp=.36,w=(cw-2*gp)/3,h=.98;grp('三步驟 現況→改善→目標',()=>{
+    [['現況 Now','60',0],['改善 Better','75',0],['目標 Goal','90',1]].forEach(([lab,n,hi],i)=>{const xx=x+i*(w+gp),f=hi?P:CARD,fg=hi?onC(P):G.ink;
+     box(xx,y,w,h,{fill:f,r:RAD*1.3,sh:'card',force:1,name:'步驟卡 '+(i+1)});
+     circ(xx+.26,y+.27,.28,{fill:hi?W2:DARK,text:String(i+1),size:LS(10),bold:1,color:hi?P:W2,font:nf,margin:0,name:'編號徽章'});
+     pill(xx+.46,y+.13,w-.6,.28,lab,hi?mix(P,'FFFFFF',.18):W2,{color:hi?W2:G.ink,line:hi?null:G.line,lw:.75});
+     txt(xx+.14,y+.48,w-.24,.42,[{t:'達成率 ',s:LS(10),c:hi?mix(fg,P,.3):G.mute},{t:n,s:LS(20),b:1,c:hi?fg:G.ink,f:nf},{t:'%',s:LS(11),b:1,c:hi?fg:G.t2}],{valign:'middle',name:'數值'});
+     if(i<2)chev(xx+w+gp/2,y+h/2,.3,'right');});});
+   cap(x,y+h+.08,cw,'F｜三步驟 Three-step（現況 → 改善 → 目標）');}
+  // G Before／After 卡＋條列（痛點 vs 改善）
+  {const x=cx[0],y=3.38,AG=.44,w=(cw-AG)/2,h=1.62;grp('痛點 vs 改善',()=>{
+    box(x,y,w,h,{fill:CARD,r:RAD*1.3,sh:'card',force:1,name:'Before 卡'});box(x+w+AG,y,w,h,{fill:W2,line:P,lw:1.25,r:RAD*1.3,sh:'card',force:1,name:'After 卡'});
+    pill(x+.18,y+.16,1.3,.32,'Before 痛點',DARK);pill(x+w+AG+.18,y+.16,1.3,.32,'After 改善',P);
+    ['人工對帳耗時 3 天','資料散落多個系統','錯誤難追蹤'].forEach((t,i)=>{const yy=y+.62+i*.3;circ(x+.28,yy+.13,.08,{fill:G.l1,name:'項目符號'});txt(x+.42,yy,w-.52,.26,t,{size:LS(12),color:G.t2,valign:'middle',name:'痛點 '+(i+1)});});
+    ['自動對帳半天完成','單一平台即時查詢','異常自動提醒'].forEach((t,i)=>{const yy=y+.62+i*.3,xx=x+w+AG;icon('check_circle',xx+.18,yy+.03,.2,{variant:'line',color:P});txt(xx+.44,yy,w-.54,.26,t,{size:LS(12),bold:1,color:G.ink,valign:'middle',name:'改善 '+(i+1)});});
+    chev(x+w+AG/2,y+h/2,.36,'right');});
+   cap(x,y+h+.08,cw,'G｜Before／After 條列 Pain points → Improvements');}
+  // K 小尺寸 inline chips
+  {const x=cx[0],y=5.5,hh=.32;
+   grp('小尺寸對比 ×2',()=>{const a=box(x,y,1.3,hh,{fill:GF,r:'full',text:[{t:'As Was  ',s:LS(9),b:1,c:G.mute,f:nf},{t:'2000',s:LS(12),b:1,c:G.t2,f:nf}],margin:0,name:'數值'});
+    path([[x+1.38,y+hh/2-.07],[x+1.45,y+hh/2],[x+1.38,y+hh/2+.07]],{line:G.t2,lw:1.5,name:'V 形箭頭'});
+    const b=box(x+1.53,y,1.3,hh,{fill:P,r:'full',text:[{t:'To Be  ',s:LS(9),b:1,c:mix(onC(P),P,.3),f:nf},{t:'4000',s:LS(12),b:1,c:onC(P),f:nf}],margin:0,name:'數值'});
+    calc(dbadge(x+2.91,y+.03,.5,hh-.06,'×2',DARK,{line:null}),a,b,'x');});
+   const x2=x+3.65;grp('小尺寸對比 降幅',()=>{const a=box(x2,y,.9,hh,{fill:GF,r:'full',text:[{t:'前 ',s:LS(9),b:1,c:G.mute},{t:'5%',s:LS(12),b:1,c:G.t2,f:nf}],margin:0,name:'數值'});
+    path([[x2+.98,y+hh/2-.07],[x2+1.05,y+hh/2],[x2+.98,y+hh/2+.07]],{line:G.t2,lw:1.5,name:'V 形箭頭'});
+    const b=box(x2+1.13,y,.9,hh,{fill:mix(GOOD,'FFFFFF',.86),r:'full',text:[{t:'後 ',s:LS(9),b:1,c:GOOD},{t:'1%',s:LS(12),b:1,c:GOOD,f:nf}],margin:0,name:'數值'});
+    calc(txt(x2+2.08,y,.6,hh,'↓80%',{size:LS(11),bold:1,color:GOOD,font:nf,valign:'middle',name:'增減'}),a,b,'down');});
+   cap(x,y+hh+.1,cw,'K｜小尺寸 Inline chips（放在句子或表格旁）');}
+  // H 降幅（不良率 5% → 1%，綠色）
+  {const x=cx[1],y=2.02,AG=.5,w=(cw-AG)/2,h=.86,GS=mix(GOOD,'FFFFFF',.9);let nA,nB;grp('降幅對比 ↓%',()=>{
+    box(x,y,w,h,{fill:CARD,r:RAD*1.3,sh:'card',force:1,name:'As Was 卡'});box(x+w+AG,y,w,h,{fill:GS,line:GOOD,lw:1,r:RAD*1.3,sh:'card',force:1,name:'To Be 卡'});
+    pill(x+.16,y+(h-.32)/2,.84,.32,'As Was',DARK);pill(x+w+AG+.16,y+(h-.32)/2,.84,.32,'To Be',GOOD);
+    [[x,'5',G.t2,0],[x+w+AG,'1',GOOD,1]].forEach(([xx,n,c,hi])=>{txt(xx+1.1,y+.1,w-1.2,.24,'不良率 Defect',{size:LS(11),color:G.mute,name:'指標名稱'});const it=num(xx+1.1,y+.32,w-1.2,.44,n+'%','',c,{s:LS(22)});if(hi)nB=it;else nA=it;});
+    chev(x+w+AG/2,y+h/2,.36,'right',GOOD);calc(dbadge(x+cw-.7,y-.15,.7,.3,'↓80%',GOOD),nA,nB,'down');});
+   cap(x,y+h+.08,cw,'H｜降幅 Reduction（越低越好，綠色 ↓80%）');}
+  // I 左右欄 VS
+  {const x=cx[1],y=3.38,h=1.62,cl=(cw-.7)/2;grp('左右欄 VS',()=>{
+    ln(x+cw/2,y,x+cw/2,y+h,{c:G.line,w:.75});
+    [[x,'方案 A 自建',DARK,[['成本','120 萬'],['時程','6 個月'],['維運','自行負責']]],[x+cl+.7,'方案 B 外包',P,[['成本','80 萬'],['時程','3 個月'],['維運','廠商支援']]]].forEach(([xx,hd,f,rows],k)=>{
+     pill(xx,y,cl,.34,hd,f);rows.forEach(([a,b],i)=>{const yy=y+.46+i*.38;if(i)ln(xx,yy,xx+cl,yy,{c:G.l2,w:.5});
+      txt(xx+.08,yy,.8,.38,a,{size:LS(11),color:G.mute,valign:'middle',name:'項目'});txt(xx+.8,yy,cl-.88,.38,b,{size:LS(13),bold:1,color:k?P:G.ink,align:'right',valign:'middle',name:'內容'});});});
+    circ(x+cw/2,y+h/2+.17,.52,{fill:DARK,line:W2,lw:2,sh:'small',text:'VS',size:LS(13),bold:1,color:W2,font:nf,margin:0,name:'VS 圓'});});
+   cap(x,y+h+.08,cw,'I｜左右欄 VS（兩案比較）');}
+  // J 時間軸 前後（年份）
+  {const x=cx[1],y=5.5,ly=y+.5;let nA,nB;grp('時間軸前後',()=>{
+    ln(x+.2,ly,x+cw-.2,ly,{c:G.line,w:1.25,head:'triangle'});
+    [[x+.5,'2024','As Was','2000',0],[x+cw-1.2,'2026','To Be','4000',1]].forEach(([xx,yr,lab,n,hi])=>{const c=hi?P:G.t2;
+     pill(xx-.38,y,.76,.28,yr,hi?P:DARK,{font:nf});circ(xx,ly,.16,{fill:hi?P:W2,line:hi?W2:G.l1,lw:2,name:'時間點'});
+     txt(xx+.42,y,1.0,.28,lab,{size:LS(10),bold:1,color:hi?P:G.mute,font:nf,valign:'middle',name:'階段'});
+     const it=num(xx-.8,ly+.14,1.6,.36,n,'萬',c,{s:LS(18),us:LS(11),align:'center'});if(hi)nB=it;else nA=it;});
+    calc(dbadge(x+cw/2-.32,ly-.15,.64,.3,'×2',DARK),nA,nB,'x');});
+   cap(x,y+1.08,cw,'J｜時間軸前後 Timeline（年份標籤）');}
+ };
+
  SL.circles=()=>{title('圓形與流程鏈','大外框圓＋疊放小圓，以及三段式流程鏈');
   section(X0,1.95,5.6,'大圓＋疊圓 Circles');
   const ccx=X0+2.8,ccy=3.95,R=1.38;bigCircle(ccx,ccy,R,'How','如何做到\n三個關鍵');
@@ -1210,7 +1326,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const raw=(T.rows||[])
   cur.table={hcol:!!T.hcol,pad:st.tbPad||'m',orphans,colMin:colMin.map(v=>+v.toFixed(3)),REC,k,colFit:colFit.map(v=>+v.toFixed(3)),tx,ty,tW,tH,colW,rowH,h0,nC,nR:rows.length,look:lookId,grey,hiMode:hiStyle,hiStyle,EC,colNum:AU.numC,colStat:AU.statC,key:[...keySet].sort((a,b)=>a-b),hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,
    ruleCols:[...new Set(MK.rules.map(r=>r.c))],unit:T.unit||'',note:T.note||'',title:T.title||'',font:F,nf:NF,slots,fs,hfs,k};}
  if(opt.compose){sno=0;cur={key:'compose',title:'待選素材',no:1,items:[],groups:[]};slides.push(cur);SL.compose();}
- else SLIDES.forEach(([k,zh],i)=>{if(opt.only&&!opt.only.includes(k))return;if(!opt.only&&opt.examples===false&&/^ex\d/.test(k))return;/* 12–14 範例頁（主題式版面）：studio 預設不含，勾「含範例頁」才加 */sno=i+1;cur={key:k,title:zh,no:i+1,items:[],groups:[]};slides.push(cur);canvas();SL[k]();footer();if(opt.labels)applyLabels(cur,opt.labels);});
+ else SLIDES.forEach(([k,zh],i)=>{if(opt.only&&!opt.only.includes(k))return;if(!opt.only&&opt.examples===false&&/^ex\d/.test(k))return;/* 12–14 範例頁（主題式版面）：studio 預設不含，勾「含範例頁」才加 */sno=i+1;cur={key:k,title:zh,no:i+1,items:[],groups:[]};slides.push(cur);canvas();SL[k]();footer();if(opt.labels)applyLabels(cur,opt.labels);recalc(cur);});
  const k=SIZE_K[st.size]||1;if(k!==1)slides.forEach(sl=>scaleSlide(sl,k));
  return{slides,warns,params:st,W:W*k,H:H*k,k,sem:{warn:AL,good:GOOD,bad:BAD}};}
 /* ---------- S／M／L 元件尺寸（v5.2）：整頁幾何、字級、線寬、陰影一起等比縮放，投影片也同比例（仍是 16:9）。
@@ -1535,9 +1651,21 @@ function applyLabels(sl,labels){if(!labels||typeof labels!=='object')return 0;le
    if(o.icon!=null){if(it.ic&&ICONS&&ICONS.BY[o.icon]&&(o.from==null||o.from===it.ic.id)){const q=ICONS.geom(it.ic.variant,it.ic.wt);it.points=ICONS.points(o.icon,it.w,q.k,q.off,q.wt);it.ic=Object.assign({},it.ic,{id:o.icon});it.name='圖示 '+ICONS.BY[o.icon].zh;it.edited=1;n++;}return;}
    if(!it.runs)return;if(o.from!=null&&textOf(it)!==o.from)return;
    const to=stripCtl(o.to==null?'':o.to).slice(0,400);const paras=[[]];it.runs.forEach(r=>{paras[paras.length-1].push(r);if(r.o.br)paras.push([]);});
-   const lines=to.split('\n');it.runs=lines.map((t,j)=>{const src=(paras[Math.min(j,paras.length-1)][0]||it.runs[0]).o;const ro=Object.assign({},src);delete ro.br;if(j<lines.length-1)ro.br=true;return{t,o:ro};});
+   const lines=to.split('\n');if(keepNums(it,lines,paras)){it.edited=1;autoShrink(it);n++;return;}it.runs=lines.map((t,j)=>{const src=(paras[Math.min(j,paras.length-1)][0]||it.runs[0]).o;const ro=Object.assign({},src);delete ro.br;if(j<lines.length-1)ro.br=true;return{t,o:ro};});
    it.edited=1;autoShrink(it);n++;});});
- return n;}
+ if(n)recalc(sl);return n;}
+/* v11：只改數字（其餘字不變）→ 逐段把數字換進原本的字串，保留大數字／小單位的格式 */
+const NUM_RE=/[-+−]?\d[\d,]*(?:\.\d+)?/g;
+function keepNums(it,lines,paras){if(lines.length!==paras.length)return false;const sk=t=>t.replace(NUM_RE,'#');
+ for(let j=0;j<lines.length;j++){const old=paras[j].map(r=>r.t).join('');if(sk(old)!==sk(lines[j])||!NUM_RE.test(old))return false;NUM_RE.lastIndex=0;}
+ lines.forEach((ln,j)=>{const nums=ln.match(NUM_RE)||[];let k=0;paras[j].forEach(r=>{r.t=r.t.replace(NUM_RE,()=>nums[k++]);});});return true;}
+/* v11：對比元件的倍數／增減徽章與長條長度，依兩邊數字自動重算（徽章本身被改過字就不動） */
+function numOf(it){if(!it)return NaN;const m=textOf(it).replace(/,/g,'').replace('−','-').match(/-?\d+(?:\.\d+)?/);return m?+m[0]:NaN;}
+function recalc(sl){sl.items.forEach(it=>{const c=it.calc;if(!c||it.edited)return;const a=numOf(sl.items[c.a]),b=numOf(sl.items[c.b]);if(!(isFinite(a)&&isFinite(b)))return;
+  if(c.m==='bar'){const mx=Math.max(Math.abs(a),Math.abs(b));if(mx>0)it.w=Math.max(it.h,c.full*Math.abs(c.side==='a'?a:b)/mx);return;}
+  if(!it.runs||!it.runs.length||a===0)return;const r=b/a,d=(b-a)/Math.abs(a)*100,f=v=>String(Math.round(v*10)/10),p=v=>String(Math.round(Math.abs(v)));let t;
+  if(c.m==='x')t=r>=1?'×'+f(r):(d>=0?'+':'−')+p(d)+'%';else if(c.m==='pct')t=(d>=0?'+':'−')+p(d)+'%';else if(c.m==='down')t=(d<=0?'↓':'↑')+p(d)+'%';else if(c.m==='arrow')t=(d>=0?'▲ +':'▼ −')+p(d)+'%';else return;
+  it.runs=[{t,o:Object.assign({},it.runs[0].o,{br:undefined})}];delete it.runs[0].o.br;});}
 /* ---------- v9：最小字級——單一元件／待選素材匯出時，若元件內最小的字小於設定值，整個元件（幾何＋字級）等比放大 ---------- */
 function runSizes(items){const a=[];items.forEach(it=>{if(it.runs)it.runs.forEach(r=>{if(String(r.t).trim())a.push(r.o.size);});if(it.t==='tbl')it.cells.forEach(row=>row.forEach(c=>c.runs.forEach(r=>{if(String(r.t).trim())a.push(r.o.size);})));});return a;}
 function minFontOf(items){const a=runSizes(items);return a.length?Math.min(...a):0;}

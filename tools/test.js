@@ -39,6 +39,21 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
   ok(!D.buildModel(nav,{only:['labels'],labels:{'labels:0':{[gi]:{from:'other',icon:'star'}}}}).slides[0].items.some(i=>i.ic&&i.ic.id==='star'),'標籤元件：原圖示對不上就不換');
   await save('labelcomp-element.pptx',nav,{model:em});await save('labelcomp-investor.pptx',D.PRESETS.find(p=>p.id==='investor'),{only:['labels']});
   const K=D.buildModel(nav,{only:['labels']}).slides[0];const kg=K.groups.find(g=>g.name==='直式標籤清單');ok(kg&&K.items.slice(kg.from,kg.to+1).filter(i=>i.runs).length>=8,'直式清單：4 組短字＋文字皆可編輯');}
+ // v11：對比式排版（2 頁、11 款）：9 風格無警告；只改數字保留格式；倍數／增減／長條自動重算；單一元件 .pptx
+ {let bad=[];for(const st of D.PRESETS){const m=D.buildModel(st,{only:['cmp','cmp2']});const n=m.slides.reduce((a,s)=>a+s.groups.length,0);if(m.warns.length||n<11)bad.push(st.id+' '+n+' '+m.warns.join());}
+  ok(!bad.length,'對比式排版：9 風格各 11 個元件、無排版警告'+(bad.length?'｜'+bad.join('；'):''));
+  const sl=D.buildModel(nav,{only:['cmp']}).slides[0];const gA=sl.groups.findIndex(g=>/橫向對比/.test(g.name)),g=sl.groups[gA];const its=sl.items.slice(g.from,g.to+1);
+  const ix=its.findIndex(i=>D.textOf(i)==='4000 元');ok(ix>=0&&its.some(i=>i.calc&&D.textOf(i)==='×2'),'橫向對比：數值「4000 元」＋徽章 ×2');
+  const L={['cmp:'+gA]:{[ix]:{from:'4000 元',to:'6000 元'}}};const s2=D.buildModel(nav,{only:['cmp'],labels:L}).slides[0];const i2=s2.items.slice(g.from,g.to+1);
+  ok(i2[ix].runs[0].t==='6000'&&i2[ix].runs[0].o.size>i2[ix].runs[1].o.size&&i2.some(i=>i.calc&&D.textOf(i)==='×3'),'改數字 4000→6000：保留大數字＋小單位格式、徽章自動 ×3');
+  const gB=sl.groups.findIndex(g=>/多指標/.test(g.name)),b=sl.groups[gB],bi=sl.items.slice(b.from,b.to+1);const k=bi.findIndex(i=>D.textOf(i)==='7 天');
+  const s3=D.buildModel(nav,{only:['cmp'],labels:{['cmp:'+gB]:{[k]:{from:'7 天',to:'5 天'}}}}).slides[0];ok(s3.items.slice(b.from,b.to+1).some(i=>i.calc&&D.textOf(i)==='−50%'),'多指標：交期 10→5 天 → Δ −50%');
+  const gC=sl.groups.findIndex(g=>/長條/.test(g.name)),c=sl.groups[gC],ci=sl.items.slice(c.from,c.to+1);const kc=ci.findIndex(i=>D.textOf(i).trim()==='2000');
+  const s4=D.buildModel(nav,{only:['cmp'],labels:{['cmp:'+gC]:{[kc]:{from:D.textOf(ci[kc]),to:'3000 '}}}}).slides[0];const bars=s4.items.slice(c.from,c.to+1).filter(i=>i.calc&&i.calc.m==='bar');
+  ok(bars.length===2&&Math.abs(bars[0].w/bars[1].w-.75)<.01,'長條比較：2000→3000，長度比自動變 75%');
+  const s5=D.buildModel(nav,{only:['cmp2']}).slides[0];ok(s5.items.some(i=>i.calc&&D.textOf(i)==='↓80%'),'降幅：5%→1% 徽章 ↓80%');
+  for(const [kk,gi] of [['cmp',gA],['cmp2',1]]){const em=D.elementModel(nav,kk,gi);await save('compare-'+kk+'-'+gi+'.pptx',nav,{model:em});}
+  await save('compare-investor.pptx',D.PRESETS.find(p=>p.id==='investor'),{only:['cmp','cmp2']});}
  // R1：表格重新設計（4 外觀 × 9 風格、單一強調色、狀態字精準比對、合計列、數字格式、門檻建議、貼上重設、舊快照相容）
  {const Y={title:'批次良率',rows:[['Lot','站點','Yield%','Defect','Status'],['A1','CMP','95.2%','12','Pass'],['A2','CMP','88.1%','31','Hold'],['A3','Etch','(86.4%)','40','Scrap'],['A4','Litho','93.7%','15','已完成 60%']],
    his:[{type:'col',i:2,color:'auto'},{type:'row',i:3,color:'alert'},{type:'cell',r:1,c:3,color:'A'},{type:'col',i:1}],rules:[{c:2,op:'<',v:90,tone:'warn',style:'fill'},{c:3,op:'>=',v:30,tone:'warn',style:'box'},{c:3,op:'=',v:12,tone:'good',style:'text'}]};
