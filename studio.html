@@ -29,7 +29,7 @@ aside::-webkit-scrollbar,.thumbs::-webkit-scrollbar{width:8px;height:8px}aside::
 .tpls{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
 .tpl{border:1px solid var(--line);border-radius:8px;padding:7px 8px;cursor:pointer;background:#fff;text-align:left;transition:.15s}
 .tpl:hover{border-color:#C8C8C8}
-.tpl.on{border-color:var(--c);box-shadow:0 0 0 1px var(--c) inset}
+.tpl{position:relative}.tpl.on{border-color:var(--c);box-shadow:0 0 0 1px var(--c) inset}.tpl.on::before{content:'✓';position:absolute;left:-6px;top:-6px;width:16px;height:16px;border-radius:50%;background:#1F3864;color:#fff;font-size:10px;line-height:16px;text-align:center;font-weight:700}
 .tpl b{display:flex;align-items:center;gap:5px;font-size:12.5px}
 .tpl b em,.tpl b u{width:9px;height:9px;border-radius:50%;flex:none;background:var(--c)}
 .tpl b u{background:var(--a)}
@@ -55,7 +55,7 @@ summary .n.on{display:inline-block}
 .col input[type=text]{width:74px;padding:3px 6px;border:1px solid #DADADA;border-radius:5px;font-family:Consolas,monospace;font-size:11.5px;text-transform:uppercase}
 .sw{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0 8px}
 .pal{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;cursor:pointer;height:22px;width:58px}
-.pal:hover{border-color:#AAA}.pal i{flex:1}
+.pal:hover{border-color:#AAA}.pal.on{outline:2px solid #1F3864;outline-offset:2px}.pal i{flex:1}
 .seg{display:flex;flex-wrap:wrap;gap:4px}
 .seg button{border:1px solid #DADADA;background:#fff;border-radius:6px;padding:3px 8px;cursor:pointer;font-size:11.5px}
 .seg button.on{border-color:var(--p);color:var(--p);background:#F3F6FA;font-weight:700}
@@ -64,7 +64,7 @@ summary .n.on{display:inline-block}
 .tg span{position:absolute;inset:0;background:#D5D5D5;border-radius:99px;cursor:pointer;transition:.15s}
 .tg span:before{content:"";position:absolute;left:2px;top:2px;width:15px;height:15px;border-radius:50%;background:#fff;box-shadow:0 1px 2px #0003;transition:.15s}
 .tg input:checked+span{background:var(--p)}.tg input:checked+span:before{transform:translateX(15px)}
-.hint{font-size:11px;color:var(--mu);line-height:1.5;margin:2px 0 6px}
+.hint{font-size:12px;color:#5B6474;line-height:1.5;margin:2px 0 6px}
 main{display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff}
 .bar{flex:none;display:flex;align-items:center;gap:10px;padding:10px 22px 6px}
 .bar h2{margin:0;font-size:15px}.bar h2 small{color:var(--mu);font-weight:400;font-size:12px;margin-left:6px}
@@ -388,7 +388,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 #pRes{margin:6px 0;border:1px solid #E6E6E6;border-radius:8px;max-height:260px;overflow:auto}#pRes a{display:block;padding:6px 9px;font-size:12.5px;color:var(--ink);text-decoration:none;border-bottom:1px solid #F0F0F0;cursor:pointer}#pRes a:hover{background:#F4F4F4}#pRes a b{color:var(--p);margin-right:6px}#pRes small{color:#8C8C8C;margin-left:4px}#pRes .pempty{padding:10px;font-size:12.5px;color:var(--ink);line-height:1.6}#pRes .pempty small{margin:0;color:#5B6474}
 #pTree details{border-bottom:1px solid #EEE}#pTree summary{cursor:pointer;padding:7px 2px;font-size:13px;font-weight:700;list-style:none;display:flex;gap:7px;align-items:center}#pTree summary::-webkit-details-marker{display:none}#pTree summary i{font-style:normal;background:#333;color:#fff;border-radius:10px;padding:0 7px;font-size:11px}#pTree summary small{color:#8C8C8C;font-weight:400;margin-left:auto}
 #pTree a{display:flex;gap:8px;padding:5px 6px 5px 10px;font-size:12.5px;color:#444;text-decoration:none;border-radius:6px;cursor:pointer}#pTree a b{min-width:34px;color:#8C8C8C;font-weight:600}#pTree a:hover{background:#F4F4F4}#pTree a.on{background:color-mix(in srgb,var(--p) 12%,#fff);color:var(--ink);font-weight:700}#pTree a.on b{color:var(--p)}
-#vStyle .stv{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:18px;padding:14px;align-items:start}#vStyle .sthost{max-height:calc(100vh - 120px);overflow:auto}#vStyle #stDet>summary{display:none}.stprev{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stprev .sp1{border:1px solid #E3E3E3;border-radius:8px;overflow:hidden;background:#fff}.stprev .sp1 span{display:block;font-size:12px;color:#595959;padding:4px 8px;border-top:1px solid #EEE}.stprev svg{display:block;width:100%;height:auto}@media(max-width:800px){#vStyle .stv{grid-template-columns:1fr}}
+#vStyle .stv{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:18px;padding:14px;align-items:start}#vStyle .sthost{max-height:calc(100vh - 120px);overflow:auto}#vStyle #stDet>summary{display:none}#vStyle .cap{font-size:13px;font-weight:600;color:#1F3864;letter-spacing:0;margin:16px 0 8px;padding-top:12px;border-top:1px solid #E6EAF0}#vStyle #groups summary{font-size:13px;font-weight:600;color:#1F3864;border-top:1px solid #E6EAF0;margin-top:16px}body.tabS #bStyleTab{display:none}.stpw .sthd{display:flex;align-items:center;justify-content:space-between;margin:0 0 8px}.stpw .sthd h3{margin:0}#stReset{background:#fff;border:1px solid #C9D1DC;color:#1F3864;border-radius:6px;padding:4px 10px;font-size:12.5px;cursor:pointer}#stReset:hover{background:#F4F6FA}.stprev{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stprev .sp1{border:1px solid #E3E3E3;border-radius:8px;overflow:hidden;background:#fff}.stprev .sp1 span{display:block;font-size:12px;color:#595959;padding:4px 8px;border-top:1px solid #EEE}.stprev svg{display:block;width:100%;height:auto}@media(max-width:800px){#vStyle .stv{grid-template-columns:1fr}}
 #stDet>summary{cursor:pointer;font-weight:700;font-size:13px;padding:8px 0;border-top:2px solid #EEE}
 .guide{padding:18px 22px;overflow:auto;height:100%;box-sizing:border-box}.guide h2{margin:0 0 4px}.guide>p{color:#666;margin:0 0 14px;font-size:13px}.rcps{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
 .rcp{border:1px solid #E3E3E3;border-radius:12px;padding:14px 16px;box-shadow:0 2px 8px #0000000d;background:#fff}.rcp h3{margin:0 0 2px;font-size:15px}.rcp .who{color:#8C8C8C;font-size:12px;margin-bottom:8px}.rcp ol{margin:0;padding-left:20px;font-size:12.5px;line-height:1.75}.rcp a{display:inline-block;background:#333;color:#fff;border-radius:10px;padding:0 7px;margin-right:5px;font-size:11px;text-decoration:none;cursor:pointer}.rcp a:hover{background:var(--p)}.rcp .tip{margin-top:8px;font-size:12px;color:#555;background:#F6F6F6;border-radius:8px;padding:6px 9px}
@@ -451,7 +451,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
    <div class="thumbs" id="thumbs"></div>
   </div>
   </section>
-  <section class="view" id="vStyle" hidden><div class="stv"><div class="sthost" id="stHost"><h2 style="margin:0 0 4px">風格設定</h2><p class="hint" style="margin:0 0 8px">在這裡改的範本、顏色、字型會套用到全站：投影片、表格、圖示庫、Style Kit，並自動記住。</p></div><div class="stpw"><h3 style="margin:0 0 8px">即時預覽</h3><div class="stprev" id="stPrev"></div></div></div></section>
+  <section class="view" id="vStyle" hidden><div class="stv"><div class="sthost" id="stHost"><h2 style="margin:0 0 4px">風格設定</h2><p class="hint" style="margin:0 0 8px">在這裡改的範本、顏色、字型會套用到全站：投影片、表格、圖示庫、Style Kit，並自動記住。</p></div><div class="stpw"><div class="sthd"><h3>即時預覽</h3><button id="stReset" title="捨棄微調，回到目前範本的預設值">↺ 恢復預設</button></div><div class="stprev" id="stPrev"></div></div></div></section>
   <section class="view" id="vGuide" hidden><div class="guide" id="guide"></div></section>
   <section class="view" id="vIcons" hidden>
    <div class="ibar">
@@ -562,7 +562,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <script src="jszip.min.js?v=978d62b5"></script>
 <script src="pptxgen.min.js?v=24808c08"></script>
 <script src="icons.js?v=65c03732"></script>
-<script src="deck.js?v=2cd21bf6"></script>
+<script src="deck.js?v=74f0fd47"></script>
 <script src="stylekit-data.js?v=47e8edb0"></script>
 <script src="stylekit.js?v=2a276743"></script>
 <script>
@@ -713,7 +713,7 @@ function buildTemplates(){
  $('#tpls').onclick=e=>{const b=e.target.closest('.tpl');if(!b)return;S.mine=null;S.base=b.dataset.id;S.p=templateParams(S.base);syncPanel();schedule();toast('已套用範本：'+presetOf(S.base).zh);};
 }
 function rowHtml(r){
- if(r.html==='palettes')return `<div class="hint">配色組合（主色＋強調色，深／淺主色自動推算）</div><div class="sw">${PALETTES.map((p,i)=>`<div class="pal" data-pal="${i}" title="${p[0]}"><i style="background:#${p[1]}"></i><i style="background:#${D.mix(p[1],'FFFFFF',.85)}"></i><i style="background:#${p[2]}"></i></div>`).join('')}</div>`;
+ if(r.html==='palettes')return `<div class="hint">配色組合（主色＋強調色，深／淺主色自動推算）</div><div class="sw">${PALETTES.map((p,i)=>`<div class="pal" data-pal="${i}" title="${p[0]}" aria-label="配色：${p[0]}" role="button" tabindex="0"><i style="background:#${p[1]}"></i><i style="background:#${D.mix(p[1],'FFFFFF',.85)}"></i><i style="background:#${p[2]}"></i></div>`).join('')}</div>`;
  if(r.html==='greys')return `<div class="hint" style="margin-top:8px">灰階結構（文字／線條／淺灰底）</div><div class="seg" style="margin-bottom:6px">${GREYS.map((g,i)=>`<button data-grey="${i}">${g[0]}</button>`).join('')}</div>`;
  if(r.hintText)return `<div class="hint">${r.hintText}</div>`;
  if(r.html==='fontwarn')return `<div class="hint fwarn" id="fontWarn" hidden>⚠ Noto Sans TC 不是 Windows 內建字型：沒安裝的電腦開啟 .pptx 時，PowerPoint 會用其他字型替代（字寬不同，可能換行）。分享給同事請用微軟正黑體。</div>`;
@@ -754,6 +754,7 @@ function syncPanel(skip){
   else el.value=p[k];});
  document.querySelectorAll('#groups [data-o]').forEach(o=>{const r=RANGE[o.dataset.o];o.textContent=r.fmt(+p[o.dataset.o]);});
  document.querySelectorAll('#groups [data-seg]').forEach(s=>{const k=s.dataset.seg;s.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===String(p[k])));});
+ document.querySelectorAll('#groups .pal').forEach(b=>{const q=PALETTES[+b.dataset.pal];b.classList.toggle('on',p.P===q[1]&&p.useA&&p.A===q[2]);b.setAttribute('aria-pressed',b.classList.contains('on'));});
  document.querySelectorAll('#groups [data-grey]').forEach(b=>{const g=GREYS[+b.dataset.grey][1];b.classList.toggle('on',Object.keys(g).every(k=>p[k]===g[k]));});
  /* 修改標記 */
  document.querySelectorAll('#groups details').forEach(d=>{let n=0;d.querySelectorAll('.row[data-row]').forEach(r=>{const k=r.dataset.row;const m=k in T&&String(T[k])!==String(p[k]);r.classList.toggle('mod',m);if(m)n++;});
@@ -972,12 +973,13 @@ window.__studio=window.__studio||{};
 const I=window.Icons;const ENV=()=>({PptxGenJS:window.PptxGenJS,JSZip:window.JSZip});
 const SK=()=>D.SIZE_K[S.p.size]||1;
 function setTab(t){S.tab=t;document.body.classList.toggle('tabT',t==='table');if(t==='table'&&document.body.classList.contains('pan'))setPanel(false);document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
- $('#vSlides').hidden=t!=='slides';$('#vIcons').hidden=t!=='icons';$('#vTable').hidden=t!=='table';$('#vKit').hidden=t!=='kit';$('#vGuide').hidden=t!=='guide';$('#vStyle').hidden=t!=='style';if(t==='style'){const d=$('#stDet');if(d&&d.parentNode!==$('#stHost')){$('#stHost').appendChild(d);d.open=true;}renderStylePrev();}else{const d=$('#stDet'),bt=$('#bStyleTab');if(d&&bt&&d.parentNode!==bt.parentNode)bt.after(d);}if(t==='guide')renderGuide();document.body.classList.toggle('tabK',t==='kit'||t==='guide');document.body.classList.toggle('tabK',t==='kit');if(t==='kit'&&window.StyleKit)StyleKit.render(StyleKit.current()||S.base);
+ $('#vSlides').hidden=t!=='slides';$('#vIcons').hidden=t!=='icons';$('#vTable').hidden=t!=='table';$('#vKit').hidden=t!=='kit';$('#vGuide').hidden=t!=='guide';$('#vStyle').hidden=t!=='style';document.body.classList.toggle('tabS',t==='style');if(t==='style'){const d=$('#stDet');if(d&&d.parentNode!==$('#stHost')){$('#stHost').appendChild(d);d.open=true;}renderStylePrev();}else{const d=$('#stDet'),bt=$('#bStyleTab');if(d&&bt&&d.parentNode!==bt.parentNode)bt.after(d);}if(t==='guide')renderGuide();document.body.classList.toggle('tabK',t==='kit'||t==='guide');document.body.classList.toggle('tabK',t==='kit');if(t==='kit'&&window.StyleKit)StyleKit.render(StyleKit.current()||S.base);
  $('#bOne').style.display=$('#bAll').style.display=t==='slides'?'':'none';
  if(t==='icons')renderIcons();if(t==='table'){syncTableUI();renderTable();}persist();}
 $('#tabs').onclick=e=>{const b=e.target.closest('button[data-tab]');if(b)setTab(b.dataset.tab);};
 function renderStylePrev(){const H=$('#stPrev');if(!H||!model)return;const ks=['frame','kpi','cmp2','emph'];H.innerHTML=ks.map(k=>{const i=model.slides.findIndex(x=>x.key===k);if(i<0)return'';const s=model.slides[i];return `<div class="sp1" data-key="${k}">${D.toSvg(s,{id:'sp'+i})}<span>${s.title}</span></div>`;}).join('');}
-$('#bStyleTab').onclick=()=>setTab('style');
+$('#bStyleTab').onclick=()=>setTab('style');$('#stReset').onclick=()=>$('#bReset').click();
+document.addEventListener('keydown',e=>{const p=e.target.closest&&e.target.closest('.pal');if(p&&(e.key==='Enter'||e.key===' ')){e.preventDefault();p.click();}});
 function renderExtra(){if(S.tab==='style')renderStylePrev();else if(S.tab==='icons')renderIcons();else if(S.tab==='table')renderTable();}
 
 /* ---------- 圖示庫 ---------- */

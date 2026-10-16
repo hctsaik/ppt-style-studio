@@ -16,6 +16,12 @@ const URL=process.argv[2]||'http://localhost:8765/studio.html',SHOT=process.argv
  const after=await pg.evaluate(()=>document.querySelector('#stPrev').innerHTML.length+'|'+getComputedStyle(document.querySelector('#dot')).backgroundColor);
  ck(`套用範本 ${tgt} → 主色 #${P}，預覽更新`,before!==after);
  ck('預覽頁用新主色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#stPrev').innerHTML),P));
+ const u=await pg.evaluate(()=>({hint:getComputedStyle(document.querySelector('#vStyle .hint')).color,lab:[...document.querySelectorAll('#vStyle .pal')].every(p=>p.getAttribute('aria-label')&&p.title),btn:getComputedStyle(document.querySelector('#bStyleTab')).display,rs:!!document.querySelector('#stReset'),chk:getComputedStyle(document.querySelector('.tpl.on'),'::before').content}));
+ ck('說明字 #5B6474、色票有名稱、側欄重複入口隱藏、有恢復預設、選中範本有 ✓',u.hint==='rgb(91, 100, 116)'&&u.lab&&u.btn==='none'&&u.rs&&/✓/.test(u.chk));
+ await pg.evaluate(()=>document.querySelector('#vStyle .pal[data-pal="0"]').click());await sl(500);
+ ck('點色票 → 該色票選中外框',await pg.evaluate(()=>document.querySelector('#vStyle .pal[data-pal="0"]').classList.contains('on')));
+ await pg.click('#stReset');await sl(500);
+ ck('恢復預設 → 回到範本主色',await pg.evaluate(P=>getComputedStyle(document.querySelector('#dot')).backgroundColor.match(/\d+/g).map(n=>(+n).toString(16).padStart(2,'0')).join('').toUpperCase()===P,P));
  await pg.screenshot({path:SHOT});
  await pg.click('#tabs button[data-tab="slides"]');await sl(500);
  ck('投影片分頁跟著換色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#big').innerHTML+document.querySelector('#thumbs').innerHTML),P));

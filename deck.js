@@ -1597,7 +1597,7 @@ function buildModel(params,opt){
   grp('講者與日期',()=>{ln(X0+.4,4.3,X0+4.4,4.3,{c:G.l2,w:.75});T(X0+.4,4.42,6,.32,[{t:'陳怡君',b:1,c:G.ink},{t:'  製程整合工程師'}],{size:Z(13),color:G.t2,wrap:0,name:'講者'});T(X0+.4,4.78,6,.3,'2026 / 10 / 16 ・ 品質月會',{size:Z(11),color:G.t2,font:nf,wrap:0,name:'日期場合'});});
   grp('封面圖（可換）',()=>{ph(9.0,1.6,3.73,4.3,'封面圖（右鍵→變更圖片）','m');});
   grp('頁首小標',()=>{pill(X0+.4,1.25,1.4,.3,'結案報告',DARK,{size:10});T(X0+1.95,1.25,3,.3,'Final Report',{size:10,color:G.t2,font:nf,wrap:0,name:'英文'});});};
- const endMark=(n)=>grp('頁碼區',()=>{ln(X1-2.0,6.62,X1,6.62,{c:P,w:.9,name:'細線'});txt(X1-2.0,6.3,2.0,.28,[{t:n,b:1,c:P,f:nf},{t:' / 24',c:'5B6474',f:nf}],{size:11,align:'right',wrap:0,name:'頁碼'});});
+ const endMark=(n)=>grp('頁碼區',()=>{ln(X1-2.0,6.62,X1,6.62,{c:P,w:.9,name:'細線'});txt(X1-2.0,6.3,2.0,.28,[{t:n,b:1,c:P,f:nf},{t:' / 24',c:'5B6474',f:nf}],{size:11,align:'right',wrap:0,name:'頁碼'});txt(X1-3.2,6.3,1.15,.28,'範例簡報頁碼',{size:9,color:'5B6474',valign:'middle',wrap:0,name:'頁碼說明'});});
  SL.section=()=>{const {Z,T,TN,DARK,W2,bdg}=UK();cur.noFoot=1;
   grp('大編號＋章節標題',()=>{T(X0+.4,2.0,3.0,1.6,'02',{size:Z(72),bold:1,color:P,font:nf,wrap:0,name:'章節編號'});T(X0+3.3,2.35,8.5,.7,'問題與根因',{size:Z(32),bold:1,color:G.ink,wrap:0,name:'章節標題'});
    T(X0+3.3,3.05,8.5,.4,'Problem & Root Cause',{size:Z(16),color:G.t2,font:nf,wrap:0,name:'英文'});});
@@ -1617,11 +1617,11 @@ function buildModel(params,opt){
    T(X0+1.9,5.0,8.8,.4,'用在：開場定調、章節轉場、結尾收束；一頁只放一句，字數 ≤ 30',{size:Z(11),color:G.mute,wrap:0,name:'使用說明'});});
   grp('主題標籤',()=>{box(X0+1.9,1.55,1.2,.3,{fill:TN(P,.88),r:'full',text:'品質文化',size:Z(10.5),bold:1,color:PD,margin:0,name:'主題膠囊'});T(X0+3.2,1.55,3,.3,'第 2 章・開場',{size:Z(10.5),color:G.t2,valign:'middle',wrap:0,name:'位置'});});
   grp('引言＋人像',()=>{photo(X1-1.35,3.15,1.7,'人像（右鍵→變更圖片）');T(X1-2.45,4.15,2.2,.35,'客戶 品保經理',{size:Z(11),color:G.t2,align:'center',wrap:0,name:'身分'});});};
- SL.quote2=()=>{const {Z,T,TN,DARK,W2}=UK();const BG=PD,QC=mix(P,'FFFFFF',.55);
-  grp('主色卡引言（深底白字）',()=>{box(X0,1.0,CW,5.2,{fill:BG,r:.12,name:'主色底卡'});T(X0+.7,1.15,1.4,2.0,'“',{size:72,bold:1,color:mix(BG,'FFFFFF',.2),font:'Georgia',valign:'top',wrap:0,name:'大引號'});
-   T(X0+2.0,2.2,8.6,1.9,'先把問題說清楚，\n答案就會自己出現。',{size:Z(34),bold:1,color:'FFFFFF',valign:'top',lsp:1.15,name:'金句'});
-   box(X0+2.0,4.4,.9,.05,{fill:QC,r:0,name:'分隔線'});T(X0+2.0,4.6,7,.4,'劉奕酉｜《看懂簡報》',{size:Z(14),bold:1,color:QC,wrap:0,name:'出處'});
-   T(X0+2.0,5.15,8.6,.4,'白底頁面裡放一張主色卡：章節轉場或結尾金句用；卡片外仍是白底',{size:Z(11),color:mix(P,'FFFFFF',.8),wrap:0,name:'使用說明'});});
+ SL.quote2=()=>{const {Z,T,TN,DARK,W2}=UK();const QC=mix(P,'FFFFFF',.8);
+  grp('主色直條引言（白底）',()=>{box(X0+.3,2.0,.12,2.4,{fill:P,r:0,name:'主色直條'});T(X0+.75,1.0,1.6,2.0,'“',{size:96,bold:1,color:QC,font:'Georgia',valign:'top',wrap:0,name:'大引號'});
+   T(X0+2.0,2.2,8.6,1.6,'先把問題說清楚，\n答案就會自己出現。',{size:28,bold:1,color:'1F3864',valign:'top',lsp:1.2,name:'金句'});
+   box(X0+2.0,4.0,.9,.05,{fill:P,r:0,name:'分隔線'});T(X0+2.0,4.2,7,.4,'劉奕酉｜《看懂簡報》',{size:12,bold:1,color:'5B6474',wrap:0,name:'出處'});
+   T(X0+2.0,4.7,8.6,.4,'白底＋主色直條：章節轉場或結尾金句用；一頁只放一句',{size:Z(11),color:'5B6474',wrap:0,name:'使用說明'});});
   grp('下一章提示',()=>{T(X0,6.38,CW,.3,[{t:'下一章  ',c:G.t2},{t:'問題定義 →',b:1,c:P}],{size:Z(11),align:'right',wrap:0,name:'下一章'});});};
  /* ================= v14：封面／章節／結尾變體、亞洲與世界地圖 ================= */
  const qr=(x,y,s,nm)=>{box(x,y,s,s,{fill:'FFFFFF',line:G.l2,lw:.75,r:.03,name:nm||'QR 佔位（換成你的 QR 圖）'});const q=.056,m=s-2*q,n=9,c=m/n;
@@ -1671,7 +1671,7 @@ function buildModel(params,opt){
    [['台北',121.5,25],['聖荷西',-121.9,37.3],['德勒斯登',13.7,51]].forEach(([t,lo,la],i)=>{const [px,py]=geoP([[lo,la]],x,y,w,h,...B4)[0];pinS(px,py,.18,i===0?DARK:PD,String(i+1));lab(t,px,py+.14);});});
   comp('B','亞洲地圖（台灣・日韓・東南亞分區）','Asia map',{x:X0+7.7,y:Y0,w:CW-7.7,h:2.95},(x,y,w,h)=>{const B4=[66,150,-11,54],hi={台灣:P,日本:mix(P,'FFFFFF',.35),韓國:mix(P,'FFFFFF',.5),東南亞:mix(P,'FFFFFF',.7),中國:'D9D9D9'};draw(ASIA,hi,'E6E6E6',B4,x,y,w,h,'區 ');
    [['日本',146.5,38.5],['韓國',122.5,38.6],['東南亞',112,13],['中國',100,35],['印度',78,22]].forEach(([t,lo,la])=>{const [px,py]=geoP([[lo,la]],x,y,w,h,...B4)[0];lab(t,px,py,{color:t==='東南亞'||t==='中國'||t==='印度'?'5B6474':PD});});
-   [['新竹',121,24.8],['熊本',130.7,32.8],['新加坡',103.8,1.35]].forEach(([t,lo,la],i)=>{const [px,py]=geoP([[lo,la]],x,y,w,h,...B4)[0];pinS(px,py,.18,DARK,String(i+1));if(i===1){ln(px+.08,py+.02,px+.5,py+.12,{c:'8A94A6',w:.5,name:'引導線'});lab('熊本',px+1.14,py+.12,{align:'left',color:'5B6474'});}if(i===0){lab('台灣・新竹',px+.77,py-.08,{align:'left'});const cx0=px+.62,cy0=py+.62,d=.6;ln(px+.08,py+.08,cx0-d/2*.7,cy0-d/2*.7,{c:P,w:.75});circ(cx0,cy0,d,{fill:W2,line:P,lw:1,name:'台灣放大圓'});(ASIA['台灣']||[]).forEach(pts=>path(geoP(pts,cx0-.17,cy0-.24,.34,.48,119.9,122.1,21.8,25.4),{fill:P,line:P,lw:.25,close:true,name:'台灣（放大）'}));circ(cx0+(121-119.9)/2.2*.34-.17,cy0-.24+(25.4-24.8)/3.6*.48,.07,{fill:'FFFFFF',line:DARK,lw:.75,name:'新竹點'});}});});
+   [['新竹',121,24.8],['熊本',130.7,32.8],['新加坡',103.8,1.35]].forEach(([t,lo,la],i)=>{const [px,py]=geoP([[lo,la]],x,y,w,h,...B4)[0];pinS(px,py,.18,DARK,String(i+1));if(i===2)lab('新加坡',px+.8,py-.12,{align:'left',size:10.5,color:'5B6474'});if(i===1){ln(px+.08,py+.02,px+.5,py+.12,{c:'8A94A6',w:.5,name:'引導線'});lab('熊本',px+1.14,py+.12,{align:'left',color:'5B6474'});}if(i===0){lab('台灣・新竹',px+.77,py-.08,{align:'left'});const cx0=px+.62,cy0=py+.62,d=.6;ln(px+.08,py+.08,cx0-d/2*.7,cy0-d/2*.7,{c:P,w:.75});circ(cx0,cy0,d,{fill:W2,line:P,lw:1,name:'台灣放大圓'});(ASIA['台灣']||[]).forEach(pts=>path(geoP(pts,cx0-.17,cy0-.24,.34,.48,119.9,122.1,21.8,25.4),{fill:P,line:P,lw:.25,close:true,name:'台灣（放大）'}));circ(cx0+(121-119.9)/2.2*.34-.17,cy0-.24+(25.4-24.8)/3.6*.48,.07,{fill:'FFFFFF',line:DARK,lw:.75,name:'新竹點'});}});});
   const y2=Y0+2.95+.5,h2=Math.max(1.12,Y1-y2-.3);
   comp('C','區域營收占比','Revenue by region',{x:X0,y:y2,w:5.6,h:h2},(x,y,w,h)=>{[['亞洲',62,P],['北美',24,mix(P,'FFFFFF',.45)],['歐洲',10,'BFBFBF'],['其他',4,'D9D9D9']].forEach(([t,v,c],i)=>{const yy=y+i*.27;T(x,yy,.8,.26,t,{size:10,color:G.ink,wrap:0,name:'區域'});box(x+.85,yy+.06,(w-1.6)*v/62,.15,{fill:c,r:0,name:'占比條'});T(x+.95+(w-1.6)*v/62,yy,.7,.26,v+'%',{size:10,bold:1,color:G.ink,font:nf,wrap:0,name:'占比'});});});
   comp('D','全球據點清單','Site list',{x:X0+5.9,y:y2,w:CW-5.9,h:h2},(x,y,w,h)=>{[['台北','總部｜研發','1,200 人'],['聖荷西','北美業務','80 人'],['德勒斯登','歐洲工廠','300 人']].forEach(([a,b,c],i)=>{const xx=x+i*(w/3);bdg(xx+.2,y+.2,.32,String(i+1),i===0?DARK:PD);T(xx+.45,y+.04,w/3-.5,.32,a,{size:Z(12),bold:1,color:G.ink,wrap:0,name:'據點'});T(xx+.45,y+.36,w/3-.5,.28,b,{size:10.5,color:'5B6474',wrap:0,name:'功能'});T(xx+.45,y+.82,w/3-.5,.28,c,{size:10.5,bold:1,color:P,font:nf,wrap:0,name:'人數'});});});};
