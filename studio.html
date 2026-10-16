@@ -29,7 +29,7 @@ aside::-webkit-scrollbar,.thumbs::-webkit-scrollbar{width:8px;height:8px}aside::
 .tpls{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
 .tpl{border:1px solid var(--line);border-radius:8px;padding:7px 8px;cursor:pointer;background:#fff;text-align:left;transition:.15s}
 .tpl:hover{border-color:#C8C8C8}
-.tpl{position:relative}.tpl.on{border-color:var(--c);box-shadow:0 0 0 1px var(--c) inset}.tpl.on::before{content:'✓';position:absolute;left:-6px;top:-6px;width:16px;height:16px;border-radius:50%;background:#1F3864;color:#fff;font-size:10px;line-height:16px;text-align:center;font-weight:700}
+.tpl{position:relative}.tpl.on{border-color:var(--c);box-shadow:0 0 0 1px var(--c) inset}.tpl.on::before{content:'✓';position:absolute;right:6px;top:6px;width:16px;height:16px;border-radius:50%;background:#1F3864;color:#fff;font-size:10px;line-height:16px;text-align:center;font-weight:700}
 .tpl b{display:flex;align-items:center;gap:5px;font-size:12.5px}
 .tpl b em,.tpl b u{width:9px;height:9px;border-radius:50%;flex:none;background:var(--c)}
 .tpl b u{background:var(--a)}
@@ -93,6 +93,7 @@ main{display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff
 .tstagew.close{overflow:hidden}.tstagew.close .tprev{transform-origin:0 0;transition:transform .2s}
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:#333;color:#fff;padding:9px 16px;border-radius:8px;font-size:12.5px;line-height:1.6;opacity:0;transition:.25s;pointer-events:none;z-index:9;max-width:760px}
 .toast b{color:#FFE08A}
+@media (min-width:821px){body.tabS .toast{left:auto;right:24px;top:auto;bottom:80px;transform:translateY(-8px);max-width:340px}body.tabS .toast.on{transform:none}}
 .el{cursor:pointer}
 .eladd{position:absolute;z-index:6;width:22px;height:22px;border-radius:50%;border:1.5px solid #fff;background:var(--p);color:#fff;font:700 14px/1 sans-serif;cursor:pointer;box-shadow:0 1px 4px #0000004d;padding:0}.eladd[hidden]{display:none}
 .eladd:hover{transform:scale(1.12)}.el .hit{fill:#2E75B6;fill-opacity:0;stroke:none;pointer-events:all}
@@ -562,7 +563,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <script src="jszip.min.js?v=978d62b5"></script>
 <script src="pptxgen.min.js?v=24808c08"></script>
 <script src="icons.js?v=65c03732"></script>
-<script src="deck.js?v=d267326e"></script>
+<script src="deck.js?v=5647dbba"></script>
 <script src="stylekit-data.js?v=47e8edb0"></script>
 <script src="stylekit.js?v=2a276743"></script>
 <script>
