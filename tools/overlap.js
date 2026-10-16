@@ -1,5 +1,5 @@
 // 估算每個文字的實際墨跡範圍，找出彼此重疊的文字（全站檢查）
-function ext(it){const tx=it.tx||{};const txt=it.runs.map(r=>r.t).join('');if(!txt.trim())return null;
+function ext(it){const tx=it.tx||{};const txt=it.runs.map(r=>r.t+(r.o&&r.o.br?'\n':'')).join('');if(!txt.trim())return null;
  const sz=(it.runs[0].o&&it.runs[0].o.size)||tx.size||12;const lines=txt.split('\n');
  const cw=c=>c===' '?.28:/[\u0000-\u00ff]/.test(c)?.52:1;const lw=Math.max(...lines.map(l=>[...l].reduce((a,c)=>a+cw(c),0)))*sz/72;
  const m=tx.margin!=null?(Array.isArray(tx.margin)?tx.margin[0]/72:tx.margin/72):.05;
