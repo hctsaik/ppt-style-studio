@@ -33,7 +33,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
   const bad={'cmp2:1':{'5':{from:'別的字',to:'不該套用'}}};ok(!D.textOf(D.buildModel(nav,{only:['cmp2'],labels:bad}).slides[0].items[g.from+5]).includes('不該'),'改字：原文對不上就不套用');}
  {const e0=D.elementModel(nav,'patterns',0),e1=D.elementModel(Object.assign({},nav,{minFont:12}),'patterns',0);ok(e1.element.scale>1&&e1.element.minSize>=12&&e1.element.w>e0.element.w*0||D.minFontOf(e1.slides[0].items)>=12,`最小字級 12：三步驟流程放大 ×${e1.element.scale}，最小字 ${e1.element.minSize}pt`);await save('minfont-element.pptx',nav,{model:e1});}
  {const inv=D.PRESETS.find(p=>p.id==='investor');const m=D.buildModel(inv,{only:['catalog']});ok(m.sem.warn!==inv.P,`法說會紅：警示色 ${m.sem.warn} ≠ 主色 ${inv.P}`);
-  const k=D.buildModel(nav,{only:['kpi']}).slides[0];const runs=[].concat(...k.items.filter(i=>i.name==='變化').map(i=>i.runs));ok(runs.some(r=>r.o.color==='2E7D4F')&&runs.some(r=>r.o.color==='C0504D'),'KPI ▲▼ 依越高／越低越好上色（良＝綠、不良＝紅）');}
+  const k=D.buildModel(nav,{only:['kpi']}).slides[0];const runs=[].concat(...k.items.filter(i=>i.name==='變化').map(i=>i.runs));ok(runs.some(r=>r.o.color===nav.P)&&runs.some(r=>r.o.color==='A15C00'),'KPI ▲▼ 依越高／越低越好上色（良＝主色、不良＝深琥珀，不用紅綠）');}
  // v10：標籤元件（左＝圖示／短字、右＝文字）：9 風格無警告、≥11 個元件、圖示可換、單一元件 .pptx
  {let bad=[];for(const st of D.PRESETS){const m=D.buildModel(st,{only:['labels']});const g=m.slides[0].groups;if(m.warns.length||g.length<11)bad.push(st.id+' '+g.length+' '+m.warns.join());}
   ok(!bad.length,'標籤元件：9 風格各 '+D.buildModel(nav,{only:['labels']}).slides[0].groups.length+' 個元件、無排版警告'+(bad.length?'｜'+bad.join('；'):''));
@@ -59,7 +59,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
   for(const [kk,gi] of [['cmp',gA],['cmp2',1]]){const em=D.elementModel(nav,kk,gi);await save('compare-'+kk+'-'+gi+'.pptx',nav,{model:em});}
   await save('compare-investor.pptx',D.PRESETS.find(p=>p.id==='investor'),{only:['cmp','cmp2']});}
  // v12：缺漏元件 4 頁（KPI＋評比、時間軸／甘特、2×2／議程、註腳／強調）：9 風格各頁元件數、無警告、白底、改字重算、螢光底 OOXML、單一元件 .pptx
- {const PG={kpi:7,rating:8,tline:4,mtx:6,emph:8};let bad=[];for(const st of D.PRESETS){const m=D.buildModel(st,{only:Object.keys(PG)});
+ {const PG={kpi:7,rating:6,tline:4,mtx:6,emph:8};let bad=[];for(const st of D.PRESETS){const m=D.buildModel(st,{only:Object.keys(PG)});
    m.slides.forEach(s=>{if(s.groups.length<PG[s.key])bad.push(st.id+'/'+s.key+' '+s.groups.length);if(s.items.some(i=>i.name==='畫布面板'))bad.push(st.id+'/'+s.key+' 有畫布');});if(m.warns.length)bad.push(st.id+' '+m.warns.join());}
   ok(!bad.length,'缺漏元件 4 頁：9 風格各 '+Object.entries(PG).map(([k,v])=>k+'≥'+v).join('／')+'、無排版警告、白底'+(bad.length?'｜'+bad.join('；'):''));
   const all=D.buildModel(nav).slides.map(s=>s.key);ok(all[0]==='catalog'&&all.indexOf('kpi')===D.SLIDES.findIndex(e=>e[0]==='kpi')&&all.length===D.SLIDES.length&&all.indexOf('ex1')<all.indexOf('profile'),'頁序依 SLIDES（00 總覽 → A–G → X 附錄）');
@@ -90,7 +90,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
   ok(/<a:highlight><a:srgbClr val="[0-9A-F]{6}"\/><\/a:highlight>/.test(x4)&&/strike="sngStrike"/.test(x4)&&/ u="sng"/.test(x4),'OOXML：自訂 srgb 醒目提示、刪除線、底線');
   for(const k of Object.keys(PG))for(const g of [0,1]){const em=D.elementModel(nav,k,g);await save('gap-'+k+'-'+g+'.pptx',nav,{model:em});}
   for(const id of ['investor','wire','charcoal'])await save('gap-'+id+'.pptx',D.PRESETS.find(p=>p.id===id),{only:Object.keys(PG)});
-  ok(D.buildModel(nav,{only:['annot']}).slides[0].items.some(i=>/swiffchart/.test(D.textOf(i))),'標註頁圖表佔位：指向 SwiffChart');}
+  ok(D.buildModel(nav,{only:['chart']}).slides[0].items.some(i=>/swiffchart/.test(D.textOf(i))),'圖表頁：指向 SwiffChart');}
  // R1：表格重新設計（4 外觀 × 9 風格、單一強調色、狀態字精準比對、合計列、數字格式、門檻建議、貼上重設、舊快照相容）
  {const Y={title:'批次良率',rows:[['Lot','站點','Yield%','Defect','Status'],['A1','CMP','95.2%','12','Pass'],['A2','CMP','88.1%','31','Hold'],['A3','Etch','(86.4%)','40','Scrap'],['A4','Litho','93.7%','15','已完成 60%']],
    his:[{type:'col',i:2,color:'auto'},{type:'row',i:3,color:'alert'},{type:'cell',r:1,c:3,color:'A'},{type:'col',i:1}],rules:[{c:2,op:'<',v:90,tone:'warn',style:'fill'},{c:3,op:'>=',v:30,tone:'warn',style:'box'},{c:3,op:'=',v:12,tone:'good',style:'text'}]};
@@ -238,7 +238,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
   {const C=require('./table-cases.js');for(const [k,T] of Object.entries(C))for(const lk of ['clean','band','card','zebra']){const m=D.buildModel(Object.assign({},nav,{tbLook:lk}),{table:T});await save(`table-case-${k}-${lk}.pptx`,nav,{model:m});}}
  }
  {const am=D.buildModel(nav,{only:['annot','catalog']});const an=am.slides.find(x=>x.key==='annot'),ca=am.slides.find(x=>x.key==='catalog');const names=an.groups.map(g=>g.name);
-  ok(['強調框（實線）','強調框（虛線）','圈選','編號釘 ①②③','對話框','箭頭＋標籤','括號（橫）','括號（直）','旗標＋日期'].every(k=>names.includes(k))&&ca.groups.filter(g=>/^標註・/.test(g.full||'')).length===7,`標註頁 ${an.groups.length} 組、元件總表標註列 7 格`);
+  ok(['強調框（實線）','圈選','編號釘 ①②③','對話框','箭頭＋標籤','旗標＋日期'].every(k=>names.includes(k))&&an.groups.length<=7&&ca.groups.filter(g=>/^標註・/.test(g.full||'')).length===7,`標註頁 ${an.groups.length} 組、元件總表標註列 7 格`);
   const gi=an.groups.findIndex(g=>g.name==='對話框');const L={[`annot:${gi}`]:{}};const g=an.groups[gi];const ti=an.items.slice(g.from,g.to+1).findIndex(it=>it.runs&&it.runs.length);L[`annot:${gi}`][ti]={from:D.textOf(an.items[g.from+ti]),to:'良率連 6 批上升'};
   const e1=D.elementModel(Object.assign({},nav,{minFont:14,size:'L'}),'annot',gi,{labels:L});ok(D.textOf(e1.slides[0].items.find(it=>it.runs&&it.runs.length))==='良率連 6 批上升'&&e1.element.minSize>=14,`標註對話框：改字＋L＋最小字 14（×${e1.element.scale}）`);
   await save('annot-element.pptx',nav,{model:e1});

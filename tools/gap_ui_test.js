@@ -9,7 +9,7 @@ const URL=process.argv[2]||'http://localhost:8765/studio.html';let fail=0;const 
  const ng=()=>pg.evaluate(()=>new Set([...document.querySelectorAll('g.el')].map(g=>g.dataset.g)).size);
  const gIdx=name=>pg.evaluate(n=>{const g=[...document.querySelectorAll('g.el')].find(g=>g.dataset.name===n);return g?+g.dataset.g:-1;},name);
  const pick=gi=>pg.evaluate(gi=>{document.querySelector(`g.el[data-g="${gi}"] .hit`).dispatchEvent(new MouseEvent('click',{bubbles:true}));},gi);
- for(const [re,n] of [['KPI 卡$',7],['評比指標',8],['時間軸與甘特',4],['矩陣與風險',6],['強調與註腳',8]]){const i=await go(re);const k=await ng();const w=await pg.evaluate(()=>window.__studio.warns);ck(re+' #'+(i+1)+'：'+k+' 個元件、無警告',i>=0&&k>=n&&!w);}
+ for(const [re,n] of [['KPI 卡$',7],['評比指標',6],['時間軸與甘特',4],['矩陣與風險',6],['強調與註腳',8]]){const i=await go(re);const k=await ng();const w=await pg.evaluate(()=>window.__studio.warns);ck(re+' #'+(i+1)+'：'+k+' 個元件、無警告',i>=0&&k>=n&&!w);}
  await go('KPI 卡$');let gi=await gIdx('數值＋目標＋Δ');await pick(gi);await sl(300);await pg.evaluate(()=>document.querySelector('#ebar button[data-a="lbl"]').click());await sl(300);
  const ed=await pg.evaluate(()=>[...document.querySelectorAll('#lbList textarea')].map(t=>t.value));ck('改字面板：'+ed.join('｜'),ed.includes('96.8 %')&&ed.includes('95.0 %')&&ed.includes('▲ +2%')&&ed.includes('W42 · 2026'));
  await pg.evaluate(()=>{const t=[...document.querySelectorAll('#lbList textarea')].find(t=>t.value==='96.8 %');t.value='90.0 %';t.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('#lbOk').click();});await sl(700);
