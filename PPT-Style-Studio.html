@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%226%22 fill=%22%231F4E79%22/%3E%3C/svg%3E">
-<!-- PPT Style Studio 單檔版（自動產生於 2026-10-17 02:19，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
+<!-- PPT Style Studio 單檔版（自動產生於 2026-10-17 03:17，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
 <title>PPT Style Studio · 圖解元件客製工作室</title>
 <style>
 :root{--ink:#3A3A3A;--t2:#595959;--mu:#8C8C8C;--line:#E4E4E4;--fill:#F6F6F6;--p:#1F4E79}
@@ -382,19 +382,31 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .tdrop{display:none;border:2px dashed #b9c3d0;border-radius:10px;padding:22px 12px;text-align:center;color:#556;margin:6px 0 10px;background:#fff}.tdrop b{display:block;font-size:16px;color:#234;margin-bottom:6px}.tdrop span{font-size:12px}
 .tsec.empty .tdrop{display:block}.tsec.empty .tph{display:none}.tph{margin:0;flex:1}.tdrow{align-items:center}.tclr{margin-left:auto;color:#a33}
 body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK #bPanel{display:none}
+#pnav{margin:-4px 0 12px}.psearch input{width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #D6D6D6;border-radius:8px;font:inherit;font-size:13px}
+#pRes{margin:6px 0;border:1px solid #E6E6E6;border-radius:8px;max-height:260px;overflow:auto}#pRes a{display:block;padding:6px 9px;font-size:12.5px;color:var(--ink);text-decoration:none;border-bottom:1px solid #F0F0F0;cursor:pointer}#pRes a:hover{background:#F4F4F4}#pRes a b{color:var(--p);margin-right:6px}#pRes small{color:#8C8C8C;margin-left:4px}
+#pTree details{border-bottom:1px solid #EEE}#pTree summary{cursor:pointer;padding:7px 2px;font-size:13px;font-weight:700;list-style:none;display:flex;gap:7px;align-items:center}#pTree summary::-webkit-details-marker{display:none}#pTree summary i{font-style:normal;background:#333;color:#fff;border-radius:10px;padding:0 7px;font-size:11px}#pTree summary small{color:#8C8C8C;font-weight:400;margin-left:auto}
+#pTree a{display:flex;gap:8px;padding:5px 6px 5px 10px;font-size:12.5px;color:#444;text-decoration:none;border-radius:6px;cursor:pointer}#pTree a b{min-width:34px;color:#8C8C8C;font-weight:600}#pTree a:hover{background:#F4F4F4}#pTree a.on{background:color-mix(in srgb,var(--p) 12%,#fff);color:var(--ink);font-weight:700}#pTree a.on b{color:var(--p)}
+#stDet>summary{cursor:pointer;font-weight:700;font-size:13px;padding:8px 0;border-top:2px solid #EEE}
+.guide{padding:18px 22px;overflow:auto;height:100%;box-sizing:border-box}.guide h2{margin:0 0 4px}.guide>p{color:#666;margin:0 0 14px;font-size:13px}.rcps{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.rcp{border:1px solid #E3E3E3;border-radius:12px;padding:14px 16px;box-shadow:0 2px 8px #0000000d;background:#fff}.rcp h3{margin:0 0 2px;font-size:15px}.rcp .who{color:#8C8C8C;font-size:12px;margin-bottom:8px}.rcp ol{margin:0;padding-left:20px;font-size:12.5px;line-height:1.75}.rcp a{display:inline-block;background:#333;color:#fff;border-radius:10px;padding:0 7px;margin-right:5px;font-size:11px;text-decoration:none;cursor:pointer}.rcp a:hover{background:var(--p)}.rcp .tip{margin-top:8px;font-size:12px;color:#555;background:#F6F6F6;border-radius:8px;padding:6px 9px}
+.gocards{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 0}.gocards a{border:1px solid #DDD;border-radius:14px;padding:2px 10px;font-size:12px;color:var(--ink);text-decoration:none;cursor:pointer;background:#fff}.gocards a b{color:var(--p);margin-right:4px}.gocards a:hover{border-color:var(--p)}
+.more.tools .menu a{display:block;padding:7px 10px;border-radius:6px;font-size:12.5px;color:var(--ink);text-decoration:none}.more.tools .menu a:hover{background:#F2F2F2}
 </style></head><body><div class="tpop" id="tPop" role="dialog" aria-label="儲存格選單" hidden></div>
 
 <header>
  <h1><i id="dot"></i>PPT <span class="hs">Style </span>Studio <small>精緻圖解元件・客製工作室（背景永遠白色）</small></h1>
- <nav class="tabs" id="tabs"><button data-tab="slides" class="on">投影片元件</button><button data-tab="icons">圖示庫</button><button data-tab="table">表格</button><button data-tab="kit" title="PPT 範本 Style Kit：快速樣式＋螢光筆預覽，下載內嵌主題的 .pptx／.potx">範本 Style Kit</button></nav>
+ <nav class="tabs" id="tabs"><button data-tab="slides" class="on">投影片元件</button><button data-tab="icons">圖示庫</button><button data-tab="table">表格</button><button data-tab="kit" title="PPT 範本 Style Kit：快速樣式＋螢光筆預覽，下載內嵌主題的 .pptx／.potx">範本 Style Kit</button><button data-tab="guide" title="依情境挑元件：週報、8D、提案、面試、作品集、競賽簡報">簡報食譜</button></nav>
+ <div class="more tools"><button class="btn" id="bTools" aria-haspopup="true" aria-expanded="false">工具 ▾</button><div class="menu" id="mTools" hidden>
+  <button data-go="table">▦ 表格工具（風險表／議題／行動／RACI）</button><button data-go="icons">◎ 圖示庫</button><button data-go="kit">🎨 範本 Style Kit（.pptx／.potx）</button><button data-go="guide">📖 簡報食譜</button>
+  <a href="https://github.com/hctsaik/swiffchart-web-preview" target="_blank" rel="noopener">📊 圖表 → SwiffChart ↗</a><a href="PPT-Style-Studio.html" download>⬇ 離線單一檔案 .html</a><button data-go="tray">🧺 待選素材</button></div></div>
  <span class="sp"></span>
- <button class="btn monly" id="bPanel" aria-expanded="false" aria-controls="panel">⚙ 設定</button>
- <label class="hx" id="exWrap" title="23–25 頁是主題式範例版面（三圓架構、框架流程、能力地圖），不是基本元件；預設不放進預覽與整份 .pptx"><input type="checkbox" id="bEx"> 含範例頁</label>
+ <button class="btn monly" id="bPanel" aria-expanded="false" aria-controls="panel">☰ 頁面／設定</button>
+ <label class="hx" id="exWrap" style="display:none!important" title="23–25 頁是主題式範例版面（三圓架構、框架流程、能力地圖），不是基本元件；預設不放進預覽與整份 .pptx"><input type="checkbox" id="bEx"> 含範例頁</label>
  <button class="btn" id="bOne">下載本頁 .pptx</button>
  <button class="btn pri" id="bAll">下載整份 .pptx</button>
  <div class="more"><button class="btn" id="bMore" aria-haspopup="true" aria-expanded="false" title="重設／儲存／載入設定">⋯</button>
   <div class="menu" id="mMore" hidden>
-   <button id="bExM" class="monly" title="23–25 頁主題式範例版面">☐ 含範例頁（23–25）</button>
+   <button id="bExM" class="monly" style="display:none!important" title="23–25 頁主題式範例版面">☐ 含範例頁（23–25）</button>
    <button id="bReset" title="捨棄所有微調，回到目前範本的預設值">↺ 重設為範本</button>
    <button id="bSave" title="把目前設定存成 JSON 檔">儲存設定 JSON</button>
    <button id="bLoad" title="載入先前存的 JSON 設定">載入設定 JSON…</button>
@@ -405,6 +417,8 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <div class="wrap">
  <aside id="panel">
   <div class="pclose"><b>風格設定</b><small>改了即時套用到上方預覽</small><button id="bPanelX">完成</button></div>
+  <div id="pnav"><div class="psearch"><input type="search" id="pSearch" placeholder="搜尋元件：KPI、對比、時間軸、STAR…" aria-label="搜尋元件"></div><div id="pRes" hidden></div><div id="pTree"></div></div>
+  <details id="stDet" open><summary>風格設定</summary>
   <div class="cap">範本</div>
   <div class="tpls" id="tpls"></div>
   <div class="cap">我的風格</div>
@@ -415,6 +429,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
    <input type="file" id="mFile" accept=".json,application/json" hidden multiple>
   </div>
   <div id="groups"></div>
+  </details>
  </aside>
  <main>
   <section class="view" id="vSlides">
@@ -425,6 +440,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
    <div class="thumbs" id="thumbs"></div>
   </div>
   </section>
+  <section class="view" id="vGuide" hidden><div class="guide" id="guide"></div></section>
   <section class="view" id="vIcons" hidden>
    <div class="ibar">
     <input type="search" id="iSearch" placeholder="搜尋（中英）：晶圓、機台、良率、chart…">
@@ -462,7 +478,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
        <section class="tsec on" data-sec="data"><h3><i>1</i>資料</h3>
         <div class="tdrop" id="tDrop"><b>Ctrl+V 貼上 Excel 表格</b><span>在 Excel 選取儲存格 → Ctrl+C → 回到這一頁按 Ctrl+V</span></div>
         <div class="trow tdrow"><span class="hint tph"><b>Ctrl+V</b> 重新貼上（照原樣）</span><button class="btn" id="tUndoPaste" title="回到貼上之前的資料" hidden>↶ 還原上一份</button>
-         <select id="tSample" aria-label="載入範例"><option value="">範例…</option><option value="yield">批次良率</option><option value="fin">損益表摘要</option><option value="status">專案進度</option><option value="cmp">方案比較</option><option value="kpi">月度 KPI</option></select>
+         <select id="tSample" aria-label="載入範例"><option value="">範例…</option><option value="yield">批次良率</option><option value="fin">損益表摘要</option><option value="status">專案進度</option><option value="cmp">方案比較</option><option value="kpi">月度 KPI</option><option value="risk">風險表</option><option value="issue">議題追蹤</option><option value="action">行動項目</option><option value="raci">RACI 分工</option></select>
 </div>
         <details class="tedit" id="tEdit"><summary id="tEditSum">編輯資料</summary>
         <div class="tgrid" id="tGrid"></div>
@@ -3883,11 +3899,11 @@ const BASE={
  anC:'alert'
 };
 const PRESETS=[
- {id:'navy',zh:'商務深藍卡片',en:'Navy Card',ref:'參考圖 2',desc:'淺灰畫布＋白色大外框圓與柔和光暈，深藍膠囊白字，▶ 小三角分隔',
-  canvas:true,canvasColor:'F5F5F5',sh:true,shB:7,shO:2,shA:.24,haloB:16,haloA:.32,ring:true,
+ {id:'navy',zh:'商務深藍卡片',en:'Navy Card',ref:'參考圖 2',desc:'白底＋白色大外框圓與柔和光暈，深藍膠囊白字，▶ 小三角分隔',
+  canvas:false,canvasColor:'F5F5F5',sh:true,shB:7,shO:2,shA:.24,haloB:16,haloA:.32,ring:true,
   card:'outline',cardLW:1.25,cardLine:'D9D9D9',tag:'pill',badge:'ring',sep:'tri',chain:'chev',circle:'ring3',circleLW:3,sym:'outlineP',mark:'bar',bar:'under'},
- {id:'green',zh:'墨綠筆記',en:'Green Notes',ref:'參考圖 1',desc:'暖灰畫布、粗灰外框扁平卡片，墨綠小圓角標籤＋芥末黃點綴，六角鏈與 ▶▶▶ 點狀箭號',
-  P:'2F5D50',PD:'24483E',PT:'E2EBE7',A:'C9A227',canvas:true,canvasColor:'F4F4F1',r:.12,
+ {id:'green',zh:'墨綠筆記',en:'Green Notes',ref:'參考圖 1',desc:'白底、粗灰外框扁平卡片，墨綠小圓角標籤＋芥末黃點綴，六角鏈與 ▶▶▶ 點狀箭號',
+  P:'2F5D50',PD:'24483E',PT:'E2EBE7',A:'C9A227',canvas:false,canvasColor:'F4F4F1',r:.12,
   card:'outline',cardLW:2.25,cardLine:'BFBFBF',tag:'round',badge:'rsq',sep:'dots',chain:'hex',circle:'thick',circleLW:2.25,sym:'thick',mark:'sq',bar:'banner',
   cnW:1.5,cnC:'8C8C8C',cnHs:'med',tSize:40,colR:'small'},
  {id:'frame',zh:'框架鑑',en:'Framework Atlas',ref:'參考圖 3',desc:'淺灰實心圓角卡＋陰影，中英雙語標籤，01 02 編號小膠囊，點狀折線／曲線箭頭',
@@ -3895,7 +3911,7 @@ const PRESETS=[
   card:'gray',headColor:'ink',tag:'pill',badge:'pill',sep:'tri',chain:'gray',circle:'gray',sym:'gray',bar:'rule',bracket:true,
   cnC:'595959',cnDash:'sysDot',tSize:34,colR:'small'},
  {id:'iceberg',zh:'冰山能力圖',en:'Iceberg Map',ref:'參考圖 4',desc:'炭灰細框直角卡＋角落標籤緞帶，半透明寬欄條上的圓點，細折線樹狀與淺藍漸隱大箭頭',
-  P:'404040',PD:'262626',PT:'E7E7E7',A:'5B9BD5',canvas:true,canvasColor:'F5F5F5',r:.03,
+  P:'404040',PD:'262626',PT:'E7E7E7',A:'5B9BD5',canvas:false,canvasColor:'F5F5F5',r:.03,
   card:'outline',cardLW:1,cardLine:'7F7F7F',headColor:'ink',ribbonTone:'a',tag:'square',badge:'circle',sep:'line',chain:'outline',circle:'thin',circleLW:1,sym:'thin',mark:'vbar',bar:'vbar',
   cnW:1,cnC:'595959',tSize:34},
  {id:'wire',zh:'極簡線框',en:'Hairline',ref:'延伸',desc:'全部 0.75pt 髮絲線、無填色無陰影，細字標題，單一靛藍強調色，空心編號',
@@ -3927,7 +3943,19 @@ const LANG_OF={card:{outline:'白底外框',gray:'淺灰實心',soft:'白底無�
 function langOf(p){return{card:LANG_OF.card[p.card]+(p.card==='outline'?' '+p.cardLW+'pt':'')+(p.sh?'＋陰影':''),tag:LANG_OF.tag[p.tag],badge:LANG_OF.badge[p.badge],sep:LANG_OF.sep[p.sep],
  conn:p.cnW+'pt '+({solid:'實線',sysDot:'點線',sysDash:'虛線',dash:'長虛線'}[p.cnDash]||'')+({triangle:'＋三角箭頭',arrow:'＋開放箭頭',stealth:'＋燕尾箭頭',oval:'＋圓點',none:''}[p.cnHead]||''),chain:LANG_OF.chain[p.chain]};}
 const WHITE_PG=new Set(['kpi','tline','mtx','emph']);/* v12 新頁一律白底（不畫淺灰畫布面板） */
-const SLIDES=[['catalog','元件總表'],['patterns','常見組合'],['patterns2','常見組合（二）'],['flex','可調數量'],['rca','原因分析'],['annot','標註'],['icons','圖示庫'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['asis','版型｜As Was／To Be'],['labels','標籤元件'],['cmp','對比式排版'],['cmp2','對比式排版（二）'],['kpi','KPI 卡與評比指標'],['tline','時間軸與甘特'],['mtx','2×2 矩陣與議程'],['emph','註腳與強調'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
+const SECTIONS=[['S','開始','Start'],['A','基礎元件','Basics'],['B','流程與結構','Flow & Structure'],['C','資料呈現','Data'],['D','對比與分析','Compare & Analyze'],['E','標註與強調','Annotate & Emphasize'],['F','範例與頁型','Examples & Page types'],['G','求職與作品集','Career & Portfolio'],['X','附錄','Reference']];
+/* v14 重整：[key, 標題, 代號, 英文, 群組]；key 是穩定 ID（位置記憶、URL、改字 labels 都用 key） */
+const SLIDES=[['catalog','總覽','00','Overview','S'],
+ ['frame','頁面骨架','A0','Page Skeleton','A'],['cards','卡片與面板','A1','Cards & Panels','A'],['tags','標籤與編號','A2','Labels & Numbers','A'],['labels','標籤元件','A2·2','Label Components','A'],['lists','清單與勾選','A2·3','Lists & Checklists','A'],['circles','圓形與流程鏈','A3','Circles & Chains','A'],['conn','連接線與箭頭','A4','Connectors & Arrows','A'],['icons','圖示精選','A5','Icons','A'],
+ ['flow','流程圖符號','B1','Flowchart Symbols','B'],['patterns','常用流程組合','B2','Flow Patterns','B'],['flex','可調數量流程','B3','Scalable Flows','B'],['steps','編號步驟','B3·2','Numbered Steps','B'],['struct','結構元件','B4','Structure','B'],['agenda','議程與章節','B5','Agenda & Sections','B'],['people','人員與組織','B6','People & Team','B'],
+ ['kpi','KPI 卡','C1','KPI Cards','C'],['rating','評比指標','C2','Ratings & Status','C'],['tline','時間軸與甘特','C3','Timeline & Gantt','C'],['chart','圖表佔位與圖例','C4','Chart Kit','C'],
+ ['cmp','前後對比 · 數字','D1','Before & After','D'],['asis','前後對比 · 版型零件','D1·2','Before & After Kit','D'],['cmp2','步驟與欄位對比','D2','Side-by-side','D'],['cmp3','表格與方案比較','D2·2','Tables & Options','D'],['mtx','矩陣與風險','D3','Matrix & Risk','D'],['rca','原因分析','D4','Root Cause','D'],['rca2','管理框架','D4·2','Fishbone, 8D & RACI','D'],['decide','決策與下一步','D5','Decision & Next Steps','D'],
+ ['annot','標註','E1','Callouts','E'],['emph','強調與註腳','E2','Emphasis & Footnotes','E'],['shots','截圖與圖片框','E3','Screenshots & Frames','E'],['story','引言與故事','E4','Quotes & Storytelling','E'],
+ ['ex1','範例：三圓架構','F1','Example: 3 circles','F'],['ex2','範例：框架流程','F2','Example: framework','F'],['ex3','範例：分支樹狀','F3','Example: tree','F'],['sum','頁型：結論＋3 支撐','F4','Page: Key takeaway','F'],['pcn','頁型：問題→對策→下一步','F5','Page: Problem to action','F'],['weekly','頁型：週報一頁','F6','Page: Weekly one-pager','F'],
+ ['profile','自我介紹','G1','Profile & Intro','G'],['skills','技能與成就','G2','Skills & Achievements','G'],['star','專案案例 STAR','G3','STAR Case Study','G'],['folio','作品集版面','G4','Portfolio Layouts','G'],
+ ['guide','風格規範','X1','Style Guide','X']];
+const USED={ex1:['A3·A','A3·B','A2·C','A2·F'],ex2:['A1','A2·D','A4·E','B4'],ex3:['B4·A','B4·E','A2·D','A4'],sum:['A0','A1·F','A2·E','C1'],pcn:['A0','D4·2','D5','A2·G'],weekly:['A0','C1·D','D5·A','A2·E']};
+const PH={"w": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAEOCAIAAADe+FMwAAAEt0lEQVR42u3dTXKjMBSF0ZDKKrT/tWn8lpCBh3b+FAkucM6wqzoNAn28ImX3VlVvAOR5twQAAg2AQAMINAACDSDQAAg0AAININAACDSAQAMg0AAINIBAAyDQAAINgEADCDQAAg2AQAMINAACDSDQAAg0AAININAACDSAQAMg0AACDYBAAyDQAAINgEADCDQAAg2AQAMINAACDSDQAAg0gEADINAACDSAQAMg0AACDYBAAyDQAAINgEADCDQAAg2AQAMINAACDSDQAAg0gEADINAACDSAQAMg0AACDcAhPiwBHKX3/vyHrTUrw8NWVVYBDu+yUiPQcII0yzQP3kFDbp2H/xYmaGC/yBqlTdBAYp2N0gINgECD8dkQjUDDNeqs0QINgECD8dkQjUADCDQAAg3BVr+F8JZDoAEQaAAEGkCgARBoAIEGQKDhxFZ/d7PvhhZoAAQaAIGGfax7C+H9hkADINBgiDY+I9Bw6kars0ADINBgiDY+87WtqqwC7GD4S5yl2QQNJI7S6myCBuJGaWlGoCGr1LqMQAOk8w4aQKBhBv+hNQINuXXWaAQacmdnjUagIbHOGo1AQ26dNRqBhrO2GwQaJBgEGnVWcAQaTjc7azQCDYl11mgEGnLrrNEINOTWWaMRaMits0Yj0JBbZ41GoOEurQeBhvlJ1WgEGnJjqtEINMgoCDTqrP4INFxmdtZoBBpyu6nRCDTkFlOjEWjIbaVGI9Dg2QACjURqNAINV4qjRiPQkJtFjUagITeIGo1AgxSCQKPOnhwINFymgOFH6BEi0HDruMQepzoLNBD9O0yZFmi4+/SXc8C9d1FGoFHnuMN+eQx6LdBw6zonHLwQI9BITOIpfP/vardAgwHwmBPRX55tVWUVkJiXWmtp67bPIWGCRp2xbgg0KhN5XgM/X9AFGlgeRKlFoDE+J57gf36msgs0iMWS0/QpQQQadU482VkrJvECDRox85RVFYFGnRNPfPqKyb1AgzRMOH0xZYxPEqI1I375ib7Vy+WDhSZoUOeRpbBcCDTc92HmGSDQoAV/WxBrhUCjzonLsvNauTQCjQzx8+L4lCACjTonLtGBC+UaCTTqjIVCoBEdXCwEGhseBBp1xlVDoAEEGoMYrh0CjR0OAo064yIi0NjYgECjzq4mAo39DAg06ozLKtDYxoBAA56+CDQ2MAg06oyrjEBj34JAo8643Ag0tisINOqM645AY5cCAo064wYQaAAEGtMTbgOBxrYEBBp1xv2AQNuNgECjzrgxEGhsQhBo1Bl3CAKNvQcCDXiQI9DYdYBAqzO4YQQamw0QaNQZd859bFVlFQBM0AAINIBAAyDQAAINgEADINAAAg2AQAMINAACDYBAAwg0AAININAACDSAQAMg0AAINIBAAyDQAAINgEADINAAAg2AQAMINAACDSDQAAg0AAININAACDSAQAMg0AAINIBAAyDQAAINgEADCDQAAg2AQAMINAACDSDQAAg0AAININAACDSAQAMg0AAINIBAAyDQAAINgEADCDQAAg2AQAMINAACDSDQAAg0AAININAACDSAQAMg0AACDYBAAyDQAAINgEADCDQAAg2AQAMINADDPgE3HE38GmtyuAAAAABJRU5ErkJggg==", "m": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAEsCAIAAABi1XKVAAAE60lEQVR42u3d0XHbMBBFUdHjKtB/bfjeElyAPbIskgCecc5nZpJIq+UVZGaUo6oeAAk+jAAQLADBAgQLQLAABAsQLADBAhAsQLAABAtAsADBAhAsAMECBAtAsAAECxAsAMECECxAsAAEC0CwAMECECwAwQIEC0CwAMECECwAwQIEC0CwAAQLECwAwQIQLECwAAQLQLAAwQIQLADBAgQLQLAABAsQLADBAhAsQLAABAtAsADBAhAsAMECBAtAsADBAhAsAMECBAtAsAAECxAsAMECECxAsAAEC0CwAMECmO/TCOC73vuPv95aM5yJjqoyBXjeKeUSLIhMlWxN5GdY8GatzvxGnLBgWnEctZywIKNWjlqCBTG10izBAhAsuO005JAlWJCUFc0SLADBwvHKIUuwAAQLECzwedCnQsECECxAsAAEC0CwAMECECwAwYLfDfteUF9AKliAYAEIFuz5qdDnQcECECwcshyvBAs2bJZaCRaAYOGQ5XglWLBhs9RqjKOqTIHNnfmCUKlywoKMo5ZaOWFBwFFLqgQLVi+XTgkWwEv8DAsQLADBYjr/SyiCRVKtNAvBIulspVkIFkmfBDULwSKjVpqFYPF/WgaCxYpJ0iwECwcoECxuqJWuIVgkna00C8Ei6ZOgZiFYZNRKsxAskmqlWQgWO1YPBItxodEsBIukY5FmIVgkfYjTLASLpKxoFoJFUlA0C8FCShAs1EoZESz00RAQLGLyoVkIFknh0CwEi6RkaBaCRVIsNAvBIikTmoVgkRQIzUKwSEqDZiFYJEVBsxAsJBXBQgtAsNi8VsKKYKmVB+wBCxauJUfC3jVLsNj9nT/iwevUFEdVmYJaLai1FjTeZR+tExZqte8TcbASLMiow5PHI2SChff/hZ6RJAkWrqiM5/XKY1A0wcL7//xnp0TrcJfQ9Rxj/J24NwbrdqETFmplsAiWi8qTvfrvkjnBwrUx9CmLjmBBRk3O//l6J1i4KkY8d61ZnLuErthU196Pu3ykbhc6YaFWt8zBSAULtcqYxk0j9UoJluvTNXDxTIxUsFCrjMmsf8MRwVIr83n03o1UsFCrgClF/It5BAsURLBwgYXMasowvYKC5QrkzxMzTMFCrTLm5isABQsrHjA9NwQFC7XKmKH/w0KwsNkmiWDhGvPiIliAYOEdGC+xYFllQLDUCq+1YGGDQbDUCi86gmVxQbBQK7z6ggUgWN5gsQOChU0FwVIrLINgYUFBsFArbIVg2UsQLNQK6yFY1hEQLPCuJlhYRBAstQLbIlj2DwQLtcLaCJa1AwRLrbA/goVtA8ECvO0Jlj0DwUKtsE6CZb0AwVIr7JVgYatAsNQKLJhgWSYQLMD7omBZI0Cw1Ar7Jli2BxAstcLi8TiqyhQAJywAwQIEC0CwAAQLECwAwQIQLECwAAQLQLAAwQIQLADBAgQLQLAABAsQLADBAhAsQLAABAtAsADBAhAsAMECBAtAsADBAhAsAMECBAtAsAAECxAsAMECECxAsAAEC0CwAMECECwAwQIEC0CwAAQLECwAwQIQLECwAAQLQLAAwQIQLADBAgQLQLAAwQIQLADBAgQLQLAABAsQLADBAhAsQLAABAtAsADBAhAsAMECBAtAsAAECxAsAMECECxAsAAEC0CwAMECECwAwQIEC0CwAMECWN8XVASIJw30VzgAAAAASUVORK5CYII=", "s": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAIAAAD2HxkiAAAEh0lEQVR42u3dQW7jSBBFQcvwKXj/s3FdR/DOK8E2JIJZmT9i2UBjqFI9JsUeiY+11gdQ59MSgAhBhIAIQYSACEGEgAhBhIAIQYSACEGEgAhBhIAIQYSACEGEgAhBhIAIQYSACEGEgAhBhIAIQYSACEGEgAhBhIAIQYSACEGEgAhBhIAIQYSACEGEgAhBhIAIQYSACEGEgAhBhIAIQYSACEGEgAhBhIAIQYSACEGEgAhBhIAIQYQgQkCEIEJAhCBCQISQ6MsSUOs8z6d/fhxHyAo81lr2Afu0F1ijCNk3v5AUfSakQYHv/EWTEC6uaN5INAnpVODIkShCOhU4skMRgggxBrOHoQjpV+CwDkUIIsQYzB6GIgQRggih74XigCtSEYIIQYSACEGEgAhBhIAImeK2778P+KK9CEGEIEJoeqE440efRAgixDAMHoMipGuHk359VIQgQgzD4DEoQvp1OO9n8D2Lglu980X4qQ9mMgnpMRIHPxrNJGT3keghoVBTo8dlAz4TgggBEfq8dFoEEVJcoA5FSP0M1KEIqb8K1aEIqf8cqEMRsm+fiJD7MtOhCDHoEGF8gVoVIfUzUIcipP4qVIcipP5zoA5FSGWBOhQhc0pGhOLRoQjpP750KELqg9GhCKlPRYcipD4SHYoQeSDC+ALVLkJMXUQoCR2KkB1i0KEIqc9AhyJUoMNAhLa+DkWoQIeECG13HYpQgQ4PEaJDEdrfIEIFOlmIUIEO2IlDhPZH19E9tUMRRp+hWxz8+Ivnx1pLSOH74ziORsu77dGahAqc9kJy7h6JkB13/C/HMy9OETpPb/eK0v4FRYR2yV6v6z/HMGz9RajAjV5d5v9F4O6oXfLE/XcgX1jYMbdJTUIFWlgR2ijZL/bl/9aYd0SECqx8yS4uREhlIR5ULEJn68rXbgb+cHfUXvnbtfchL1/S7rdJTUIF3roOllSEtkvlanhEsQgVWLkmllSEtkvlyux/o1WEChy7Pud5WlIRKrBslTyfWIQ4o4nQpkldKw8nFqECK1fMYopQgZXr5mvBIlRg2eq5ESpCBVauod+JEqECraRJaN/gzRUhmITOlHiLRahATEIF4r0WoQIxCRWIN12ECsQkVCDefRGCSehEiD2QHqECMQkViM2QGqECMQkViF2RGqECMQkViO2RGqECMQnBmTo4QmMQk1CB2C2pESoQk1CB2DapESoQk1CB2D+pESoQkxAMw+AIjUFMQgViGKZGqEBMQgViGKZGqEBMQgViGKZGqEBMQjAMgyM0BjEJFYhhmBqhAjEJFYhheIfHWsvSg0kIIgRECCIERAgiBEQIIgRECCIERAgiBEQIIgRECCIERAgiBEQIIgRECCIERAgiBEQIIgRECCIERAgiBEQIIgRECCIERAgiBEQIIgRECCIERAgiBEQIIgRECCIERAgiBEQIIgRECCIERAgiBEQIIgRECCIERAgiBEQIIgQRWgIQIYgQECGIEBAhiBAQIYgQECGIEBAhiBAQIYgQECGIEBAhiBAQIYgQECGIEBAhiBC41jefvognGOQoZgAAAABJRU5ErkJggg==", "t": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAFoCAIAAAApfoK1AAAEyklEQVR42u3dQXKrOBCA4bgrp+D+Z2OtI2SRXZJKsCOgu/V9y1dvpkDSj/Awxo8xxhvwlzAEIBWQCkgFpAJSAakAUgGpgFRAKiAVkApIBZAKSAWkAlIBqYBUQCqAVEAqIBWQCkgFpAJSAaQCUgGpgFRAKiAVkAogFZAKSAWkAlIBqYBUAKmAVEAqIBWQCkgFpAJIBaQCUgGpgFRAKiAVQCogFZAKSAWkAlIBqQBSAamAVEAqIBWQCkgFkApIBaQCUgGpgFRAKoBUQCogFZAKSAWkAlIBpAJSAamAVEAqIBWQCiAVkApIBaQCUgGpgFQAqYBUQCogFZAKSAWkAkgFpAJSAalAfu+GgH/a9/37H27b1uw0H2MMk82sQho3IxXOiqRZMD6rcHonL/9TdhUWiqTN9mJX4dJtoe72IhWQCsm2lNIbi1S4YWVXrEUqIBUSX/7LbSxSAamAVCh991XxHkwqIBWQCkgFpAJSAamwqLO/W1LruytSAamAVKh+D1bum8NSAamQ9fJf8WUUUuHqlV30pS1SAamQbyuo+x4wr8zjOS9/yaT6u1jtKlyx4hu8s9iuwrnbizfhw2/N+H0VWJTPKiCV+jf6SEUnapEKh/cTtUiFo/ddapEKRz+fqEUq+JQvFcQgFW7pREtS0ck+/W8ildXvu9QiFZ2oRSrMXvFqkYpO1CIVZq9ytUgFtUjF4p69uNUiFZ2oRSo6QSrc0okOpaITtUhFJ2qRCnetXbVIRSdqkQpqkYrFqhapkH2ZqkUqOlGLVHSiFqnoBKmQuhMNS8VabHKEDWKWSp9pTnucPTY9qaj6okOqHoxUul0R8xzwvu+dPkRJpeGdQ4bD/vEYSpcjlZ532PcefMv/IieVtpOd8398rjuwUul8UfR1mon8bn3/yd62Ldu4XXNIdhWdGDepmO+C5/XCv7/iUEvFVcD1RSqm/OQTXOqHMaSy0KVx4mk2exIvFZ2ccrJr/ipG6MQpGzGpmPXJJ77yT2KETpy+ETti0af1HjV+OvjU/OzhKvHwPnRibzFcUqHGZaVEjWHuxWCspGLuXx+Wi8cq/9SETvgyOAs+iZeKTp4eohsHKvkchU4wUFIx/SZLKjpBKjqxsUgF7CouTrSeuzDWsGgqOjGJUtEJUtEJuWczjCwslIpObCxS0QlSgTrXwTCU0D8VndhYpKIT7Co6oeB0h4GDnqnoxMYiFZ1gV9EJxReAR5DQKxVbCvcugzBA0CQVnZBhPYRxgfKp6IQ8CyMMBxRORSdkWyFhFKDDx3pIckmNxc8fSqaiE9IumNAJVEpFJyRfOY8xhuGGeh/rQSogFZAKIBWQCkgFpAJSAamAVACpgFRAKiAVkApIBaQCSAWkAlIBqYBUQCogFUAqIBWQCkgFpAJSAakAUgGpgFRAKiAVkApIBZAKSAWkAlIBqYBUQCqAVEAqIBWQCkgFpAJSAaQCUgGpgFRAKiAVkAogFZAKSAWkAlIBqYBUAKmAVEAqIBWQCkgFpAJIBaQCUgGpgFRAKiAVQCogFZAKSAWkAlIBqQBSAamAVEAqIBWQCkgFkApIBaQCUgGpgFRAKoBUQCogFZAKSAWkAlIBpAJSAamAVEAqIBWQCiAVkApIBaQCUgGpgFSAn3wAGbBOsGLAXTMAAAAASUVORK5CYII="};
 
 /* ---------- 文字寬度估算（Node 端排版檢查用；瀏覽器預覽改用 canvas 實測） ---------- */
 function tw(str,size){let u=0;for(const ch of String(str)){const c=ch.codePointAt(0);
@@ -4236,7 +4264,7 @@ function buildModel(params,opt){
   pin:(n,px,py,bx,by,o)=>{o=o||{};const d=o.d||.3;const L=Math.hypot(px-bx,py-by);
    if(L>d/2+.02){const ux=(px-bx)/L,uy=(py-by)/L;ln(bx+ux*d/2,by+uy*d/2,px,py,{c:AC,w:1.25});}
    circ(px,py,o.dot||.08,{fill:AC,name:'標註點'});
-   return circ(bx,by,d,{fill:AC,line:'FFFFFF',lw:1.25,text:String(n),size:Math.max(7,Math.round(d*34)),bold:1,color:'FFFFFF',margin:0,font:nf,name:'編號釘'});},
+   return circ(bx,by,d,{fill:AC,line:'FFFFFF',lw:1.25,text:String(n),size:o.size||Math.max(7,Math.round(d*34)),bold:1,color:'FFFFFF',margin:0,font:nf,name:'編號釘'});},
   /* 對話框：圓角泡泡（白底＋標註色外框）＋指向目標的尖角；文字是泡泡上的文字框（改字、PowerPoint 編輯都方便） */
   callout:(x,y,w,h,t,tx,ty,o)=>{o=o||{};const r=Math.min(.08,h/3),pw=Math.min(.2,w/4),up=ty<y;
    const b1=Math.max(x+r+.02,Math.min(tx-pw/2,x+w-r-.02-pw)),b2=b1+pw;
@@ -4397,72 +4425,15 @@ function buildModel(params,opt){
      const ns=[['io','輸入'],['proc','處理'],['doc','報表']].map(([k,t],i)=>{const n=sym(k,xi,k==='doc'?yy-.05:yy,ww[i],k==='doc'?.52:nh,t,{size:fs,strong:i===1});
       lab(xi-.05,yy+.6,ww[i]+.1,['資料來源','整理運算','產出結果'][i],{color:G.mute});xi+=ww[i]+g;return n;});
      link(ns[0],2,ns[1],1);link(ns[1],3,ns[2],1);}],
-   ['前後對照','Before / After',(x,y)=>{const w=1.18,h=1.3,yy=y+.2,xb=x+cw-w;
-     cardBase(x,yy,w,h);txt(x+.14,yy+.12,w-.28,.3,[{t:'現況 ',b:1,c:G.t2},{t:'Before',s:8,c:G.mute,f:nf}],{size:LS(11),name:'卡片標題'});
-     txt(x+.14,yy+.48,w-.28,.7,'流程分散\n交接常出錯',{size:9.5,color:G.t2,valign:'top',lsp:1.2,name:'卡片內文'});
-     sep(x+cw/2,yy+h/2);
-     box(xb,yy,w,h,{fill:'FFFFFF',line:P,lw:1.75,r:st.r,sh:1,name:'強調卡片'});txt(xb+.14,yy+.12,w-.28,.3,[{t:'改善後 ',b:1,c:P},{t:'After',s:8,c:G.mute,f:nf}],{size:LS(11),name:'卡片標題'});
-     txt(xb+.14,yy+.48,w-.28,.7,'單一窗口\n進度一目了然',{size:9.5,color:G.ink,valign:'top',lsp:1.2,name:'卡片內文'});}]];
+   ['迴圈回饋（PDCA）','Feedback Loop',(x,y)=>{const w=.92,y1=y+.2,y2=y+1.22,xr=x+cw-w;
+     const a=N(x,y1,w,'計畫 Plan',{strong:1}),b=N(xr,y1,w,'執行 Do'),c=N(xr,y2,w,'檢核 Check'),d=N(x,y2,w,'行動 Act');
+     link(a,3,b,1);link(b,2,c,0);link(c,1,d,3);link(d,0,a,2);
+     txt(x+w,y+.72,cw-2*w,.36,'持續改善',{size:fs,bold:1,color:P,align:'center',valign:'middle',name:'中心標註'});}]];
   combos.forEach(([zh,en,fn],i)=>{const col=i%NCOL,row=Math.floor(i/NCOL);const x=X0+col*(cw+GAPc),y=row?rows2:y0;
    const dx=mark(x,y+.14);txt(x+dx,y,cw-dx,.3,[{t:zh,s:LS(11.5),b:st.lBold,c:G.ink},{t:'  '+en,s:8,c:G.mute,f:nf}],{name:'組合名稱'});
    ln(x,y+.34,x+cw,y+.34,{c:G.l2,w:.5});
    grp(zh,()=>fn(x,y+lh));});};
  /* ---------- 03 常見組合（二）：表格、比較、數字卡、PDCA；每組在 pptx 中是一個群組（含表格者除外：PowerPoint 不允許表格入群組） ---------- */
- SL.patterns2=()=>{title('常見組合（二）Common Patterns II','分工表、前後對照、問題對策、方案比較、KPI 數字卡與 PDCA：整組複製即可使用');
-  const NCOL=3,GAPc=.34,cw=(CW-(NCOL-1)*GAPc)/NCOL,lh=.4,ch=1.86,rowGap=.24;
-  const y0=1.9,rows2=y0+lh+ch+rowGap;const fs=Math.min(LS(10),11.5);const W2='FFFFFF';
-  const bHead={c:P,w:1.25},bRow={c:G.l2,w:.5};
-  const combos=[
-   ['責任分工 RACI','RACI Matrix',(x,y)=>{const roles=['PM','設計','工程','業務'],tasks=['需求定義','方案設計','開發測試','上線推廣'];
-     const M=[['A','C','C','R'],['A','R','C','I'],['A','C','R','I'],['A','I','C','R']];
-     const c0=1.16,cr=(cw-c0)/4,rh0=.32,rh=.34;
-     const head=[{t:'工作項目',bold:1,color:G.t2,align:'left',size:fs-1,bB:bHead}].concat(roles.map(r=>({t:r,bold:1,color:G.ink,size:fs-1,bB:bHead})));
-     const body=tasks.map(t=>[{t,color:G.ink,align:'left',size:fs-.5,bB:bRow}].concat(roles.map(()=>({t:'',bB:bRow}))));
-     table(x,y,[c0,cr,cr,cr,cr],[rh0,rh,rh,rh,rh],[head].concat(body),{name:'RACI 表格'});
-     const look={R:{fill:P,c:W2},A:{fill:HASA?A:PD,c:HASA&&lum(A)>.55?G.ink:W2},C:{fill:PTn,c:PD},I:{fill:W2,line:G.line,c:G.t2}};
-     M.forEach((row,i)=>row.forEach((k,j)=>{const L=look[k],cx=x+c0+cr*(j+.5),cy=y+rh0+rh*(i+.5),pw=.34,ph=.21;
-      box(cx-pw/2,cy-ph/2,pw,ph,{fill:L.fill,line:L.line,lw:.75,r:'full',text:k,size:8,bold:1,color:L.c,margin:0,font:nf,name:'RACI 標記'});}));
-     const ly=y+rh0+4*rh+.08;let lx=x;[['R','執行'],['A','當責'],['C','諮詢'],['I','知會']].forEach(([k,t])=>{const L=look[k];
-      box(lx,ly+.02,.22,.16,{fill:L.fill,line:L.line,lw:.5,r:'full',text:k,size:6.5,bold:1,color:L.c,margin:0,font:nf,name:'圖例'});
-      txt(lx+.26,ly,.6,.2,t,{size:8,color:G.t2,name:'圖例'});lx+=.86;});}],
-   ['改善前後對照表','Before / After Table',(x,y)=>{const c0=1.0,c1=(cw-c0)/2,rh0=.34,rh=.36;
-     const rows=[['交期','10 天','6 天'],['不良率','3.2%','1.1%'],['人力','5 人','3 人'],['客訴','8 件／月','2 件／月']];
-     const head=[{t:'項目',bold:1,color:G.t2,align:'left',size:fs-1,bB:bHead},{t:'改善前 Before',bold:1,color:G.t2,size:fs-1,fill:GF,bB:{c:G.line,w:1.25}},{t:'改善後 After',bold:1,color:W2,size:fs-1,fill:P,bB:bHead}];
-     const body=rows.map(r=>[{t:r[0],color:G.ink,align:'left',size:fs-.5,bB:bRow},{t:r[1],color:G.mute,size:fs,bB:bRow,font:nf},{t:r[2],color:P,bold:1,size:fs+1,bB:bRow,font:nf}]);
-     table(x,y,[c0,c1,c1],[rh0,rh,rh,rh,rh],[head].concat(body),{name:'前後對照表'});
-     note(x,y+rh0+4*rh+.06,cw,'※ 改善後一欄以主色粗體標示',{size:8,h:.2});}],
-   ['問題 → 原因 → 對策','Problem / Cause / Countermeasure',(x,y)=>{const bw=1.02,g=(cw-3*bw)/2,bh=1.16,yy=y+.22;
-     const sh=symLook(false).sh?'small':0;
-     const spec=[['問題','Problem','交期常延誤\n客戶抱怨增加',{fill:W2,line:AL,lw:1.5,c:ALd}],['原因','Cause','需求變更頻繁\n排程未同步',{fill:GF,c:G.ink}],['對策','Countermeasure','需求凍結點\n每週排程會議',{fill:P,c:W2}]];
-     const B=spec.map(([zh,en,body,L],i)=>box(x+i*(bw+g),yy,bw,bh,{fill:L.fill,line:L.line,lw:L.lw,r:st.r>0?Math.min(st.r,.12):0,sh,valign:'top',align:'left',margin:[7,5,4,8],lsp:1.15,size:fs-1.5,
-      text:[{t:zh,s:fs+1.5,b:1,c:L.c===W2?W2:(i===0?ALd:G.ink),br:1},{t:en,s:7,c:L.c===W2?mix(P,'FFFFFF',.7):G.mute,f:nf,br:1}].concat(body.split('\n').map((t,k,a)=>({t,s:fs-1.5,c:L.c===W2?W2:G.t2,br:k<a.length-1?1:0}))),name:zh}));
-     link(B[0],3,B[1],1);link(B[1],3,B[2],1);}],
-   ['三方案比較','3-Column Comparison',(x,y)=>{const g=.12,w=(cw-2*g)/3,h=1.8,yy=y+.06,hh=.4;
-     const opts=[['方案 A','Option A',['成本：低','時程：2 週','擴充：有限']],['方案 B','Option B',['成本：中','時程：4 週','擴充：佳']],['方案 C','Option C',['成本：高','時程：8 週','擴充：最佳']]];
-     opts.forEach(([zh,en,rows],i)=>{const xi=x+i*(w+g),hi=i===1;
-      if(hi){box(xi,yy,w,h,{fill:W2,line:P,lw:1.75,r:st.r>0?Math.min(st.r,.12):0,sh:1,name:'推薦方案'});topRound(xi,yy,w,hh,st.r>0?Math.min(st.r,.12):0,{fill:P,name:'表頭'});}
-      else{box(xi,yy,w,h,{fill:W2,line:G.l2,lw:1,r:st.r>0?Math.min(st.r,.12):0,name:'方案'});box(xi+.001,yy+.001,w-.002,hh,{fill:GF,r:0,name:'表頭底'});}
-      txt(xi,yy,w,hh,[{t:zh,s:fs+.5,b:1,c:hi?W2:G.ink,br:1},{t:en,s:7,c:hi?mix(P,'FFFFFF',.7):G.mute,f:nf}],{align:'center',lsp:.95,name:'方案名稱'});
-      rows.forEach((r,j)=>{const ry=yy+hh+.14+j*.36;const [k,v]=r.split('：');
-       txt(xi+.12,ry,w-.24,.18,k,{size:7.5,color:G.mute,name:'項目'});txt(xi+.12,ry+.15,w-.24,.2,v,{size:fs-.5,bold:hi?1:0,color:hi?P:G.ink,name:'內容'});});
-      if(hi)tag(xi+w/2,yy+h-.08,'推薦',{tone:'a',size:8,h:.22,anchor:'center'});});}],
-   ['KPI 數字卡','KPI Cards',(x,y)=>{const g=.14,w=(cw-2*g)/3,h=1.36,yy=y+.22;
-     /* ▲▼ 依「越高越好／越低越好」上色：變好＝語意綠、變差＝語意紅（不用品牌色，紅色品牌也分得清） */
-     const K=[['準時交貨率','98.6','%','▲ 2.1 pt',1,1],['平均交期','6.2','天','▼ 1.8 天',-1,-1],['客訴件數','3','件／月','▲ 1 件',1,-1]];
-     K.forEach(([l,v,u,d,dir,better],i)=>{const good=dir===better;const xi=x+i*(w+g);cardBase(xi,yy,w,h,{});box(xi+.14,yy+.16,.24,.04,{fill:i===0?P:G.line,name:'色條'});
-      txt(xi+.14,yy+.26,w-.2,.22,l,{size:8.5,color:G.t2,name:'指標名稱'});
-      txt(xi+.12,yy+.5,w-.18,.46,[{t:v,s:24,b:1,c:i===0?P:G.ink,f:nf},{t:' '+u,s:9,c:G.t2}],{valign:'bottom',name:'數值'});
-      txt(xi+.14,yy+1.0,w-.2,.2,[{t:d,s:8,b:1,c:good?GOOD:BAD},{t:'  較上季',s:7,c:G.mute}],{name:'變化'});});}],
-   ['PDCA 循環','PDCA Cycle',(x,y)=>{const bw=1.44,bh=.68,vg=.44,yy=y+.06,xr=x+cw-bw,yb=yy+bh+vg;const L=symLook(false);
-     const S=[['P','計畫','Plan','設定目標與做法',x,yy],['D','執行','Do','依計畫小步執行',xr,yy],['C','查核','Check','量測結果與差異',xr,yb],['A','行動','Act','標準化並修正',x,yb]];
-     const B=S.map(([k,zh,en,t,bx,by])=>box(bx,by,bw,bh,{fill:L.fill===P?W2:L.fill,line:L.line||(L.fill===P?P:null),lw:L.lw||1.5,dash:L.dash,r:st.r>0?Math.min(st.r,.12):0,sh:L.sh?'small':0,align:'left',valign:'middle',margin:[8,4,0,0],lsp:1.08,size:fs-1.5,
-      text:[{t:k,s:15,b:1,c:P,f:nf},{t:'  '+zh+' ',s:fs+.5,b:1,c:G.ink},{t:en,s:7.5,c:G.mute,f:nf,br:1},{t:t,s:fs-1.5,c:G.t2}],name:'PDCA '+en}));
-     link(B[0],3,B[1],1);link(B[1],2,B[2],0);link(B[2],1,B[3],3);link(B[3],0,B[0],2);
-     const cx=x+cw/2,cy=yy+bh+vg/2;box(cx-.5,cy-.13,1.0,.26,{fill:W2,line:G.l2,lw:.75,r:'full',text:[{t:'PDCA',s:8,b:1,c:P,f:nf},{t:'  持續改善',s:7.5,c:G.t2}],size:8,margin:0,name:'中心標籤'});}]];
-  combos.forEach(([zh,en,fn],i)=>{const col=i%NCOL,row=Math.floor(i/NCOL);const x=X0+col*(cw+GAPc),y=row?rows2:y0;
-   const dx=mark(x,y+.14);txt(x+dx,y,cw-dx,.3,[{t:zh,s:LS(11.5),b:st.lBold,c:G.ink},{t:'  '+en,s:8,c:G.mute,f:nf}],{name:'組合名稱'});
-   ln(x,y+.34,x+cw,y+.34,{c:G.l2,w:.5});
-   grp(zh,()=>fn(x,y+lh));});};
  /* ---------- 04 可調數量（v9）：線性流程、泳道、問題→原因→對策；數量 2–6 由參數 nLin／nLane／nPcc 決定（純流程圖語意，不套主題版面） ---------- */
  const head2=(x,y,w,zh,en)=>{const dx=mark(x,y+.14);txt(x+dx,y,w-dx,.3,[{t:zh,s:LS(11.5),b:st.lBold,c:G.ink},{t:'  '+en,s:8,c:G.mute,f:nf}],{name:'組合名稱'});ln(x,y+.34,x+w,y+.34,{c:G.l2,w:.5});};
  const NUM=(k,d,lo)=>Math.max(lo||2,Math.min(6,Math.round(+st[k]||d)));
@@ -4551,24 +4522,6 @@ function buildModel(params,opt){
   if(t){let ts=st.tSize;while(ts>20&&tw(t,ts)>11.4)ts-=1;cur.tsz=ts;title(t,sub);}
   if(f){const y=6.82;if(st.footRule)ln(.4,y-.08,W-.4,y-.08,{c:P,w:1.25});note(.6,y,W-1.2,f,{h:.3,name:'註解'});}};
  /* ---------- 06 圖示庫：Material Symbols 圖示（每個都是可單獨複製的原生圖案）＋圖示＋文字的常用組合 ---------- */
- SL.icons=()=>{const TOPI=ICONS?(ICONS.TOP||ICONS.LIST):[];title('圖示庫 Icon Library','精選 '+TOPI.length+' 個 Material Symbols（Studio 共 '+(ICONS?ICONS.LIST.length:0)+' 個）：顏色、粗細跟著風格；每個都是可編輯圖案');
-  if(!ICONS)return;const NC=20,cw=CW/NC,s=.33,pitch=.585,y0=1.8,W2='FFFFFF',PR=st.r>0?Math.min(st.r,.1):0;const cs=Math.max(7.5,Math.min(8.5,st.nSize-3));
-  TOPI.forEach((ic,i)=>{const c=i%NC,r=Math.floor(i/NC);const cx=X0+(c+.5)*cw,y=y0+r*pitch;
-   grp(ic.zh,()=>icon(ic.id,cx-s/2,y,s));txt(cx-cw/2-.02,y+s+.03,cw+.04,.18,ic.zh,{size:cs,color:G.t2,align:'center',name:'圖說'});});
-  const ys=y0+Math.ceil(TOPI.length/NC)*pitch+.02;ln(X0,ys-.06,X1,ys-.06,{c:G.l2,w:.5});
-  const dx=mark(X0,ys+.13);txt(X0+dx,ys,6,.28,[{t:'圖示＋文字組合',s:LS(11.5),b:st.lBold,c:G.ink},{t:'  Icon + Label',s:8,c:G.mute,f:nf}],{name:'小節'});
-  const yb=Math.min(ys+.36,(st.canvas?6.82:6.92)-.8),hb=.74,gap=.16;const ws=[2.15,2.15,2.3,2.05];const w5=CW-ws.reduce((a,b)=>a+b,0)-4*gap;let xb=X0;
-  const place=(w,name,fn)=>{const x=xb;grp(name,()=>fn(x,w));xb+=w+gap;};
-  const two=(x,y,w,h,a,b,o)=>txt(x,y,w,h,[{t:a,s:LS(11.5),b:1,c:(o&&o.c)||G.ink,br:1},{t:b,s:Math.max(8,LS(9)),c:(o&&o.c2)||G.t2}],{lsp:1.05,valign:'middle',name:'文字'});
-  place(ws[0],'圖示＋流程方塊',(x,w)=>{box(x,yb,w,hb,{fill:W2,line:G.line,lw:1,r:PR,name:'流程方塊'});icon('precision_manufacturing',x+.14,yb+(hb-.4)/2,.4);two(x+.66,yb,w-.74,hb,'設備保養','每月 PM 排程');});
-  place(ws[1],'淺色圓底＋說明',(x,w)=>{icon('frame_inspect',x,yb+(hb-.56)/2,.56,{variant:'tint'});two(x+.68,yb,w-.7,hb,'線上檢測','AOI 全檢・即時回饋');});
-  place(ws[2],'深色圓底＋卡片',(x,w)=>{cardBase(x,yb,w,hb,{sh:'small'});icon('neurology',x+.14,yb+(hb-.46)/2,.46,{variant:'solid'});two(x+.72,yb,w-.8,hb,'AI 判片','自動分類缺陷');});
-  place(ws[3],'數字＋圖示',(x,w)=>{box(x,yb,w,hb,{fill:GF,r:PR,name:'淺灰面板'});
-   txt(x+.16,yb+.06,w-.7,.4,[{t:'98.6',s:22,b:1,c:P,f:nf},{t:' %',s:10,c:G.t2}],{valign:'bottom',name:'數值'});txt(x+.16,yb+.47,w-.7,.2,'整體良率',{size:Math.max(8,LS(9)),color:G.t2,name:'指標名稱'});
-   icon('verified',x+w-.56,yb+(hb-.4)/2,.4);});
-  place(w5,'圖示流程',(x,w)=>{const d=.44,sp=(w-d)/2;const B=[['wafer','投片'],['frame_inspect','檢測'],['build','改善']].map(([id,t],i)=>{const xi=x+i*sp;
-    const r=icon(id,xi,yb+.02,d,{variant:i===2?'solid':'tint'});txt(xi-.3,yb+d+.06,d+.6,.2,t,{size:Math.max(8,LS(9)),color:G.t2,align:'center',name:'圖說'});return r.bg;});
-   link(B[0],6,B[1],2);link(B[1],6,B[2],2);});};
  SL.guide=()=>{title('風格規範','色彩、字級與元件語言一覽'+(st.desc?'：'+st.desc.split('，')[0]:''));
   section(X0,1.95,5.5,'色彩 Palette');
   const sw=[[P,'主色'],[PD,'深色'],[PTn,'淺色']].concat(HASA?[[A,'輔助色']]:[]).concat([[G.ink,'文字'],[G.mute,'註解'],[G.line,'框線'],[G.fill,'底色']]);
@@ -4594,36 +4547,7 @@ function buildModel(params,opt){
    if(k==='chain')chain(sx,y+.08,3.0,.44,['規劃','執行','檢核'],{size:11});
    if(i<rows.length-1)ln(RX,y+.66,X1,y+.66,{c:mix(G.l2,'FFFFFF',.5),w:.5});});};
 
- SL.cards=()=>{title('卡片','標題＋內文、角落標籤、表頭強調三種基本卡片');
-  const cw=3.73,gap=(CW-3*cw)/2,y=2.05,h=2.35;const xs=[0,1,2].map(i=>X0+i*(cw+gap));
-  card(xs[0],y,cw,h,{head:'標題＋內文',en:'Card',body:'先用一句話說清楚重點，\n再以兩到三行補充說明。\n內文維持灰色、行距寬鬆，\n留白讓卡片更好讀。'});
-  card(xs[1],y,cw,h,{head:'角落標籤卡片',body:'右上角的小標籤標示階段、\n分類或狀態，跨在邊框上，\n不佔用內文空間。',tag:st.cornerTag?'第一階段':null,tag2:st.cornerTag&&st.ribbonTone==='a'?'價值說明':null});
-  card(xs[2],y,cw,h,{head:'表頭強調卡片',band:1,force:1,body:'以主色表頭強調，\n用來標出最重要的一張卡。\n同一頁建議只放一張。'});
-  ['A｜基本卡片','B｜角標卡片','C｜強調卡片（含陰影）'].forEach((t,i)=>note(xs[i],y+h+.18,cw,t,{align:'center'}));
-  section(X0,5.0,7.0,'標籤＋說明列');
-  [['簡潔','一頁只講一個重點，讀者不費力'],['具體','用例子與數字說話，避免空泛'],['深入','提出觀點與洞見，留下記憶點']].forEach(([a,b],i)=>{const yy=5.58+i*.42;
-   tag(X0,yy,a,{size:12,h:.32,w:.82,tone:i===1&&HASA&&st.tag!=='soft'?'a':'p'});txt(X0+1.0,yy,5.8,.32,b,{size:13,color:G.ink});});
-  section(8.0,5.0,X1-8.0,'註解 Note');
-  note(8.0,5.6,X1-8.0,'※ 註解用灰色小字，補充前提或資料來源。',{h:.3});
-  note(8.0,6.0,X1-8.0,'※ 每張卡片內文以 3–4 行為上限。',{h:.3});};
 
- SL.tags=()=>{title('標籤與編號','單一標籤、堆疊清單、編號徽章與圈號清單');
-  section(X0,1.95,CW,'單一標籤 Tags');
-  let x=X0;const ty=2.55;
-  [['主要標籤','p'],['輔助標籤','a'],['灰階標籤','g'],['外框標籤','o']].forEach(([t,tone])=>{x+=tag(x,ty,t,{tone,size:13,h:.38})+.3;});
-  x+=.3;txt(x,ty,.9,.38,'小尺寸',{size:11,color:G.mute});x+=.8;
-  ['元素','關聯','因果'].forEach((t,i)=>{x+=tag(x,ty+.04,t,{tone:i===0?'o':'g',size:10,h:.3})+.15;});
-  const cw=3.79,gap=(CW-3*cw)/2;const cx=[0,1,2].map(i=>X0+i*(cw+gap));const y0=3.35;
-  section(cx[0],y0,cw,'堆疊清單 Stacked');
-  ['釐清溝通目的','對齊彼此期待','降低理解門檻','提升決策效率'].forEach((t,i)=>tag(cx[0],y0+.66+i*.62,t,{w:2.9,h:.42,size:13,tone:'p',sh:1}));
-  section(cx[1],y0,cw,'編號 Badges');
-  [1,2,3,4].forEach(n=>badge(cx[1]+.25+(n-1)*.62,y0+.88,bnum(n),{d:.42,alt:n===4&&HASA}));
-  [['界定問題','先釐清要解決什麼'],['盤點現況','蒐集事實與數據'],['排序優先','聚焦影響最大處']].forEach(([a,b],i)=>{const yy=y0+1.6+i*.62;
-   badge(cx[1]+.25,yy+.17,bnum(i+1),{d:.36});txt(cx[1]+.62,yy,1.2,.34,a,{size:13,bold:1,color:G.ink});txt(cx[1]+1.75,yy,cw-1.75,.34,b,{size:11,color:G.t2});});
-  section(cx[2],y0,cw,'圈號清單 ①②③');
-  ['① 釐清目的','② 拆解結構','③ 重新組合','④ 檢查一致'].forEach((t,i)=>txt(cx[2],y0+.65+i*.42,1.8,.34,t,{size:14,color:i===0?G.ink:G.t2,bold:i===0}));
-  ['過濾數據','確認關係','產出圖表'].forEach((t,i)=>txt(cx[2]+2.0,y0+.65+i*.42,1.79,.34,'①②③'[i]+' '+t,{size:12,color:G.t2}));
-  note(cx[2],y0+2.45,cw,'※ 清單 3–5 項最易記',{h:.28});};
 
  /* ---------- 標籤元件（v10）：左＝圖示或 1–3 字短字（01／重點／A），右＝標籤文字；全部原生圖形、文字可編輯、圖示可在「改字」換 ---------- */
  SL.labels=()=>{title('標籤元件 Labels','左側放圖示或短字（01／重點／A），右側放標籤文字；選取後按「改字」換字或換圖示');
@@ -4690,7 +4614,7 @@ function buildModel(params,opt){
   const num=(x,y,w,h,n,u,c,o)=>{o=o||{};return txt(x,y,w,h,[{t:n,s:o.s||LS(24),b:1,c,f:nf},{t:u?' '+u:'',s:o.us||LS(12),b:0,c:o.uc||c}],{valign:'middle',align:o.align||'left',name:o.name||'數值'});};
   const dbadge=(x,y,w,h,t,fill,o)=>box(x,y,w,h,Object.assign({fill,r:'full',text:t,size:LS(11),bold:1,color:onC(fill),font:nf,margin:0,line:W2,lw:1.5,name:'增減徽章'},o||{}));
   return{W2,CARD,DARK,RAD,onC,cs,cw,cx,calc,cap,pill,chev,num,dbadge};};
- SL.cmp=()=>{title('對比式排版 Compare','As Was → To Be 基本元件；選取 →「改字」改數字，倍數／增減徽章自動重算');
+ SL.cmp=()=>{title('前後對比 · 數字 Before & After','As Was → To Be 基本元件；選取 →「改字」改數字，倍數／增減徽章自動重算');
   const {W2,CARD,DARK,RAD,onC,cw,cx,calc,cap,pill,chev,num,dbadge}=CMPK();
   // A 橫向一列（同 As Was／To Be 頁）
   {const x=cx[0],y=2.02,AG=.5,w=(cw-AG)/2,h=.86;let nA,nB;grp('橫向對比 As Was→To Be',()=>{
@@ -4739,7 +4663,7 @@ function buildModel(params,opt){
     txt(x,y+.98,hw-.4,.28,'銷售額（元）',{size:LS(11),color:G.mute,name:'指標名稱'});});
    cap(x,y+h+.08,cw,'E｜大數字分割 Big number split（細分隔線＋▲▼ 增減）');}
  };
- SL.cmp2=()=>{title('對比式排版（二）Compare','三步驟、痛點對改善、降幅、VS 左右欄、時間軸、小尺寸');
+ SL.cmp2=()=>{title('步驟與欄位對比 Compare Layouts','三步驟、痛點對改善、降幅、VS 左右欄、時間軸、小尺寸');
   const {W2,CARD,DARK,RAD,onC,cs,cw,cx,calc,cap,pill,chev,num,dbadge}=CMPK();
   // F 三步驟 現況→改善→目標
   {const x=cx[0],y=2.02,gp=.36,w=(cw-2*gp)/3,h=.98;grp('三步驟 現況→改善→目標',()=>{
@@ -4807,60 +4731,6 @@ function buildModel(params,opt){
   const calc1=(it,src,m,extra)=>{it.calc=Object.assign({a:cur.items.indexOf(src),m},extra||{});return it;};
   const badge=(cx0,cy0,d,t,fill,o)=>circ(cx0,cy0,d,Object.assign({fill,text:t,size:LS(11),bold:1,color:onC(fill),font:nf,margin:0,name:'編號徽章'},o||{}));
   return{AMB,W2,DARK,RAD,onC,cs,AC2,TN,SF,card,pill,nm,num,light,cap,small,calc1,badge};};
- SL.kpi=()=>{title('KPI 卡與評比指標 KPI & Rating','數值、目標、Δ、燈號、期間皆可「改字」；Harvey ball／進度條／點數改數字自動重畫');
-  const {AMB,W2,DARK,RAD,TN,card,pill,nm,num,light,cap,small,calc1}=GPK();const g3=.25,y1=1.98,h1=1.3,wA=3.2,wB=4.3,wC=CW-wA-wB-2*g3;
-  // A 單值大數字
-  {const x=X0;grp('KPI 單值大數字',()=>{card(x,y1,wA,h1);nm(x+.2,y1+.14,2.0,'良率','Yield');small(x+wA-1.1,y1+.16,.9,'2026 Q3',{align:'right',font:nf,name:'期間'});
-    num(x+.2,y1+.42,wA-.4,.56,'98.6','%',P,{s:LS(30)});light(x+.28,y1+1.08,.13,GOOD);small(x+.42,y1+.98,2.4,'達標 On target',{name:'燈號說明'});});
-   cap(x,y1+h1+.06,wA,'A｜單值大數字 Single KPI');}
-  // B 數值＋目標＋Δ
-  {const x=X0+wA+g3;grp('KPI 數值＋目標＋Δ',()=>{card(x,y1,wB,h1);nm(x+.2,y1+.14,2.4,'CMP 良率','CMP yield');light(x+wB-1.0,y1+.26,.13,GOOD);small(x+wB-.88,y1+.16,.75,'正常',{name:'燈號說明'});
-    const v=num(x+.2,y1+.44,2.1,.56,'96.8','%',DARK,{s:LS(28)});small(x+.2,y1+1.0,2.0,'W42 · 2026',{font:nf,name:'期間'});
-    const cx0=x+2.45;ln(cx0-.12,y1+.5,cx0-.12,y1+1.16,{c:G.l2,w:.75});small(cx0,y1+.48,1.7,'目標 Target',{name:'欄名'});
-    const t=num(cx0,y1+.66,.9,.26,'95.0','%',G.t2,{s:LS(13),us:LS(9),name:'目標值'});small(cx0,y1+.94,.9,'Δ vs 目標',{name:'欄名'});
-    calc1(box(cx0+.92,y1+.7,.82,.26,{fill:TN(GOOD),r:'full',text:'▲ +2%',size:LS(10),bold:1,color:GOOD,font:nf,margin:0,name:'增減徽章'}),t,'arrow',{b:cur.items.indexOf(v)});
-    const bd=cur.items[cur.items.length-1];bd.calc.b=cur.items.indexOf(v);bd.calc.a=cur.items.indexOf(t);});
-   cap(x,y1+h1+.06,wB,'B｜數值＋目標＋Δ▲▼（Δ 依數值／目標自動算）');}
-  // C 數值＋迷你趨勢
-  {const x=X0+wA+wB+2*g3;grp('KPI 數值＋迷你趨勢',()=>{card(x,y1,wC,h1);nm(x+.2,y1+.14,2.2,'產出','Output');small(x+wC-1.2,y1+.16,1.0,'近 8 週',{align:'right',name:'期間'});
-    num(x+.2,y1+.44,1.9,.5,'1,240','片',DARK,{s:LS(24)});txt(x+.2,y1+.96,1.9,.22,[{t:'▲ 8%',b:1,c:GOOD,f:nf},{t:'  vs 上週',c:G.mute}],{size:Math.max(8,LS(9)),valign:'middle',name:'增減'});
-    const sx=x+2.15,sw=wC-2.4,sy=y1+.5,sh=.62,V=[3.1,3.6,3.3,4.2,3.9,4.6,4.4,5.2],mn=3,mx=5.4,px=i=>sx+i*sw/(V.length-1),py=v=>sy+sh-(v-mn)/(mx-mn)*sh;
-    ln(sx,sy+sh+.04,sx+sw,sy+sh+.04,{c:G.l2,w:.75});path(V.map((v,i)=>[px(i),py(v)]),{line:G.l1,lw:1.5,name:'趨勢線'});path(V.slice(-3).map((v,i)=>[px(i+5),py(v)]),{line:P,lw:2,name:'近期趨勢'});
-    circ(px(7),py(V[7]),.11,{fill:P,line:W2,lw:1,name:'最新點'});});
-   cap(x,y1+h1+.06,wC,'C｜數值＋迷你趨勢 Sparkline（原生線條）');}
-  // D 4 卡橫排
-  const y2=3.86,h2=.98,wD=7.6;{const x=X0,gw=.18,w=(wD-3*gw)/4;grp('KPI 4 卡橫排',()=>{
-    [['良率','Yield','98.6','%','▲ 0.4 pt',GOOD,GOOD],['產出','Output','12.4','K','▲ 3%',GOOD,GOOD],['交期','Lead time','7.2','天','▼ 0.5 天',GOOD,AMB],['客訴','Complaint','3','件','▲ 1 件',BAD,BAD]].forEach(([zh,en,v,u,d,dc,lc],i)=>{const xx=x+i*(w+gw);
-     card(xx,y2,w,h2);box(xx+.14,y2,.42,.05,{fill:i===0?P:G.l1,name:'頂邊色條'});nm(xx+.14,y2+.1,w-.42,zh,en,{size:LS(10)});light(xx+w-.2,y2+.22,.12,lc);
-     num(xx+.14,y2+.36,w-.28,.36,v,u,DARK,{s:LS(18),us:LS(9.5)});txt(xx+.14,y2+.72,w-.28,.18,d,{size:Math.max(8,LS(9)),bold:1,color:dc,font:nf,valign:'middle',name:'增減'});});});
-   cap(x,y2+h2+.06,wD,'D｜4 卡橫排 KPI row（頂邊色條＋燈號）');}
-  // E 進度條（細）
-  {const x=X0+wD+.35,w=CW-wD-.35,lw=1.2,bw=w-lw-.6;grp('進度條（細）',()=>{small(x,y2-.06,w,'進度 Progress',{bold:1,color:G.ink,size:LS(10)});
-    [['設計 Design','100%'],['驗證 Verify','65%'],['量產 Ramp','30%']].forEach(([t,p],i)=>{const yy=y2+.26+i*.27;small(x,yy,lw,t,{color:G.t2,name:'項目'});
-     box(x+lw,yy+.07,bw,.06,{fill:'E6E6E6',r:'full',name:'進度底'});const pt=txt(x+lw+bw+.08,yy,.52,.2,p,{size:Math.max(8,LS(9)),bold:1,color:i===1?P:G.t2,font:nf,align:'right',valign:'middle',name:'百分比'});
-     calc1(box(x+lw,yy+.07,bw*parseFloat(p)/100,.06,{fill:i===1?P:G.l1,r:'full',name:'進度條'}),pt,'pbar',{full:bw});});});
-   cap(x,y2+h2+.06,w,'E｜細進度條＋%（改 % 自動調長度）');}
-  // F Harvey balls
-  const y3=5.3;{const x=X0,w=3.0,d=.42,sp=.6;grp('Harvey ball',()=>{['0%','25%','50%','75%','100%'].forEach((p,i)=>{const cx0=x+.25+i*sp,cy0=y3+.38;
-     circ(cx0,cy0,d,{fill:W2,line:G.t2,lw:1,name:'Harvey 外圈'});const lb=txt(cx0-.3,y3+.7,.6,.2,p,{size:Math.max(8,LS(9)),color:G.t2,font:nf,align:'center',valign:'middle',name:'評分'});
-     calc1(el('custGeom',cx0-d/2,cy0-d/2,d,d,{points:PIE(d/2,parseFloat(p)/100),fill:G.ink,name:'Harvey 扇形'}),lb,'hb');});
-    small(x,y3+.94,w,'0 = 未符合 · 100 = 完全符合',{name:'說明'});});
-   cap(x,y3+1.18,w,'F｜Harvey ball 0／25／50／75／100');}
-  // G 進度條（粗）
-  {const x=X0+3.25,w=3.3,lw=.9,bw=w-lw,bh=.26;grp('進度條（粗）',()=>{[['Q1','90%'],['Q2','60%'],['Q3','35%']].forEach(([t,p],i)=>{const yy=y3+.08+i*.36;small(x,yy+.03,lw,t,{color:G.t2,font:nf,name:'項目'});
-     box(x+lw,yy,bw,bh,{fill:'EDEDED',r:'full',name:'進度底'});const bar=box(x+lw,yy,bw*parseFloat(p)/100,bh,{fill:i===0?P:i===1?mix(P,'FFFFFF',.35):G.l1,r:'full',name:'進度條'});
-     const pt=txt(x+lw+.1,yy,.6,bh,p,{size:Math.max(8,LS(9.5)),bold:1,color:i===2?G.ink:W2,font:nf,valign:'middle',name:'百分比'});calc1(bar,pt,'pbar',{full:bw});});});
-   cap(x,y3+1.18,w,'G｜粗進度條（% 在條內）');}
-  // H 紅黃綠燈號
-  {const x=X0+6.8,w=2.55;grp('紅黃綠燈號',()=>{box(x,y3+.1,.36,.98,{fill:DARK,r:'full',name:'燈號底'});[[GOOD,'正常 On track'],[AMB,'注意 At risk'],[BAD,'異常 Off track']].forEach(([c,t],i)=>{
-     circ(x+.18,y3+.27+i*.32,.2,{fill:c,name:'燈號'});small(x+.5,y3+.17+i*.32,w-.5,t,{color:G.ink,size:LS(10),name:'燈號說明'});});});
-   cap(x,y3+1.18,w,'H｜紅黃綠燈號 Status lights');}
-  // I 1–5 點數
-  {const x=X0+9.55,w=CW-9.55,d=.15;grp('1–5 點數',()=>{[['品質 Quality','4/5'],['成本 Cost','3/5'],['交期 Delivery','5/5']].forEach(([t,v],i)=>{const yy=y3+.1+i*.34;small(x,yy,1.15,t,{color:G.t2,name:'項目'});
-     const vt=txt(x+w-.4,yy,.4,.2,v,{size:Math.max(8,LS(9)),color:G.mute,font:nf,align:'right',valign:'middle',name:'評分'});
-     for(let k=1;k<=5;k++)calc1(circ(x+1.25+(k-1)*.22,yy+.1,d,{fill:k<=parseFloat(v)?P:'E3E3E3',name:'評分點'}),vt,'dot',{k,on:P,off:'E3E3E3'});});});
-   cap(x,y3+1.18,w,'I｜1–5 點數（改 4/5 自動上色）');}
- };
  SL.tline=()=>{title('時間軸與甘特 Timeline & Gantt','里程碑、日期、任務名稱皆可「改字」；甘特：灰＝計畫、強調色＝實際、虛線＝今天');
   const {W2,DARK,RAD,TN,onC,card,pill,small,cap}=GPK();const wL=7.6;
   // A 水平里程碑
@@ -4894,41 +4764,6 @@ function buildModel(params,opt){
    const py=y+3*rh+1.2,pw=(w+.2)/3;grp('階段 V 形時程',()=>{[['Q1','規劃'],['Q2','執行'],['Q3','驗收']].forEach(([q,t],i)=>{const now=i===1,f=now?P:i<1?DARK:'E6E6E6';
      el(i===0?'homePlate':'chevron',x+i*(pw-.07),py,pw,.42,{fill:f,adj:.16,text:[{t:q+' ',b:1,f:nf},{t,b:0}],size:LS(10.5),color:onC(f),margin:0,name:'階段'});});});
    cap(x,py+.5,w,'D｜階段 V 形時程 Phase chevrons');}
- };
- SL.mtx=()=>{title('2×2 矩陣與議程 Matrix & Agenda','軸標題、象限標題／內容、議程項目皆可「改字」；高亮一個象限、目前章節');
-  const {W2,DARK,RAD,TN,onC,card,pill,small,cap,badge}=GPK();
-  // A 2×2 矩陣
-  {const x=X0,y=1.98,w=4.7,h=4.42,ox=x+.34,oy=y+h-.34,qw=(w-.5)/2,qh=(h-.72)/2,qx=[ox+.08,ox+.12+qw-.04],qy=[y+.3,y+.34+qh-.04];
-   grp('2×2 矩陣',()=>{ln(ox,oy,ox,y+.04,{c:G.t2,w:1.25,head:'triangle'});ln(ox,oy,x+w,oy,{c:G.t2,w:1.25,head:'triangle'});
-    txt(ox+.1,y-.06,2.6,.24,[{t:'影響程度',b:1},{t:'  Impact',c:G.mute,f:nf,b:0}],{size:LS(10),color:G.ink,valign:'middle',name:'Y 軸標題'});
-    txt(x+w-2.6,oy+.08,2.6,.24,[{t:'執行難度',b:1},{t:'  Effort',c:G.mute,f:nf,b:0}],{size:LS(10),color:G.ink,align:'right',valign:'middle',name:'X 軸標題'});
-    small(x-.06,oy-.22,.36,'低',{align:'center'});small(x-.06,y+.3,.36,'高',{align:'center'});small(ox+.04,oy+.08,.5,'低');
-    [[0,0,'速贏','Quick wins','優先投入資源',1],[1,0,'重大專案','Major projects','分階段規劃'],[0,1,'順手做','Fill-ins','有空再做'],[1,1,'避免','Thankless','暫緩或捨棄']].forEach(([c,r,t,e,s,hi])=>{const xx=qx[c],yy=qy[r];
-     box(xx,yy,qw-.04,qh-.04,{fill:hi?TN(P,.88):'F5F5F5',line:hi?P:null,lw:1.25,r:RAD,name:'象限'});
-     txt(xx+.14,yy+.1,qw-.3,.26,[{t},{t:'  '+e,s:Math.max(8,LS(9)),b:0,c:G.mute,f:nf}],{size:LS(12),bold:1,color:hi?P:G.ink,valign:'middle',name:'象限標題'});small(xx+.14,yy+.38,qw-.3,s,{color:G.t2,name:'象限內容'});});
-    [[qx[0]+.55,qy[0]+1.15,.5,'A',P],[qx[0]+1.45,qy[0]+1.55,.36,'B',P],[qx[1]+.9,qy[0]+1.0,.44,'C',G.t2],[qx[0]+1.2,qy[1]+1.15,.32,'D',G.l1]].forEach(([cx0,cy0,d,t,c])=>circ(cx0,cy0,d,{fill:c,ft:t==='A'?0:10,line:W2,lw:1.5,sh:'small',text:t,size:LS(10),bold:1,color:onC(c),font:nf,margin:0,name:'泡泡'}));});
-   cap(x,y+h+.08,w,'A｜2×2 矩陣（高亮象限＋泡泡標籤）');}
-  // B SWOT
-  {const x=X0+5.0,y=1.98,w=4.1,gw=.12,cw=(w-gw)/2,ch=(4.42-gw)/2;grp('SWOT',()=>{
-    [['S','優勢','Strengths',['製程良率領先','客戶黏著度高'],P],['W','劣勢','Weaknesses',['產能吃緊','人力流動高'],G.t2],['O','機會','Opportunities',['AI 晶片需求','先進封裝'],HASA?A:PD],['T','威脅','Threats',['價格競爭','供應鏈風險'],DARK]].forEach(([k,zh,en,L,c],i)=>{const xx=x+(i%2)*(cw+gw),yy=y+Math.floor(i/2)*(ch+gw);
-     card(xx,yy,cw,ch);box(xx+.16,yy+.18,.5,.5,{fill:c,r:Math.min(RAD,.08),text:k,size:LS(20),bold:1,color:onC(c),font:nf,margin:0,name:'SWOT 字母'});
-     txt(xx+.76,yy+.18,cw-.86,.26,zh,{size:LS(12),bold:1,color:G.ink,valign:'middle',name:'象限標題'});small(xx+.76,yy+.44,cw-.86,en,{font:nf,name:'英文'});
-     ln(xx+.16,yy+.84,xx+cw-.16,yy+.84,{c:G.l2,w:.75});L.forEach((t,j)=>{circ(xx+.24,yy+1.06+j*.32,.06,{fill:c,name:'項目符號'});txt(xx+.36,yy+.95+j*.32,cw-.5,.24,t,{size:LS(10),color:G.ink,valign:'middle',name:'項目'});});});});
-   cap(x,y+4.5,w,'B｜SWOT（2×2 預設標籤）');}
-  // C 議程清單
-  const xr=X0+9.4,wr=CW-9.4;{const y=1.98,rh=.42;grp('議程清單',()=>{[['背景','Background'],['現況分析','Status'],['對策','Actions'],['時程','Timeline'],['結論','Summary']].forEach(([t,e],i)=>{const yy=y+i*(rh+.06),now=i===1;
-     if(now)box(xr,yy,wr,rh,{fill:TN(P,.88),r:'full',name:'目前章節底'});badge(xr+rh/2,yy+rh/2,.32,String(i+1).padStart(2,'0'),now?P:i<1?DARK:'E3E3E3',{color:now||i<1?W2:G.t2,size:LS(9.5)});
-     txt(xr+.5,yy,wr-.6,rh,[{t,b:1},{t:'  '+e,s:Math.max(8,LS(9)),b:0,c:G.mute,f:nf}],{size:LS(11),color:now?P:G.ink,valign:'middle',name:'議程項目'});});});
-   cap(xr,y+5*(rh+.06),wr,'C｜議程清單（目前章節高亮）');}
-  // D 頁首章節標籤＋麵包屑
-  {const y=4.68;grp('頁首章節標籤',()=>{box(xr,y,1.7,.3,{fill:DARK,r:'full',text:'現況分析',size:LS(10),bold:1,color:W2,align:'left',margin:[30,6,0,0],name:'章節標籤'});badge(xr+.17,y+.15,.24,'02',P,{size:Math.max(7.5,LS(8)),line:W2,lw:1});
-     small(xr+1.78,y+.05,wr-1.78,'Status · 2／5',{font:nf,name:'英文'});});
-   grp('進度麵包屑',()=>{const yy=y+.42;let xx=xr;[['背景',0],['現況',1],['對策',0]].forEach(([t,on],i)=>{const ww=.84;box(xx,yy,ww,.24,{fill:on?P:'EDEDED',r:'full',text:t,size:Math.max(8,LS(9)),bold:on,color:on?W2:G.mute,margin:0,name:'麵包屑'});xx+=ww;if(i<2){path([[xx+.07,yy+.06],[xx+.13,yy+.12],[xx+.07,yy+.18]],{line:G.l1,lw:1.25,name:'V 形箭頭'});xx+=.2;}});});
-   cap(xr,y+.72,wr,'D｜頁首章節標籤／麵包屑');}
-  // E 章節分隔
-  {const y=5.72;grp('章節分隔',()=>{txt(xr,y-.08,.9,.62,'02',{size:LS(34),bold:1,color:P,font:nf,valign:'middle',name:'章節編號'});ln(xr+.92,y+.08,xr+.92,y+.5,{c:G.l2,w:1});
-     pill(xr+1.06,y+.03,1.4,.28,'現況分析',DARK,{size:LS(11)});small(xr+1.08,y+.34,wr-1.1,'Current status',{font:nf,name:'英文'});ln(xr,y+.62,xr+wr,y+.62,{c:G.l2,w:.75});});
-   cap(xr,y+.7,wr,'E｜章節分隔 Section divider');}
  };
  SL.emph=()=>{title('註腳與強調 Footnote & Emphasis','8 種強調手法：各一張卡＝用途＋實例；上標 ¹² 對應頁尾來源列與資料截止日');
   const {W2,DARK,RAD,TN,card,pill,badge,num}=GPK();const gp=.2,cw=(CW-3*gp)/4,cx=[0,1,2,3].map(i=>X0+i*(cw+gp)),y1=1.92,h1=1.98,y2=y1+h1+gp,h2=1.94;
@@ -4981,110 +4816,11 @@ function buildModel(params,opt){
     const cw2=2.55,xx=x+w-cw2;box(xx,y+.08,cw2,.26,{fill:'F2F2F2',r:'full',name:'資料截止日底'});pill(xx,y+.08,.9,.26,'資料截止',DARK,{size:fs});
     txt(xx+.98,y+.08,cw2-1.06,.26,[{t:'Data as of ',c:G.mute},{t:'2026/10/16',b:1,c:G.ink}],{size:fs,font:nf,valign:'middle',align:'center',name:'資料截止日'});});}
  };
- SL.circles=()=>{title('圓形與流程鏈','大外框圓＋疊放小圓，以及三段式流程鏈');
-  section(X0,1.95,5.6,'大圓＋疊圓 Circles');
-  const ccx=X0+2.8,ccy=3.95,R=1.38;bigCircle(ccx,ccy,R,'How','如何做到\n三個關鍵');
-  [['觀察',143],['分析',90],['表達',37]].forEach(([t,a],i)=>{const r=a*Math.PI/180;smallCircle(ccx+R*Math.cos(r),ccy+R*Math.sin(r),.84,t,{hi:i===1});});
-  const RX=6.9,RW=X1-RX;section(RX,1.95,RW,'流程鏈 Chain');
-  chain(RX,2.62,RW,.72,['主題思考','主題定位','內容產出']);
-  chain(RX,3.85,RW,.56,['願景','使命','目標','策略','戰術'],{size:LS(14)});
-  chain(RX,4.95,RW,.56,['規劃','設計','執行','檢討'],{size:LS(14)});
-  const cd=chainDims(RW,.56,4);
-  ['界定範圍','產出方案','落實計畫','回顧改善'].forEach((t,i)=>txt(RX+i*cd.step,5.62,cd.iw,.3,t,{size:11,color:G.t2,align:'center'}));
-  note(RX,6.3,RW,'※ 流程鏈以 3–5 個步驟為佳，重點步驟可用強調色');};
 
- SL.conn=()=>{title('連接線與箭頭','細直線、折線、點狀線、曲線、▶ 小三角與區塊箭號');const TL=st.cnTail==='none'?false:st.cnTail;
-  const cw=(CW-3*.32)/4,cx=i=>X0+i*(cw+.32);
-  const cells=['細直線 Straight','折線 Elbow','點狀線 Dotted','曲線 Curved','▶ 小三角分隔','▶▶▶ 點狀箭號','區塊箭號 Chevron','分支 Branch'];
-  cells.forEach((l,i)=>{const r=Math.floor(i/4),c=i%4,x=cx(c),y=1.95+r*2.35;section(x,y,cw,l);
-   const nw=.9,nh=.46,top=y+.75,mid=y+1.35;
-   switch(i){
-    case 0:{const a=node(x,mid-nh/2,nw,nh,'A'),b=node(x+cw-nw,mid-nh/2,nw,nh,'B');link(a,3,b,1,{style:{dash:'solid',tail:TL}});break;}
-    case 1:{const a=node(x,top,nw,nh,'A'),b=node(x+cw-nw,top+1.0,nw,nh,'B');link(a,3,b,1,{style:{tail:TL}});break;}
-    case 2:{const a=node(x,mid-nh/2,nw,nh,'A'),b=node(x+cw-nw,mid-nh/2,nw,nh,'B');link(a,3,b,1,{style:{dash:'sysDot',w:Math.max(1.25,st.cnW),tail:TL}});break;}
-    case 3:node(x,top+.85,nw,nh,'A');node(x+cw-nw,top+.85,nw,nh,'B');curve([x+nw/2,top+.79],[x+nw/2,top-.05],[x+cw-nw/2,top-.05],[x+cw-nw/2,top+.79]);break;
-    case 4:{const ws=['輸入','處理','輸出'];const gw=(cw-3*.62)/2;ws.forEach((t,j)=>{const xx=x+j*(.62+gw);txt(xx,mid-.2,.62,.4,t,{size:13,bold:1,color:G.ink,align:'center'});if(j<2)sep(xx+.62+gw/2,mid);});break;}
-    case 5:node(x,mid-nh/2,nw,nh,'A');node(x+cw-nw,mid-nh/2,nw,nh,'B');sep(x+cw/2,mid,{kind:'dots',k:1.2});break;
-    case 6:{const n=3,bw=(cw+2*.18)/3,ol=st.chain==='hairchev';for(let j=0;j<n;j++)el(j?'chevron':'homePlate',x+j*(bw-.18+.04),mid-.27,bw,.54,{fill:ol?'FFFFFF':(j===2&&HASA?A:mix(P,'FFFFFF',j*.25)),line:ol?P:null,lw:.75,adj:.18,text:['一','二','三'][j],size:13,bold:1,color:ol?P:'FFFFFF',margin:[2,2,0,0],name:'區塊箭號'});break;}
-    case 7:{const t1=mid-.42-nh/2,t2=mid+.42-nh/2;const a=node(x,mid-nh/2,nw,nh,'A'),b1=node(x+cw-nw,t1,nw,nh,'B1'),b2=node(x+cw-nw,t2,nw,nh,'B2');const jx=x+nw+(cw-2*nw)/2;
-     link(a,3,b1,1,{mid:jx});link(a,3,b2,1,{mid:jx});break;}}});
-  note(X0,6.5,CW,'※ 直線、折線、點狀線、分支在 pptx 中是「黏著連接線」：移動圖形，線會跟著走（曲線為一般線條）');};
 
- SL.flow=()=>{title('流程圖符號','開始／結束、處理、判斷、輸入輸出、文件、資料庫');
-  const items=[['term','開始','開始／結束','Terminator',1.5,.62],['proc','處理','處理','Process',1.6,.72],['dec','判斷','判斷','Decision',1.5,1.0],['io','輸入','輸入／輸出','Input / Output',1.7,.72],['doc','文件','文件','Document',1.5,.85],['db','資料庫','資料庫','Database',1.1,1.0]];
-  const cw=CW/6;items.forEach(([k,t,zh,en,w,h],i)=>{const cx=X0+cw*i+cw/2;sym(k,cx-w/2,2.75-h/2,w,h,t,{strong:k==='term',alt:k==='dec'});
-   txt(cx-cw/2,3.42,cw,.52,[{t:zh,s:12,b:1,c:G.ink,br:1},{t:en,s:9,c:G.mute,f:nf}],{align:'center'});});
-  section(X0,4.12,CW,'基本流程範例');
-  const cy=5.15;const ws=[1.25,1.8,1.7,1.6,1.6,1.25];const g=(CW-ws.reduce((a,b)=>a+b))/5;const xs=[];let xx=X0;ws.forEach(w=>{xs.push(xx);xx+=w+g;});
-  const S=[sym('term',xs[0],cy-.3,ws[0],.6,'開始',{strong:1}),sym('io',xs[1],cy-.34,ws[1],.68,'輸入需求'),
-  sym('dec',xs[2],cy-.5,ws[2],1.0,'是否可行？',{alt:1,size:LS(13)}),sym('proc',xs[3],cy-.34,ws[3],.68,'執行處理'),
-  sym('doc',xs[4],cy-.4,ws[4],.8,'產出報告'),sym('term',xs[5],cy-.3,ws[5],.6,'結束',{strong:1})];
-  link(S[0],3,S[1],5);link(S[1],2,S[2],1);link(S[2],3,S[3],1);link(S[3],3,S[4],1);link(S[4],3,S[5],1);
-  txt(xs[2]+ws[2]+.02,cy-.42,g,.3,'是',{size:11,bold:1,color:G.t2,align:'center'});
-  const dbx=xs[3]+ws[3]/2;const db=sym('db',dbx-.5,5.92,1.0,.82,'資料庫',{size:LS(12)});link(S[3],2,db,0,{style:{tail:'triangle',dash:'sysDash'}});
-  const dx=xs[2]+ws[2]/2,ix=xs[1]+ws[1]/2;link(S[2],2,S[1],4,{via:[[dx,6.4],[ix,6.4]]});
-  txt(dx+.1,cy+.62,.5,.3,'否',{size:11,bold:1,color:G.t2});};
 
- SL.struct=()=>{title('結構元件','樹狀分支、十字矩陣與半透明寬欄條');
-  const LW=5.7;section(X0,1.95,LW,'樹狀分支 Tree');
-  const cy=4.4,nh=.5;const bw=[.82,.92,.82,1.25];const g=(LW-bw.reduce((a,b)=>a+b))/3;const bx=[];let xx=X0;bw.forEach(w=>{bx.push(xx);xx+=w+g;});
-  node(bx[0],cy-nh/2,bw[0],nh,'起點');
-  const l2=[cy-.8,cy+.8];l2.forEach((yy,i)=>node(bx[1],yy-nh/2,bw[1],nh,['分支一','分支二'][i],{size:LS(12)}));
-  node(bx[2],cy-nh/2,bw[2],nh,'整合',{strong:1});
-  const l3=[cy-1.3,cy,cy+1.3];l3.forEach((yy,i)=>node(bx[3],yy-nh/2,bw[3],nh,['結果 A','結果 B','結果 C'][i],{size:LS(12)}));
-  const ga=.06;const m1=bx[0]+bw[0]+g/2;
-  l2.forEach(yy=>conn([[bx[0]+bw[0]+ga,cy],[m1,cy],[m1,yy],[bx[1]-ga,yy]],{tail:false}));
-  const m2=bx[1]+bw[1]+g/2;l2.forEach(yy=>conn([[bx[1]+bw[1]+ga,yy],[m2,yy],[m2,cy],[bx[2]-ga,cy]],{tail:false}));
-  const m3=bx[2]+bw[2]+g/2;l3.forEach(yy=>conn(yy===cy?[[bx[2]+bw[2]+ga,cy],[bx[3]-ga,cy]]:[[bx[2]+bw[2]+ga,cy],[m3,cy],[m3,yy],[bx[3]-ga,yy]],{tail:false}));
-  const MX=6.75,MW=2.95;section(MX,1.95,MW,'十字矩陣 2×2');
-  const mcx=MX+MW/2,mcy=4.4;ln(MX+.42,mcy,MX+MW-.42,mcy,{c:G.line,w:1});ln(mcx,2.95,mcx,5.85,{c:G.line,w:1});
-  circ(mcx,mcy,.92,{fill:P,line:'FFFFFF',lw:2,sh:'small',text:'定位\n核心',size:12,bold:1,color:'FFFFFF',margin:0,lsp:.95,name:'中心圓'});
-  [['吸引',-1,-1],['實用',1,-1],['好記',-1,1],['可信',1,1]].forEach(([t,sx,sy],i)=>tag(mcx+sx*.78,mcy+sy*.72-.15,t,{anchor:'center',size:11,h:.3,tone:i===1?'p':'g'}));
-  txt(mcx-.6,2.6,1.2,.3,'具體',{size:11,color:G.t2,align:'center'});txt(mcx-.6,5.9,1.2,.3,'抽象',{size:11,color:G.t2,align:'center'});
-  txt(MX-.05,mcy-.15,.45,.3,'感性',{size:11,color:G.t2,align:'center'});txt(MX+MW-.4,mcy-.15,.45,.3,'理性',{size:11,color:G.t2,align:'center'});
-  const CX=10.1,CWd=X1-CX;section(CX,1.95,CWd,'寬欄透明條 Columns');
-  const b1=CX+1.0,b2=CX+1.85,bwid=.62;
-  txt(b1-.2,2.5,bwid+.4,.3,'輸入',{size:11,bold:1,color:G.t2,align:'center'});txt(b2-.2,2.5,bwid+.4,.3,'輸出',{size:11,bold:1,color:G.t2,align:'center'});
-  colBar(b1,2.85,bwid,3.4);colBar(b2,2.85,bwid,3.4);
-  [['階段一','看','練'],['階段二','問','談'],['階段三','想','寫']].forEach(([l,a,b],i)=>{const yy=3.5+i*1.05;txt(CX,yy-.17,.9,.34,l,{size:11,color:G.t2});badge(b1+bwid/2,yy,a,{d:.46,size:13,nodot:1});badge(b2+bwid/2,yy,b,{d:.46,size:13,nodot:1});});};
 
  /* ---------- 版型｜As Was／To Be（參考法說會簡報版面）：上方三行重點句 20pt → 前後對照兩框 20pt → 左：四個行動方塊 18pt（6 字、兩行、內距 0）／右：原生表格（首列＋首欄為表頭） ---------- */
- SL.asis=()=>{const V0=+opt.asisV||4,V=V0===4?2:V0;/* 定稿＝4：主色 To Be 卡（2）＋深色表頭（1），To Be 欄頭用主色 */title('銷售額倍增：As Was → To Be');
-  // 格線：左右邊界 0.6"、欄距 0.3"、左右 50/50；灰色結構＋主色只用在 To Be
-  const GUT=.3,HALF=(CW-GUT)/2,RAD=.09,SOFT=mix(P,'FFFFFF',.92),CARD=mix(G.fill||'F4F4F4','FFFFFF',.35),DARK=G.ink;
-  box(W-1.55,.3,.95,.46,{line:G.line,dash:'dash',text:'LOGO',size:9,color:G.mute,r:.06,name:'Logo 位置（可換成公司標誌）'});
-  // 1) 三行重點句（20pt，一行一句；灰色圓點）
-  ['鎖定高價值客群，銷售額由 2000 元提升到 4000 元','客戶數與客單價同步成長，回購率翻倍','四項行動依序推進，每月追蹤關鍵指標'].forEach((t,i)=>{const y=1.22+i*.4;
-   circ(X0+.08,y+.19,.1,{fill:G.g7,name:'項目符號'});txt(X0+.28,y,CW-.28,.38,t,{size:20,valign:'middle',name:'重點句 '+(i+1)});});
-  // 2) 主視覺：As Was（灰卡）→ To Be（主色卡）
-  const hy=2.58,hh=.82,AG=.62,cw=(CW-AG)/2;
-  const card=(x,lab,num,hi)=>{box(x,hy,cw,hh,{fill:hi?(V===2?P:SOFT):CARD,line:hi?(V===2?null:P):null,lw:1.5,r:RAD*1.4,sh:'card',force:1,name:lab+' 卡'});
-   const pw=1.55;box(x+.28,hy+(hh-.48)/2,pw,.48,{fill:hi?(V===2?'FFFFFF':P):DARK,r:.24,text:lab,size:20,bold:1,color:hi&&V===2?P:'FFFFFF',margin:0,name:lab+' 標籤'});
-   const fg=hi&&V===2?'FFFFFF':hi?P:G.t2;
-   txt(x+.28+pw+.25,hy,cw-pw-.8,hh,[{t:'銷售額 ',s:20,c:hi&&V===2?'FFFFFF':G.t2},{t:num,s:34,b:1,c:fg},{t:' 元',s:20,c:hi&&V===2?'FFFFFF':G.t2}],{size:20,valign:'middle',name:lab+' 數值'});};
-  card(X0,'As Was','2000',0);card(X0+cw+AG,'To Be','4000',1);
-  // 箭頭：圓形底＋粗 chevron
-  const ax=X0+cw+AG/2,ay=hy+hh/2;circ(ax,ay,.46,{fill:'FFFFFF',line:G.line,lw:1,name:'箭頭底'});
-  path([[ax-.07,ay-.12],[ax+.07,ay],[ax-.07,ay+.12]],{line:V===3?P:G.t2,lw:2.75,name:'箭頭'});
-  box(X0+CW-.98,hy-.2,.86,.38,{fill:V===2?DARK:P,r:.19,text:'×2',size:14,bold:1,color:'FFFFFF',margin:0,name:'倍數徽章'});
-  // 3) 下半：左＝四個行動（與表格逐列對齊）／右＝原生表格
-  const ty=3.62,hr=.38,rh=.66,nR=4,by=ty+hr;
-  // 左半：四個扁長方塊由左到右（與表格同頂），下方為編號說明清單（與表格同底）；第 3 個強調
-  const acts=[['鎖客群','抓需求','聚焦高價值客群，停掉低毛利通路'],['升方案','提單價','推出加值方案，客單價 20 → 25 元'],['拓通路','接線上','導入線上預約與會員，客戶數 +60%'],['顧回購','養忠誠','回購提醒與專屬服務，回購率翻倍']];
-  const bw4=1.38,bh4=.8,bgp=(HALF-4*bw4)/3,botY=ty+hr+nR*rh;
-  acts.forEach(([a,b],i)=>{const x=X0+i*(bw4+bgp),hi=i===2;
-   box(x,ty,bw4,bh4,{fill:hi?P:CARD,line:hi?null:G.line,lw:.75,r:RAD,sh:hi?'card':null,force:hi?1:0,text:a+'\n'+b,size:18,bold:1,lsp:.9,margin:0,align:'center',valign:'middle',color:hi?'FFFFFF':G.ink,name:'行動 '+(i+1)+(hi?'（強調）':'')});});
-  const ly=ty+bh4+.3,lh=(botY-ly)/4;ln(X0,ly-.12,X0+HALF,ly-.12,{c:G.line,w:.75});
-  acts.forEach(([a,b,ds],i)=>{const y=ly+i*lh,hi=i===2;
-   circ(X0+.14,y+lh/2,.26,{fill:hi?P:DARK,text:String(i+1),size:10,bold:1,color:'FFFFFF',margin:0,name:'說明編號 '+(i+1)});
-   txt(X0+.38,y,HALF-.38,lh,[{t:a+b+'　',b:1,c:hi?P:G.ink},{t:ds,c:G.t2}],{size:13,valign:'middle',name:'行動說明 '+(i+1)});});
-  const tx=X0+HALF+GUT,cwT=[HALF*.34,HALF*.33,HALF*.33];const rows=[['指標','As Was','To Be'],['銷售額','2000 元','4000 元'],['客戶數','100 人','160 人'],['客單價','20 元','25 元'],['回購率','15%','30%']];
-  const hdrF=V0===1||V0===4?DARK:mix(G.fill||'F2F2F2',G.line,.4),hdrC=V0===1||V0===4?'FFFFFF':G.ink;
-  table(tx,ty,cwT,[hr,rh,rh,rh,rh],rows.map((r,ri)=>r.map((c,ci)=>{const toBe=ci===2;const o={t:c,size:16,bB:{c:G.line,w:.75}};
-   if(ri===0)Object.assign(o,{fill:toBe&&V!==1?P:hdrF,color:toBe&&V!==1?'FFFFFF':hdrC,bold:1,size:15,bB:null});
-   else if(ci===0)Object.assign(o,{bold:1,color:G.t2,align:'left',fill:mix(G.fill||'F4F4F4','FFFFFF',.5)});
-   else if(toBe)Object.assign(o,{bold:1,color:P,fill:SOFT});else Object.assign(o,{color:G.t2});
-   return o;})),{name:'As Was／To Be 對照表',mL:10});};
  SL.ex1=()=>{title('高效溝通：讓想法被看見','關鍵在於把資訊整理成對方能理解的結構');
   const R=1.3,cy=3.3,cxs=[X0+CW/6,X0+CW/2,X0+CW*5/6];
   [['Why','為何要重視\n溝通品質'],['How','溝通的\n三個關鍵'],['What','呈現的\n三個層次']].forEach(([b,t],i)=>bigCircle(cxs[i],cy,R,b,t));
@@ -5094,7 +4830,7 @@ function buildModel(params,opt){
   const lists=[['蒐集','篩選','歸納'],['比較','拆解','連結'],['聚焦','排序','呈現']];
   sm.forEach(([t,x],i)=>txt(x-.42,5.15,.95,1.05,lists[i].map((w,j)=>({t:'①②③'[j]+' '+w,br:1})),{size:11.5,color:G.t2,valign:'top',lsp:1.2}));
   [[0,['節省理解時間','對齊彼此認知','提升決策效率']],[2,['資料','資訊','洞見']]].forEach(([ci,ws])=>ws.forEach((w,j)=>tag(cxs[ci],5.0+j*.55,w,{anchor:'center',w:2.3,h:.42,size:13,sh:1})));
-  note(X0,6.58,CW,'※ 三個圓依序回答 Why／How／What，中間的小圓拆出方法，左右兩側以清單補充',{align:'center'});};
+  note(X0,6.58,7.4,'※ 三個圓依序回答 Why／How／What，中間的小圓拆出方法，左右兩側以清單補充');used(null);};
 
  SL.ex2=()=>{title('策略規劃框架地圖','從現況、課題到行動方案的思考路徑');
   const n=5,sw=.46,cw=(CW-(n-1)*sw)/n,by=4.3,bh=.92;const bx=i=>X0+i*(cw+sw);const k=K;
@@ -5114,7 +4850,7 @@ function buildModel(params,opt){
   grp(X0,2.05,[1,2],'界定問題');grp(X0,2.55,[3,4],'排序優先');
   grp(bx(4)-.1,2.05,[5,6],'設定目標',{tone:'g'});grp(bx(4)-.1,2.55,[7,8],'規劃路徑',{tone:'g'});
   const oy=5.55,oh=.6;cardBase(X0,oy,CW,oh);txt(X0,oy,CW,oh,[{t:'組織',s:LS(18),b:st.lBold,c:G.ink},{t:'  Organization',s:11,c:G.mute,f:nf}],{align:'center'});
-  [[[9,10],'凝聚共識'],[[11,12],'提升能力'],[[13],'資訊透明'],[[14,15],'激勵動機']].forEach(([ns,l],i)=>grp(X0+CW*(i+.5)/4-grpW(ns,l)/2,6.37,ns,l,{tone:i%2?'g':'p'}));};
+  [[[9,10],'凝聚共識'],[[11,12],'提升能力'],[[13],'資訊透明'],[[14,15],'激勵動機']].forEach(([ns,l],i)=>grp(X0+CW*(i+.5)/4-grpW(ns,l)/2,6.37,ns,l,{tone:i%2?'g':'p'}));used(null,.5);};
 
  SL.ex3=()=>{title('能力成長地圖','從個人特質到可遷移能力的三階段路徑');
   const cy=4.45,ys=[3.0,4.45,5.9];
@@ -5140,8 +4876,477 @@ function buildModel(params,opt){
    conn([[b2+bw/2+.3,y],[jx,y]],{head:false,tail:false});
    yy.forEach((t,j)=>{conn([[jx,y],[jx,t],[dx-.08,t]],{tail:false});txt(dx,t-.15,dw,.3,d[j],{size:11,color:G.t2});});});
   fadeBar(12.3,2.25,.38,4.25,G.l1);
-  txt(11.35,1.92,1.4,.3,'情境限定',{size:10,bold:1,color:G.t2,align:'right'});txt(11.35,6.55,1.4,.3,'跨域通用',{size:10,bold:1,color:A,align:'right'});};
+  txt(11.35,1.92,1.4,.3,'情境限定',{size:10,bold:1,color:G.t2,align:'right'});txt(11.35,6.55,1.4,.3,'跨域通用',{size:10,bold:1,color:A,align:'right'});used(null,.5);};
 
+ /* ================= v14 重整新頁（A0／A1–A5、B1／B3·2–B6）：白底、灰階＋1–2 強調色、可選元件、最小字 10pt ================= */
+ const UK=()=>{const K0=GPK();const Z=v=>Math.max(10,LS(v));const W2='FFFFFF',AC2=HASA?A:PD;
+  const cap=(x,y,w,t)=>txt(x,y,w,.24,t,{size:10,color:G.mute,valign:'middle',name:'圖說'});
+  const comp=(code,zh,en,c,fn,meta)=>{grp(zh,()=>fn(c.x,c.y,c.w,c.h),meta);cap(c.x,c.y+c.h+.04,c.w,code+'｜'+zh+(en?' '+en:''));};
+  const T=(x,y,w,h,t,o)=>txt(x,y,w,h,t,Object.assign({size:11,color:G.t2,valign:'middle',wrap:1},o||{}));
+  const H=(x,y,w,zh,en,o)=>txt(x,y,w,.3,[{t:zh,b:1},{t:en?'  '+en:'',s:10,b:0,c:G.mute,f:nf}],Object.assign({size:Z(13),color:G.ink,valign:'middle',name:'標題'},o||{}));
+  const chev=(x,y,s,c,lw)=>path([[x,y],[x+s*.5,y+s*.5],[x,y+s]],{line:c||G.l1,lw:lw||1.5,name:'V 形箭頭'});
+  const chevD=(x,y,s,c)=>path([[x,y],[x+s*.5,y+s*.5],[x+s,y]],{line:c||G.l1,lw:1.5,name:'V 形箭頭'});
+  const ph=(x,y,w,h,nm)=>{const r=w/h,k=r>1.6?'w':r>1.15?'m':r>.85?'s':'t';const it={t:'pic',x,y,w,h,png:PH[k],name:nm||'圖片佔位（右鍵→變更圖片）'};cur.items.push(it);box(x,y,w,h,{line:G.l2,lw:.75,name:'圖片外框'});return it;};
+  const pill=(x,y,w,h,t,fill,o)=>K0.pill(x,y,w,h,t,fill,Object.assign({size:Z(10.5)},o||{}));
+  const bdg=(cx0,cy0,d,t,fill,o)=>K0.badge(cx0,cy0,d,t,fill||P,Object.assign({size:Z(11)},o||{}));
+  const av=(cx0,cy0,d,t,fill)=>circ(cx0,cy0,d,{fill:fill||K0.TN(P,.8),text:t,size:Math.max(10,Math.round(d*30)),bold:1,color:fill?W2:PD,margin:0,name:'頭像（姓名縮寫）'});
+  const GRID=(nc,nr,y0,y1,o)=>{o=o||{};const gx=o.gx!=null?o.gx:.3,gy=o.gy!=null?o.gy:.16,ch=o.cap!=null?o.cap:.3;const w=(CW-(nc-1)*gx)/nc,h=(y1-y0-(nr-1)*gy-nr*ch)/nr;const a=[];
+   for(let r=0;r<nr;r++)for(let c=0;c<nc;c++)a.push({x:X0+c*(w+gx),y:y0+r*(h+ch+gy),w,h});return a;};
+  return Object.assign({},K0,{Z,cap,comp,T,H,chev,chevD,ph,pill,bdg,av,GRID,W2,AC2});};
+ const Y0=1.9,Y1=6.82;
+ /* A0 頁面骨架 */
+ SL.frame=()=>{title('頁面骨架 Page Skeleton','結論先行標題 4+2 種變體＋標準頁尾（來源／資料截止／頁碼／機密等級）：每頁都從這裡開始');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(3,2,Y0,5.86,{gy:.14});const hs=Z(18),HL='B 線良率回升至 98.6%\nCMP 參數優化見效';
+  const sub=(x,y,w,t)=>T(x,y,w,.26,[{t:'依據 ',b:1,c:P},{t}],{size:Z(11),name:'副標依據'});
+  comp('A','純文字結論標題','Plain headline',C[0],(x,y,w,h)=>{T(x,y+.08,w,.9,HL,{size:hs,bold:1,color:G.ink,valign:'top',lsp:1.05,name:'結論標題'});box(x,y+1.08,.5,.05,{fill:P,name:'色條'});sub(x,y+1.2,w,'W40–W42 MES 晶圓資料');});
+  comp('B','編號徽章＋標題','Numbered headline',C[1],(x,y,w,h)=>{bdg(x+.26,y+.36,.46,'01',P,{size:Z(13)});T(x+.62,y+.08,w-.62,.9,HL,{size:hs,bold:1,color:G.ink,valign:'top',lsp:1.05,name:'結論標題'});sub(x+.62,y+1.2,w-.62,'良率週報 W42');});
+  comp('C','章節膠囊＋標題','Section pill + headline',C[2],(x,y,w,h)=>{pill(x,y+.04,1.5,.3,'02 現況分析',DARK,{align:'left',margin:[8,4,0,0]});T(x,y+.44,w,.9,HL,{size:hs,bold:1,color:G.ink,valign:'top',lsp:1.05,name:'結論標題'});sub(x,y+1.32,w,'2026 Q3 品質檢討');});
+  comp('D','結論框＋底線','Conclusion box',C[3],(x,y,w,h)=>{box(x,y+.04,w,1.06,{fill:TN(P,.92),r:.06,name:'結論底'});box(x,y+.04,.07,1.06,{fill:P,name:'色條'});
+   T(x+.24,y+.12,w-.4,.9,HL,{size:hs,bold:1,color:PD,valign:'middle',lsp:1.05,name:'結論標題'});ln(x,y+1.2,x+w,y+1.2,{c:G.l2,w:.75});sub(x,y+1.28,w,'MES／YMS，晶圓數加權');});
+  comp('E','關鍵數字標題','Key-number headline',C[4],(x,y,w,h)=>{txt(x,y+.1,1.36,.8,[{t:'+1.2',b:1,c:P,f:nf},{t:' pt',s:Z(12),c:G.mute,f:nf}],{size:Z(30),valign:'middle',name:'關鍵數字'});ln(x+1.42,y+.18,x+1.42,y+.92,{c:G.l2,w:1});
+   T(x+1.56,y+.06,w-1.56,.9,'良率三週回升，\nCMP 參數優化見效',{size:Z(16),bold:1,color:G.ink,lsp:1.05,name:'結論標題'});sub(x,y+1.2,w,'vs. 上季 QoQ，W42');});
+  comp('F','標題＋結論列','Headline + takeaway',C[5],(x,y,w,h)=>{T(x,y+.04,w,.5,'B 線良率三週回升至 98.6%',{size:hs,bold:1,color:G.ink,name:'結論標題'});ln(x,y+.62,x+w,y+.62,{c:G.l2,w:.75});
+   pill(x,y+.8,.7,.3,'結論',DARK);T(x+.82,y+.76,w-.82,.38,'下季擴線到 C 線，需 2 位製程工程師',{size:Z(11.5),color:G.ink,name:'結論句'});});
+  const fy=6.22;grp('標準頁尾（來源／截止／頁碼）',()=>{const w=8.9;ln(X0,fy,X0+w,fy,{c:G.l2,w:.75});
+   T(X0,fy+.06,4.1,.3,[{t:'資料來源 ',b:1,c:G.t2},{t:'MES／YMS，W30–W42 晶圓資料'}],{size:10,color:G.mute,name:'來源'});
+   const xx=X0+4.25;box(xx,fy+.08,2.75,.28,{fill:'F2F2F2',r:'full',name:'資料截止底'});pill(xx,fy+.08,.95,.28,'資料截止',DARK,{size:10});T(xx+1.0,fy+.08,1.7,.28,'2026/10/16',{size:10,color:G.ink,bold:1,align:'center',font:nf,name:'資料截止日'});
+   T(X0+w-1.6,fy+.06,1.6,.3,[{t:'07',b:1,c:G.ink,f:nf},{t:' / 24',c:G.mute,f:nf}],{size:10.5,align:'right',name:'頁碼'});});
+  T(X0,fy+.42,8.9,.24,'G｜標準頁尾 Standard footer：來源 Source · 資料截止 Data as of · 頁碼 Page',{size:10,color:G.mute,name:'圖說'});
+  grp('機密等級膠囊',()=>{const x=X0+9.25;pill(x,fy+.06,1.25,.3,'內部使用',AL,{size:10});T(x+1.34,fy+.06,1.6,.3,'Internal only',{size:10,color:G.mute,font:nf,name:'英文'});});
+  T(X0+9.25,fy+.42,CW-9.25,.24,'H｜機密等級 Classification',{size:10,color:G.mute,name:'圖說'});};
+ /* A1 卡片與面板 */
+ SL.cards=()=>{title('卡片與面板 Cards & Panels','9 種卡片：基本、角標、表頭、側色條、圖示頭、數字頭、編號、待定、雙欄；整張可選、文字可改');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(3,3,Y0,Y1,{gy:.1,cap:.28});const bt='先用一句話說重點，再補兩行說明。';
+  const body=(x,y,w,h,t)=>T(x,y,w,h,t||bt,{size:11,valign:'top',lsp:1.15,name:'內文'});
+  comp('A','基本卡片','Basic',C[0],(x,y,w,h)=>{card(x,y,w,h);H(x+.22,y+.16,w-.44,'標題＋內文','Card');ln(x+.22,y+.52,x+w-.22,y+.52,{c:G.l2,w:.75});body(x+.22,y+.62,w-.44,h-.7);});
+  comp('B','角標卡片','Corner tag',C[1],(x,y,w,h)=>{card(x,y+.1,w,h-.1);pill(x+w-1.2,y-.02,1.0,.28,'第一階段',P);H(x+.22,y+.26,w-1.5,'角落標籤','Ribbon');body(x+.22,y+.66,w-.44,h-.72,'標示階段、分類或狀態，\n跨在邊框上不佔內文。');});
+  comp('C','表頭強調卡','Header band',C[2],(x,y,w,h)=>{card(x,y,w,h,{line:P,lw:1});topRound(x,y,w,.46,RAD,{fill:P,name:'表頭'});T(x+.22,y,w-.44,.46,[{t:'表頭強調',b:1},{t:'  Key card',s:10,c:TN(P,.6),f:nf}],{size:Z(13),color:W2,name:'表頭文字'});body(x+.22,y+.58,w-.44,h-.64,'同頁只放一張，\n標出最重要的結論。');});
+  comp('D','側邊色條卡','Side bar',C[3],(x,y,w,h)=>{card(x,y,w,h);box(x,y,.08,h,{fill:AC2,name:'側邊色條'});H(x+.3,y+.16,w-.5,'側邊色條','Accent bar');body(x+.3,y+.56,w-.5,h-.62);});
+  comp('E','圖示頭卡片','Icon head',C[4],(x,y,w,h)=>{card(x,y,w,h);icon('lightbulb',x+.22,y+.2,.56,{variant:'tint'});H(x+.92,y+.18,w-1.1,'圖示頭','Icon');body(x+.92,y+.52,w-1.1,h-.6,'圖示放左上，\n標題與內文靠右。');});
+  comp('F','數字頭卡片','Number head',C[5],(x,y,w,h)=>{card(x,y,w,h);txt(x+.22,y+.1,w-.44,.6,[{t:'98.6',b:1,c:P,f:nf},{t:' %',s:Z(13),c:G.mute,f:nf}],{size:Z(30),valign:'middle',name:'數值'});
+   H(x+.22,y+.72,w-.44,'整體良率','Yield');T(x+.22,y+1.0,w-.44,.26,'較上季 +1.2 pt',{size:11,color:GOOD,bold:1,name:'說明'});});
+  comp('G','編號徽章卡','Numbered',C[6],(x,y,w,h)=>{card(x+.14,y+.1,w-.14,h-.1);bdg(x+.2,y+.16,.4,'01',P);H(x+.54,y+.22,w-.76,'編號徽章','Step');body(x+.54,y+.6,w-.76,h-.66,'跨在左上角，\n用於步驟與重點清單。');});
+  comp('H','虛線待定卡','Pending',C[7],(x,y,w,h)=>{box(x,y,w,h,{fill:W2,line:G.l1,lw:1,dash:'dash',r:RAD,name:'待定卡片'});pill(x+.22,y+.18,.9,.28,'待確認',G.t2);H(x+1.22,y+.17,w-1.4,'尚未定案','TBD',{color:G.mute});body(x+.22,y+.6,w-.44,h-.66,'虛線＝未確定，\n定案後改成實線卡片。');});
+  comp('I','雙欄卡片','Two-column',C[8],(x,y,w,h)=>{card(x,y,w,h);const m=x+w/2;ln(m,y+.2,m,y+h-.2,{c:G.l2,w:.75});
+   [['現況','As is','人工抽檢 10%',G.t2],['目標','To be','AOI 全檢 100%',P]].forEach(([a,b,c,col],i)=>{const xx=x+.22+i*w/2;H(xx,y+.16,w/2-.4,a,b,{color:col});T(xx,y+.56,w/2-.4,.6,c,{size:Z(12),bold:1,color:col,valign:'top',name:'內文'});});});};
+ /* A2 標籤與編號 */
+ SL.tags=()=>{title('標籤與編號 Labels & Numbers','標籤 4 色調、小尺寸、堆疊清單、編號徽章、徽章說明、圈號、狀態膠囊、步驟徽章列：全部可選');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(4,2,Y0,Y1);
+  comp('A','單一標籤 4 色調','Tag tones',C[0],(x,y,w,h)=>{[['主要標籤','p'],['輔助標籤','a'],['灰階標籤','g'],['外框標籤','o']].forEach(([t,tone],i)=>tag(x+(i%2)*1.42,y+.3+Math.floor(i/2)*.7,t,{tone,size:12,h:.36,w:1.3}));});
+  comp('B','小尺寸標籤','Small tags',C[1],(x,y,w,h)=>{let xx=x;['元素','關聯','因果'].forEach((t,i)=>{xx+=tag(xx,y+.3,t,{tone:i===0?'o':'g',size:10,h:.28})+.12;});xx=x;['NEW','v2.1','Q3'].forEach((t,i)=>{xx+=tag(xx,y+.84,t,{tone:i===0?'p':'g',size:10,h:.28})+.12;});
+   T(x,y+1.36,w,.5,'小標籤用於註記版本、分類，\n每處最多 3 個',{size:10,color:G.mute,valign:'top',name:'說明'});});
+  comp('C','堆疊清單','Stacked',C[2],(x,y,w,h)=>{['釐清溝通目的','對齊彼此期待','降低理解門檻','提升決策效率'].forEach((t,i)=>tag(x,y+.08+i*.48,t,{w:w,h:.38,size:12,tone:i===0?'p':'g',sh:1}));});
+  comp('D','編號徽章樣式','Badges',C[3],(x,y,w,h)=>{[1,2,3,4].forEach(n=>badge(x+.28+(n-1)*.62,y+.4,bnum(n),{d:.42,alt:n===4&&HASA}));[1,2,3,4].forEach(n=>bdg(x+.28+(n-1)*.62,y+1.1,.42,two(n),n===1?P:n===4?TN(P,.8):DARK,n===4?{color:PD}:{}));
+   T(x,y+1.5,w,.4,'實心＝目前／完成，淡色＝未開始',{size:10,color:G.mute,name:'說明'});});
+  comp('E','徽章＋說明清單','Badge list',C[4],(x,y,w,h)=>{[['界定問題','先釐清要解決什麼'],['盤點現況','蒐集事實與數據'],['排序優先','聚焦影響最大處']].forEach(([a,b],i)=>{const yy=y+.1+i*.62;bdg(x+.2,yy+.24,.38,String(i+1),P);
+   T(x+.5,yy,w-.5,.28,a,{size:Z(12),bold:1,color:G.ink,name:'項目'});T(x+.5,yy+.27,w-.5,.26,b,{size:10.5,name:'說明'});});});
+  comp('F','圈號清單 ①②③','Circled list',C[5],(x,y,w,h)=>{['① 釐清目的','② 拆解結構','③ 重新組合','④ 檢查一致'].forEach((t,i)=>T(x,y+.08+i*.44,w,.36,t,{size:Z(13),color:i===0?G.ink:G.t2,bold:i===0,name:'清單'}));});
+  comp('G','狀態膠囊','Status pills',C[6],(x,y,w,h)=>{[['完成','Done',GOOD],['進行中','Doing',P],['延遲','Late',BAD],['未開始','To do','BFBFBF']].forEach(([t,e,c],i)=>{const yy=y+.06+i*.46;
+   box(x,yy,1.3,.32,{fill:TN(c,.86),r:'full',name:'狀態膠囊'});circ(x+.2,yy+.16,.12,{fill:c,name:'狀態點'});T(x+.34,yy,.96,.32,t,{size:10.5,bold:1,color:c==='BFBFBF'?G.t2:mix(c,'000000',.15),name:'狀態'});T(x+1.42,yy,w-1.42,.32,e,{size:10,color:G.mute,font:nf,name:'英文'});});});
+  comp('H','步驟徽章橫列 01–05','Step badges',C[7],(x,y,w,h)=>{const n=5,sp=(w-.4)/(n-1);ln(x+.2,y+.5,x+.2+sp*(n-1),y+.5,{c:G.l2,w:1.25});
+   ['立案','設計','試產','驗證','量產'].forEach((t,i)=>{bdg(x+.2+i*sp,y+.5,.38,two(i+1),i<2?DARK:i===2?P:'E3E3E3',i>2?{color:G.t2}:{});T(x+.2+i*sp-.32,y+.78,.64,.26,t,{size:10,color:i===2?P:G.t2,bold:i===2,align:'center',name:'步驟'});});
+   T(x,y+1.3,w,.5,'深＝完成、主色＝目前、淺灰＝未到',{size:10,color:G.mute,valign:'top',name:'說明'});});};
+ /* A2·3 清單與勾選 */
+ SL.lists=()=>{title('清單與勾選 Lists & Checklists','圖示＋文字（直／橫／2×2）、三態勾選、編號清單、關鍵詞清單：3–6 項最易讀');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(3,2,Y0,Y1);
+  const IT=[['speed','縮短交期','Lead time −30%'],['verified','提升良率','Yield +1.2 pt'],['savings','降低成本','Cost −8%'],['groups','跨部門協作','4 teams aligned']];
+  comp('A','圖示＋文字（直式）','Icon list',C[0],(x,y,w,h)=>{IT.slice(0,3).forEach(([ic,a,b],i)=>{const yy=y+.06+i*.66;icon(ic,x,yy,.5,{variant:'tint'});T(x+.64,yy,w-.64,.28,a,{size:Z(12),bold:1,color:G.ink,name:'項目'});T(x+.64,yy+.26,w-.64,.26,b,{size:10.5,font:nf,name:'說明'});});});
+  comp('B','圖示＋文字（橫式 3 欄）','Icon row',C[1],(x,y,w,h)=>{const cw=w/3;IT.slice(0,3).forEach(([ic,a,b],i)=>{const cx0=x+cw*i+cw/2;icon(ic,cx0-.3,y+.1,.6,{variant:i===1?'solid':'tint'});
+   T(cx0-cw/2,y+.82,cw,.3,a,{size:Z(12),bold:1,color:G.ink,align:'center',name:'項目'});T(cx0-cw/2,y+1.12,cw,.5,b,{size:10,align:'center',valign:'top',font:nf,name:'說明'});});});
+  comp('C','圖示＋文字 2×2','Icon grid',C[2],(x,y,w,h)=>{IT.forEach(([ic,a,b],i)=>{const xx=x+(i%2)*w/2,yy=y+.06+Math.floor(i/2)*.98;box(xx,yy,w/2-.12,.86,{fill:'F7F7F7',r:.06,name:'淺灰面板'});icon(ic,xx+.14,yy+.2,.44);
+   T(xx+.66,yy+.12,w/2-.84,.3,a,{size:Z(11.5),bold:1,color:G.ink,name:'項目'});T(xx+.66,yy+.44,w/2-.84,.3,b,{size:10,font:nf,name:'說明'});});});
+  comp('D','勾選清單三態','Checklist',C[3],(x,y,w,h)=>{[['done','SPC 管制圖更新','完成'],['done','CMP 參數鎖定','完成'],['todo','B 線擴線評估','進行中'],['no','舊機台改造','不做']].forEach(([k,t,s],i)=>{const yy=y+.08+i*.46,d=.28;
+   if(k==='done')box(x,yy,d,d,{fill:P,r:.05,text:'✓',size:12,bold:1,color:W2,margin:0,name:'已完成'});else if(k==='todo')box(x,yy,d,d,{fill:W2,line:G.t2,lw:1.25,r:.05,name:'未完成'});else box(x,yy,d,d,{fill:'EDEDED',r:.05,text:'✕',size:11,bold:1,color:G.mute,margin:0,name:'不做'});
+   T(x+.42,yy-.02,w-1.5,.32,t,{size:Z(12),color:k==='no'?G.mute:G.ink,strike:k==='no',name:'項目'});T(x+w-1.0,yy-.02,1.0,.32,s,{size:10,color:k==='done'?GOOD:k==='todo'?P:G.mute,bold:1,align:'right',name:'狀態'});});});
+  comp('E','編號清單＋分隔線','Numbered list',C[4],(x,y,w,h)=>{['釐清目的與受眾','拆解成 3 個論點','每點配一個證據','結論放在第一頁'].forEach((t,i)=>{const yy=y+.04+i*.46;txt(x,yy,.5,.36,two(i+1),{size:Z(16),bold:1,color:i===0?P:G.l1,font:nf,valign:'middle',name:'編號'});
+   T(x+.56,yy,w-.56,.36,t,{size:Z(12),color:G.ink,name:'項目'});if(i<3)ln(x,yy+.42,x+w,yy+.42,{c:'EDEDED',w:.75});});});
+  comp('F','關鍵詞清單','Keyword bullets',C[5],(x,y,w,h)=>{[['聚焦','一頁只講一個重點'],['具體','用數字與例子說話'],['結構','先結論、後理由'],['一致','同類資訊同一格式']].forEach(([a,b],i)=>{const yy=y+.06+i*.46;circ(x+.07,yy+.17,.1,{fill:i===0?AC2:G.l1,name:'項目符號'});
+   T(x+.24,yy,w-.24,.34,[{t:a+'　',b:1,c:G.ink},{t:b}],{size:Z(12),name:'項目'});});});};
+ /* A3 圓形與流程鏈 */
+ SL.circles=()=>{title('圓形與流程鏈 Circles & Chains','大圓疊圓、Why／How／What、同心圓、放射、流程鏈、垂直鏈、文氏圖：全部可選');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(4,2,Y0,Y1);
+  comp('A','大圓＋疊圓','Hub circle',C[0],(x,y,w,h)=>{const cx0=x+w/2,cy0=y+h/2+.05,R=.72;circleShape(cx0-R,cy0-R,2*R,{noring:1});T(cx0-R,cy0-.32,2*R,.36,'How',{size:Z(20),bold:1,color:G.t2,align:'center',font:nf,name:'大字'});T(cx0-R,cy0+.04,2*R,.3,'三個關鍵',{size:11,color:PD,bold:1,align:'center',name:'說明'});
+   [['觀察',200],['分析',270],['表達',340]].forEach(([t,a],i)=>{const r=a*Math.PI/180;circ(cx0+R*Math.cos(r),cy0+R*Math.sin(r),.5,{fill:i===1?P:W2,line:i===1?W2:P,lw:1.25,sh:'small',text:t,size:10,bold:1,color:i===1?W2:P,margin:0,name:'小圓'});});});
+  comp('B','Why／How／What 三圓','3 circles',C[1],(x,y,w,h)=>{const d=.78,sp=(w-d)/2;[['Why','為何'],['How','如何'],['What','做什麼']].forEach(([a,b],i)=>{const cx0=x+d/2+i*sp;circ(cx0,y+.7,d,{fill:i===1?P:W2,line:i===1?null:G.l1,lw:1.25,text:a,size:Z(14),bold:1,color:i===1?W2:G.t2,font:nf,margin:0,name:'圓'});
+   T(cx0-.6,y+1.16,1.2,.28,b,{size:Z(11),bold:1,color:G.ink,align:'center',name:'說明'});if(i<2)chev(cx0+d/2+(sp-d)/2-.06,y+.62,.16);});});
+  comp('C','同心圓','Concentric',C[2],(x,y,w,h)=>{const cx0=x+.9,cy0=y+h/2;[[1.7,'F2F2F2','生態'],[1.15,TN(P,.75),'產品'],[.6,P,'核心']].forEach(([d,f,t],i)=>circ(cx0,cy0,d,{fill:f,line:W2,lw:1.5,name:'同心圓'}));
+   T(cx0-.3,cy0-.14,.6,.28,'核心',{size:10,bold:1,color:W2,align:'center',name:'圈名'});[['產品 Product',-.42],['生態 Eco',-.72]].forEach(([a,dy],i)=>{ln(cx0+.1,cy0+dy+.04,x+1.84,cy0+dy+.04,{c:G.l1,w:.75});T(x+1.88,cy0+dy-.1,w-1.88,.28,a,{size:10,color:G.ink,bold:1,wrap:0,name:'圈名'});});
+   T(x+1.88,cy0+.08,w-1.88,.28,'核心 Core',{size:10,color:P,bold:1,wrap:0,name:'圈名'});ln(cx0+.1,cy0+.18,x+1.84,cy0+.18,{c:G.l1,w:.75});});
+  comp('D','圓＋放射 4 點','Radial',C[3],(x,y,w,h)=>{const cx0=x+w/2,cy0=y+h/2;const c0=circ(cx0,cy0,.74,{fill:P,line:W2,lw:2,sh:'small',text:'目標',size:Z(12),bold:1,color:W2,margin:0,name:'中心圓'});
+   [['人',0,-1],['機',1,0],['料',0,1],['法',-1,0]].forEach(([t,sx,sy])=>{const px=cx0+sx*1.05,py=cy0+sy*.72;ln(cx0+sx*.37,cy0+sy*.37,px-sx*.25,py-sy*.25,{c:G.l1,w:1});circ(px,py,.48,{fill:W2,line:G.l1,lw:1,text:t,size:Z(12),bold:1,color:G.ink,margin:0,name:'放射點'});});});
+  const r2=C[4].y,rh=C[4].h,wE=CW-2*2.6-.6,CE={x:X0,y:r2,w:wE,h:rh},CF={x:X0+wE+.3,y:r2,w:2.6,h:rh},CG={x:X0+wE+2.9,y:r2,w:2.6,h:rh};
+  comp('E','流程鏈＋說明','Chain + notes',CE,(x,y,w,h)=>{chain(x,y+.2,w,.56,['規劃','執行','檢討'],{size:Z(12)});const cd=chainDims(w,.56,3);[['Plan','界定範圍與目標'],['Do','小步執行、留紀錄'],['Check','比對差異、標準化']].forEach(([e,t],i)=>{const xx=x+i*cd.step;T(xx,y+.86,cd.iw,.26,e,{size:10,color:G.mute,align:'center',font:nf,wrap:0,name:'英文'});T(xx,y+1.12,cd.iw,.3,t,{size:10.5,color:G.ink,align:'center',wrap:0,name:'說明'});});});
+  comp('F','垂直鏈','Vertical chain',CF,(x,y,w,h)=>{['蒐集資料','分析根因','導入對策'].forEach((t,i)=>{const yy=y+.02+i*.62;box(x+.3,yy,w-.6,.42,{fill:i===2?P:W2,line:i===2?null:G.l1,lw:1,r:.21,text:t,size:Z(11.5),bold:1,color:i===2?W2:G.ink,name:'流程鏈'});if(i<2)chevD(x+w/2-.09,yy+.48,.18);});});
+  comp('G','文氏圖 2 圓','Venn',CG,(x,y,w,h)=>{const cy0=y+h/2-.08,d=1.3,cx0=x+w/2;circ(cx0-.42,cy0,d,{fill:P,ft:78,line:P,lw:1,name:'集合 A'});circ(cx0+.42,cy0,d,{fill:AC2,ft:78,line:AC2,lw:1,name:'集合 B'});
+   T(cx0-1.05,cy0-.15,.6,.3,'技術',{size:Z(12),bold:1,color:PD,align:'center',name:'集合名'});T(cx0+.45,cy0-.15,.6,.3,'市場',{size:Z(12),bold:1,color:mix(AC2,'000000',.3),align:'center',name:'集合名'});T(cx0-.35,cy0-.15,.7,.3,'機會',{size:Z(11),bold:1,color:G.ink,align:'center',name:'交集'});});};
+ /* A4 連接線與箭頭 */
+ SL.conn=()=>{title('連接線與箭頭 Connectors & Arrows','直線、折線、點線、曲線、分隔、區塊箭頭、分支、雙向、回饋、編號、粗細三階、虛線計畫：黏著連接線');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(4,3,Y0,Y1,{gy:.08,cap:.28});const TL=st.cnTail==='none'?false:st.cnTail;
+  const nd=(x,y,t,o)=>sym('proc',x,y,.7,.4,t,Object.assign({size:Z(12)},o||{}));
+  const cell=(i,code,zh,en,fn)=>comp(code,zh,en,C[i],(x,y,w,h)=>fn(x,y,w,h,y+h/2));
+  cell(0,'A','細直線','Straight',(x,y,w,h,m)=>{const a=nd(x,m-.2,'A'),b=nd(x+w-.7,m-.2,'B');link(a,3,b,1,{style:{dash:'solid',tail:TL}});});
+  cell(1,'B','折線','Elbow',(x,y,w,h,m)=>{const a=nd(x,y+.1,'A'),b=nd(x+w-.7,y+h-.5,'B');link(a,3,b,1,{style:{tail:TL}});});
+  cell(2,'C','點狀線','Dotted',(x,y,w,h,m)=>{const a=nd(x,m-.2,'A'),b=nd(x+w-.7,m-.2,'B');link(a,3,b,1,{style:{dash:'sysDot',w:Math.max(1.25,st.cnW),tail:TL}});});
+  cell(3,'D','曲線','Curved',(x,y,w,h,m)=>{nd(x,y+h-.42,'A');nd(x+w-.7,y+h-.42,'B');curve([x+.35,y+h-.46],[x+.35,y],[x+w-.35,y],[x+w-.35,y+h-.46]);});
+  cell(4,'E','▶ 分隔符號','Separator',(x,y,w,h,m)=>{const ws=['輸入','處理','輸出'],gw=(w-3*.62)/2;ws.forEach((t,j)=>{const xx=x+j*(.62+gw);T(xx,m-.18,.62,.36,t,{size:Z(12),bold:1,color:G.ink,align:'center',name:'文字'});if(j<2)sep(xx+.62+gw/2,m);});});
+  cell(5,'F','區塊箭號','Chevron',(x,y,w,h,m)=>{const bw=(w+2*.18)/3;for(let j=0;j<3;j++)el(j?'chevron':'homePlate',x+j*(bw-.18+.04),m-.25,bw,.5,{fill:j===2?AC2:mix(P,'FFFFFF',j*.25),adj:.18,text:['一','二','三'][j],size:Z(12),bold:1,color:'FFFFFF',margin:[2,2,0,0],name:'區塊箭號'});});
+  cell(6,'G','分支','Branch',(x,y,w,h,m)=>{const a=nd(x,m-.2,'A'),b1=nd(x+w-.7,y+.04,'B1'),b2=nd(x+w-.7,y+h-.44,'B2');const jx=x+.7+(w-1.4)/2;link(a,3,b1,1,{mid:jx});link(a,3,b2,1,{mid:jx});});
+  cell(7,'H','雙向箭頭','Two-way',(x,y,w,h,m)=>{const a=nd(x,m-.2,'甲'),b=nd(x+w-.7,m-.2,'乙');link(a,3,b,1,{style:{head:'triangle',tail:'triangle'}});T(x+.7,m-.42,w-1.4,.24,'雙向溝通',{size:10,color:G.mute,align:'center',name:'標註'});});
+  cell(8,'I','回饋迴圈','Feedback loop',(x,y,w,h,m)=>{const a=nd(x,y+.06,'執行'),b=nd(x+w-.7,y+.06,'檢查');link(a,3,b,1);link(b,2,a,2,{via:[[x+w-.35,y+h-.16],[x+.35,y+h-.16]],style:{dash:'sysDash',c:AC2}});T(x+.7,y+h-.44,w-1.4,.24,'回饋 Feedback',{size:10,color:AC2,bold:1,align:'center',name:'標註'});});
+  cell(9,'J','帶編號連線','Numbered link',(x,y,w,h,m)=>{const a=nd(x,m-.2,'A'),b=nd(x+w-.7,m-.2,'B');link(a,3,b,1);bdg(x+w/2,m,.3,'1',P,{size:10});});
+  cell(10,'K','粗細三階','Weights',(x,y,w,h,m)=>{[[2.75,'主流程',P],[1.5,'次流程',G.t2],[.75,'參考',G.l1]].forEach(([lw,t,c],i)=>{const yy=y+.16+i*.36;ln(x,yy,x+w-1.0,yy,{c,w:lw,head:'triangle'});T(x+w-.92,yy-.14,.92,.28,t,{size:10,color:G.t2,name:'標註'});});});
+  cell(11,'L','虛線＝計畫中','Planned',(x,y,w,h,m)=>{const a=nd(x,m-.2,'現行'),b=sym('proc',x+w-.7,m-.2,.7,.4,'規劃',{size:Z(12),alt:1});link(a,3,b,1,{style:{dash:'dash',c:G.t2}});T(x+.7,m-.42,w-1.4,.24,'2027 導入',{size:10,color:G.mute,align:'center',name:'標註'});});};
+ /* A5 圖示精選 */
+ SL.icons=()=>{title('圖示精選 Icons','24 個高頻圖示＋6 種圖示＋文字組合；完整 521 個在上方「圖示庫」分頁（可搜尋、換色、下載 ZIP）');
+  if(!ICONS)return;const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();
+  const L=[['groups','團隊'],['person','人員'],['support_agent','窗口'],['factory','工廠'],['precision_manufacturing','設備'],['wafer','晶圓'],['verified','品質'],['frame_inspect','檢測'],['schedule','時間'],['calendar_month','排程'],['payments','成本'],['savings','節省'],
+   ['warning','風險'],['error','異常'],['task_alt','完成'],['flag','里程碑'],['target','目標'],['trending_up','成長'],['analytics','分析'],['lightbulb','想法'],['rocket_launch','啟動'],['handshake','合作'],['mail','聯絡'],['search','調查']].filter(([id])=>ICONS.BY[id]);
+  const NC=12,cw=CW/NC,s=.42;L.forEach(([id,zh],i)=>{const c=i%NC,r=Math.floor(i/NC),cx0=X0+(c+.5)*cw,yy=Y0+r*.82;grp(zh,()=>icon(id,cx0-s/2,yy,s));txt(cx0-cw/2,yy+s+.04,cw,.24,zh,{size:10,color:G.t2,align:'center',name:'圖說'});});
+  ln(X0,3.62,X1,3.62,{c:G.l2,w:.5});const C=GRID(3,2,3.76,Y1,{gy:.08,cap:.28});
+  comp('A','直式（圖示在上）','Stacked',C[0],(x,y,w,h)=>{[['verified','品質'],['speed','效率'],['savings','成本']].forEach(([id,t],i)=>{const cx0=x+w*(i+.5)/3;icon(id,cx0-.25,y+.06,.5,{variant:'tint'});T(cx0-.6,y+.62,1.2,.3,t,{size:Z(12),bold:1,color:G.ink,align:'center',name:'文字'});});});
+  comp('B','橫式（圖示在左）','Inline',C[1],(x,y,w,h)=>{icon('precision_manufacturing',x,y+.18,.6,{variant:'solid'});T(x+.76,y+.12,w-.8,.34,'設備保養',{size:Z(13),bold:1,color:G.ink,name:'標題'});T(x+.76,y+.46,w-.8,.3,'每月 PM 排程，停機 −20%',{size:11,name:'說明'});});
+  comp('C','圓底＋數字','Circle + number',C[2],(x,y,w,h)=>{icon('trending_up',x,y+.14,.66,{variant:'tint'});txt(x+.8,y+.06,w-.8,.5,[{t:'+18',b:1,c:P,f:nf},{t:' %',s:Z(12),c:G.mute,f:nf}],{size:Z(24),valign:'middle',name:'數值'});T(x+.8,y+.56,w-.8,.3,'年營收成長',{size:11,name:'說明'});});
+  comp('D','方底＋標籤','Square tile',C[3],(x,y,w,h)=>{[['groups','團隊'],['schedule','時程'],['warning','風險'],['task_alt','完成']].forEach(([id,t],i)=>{const xx=x+i*(w/4);box(xx,y+.06,.56,.56,{fill:i===2?AL:TN(P,.88),r:.1,name:'方底'});icon(id,xx+.1,y+.16,.36,{color:i===2?W2:P});T(xx-.1,y+.66,.76,.26,t,{size:10,color:G.t2,align:'center',name:'文字'});});});
+  comp('E','清單（圖示項目符號）','Icon bullets',C[4],(x,y,w,h)=>{[['task_alt','SOP 已更新'],['task_alt','人員訓練完成'],['pending','B 線評估中']].forEach(([id,t],i)=>{const yy=y+.02+i*.3;icon(ICONS.BY[id]?id:'schedule',x,yy,.26,{color:i<2?GOOD:G.mute});T(x+.36,yy-.02,w-.36,.3,t,{size:11,color:G.ink,name:'項目'});});});
+  comp('F','圖示流程','Icon flow',C[5],(x,y,w,h)=>{const d=.5,sp=(w-d)/2;const B=[['wafer','投片'],['frame_inspect','檢測'],['build','改善']].map(([id,t],i)=>{const xi=x+i*sp;const r=icon(id,xi,y+.04,d,{variant:i===2?'solid':'tint'});T(xi-.3,y+.6,d+.6,.26,t,{size:10.5,color:G.t2,align:'center',name:'圖說'});return r.bg;});link(B[0],6,B[1],2);link(B[1],6,B[2],2);});};
+ /* B1 流程圖符號 */
+ SL.flow=()=>{title('流程圖符號 Flowchart Symbols','11 個標準符號（含子流程、人工作業、延遲、連接點、多文件）＋基本流程＋泳道版：全部可選、黏著連接線');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const L=symLook(false),fs=Z(11);const base=o=>Object.assign({fill:L.fill,line:L.line||G.line,lw:L.lw||1,size:fs,bold:0,color:L.c},o||{});
+  const S=[['term','開始／結束','Terminator',(x,y,w,h)=>sym('term',x,y,w,h,'開始',{strong:1,size:fs})],['proc','處理','Process',(x,y,w,h)=>sym('proc',x,y,w,h,'處理',{size:fs})],['dec','判斷','Decision',(x,y,w,h)=>sym('dec',x,y-.06,w,h+.12,'判斷',{alt:1,size:fs})],
+   ['io','輸入／輸出','I / O',(x,y,w,h)=>sym('io',x,y,w,h,'輸入',{size:fs})],['doc','文件','Document',(x,y,w,h)=>sym('doc',x,y,w,h,'文件',{size:fs})],['db','資料庫','Database',(x,y,w,h)=>sym('db',x+.12,y-.04,w-.24,h+.08,'DB',{size:fs})],
+   ['sub','子流程','Subprocess',(x,y,w,h)=>{box(x,y,w,h,base({text:'子流程',name:'子流程'}));ln(x+.1,y,x+.1,y+h,{c:L.line||G.line,w:L.lw||1});ln(x+w-.1,y,x+w-.1,y+h,{c:L.line||G.line,w:L.lw||1});}],
+   ['man','人工作業','Manual op.',(x,y,w,h)=>path([[x,y],[x+w,y],[x+w-.14,y+h],[x+.14,y+h]],Object.assign(base({text:'人工',name:'人工作業'}),{close:true}))],
+   ['dly','延遲','Delay',(x,y,w,h)=>{const r=h/2;el('custGeom',x,y,w,h,base({text:'等待',name:'延遲',points:[{x:0,y:0},{x:w-r,y:0},{x:w-r,y:h,curve:{type:'arc',hR:r,wR:r,stAng:270,swAng:180}},{x:0,y:h},{close:true}]}));}],
+   ['cnt','連接點','Connector',(x,y,w,h)=>circ(x+w/2,y+h/2,h,base({text:'A',bold:1,margin:0,name:'連接點'}))],
+   ['mdoc','多文件','Multi-doc',(x,y,w,h)=>{[2,1,0].forEach(k=>sym('doc',x+k*.06,y-k*.06+.08,w-.14,h-.06,k?'':'多份',{size:fs}));}]];
+  const cw=CW/11;S.forEach(([k,zh,en,fn],i)=>{const cx0=X0+cw*i+cw/2,w=cw-.2,h=.56;grp(zh,()=>fn(cx0-w/2,2.08,w,h));T(cx0-cw/2,2.82,cw,.26,zh,{size:10.5,bold:1,color:G.ink,align:'center',wrap:0,name:'符號名'});T(cx0-cw/2,3.06,cw,.24,en,{size:10,color:G.mute,align:'center',font:nf,wrap:0,name:'英文'});});
+  T(X0,1.84,CW,.2,'',{name:'空白'});ln(X0,3.48,X1,3.48,{c:G.l2,w:.5});
+  const C1={x:X0,y:3.7,w:7.3,h:2.78},C2={x:X0+7.6,y:3.7,w:CW-7.6,h:2.78};
+  comp('L','基本流程範例','Basic flow',C1,(x,y,w,h)=>{const cy=y+.8,ws=[.9,1.15,1.2,1.05,1.0,.9],g=(w-ws.reduce((a,b)=>a+b))/5,xs=[];let xx=x;ws.forEach(v=>{xs.push(xx);xx+=v+g;});
+   const N=[sym('term',xs[0],cy-.25,ws[0],.5,'開始',{strong:1,size:fs}),sym('io',xs[1],cy-.28,ws[1],.56,'輸入需求',{size:fs}),sym('dec',xs[2],cy-.42,ws[2],.84,'可行？',{alt:1,size:fs}),sym('proc',xs[3],cy-.28,ws[3],.56,'執行',{size:fs}),sym('doc',xs[4],cy-.32,ws[4],.64,'報告',{size:fs}),sym('term',xs[5],cy-.25,ws[5],.5,'結束',{strong:1,size:fs})];
+   link(N[0],3,N[1],5);link(N[1],2,N[2],1);link(N[2],3,N[3],1);link(N[3],3,N[4],1);link(N[4],3,N[5],1);T(xs[2]+ws[2],cy-.36,g,.24,'是',{size:10,bold:1,color:G.t2,align:'center',name:'標註'});
+   const dx=xs[2]+ws[2]/2,ix=xs[1]+ws[1]/2;link(N[2],2,N[1],4,{via:[[dx,cy+.82],[ix,cy+.82]]});T(dx+.08,cy+.46,.4,.24,'否',{size:10,bold:1,color:G.t2,name:'標註'});
+   const db=sym('db',xs[3]+ws[3]/2-.42,y+1.85,.84,.72,'資料庫',{size:fs});link(N[3],2,db,0,{style:{tail:'triangle',dash:'sysDash'}});});
+  comp('M','泳道符號版','Swimlane',C2,(x,y,w,h)=>{const lh=1.28,hw=.5;[['申請','Req'],['審核','Rev']].forEach(([t,e],i)=>{const ly=y+i*(lh+.06);box(x,ly,w,lh,{fill:W2,line:G.l2,lw:.75,name:'泳道'});box(x,ly,hw,lh,{fill:'F2F2F2',text:t.split('').join('\n'),size:10.5,bold:1,color:G.t2,margin:0,lsp:.95,name:'泳道標題'});});
+   const a=sym('term',x+hw+.2,y+.38,.95,.48,'提出',{strong:1,size:fs}),b=sym('dec',x+hw+1.45,y+lh+.06+.3,1.1,.7,'核准？',{alt:1,size:fs}),c=sym('doc',x+w-1.1,y+.34,.95,.58,'歸檔',{size:fs});
+   link(a,2,b,1,{mid:0});link(b,3,c,2);T(x+w-1.25,y+lh+.5,.4,.24,'是',{size:10,bold:1,color:G.t2,name:'標註'});});};
+ /* B3·2 編號步驟 */
+ SL.steps=()=>{const n=NUM('nLin',4,3);title('編號步驟 Numbered Steps','大編號、垂直步驟、大數字直式、圓形鏈、時間軸、V 形階段：數量跟「可調數量」同步 3–6（選取後按 − ＋）');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(3,2,Y0,Y1);const ST=[['釐清目的','Purpose'],['蒐集事實','Facts'],['分析根因','Analyze'],['導入對策','Act'],['標準化','Standardize'],['擴散','Scale']].slice(0,n);
+  comp('A',`大編號步驟（${n}）`,'Big-number steps',C[0],(x,y,w,h)=>{const cw=w/n;ST.forEach(([t,e],i)=>{const xx=x+i*cw;txt(xx,y,cw,.6,two(i+1),{size:Z(n>4?24:30),bold:1,color:i===0?P:G.l1,font:nf,valign:'middle',name:'大編號'});box(xx,y+.66,cw-.16,.04,{fill:i===0?P:G.l2,name:'色條'});
+   T(xx,y+.78,cw-.1,.3,t,{size:Z(n>4?10.5:12),bold:1,color:G.ink,wrap:0,name:'步驟'});T(xx,y+1.08,cw-.1,.26,e,{size:10,color:G.mute,font:nf,wrap:0,name:'英文'});});},{count:'nLin'});
+  comp('B',`垂直步驟（${n}）`,'Vertical steps',C[1],(x,y,w,h)=>{const rh=h/n;ln(x+.18,y+.18,x+.18,y+h-rh/2,{c:G.l2,w:1.25});ST.forEach(([t,e],i)=>{const yy=y+i*rh;bdg(x+.18,yy+.18,.32,String(i+1),i===0?P:DARK,{size:10});T(x+.46,yy,w-.46,.34,[{t,b:1,c:G.ink},{t:'  '+e,s:10,c:G.mute,f:nf}],{size:Z(11.5),wrap:0,name:'步驟'});});},{count:'nLin'});
+  comp('C',`大數字直式步驟（${n}）`,'Big-number vertical',C[2],(x,y,w,h)=>{const rh=h/n;ST.forEach(([t,e],i)=>{const yy=y+i*rh;txt(x,yy,.7,rh,two(i+1),{size:Z(n>4?16:20),bold:1,color:i===n-1?P:G.l1,font:nf,valign:'middle',name:'大編號'});ln(x+.74,yy+rh*.2,x+.74,yy+rh*.8,{c:G.l2,w:1});
+   T(x+.86,yy,w-.86,rh,[{t,b:1,c:i===n-1?P:G.ink},{t:'  '+e,s:10,c:G.mute,f:nf}],{size:Z(11.5),wrap:0,name:'步驟'});});},{count:'nLin'});
+  comp('D',`圓形鏈（${n}）`,'Circle chain',C[3],(x,y,w,h)=>{const d=Math.min(.7,(w-(n-1)*.2)/n),sp=(w-d)/(n-1);const cs=ST.map(([t],i)=>circ(x+d/2+i*sp,y+.5,d,{fill:i===n-1?P:W2,line:i===n-1?null:G.l1,lw:1.25,text:two(i+1),size:Z(13),bold:1,color:i===n-1?W2:G.t2,font:nf,margin:0,name:'圓形'}));
+   for(let i=0;i<n-1;i++)link(cs[i],6,cs[i+1],2);ST.forEach(([t],i)=>T(x+d/2+i*sp-sp/2,y+.94,sp,.3,t,{size:10,color:G.ink,align:'center',wrap:0,name:'步驟'}));},{count:'nLin'});
+  comp('E',`時間軸（${n} 點）`,'Timeline',C[4],(x,y,w,h)=>{const sp=(w-.3)/(n-1||1),ay=y+.62;ln(x,ay,x+w,ay,{c:G.line,w:1.25,head:'triangle'});ST.forEach(([t],i)=>{const cx0=x+.1+i*sp;circ(cx0,ay,.18,{fill:i<2?DARK:i===2?P:W2,line:i>2?G.l1:W2,lw:1.25,name:'時間點'});
+   pill(cx0-.36,ay-.5,.72,.26,'M'+(i+1),i===2?P:'E6E6E6',{font:nf,size:10,color:i===2?W2:G.t2});T(cx0-sp/2,ay+.18,sp,.28,t,{size:10,color:G.ink,align:'center',wrap:0,name:'里程碑'});});},{count:'nLin'});
+  comp('F',`V 形階段（${n}）`,'Phase chevrons',C[5],(x,y,w,h)=>{const pw=(w+(n-1)*.07)/n;ST.forEach(([t],i)=>{const f=i===1?P:i<1?DARK:'E6E6E6';el(i===0?'homePlate':'chevron',x+i*(pw-.07),y+.3,pw,.5,{fill:f,adj:.16,text:t,size:Z(n>4?10:11),bold:1,color:lum(f)>.55?G.ink:W2,margin:0,name:'階段'});});
+   T(x,y+.96,w,.3,'深＝完成、主色＝進行中、灰＝未開始',{size:10,color:G.mute,name:'說明'});},{count:'nLin'});};
+ /* B4 結構元件 */
+ SL.struct=()=>{title('結構元件 Structure','樹狀分支、金字塔、漏斗、層級堆疊、寬欄透明條、階層樹：層數與文字可改');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(3,2,Y0,Y1);const nd=(x,y,w,t,o)=>sym('proc',x,y,w,.4,t,Object.assign({size:Z(11)},o||{}));
+  comp('A','樹狀分支','Tree',C[0],(x,y,w,h)=>{const cy=y+h/2,a=nd(x,cy-.2,.8,'起點');const ys=[y+.1,cy-.2,y+h-.5];const b=ys.map((yy,i)=>nd(x+1.3,yy,.9,'分支'+'一二三'[i]));const c=ys.map((yy,i)=>nd(x+w-1.0,yy,1.0,'結果 '+'ABC'[i],{strong:i===1}));
+   b.forEach((bb,i)=>{link(a,3,bb,1,{mid:x+1.05});link(bb,3,c[i],1);});});
+  comp('B','金字塔 4 層','Pyramid',C[1],(x,y,w,h)=>{const n=4,lh=(h-.1)/n,pw=2.3;['願景','策略','計畫','行動'].forEach((t,i)=>{const t0=pw*i/n,t1=pw*(i+1)/n,yy=y+i*lh,cx0=x+pw/2;const f=mix(P,'FFFFFF',i*.22);
+   path([[cx0-t0/2,yy],[cx0+t0/2,yy],[cx0+t1/2,yy+lh-.04],[cx0-t1/2,yy+lh-.04]],{close:true,fill:f,name:'金字塔層'});T(x+pw+.16,yy,w-pw-.16,lh,[{t,b:1,c:G.ink},{t:'  '+['Vision','Strategy','Plan','Action'][i],s:10,c:G.mute,f:nf}],{size:Z(11.5),name:'層名'});ln(cx0+t1/2-.1,yy+lh/2,x+pw+.12,yy+lh/2,{c:G.l2,w:.5});});});
+  comp('C','漏斗＋轉換率','Funnel',C[2],(x,y,w,h)=>{const n=4,lh=(h-.1)/n,fw=2.5;[['潛在客戶','1,200'],['需求確認','480'],['報價','160'],['成交','52']].forEach(([t,v],i)=>{const w0=fw*(1-i*.2),w1=fw*(1-(i+1)*.2),yy=y+i*lh,cx0=x+fw/2;
+   path([[cx0-w0/2,yy],[cx0+w0/2,yy],[cx0+w1/2,yy+lh-.04],[cx0-w1/2,yy+lh-.04]],{close:true,fill:i===n-1?P:mix(G.l2,'FFFFFF',i*.1),name:'漏斗層'});T(cx0-.6,yy,1.2,lh-.04,v,{size:Z(11),bold:1,color:i===n-1?W2:G.ink,align:'center',font:nf,name:'數值'});
+   T(x+fw+.16,yy,w-fw-.16,lh,t+(i?'  '+Math.round(100*[1200,480,160,52][i]/[1200,480,160,52][i-1])+'%':''),{size:10.5,color:G.t2,name:'層名'});});});
+  comp('D','層級堆疊','Layer stack',C[3],(x,y,w,h)=>{[['應用層','Apps',W2],['平台層','Platform',TN(P,.85)],['基礎設施','Infra',P]].forEach(([t,e,f],i)=>{const yy=y+.06+i*.58;box(x+i*.18,yy,w-i*.36,.48,{fill:f,line:f===W2?G.l1:null,lw:1,r:.06,text:[{t,b:1},{t:'  '+e,s:10,b:0,f:nf}],size:Z(12),color:f===P?W2:G.ink,name:'層'});});});
+  comp('E','寬欄透明條','Columns',C[4],(x,y,w,h)=>{const b1=x+1.2,b2=x+2.1,bw=.62;T(b1-.2,y,bw+.4,.26,'吸收',{size:10.5,bold:1,color:G.t2,align:'center',name:'欄名'});T(b2-.2,y,bw+.4,.26,'產出',{size:10.5,bold:1,color:G.t2,align:'center',name:'欄名'});colBar(b1,y+.3,bw,h-.34);colBar(b2,y+.3,bw,h-.34);
+   [['階段一','看','練'],['階段二','問','談'],['階段三','想','寫']].forEach(([l,a,b],i)=>{const yy=y+.62+i*.46;T(x,yy-.15,1.0,.3,l,{size:10.5,name:'階段'});badge(b1+bw/2,yy,a,{d:.36,size:12,nodot:1});badge(b2+bw/2,yy,b,{d:.36,size:12,nodot:1});});});
+  comp('F','階層樹 1→3','Top-down tree',C[5],(x,y,w,h)=>{const top=nd(x+w/2-.6,y+.05,1.2,'專案經理',{strong:1});const cw=(w-.3)/3;const ch=['製程','品保','設備'].map((t,i)=>nd(x+i*(cw+.15),y+.9,cw,t));ch.forEach(c=>link(top,2,c,0,{mid:y+.68}));
+   ['3 人','2 人','4 人'].forEach((t,i)=>T(x+i*(cw+.15),y+1.36,cw,.26,t,{size:10,color:G.mute,align:'center',name:'說明'}));});};
+ /* B5 議程與章節 */
+ SL.agenda=()=>{title('議程與章節 Agenda & Sections','議程清單、側欄目錄、議程進度條、章節分隔（大編號＋本節重點）、頁首章節標籤、麵包屑：目前章節高亮');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(3,2,Y0,Y1);const AG=[['背景','Background'],['現況分析','Status'],['對策','Actions'],['時程','Timeline'],['結論','Summary']];
+  comp('A','議程清單','Agenda list',C[0],(x,y,w,h)=>{const rh=(h-.04)/5;AG.forEach(([t,e],i)=>{const yy=y+i*rh,now=i===1;if(now)box(x,yy+.02,w,rh-.04,{fill:TN(P,.88),r:'full',name:'目前章節底'});bdg(x+rh/2,yy+rh/2,.3,two(i+1),now?P:i<1?DARK:'E3E3E3',{color:now||i<1?W2:G.t2,size:10});
+   T(x+.5,yy,w-.6,rh,[{t,b:1},{t:'  '+e,s:10,b:0,c:G.mute,f:nf}],{size:Z(11.5),color:now?P:G.ink,wrap:0,name:'議程項目'});});});
+  comp('B','側欄目錄','Side TOC',C[1],(x,y,w,h)=>{box(x,y,1.5,h,{fill:'F7F7F7',r:.06,name:'側欄底'});AG.forEach(([t],i)=>{const yy=y+.12+i*.34,now=i===1;if(now)box(x,yy,.06,.28,{fill:P,name:'目前標記'});T(x+.18,yy,1.3,.28,t,{size:10.5,bold:now,color:now?P:G.t2,wrap:0,name:'目錄項'});});
+   T(x+1.7,y+.04,w-1.7,.3,'現況分析',{size:Z(14),bold:1,color:G.ink,name:'本頁標題'});T(x+1.7,y+.42,w-1.7,.9,'側欄常駐在每頁左側，\n讀者隨時知道位置。',{size:10.5,valign:'top',name:'說明'});});
+  comp('C','議程進度條','Agenda progress',C[2],(x,y,w,h)=>{const sw=w/5;AG.forEach(([t],i)=>{const f=i<1?DARK:i===1?P:'E6E6E6';box(x+i*sw+.02,y+.3,sw-.04,.12,{fill:f,r:'full',name:'進度段'});T(x+i*sw,y+.48,sw,.28,t,{size:10,color:i===1?P:G.t2,bold:i===1,align:'center',wrap:0,name:'章節'});});
+   pill(x+sw*1.5-.45,y-.04,.9,.26,'目前',P,{size:10});T(x,y+.9,w,.5,'放在頁首或頁尾一列，\n不佔版面',{size:10,color:G.mute,valign:'top',name:'說明'});});
+  comp('D','章節分隔（大編號）','Section divider',C[3],(x,y,w,h)=>{txt(x,y,1.2,1.0,'02',{size:Z(54),bold:1,color:P,font:nf,valign:'middle',name:'章節編號'});ln(x+1.3,y+.16,x+1.3,y+.9,{c:G.l2,w:1});
+   T(x+1.46,y+.06,w-1.46,.4,'現況分析',{size:Z(20),bold:1,color:G.ink,name:'章節名'});T(x+1.46,y+.5,w-1.46,.3,'Current status',{size:11,color:G.mute,font:nf,name:'英文'});
+   ln(x,y+1.06,x+w,y+1.06,{c:G.l2,w:.75});['良率三週回升','CMP 為主因','C 線待擴'].forEach((t,i)=>{const xx=x+i*w/3;bdg(xx+.14,y+1.36,.26,String(i+1),DARK,{size:10});T(xx+.32,y+1.22,w/3-.34,.28,t,{size:10.5,color:G.ink,wrap:0,name:'本節重點'});});});
+  comp('E','頁首章節標籤＋麵包屑','Section tag',C[4],(x,y,w,h)=>{box(x,y+.06,1.9,.32,{fill:DARK,r:'full',text:'現況分析',size:Z(11),bold:1,color:W2,align:'left',margin:[30,6,0,0],name:'章節標籤'});bdg(x+.18,y+.22,.26,'02',P,{size:10,line:W2,lw:1});T(x+2.0,y+.06,w-2.0,.32,'Status · 2／5',{size:10,color:G.mute,font:nf,name:'英文'});
+   let xx=x;const yy=y+.72;[['背景',0],['現況',1],['對策',0]].forEach(([t,on],i)=>{const ww=.9;box(xx,yy,ww,.28,{fill:on?P:'EDEDED',r:'full',text:t,size:10,bold:on,color:on?W2:G.mute,margin:0,name:'麵包屑'});xx+=ww;if(i<2){path([[xx+.08,yy+.07],[xx+.15,yy+.14],[xx+.08,yy+.21]],{line:G.l1,lw:1.25,name:'V 形箭頭'});xx+=.24;}});});
+  comp('F','章節頁（本節 3 重點）','Section page',C[5],(x,y,w,h)=>{box(x,y,w,h,{fill:'F7F7F7',r:.08,name:'章節底'});txt(x+.24,y+.12,1.0,.6,'03',{size:Z(34),bold:1,color:P,font:nf,valign:'middle',name:'章節編號'});T(x+1.2,y+.16,w-1.4,.36,'對策與時程',{size:Z(16),bold:1,color:G.ink,name:'章節名'});
+   T(x+1.2,y+.5,w-1.4,.26,'Actions & timeline',{size:10.5,color:G.mute,font:nf,name:'英文'});['三項對策的成本與效益','導入時程與里程碑','需要的決策與資源'].forEach((t,i)=>{const yy=y+.9+i*.32;circ(x+.36,yy+.13,.08,{fill:AC2,name:'項目符號'});T(x+.5,yy,w-.7,.28,t,{size:10.5,color:G.t2,wrap:0,name:'重點'});});});};
+ /* B6 人員與組織 */
+ SL.people=()=>{title('人員與組織 People & Team','人員卡（橫／直）、聯絡卡、團隊列、小型組織樹、窗口表：頭像可換成照片（右鍵→變更圖片）');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(3,2,Y0,Y1);
+  comp('A','人員卡（橫式）','Person card',C[0],(x,y,w,h)=>{card(x,y,w,h);av(x+.6,y+.62,.8,'CY');T(x+1.16,y+.2,w-1.3,.34,'陳怡君',{size:Z(14),bold:1,color:G.ink,name:'姓名'});T(x+1.16,y+.52,w-1.3,.28,'製程整合經理 PIE Manager',{size:10.5,name:'職稱'});
+   pill(x+1.16,y+.9,1.1,.28,'專案負責',P,{size:10});pill(x+2.36,y+.9,1.0,.28,'CMP',TN(P,.85),{size:10,color:PD});T(x+.24,y+1.34,w-.48,.3,'負責 B 線良率改善與擴線評估',{size:10.5,name:'職責'});});
+  comp('B','人員卡（直式）×3','Person tiles',C[1],(x,y,w,h)=>{const cw=(w-.24)/3;[['LW','林維','品保'],['HC','黃承','設備'],['SY','孫宇','製程']].forEach(([i0,n0,r0],i)=>{const xx=x+i*(cw+.12);card(xx,y,cw,h);av(xx+cw/2,y+.5,.62,i0,i===0?P:null);
+   T(xx,y+.9,cw,.3,n0,{size:Z(12),bold:1,color:G.ink,align:'center',name:'姓名'});T(xx,y+1.2,cw,.26,r0,{size:10.5,color:G.mute,align:'center',name:'職稱'});});});
+  comp('C','聯絡卡','Contact card',C[2],(x,y,w,h)=>{card(x,y,w,h);av(x+.5,y+.5,.6,'CY',P);T(x+.94,y+.2,w-1.1,.32,'陳怡君 Chen Yi-Chun',{size:Z(12.5),bold:1,color:G.ink,name:'姓名'});T(x+.94,y+.5,w-1.1,.26,'製程整合 · B 廠',{size:10.5,name:'單位'});
+   [['mail','yc.chen@example.com'],['call','分機 3721'],['location_on','B 廠 3F'] ].forEach(([ic,t],i)=>{const yy=y+.94+i*.24;icon(ic,x+.3,yy,.2,{color:G.t2});T(x+.6,yy-.04,w-.8,.26,t,{size:10,color:G.t2,font:nf,wrap:0,name:'聯絡方式'});});});
+  comp('D','團隊列 4 人','Team row',C[3],(x,y,w,h)=>{const cw=w/4;[['CY','陳怡君','PM'],['LW','林維','QA'],['HC','黃承','EE'],['SY','孫宇','PE']].forEach(([a,b,c],i)=>{const cx0=x+cw*i+cw/2;av(cx0,y+.4,.58,a,i===0?P:null);T(cx0-cw/2,y+.76,cw,.28,b,{size:11,bold:1,color:G.ink,align:'center',name:'姓名'});
+   pill(cx0-.3,y+1.08,.6,.26,c,i===0?DARK:'EDEDED',{size:10,font:nf,color:i===0?W2:G.t2});});});
+  comp('E','小型組織樹','Org tree',C[4],(x,y,w,h)=>{const bw=1.1,bh=.5;const top=box(x+w/2-bw/2,y,bw,bh,{fill:P,r:.08,text:[{t:'陳怡君',b:1,br:1},{t:'PM',s:10,f:nf}],size:Z(11),color:W2,lsp:.95,name:'主管'});const cw=(w-.3)/3;
+   const ch=[['林維','QA'],['黃承','EE'],['孫宇','PE']].map(([a,b],i)=>box(x+i*(cw+.15)+(cw-bw)/2,y+1.0,bw,bh,{fill:W2,line:G.l1,lw:1,r:.08,text:[{t:a,b:1,br:1},{t:b,s:10,c:G.mute,f:nf}],size:Z(11),color:G.ink,lsp:.95,name:'成員'}));ch.forEach(c=>link(top,2,c,0,{mid:y+.76}));});
+  comp('F','窗口對照表','Contact matrix',C[5],(x,y,w,h)=>{[['品質問題','林維','QA'],['設備異常','黃承','EE'],['製程變更','孫宇','PE'],['交期排程','陳怡君','PM']].forEach(([a,b,c],i)=>{const yy=y+i*.36;T(x,yy,1.3,.32,a,{size:10.5,color:G.t2,wrap:0,name:'事項'});chev(x+1.34,yy+.09,.14,G.l1,1.25);
+   box(x+1.6,yy+.03,1.3,.26,{fill:i===3?P:'F2F2F2',r:'full',text:b,size:10.5,bold:1,color:i===3?W2:G.ink,margin:0,name:'窗口'});T(x+3.0,yy,w-3.0,.32,c,{size:10,color:G.mute,font:nf,wrap:0,name:'部門'});if(i<3)ln(x,yy+.34,x+w,yy+.34,{c:'EDEDED',w:.5});});
+   T(x,y+1.48,w,.26,'RACI 分工表見 D4·2',{size:10,color:G.mute,name:'說明'});});};
+ /* C1 KPI 卡 */
+ SL.kpi=()=>{title('KPI 卡 KPI Cards','單值、目標＋Δ、迷你趨勢、4 卡橫排、變化上色三卡、KPI 表列、大數字三欄：改數值 Δ 自動重算');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const AMB='E0A12B';
+  const nm=(x,y,w,zh,en)=>T(x,y,w,.28,[{t:zh,b:1,c:G.ink},{t:en?'  '+en:'',s:10,c:G.mute,f:nf}],{size:Z(11),wrap:0,name:'指標名稱'});
+  const num=(x,y,w,h,n,u,c,s,us,nm0)=>txt(x,y,w,h,[{t:n,s,b:1,c,f:nf},{t:u?' '+u:'',s:us||Z(11),c:G.mute,f:nf}],{valign:'middle',name:nm0||'數值'});
+  const sm=(x,y,w,t,o)=>T(x,y,w,.26,t,Object.assign({size:10,color:G.mute,wrap:0,name:'說明'},o||{}));
+  const r1={y:Y0,h:1.36},wA=3.2,wB=4.3,g=.3,wC=CW-wA-wB-2*g;
+  comp('A','單值大數字','Single KPI',{x:X0,y:r1.y,w:wA,h:r1.h},(x,y,w,h)=>{card(x,y,w,h);nm(x+.2,y+.12,1.9,'良率','Yield');sm(x+w-1.1,y+.12,.9,'2026 Q3',{align:'right',font:nf,name:'期間'});num(x+.2,y+.42,w-.4,.56,'98.6','%',P,Z(30));light(x+.28,y+1.12,.13,GOOD);sm(x+.42,y+.99,2.4,'達標 On target',{name:'燈號說明'});});
+  comp('B','數值＋目標＋Δ','Value vs target',{x:X0+wA+g,y:r1.y,w:wB,h:r1.h},(x,y,w,h)=>{card(x,y,w,h);nm(x+.2,y+.12,2.4,'CMP 良率','CMP yield');light(x+w-.98,y+.25,.13,GOOD);sm(x+w-.86,y+.12,.7,'正常',{name:'燈號說明'});
+   const v=num(x+.2,y+.44,2.1,.56,'96.8','%',DARK,Z(28));sm(x+.2,y+1.02,2.0,'W42 · 2026',{font:nf,name:'期間'});const cx0=x+2.4;ln(cx0-.12,y+.5,cx0-.12,y+1.2,{c:G.l2,w:.75});sm(cx0,y+.46,1.7,'目標 Target',{name:'欄名'});
+   const t=num(cx0,y+.7,.95,.28,'95.0','%',G.t2,Z(13),10,'目標值');sm(cx0,y+1.0,.95,'Δ vs 目標',{name:'欄名'});const bd=box(cx0+.96,y+.72,.86,.28,{fill:TN(GOOD),r:'full',text:'▲ +2%',size:10,bold:1,color:GOOD,font:nf,margin:0,name:'增減徽章'});bd.calc={a:cur.items.indexOf(t),b:cur.items.indexOf(v),m:'arrow'};});
+  comp('C','數值＋迷你趨勢','Sparkline',{x:X0+wA+wB+2*g,y:r1.y,w:wC,h:r1.h},(x,y,w,h)=>{card(x,y,w,h);nm(x+.2,y+.12,1.6,'產出','Output');sm(x+w-1.2,y+.12,1.0,'近 8 週',{align:'right',name:'期間'});num(x+.2,y+.44,1.9,.5,'1,240','片',DARK,Z(24));
+   T(x+.2,y+.98,1.9,.26,[{t:'▲ 8%',b:1,c:GOOD,f:nf},{t:'  vs 上週',c:G.mute}],{size:10,wrap:0,name:'增減'});const sx=x+2.1,sw=w-2.35,sy=y+.5,sh=.62,V=[3.1,3.6,3.3,4.2,3.9,4.6,4.4,5.2],px=i=>sx+i*sw/7,py=v=>sy+sh-(v-3)/2.4*sh;
+   ln(sx,sy+sh+.04,sx+sw,sy+sh+.04,{c:G.l2,w:.75});path(V.map((v,i)=>[px(i),py(v)]),{line:G.l1,lw:1.5,name:'趨勢線'});path(V.slice(-3).map((v,i)=>[px(i+5),py(v)]),{line:P,lw:2,name:'近期趨勢'});circ(px(7),py(V[7]),.11,{fill:P,line:W2,lw:1,name:'最新點'});});
+  const y2=3.62,h2=1.1,wD=7.4;
+  comp('D','4 卡橫排','KPI row',{x:X0,y:y2,w:wD,h:h2},(x,y,w,h)=>{const gw=.16,cw=(w-3*gw)/4;[['良率','98.6','%','▲ 0.4 pt',GOOD,GOOD],['產出','12.4','K','▲ 3%',GOOD,GOOD],['交期','7.2','天','▼ 0.5 天',GOOD,AMB],['客訴','3','件','▲ 1 件',BAD,BAD]].forEach(([zh,v,u,d,dc,lc],i)=>{const xx=x+i*(cw+gw);
+   card(xx,y,cw,h);box(xx+.14,y,.42,.05,{fill:i===0?P:G.l1,name:'頂邊色條'});T(xx+.14,y+.1,cw-.4,.26,zh,{size:Z(11),bold:1,color:G.ink,name:'指標名稱'});light(xx+cw-.2,y+.23,.12,lc);num(xx+.14,y+.38,cw-.28,.4,v,u,DARK,Z(20),10);T(xx+.14,y+.78,cw-.28,.24,d,{size:10,bold:1,color:dc,font:nf,wrap:0,name:'增減'});});});
+  comp('E','三卡（變化依好壞上色）','Better/worse',{x:X0+wD+g,y:y2,w:CW-wD-g,h:h2},(x,y,w,h)=>{const gw=.14,cw=(w-2*gw)/3;[['準時交貨','98.6','%','▲ 2.1 pt',1],['平均交期','6.2','天','▼ 1.8 天',1],['客訴','3','件','▲ 1 件',0]].forEach(([l,v,u,d,good],i)=>{const xx=x+i*(cw+gw);card(xx,y,cw,h);
+   T(xx+.12,y+.1,cw-.2,.26,l,{size:10.5,color:G.t2,wrap:0,name:'指標名稱'});num(xx+.12,y+.38,cw-.2,.4,v,u,i===0?P:G.ink,Z(20),10);T(xx+.12,y+.78,cw-.2,.24,d,{size:10,bold:1,color:good?GOOD:BAD,font:nf,wrap:0,name:'變化'});});});
+  const y3=5.08,h3=1.46;
+  comp('F','KPI 表列','KPI list',{x:X0,y:y3,w:7.4,h:h3},(x,y,w,h)=>{const cols=[0,2.6,4.0,5.4,6.4];['指標 Metric','實際','目標','燈號',''].forEach((t,i)=>T(x+cols[i],y,1.6,.26,t,{size:10,bold:1,color:G.mute,wrap:0,name:'欄頭'}));ln(x,y+.3,x+w,y+.3,{c:G.t2,w:1});
+   [['良率 Yield','98.6%','98.0%',GOOD,'達標'],['產出 Output','12.4K','13.0K',AMB,'注意'],['客訴 Complaints','3 件','≤ 2 件',BAD,'未達']].forEach(([a,b,c,col,s],i)=>{const yy=y+.36+i*.36;T(x,yy,2.5,.3,a,{size:11,color:G.ink,wrap:0,name:'指標'});T(x+cols[1],yy,1.3,.3,b,{size:Z(12),bold:1,color:G.ink,font:nf,wrap:0,name:'實際'});T(x+cols[2],yy,1.3,.3,c,{size:11,color:G.t2,font:nf,wrap:0,name:'目標'});
+    circ(x+cols[3]+.1,yy+.15,.16,{fill:col,name:'燈號'});T(x+cols[3]+.26,yy,.9,.3,s,{size:10.5,color:col,bold:1,wrap:0,name:'燈號說明'});ln(x,yy+.34,x+w,yy+.34,{c:'EDEDED',w:.5});});});
+  comp('G','大數字三欄','Big numbers',{x:X0+7.4+g,y:y3,w:CW-7.4-g,h:h3},(x,y,w,h)=>{const cw=w/3;[['98.6','%','良率'],['−30','%','交期'],['12','件','改善提案']].forEach(([v,u,l],i)=>{const xx=x+i*cw;if(i)ln(xx,y+.2,xx,y+h-.2,{c:G.l2,w:.75});num(xx+.12,y+.2,cw-.16,.66,v,u,i===0?P:G.ink,Z(28),Z(12));T(xx+.14,y+.92,cw-.2,.3,l,{size:11,color:G.t2,wrap:0,name:'說明'});});});};
+ /* C2 評比指標 */
+ SL.rating=()=>{title('評比指標 Ratings & Status','細／粗進度條、目標刻度進度、分段里程碑、Harvey ball、紅黃綠燈號、1–5 點數、星等：改 % 或分數自動重畫');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const AMB='E0A12B';const C=GRID(4,2,Y0,Y1);const sm=(x,y,w,t,o)=>T(x,y,w,.28,t,Object.assign({size:10.5,color:G.t2,wrap:0,name:'項目'},o||{}));
+  comp('A','細進度條','Thin progress',C[0],(x,y,w,h)=>{const lw=1.1,bw=w-lw-.6;[['設計','100%'],['驗證','65%'],['量產','30%']].forEach(([t,p],i)=>{const yy=y+.1+i*.46;sm(x,yy,lw,t);box(x+lw,yy+.11,bw,.07,{fill:'E6E6E6',r:'full',name:'進度底'});
+   const pt=T(x+lw+bw+.06,yy,.54,.28,p,{size:10.5,bold:1,color:i===1?P:G.t2,font:nf,align:'right',wrap:0,name:'百分比'});calc1(box(x+lw,yy+.11,bw*parseFloat(p)/100,.07,{fill:i===1?P:G.l1,r:'full',name:'進度條'}),pt,'pbar',{full:bw});});});
+  comp('B','粗進度條','Thick progress',C[1],(x,y,w,h)=>{const lw=.6,bw=w-lw,bh=.3;[['Q1','90%'],['Q2','60%'],['Q3','35%']].forEach(([t,p],i)=>{const yy=y+.06+i*.46;sm(x,yy+.01,lw,t,{font:nf});box(x+lw,yy,bw,bh,{fill:'EDEDED',r:'full',name:'進度底'});
+   const bar=box(x+lw,yy,bw*parseFloat(p)/100,bh,{fill:i===0?P:i===1?mix(P,'FFFFFF',.35):G.l1,r:'full',name:'進度條'});const pt=T(x+lw+.1,yy,.6,bh,p,{size:10.5,bold:1,color:i===2?G.ink:W2,font:nf,wrap:0,name:'百分比'});calc1(bar,pt,'pbar',{full:bw});});});
+  comp('C','進度＋目標刻度','Progress vs target',C[2],(x,y,w,h)=>{[['良率','86%',.9],['OEE','72%',.8],['準交','95%',.92]].forEach(([t,p,tg],i)=>{const yy=y+.1+i*.5,lw=.7,bw=w-lw-.6,v=parseFloat(p)/100;sm(x,yy,lw,t);box(x+lw,yy+.08,bw,.14,{fill:'EDEDED',r:'full',name:'進度底'});
+   const pt=T(x+lw+bw+.06,yy,.54,.28,p,{size:10.5,bold:1,color:v>=tg?GOOD:P,font:nf,align:'right',wrap:0,name:'百分比'});calc1(box(x+lw,yy+.08,bw*v,.14,{fill:v>=tg?GOOD:P,r:'full',name:'進度條'}),pt,'pbar',{full:bw});
+   ln(x+lw+bw*tg,yy,x+lw+bw*tg,yy+.3,{c:G.ink,w:1.5,name:'目標刻度'});});T(x,y+h-.3,w,.26,'│ 黑線＝目標，達標轉綠',{size:10,color:G.mute,name:'說明'});});
+  comp('D','分段里程碑進度','Milestone progress',C[3],(x,y,w,h)=>{const n=5,sw=w/n;['規劃','設計','試產','驗證','量產'].forEach((t,i)=>{const f=i<2?P:i===2?TN(P,.55):'E6E6E6';box(x+i*sw+.02,y+.4,sw-.04,.18,{fill:f,r:i===0||i===n-1?'full':0,name:'進度段'});
+   T(x+i*sw,y+.66,sw,.26,t,{size:10,color:i===2?P:G.t2,bold:i===2,align:'center',wrap:0,name:'里程碑'});});pill(x+2.5*sw-.42,y,.84,.28,'50%',P,{font:nf,size:10});ln(x+2.5*sw,y+.28,x+2.5*sw,y+.4,{c:P,w:1});
+   T(x,y+1.04,w,.5,'整段＝完成、半色＝進行中',{size:10,color:G.mute,valign:'top',name:'說明'});});
+  comp('E','Harvey ball','Harvey ball',C[4],(x,y,w,h)=>{const d=.42,sp=(w-d)/4;['0%','25%','50%','75%','100%'].forEach((p,i)=>{const cx0=x+d/2+i*sp,cy0=y+.4;circ(cx0,cy0,d,{fill:W2,line:G.t2,lw:1,name:'Harvey 外圈'});const lb=T(cx0-.3,y+.68,.6,.26,p,{size:10,color:G.t2,font:nf,align:'center',wrap:0,name:'評分'});
+   calc1(el('custGeom',cx0-d/2,cy0-d/2,d,d,{points:PIE(d/2,parseFloat(p)/100),fill:G.ink,name:'Harvey 扇形'}),lb,'hb');});T(x,y+1.06,w,.5,'0＝未符合 · 100＝完全符合\n（數字並列，色盲也讀得懂）',{size:10,color:G.mute,valign:'top',name:'說明'});});
+  comp('F','紅黃綠燈號','Status lights',C[5],(x,y,w,h)=>{box(x,y+.06,.4,1.1,{fill:DARK,r:'full',name:'燈號底'});[[GOOD,'正常 On track'],[AMB,'注意 At risk'],[BAD,'異常 Off track']].forEach(([c,t],i)=>{circ(x+.2,y+.26+i*.35,.22,{fill:c,name:'燈號'});T(x+.56,y+.12+i*.35,w-.56,.28,t,{size:Z(11),color:G.ink,wrap:0,name:'燈號說明'});});});
+  comp('G','1–5 點數','Dot rating',C[6],(x,y,w,h)=>{[['品質','4/5'],['成本','3/5'],['交期','5/5']].forEach(([t,v],i)=>{const yy=y+.1+i*.44;sm(x,yy,.8,t);const vt=T(x+w-.5,yy,.5,.28,v,{size:10,color:G.mute,font:nf,align:'right',wrap:0,name:'評分'});
+   for(let k=1;k<=5;k++)calc1(circ(x+.95+(k-1)*.26,yy+.14,.17,{fill:k<=parseFloat(v)?P:'E3E3E3',name:'評分點'}),vt,'dot',{k,on:P,off:'E3E3E3'});});});
+  comp('H','星等評分','Star rating',C[7],(x,y,w,h)=>{[['供應商 A','5'],['供應商 B','4'],['供應商 C','2']].forEach(([t,v],i)=>{const yy=y+.1+i*.44;sm(x,yy,1.0,t);for(let k=1;k<=5;k++)icon('star',x+1.05+(k-1)*.28,yy+.02,.24,{color:k<=+v?AMB:'D9D9D9'});T(x+w-.4,yy,.4,.28,v+'.0',{size:10,color:G.mute,font:nf,align:'right',wrap:0,name:'評分'});});});};
+ /* C4 圖表佔位與圖例 */
+ SL.chart=()=>{title('圖表佔位與圖例 Chart Kit','圖表用 SwiffChart 製作；這裡是佔位框、結論列、圖例、單位與來源');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const CL={x:X0,y:Y0,w:6.6,h:4.62};
+  comp('A','圖表佔位 16:9（含結論列）','Chart frame',CL,(x,y,w,h)=>{T(x,y,w,.34,'良率三週回升，W42 達 98.6%',{size:Z(15),bold:1,color:G.ink,name:'圖表標題'});T(x,y+.34,w,.26,'B 線週良率 %，W30–W42',{size:10.5,color:G.mute,name:'單位'});
+   box(x,y+.68,w,h-1.22,{fill:'FAFAFA',line:G.l2,lw:.75,dash:'dash',r:.06,name:'圖表佔位'});icon('bar_chart',x+w/2-.4,y+.68+(h-1.22)/2-.6,.8,{color:'C8C8C8'});T(x,y+.68+(h-1.22)/2+.28,w,.3,'把 SwiffChart 產生的圖表貼在這裡',{size:11,color:G.mute,align:'center',name:'佔位說明'});
+   T(x,y+.68+(h-1.22)/2+.58,w,.26,'github.com/hctsaik/swiffchart-web-preview',{size:10,color:P,align:'center',font:nf,name:'SwiffChart 連結'});
+   box(x,y+h-.46,w,.4,{fill:TN(P,.92),r:.06,name:'結論列底'});pill(x+.08,y+h-.4,.64,.28,'結論',DARK,{size:10});T(x+.82,y+h-.46,w-.9,.4,'CMP 參數優化後連續 3 週高於目標 98.0%',{size:11,color:G.ink,name:'結論句'});});
+  const C=[];const rx=X0+6.9,rw=CW-6.9;[0,1,2,3,4,5].forEach(i=>{const c=i%2,r=Math.floor(i/2),w=(rw-.3)/2;C.push({x:rx+c*(w+.3),y:Y0+r*1.66,w,h:1.3});});
+  comp('B','圖例（橫式）','Legend row',C[0],(x,y,w,h)=>{[[P,'本廠'],[G.l1,'同業'],[AC2,'目標']].forEach(([c,t],i)=>{const xx=x+i*(w/3);box(xx,y+.12,.22,.16,{fill:c,r:.03,name:'色塊'});T(xx+.28,y+.06,w/3-.3,.28,t,{size:10.5,color:G.t2,wrap:0,name:'圖例'});});T(x,y+.56,w,.5,'色塊緊貼文字、放在圖的正上方',{size:10,color:G.mute,valign:'top',name:'說明'});});
+  comp('C','圖例（直式）','Legend column',C[1],(x,y,w,h)=>{[[P,'A 線 98.6%'],[G.t2,'B 線 97.1%'],[G.l1,'C 線 95.4%']].forEach(([c,t],i)=>{const yy=y+.06+i*.38;box(x,yy+.07,.22,.16,{fill:c,r:.03,name:'色塊'});T(x+.3,yy,w-.3,.3,t,{size:10.5,color:G.ink,font:nf,wrap:0,name:'圖例'});});});
+  comp('D','線型圖例','Line legend',C[2],(x,y,w,h)=>{[['solid',P,'實際'],['dash',G.t2,'預測'],['sysDot',AL,'管制上限']].forEach(([d,c,t],i)=>{const yy=y+.2+i*.38;ln(x,yy,x+.5,yy,{c,w:2,dash:d});T(x+.6,yy-.15,w-.6,.3,t,{size:10.5,color:G.t2,wrap:0,name:'圖例'});});});
+  comp('E','符號圖例','Marker legend',C[3],(x,y,w,h)=>{circ(x+.11,y+.2,.16,{fill:P,name:'符號'});T(x+.3,y+.05,w-.3,.3,'量測點',{size:10.5,color:G.t2,name:'圖例'});el('diamond',x+.02,y+.48,.18,.18,{fill:DARK,name:'符號'});T(x+.3,y+.42,w-.3,.3,'里程碑',{size:10.5,color:G.t2,name:'圖例'});
+   AN.ring(x+.11,y+.94,.22,.22);T(x+.3,y+.79,w-.3,.3,'異常圈選',{size:10.5,color:G.t2,name:'圖例'});});
+  comp('F','單位＋資料來源','Unit & source',C[4],(x,y,w,h)=>{T(x,y,w,.28,[{t:'單位：',b:1,c:G.t2},{t:'%，晶圓數加權'}],{size:10.5,color:G.mute,name:'單位'});ln(x,y+.4,x+w,y+.4,{c:G.l2,w:.75});T(x,y+.46,w,.5,[{t:'資料來源：',b:1,c:G.t2},{t:'MES／YMS，W30–W42'}],{size:10,color:G.mute,valign:'top',name:'來源'});});
+  comp('G','SwiffChart 入口卡','Get charts',C[5],(x,y,w,h)=>{card(x,y,w,h,{line:P,lw:1});icon('bar_chart',x+.16,y+.18,.44,{variant:'solid'});T(x+.7,y+.12,w-.8,.3,'需要圖表？',{size:Z(12),bold:1,color:G.ink,name:'標題'});T(x+.7,y+.42,w-.8,.5,'到 SwiffChart 做原生\n可編輯圖表 ↗',{size:10,color:G.t2,valign:'top',name:'說明'});});};
+ /* D1·2 前後對比零件（原 As Was／To Be 版型拆成零件） */
+ SL.asis=()=>{title('前後對比 · 版型零件 Before & After Kit','大字對比條、倍數徽章、指標對照表、四行動方塊、編號說明列、三行重點句：自由拼成一頁');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const SOFT=TN(P,.92),CARD='F7F7F7';
+  comp('A','大字對比條','Big contrast bar',{x:X0,y:Y0,w:CW/2,h:.9},(x,y,w0,h)=>{const w=CW,AG=.62,cw=(w-AG)/2;[[0,'As Was','2000',0],[1,'To Be','4000',1]].forEach(([i,lab,num,hi])=>{const xx=x+i*(cw+AG);box(xx,y,cw,h,{fill:hi?P:CARD,r:.12,sh:'card',force:1,name:lab+' 卡'});
+   box(xx+.26,y+.21,1.5,.48,{fill:hi?W2:DARK,r:'full',text:lab,size:Z(18),bold:1,color:hi?P:W2,margin:0,name:lab+' 標籤'});T(xx+2.0,y,cw-2.2,h,[{t:'銷售額 ',s:Z(18),c:hi?W2:G.t2},{t:num,s:Z(32),b:1,c:hi?W2:G.t2,f:nf},{t:' 元',s:Z(18),c:hi?W2:G.t2}],{size:18,wrap:0,name:lab+' 數值'});});
+});
+  grp('倍數徽章＋箭頭',()=>{const cw=(CW-.62)/2,ax=X0+cw+.31,ay=Y0+.45;circ(ax,ay,.46,{fill:W2,line:G.line,lw:1,name:'箭頭底'});path([[ax-.07,ay-.12],[ax+.07,ay],[ax-.07,ay+.12]],{line:G.t2,lw:2.75,name:'箭頭'});box(X1-.98,Y0-.2,.86,.38,{fill:DARK,r:.19,text:'×2',size:14,bold:1,color:W2,margin:0,name:'倍數徽章'});});
+  T(X0+CW/2+.6,Y0+.94,CW/2-.6,.24,'B｜倍數徽章＋箭頭 Multiplier',{size:10,color:G.mute,name:'圖說'});
+  const ty=3.32;
+  comp('C','四行動方塊','4 action tiles',{x:X0,y:ty,w:5.9,h:.84},(x,y,w,h)=>{const bw=1.34,g=(w-4*bw)/3;[['鎖客群','抓需求'],['升方案','提單價'],['拓通路','接線上'],['顧回購','養忠誠']].forEach(([a,b],i)=>{const hi=i===2;box(x+i*(bw+g),y,bw,h,{fill:hi?P:CARD,line:hi?null:G.line,lw:.75,r:.09,sh:hi?'card':null,force:hi?1:0,text:a+'\n'+b,size:Z(16),bold:1,lsp:.9,margin:0,color:hi?W2:G.ink,name:'行動 '+(i+1)});});});
+  comp('D','編號說明列','Numbered notes',{x:X0,y:4.6,w:5.9,h:1.9},(x,y,w,h)=>{const lh=h/4;[['鎖客群抓需求','聚焦高價值客群，停掉低毛利通路'],['升方案提單價','推出加值方案，客單價 20 → 25 元'],['拓通路接線上','線上預約與會員，客戶數 +60%'],['顧回購養忠誠','回購提醒與專屬服務，回購率翻倍']].forEach(([a,b],i)=>{const yy=y+i*lh,hi=i===2;
+   circ(x+.15,yy+lh/2,.28,{fill:hi?P:DARK,text:String(i+1),size:10.5,bold:1,color:W2,margin:0,name:'說明編號'});T(x+.4,yy,w-.4,lh,[{t:a+'　',b:1,c:hi?P:G.ink},{t:b,c:G.t2}],{size:Z(12),wrap:0,name:'行動說明'});});});
+  comp('E','指標對照表（原生表格）','Metric table',{x:X0+6.2,y:ty,w:CW-6.2,h:2.0},(x,y,w,h)=>{const cw=[w*.34,w*.33,w*.33];const rows=[['指標','As Was','To Be'],['銷售額','2000 元','4000 元'],['客戶數','100 人','160 人'],['客單價','20 元','25 元'],['回購率','15%','30%']];
+   table(x,y,cw,[.38,.4,.4,.4,.4],rows.map((r,ri)=>r.map((c,ci)=>{const o={t:c,size:Z(14),bB:{c:G.line,w:.75}};if(ri===0)Object.assign(o,{fill:ci===2?P:DARK,color:W2,bold:1,size:Z(13),bB:null});else if(ci===0)Object.assign(o,{bold:1,color:G.t2,align:'left',fill:'FAFAFA'});else if(ci===2)Object.assign(o,{bold:1,color:P,fill:SOFT});else Object.assign(o,{color:G.t2});return o;})),{name:'As Was／To Be 對照表',mL:10});});
+  comp('F','三行重點句','3 key lines',{x:X0+6.2,y:5.68,w:CW-6.2,h:.84},(x,y,w,h)=>{['鎖定高價值客群，銷售額 2000 → 4000 元','客戶數與客單價同步成長，回購率翻倍','四項行動依序推進，每月追蹤'].forEach((t,i)=>{const yy=y+i*.28;circ(x+.06,yy+.14,.08,{fill:G.g7,name:'項目符號'});T(x+.2,yy,w-.2,.28,t,{size:Z(12),color:G.ink,wrap:0,name:'重點句'});});});};
+ /* D2·2 表格與方案比較 */
+ SL.cmp3=()=>{title('表格與方案比較 Tables & Options','改善前後表、三方案比較、優缺點、加權評分、功能勾選、二選一推薦：表格皆為原生 PowerPoint 表格');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(3,2,Y0,Y1);const bH={c:P,w:1.25},bR={c:G.l2,w:.5};
+  comp('A','改善前後對照表','Before/after table',C[0],(x,y,w,h)=>{const c0=1.1,c1=(w-c0)/2;table(x,y,[c0,c1,c1],[.36,.38,.38,.38,.38],[[{t:'項目',bold:1,color:G.t2,align:'left',bB:bH},{t:'改善前',bold:1,color:G.t2,fill:'F2F2F2',bB:{c:G.line,w:1.25}},{t:'改善後',bold:1,color:W2,fill:P,bB:bH}]]
+   .concat([['交期','10 天','6 天'],['不良率','3.2%','1.1%'],['人力','5 人','3 人'],['客訴','8 件','2 件']].map(r=>[{t:r[0],align:'left',bB:bR},{t:r[1],color:G.mute,bB:bR,font:nf},{t:r[2],color:P,bold:1,bB:bR,font:nf,size:Z(12)}])),{size:Z(11),name:'前後對照表'});});
+  comp('B','三方案比較','3 options',C[1],(x,y,w,h)=>{const g=.12,cw=(w-2*g)/3,hh=.42;[['方案 A',['低成本','2 週','擴充有限']],['方案 B',['中成本','4 週','擴充佳']],['方案 C',['高成本','8 週','最佳']]].forEach(([zh,rows],i)=>{const xx=x+i*(cw+g),hi=i===1;
+   box(xx,y,cw,h,{fill:W2,line:hi?P:G.l2,lw:hi?1.75:1,r:.08,sh:hi?1:0,name:hi?'推薦方案':'方案'});topRound(xx,y,cw,hh,.08,{fill:hi?P:'F2F2F2',name:'表頭'});T(xx,y,cw,hh,zh,{size:Z(12),bold:1,color:hi?W2:G.ink,align:'center',wrap:0,name:'方案名稱'});
+   rows.forEach((r,j)=>T(xx+.1,y+hh+.1+j*.34,cw-.2,.3,r,{size:Z(11),bold:hi,color:hi?P:G.ink,align:'center',wrap:0,name:'內容'}));if(hi)pill(xx+cw/2-.4,y+h-.36,.8,.26,'推薦',AC2,{size:10});});});
+  comp('C','優缺點雙欄','Pros & cons',C[2],(x,y,w,h)=>{const cw=(w-.2)/2;[['優點 Pros',GOOD,['導入快','成本低','風險小']],['缺點 Cons',BAD,['擴充有限','需人工','依賴廠商']]].forEach(([t,c,L],i)=>{const xx=x+i*(cw+.2);box(xx,y,cw,.34,{fill:TN(c,.88),r:'full',text:t,size:Z(11),bold:1,color:mix(c,'000000',.15),margin:0,name:'欄名'});
+   L.forEach((s,j)=>{const yy=y+.5+j*.38;T(xx+.08,yy,.3,.3,i?'✕':'✓',{size:Z(12),bold:1,color:c,name:'符號'});T(xx+.36,yy,cw-.4,.3,s,{size:Z(11.5),color:G.ink,wrap:0,name:'項目'});});});});
+  comp('D','加權評分表','Weighted scoring',C[3],(x,y,w,h)=>{const c0=1.0,cw=(w-c0-.6)/3;const rows=[['準則','權重','A','B','C'],['成本','40%','3','4','2'],['時程','30%','4','3','2'],['擴充','30%','2','4','5'],['加權','','3.0','3.7','2.9']];
+   table(x,y,[c0,.6,cw,cw,cw],[.34,.34,.34,.34,.38],rows.map((r,ri)=>r.map((c,ci)=>{const o={t:c,bB:bR,font:ci?nf:undefined};if(ri===0)Object.assign(o,{bold:1,color:ci===3?W2:G.t2,fill:ci===3?P:null,bB:bH});if(ci===0)o.align='left';if(ci===3&&ri>0)Object.assign(o,{fill:TN(P,.9),color:P,bold:1});if(ri===4)Object.assign(o,{bold:1,size:Z(12),bT:{c:G.t2,w:1}});return o;})),{size:Z(11),name:'加權評分表'});});
+  comp('E','功能勾選比較表','Feature check',C[4],(x,y,w,h)=>{const c0=1.6,cw=(w-c0)/3;const rows=[['功能','本案','現行','競品'],['即時看板','✓','✕','✓'],['自動警示','✓','✕','✕'],['行動版','✓','✓','✕'],['API 串接','✓','✕','✓']];
+   table(x,y,[c0,cw,cw,cw],[.34,.36,.36,.36,.36],rows.map((r,ri)=>r.map((c,ci)=>{const o={t:c,bB:bR};if(ri===0)Object.assign(o,{bold:1,color:ci===1?W2:G.t2,fill:ci===1?P:null,bB:bH});else if(ci===0)o.align='left';else Object.assign(o,{color:c==='✓'?(ci===1?P:GOOD):G.l1,bold:1,size:Z(12),fill:ci===1?TN(P,.92):null});return o;})),{size:Z(11),name:'功能比較表'});});
+  comp('F','二選一推薦卡','A vs B',C[5],(x,y,w,h)=>{const cw=(w-.5)/2;[['A 方案','外包','3 個月 · 120 萬',0],['B 方案','自建','5 個月 · 80 萬',1]].forEach(([a,b,c,hi],i)=>{const xx=x+i*(cw+.5);card(xx,y+.12,cw,h-.12,hi?{line:P,lw:1.5}:{});if(hi)pill(xx+cw-.9,y,.8,.26,'推薦',P,{size:10});
+   T(xx+.18,y+.3,cw-.3,.3,a,{size:10.5,color:G.mute,bold:1,name:'方案'});T(xx+.18,y+.6,cw-.3,.4,b,{size:Z(18),bold:1,color:hi?P:G.ink,name:'方案名稱'});T(xx+.18,y+1.06,cw-.3,.3,c,{size:10.5,color:G.t2,font:nf,wrap:0,name:'成本時程'});});
+   T(x+cw,y+.62,.5,.4,'VS',{size:Z(13),bold:1,color:G.l1,align:'center',font:nf,name:'VS'});});};
+ /* D3 矩陣與風險 */
+ SL.mtx=()=>{title('矩陣與風險 Matrix, SWOT & Risk','2×2 矩陣、5×5 風險熱圖、3×3 九宮格、SWOT（完整／橫列）、十字定位：軸標題、象限與泡泡皆可改字');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(3,2,Y0,Y1);const AMB='E0A12B';
+  comp('A','2×2 矩陣','2×2 matrix',C[0],(x,y,w,h)=>{const ox=x+.3,oy=y+h-.3,qw=(w-.4)/2,qh=(h-.4)/2;ln(ox,oy,ox,y,{c:G.t2,w:1.25,head:'triangle'});ln(ox,oy,x+w,oy,{c:G.t2,w:1.25,head:'triangle'});
+   T(x-.04,y-.02,.3,.6,'影響',{size:10,color:G.t2,bold:1,name:'Y 軸'});T(x+w-1.0,oy+.02,1.0,.26,'執行難度',{size:10,bold:1,color:G.t2,align:'right',wrap:0,name:'X 軸'});
+   [[0,0,'速贏','Quick wins',1],[1,0,'重大專案','Major'],[0,1,'順手做','Fill-ins'],[1,1,'避免','Thankless']].forEach(([c,r,t,e,hi])=>{const xx=ox+.06+c*qw,yy=y+.04+r*qh;box(xx,yy,qw-.08,qh-.08,{fill:hi?TN(P,.88):'F5F5F5',line:hi?P:null,lw:1.25,r:.06,name:'象限'});
+    T(xx+.1,yy+.06,qw-.3,.28,[{t,b:1},{t:' '+e,s:10,b:0,c:G.mute,f:nf}],{size:Z(11),color:hi?P:G.ink,wrap:0,name:'象限標題'});});circ(ox+.7,y+.6,.32,{fill:P,line:W2,lw:1.5,text:'A',size:10,bold:1,color:W2,margin:0,name:'泡泡'});});
+  comp('B','5×5 風險熱圖','Risk heatmap',C[1],(x,y,w,h)=>{const lw=.5,cs=Math.min((w-lw-.1)/5,(h-.36)/5);const col=s=>s>=15?BAD:s>=8?AMB:s>=4?mix(GOOD,'FFFFFF',.35):mix(GOOD,'FFFFFF',.6);
+   for(let r=0;r<5;r++)for(let c=0;c<5;c++){const s=(5-r)*(c+1);box(x+lw+c*cs,y+r*cs,cs-.03,cs-.03,{fill:col(s),ft:15,r:.03,name:'熱圖格'});}
+   T(x,y,lw-.06,5*cs,'機率',{size:10,bold:1,color:G.t2,align:'center',name:'Y 軸'});T(x+lw,y+5*cs+.02,5*cs,.28,'影響 Impact →',{size:10,bold:1,color:G.t2,align:'center',wrap:0,name:'X 軸'});
+   [['R1',1,3],['R2',3,1],['R3',2,4]].forEach(([t,r,c])=>circ(x+lw+(c+.5)*cs,y+(r+.5)*cs,.3,{fill:DARK,line:W2,lw:1,text:t,size:10,bold:1,color:W2,margin:0,font:nf,name:'風險點'}));
+   const lx=x+lw+5*cs+.16;[[BAD,'高'],[AMB,'中'],[mix(GOOD,'FFFFFF',.35),'低']].forEach(([c,t],i)=>{box(lx,y+.1+i*.36,.2,.2,{fill:c,r:.03,name:'色塊'});T(lx+.26,y+.06+i*.36,.5,.28,t,{size:10,color:G.t2,name:'圖例'});});});
+  comp('C','3×3 九宮格','3×3 grid',C[2],(x,y,w,h)=>{const lw=.5,cw=(w-lw)/3,ch=(h-.3)/3;['高','中','低'].forEach((t,r)=>T(x,y+r*ch,lw-.06,ch,t,{size:10,color:G.t2,bold:1,align:'center',name:'列名'}));['低','中','高'].forEach((t,c)=>T(x+lw+c*cw,y+3*ch,cw,.28,t,{size:10,color:G.t2,bold:1,align:'center',name:'欄名'}));
+   for(let r=0;r<3;r++)for(let c=0;c<3;c++){const sc=(2-r)+c;box(x+lw+c*cw,y+r*ch,cw-.04,ch-.04,{fill:sc>=4?P:sc>=2?TN(P,.75):'F2F2F2',r:.04,text:sc>=4?'明星':sc===3?'潛力':'',size:10.5,bold:1,color:sc>=4?W2:PD,name:'九宮格'});}});
+  comp('D','SWOT','SWOT',C[3],(x,y,w,h)=>{const g=.08,cw=(w-g)/2,ch=(h-g)/2;[['S','優勢','製程良率領先',P],['W','劣勢','產能吃緊',G.t2],['O','機會','AI 晶片需求',AC2],['T','威脅','價格競爭',DARK]].forEach(([k,zh,it,c],i)=>{const xx=x+(i%2)*(cw+g),yy=y+Math.floor(i/2)*(ch+g);
+   card(xx,yy,cw,ch);box(xx+.1,yy+.12,.42,.42,{fill:c,r:.06,text:k,size:Z(16),bold:1,color:lum(c)>.55?G.ink:W2,font:nf,margin:0,name:'SWOT 字母'});T(xx+.6,yy+.1,cw-.7,.28,zh,{size:Z(12),bold:1,color:G.ink,name:'象限標題'});T(xx+.6,yy+.38,cw-.7,.4,it,{size:10.5,valign:'top',name:'項目'});});});
+  comp('E','SWOT 橫列（精簡）','SWOT compact',C[4],(x,y,w,h)=>{const cw=(w-.24)/4;[['S','優勢','良率領先',P],['W','劣勢','產能吃緊',G.t2],['O','機會','AI 需求',AC2],['T','威脅','價格戰',DARK]].forEach(([k,zh,it,c],i)=>{const xx=x+i*(cw+.08);box(xx,y,cw,.42,{fill:c,r:.06,text:k+' '+zh,size:Z(11),bold:1,color:lum(c)>.55?G.ink:W2,margin:0,name:'SWOT 欄頭'});
+   box(xx,y+.48,cw,h-.48,{fill:'F7F7F7',r:.06,name:'SWOT 內容底'});T(xx+.08,y+.56,cw-.16,h-.64,it,{size:10.5,color:G.ink,valign:'top',name:'項目'});});});
+  comp('F','十字定位','Positioning cross',C[5],(x,y,w,h)=>{const cx0=x+w/2,cy0=y+h/2;ln(x+.4,cy0,x+w-.4,cy0,{c:G.line,w:1});ln(cx0,y+.2,cx0,y+h-.2,{c:G.line,w:1});circ(cx0,cy0,.7,{fill:P,line:W2,lw:2,sh:'small',text:'定位',size:Z(11),bold:1,color:W2,margin:0,name:'中心圓'});
+   [['吸引',-1,-1],['實用',1,-1],['好記',-1,1],['可信',1,1]].forEach(([t,sx,sy],i)=>tag(cx0+sx*.9,cy0+sy*.5-.15,t,{anchor:'center',size:10.5,h:.3,tone:i===1?'p':'g'}));T(cx0-.6,y-.04,1.2,.26,'具體',{size:10,color:G.t2,align:'center',name:'軸'});T(cx0-.6,y+h-.2,1.2,.26,'抽象',{size:10,color:G.t2,align:'center',name:'軸'});});};
+ /* D4·2 管理框架 */
+ SL.rca2=()=>{title('原因分析 · 管理框架 Fishbone, 8D & RACI','魚骨圖 6M、8D 步驟條、問題陳述卡、問題→原因→對策、RACI 分工、PDCA：8D／異常報告常用');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();
+  comp('A','魚骨圖 6M','Fishbone',{x:X0,y:Y0,w:7.3,h:2.5},(x,y,w,h)=>{const sy=y+h/2,hx=x+w-1.5;ln(x+.1,sy,hx,sy,{c:G.t2,w:2,head:'triangle',hs:'lg'});box(hx+.05,sy-.4,1.45,.8,{fill:W2,line:AL,lw:1.75,r:.08,text:[{t:'問題',b:1,c:ALd,br:1},{t:'不良率上升',s:10.5,c:G.ink}],size:Z(12),lsp:1.05,name:'問題'});
+   const M=[['人','新人不熟'],['機','參數漂移'],['料','批次差異'],['法','SOP 未更新'],['環','溫濕波動'],['測','量測誤差']];M.forEach(([k,t],i)=>{const top=i<3,j=i%3,bx=x+.6+j*(hx-x-.6)/3+.9,ey=top?y+.18:y+h-.18;ln(bx-.55,ey,bx,sy,{c:G.l1,w:1.25});
+    box(bx-1.0,top?ey-.14:ey-.16,.44,.3,{fill:i===1||i===3?P:DARK,r:'full',text:k,size:10.5,bold:1,color:W2,margin:0,name:'骨名'});T(bx-.5,top?ey-.16:ey-.16,1.2,.32,t,{size:10.5,color:G.ink,wrap:0,name:'原因'});});});
+  comp('B','8D 步驟條','8D steps',{x:X0+7.6,y:Y0,w:CW-7.6,h:1.0},(x,y,w,h)=>{const n=8,sw=(w+(n-1)*.05)/n;['團隊','描述','圍堵','根因','對策','驗證','預防','結案'].forEach((t,i)=>{const f=i<4?DARK:i===4?P:'E6E6E6';el(i?'chevron':'homePlate',x+i*(sw-.05),y,sw,.44,{fill:f,adj:.1,text:'D'+(i+1),size:10,bold:1,color:lum(f)>.55?G.t2:W2,font:nf,margin:0,name:'8D 步驟'});
+   T(x+i*(sw-.05),y+.5,sw,.26,t,{size:10,color:i===4?P:G.t2,bold:i===4,align:'center',wrap:0,name:'步驟名'});});});
+  comp('C','問題陳述卡','Problem statement',{x:X0+7.6,y:Y0+1.36,w:CW-7.6,h:1.14},(x,y,w,h)=>{card(x,y,w,h,{line:AL,lw:1.25});const cw=w/4;[['What','CMP 刮傷'],['Where','B 線 #3'],['When','W40 起'],['How much','+0.8%']].forEach(([k,v],i)=>{const xx=x+i*cw;if(i)ln(xx,y+.18,xx,y+h-.18,{c:G.l2,w:.75});
+   T(xx+.12,y+.14,cw-.2,.26,k,{size:10,bold:1,color:ALd,font:nf,wrap:0,name:'欄名'});T(xx+.12,y+.46,cw-.2,.5,v,{size:Z(12),bold:1,color:G.ink,valign:'top',name:'內容'});});});
+  const y2=4.78,h2=1.72,cw3=(CW-.6)/3;
+  comp('D','問題 → 原因 → 對策','Problem → cause → action',{x:X0,y:y2,w:cw3,h:h2},(x,y,w,h)=>{const bw=(w-.6)/3;const B=[['問題','交期延誤',{fill:W2,line:AL,lw:1.5,c:ALd}],['原因','排程未同步',{fill:'F2F2F2',c:G.ink}],['對策','每週排程會',{fill:P,c:W2}]].map(([a,b,L],i)=>box(x+i*(bw+.3),y+.1,bw,h-.2,{fill:L.fill,line:L.line,lw:L.lw,r:.08,lsp:1.1,
+   text:[{t:a,b:1,s:Z(13),c:L.c,br:1},{t:b,s:10.5,c:L.c===W2?W2:G.t2}],size:Z(12),name:a}));link(B[0],3,B[1],1);link(B[1],3,B[2],1);});
+  comp('E','RACI 分工表','RACI',{x:X0+cw3+.3,y:y2,w:cw3,h:h2},(x,y,w,h)=>{const roles=['PM','製程','品保','設備'],c0=1.2,cr=(w-c0)/4,rh=.3;const M=[['A','R','C','I'],['A','C','R','I'],['I','A','C','R']];
+   table(x,y,[c0,cr,cr,cr,cr],[rh,rh,rh,rh],[[{t:'工作',bold:1,color:G.t2,align:'left',bB:{c:P,w:1.25}}].concat(roles.map(r=>({t:r,bold:1,bB:{c:P,w:1.25}})))].concat(['需求定義','製程驗證','設備改造'].map(t=>[{t,align:'left',bB:{c:G.l2,w:.5}}].concat(roles.map(()=>({t:'',bB:{c:G.l2,w:.5}}))))),{size:10.5,name:'RACI 表格'});
+   const look={R:[P,W2],A:[AC2,W2],C:[TN(P,.8),PD],I:[W2,G.t2]};M.forEach((row,i)=>row.forEach((k,j)=>{const [f,c]=look[k];box(x+c0+cr*(j+.5)-.18,y+rh*(i+1.5)-.11,.36,.22,{fill:f,line:k==='I'?G.line:null,lw:.75,r:'full',text:k,size:10,bold:1,color:c,margin:0,font:nf,name:'RACI 標記'});}));
+   let lx=x;[['R','執行'],['A','當責'],['C','諮詢'],['I','知會']].forEach(([k,t])=>{T(lx,y+4*rh+.08,.9,.26,[{t:k+' ',b:1,c:P,f:nf},{t}],{size:10,color:G.t2,wrap:0,name:'圖例'});lx+=w/4;});});
+  comp('F','PDCA 循環','PDCA',{x:X0+2*(cw3+.3),y:y2,w:cw3,h:h2},(x,y,w,h)=>{const bw=(w-.5)/2,bh=(h-.36)/2;const S=[['P','計畫'],['D','執行'],['C','查核'],['A','行動']];const pos=[[0,0],[1,0],[1,1],[0,1]];
+   const B=S.map(([k,t],i)=>box(x+pos[i][0]*(bw+.5),y+pos[i][1]*(bh+.36),bw,bh,{fill:i===0?P:W2,line:i===0?null:G.l1,lw:1.25,r:.08,text:[{t:k+' ',b:1,s:Z(15),f:nf},{t,s:Z(12),b:1}],size:12,color:i===0?W2:G.ink,name:'PDCA '+k}));
+   link(B[0],3,B[1],1);link(B[1],2,B[2],0);link(B[2],1,B[3],3);link(B[3],0,B[0],2);});};
+ /* D5 決策與下一步 */
+ SL.decide=()=>{title('決策與下一步 Decision & Next Steps','行動項目表、決策倒數、決策框、三段下一步、行動卡、需要的支援');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const AMB='E0A12B';
+  comp('A','行動項目表（原生表格）','Action items',{x:X0,y:Y0,w:5.5,h:2.3},(x,y,w,h)=>{const cw=[.4,2.45,.85,.75,1.05];const S={完成:GOOD,進行中:P,延遲:BAD};const rows=[['#','行動 Action','負責','到期','狀態'],['1','鎖定 CMP 參數並更新 SOP','陳怡君','10/25','完成'],['2','B 線擴線產能評估','黃承','11/08','進行中'],['3','供應商來料批次管制','林維','11/15','延遲'],['4','C 線導入計畫提報','孫宇','11/30','進行中']];
+   table(x,y,cw,[.38,.46,.46,.46,.46],rows.map((r,ri)=>r.map((c,ci)=>{const o={t:c,bB:{c:G.l2,w:.5}};if(ri===0)Object.assign(o,{bold:1,color:W2,fill:DARK,bB:null});else{if(ci===1)o.align='left';if(ci===0)Object.assign(o,{bold:1,color:P,font:nf});if(ci===3)o.font=nf;if(ci===4)Object.assign(o,{bold:1,color:S[c],t:'● '+c});}return o;})),{size:Z(11),name:'行動項目表'});});
+  comp('B','決策倒數','Countdown',{x:X0+5.75,y:Y0,w:1.7,h:2.3},(x,y,w,h)=>{card(x,y,w,h);T(x,y+.14,w,.28,'距決策期限',{size:10.5,color:G.t2,align:'center',wrap:0,name:'標題'});
+   T(x,y+.46,w,.78,[{t:'18',s:Z(36),b:1,c:P,f:nf},{t:' 天',s:Z(13),c:G.ink}],{align:'center',wrap:0,name:'倒數'});const bw=w-.4;box(x+.2,y+1.36,bw,.1,{fill:G.l2,r:'full',name:'進度底'});box(x+.2,y+1.36,bw*.6,.1,{fill:P,r:'full',name:'進度'});
+   T(x,y+1.56,w,.26,'11/05 前回覆',{size:10.5,bold:1,color:G.ink,align:'center',wrap:0,name:'期限'});T(x,y+1.86,w,.26,'已過 60%',{size:10,color:G.mute,align:'center',wrap:0,name:'註'});});
+  comp('C','決策框（強調）','Decision box',{x:X0+7.7,y:Y0,w:CW-7.7,h:2.3},(x,y,w,h)=>{box(x,y,w,h,{fill:TN(P,.92),r:.1,name:'決策底'});pill(x+.2,y+.16,1.6,.32,'需要您決定',DARK,{size:Z(11)});T(x+1.92,y+.16,w-2.0,.32,'11/05 前',{size:10.5,color:G.mute,font:nf,name:'期限'});
+   [['A','B 線擴線（推薦）','+12% 產能 · 投資 2.4 億 · 6 個月',1],['B','維持現況','零投資 · Q2 起產能不足']].forEach(([k,t,s,rec],i)=>{const yy=y+.62+i*.8;box(x+.2,yy,w-.4,.68,{fill:W2,line:rec?P:G.l2,lw:rec?1.5:.75,r:.08,name:'選項'});bdg(x+.48,yy+.34,.36,k,rec?P:'BFBFBF');
+    T(x+.78,yy+.06,w-1.1,.3,t,{size:Z(12),bold:1,color:rec?P:G.ink,wrap:0,name:'選項名'});T(x+.78,yy+.36,w-1.1,.26,s,{size:10.5,color:G.t2,wrap:0,name:'影響'});});});
+  const y2=4.62,h2=1.88;
+  comp('D','三段下一步','Next steps timeline',{x:X0,y:y2,w:5.2,h:h2},(x,y,w,h)=>{const cw=(w-.4)/3;[['本週','This week',['鎖定參數','SOP 發行']],['下月','Next month',['B 線評估','人員訓練']],['下季','Next quarter',['C 線導入','成本覆盤']]].forEach(([a,b,L],i)=>{const xx=x+i*(cw+.2);
+   el(i?'chevron':'homePlate',xx,y,cw+.12,.42,{fill:i===0?P:i===1?TN(P,.4):'E6E6E6',adj:.14,text:a,size:Z(11.5),bold:1,color:i<2?W2:G.t2,margin:0,name:'階段'});T(xx,y+.46,cw,.26,b,{size:10,color:G.mute,font:nf,align:'center',wrap:0,name:'英文'});
+   L.forEach((t,j)=>{circ(xx+.12,y+.95+j*.36,.08,{fill:i===0?P:G.l1,name:'項目符號'});T(xx+.24,y+.8+j*.36,cw-.26,.3,t,{size:10.5,color:G.ink,wrap:0,name:'行動'});});});});
+  comp('E','行動卡（負責人＋到期）','Action cards',{x:X0+5.5,y:y2,w:3.6,h:h2},(x,y,w,h)=>{[['鎖定 CMP 參數','陳怡君','10/25',GOOD],['擴線產能評估','黃承','11/08',P],['來料批次管制','林維','11/15',BAD]].forEach(([t,o,d,c],i)=>{const yy=y+i*.62;card(x,yy,w,.52);bdg(x+.28,yy+.26,.3,String(i+1),DARK,{size:10});
+   T(x+.52,yy+.02,w-.6,.28,t,{size:Z(11),bold:1,color:G.ink,wrap:0,name:'行動'});T(x+.52,yy+.26,w-.6,.24,[{t:o,b:1,c:G.t2},{t:'  · '+d,c:G.mute,f:nf}],{size:10,wrap:0,name:'負責與到期'});circ(x+w-.2,yy+.26,.14,{fill:c,name:'狀態燈'});});});
+  comp('F','需要的支援','Asks',{x:X0+9.4,y:y2,w:CW-9.4,h:h2},(x,y,w,h)=>{box(x,y,w,h,{fill:W2,line:G.ink,lw:1,r:.08,name:'支援框'});T(x+.16,y+.1,w-.3,.3,[{t:'需要的支援 ',b:1,c:G.ink},{t:'Asks',s:10,c:G.mute,f:nf}],{size:Z(12),name:'標題'});
+   [['人力','製程工程師 ×2'],['預算','治具 NT$ 80 萬'],['跨部門','IT 開放 MES API']].forEach(([a,b],i)=>{const yy=y+.5+i*.42;pill(x+.16,yy,.72,.28,a,TN(P,.85),{size:10,color:PD});T(x+.96,yy,w-1.06,.28,b,{size:10.5,color:G.ink,wrap:0,name:'內容'});});});};
+ /* E3 截圖與圖片框 */
+ SL.shots=()=>{title('截圖與圖片框 Screenshots','灰色佔位是真的圖片：PowerPoint 右鍵 →「變更圖片」即可換成截圖，疊加的編號、圈選、遮罩、箭頭都保留');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(4,2,Y0,Y1);
+  comp('A','圖片框 16:9','16:9 frame',C[0],(x,y,w,h)=>{const ih=Math.min(h-.34,w*9/16);ph(x,y,w,ih);T(x,y+ih+.06,w,.26,[{t:'圖 1 ',b:1,c:P},{t:'B 線 AOI 畫面'}],{size:10.5,color:G.t2,name:'圖說'});});
+  comp('B','圓角框＋陰影 4:3','4:3 card frame',C[1],(x,y,w,h)=>{const iw=Math.min(w-.3,(h-.3)*4/3),ix=x+(w-iw)/2;card(ix-.1,y,iw+.2,iw*3/4+.2);ph(ix,y+.1,iw,iw*3/4);});
+  comp('C','瀏覽器／裝置框','Browser frame',C[2],(x,y,w,h)=>{box(x,y,w,h,{fill:W2,line:G.l1,lw:1,r:.08,name:'裝置框'});box(x,y,w,.28,{fill:'F2F2F2',r:.08,name:'網址列底'});[BAD,'E0A12B',GOOD].forEach((c,i)=>circ(x+.16+i*.16,y+.14,.09,{fill:c,name:'視窗按鈕'}));
+   box(x+.7,y+.06,w-.9,.16,{fill:W2,r:'full',name:'網址列'});ph(x+.06,y+.34,w-.12,h-.4);});
+  comp('D','雙圖對比 Before／After','Before / after',C[3],(x,y,w,h)=>{const iw=(w-.3)/2,ih=Math.min(h-.4,iw*.75);[['Before',DARK],['After',P]].forEach(([t,c],i)=>{const xx=x+i*(iw+.3);ph(xx,y+.36,iw,ih);pill(xx,y,.86,.28,t,c,{font:nf,size:10});});chev(x+iw+.1,y+.36+ih/2-.08,.16,G.t2,2);});
+  comp('E','截圖＋編號釘＋說明列','Pins + legend',C[4],(x,y,w,h)=>{const ih=h*.62;ph(x,y,w,ih);[[1,.3,.4],[2,.7,.3],[3,.55,.75]].forEach(([n,fx,fy])=>AN.pin(n,x+w*fx,y+ih*fy,x+w*fx-.25,y+ih*fy-.18,{d:.3,dot:.06,size:10}));
+   ['1 刮傷位置','2 量測框','3 異常區'].forEach((t,i)=>T(x+(i%3)*w/3,y+ih+.1,w/3,.26,t,{size:10,color:G.ink,wrap:0,name:'說明列'}));});
+  comp('F','放大鏡圈','Zoom-in',C[5],(x,y,w,h)=>{const iw=w*.62;ph(x,y,iw,h);AN.ring(x+iw*.55,y+h*.45,.36,.36);const zx=x+w-.5,zy=y+h*.45,d=.92;ln(x+iw*.55+.18,y+h*.45-.12,zx-d/2+.04,zy-.3,{c:AL,w:1});ln(x+iw*.55+.18,y+h*.45+.12,zx-d/2+.04,zy+.3,{c:AL,w:1});
+   circ(zx,zy,d,{fill:'F0F0F0',line:AL,lw:2,name:'放大圈'});T(zx-d/2,zy-.14,d,.28,'×4',{size:Z(12),bold:1,color:ALd,align:'center',font:nf,name:'倍率'});});
+  comp('G','半透明遮罩聚焦','Spotlight mask',C[6],(x,y,w,h)=>{ph(x,y,w,h);const hx=x+w*.35,hy=y+h*.3,hw=w*.38,hh=h*.36,m={fill:'000000',ft:55,name:'遮罩'};box(x,y,w,hy-y,m);box(x,hy+hh,w,y+h-hy-hh,m);box(x,hy,hx-x,hh,m);box(hx+hw,hy,x+w-hx-hw,hh,m);AN.box(hx,hy,hw,hh);});
+  comp('H','截圖＋箭頭說明','Arrow callout',C[7],(x,y,w,h)=>{const iw=w*.66;ph(x,y+.2,iw,h-.2);AN.arrow(x+iw+.06,y+.1,'新按鈕',x+iw*.7,y+h*.5,{size:Z(11)});T(x+iw+.08,y+.5,w-iw-.08,.8,'點這裡\n匯出報表',{size:10,color:G.t2,valign:'top',name:'說明'});});};
+ /* E4 引言與故事 */
+ SL.story=()=>{title('引言與故事 Storytelling','開場鉤子、引言、故事三幕、金句與結尾行動呼籲');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(4,2,Y0,Y1);const MK=TN(AC2,.62);
+  comp('A','大引言','Quote',C[0],(x,y,w,h)=>{txt(x,y-.24,1.0,1.12,'“',{size:Z(60),bold:1,color:TN(P,.5),font:'Georgia',name:'引號'});T(x+.1,y+.56,w-.1,.9,'把結論放第一頁，\n主管才會看第二頁。',{size:Z(15),bold:1,color:G.ink,valign:'top',lsp:1.1,name:'引言'});
+   ln(x+.1,y+1.56,x+.5,y+1.56,{c:P,w:1.5});T(x+.6,y+1.42,w-.6,.28,'製造處 處長',{size:10.5,color:G.mute,name:'出處'});});
+  comp('B','客戶聲音 VOC','Voice of customer',C[1],(x,y,w,h)=>{[['交期終於穩定了','客戶 A · 採購'],['報表一眼看懂','客戶 B · 品保'],['回覆速度快很多','客戶 C · PM']].forEach(([q,s],i)=>{const yy=y+i*.62;box(x,yy,w,.52,{fill:'F7F7F7',r:.08,name:'聲音卡'});box(x,yy,.06,.52,{fill:i===0?P:G.l1,name:'色條'});
+   T(x+.18,yy+.02,w-.3,.28,'「'+q+'」',{size:Z(11.5),bold:1,color:G.ink,wrap:0,name:'客戶原話'});T(x+.18,yy+.27,w-.3,.24,s,{size:10,color:G.mute,wrap:0,name:'來源'});});});
+  comp('C','驚人數字開場','Stat hook',C[2],(x,y,w,h)=>{T(x,y,w,.3,'你知道嗎？',{size:Z(12),bold:1,color:G.mute,name:'引子'});txt(x,y+.24,w,1.04,[{t:'37',b:1,c:P,f:nf},{t:' 小時',s:Z(16),c:G.ink,b:1}],{size:Z(54),valign:'middle',name:'驚人數字'});
+   T(x,y+1.24,w,.5,'每月花在手動整理報表的時間',{size:Z(12),color:G.t2,valign:'top',name:'說明'});});
+  comp('D','提問開場','Question hook',C[3],(x,y,w,h)=>{box(x,y,w,h,{fill:DARK,r:.1,name:'提問底'});T(x+.24,y+.24,w-.48,.3,'先問一個問題',{size:10.5,color:G.l1,name:'引子'});T(x+.24,y+.6,w-.48,.9,'如果良率再升 1%，\n一年能省多少？',{size:Z(17),bold:1,color:W2,valign:'top',lsp:1.1,name:'問題'});
+   box(x+.24,y+h-.34,.5,.05,{fill:AC2,name:'色條'});});
+  comp('E','故事三幕','Story arc',C[4],(x,y,w,h)=>{const cw=(w+.14)/3;[['情境','Situation'],['衝突','Conflict'],['解方','Resolution']].forEach(([a,b],i)=>{el(i?'chevron':'homePlate',x+i*(cw-.07),y,cw,.5,{fill:i===2?P:i===1?TN(P,.5):'E6E6E6',adj:.14,text:a,size:Z(12),bold:1,color:i?W2:G.ink,margin:0,name:'幕'});
+   T(x+i*(cw-.07),y+.56,cw,.26,b,{size:10,color:G.mute,font:nf,align:'center',wrap:0,name:'英文'});});['產能滿載','客訴上升','擴線＋參數優化'].forEach((t,i)=>T(x+i*(cw-.07),y+.9,cw,.5,t,{size:10.5,color:G.ink,align:'center',valign:'top',name:'內容'}));});
+  comp('F','一句話總結','One-line takeaway',C[5],(x,y,w,h)=>{pill(x,y+.1,1.1,.32,'一句話總結',P,{size:10.5});T(x,y+.56,w,1.0,'不是做更多，\n是先做對的 20%。',{size:Z(18),bold:1,color:G.ink,valign:'top',lsp:1.1,name:'總結'});});
+  comp('G','金句＋半高螢光筆','Marker statement',C[6],(x,y,w,h)=>{T(x,y+.1,w,.3,'本季關鍵',{size:10.5,color:G.mute,name:'引子'});const s=Z(20),t='資料先於意見',m=txt(x,y+.5,tw(t,s)*1.06+.08,s*1.3/72,[{t,b:1}],{size:s,color:G.ink,valign:'middle',name:'半高螢光筆'});m.mk={c:MK,a:.55,b:.92};
+   T(x,y+1.0,w,.6,'每個結論都附資料來源與截止日',{size:10.5,color:G.t2,valign:'top',name:'說明'});});
+  comp('H','結尾行動呼籲 CTA','Closing CTA',C[7],(x,y,w,h)=>{card(x,y,w,h,{line:P,lw:1.25});pill(x+.18,y+.16,1.0,.3,'下一步',DARK,{size:10.5});
+   ['11/05 前核准擴線','指派 2 位工程師'].forEach((t,i)=>{bdg(x+.32,y+.72+i*.4,.28,String(i+1),P,{size:10});T(x+.54,y+.58+i*.4,w-.7,.3,t,{size:Z(11),color:G.ink,wrap:0,name:'行動'});});T(x+.18,y+h-.36,w-.3,.28,'聯絡：yc.chen@example.com',{size:10,color:G.mute,font:nf,wrap:0,name:'聯絡'});});};
+ /* F 頁型骨架：結論先行標題＋標準頁尾；右下標示本頁使用元件 */
+ const used=(codes,y)=>{codes=codes||USED[cur.key];const t='本頁使用元件：'+codes.join('・');const w=Math.min(6,tw(t,10)+.4);box(X1-w,y||6.56,w,.28,{fill:'F2F2F2',r:'full',text:t,size:10,color:G.t2,margin:0,name:'使用元件'});};
+ const srcFoot=(t)=>{ln(X0,6.5,X0+5.6,6.5,{c:G.l2,w:.75});txt(X0,6.56,5.6,.28,[{t:'資料來源 ',b:1,c:G.t2},{t}],{size:10,color:G.mute,valign:'middle',name:'來源'});};
+ const skel=(h,s)=>{cur.tsz=Math.min(st.tSize,28);title(h,s);};
+ SL.sum=()=>{skel('B 線良率三週回升至 98.6%，CMP 優化見效','依據：W40–W42 MES 晶圓資料；以下 3 個支撐點');const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();
+  grp('結論大字框',()=>{box(X0,Y0,4.4,4.4,{fill:TN(P,.92),r:.12,name:'結論底'});pill(X0+.3,Y0+.3,.9,.32,'結論',DARK,{size:Z(11)});txt(X0+.3,Y0+.9,3.9,1.0,[{t:'+1.2',b:1,c:P,f:nf},{t:' pt',s:Z(18),c:G.mute,f:nf}],{size:Z(54),valign:'middle',name:'關鍵數字'});
+   T(X0+.3,Y0+2.0,3.9,1.2,'良率回到目標以上，\n下季可擴線到 C 線',{size:Z(18),bold:1,color:G.ink,valign:'top',lsp:1.15,name:'結論句'});T(X0+.3,Y0+3.6,3.9,.5,'vs. 上季 97.4%',{size:Z(12),color:G.t2,name:'比較基準'});});
+  [['參數鎖定','CMP 壓力與轉速固定後，刮傷率 −62%','62%'],['人員到位','SOP 改版＋12 人完成訓練，誤操作 0 件','0 件'],['持續監控','SPC 管制圖每日更新，連 3 週在管制內','3 週']].forEach(([t,s,n],i)=>{const y=Y0+i*1.5;
+   grp('支撐點 '+(i+1),()=>{card(X0+4.8,y,CW-4.8,1.32);bdg(X0+5.2,y+.66,.5,two(i+1),i===0?P:DARK,{size:Z(14)});T(X0+5.6,y+.2,4.6,.36,t,{size:Z(16),bold:1,color:G.ink,name:'支撐標題'});
+    T(X0+5.6,y+.6,4.9,.5,s,{size:Z(12),valign:'top',name:'支撐內容'});txt(X1-1.7,y+.3,1.5,.7,n,{size:Z(26),bold:1,color:i===0?P:G.ink,font:nf,align:'right',valign:'middle',name:'數值'});});});
+  srcFoot('MES／YMS，資料截止 2026/10/16');used(['A0','A1·F','A2·E','C1']);};
+ SL.pcn=()=>{skel('交期延誤主因是排程未同步，建議導入每週排程會','8D 摘要：問題 → 原因 → 對策 → 下一步');const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const cw=(CW-.9)/3,h=2.9;
+  [['問題','Problem','交期延誤率 18%',['客訴 8 件／月','急單插單無評估','加班費 +22%'],AL],['原因','Root cause','排程未同步',['業務、生管各自排程','變更沒有凍結點','缺單一窗口'],G.t2],['對策','Countermeasure','每週排程會',['設需求凍結點 T−5','變更走單一窗口','延誤率週報追蹤'],P]].forEach(([a,b,c,L,col],i)=>{const x=X0+i*(cw+.45);
+   grp(a,()=>{card(x,Y0,cw,h,i===0?{line:AL,lw:1.5}:i===2?{line:P,lw:1.5}:{});pill(x+.24,Y0+.22,1.0,.32,a,i===2?P:i===0?AL:DARK,{size:Z(11.5)});T(x+1.34,Y0+.22,cw-1.5,.32,b,{size:10.5,color:G.mute,font:nf,name:'英文'});
+    T(x+.24,Y0+.74,cw-.48,.5,c,{size:Z(20),bold:1,color:i===0?ALd:i===2?P:G.ink,name:'重點'});ln(x+.24,Y0+1.36,x+cw-.24,Y0+1.36,{c:G.l2,w:.75});L.forEach((t,j)=>{circ(x+.32,Y0+1.68+j*.46,.09,{fill:col,name:'項目符號'});T(x+.48,Y0+1.52+j*.46,cw-.7,.32,t,{size:Z(12),color:G.ink,name:'內容'});});});
+   if(i<2)chev(x+cw+.16,Y0+h/2-.1,.2,G.t2,2);});
+  grp('下一步列',()=>{const y=Y0+h+.3;box(X0,y,CW,1.06,{fill:'F7F7F7',r:.1,name:'下一步底'});pill(X0+.24,y+.36,1.0,.34,'下一步',DARK,{size:Z(11.5)});
+   [['T−5 凍結點上線','陳怡君','10/25'],['每週一排程會','黃承','11/01'],['月底檢討延誤率','林維','11/30']].forEach(([t,o,d],i)=>{const x=X0+1.5+i*3.55;bdg(x+.16,y+.53,.3,String(i+1),P,{size:10});T(x+.38,y+.2,3.1,.32,t,{size:Z(12),bold:1,color:G.ink,name:'行動'});T(x+.38,y+.54,3.1,.28,[{t:o,b:1,c:G.t2},{t:'  · '+d,c:G.mute,f:nf}],{size:10.5,name:'負責與到期'});});});
+  srcFoot('生管排程系統，W30–W42');used(['A0','D4·2','D5','A2·G']);};
+ SL.weekly=()=>{skel('W42 良率達標、交期改善，B 線產能仍是風險','週報一頁：KPI → 議題 → 下一步');const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const AMB='E0A12B';const gw=.2,cw=(CW-3*gw)/4;
+  [['良率','98.6','%','▲ 0.4 pt',GOOD],['產出','12.4','K','▲ 3%',GOOD],['交期','7.2','天','▼ 0.5 天',GOOD],['產能利用','96','%','逼近上限',AMB]].forEach(([a,v,u,d,c],i)=>{const x=X0+i*(cw+gw);grp('KPI '+a,()=>{card(x,Y0,cw,1.16);box(x+.16,Y0,.5,.05,{fill:i===0?P:G.l1,name:'頂邊色條'});T(x+.18,Y0+.1,cw-.6,.3,a,{size:Z(12),bold:1,color:G.ink,name:'指標'});light(x+cw-.26,Y0+.25,.14,c);
+   txt(x+.18,Y0+.4,cw-.36,.46,[{t:v,b:1,c:DARK,f:nf},{t:' '+u,s:Z(12),c:G.mute,f:nf}],{size:Z(24),valign:'middle',name:'數值'});T(x+.18,Y0+.84,cw-.36,.26,d,{size:10.5,bold:1,color:c,name:'變化'});});});
+  const y2=Y0+1.44;grp('議題表（原生表格）',()=>{T(X0,y2,7.4,.3,[{t:'議題 Issues',b:1,c:G.ink}],{size:Z(13),name:'標題'});const S={高:BAD,中:AMB,低:GOOD};const rows=[['議題','影響','負責','狀態'],['B 線產能 96%','高','黃承','評估中'],['來料批次差異','中','林維','管制中'],['新人訓練進度','低','孫宇','80%']];
+   table(X0,y2+.38,[3.2,1.0,1.4,1.8],[.36,.42,.42,.42],rows.map((r,ri)=>r.map((c,ci)=>{const o={t:c,bB:{c:G.l2,w:.5}};if(ri===0)Object.assign(o,{bold:1,color:W2,fill:DARK,bB:null});else{if(ci===0)o.align='left';if(ci===1)Object.assign(o,{bold:1,color:S[c],t:'● '+c});}return o;})),{size:Z(11.5),name:'議題表'});});
+  grp('下一步清單',()=>{const x=X0+7.8,w=CW-7.8;card(x,y2,w,2.4);T(x+.2,y2+.12,w-.4,.32,'下一步 Next steps',{size:Z(13),bold:1,color:G.ink,name:'標題'});
+   [['B 線擴線提案','11/05'],['來料 IQC 加嚴','11/08'],['訓練完成 100%','11/15']].forEach(([t,d],i)=>{const yy=y2+.6+i*.56;bdg(x+.36,yy+.16,.32,String(i+1),i===0?P:DARK,{size:10});T(x+.6,yy,w-1.6,.32,t,{size:Z(12),color:G.ink,name:'行動'});T(x+w-1.0,yy,.8,.32,d,{size:10.5,color:G.mute,font:nf,align:'right',name:'到期'});});});
+  grp('決策需求列',()=>{const y=5.42;box(X0,y,7.4,.78,{fill:TN(P,.92),r:.1,name:'決策底'});pill(X0+.2,y+.24,1.4,.32,'需要您決定',DARK,{size:Z(11)});T(X0+1.76,y,5.5,.78,'11/05 前核准 B 線擴線提案（+12% 產能）',{size:Z(12.5),bold:1,color:PD,name:'決策內容'});});
+  srcFoot('MES／生管，資料截止 2026/10/16');used(['A0','C1·D','D5·A','A2·E']);};
+ /* G 求職與作品集 */
+ SL.profile=()=>{title('自我介紹 Profile & Intro','自介卡、聯絡＋QR、職涯時間軸、價值主張、關於我數字、個人特質：面試第一頁與作品集封底');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();
+  comp('A','自介卡（照片可換）','Intro card',{x:X0,y:Y0,w:5.6,h:2.1},(x,y,w,h)=>{card(x,y,w,h);ph(x+.24,y+.24,1.3,1.62,'大頭照（右鍵→變更圖片）');T(x+1.8,y+.22,w-2.0,.44,'陳怡君',{size:Z(22),bold:1,color:G.ink,name:'姓名'});T(x+1.8,y+.66,w-2.0,.3,'製程整合工程師 · 6 年經驗',{size:Z(12),color:P,bold:1,name:'職稱'});
+   T(x+1.8,y+1.0,w-2.0,.5,'用數據把良率問題變成可執行的改善',{size:Z(11.5),valign:'top',name:'一句話定位'});[['CMP',P],['SPC',DARK],['Python',DARK]].forEach(([t,c],i)=>pill(x+1.8+i*1.0,y+1.56,.9,.28,t,c,{size:10,font:nf}));});
+  comp('B','聯絡＋QR','Contact & QR',{x:X0+5.9,y:Y0,w:3.0,h:2.1},(x,y,w,h)=>{card(x,y,w,h);ph(x+.2,y+.2,.9,.9,'QR Code（右鍵→變更圖片）');T(x+1.2,y+.24,w-1.3,.6,'掃描看\n作品集',{size:Z(12),bold:1,color:G.ink,valign:'top',name:'QR 說明'});
+   [['mail','yc.chen@example.com'],['link','linkedin.com/in/ycchen'],['call','0912-345-678']].forEach(([ic,t],i)=>{const yy=y+1.24+i*.26;icon(ic,x+.2,yy,.2,{color:G.t2});T(x+.48,yy-.04,w-.56,.28,t,{size:10,color:G.t2,font:nf,wrap:0,name:'聯絡方式'});});});
+  comp('C','關於我數字','About in numbers',{x:X0+9.2,y:Y0,w:CW-9.2,h:2.1},(x,y,w,h)=>{[['6','年','製程經驗'],['12','項','改善專案'],['3','件','專利']].forEach(([v,u,t],i)=>{const yy=y+i*.7;txt(x,yy,1.3,.6,[{t:v,b:1,c:i===0?P:G.ink,f:nf},{t:' '+u,s:Z(12),c:G.mute}],{size:Z(26),valign:'middle',name:'數值'});T(x+1.3,yy,w-1.3,.6,t,{size:Z(12),color:G.t2,name:'說明'});});});
+  const y2=4.38;
+  comp('D','職涯時間軸','Career timeline',{x:X0,y:y2,w:7.4,h:1.38},(x,y,w,h)=>{const ay=y+.62,P4=[['2018','台大化工 碩士','學歷'],['2020','A 公司 製程工程師','良率 +2%'],['2023','B 公司 資深工程師','帶 4 人'],['2026','求職：製程整合','下一步']];const sp=w/4;ln(x,ay,x+w,ay,{c:G.line,w:1.25,head:'triangle'});
+   P4.forEach(([yr,t,s],i)=>{const cx0=x+sp*(i+.5),now=i===3;circ(cx0,ay,.2,{fill:now?P:DARK,line:W2,lw:1.5,name:'時間點'});pill(cx0-.4,ay-.52,.8,.28,yr,now?P:'E6E6E6',{font:nf,size:10,color:now?W2:G.t2});
+    T(cx0-sp/2,ay+.2,sp,.3,t,{size:10.5,bold:1,color:now?P:G.ink,align:'center',wrap:0,name:'經歷'});T(cx0-sp/2,ay+.5,sp,.26,s,{size:10,color:G.mute,align:'center',wrap:0,name:'成果'});});});
+  comp('E','價值主張 3 點','I bring',{x:X0+7.7,y:y2,w:CW-7.7,h:1.38},(x,y,w,h)=>{[['數據分析','SPC／Python 自動化報表'],['跨部門溝通','整合製程、設備、品保'],['問題解決','8D 結案 12 件']].forEach(([a,b],i)=>{const yy=y+i*.46;bdg(x+.18,yy+.2,.34,two(i+1),i===0?P:DARK,{size:10});T(x+.46,yy,w-.46,.4,[{t:a+'　',b:1,c:G.ink},{t:b,c:G.t2}],{size:Z(11.5),wrap:0,name:'價值'});});});
+  comp('F','個人特質標籤列','Traits',{x:X0,y:6.08,w:CW,h:.4},(x,y,w,h)=>{T(x,y,1.3,h,'個人特質',{size:Z(11),bold:1,color:G.ink,name:'標題'});let xx=x+1.4;['好奇','重視數據','樂於分享','抗壓','跨文化合作','終身學習'].forEach((t,i)=>{xx+=tag(xx,y+.05,t,{tone:i<2?'p':'g',size:10.5,h:.3})+.14;});});};
+ SL.skills=()=>{title('技能與成就 Skills & Achievements','技能條、技能矩陣、雙系列能力條（取代雷達圖）、成就數字、證照學歷、語言、工具 chips：履歷頁與自評頁');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(4,2,Y0,Y1);
+  comp('A','技能條','Skill bars',C[0],(x,y,w,h)=>{[['SPC 統計','90%'],['Python','75%'],['DOE 實驗','60%'],['簡報溝通','85%']].forEach(([t,p],i)=>{const yy=y+.04+i*.44,bw=w-.5;T(x,yy,bw,.24,t,{size:10.5,color:G.ink,wrap:0,name:'技能'});
+   const pt=T(x+bw,yy,.5,.24,p,{size:10,color:G.mute,font:nf,align:'right',wrap:0,name:'百分比'});box(x,yy+.27,w,.08,{fill:'EDEDED',r:'full',name:'進度底'});calc1(box(x,yy+.27,w*parseFloat(p)/100,.08,{fill:i===0?P:G.t2,r:'full',name:'進度條'}),pt,'pbar',{full:w});});});
+  comp('B','技能矩陣（點數）','Skill matrix',C[1],(x,y,w,h)=>{['','入門','熟練','精通'].forEach((t,i)=>i&&T(x+1.2+(i-1)*(w-1.2)/3,y,(w-1.2)/3,.26,t,{size:10,color:G.mute,align:'center',wrap:0,name:'欄頭'}));
+   [['製程整合',3],['資料分析',3],['設備維護',2],['專案管理',2],['英文',2]].forEach(([t,l],i)=>{const yy=y+.32+i*.32;T(x,yy,1.2,.28,t,{size:10.5,color:G.ink,wrap:0,name:'技能'});for(let k=1;k<=3;k++)circ(x+1.2+(k-.5)*(w-1.2)/3,yy+.14,.16,{fill:k<=l?P:'E3E3E3',name:'等級點'});});});
+  comp('C','能力雙系列條（取代雷達）','Me vs target',C[2],(x,y,w,h)=>{const lw=.9,bw=w-lw;[['分析',.9,.8],['溝通',.7,.8],['領導',.55,.7],['技術',.85,.75]].forEach(([t,a,b],i)=>{const yy=y+.06+i*.38;T(x,yy,lw,.3,t,{size:10.5,color:G.ink,wrap:0,name:'能力'});
+   box(x+lw,yy+.03,bw*a,.11,{fill:P,r:'full',name:'自評'});box(x+lw,yy+.17,bw*b,.11,{fill:G.l1,r:'full',name:'職缺要求'});});
+   [[P,'我'],[G.l1,'職缺要求']].forEach(([c,t],i)=>{box(x+lw+i*1.2,y+1.62,.2,.14,{fill:c,r:.03,name:'色塊'});T(x+lw+i*1.2+.26,y+1.55,1.0,.28,t,{size:10,color:G.t2,wrap:0,name:'圖例'});});});
+  comp('D','成就數字卡','Achievements',C[3],(x,y,w,h)=>{[['+2.1','pt','良率提升'],['NT$ 1,200','萬','年省成本'],['−35','%','交期縮短']].forEach(([v,u,t],i)=>{const yy=y+i*.6;txt(x,yy,w*.62,.52,[{t:v,b:1,c:i===0?P:G.ink,f:nf},{t:' '+u,s:10.5,c:G.mute}],{size:Z(18),valign:'middle',name:'數值'});T(x+w*.62,yy,w*.38,.52,t,{size:10.5,color:G.t2,name:'說明'});});});
+  comp('E','證照與學歷','Credentials',C[4],(x,y,w,h)=>{[['school','台大 化工所 碩士','2018'],['workspace_premium','六標準差黑帶','2022'],['verified','PMP 專案管理','2024']].forEach(([ic,t,d],i)=>{const yy=y+.04+i*.56;icon(ic,x,yy,.42,{variant:'tint'});T(x+.54,yy,w-.54,.26,t,{size:Z(11),bold:1,color:G.ink,wrap:0,name:'證照'});T(x+.54,yy+.24,w-.54,.24,d,{size:10,color:G.mute,font:nf,name:'年份'});});});
+  comp('F','語言能力','Languages',C[5],(x,y,w,h)=>{[['中文','母語',5],['英文','TOEIC 905',4],['日文','N3',2]].forEach(([t,s,l],i)=>{const yy=y+.06+i*.5;T(x,yy,.7,.28,t,{size:Z(11),bold:1,color:G.ink,name:'語言'});T(x,yy+.24,1.2,.24,s,{size:10,color:G.mute,font:nf,wrap:0,name:'程度'});for(let k=1;k<=5;k++)box(x+1.3+(k-1)*.28,yy+.1,.22,.12,{fill:k<=l?P:'E3E3E3',r:'full',name:'等級'});});});
+  comp('G','工具 chips','Tool chips',C[6],(x,y,w,h)=>{let xx=x,yy=y+.04;['Python','JMP','Minitab','SQL','Power BI','Excel VBA','Git','Tableau'].forEach((t,i)=>{const cw=tw(t,10.5)+.34;if(xx+cw>x+w){xx=x;yy+=.42;}box(xx,yy,cw,.32,{fill:i<3?TN(P,.86):'F2F2F2',r:'full',text:t,size:10.5,bold:i<3,color:i<3?PD:G.t2,font:nf,margin:0,name:'工具'});xx+=cw+.1;});});
+  comp('H','亮點列表（STAR 精簡）','Highlights',C[7],(x,y,w,h)=>{[['良率改善','+2.1 pt'],['自動化報表','每月省 37 h'],['跨廠導入','3 條產線']].forEach(([a,b],i)=>{const yy=y+.04+i*.52;box(x,yy,.06,.42,{fill:i===0?P:G.l1,name:'色條'});T(x+.16,yy,w-.16,.24,a,{size:Z(11),bold:1,color:G.ink,name:'亮點'});T(x+.16,yy+.22,w-.16,.22,b,{size:10,color:P,bold:1,font:nf,name:'成果'});});});};
+ SL.star=()=>{title('專案案例 STAR Case Study','情境 S → 任務 T → 行動 A → 結果 R：面試、升遷簡報、作品集的專案頁；可直接當一頁使用');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();
+  comp('H','專案標頭卡','Project header',{x:X0,y:Y0,w:CW,h:.62},(x,y,w,h)=>{box(x,y,w,h,{fill:'F7F7F7',r:.1,name:'標頭底'});T(x+.24,y,4.6,h,'B 線 CMP 良率改善專案',{size:Z(16),bold:1,color:G.ink,name:'專案名稱'});
+   [['角色','專案負責人'],['期間','2025/03–09'],['團隊','5 人跨部門']].forEach(([a,b],i)=>{const xx=x+5.0+i*2.35;pill(xx,y+.17,.62,.28,a,DARK,{size:10});T(xx+.7,y,1.6,h,b,{size:Z(11),color:G.ink,wrap:0,name:'資訊'});});});
+  const y2=Y0+1.0,cw=(CW-.6)/4,h2=2.3;
+  [['S','情境','Situation','B 線良率連 3 週低於目標，客訴增加'],['T','任務','Task','3 個月內良率回到 98% 以上'],['A','行動','Action','DOE 鎖定 CMP 參數、改版 SOP、訓練 12 人'],['R','結果','Result','良率 96.5 → 98.6%，年省 1,200 萬']].forEach(([k,zh,en,t],i)=>{const x=X0+i*(cw+.2);
+   comp(k,zh+' '+en,'',{x,y:y2,w:cw,h:h2},(x,y,w,h)=>{card(x,y,w,h,i===3?{line:P,lw:1.5}:{});box(x+.2,y+.2,.6,.6,{fill:i===3?P:DARK,r:.08,text:k,size:Z(24),bold:1,color:W2,font:nf,margin:0,name:'STAR 字母'});T(x+.92,y+.2,w-1.0,.32,zh,{size:Z(14),bold:1,color:i===3?P:G.ink,name:'標題'});
+    T(x+.92,y+.5,w-1.0,.28,en,{size:10.5,color:G.mute,font:nf,name:'英文'});ln(x+.2,y+.98,x+w-.2,y+.98,{c:G.l2,w:.75});T(x+.2,y+1.1,w-.4,1.0,t,{size:Z(12),color:G.ink,valign:'top',lsp:1.15,name:'內容'});});});
+  const y3=y2+h2+.38;
+  comp('N','成果數字列','Results',{x:X0,y:y3,w:7.6,h:1.1},(x,y,w,h)=>{[['+2.1','pt','良率'],['1,200','萬','年省成本'],['0','件','重複異常']].forEach(([v,u,t],i)=>{const xx=x+i*w/3;if(i)ln(xx,y+.1,xx,y+h-.1,{c:G.l2,w:.75});txt(xx+.2,y,w/3-.3,.66,[{t:v,b:1,c:i===0?P:G.ink,f:nf},{t:' '+u,s:Z(12),c:G.mute}],{size:Z(28),valign:'middle',name:'數值'});T(xx+.2,y+.68,w/3-.3,.3,t,{size:Z(11),color:G.t2,name:'說明'});});});
+  comp('L','學到的事','Lessons',{x:X0+7.9,y:y3,w:CW-7.9,h:1.1},(x,y,w,h)=>{box(x,y,w,h,{fill:TN(P,.92),r:.1,name:'學習底'});pill(x+.18,y+.14,1.0,.28,'我學到',P,{size:10.5});T(x+.18,y+.5,w-.36,.56,'先用數據對齊問題，再談對策；跨部門要有單一窗口',{size:Z(11),color:G.ink,valign:'top',name:'學習'});});};
+ SL.folio=()=>{title('作品集版面 Portfolio Layouts','作品 2×2、主圖＋側欄、三欄作品卡、前後對比、作品時間線、問題→解法→成果卡：圖片都可右鍵換圖');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(3,2,Y0,Y1);
+  comp('A','作品格 2×2','2×2 grid',C[0],(x,y,w,h)=>{const g=.12,iw=(w-g)/2,ih=(h-g-.52)/2;[0,1,2,3].forEach(i=>{const xx=x+(i%2)*(iw+g),yy=y+Math.floor(i/2)*(ih+.26+g);ph(xx,yy,iw,ih);T(xx,yy+ih,iw,.26,['看板設計','報表自動化','製程地圖','訓練教材'][i],{size:10,color:G.t2,wrap:0,name:'作品名'});});});
+  comp('B','主圖＋側欄','Hero + notes',C[1],(x,y,w,h)=>{const iw=w*.6;ph(x,y,iw,h);T(x+iw+.16,y,w-iw-.16,.3,'良率看板',{size:Z(13),bold:1,color:G.ink,name:'作品名'});['Power BI','每日自動更新','主管 3 秒看懂'].forEach((t,i)=>{circ(x+iw+.22,y+.56+i*.36,.08,{fill:i===0?P:G.l1,name:'項目符號'});T(x+iw+.34,y+.42+i*.36,w-iw-.36,.28,t,{size:10.5,color:G.t2,wrap:0,name:'重點'});});});
+  comp('C','三欄作品卡','3 project cards',C[2],(x,y,w,h)=>{const cw=(w-.24)/3;['看板','報表','SOP'].forEach((t,i)=>{const xx=x+i*(cw+.12);card(xx,y,cw,h);ph(xx+.08,y+.08,cw-.16,(cw-.16)*.75);T(xx+.1,y+.16+(cw-.16)*.75,cw-.2,.28,t,{size:Z(11),bold:1,color:G.ink,name:'作品名'});pill(xx+.1,y+.5+(cw-.16)*.75,cw-.2,.26,['BI','Python','教材'][i],TN(P,.86),{size:10,color:PD});});});
+  comp('D','作品前後對比','Before / after',C[3],(x,y,w,h)=>{const iw=(w-.4)/2,ih=h-.4;[['改版前',DARK],['改版後',P]].forEach(([t,c],i)=>{const xx=x+i*(iw+.4);ph(xx,y+.36,iw,ih);pill(xx,y,.9,.28,t,c,{size:10});});chev(x+iw+.13,y+.36+ih/2-.1,.2,G.t2,2);});
+  comp('E','作品時間線','Portfolio timeline',C[4],(x,y,w,h)=>{const cw=(w-.3)/3,ih=cw*.62;ln(x,y+ih+.3,x+w,y+ih+.3,{c:G.line,w:1.25,head:'triangle'});['2021','2023','2025'].forEach((t,i)=>{const xx=x+i*(cw+.15);ph(xx,y,cw,ih);circ(xx+cw/2,y+ih+.3,.16,{fill:i===2?P:DARK,line:W2,lw:1.25,name:'時間點'});T(xx,y+ih+.44,cw,.26,t,{size:10.5,bold:1,color:i===2?P:G.ink,align:'center',font:nf,name:'年份'});});});
+  comp('F','問題→解法→成果卡','Case card',C[5],(x,y,w,h)=>{card(x,y,w,h);const iw=w*.42;ph(x+.1,y+.1,iw,h-.2);[['問題','報表靠人工'],['解法','Python 自動化'],['成果','每月省 37 h']].forEach(([a,b],i)=>{const yy=y+.16+i*.54;pill(x+iw+.24,yy,.62,.26,a,i===2?P:DARK,{size:10});T(x+iw+.24,yy+.26,w-iw-.32,.26,b,{size:10.5,color:i===2?P:G.ink,bold:i===2,wrap:0,name:'內容'});});});};
  if(opt.icon||opt.table){const kk=SIZE_K[st.size]||1;sno=1;cur={key:opt.icon?'icon':'table',title:opt.icon?'圖示':'表格',no:1,items:[],groups:[]};slides.push(cur);
   if(opt.icon)oneIcon(opt.icon,kk);else userTable(opt.table,kk);return{slides,warns,params:st,k:kk,custom:true};}
  /* 單一圖示投影片：pic＝SVG 圖片（PNG 備援，PowerPoint 365 可「轉換成圖案」）；否則＝原生自訂圖案 */
@@ -5304,7 +5509,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const raw=(T.rows||[])
   const tx=X;   // 卡片外擴：表格文字與標題同一條左邊線
   const blockH=tH+frame+(noteH?noteH+.11*k:0);const off=vMode==='center'?Math.max(0,(H-.45-ty0-blockH)*.38):0;/* 視覺錨點：上方留白 38% */const Y0=TOP+off;
   const TWs=W-.6-X;const slots={title:{x:X,y:Y0,w:Math.min(TWs,Math.max(tW,TWm)),h:titH,size:tfsT,font:(st.tbFont==='jh'||st.tbFont==='noto')?'Microsoft JhengHei':st.tFont,color:G.ink,bold:1},unit:{x:X,y:Y0+titH+.02,w:Math.max(tW,8),h:.27*k,size:ufs,color:G.t2}};
-  if(T.title)txt(X,Y0,Math.min(TWs,Math.max(tW,TWm)),titH,ttl,{size:tfsT,bold:1,color:G.ink,font:slots.title.font,name:'表格標題',valign:'bottom'});
+  if(T.title)txt(X,Y0,Math.min(TWs,Math.max(tW,TWm)),titH,ttl,{size:tfsT,bold:1,color:st.tbTitleInk?G.ink:P,font:slots.title.font,name:'表格標題',valign:'bottom'});
   if(T.unit)txt(X,slots.unit.y,Math.max(tW,6),slots.unit.h,T.unit,{size:ufs,color:G.t2,name:'單位',valign:'top'});
   const fy=ty0+off;const ty=fy;   /* 卡片外框畫在表格外圍，不推移表格 */
   if(LK.card){const o=grey?{fill:G.fill,r:.14*k,name:'灰色底板'}:{fill:'FFFFFF',line:G.line,lw:.75*k,r:.14*k,sh:'card',force:1,name:'卡片'};box(X-frame,ty-frame,tW+2*frame,tH+2*frame,o);}
@@ -5671,7 +5876,7 @@ async function fixOoxml(zip){
  const cf=zip.file('[Content_Types].xml');if(cf){let x=await cf.async('string');
   x=x.replace(/<Override PartName="\/([^"]+)"[^>]*\/>/g,(m,part)=>zip.file(part)?m:'');
   if(addTheme2&&!/theme2\.xml/.test(x))x=x.replace('</Types>','<Override PartName="/ppt/theme/theme2.xml" ContentType="application/vnd.openxmlformats-officedocument.theme+xml"/></Types>');zip.file('[Content_Types].xml',x);}}
-async function exportPptx(env,params,opt){opt=opt||{};const model=opt.model||buildModel(params,{only:opt.only,examples:opt.examples});
+async function exportPptx(env,params,opt){opt=opt||{};const model=opt.model||buildModel(params,{only:opt.only,examples:opt.examples,labels:opt.labels});
  const pptx=new env.PptxGenJS();toPptx(pptx,model);
  const buf=await pptx.write({outputType:'arraybuffer'});const zip=await env.JSZip.loadAsync(buf);const patched=await patchZip(zip,model);
  // 重新打包成像 PowerPoint 存出的 zip：[Content_Types].xml 第一個、不含資料夾項目（空的 charts/、media/ 等）
@@ -5951,7 +6156,7 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
  if(p.tbPanel&&!p.tbLook){out.tbLook='card';out.tbCard='grey';}if(p.tbLook==='panel')out.tbCard='grey';
  return out;}
-const api={tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
+const api={USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);
 
@@ -6173,13 +6378,13 @@ const G=[
 const ENUMS={},RANGES={};G.forEach(g=>g.rows.forEach(r=>{if(r.type==='select'||r.type==='seg')ENUMS[r.k]=r.opts.map(o=>o[0]);if(r.type==='range')RANGES[r.k]=[r.min,r.max];}));
 const cleanP=(p,base)=>D.sanitizeParams(p,templateParams(presetOf(base).id),ENUMS,RANGES);
 /* ---------- 狀態 ---------- */
-let S={base:'navy',p:templateParams('navy'),slide:0,autoTone:true,labels:{}};
+let S={base:'navy',p:templateParams('navy'),slide:0,autoTone:true,labels:{},examples:true};
 /* 改字（v9）：{ '<頁>:<群組>': { '<第幾個圖形>': {from 原文, to 新文字} } } */
 function cleanLabels(o){const out={};if(!o||typeof o!=='object')return out;Object.keys(o).slice(0,200).forEach(k=>{if(!/^[\w-]+:\d+$/.test(k)||!o[k]||typeof o[k]!=='object')return;const L={};
  Object.keys(o[k]).slice(0,60).forEach(i=>{const v=o[k][i];if(/^\d+$/.test(i)&&v&&typeof v==='object'&&typeof v.icon==='string'&&window.Icons&&window.Icons.BY[v.icon])L[i]={from:typeof v.from==='string'?v.from.slice(0,60):null,icon:v.icon};else if(/^\d+$/.test(i)&&v&&typeof v==='object'&&typeof v.to==='string')L[i]={from:typeof v.from==='string'?D.stripCtl(v.from).slice(0,400):null,to:D.stripCtl(v.to).slice(0,400)};});
  if(Object.keys(L).length)out[k]=L;});return out;}
-try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=presetOf(s.base).id;S.p=cleanP(s.p,S.base);S.slide=0;/* 每次開啟都先顯示 01 元件總表 */S.mine=s.mine?D.stripCtl(s.mine).slice(0,40):null;S.autoTone=s.autoTone!==false;S.tab=['slides','icons','table','kit'].includes(s.tab)?s.tab:'slides';S.examples=!!s.examples;S.labels=cleanLabels(s.labels);}}catch(e){}
-const persist=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify({base:S.base,p:S.p,slide:S.slide,autoTone:S.autoTone,mine:S.mine||null,tab:S.tab||'slides',examples:!!S.examples,labels:S.labels||{}}));}catch(e){}};
+try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=presetOf(s.base).id;S.p=cleanP(s.p,S.base);S.slideKey=typeof s.key==='string'?s.key:null;/* 位置記憶：以頁面 ID（非索引）記憶，找不到回到 00 總覽 */S.mine=s.mine?D.stripCtl(s.mine).slice(0,40):null;S.autoTone=s.autoTone!==false;S.tab=['slides','icons','table','kit','guide'].includes(s.tab)?s.tab:'slides';S.examples=true;S.labels=cleanLabels(s.labels);}}catch(e){}
+const persist=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify({base:S.base,p:S.p,slide:S.slide,key:model&&model.slides[S.slide]?model.slides[S.slide].key:S.slideKey,autoTone:S.autoTone,mine:S.mine||null,tab:S.tab||'slides',examples:!!S.examples,labels:S.labels||{}}));}catch(e){}};
 const hex=v=>String(v||'').replace('#','').toUpperCase();
 const toast=(t,ms,html)=>{const e=$('#toast');
  {const ti=document.querySelector('.tins');if(document.body.classList.contains('tabT')&&matchMedia('(max-width:820px)').matches&&ti){const tt=ti.querySelector('.tinsTabs');const tr=(tt||ti).getBoundingClientRect();e.style.bottom=Math.round(innerHeight-tr.bottom+4)+'px';e.style.top='auto';}else{e.style.bottom='';e.style.top='';}}if(html)e.innerHTML=t;else e.textContent=t;e.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>e.classList.remove('on'),ms||2200);window.__lastToast=e.textContent;};
@@ -6248,7 +6453,7 @@ function syncPanel(skip){
 let model=null,raf=0;
 function schedule(){if(raf)return;raf=requestAnimationFrame(()=>{raf=0;const sv=[...document.querySelectorAll('.tmain,.tstagew,#tIns .tsecs')].map(e=>[e,e.scrollTop,e.scrollLeft]),wy=scrollY;render();persist();/* 保留捲動位置，避免換外觀時畫面跳動 */const rs=()=>{if(window.__tblNewData)return;sv.forEach(([e,t,l])=>{if(Math.abs(e.scrollTop-t)>1)e.scrollTop=t;if(Math.abs(e.scrollLeft-l)>1)e.scrollLeft=l;});if(Math.abs(scrollY-wy)>1)scrollTo(scrollX,wy);};rs();requestAnimationFrame(rs);});}
 function render(){
- model=D.buildModel(S.whitePrev&&S.p.canvas?Object.assign({},S.p,{canvas:false}):S.p,{examples:!!S.examples,labels:S.labels});if(S.slide>=model.slides.length)S.slide=0;
+ model=D.buildModel(S.whitePrev&&S.p.canvas?Object.assign({},S.p,{canvas:false}):S.p,{examples:true,labels:S.labels});if(S.slideKey!=null){const ix=model.slides.findIndex(x=>x.key===S.slideKey);S.slide=ix<0?0:ix;S.slideKey=null;}if(S.slide>=model.slides.length)S.slide=0;if(!render._nav){render._nav=1;buildNav();}
  {const sw=document.querySelector('#groups input[type=color][data-k="semWarn"]');if(sw&&!S.p.semWarn&&model.sem)sw.value='#'+model.sem.warn;}
  $('#thumbs').innerHTML=model.slides.map((s,i)=>`<div class="th${i===S.slide?' on':''}" data-i="${i}"><div>${D.toSvg(s,{id:'t'+i})}</div><span>${String(i+1).padStart(2,'0')}　${s.title}</span></div>`).join('');
  showSlide();
@@ -6266,10 +6471,47 @@ function showSlide(){
   '<button class="eladd" id="elAdd" hidden aria-label="加入待選素材">＋</button><div class="ebar" id="ebar"><b id="eName"></b><small id="eDim" style="color:#8C8C8C;margin-right:4px" title="元件實際尺寸（依 S／M／L）"></small><span class="ecnt" id="eCnt" hidden><button data-a="cnt-" title="減少一個">−</button><b id="eCntN"></b><button data-a="cnt+" title="增加一個">＋</button></span><button class="pri" data-a="copy" title="複製到剪貼簿（SVG 向量＋PNG）">複製</button><button data-a="tray" title="加入待選素材（保留目前風格）">＋待選</button><button data-a="lbl" title="修改這個元件的文字；有圖示的元件（如標籤元件）也可在這裡換圖示（不重排版面；放不下時字級自動縮小）">改字</button><button data-a="pptx" title="只含這個元件的 1 頁 .pptx，原生可編輯圖形">下載此元件 .pptx</button><button data-a="svg">SVG</button><button data-a="png">PNG</button><button data-a="x" title="關閉">✕</button></div>';
  SEL=null;
  {const n=D.smallRuns(sl,10);const fe=$('#fsNote');if(fe){fe.textContent=n?`ⓘ 本頁 ${n} 段字小於 10pt`:'';fe.title=n?'投影時可能偏小。單一元件與待選素材可在「字型與字級 › 最小字級」設定 10／12／14pt，匯出時整個元件等比放大。':'';}}
- document.querySelectorAll('.th').forEach(t=>t.classList.toggle('on',+t.dataset.i===S.slide));
+ document.querySelectorAll('.th').forEach(t=>t.classList.toggle('on',+t.dataset.i===S.slide));navSync(sl);
  const on=document.querySelector('.th.on');if(on&&on.scrollIntoView&&S.tab!=='table'&&on.offsetParent)on.scrollIntoView({block:'nearest',inline:'nearest'});/* 表格分頁時不捲動（會連帶捲動畫布造成跳動） */
- $('#sTitle').innerHTML=`${String(S.slide+1).padStart(2,'0')}／${model.slides.length}　${sl.title}<small>${S.mine?'我的風格：'+escH(S.mine):presetOf(S.base).zh}${isModified()&&!S.mine?'（已微調）':''}</small>${sl.key==='annot'?'<a class="chartln" href="https://github.com/hctsaik/swiffchart-web-preview" target="_blank" rel="noopener" title="原生可編輯圖表（直條／折線／Pareto／瀑布）在另一個專案 SwiffChart">📊 圖表 → SwiffChart</a>':''}`;$('#elHint').textContent=sl.groups&&sl.groups.length?(TOUCH?`👆 點元件＝選取 → 下方工具列：＋待選／下載 .pptx／SVG／PNG（本頁 ${sl.groups.length} 個）`:`👆 點一下＝選取（工具列：複製／下載／＋待選）；雙擊或 ⊕＝加入待選素材（本頁 ${sl.groups.length} 個）`):'';
+ const SE=D.SLIDES.find(x=>x[0]===sl.key)||[];$('#sTitle').innerHTML=`<b class="pcode">${SE[2]||''}</b> ${sl.title} · ${String(S.slide+1).padStart(2,'0')}/${model.slides.length}<small>${S.mine?'我的風格：'+escH(S.mine):presetOf(S.base).zh}${isModified()&&!S.mine?'（已微調）':''}</small>${sl.key==='catalog'?gocards():''}${(D.USED&&D.USED[sl.key])?usedLinks(D.USED[sl.key]):''}${sl.key==='annot'||sl.key==='chart'?'<a class="chartln" href="https://github.com/hctsaik/swiffchart-web-preview" target="_blank" rel="noopener" title="原生可編輯圖表（直條／折線／Pareto／瀑布）在另一個專案 SwiffChart">📊 圖表 → SwiffChart</a>':''}`;$('#elHint').textContent=sl.groups&&sl.groups.length?(TOUCH?`👆 點元件＝選取 → 下方工具列：＋待選／下載 .pptx／SVG／PNG（本頁 ${sl.groups.length} 個）`:`👆 點一下＝選取（工具列：複製／下載／＋待選）；雙擊或 ⊕＝加入待選素材（本頁 ${sl.groups.length} 個）`):'';
 }
+/* ---------- 頁面導覽：分組側欄、搜尋（含同義詞）、hash 深連結 ---------- */
+const SYN=[['kpi','指標','數字','metric','達成','成果','數據'],['比較','對比','vs','compare','差異','優劣'],['時間軸','時程','timeline','里程碑','甘特','路線圖','roadmap','經歷','職涯'],['流程','process','步驟','steps','程序','sop'],['矩陣','2x2','象限','matrix','優先'],['原因','魚骨','rca','5why','why','根因','8d'],['履歷','求職','面試','自我介紹','profile','個人','about'],['作品集','portfolio','圖片','截圖','照片','screenshot'],['技能','skills','能力','skill'],['star','案例','case','專案'],['引言','故事','hook','開場','quote','story'],['結尾','cta','行動','closing','謝謝','聯絡','contact','qr'],['標籤','tag','膠囊','capsule'],['圖示','icon'],['表格','table','raci','風險'],['圖表','chart','swiffchart','長條','折線'],['決策','decide','建議','選項'],['前後','before','after','改善','asis','tobe'],['組織','人員','team','團隊','人'],['議程','agenda','目錄','章節','divider','分隔'],['評分','rating','星','進度','harvey']];
+const normQ=q=>String(q||'').toLowerCase().replace(/\s+/g,'');
+function expandQ(q){q=normQ(q);if(!q)return[];const o=new Set([q]);SYN.forEach(g=>{if(g.some(w=>w.includes(q)||q.includes(w)&&w.length>1))g.forEach(w=>o.add(w));});return[...o];}
+const pageHref=k=>{const e=D.SLIDES.find(x=>x[0]===k);return '#/'+(e?e[2].replace('·','.'):'')+'/'+k;};
+function buildNav(){const T=$('#pTree');if(!T)return;const open=JSON.parse(localStorage.getItem('pss-nav-open')||'null')||{};
+ T.innerHTML=D.SECTIONS.map(([g,zh,en])=>{const ps=D.SLIDES.map((e,i)=>[e,i]).filter(([e])=>e[4]===g);if(!ps.length)return '';return `<details data-g="${g}"${open[g]!==false?' open':''}><summary><i>${g==='S'?'00':g}</i>${zh}<small>${en} · ${ps.length}</small></summary>${ps.map(([e])=>`<a data-k="${e[0]}" href="${pageHref(e[0])}"><b>${e[2]}</b>${e[1]}</a>`).join('')}</details>`;}).join('');
+ T.addEventListener('toggle',e=>{const d=e.target;if(d.dataset&&d.dataset.g){open[d.dataset.g]=d.open;try{localStorage.setItem('pss-nav-open',JSON.stringify(open));}catch(x){}}},true);
+ const inp=$('#pSearch');inp.oninput=()=>{const qs=expandQ(inp.value),R=$('#pRes');if(!qs.length){R.hidden=true;return;}const hits=[];
+  model.slides.forEach((sl,i)=>{const e=D.SLIDES.find(x=>x[0]===sl.key)||[];const ptxt=normQ([e[1],e[2],e[3],sl.title].join(' '));const pm=qs.some(q=>ptxt.includes(q));if(pm)hits.push({i,gi:-1,lab:sl.title,code:e[2]});
+   (sl.groups||[]).forEach((g,gi)=>{if(qs.some(q=>normQ(g.name).includes(q)))hits.push({i,gi,lab:g.name,code:e[2],pt:sl.title});});});
+  R.hidden=false;R.innerHTML=hits.length?hits.slice(0,40).map(h=>`<a data-i="${h.i}" data-gi="${h.gi}"><b>${h.code}</b>${escH(h.lab)}${h.pt?`<small>${escH(h.pt)}</small>`:''}</a>`).join(''):'<a>找不到，試試：KPI、比較、時間軸、STAR、作品集</a>';window.__studio.search={q:inp.value,n:hits.length};};
+ $('#pRes').onclick=e=>{const a=e.target.closest('a[data-i]');if(!a)return;setTab('slides');go(+a.dataset.i);if(+a.dataset.gi>=0)selectEl(+a.dataset.gi);if(MQ.matches)setPanel(false);};
+ T.onclick=e=>{const a=e.target.closest('a[data-k]');if(!a)return;e.preventDefault();goKey(a.dataset.k);if(MQ.matches)setPanel(false);};}
+function goKey(k){const i=model.slides.findIndex(x=>x.key===k);if(i<0)return false;if(S.tab!=='slides')setTab('slides');go(i);return true;}
+function navSync(sl){document.querySelectorAll('#pTree a').forEach(a=>a.classList.toggle('on',a.dataset.k===sl.key));const on=document.querySelector('#pTree a.on');if(on){const d=on.closest('details');if(d&&!d.open)d.open=true;}
+ const h=pageHref(sl.key);if(S.tab==='slides'&&location.hash!==h)try{history.replaceState(null,'',h);}catch(e){}window.__studio.key=sl.key;}
+const gocards=()=>`<span class="gocards">${D.SECTIONS.filter(x=>x[0]!=='S').map(([g,zh])=>{const f=D.SLIDES.find(e=>e[4]===g);return f?`<a data-k="${f[0]}"><b>${g}</b>${zh}</a>`:'';}).join('')}</span>`;
+const usedLinks=cs=>`<span class="gocards"><small style="color:#8C8C8C">本頁使用元件：</small>${cs.map(c=>{const e=D.SLIDES.find(x=>x[2]===c)||D.SLIDES.find(x=>x[2]===c.replace(/·[A-Z]$/,''));return e?`<a data-k="${e[0]}"><b>${c}</b>${e[1]}</a>`:'';}).join('')}</span>`;
+document.addEventListener('click',e=>{const a=e.target.closest('.gocards a[data-k],.rcp a[data-k]');if(a){e.preventDefault();goKey(a.dataset.k);}});
+function hashKey(){const m=/^#\/(?:[^/]*\/)?([\w-]+)$/.exec(location.hash||'');return m?m[1]:null;}
+addEventListener('hashchange',()=>{const k=hashKey();if(k&&model&&model.slides[S.slide].key!==k&&!goKey(k))goKey('catalog');});
+{const hk=hashKey();if(hk)S.slideKey=hk;}
+const RECIPES=[
+ {t:'週報／月報',who:'主管 3 分鐘看完：先結論、再數字、最後要決策',st:[['A0','結論先行標題'],['C1','KPI 數字卡＋燈號'],['C3','進度時間軸'],['D1·2','改善前後對照'],['D5','需要的決策'],['F6','整頁範例：週報']],tip:'一頁一個訊息；標題寫成完整句子（例如「B 線良率回升至 98.6%」）。'},
+ {t:'異常報告／8D',who:'品質、製程、客訴回覆',st:[['A0','問題摘要'],['B1','發生流程'],['D4','魚骨圖／5 Why'],['D4·2','根因驗證'],['B3·2','對策步驟'],['C3','矯正時程'],['F5','整頁範例：PCN／變更']],tip:'表格工具 › 行動項目／議題追蹤 預設可直接放對策清單。'},
+ {t:'提案與決策簡報',who:'向上爭取資源、選方案',st:[['E4','開場鉤子'],['B5','議程'],['D2','方案比較'],['D3','2×2 優先矩陣'],['C1','效益數字'],['D5','建議與決策請求'],['E4','結尾 CTA']],tip:'把要的決策放在第 2 頁也放在最後一頁。'},
+ {t:'求職面試簡報（15 分鐘）',who:'讓面試官 30 秒記住你',st:[['G1','自我介紹／個人檔案'],['C3','職涯時間軸'],['G2','技能矩陣'],['G3','STAR 案例 ×2'],['C1','成就數字'],['G4','作品集'],['E4','結尾 CTA＋聯絡方式']],tip:'每個 STAR 結果都要有數字（↑ 32%、省 37 小時）；最後一頁放聯絡與 QR。'},
+ {t:'作品集 Portfolio',who:'設計／工程／研究作品展示',st:[['G1','個人簡介'],['G4','作品圖片網格'],['E3','截圖框＋標註'],['G3','專案 STAR'],['A1','重點卡片'],['E4','引言／推薦語']],tip:'圖片框是真的圖片：在 PowerPoint 右鍵「變更圖片」即可換成作品。'},
+ {t:'競賽／得獎簡報',who:'評審看：故事、清楚度、視覺一致',st:[['E4','故事開場（問題的代價）'],['A0','一句話主張'],['D1','前後對比'],['B1','解法流程'],['C1','成果數字'],['E2','強調重點'],['E4','行動呼籲']],tip:'全份只用 1–2 個強調色，同一元件重複使用，評審會覺得「有設計」。'},
+ {t:'專案啟動 Kick-off',who:'對齊目標、角色、時程',st:[['A0','專案目標'],['B6','團隊與角色'],['B4','工作分解結構'],['C3','里程碑'],['F4','整頁範例：摘要']],tip:'表格工具 › RACI 預設可直接產生角色分工表。'},
+ {t:'策略／框架報告',who:'讓抽象概念一眼懂',st:[['A3','圓形架構'],['B4','層級結構'],['F1','三圓 Why/How/What'],['F2','框架流程'],['F3','能力地圖']],tip:'範例頁下方會列出所用元件，點一下即可跳過去單獨取用。'}];
+function renderGuide(){const g=$('#guide');if(g.dataset.on)return;g.dataset.on=1;const by=c=>D.SLIDES.find(x=>x[2]===c);
+ g.innerHTML='<h2>簡報食譜 Deck Recipes</h2><p>選一個情境，照順序點頁碼挑元件、改字、＋待選，最後一次下載。所有元件都是原生可編輯的 PowerPoint 圖形。</p><div class="rcps">'+RECIPES.map(r=>`<div class="rcp"><h3>${r.t}</h3><div class="who">${r.who}</div><ol>${r.st.map(([c,l])=>{const e=by(c);return `<li>${e?`<a data-k="${e[0]}">${c}</a>`:''}${l}</li>`;}).join('')}</ol><div class="tip">💡 ${r.tip}</div></div>`).join('')+'</div>';}
+$('#bTools').onclick=e=>{e.stopPropagation();const m=$('#mTools');m.hidden=!m.hidden;$('#bTools').setAttribute('aria-expanded',String(!m.hidden));};
+$('#mTools').onclick=e=>{const b=e.target.closest('[data-go]');$('#mTools').hidden=true;if(!b)return;const g=b.dataset.go;if(g==='tray'){const t=$('#trayBtn');if(t)t.click();}else setTab(g);};
+document.addEventListener('click',e=>{if(!e.target.closest('.more.tools'))$('#mTools').hidden=true;});
 function isModified(){const T=templateParams(S.base);return Object.keys(T).some(k=>String(T[k])!==String(S.p[k]));}
 function go(i){S.slide=(i+model.slides.length)%model.slides.length;showSlide();persist();}
 $('#thumbs').onclick=e=>{const t=e.target.closest('.th');if(t)go(+t.dataset.i);};
@@ -6333,8 +6575,8 @@ function saveBlob(blob,name){const url=URL.createObjectURL(blob);const a=documen
 const fileBase=()=>'kit-'+S.base+(isModified()?'-custom':'');
 async function download(one){
  const btn=one?$('#bOne'):$('#bAll');btn.disabled=true;const old=btn.textContent;btn.textContent='產生中…';
- try{const key=D.SLIDES[S.slide][0];
-  const r=await D.exportPptx({PptxGenJS:window.PptxGenJS,JSZip:window.JSZip},S.p,one?{only:[key]}:{examples:!!S.examples});
+ try{const key=model.slides[S.slide].key;
+  const r=await D.exportPptx({PptxGenJS:window.PptxGenJS,JSZip:window.JSZip},S.p,one?{only:[key],examples:true,labels:S.labels}:{examples:true,labels:S.labels});
   saveBlob(r.data,fileBase()+(one?'-'+String(S.slide+1).padStart(2,'0')+'-'+key:'')+'.pptx');
   window.__studio.lastExport={slides:r.model.slides.length,patched:r.patched,size:r.data.size};
   toast(`已產生 ${r.model.slides.length} 頁 .pptx（${r.patched} 個形狀套用柔和陰影）`);}
@@ -6398,8 +6640,8 @@ window.__studio=window.__studio||{};
 const I=window.Icons;const ENV=()=>({PptxGenJS:window.PptxGenJS,JSZip:window.JSZip});
 const SK=()=>D.SIZE_K[S.p.size]||1;
 function setTab(t){S.tab=t;document.body.classList.toggle('tabT',t==='table');if(t==='table'&&document.body.classList.contains('pan'))setPanel(false);document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
- $('#vSlides').hidden=t!=='slides';$('#vIcons').hidden=t!=='icons';$('#vTable').hidden=t!=='table';$('#vKit').hidden=t!=='kit';document.body.classList.toggle('tabK',t==='kit');if(t==='kit'&&window.StyleKit)StyleKit.render(StyleKit.current()||S.base);
- $('#bOne').style.display=$('#bAll').style.display=$('#exWrap').style.display=t==='slides'?'':'none';
+ $('#vSlides').hidden=t!=='slides';$('#vIcons').hidden=t!=='icons';$('#vTable').hidden=t!=='table';$('#vKit').hidden=t!=='kit';$('#vGuide').hidden=t!=='guide';if(t==='guide')renderGuide();document.body.classList.toggle('tabK',t==='kit'||t==='guide');document.body.classList.toggle('tabK',t==='kit');if(t==='kit'&&window.StyleKit)StyleKit.render(StyleKit.current()||S.base);
+ $('#bOne').style.display=$('#bAll').style.display=t==='slides'?'':'none';
  if(t==='icons')renderIcons();if(t==='table'){syncTableUI();renderTable();}persist();}
 $('#tabs').onclick=e=>{const b=e.target.closest('button[data-tab]');if(b)setTab(b.dataset.tab);};
 function renderExtra(){if(S.tab==='icons')renderIcons();else if(S.tab==='table')renderTable();}
@@ -6506,6 +6748,15 @@ const T_SAMPLES={
   rows:[['','方案 A：自建','方案 B：外包','方案 C：雲端'],['導入成本','高','中','低'],['上線時間','6 個月','3 個月','1 個月'],['客製彈性','●','◎','○'],['資料安全','●','○','◎'],['維運人力','3 人','1 人','0.5 人']]},
  kpi:{title:'月度 KPI（示意）',unit:'統計至 9 月',note:'',his:[{type:'col',i:2}],
   rows:[['指標','目標','實際','達成率','與上月'],['生產','','','',''],['良率','98.5%','98.9%','100.4%','▲ 0.3'],['產出（千片）','120','113','94.2%','▼ 4.1'],['品質','','','',''],['Cycle time（天）','45','43','104.7%','▲ 1.5'],['客訴件數','2','1','達成','—']]}};
+Object.assign(T_SAMPLES,{
+ risk:{title:'專案風險表（示意）',unit:'更新：10/16',note:'燈號：紅＝需立即處理　黃＝監控中　綠＝已受控',his:[],
+  rows:[['#','風險描述','可能性','影響','燈號','對策','負責人'],['R1','關鍵機台交期延後','高','高','紅燈','啟用備援機台、每週追蹤','王小明'],['R2','新製程良率爬坡慢','中','高','黃燈','加開 DOE、導入 APC','陳美玲'],['R3','關鍵人員流動','中','中','黃燈','交接文件、雙人制','林志豪'],['R4','原物料價格上漲','低','中','綠燈','長約鎖價','張家瑋']]},
+ issue:{title:'議題追蹤表（示意）',unit:'週會 W42',note:'',his:[],
+  rows:[['#','議題','提出','負責','開立','到期','狀態'],['I-01','AOI 誤判率偏高','品保','林志豪','10/02','10/20','進行中'],['I-02','MES 報表延遲','製造','IT 黃承','10/05','10/18','延遲'],['I-03','治具備品不足','設備','陳怡君','10/08','10/15','完成'],['I-04','供應商來料批次混料','採購','李怡君','10/12','10/30','未開始']]},
+ action:{title:'行動項目（示意）',unit:'會議：10/16 品質週會',note:'',his:[],
+  rows:[['#','行動 Action','負責','到期','狀態'],['1','鎖定 CMP 參數並更新 SOP','陳怡君','10/25','完成'],['2','B 線擴線產能評估','黃承','11/08','進行中'],['3','供應商來料批次管制','林維','11/15','延遲'],['4','C 線導入計畫提報','孫宇','11/30','未開始']]},
+ raci:{title:'RACI 角色分工表（示意）',unit:'',note:'R＝執行　A＝當責（每列僅一位）　C＝諮詢　I＝告知',his:[{type:'col',i:1}],
+  rows:[['工作項目','PM','製程','品保','設備','IT'],['需求定義','A','R','C','I','C'],['參數優化','I','A/R','C','C','—'],['驗證與放行','C','R','A','I','—'],['系統上線','A','I','I','—','R'],['教育訓練','A','R','R','I','I']]}});
 const SAMPLE_T=T_SAMPLES.yield;
 const sampleOf=k=>{const t=clone(T_SAMPLES[k]);const A=D.tableAuto(t.rows);return Object.assign({bold:A.key,align:{},fmt:{},header:'auto',cw:null,pin:false,rules:[],his:[]},t);};
 let T=(()=>{try{const t=JSON.parse(localStorage.getItem(TKEY)||'null');if(t&&Array.isArray(t.rows)){t.rows=t.rows.filter(Array.isArray).map(r=>r.map(c=>D.stripCtl(c)));['title','unit','note'].forEach(k=>t[k]=D.stripCtl(t[k]));return t;}}catch(e){}return sampleOf('yield');})();
@@ -6611,7 +6862,7 @@ function renderTable(light){/* 重繪時保留捲動位置：換外觀／密度�
  renderTable0(light);const rs=()=>{if(window.__tblNewData)return;sv.forEach(([e,t,l])=>{if(Math.abs(e.scrollTop-t)>1)e.scrollTop=t;if(Math.abs(e.scrollLeft-l)>1)e.scrollLeft=l;});if(Math.abs(scrollY-wy)>1)scrollTo(scrollX,wy);};rs();requestAnimationFrame(rs);}
 function renderTable0(light){renderTableOpts();const nR=T.rows.length,nC=nCols();const P=$('#tPrev');
  if(!nR){TM=null;closeChip();$('#tLooks').innerHTML='';TLKEY='';$('#tAuto').innerHTML='';P.querySelector('.tov').innerHTML='';P.querySelector('.tslots').innerHTML='';
-  P.querySelector('.tsvg').innerHTML=`<div class="tempt2"><b>按 Ctrl+V 貼上 Excel 表格</b><span>在 Excel／Google 試算表選取儲存格 → Ctrl+C → 回到這一頁 Ctrl+V（不用點任何框）</span><div class="tline">${[['yield','批次良率'],['fin','損益表'],['status','專案進度'],['cmp','方案比較'],['kpi','KPI 表']].map(([k,z])=>`<button class="btn" data-sample="${k}">範例：${z}</button>`).join('')}</div></div>`;
+  P.querySelector('.tsvg').innerHTML=`<div class="tempt2"><b>按 Ctrl+V 貼上 Excel 表格</b><span>在 Excel／Google 試算表選取儲存格 → Ctrl+C → 回到這一頁 Ctrl+V（不用點任何框）</span><div class="tline">${[['yield','批次良率'],['fin','損益表'],['status','專案進度'],['cmp','方案比較'],['kpi','KPI 表'],['risk','風險表'],['issue','議題追蹤'],['action','行動項目'],['raci','RACI']].map(([k,z])=>`<button class="btn" data-sample="${k}">範例：${z}</button>`).join('')}</div></div>`;
   P.querySelectorAll('[data-sample]').forEach(b=>b.onclick=e=>{e.stopPropagation();T=sampleOf(b.dataset.sample);saveT();renderAll();});
   $('#tMsg').textContent='';renderHiPanel();stepState();window.__studio.table={rows:0,cols:0};return;}
  TM=D.buildModel(S.p,{table:T});const sl=TM.slides[0],tb=sl.table;

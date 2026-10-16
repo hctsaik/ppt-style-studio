@@ -30,10 +30,10 @@ const BASE={
  anC:'alert'
 };
 const PRESETS=[
- {id:'navy',zh:'商務深藍卡片',en:'Navy Card',ref:'參考圖 2',desc:'淺灰畫布＋白色大外框圓與柔和光暈，深藍膠囊白字，▶ 小三角分隔',
+ {id:'navy',zh:'商務深藍卡片',en:'Navy Card',ref:'參考圖 2',desc:'白底＋白色大外框圓與柔和光暈，深藍膠囊白字，▶ 小三角分隔',
   canvas:false,canvasColor:'F5F5F5',sh:true,shB:7,shO:2,shA:.24,haloB:16,haloA:.32,ring:true,
   card:'outline',cardLW:1.25,cardLine:'D9D9D9',tag:'pill',badge:'ring',sep:'tri',chain:'chev',circle:'ring3',circleLW:3,sym:'outlineP',mark:'bar',bar:'under'},
- {id:'green',zh:'墨綠筆記',en:'Green Notes',ref:'參考圖 1',desc:'暖灰畫布、粗灰外框扁平卡片，墨綠小圓角標籤＋芥末黃點綴，六角鏈與 ▶▶▶ 點狀箭號',
+ {id:'green',zh:'墨綠筆記',en:'Green Notes',ref:'參考圖 1',desc:'白底、粗灰外框扁平卡片，墨綠小圓角標籤＋芥末黃點綴，六角鏈與 ▶▶▶ 點狀箭號',
   P:'2F5D50',PD:'24483E',PT:'E2EBE7',A:'C9A227',canvas:false,canvasColor:'F4F4F1',r:.12,
   card:'outline',cardLW:2.25,cardLine:'BFBFBF',tag:'round',badge:'rsq',sep:'dots',chain:'hex',circle:'thick',circleLW:2.25,sym:'thick',mark:'sq',bar:'banner',
   cnW:1.5,cnC:'8C8C8C',cnHs:'med',tSize:40,colR:'small'},
@@ -745,7 +745,7 @@ function buildModel(params,opt){
   const num=(x,y,w,h,n,u,c,o)=>{o=o||{};return txt(x,y,w,h,[{t:n,s:o.s||LS(24),b:1,c,f:nf},{t:u?' '+u:'',s:o.us||LS(12),b:0,c:o.uc||c}],{valign:'middle',align:o.align||'left',name:o.name||'數值'});};
   const dbadge=(x,y,w,h,t,fill,o)=>box(x,y,w,h,Object.assign({fill,r:'full',text:t,size:LS(11),bold:1,color:onC(fill),font:nf,margin:0,line:W2,lw:1.5,name:'增減徽章'},o||{}));
   return{W2,CARD,DARK,RAD,onC,cs,cw,cx,calc,cap,pill,chev,num,dbadge};};
- SL.cmp=()=>{title('對比式排版 Compare','As Was → To Be 基本元件；選取 →「改字」改數字，倍數／增減徽章自動重算');
+ SL.cmp=()=>{title('前後對比 · 數字 Before & After','As Was → To Be 基本元件；選取 →「改字」改數字，倍數／增減徽章自動重算');
   const {W2,CARD,DARK,RAD,onC,cw,cx,calc,cap,pill,chev,num,dbadge}=CMPK();
   // A 橫向一列（同 As Was／To Be 頁）
   {const x=cx[0],y=2.02,AG=.5,w=(cw-AG)/2,h=.86;let nA,nB;grp('橫向對比 As Was→To Be',()=>{
@@ -794,7 +794,7 @@ function buildModel(params,opt){
     txt(x,y+.98,hw-.4,.28,'銷售額（元）',{size:LS(11),color:G.mute,name:'指標名稱'});});
    cap(x,y+h+.08,cw,'E｜大數字分割 Big number split（細分隔線＋▲▼ 增減）');}
  };
- SL.cmp2=()=>{title('對比式排版（二）Compare','三步驟、痛點對改善、降幅、VS 左右欄、時間軸、小尺寸');
+ SL.cmp2=()=>{title('步驟與欄位對比 Compare Layouts','三步驟、痛點對改善、降幅、VS 左右欄、時間軸、小尺寸');
   const {W2,CARD,DARK,RAD,onC,cs,cw,cx,calc,cap,pill,chev,num,dbadge}=CMPK();
   // F 三步驟 現況→改善→目標
   {const x=cx[0],y=2.02,gp=.36,w=(cw-2*gp)/3,h=.98;grp('三步驟 現況→改善→目標',()=>{
