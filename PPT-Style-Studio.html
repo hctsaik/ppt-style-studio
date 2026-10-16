@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%226%22 fill=%22%231F4E79%22/%3E%3C/svg%3E">
-<!-- PPT Style Studio 單檔版（自動產生於 2026-10-17 06:53，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
+<!-- PPT Style Studio 單檔版（自動產生於 2026-10-17 07:01，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
 <title>PPT Style Studio · 圖解元件客製工作室</title>
 <style>
 :root{--ink:#3A3A3A;--t2:#595959;--mu:#8C8C8C;--line:#E4E4E4;--fill:#F6F6F6;--p:#1F4E79}
@@ -5517,11 +5517,16 @@ function buildModel(params,opt){
    T(X0+1.9,5.0,8.8,.4,'用在：開場定調、章節轉場、結尾收束；一頁只放一句，字數 ≤ 30',{size:Z(11),color:G.mute,wrap:0,name:'使用說明'});});
   grp('主題標籤',()=>{box(X0+1.9,1.55,1.2,.3,{fill:TN(P,.88),r:'full',text:'品質文化',size:Z(10.5),bold:1,color:PD,margin:0,name:'主題膠囊'});T(X0+3.2,1.55,3,.3,'第 2 章・開場',{size:Z(10.5),color:G.t2,valign:'middle',wrap:0,name:'位置'});});
   grp('引言＋人像',()=>{photo(X1-1.35,3.15,1.7,'人像（右鍵→變更圖片）');T(X1-2.45,4.15,2.2,.35,'客戶 品保經理',{size:Z(11),color:G.t2,align:'center',wrap:0,name:'身分'});});};
- SL.quote2=()=>{const {Z,T,TN,DARK,W2}=UK();const QC=mix(P,'FFFFFF',.8);
+ SL.quote2=()=>{const {Z,T,TN,DARK,W2,bdg}=UK();const QC=mix(P,'FFFFFF',.8);
   grp('主色直條引言（白底）',()=>{box(X0+.3,2.0,.12,2.4,{fill:P,r:0,name:'主色直條'});T(X0+.75,1.0,1.6,2.0,'“',{size:96,bold:1,color:QC,font:'Georgia',valign:'top',wrap:0,name:'大引號'});
-   T(X0+2.0,2.2,8.6,1.6,'先把問題說清楚，\n答案就會自己出現。',{size:28,bold:1,color:'1F3864',valign:'top',lsp:1.2,name:'金句'});
-   box(X0+2.0,4.0,.9,.05,{fill:P,r:0,name:'分隔線'});T(X0+2.0,4.2,7,.4,'劉奕酉｜《看懂簡報》',{size:12,bold:1,color:'5B6474',wrap:0,name:'出處'});
-   T(X0+2.0,4.7,8.6,.4,'白底＋主色直條：章節轉場或結尾金句用；一頁只放一句',{size:Z(11),color:'5B6474',wrap:0,name:'使用說明'});});
+   T(X0+2.0,2.2,5.4,1.6,'先把問題說清楚，\n答案就會自己出現。',{size:28,bold:1,color:'1F3864',valign:'top',lsp:1.2,name:'金句'});
+   box(X0+2.0,4.0,.9,.05,{fill:P,r:0,name:'分隔線'});T(X0+2.0,4.2,5.4,.4,'劉奕酉｜《看懂簡報》',{size:12,bold:1,color:'5B6474',wrap:0,name:'出處'});
+   T(X0+2.0,4.7,5.4,.4,'章節轉場或結尾金句用；一頁只放一句',{size:Z(11),color:'5B6474',wrap:0,name:'使用說明'});});
+
+  {const bw=CW*.35,bx=X1-bw,by=1.0,bh=5.15;grp('右側淺色塊（人像＋重點）',()=>{box(bx,by,bw,bh,{fill:mix(P,'FFFFFF',.94),r:.1,name:'淺色塊'});
+   photo(bx+bw/2,by+.98,1.2,'人像（右鍵→變更圖片）');T(bx+.3,by+1.8,bw-.6,.36,'劉奕酉',{size:Z(16),bold:1,color:'1F3864',align:'center',wrap:0,name:'姓名'});T(bx+.3,by+2.16,bw-.6,.3,'簡報顧問｜《看懂簡報》作者',{size:Z(11),color:'5B6474',align:'center',wrap:0,name:'頭銜'});
+   ln(bx+.4,by+2.62,bx+bw-.4,by+2.62,{c:mix(P,'FFFFFF',.75),w:.75});T(bx+.4,by+2.74,bw-.8,.3,'本章重點',{size:Z(11),bold:1,color:P,wrap:0,name:'重點標題'});
+   ['先寫結論，再補依據','一頁只回答一個問題','用數字取代形容詞'].forEach((t,k)=>{bdg(bx+.55,by+3.27+k*.5,.3,String(k+1),P,{size:10});T(bx+.82,by+3.12+k*.5,bw-1.1,.3,t,{size:Z(12),color:G.ink,valign:'middle',wrap:0,name:'重點'});});});}
   grp('下一章提示',()=>{T(X0,6.38,CW,.3,[{t:'下一章  ',c:G.t2},{t:'問題定義 →',b:1,c:P}],{size:Z(11),align:'right',wrap:0,name:'下一章'});});};
  /* ================= v14：封面／章節／結尾變體、亞洲與世界地圖 ================= */
  const qr=(x,y,s,nm)=>{box(x,y,s,s,{fill:'FFFFFF',line:G.l2,lw:.75,r:.03,name:nm||'QR 佔位（換成你的 QR 圖）'});const q=.056,m=s-2*q,n=9,c=m/n;
