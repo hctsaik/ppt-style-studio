@@ -385,7 +385,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .tsec.empty .tdrop{display:block}.tsec.empty .tph{display:none}.tph{margin:0;flex:1}.tdrow{align-items:center}.tclr{margin-left:auto;color:#a33}
 body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK #bPanel{display:none}
 #pnav{margin:-4px 0 12px}.psearch input{width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #D6D6D6;border-radius:8px;font:inherit;font-size:13px}
-#pRes{margin:6px 0;border:1px solid #E6E6E6;border-radius:8px;max-height:260px;overflow:auto}#pRes a{display:block;padding:6px 9px;font-size:12.5px;color:var(--ink);text-decoration:none;border-bottom:1px solid #F0F0F0;cursor:pointer}#pRes a:hover{background:#F4F4F4}#pRes a b{color:var(--p);margin-right:6px}#pRes small{color:#8C8C8C;margin-left:4px}
+#pRes{margin:6px 0;border:1px solid #E6E6E6;border-radius:8px;max-height:260px;overflow:auto}#pRes a{display:block;padding:6px 9px;font-size:12.5px;color:var(--ink);text-decoration:none;border-bottom:1px solid #F0F0F0;cursor:pointer}#pRes a:hover{background:#F4F4F4}#pRes a b{color:var(--p);margin-right:6px}#pRes small{color:#8C8C8C;margin-left:4px}#pRes .pempty{padding:10px;font-size:12.5px;color:var(--ink);line-height:1.6}#pRes .pempty small{margin:0;color:#5B6474}
 #pTree details{border-bottom:1px solid #EEE}#pTree summary{cursor:pointer;padding:7px 2px;font-size:13px;font-weight:700;list-style:none;display:flex;gap:7px;align-items:center}#pTree summary::-webkit-details-marker{display:none}#pTree summary i{font-style:normal;background:#333;color:#fff;border-radius:10px;padding:0 7px;font-size:11px}#pTree summary small{color:#8C8C8C;font-weight:400;margin-left:auto}
 #pTree a{display:flex;gap:8px;padding:5px 6px 5px 10px;font-size:12.5px;color:#444;text-decoration:none;border-radius:6px;cursor:pointer}#pTree a b{min-width:34px;color:#8C8C8C;font-weight:600}#pTree a:hover{background:#F4F4F4}#pTree a.on{background:color-mix(in srgb,var(--p) 12%,#fff);color:var(--ink);font-weight:700}#pTree a.on b{color:var(--p)}
 #stDet>summary{cursor:pointer;font-weight:700;font-size:13px;padding:8px 0;border-top:2px solid #EEE}
@@ -559,7 +559,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <script src="jszip.min.js?v=978d62b5"></script>
 <script src="pptxgen.min.js?v=24808c08"></script>
 <script src="icons.js?v=65c03732"></script>
-<script src="deck.js?v=f61e3c55"></script>
+<script src="deck.js?v=2cd21bf6"></script>
 <script src="stylekit-data.js?v=47e8edb0"></script>
 <script src="stylekit.js?v=2a276743"></script>
 <script>
@@ -801,7 +801,7 @@ function buildNav(){const T=$('#pTree');if(!T)return;const open=JSON.parse(local
  const inp=$('#pSearch');inp.oninput=()=>{const qs=expandQ(inp.value),R=$('#pRes');if(!qs.length){R.hidden=true;return;}const hits=[];
   model.slides.forEach((sl,i)=>{const e=D.SLIDES.find(x=>x[0]===sl.key)||[];const ptxt=normQ([e[1],e[2],e[3],sl.title].join(' '));const pm=qs.some(q=>ptxt.includes(q));if(pm)hits.push({i,gi:-1,lab:sl.title,code:e[2]});
    (sl.groups||[]).forEach((g,gi)=>{if(qs.some(q=>normQ(g.name).includes(q)))hits.push({i,gi,lab:g.name,code:e[2],pt:sl.title});});});
-  R.hidden=false;const nc=hits.filter(h=>h.gi>=0).length;R.innerHTML=hits.length?(nc?`<div class="pmulti"><span id="pmN">勾選元件可一次取用</span><button id="pmTray" disabled>＋加入待選</button><button id="pmDl" disabled>⬇ 下載所選</button></div>`:'')+hits.slice(0,40).map(h=>`<a data-i="${h.i}" data-gi="${h.gi}" tabindex="0">${h.gi>=0?`<input type="checkbox" class="pck" aria-label="勾選 ${escH(h.lab)}">`:''}<b>${h.code}</b>${escH(h.lab)}${h.pt?`<small>${escH(h.pt)}</small>`:''}</a>`).join(''):'<a>找不到，試試：KPI、比較、時間軸、STAR、作品集</a>';window.__studio.search={q:inp.value,n:hits.length};};
+  R.hidden=false;const nc=hits.filter(h=>h.gi>=0).length;R.innerHTML=hits.length?(nc?`<div class="pmulti"><span id="pmN">勾選元件可一次取用</span><button id="pmTray" disabled>＋加入待選</button><button id="pmDl" disabled>⬇ 下載所選</button></div>`:'')+hits.slice(0,40).map(h=>`<a data-i="${h.i}" data-gi="${h.gi}" tabindex="0">${h.gi>=0?`<input type="checkbox" class="pck" aria-label="勾選 ${escH(h.lab)}">`:''}<b>${h.code}</b>${escH(h.lab)}${h.pt?`<small>${escH(h.pt)}</small>`:''}</a>`).join(''):`<div class="pempty" role="status">找不到「${escH(inp.value.trim())}」<br><small>試試：KPI、比較、時間軸、STAR、作品集・按 Esc 清除</small></div>`;window.__studio.search={q:inp.value,n:hits.length};};
  const pmSel=()=>[...document.querySelectorAll('#pRes .pck:checked')].map(c=>{const a=c.closest('a');const sl=model.slides[+a.dataset.i];const gi=+a.dataset.gi;const gr=sl.groups[gi];const lk=sl.key+':'+gi;const it={kind:'el',key:sl.key,gi,name:gr.full||gr.name};if(S.labels&&S.labels[lk])it.labels={[lk]:clone(S.labels[lk])};return it;});
  $('#pRes').onchange=()=>{const n=pmSel().length;$('#pmN').textContent=n?`已勾 ${n} 個元件`:'勾選元件可一次取用';$('#pmTray').disabled=$('#pmDl').disabled=!n;};
  $('#pRes').addEventListener('click',async e=>{const b=e.target.closest('#pmTray,#pmDl');if(!b)return;e.stopPropagation();const its=pmSel();if(!its.length)return;
@@ -1567,8 +1567,9 @@ buildTemplates();buildGroups();syncPanel();renderMine();setTab(S.tab||'slides');
 (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(render);
 render();
 /* 搜尋框：↑↓ 在結果間移動、Enter 開啟 */
-$('#pSearch').addEventListener('keydown',e=>{if(e.key!=='ArrowDown'&&e.key!=='ArrowUp')return;const L=[...document.querySelectorAll('#pRes a[data-i]')];if(!L.length)return;e.preventDefault();(e.key==='ArrowDown'?L[0]:L[L.length-1]).focus();});
-$('#pRes').addEventListener('keydown',e=>{const a=document.activeElement;if(e.key==='Enter'&&a&&a.matches('#pRes a[data-i]')){e.preventDefault();a.click();return;}if(e.key!=='ArrowDown'&&e.key!=='ArrowUp')return;const L=[...document.querySelectorAll('#pRes a[data-i]')];const i=L.indexOf(a);if(i<0)return;e.preventDefault();const j=i+(e.key==='ArrowDown'?1:-1);if(j<0)$('#pSearch').focus();else if(L[j])L[j].focus();});
+const pClr=()=>{const i=$('#pSearch');i.value='';i.oninput();i.focus();};
+$('#pSearch').addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();pClr();return;}if(e.key!=='ArrowDown'&&e.key!=='ArrowUp')return;const L=[...document.querySelectorAll('#pRes a[data-i]')];if(!L.length)return;e.preventDefault();(e.key==='ArrowDown'?L[0]:L[L.length-1]).focus();});
+$('#pRes').addEventListener('keydown',e=>{const a=document.activeElement;if(e.key==='Escape'){e.preventDefault();pClr();return;}if(e.key==='Enter'&&a&&a.matches('#pRes a[data-i]')){e.preventDefault();a.click();return;}if(e.key!=='ArrowDown'&&e.key!=='ArrowUp')return;const L=[...document.querySelectorAll('#pRes a[data-i]')];const i=L.indexOf(a);if(i<0)return;e.preventDefault();const j=i+(e.key==='ArrowDown'?1:-1);if(j<0)$('#pSearch').focus();else if(L[j])L[j].focus();});
 window.__studioApi={S,render,syncPanel,templateParams};
 })();
 </script></body></html>
