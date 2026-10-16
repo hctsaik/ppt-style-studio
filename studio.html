@@ -554,8 +554,8 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <script src="jszip.min.js?v=978d62b5"></script>
 <script src="pptxgen.min.js?v=24808c08"></script>
 <script src="icons.js?v=65c03732"></script>
-<script src="deck.js?v=751d1b5f"></script>
-<script src="stylekit-data.js?v=9132fa85"></script>
+<script src="deck.js?v=c23c57cc"></script>
+<script src="stylekit-data.js?v=47e8edb0"></script>
 <script src="stylekit.js?v=98c8d04f"></script>
 <script>
 (function(){
@@ -822,7 +822,7 @@ const RECIPES=[
  {t:'作品集 Portfolio',lim:'6–12 頁｜每件作品 1 頁｜圖 > 字',who:'設計／工程／研究作品展示',st:[['F1','封面'],['G1','個人簡介'],['G5','作品圖片網格'],['E4','截圖框＋裝置框'],['G4','專案 STAR'],['E5','引言／推薦語']],tip:'圖片框是真的圖片：在 PowerPoint 右鍵「變更圖片」即可換成作品。'},
  {t:'競賽／得獎簡報',lim:'6 頁｜評審 5–8 分鐘｜每頁 ≤ 40 字、標題 ≤ 20 字',who:'評審看：問題夠痛、解法可行、市場夠大、團隊能做',st:[['F1','封面＋一句話主張（≤ 20 字）'],['D10','問題規模／市場 TAM（≤ 3 數字）'],['D9','解法與商業模式 BMC（每格 ≤ 12 字）'],['C1','成果數字（≤ 4 張 KPI）'],['G6','未來計畫 30-60-90（每欄 ≤ 3 點）'],['F7','結尾＋行動呼籲（≤ 15 字）']],tip:'順序：主張 → 痛點 → 解法 → 證據 → 計畫 → 呼籲；全份只用 1–2 個強調色。'},
  {t:'專案啟動 Kick-off',lim:'6–8 頁｜20 分鐘',who:'對齊目標、角色、時程',st:[['F1','封面'],['D9','OKR 目標'],['B9','團隊與角色'],['B7','工作分解結構'],['C3','里程碑'],['F13','整頁範例：摘要']],tip:'表格工具 › RACI 預設可直接產生角色分工表。'},
- {t:'策略／框架報告',lim:'8–12 頁｜每個框架 1 頁',who:'讓抽象概念一眼懂',st:[['F4','章節頁'],['D9','PESTEL／五力'],['A9','圓形架構'],['B7','層級結構'],['E8','地圖與據點'],['F10','三圓 Why/How/What'],['F12','能力地圖']],tip:'範例頁下方會列出所用元件，點一下即可跳過去單獨取用。'}];
+ {t:'策略／框架報告',lim:'8–12 頁｜每個框架 1 頁',who:'讓抽象概念一眼懂',st:[['F4','章節頁'],['D9','PESTEL／五力'],['A9','圓形架構'],['B7','層級結構'],['E9','地圖與據點'],['F10','三圓 Why/How/What'],['F12','能力地圖']],tip:'範例頁下方會列出所用元件，點一下即可跳過去單獨取用。'}];
 async function recipeDeck(i,btn){const r=RECIPES[i];const keys=[...new Set(r.st.map(([c])=>(D.SLIDES.find(x=>x[2]===c)||[])[0]).filter(Boolean))];
  btn.disabled=true;const old=btn.textContent;btn.textContent='產生中…';
  try{const mm=D.buildModel(S.p,{examples:true});let nT=0;keys.forEach(k=>{const sl=mm.slides.find(x=>x.key===k);if(sl&&sl.groups[0]){addTray({kind:'el',key:k,gi:0,name:sl.groups[0].full||sl.groups[0].name});nT++;}});window.__studio.recipeTray=nT;
@@ -929,7 +929,7 @@ function renderMine(){const a=loadMine();
    <span class="nm" data-a="apply" title="套用">${escH(m.name)}<small>以「${escH(presetOf(m.base).zh)}」為基礎</small></span>
    <button class="ap" data-a="apply">套用</button><button data-a="ren">改名</button><button data-a="exp">匯出</button><button data-a="del">刪除</button></div>`;}).join('')
   :'<div class="mempty">還沒有自訂風格。調整好後在上方命名並按「＋ 儲存」。</div>';}
-document.addEventListener('stylekit-apply',e=>{const d=e.detail||{};S.mine=null;if(presetOf(d.id)&&presetOf(d.id).id===d.id){S.base=d.id;S.p=templateParams(d.id);}else if(d.acc){setColor('P',d.acc[0]);}syncPanel();schedule();setTab('slides');window.__studio.kitApplied=d.id;toast('已把 Style Kit「'+((presetOf(d.id)||{}).zh||d.id)+'」配色套用到全部元件；下載的 .pptx 與 .potx 主題色一致');});
+document.addEventListener('stylekit-apply',e=>{const d=e.detail||{};S.mine=null;if(presetOf(d.id)&&presetOf(d.id).id===d.id){S.base=d.id;S.p=templateParams(d.id);}else if(d.acc){setColor('P',d.acc[0]);setColor('PD',d.acc[4]);setColor('A',d.acc[1]);}syncPanel();schedule();setTab('slides');window.__studio.kitApplied=d.id;toast('已把 Style Kit「'+((presetOf(d.id)||{}).zh||((window.STYLEKIT_THEMES||[]).find(t=>t.id===d.id)||{}).zh||d.id)+'」配色套用到全部元件；下載的 .pptx 與 .potx 主題色一致');});
 function applyMine(m){const base=presetOf(m.base).id;S.base=base;S.p=cleanP(m.params||m.changed||{},base);S.mine=m.name;syncPanel();schedule();renderMine();toast('已套用我的風格：'+m.name);}
 function importMine(j,fname){const list=loadMine();let n=0;
  const items=j.type==='my-styles'?(j.styles||[]):[j];

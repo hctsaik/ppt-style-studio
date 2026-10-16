@@ -6,7 +6,7 @@
   "scripts": {
     "gen": "node gen.js",
     "review": "bash review.sh",
-    "test": "node tools/test.js"
+    "test": "python3 tools/stylekit_assets_test.py && node tools/test.js"
   },
   "keywords": [],
   "author": "",
