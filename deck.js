@@ -908,7 +908,7 @@ function buildModel(params,opt){
     T.forEach(([t,ps,pl,as,al],i)=>{const yy=y+hh+i*rh;ln(x,yy+rh,x+wL,yy+rh,{c:G.l2,w:.5});txt(x,yy,lc,rh,t,{size:LS(10),color:G.ink,valign:'middle',name:'任務'});
      box(gx(ps)+.04,yy+.07,pl*cw-.08,.1,{fill:'D9D9D9',r:'full',name:'計畫'});if(as!=null)box(gx(as)+.04,yy+.19,al*cw-.08,.1,{fill:i===3?AL:P,r:'full',name:'實際'});});
     el('diamond',gx(8)-.13,y+hh+4*rh+.07,.2,.2,{fill:DARK,name:'里程碑'});
-    const tx0=gx(today);ln(tx0,y+hh-.02,tx0,y+hh+T.length*rh+.04,{c:AL,w:1.25,dash:'sysDash'});pill(tx0-.32,y+hh+T.length*rh+.06,.64,.22,'Today',AL,{font:nf,size:Math.max(8,LS(9))});});
+    const tx0=gx(today);ln(tx0,y+hh-.02,tx0,y+hh+T.length*rh+.04,{c:AL,w:1.25,dash:'sysDash'});pill(tx0-.32,y+hh+T.length*rh+.06,.64,.22,'今天',AL,{size:Math.max(10,LS(10))});});
    const ly=y+hh+T.length*rh+.34;cap(x,ly,4.6,'B｜週別甘特 Weekly Gantt（灰＝計畫、色＝實際、虛線＝今天）');}
   // C 垂直時間軸
   {const x=X0+wL+.45,w=CW-wL-.45,y=1.98,rh=.9,lx=x+1.08;grp('垂直時間軸',()=>{ln(lx,y+.2,lx,y+3*rh+.4,{c:G.l2,w:1.25});
