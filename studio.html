@@ -287,6 +287,7 @@ body.tabT .wrap{grid-template-columns:1fr}body.tabT aside{display:none}body.tabT
 #lbList label{font-size:11px;color:var(--mu);display:block;margin-bottom:2px}
 #lbList textarea{width:100%;box-sizing:border-box;font-family:inherit;font-size:12.5px;line-height:1.45;border:1px solid #DADADA;border-radius:6px;padding:4px 6px;resize:vertical}
 #lbList .lbic{display:grid;grid-template-columns:28px 1fr;align-items:center;gap:4px}#lbList .lbic label{grid-column:1/3}#lbList .lbic input{font:inherit;font-size:12.5px;border:1px solid #DADADA;border-radius:6px;padding:4px 6px}#lbList .lbic input.chg{border-color:var(--p);background:#F7FAFD}
+#lbList .lbmk{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#595959;margin-top:2px;cursor:pointer}#lbList .lbmk input{margin:0}
 #lbList textarea.chg{border-color:var(--p);background:#F7FAFD}
 .lbed .lbf{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}.lbed .lbf .btn{flex:1}
 .toast.on{opacity:1;transform:translateX(-50%)}
@@ -529,7 +530,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 <script src="jszip.min.js?v=978d62b5"></script>
 <script src="pptxgen.min.js?v=24808c08"></script>
 <script src="icons.js?v=f4423941"></script>
-<script src="deck.js?v=b7c38ee7"></script>
+<script src="deck.js?v=9b72c26c"></script>
 <script>
 (function(){
  'use strict';
@@ -1423,17 +1424,17 @@ $('#cMin').onclick=e=>{const b=e.target.closest('button');if(!b)return;CMP.minFo
 let LB=null;
 function openLabels(){if(!SEL)return;const raw=D.buildModel(S.p,{only:[SEL.key]}).slides[0];const g=raw.groups[SEL.gi];if(!g)return;const lk=SEL.key+':'+SEL.gi;const cur=(S.labels||{})[lk]||{};
  const rows=[];for(let i=g.from;i<=g.to&&rows.length<40;i++){const it=raw.items[i];if(!it.runs||!it.runs.length)continue;const orig=D.textOf(it);if(!orig.trim())continue;const ix=i-g.from;const L=cur[ix];
-  rows.push({ix,orig,val:L&&L.from===orig?L.to:orig,name:it.name||'文字'});}
+  const mk0=!!it.mk,mkOk=mk0||/強調句|半高螢光筆|新值|數值|關鍵|重點/.test(it.name||'');rows.push({ix,orig,val:L&&L.from===orig&&L.to!=null?L.to:orig,name:it.name||'文字',mk0,mkOk,mk:L&&L.from===orig&&L.mk!=null?!!L.mk:mk0});}
  const ics=[];for(let i=g.from;i<=g.to&&ics.length<12;i++){const it=raw.items[i];if(!it.ic)continue;const ix=i-g.from,L=cur[ix];ics.push({ix,orig:it.ic.id,val:L&&L.icon&&L.from===it.ic.id?L.icon:it.ic.id});}
  LB={lk,gi:SEL.gi,rows,ics};$('#lbName').textContent='改字：'+g.name;
- $('#lbList').innerHTML=rows.length?rows.map((r,j)=>`<div><label>${escH(r.name)}</label><textarea data-j="${j}" rows="${Math.min(5,r.val.split('\n').length)}" class="${r.val!==r.orig?'chg':''}">${escH(r.val)}</textarea></div>`).join(''):(ics.length?'':'<div class="hint">這個元件沒有可改的文字。</div>');
+ $('#lbList').innerHTML=rows.length?rows.map((r,j)=>`<div><label>${escH(r.name)}</label><textarea data-j="${j}" rows="${Math.min(5,r.val.split('\n').length)}" class="${r.val!==r.orig?'chg':''}">${escH(r.val)}</textarea>${r.mkOk?`<label class="lbmk" title="整段加上半高螢光筆（下半部淡色帶；PowerPoint 裡是文字方塊漸層填滿＋圖形隨文字調整大小）"><input type="checkbox" data-m="${j}"${r.mk?' checked':''}> 半高螢光筆</label>`:''}</div>`).join(''):(ics.length?'':'<div class="hint">這個元件沒有可改的文字。</div>');
  if(ics.length){if(!$('#lbIcList')){const dl=document.createElement('datalist');dl.id='lbIcList';dl.innerHTML=I.LIST.map(ic=>`<option value="${ic.id}">${escH(ic.zh)}</option>`).join('');document.body.appendChild(dl);}
   $('#lbList').insertAdjacentHTML('beforeend',ics.map((r,j)=>`<div class="lbic"><label>圖示 ${ics.length>1?j+1:''}（輸入中文或英文名稱搜尋圖示庫）</label><span class="lbicv">${icSvg(I.BY[r.val]?r.val:r.orig,22)}</span><input data-k="${j}" list="lbIcList" value="${escH(r.val)}" class="${r.val!==r.orig?'chg':''}" placeholder="例：star、目標"></div>`).join(''));}
  $('#lbEd').hidden=false;const t=$('#lbList textarea');if(t)t.focus();}
 $('#lbList').addEventListener('input',e=>{const q=e.target.closest('input[data-k]');if(q&&LB){const v=q.value.trim(),id=I.BY[v]?v:((I.LIST.find(ic=>ic.zh===v)||{}).id);if(id){q.dataset.id=id;q.previousElementSibling.innerHTML=icSvg(id,22);}q.classList.toggle('chg',(id||v)!==LB.ics[+q.dataset.k].orig);return;}const t=e.target.closest('textarea');if(!t||!LB)return;t.classList.toggle('chg',t.value!==LB.rows[+t.dataset.j].orig);});
 $('#lbCancel').onclick=()=>{$('#lbEd').hidden=true;LB=null;};
 $('#lbReset').onclick=()=>{if(!LB)return;delete S.labels[LB.lk];const gi=LB.gi;$('#lbEd').hidden=true;LB=null;render();persist();selectEl(gi);toast('已還原這個元件的文字');};
-$('#lbOk').onclick=()=>{if(!LB)return;const L={};document.querySelectorAll('#lbList textarea').forEach(t=>{const r=LB.rows[+t.dataset.j];const v=D.stripCtl(t.value).slice(0,400);if(v!==r.orig)L[r.ix]={from:r.orig,to:v};});document.querySelectorAll('#lbList input[data-k]').forEach(q=>{const r=LB.ics[+q.dataset.k];const v=q.value.trim();const id=q.dataset.id||(I.BY[v]?v:((I.LIST.find(ic=>ic.zh===v)||{}).id));if(id&&id!==r.orig)L[r.ix]={from:r.orig,icon:id};});
+$('#lbOk').onclick=()=>{if(!LB)return;const L={};document.querySelectorAll('#lbList textarea').forEach(t=>{const r=LB.rows[+t.dataset.j];const v=D.stripCtl(t.value).slice(0,400);const mb=document.querySelector(`#lbList input[data-m="${t.dataset.j}"]`),mk=mb?mb.checked:r.mk0;if(v!==r.orig||mk!==r.mk0){L[r.ix]={from:r.orig};if(v!==r.orig)L[r.ix].to=v;if(mk!==r.mk0)L[r.ix].mk=mk?1:0;}});document.querySelectorAll('#lbList input[data-k]').forEach(q=>{const r=LB.ics[+q.dataset.k];const v=q.value.trim();const id=q.dataset.id||(I.BY[v]?v:((I.LIST.find(ic=>ic.zh===v)||{}).id));if(id&&id!==r.orig)L[r.ix]={from:r.orig,icon:id};});
  S.labels=S.labels||{};if(Object.keys(L).length)S.labels[LB.lk]=L;else delete S.labels[LB.lk];const gi=LB.gi,n=Object.keys(L).length;$('#lbEd').hidden=true;LB=null;render();persist();selectEl(gi);
  const sl=model.slides[S.slide],g=sl.groups[gi];const shr=g?sl.items.slice(g.from,g.to+1).filter(it=>it.shrunk).length:0;
  window.__studio.lastLabels={n,shrunk:shr};toast(n?`已改 ${n} 處（文字／圖示）${shr?`；${shr} 段放不下，字級已自動縮小`:''}。下載、複製、＋待選都會帶這些文字。`:'沒有變更',3200);};

@@ -68,9 +68,14 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
   const w4=s4.items.slice(K.groups[gH].from,K.groups[gH].to+1).filter(i=>i.calc&&i.calc.m==='hb');ok(Math.abs(w4[1].points[2].curve.swAng-270)<.01,'Harvey ball：25%→75% 扇形 270°');
   const gD=gi('1–5 點數'),dI=its(gD),dk=dI.findIndex(i=>D.textOf(i)==='4/5');const s5=D.buildModel(nav,{only:['kpi'],labels:{['kpi:'+gD]:{[dk]:{from:'4/5',to:'2/5'}}}}).slides[0];
   ok(s5.items.slice(K.groups[gD].from,K.groups[gD].to+1).filter(i=>i.calc&&i.calc.m==='dot'&&i.fill===nav.P).length===2+3+5,'1–5 點數：4/5→2/5 自動上色');
-  const E=D.buildModel(nav,{only:['emph']}).slides[0];const runs=[].concat(...E.items.filter(i=>i.runs).map(i=>i.runs));ok(runs.filter(r=>r.o.hl).length===3&&runs.some(r=>r.o.strike)&&runs.some(r=>r.o.u),'強調：螢光底 3 種、刪除線、底線');
+  const E=D.buildModel(nav,{only:['emph']}).slides[0];const runs=[].concat(...E.items.filter(i=>i.runs).map(i=>i.runs));ok(runs.filter(r=>r.o.hl).length===2&&runs.some(r=>r.o.strike)&&runs.some(r=>r.o.u),'強調：淡色螢光底 2 種、刪除線、底線');
+  {const mi=E.items.findIndex(i=>i.mk);const M=E.items[mi];ok(M&&M.name==='半高螢光筆'&&M.mk.a===.55&&M.mk.b===.92&&E.groups.length===8&&E.groups.every(g=>E.items.slice(g.from,g.to+1).some(i=>i.name==='編號徽章')),'強調：8 張卡各有編號徽章；半高螢光筆 55%／92% 硬切');
+   const gM=E.groups.findIndex(g=>g.name==='半高螢光筆'),ix=mi-E.groups[gM].from;const S2=D.buildModel(nav,{only:['emph'],labels:{['emph:'+gM]:{[ix]:{from:'良率提升 1.2 pt',to:'良率提升 1.2 pt，交期縮短 2 天'}}}}).slides[0];ok(S2.items[mi].mk&&S2.items[mi].w>M.w+1,'半高螢光筆：改字後方塊（色帶）跟著變寬');
+   const gU=E.groups.findIndex(g=>g.name==='底線強調'),uI=E.items.slice(E.groups[gU].from,E.groups[gU].to+1),uk=uI.findIndex(i=>i.name==='強調句');const S3=D.buildModel(nav,{only:['emph'],labels:{['emph:'+gU]:{[uk]:{from:D.textOf(uI[uk]),mk:1}}}}).slides[0];const U=S3.items[E.groups[gU].from+uk];
+   ok(U.mk&&U.mk.c===S3.mkC&&U.w<uI[uk].w&&D.textOf(U)===D.textOf(uI[uk])&&U.runs.some(r=>r.o.u),'改字：任一強調句可勾「半高螢光筆」（保留原格式、寬度貼字）');}
   const S=D.buildModel(nav,{only:['emph'],labels:{}}).slides[0];ok(S.items.some(i=>i.calc&&D.textOf(i)==='↓76%'),'前後值：5.0%→1.2% 徽章 ↓76%');
   const r=await save('gap-navy.pptx',nav,{only:Object.keys(PG)});const z=await JSZip.loadAsync(r.data);const x4=await z.file('ppt/slides/slide4.xml').async('string');
+  ok(/name="半高螢光筆"[\s\S]*?<a:gradFill rotWithShape="1"><a:gsLst><a:gs pos="0">[\s\S]*?pos="55000"[\s\S]*?pos="92000"[\s\S]*?<\/a:gradFill>[\s\S]*?wrap="none"><a:spAutoFit\/><\/a:bodyPr>/.test(x4),'OOXML：半高螢光筆＝文字方塊硬切漸層＋wrap none＋spAutoFit');
   ok(/<a:highlight><a:srgbClr val="[0-9A-F]{6}"\/><\/a:highlight>/.test(x4)&&/strike="sngStrike"/.test(x4)&&/ u="sng"/.test(x4),'OOXML：自訂 srgb 醒目提示、刪除線、底線');
   for(const k of Object.keys(PG))for(const g of [0,1]){const em=D.elementModel(nav,k,g);await save('gap-'+k+'-'+g+'.pptx',nav,{model:em});}
   for(const id of ['investor','wire','charcoal'])await save('gap-'+id+'.pptx',D.PRESETS.find(p=>p.id===id),{only:Object.keys(PG)});

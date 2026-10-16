@@ -20,7 +20,14 @@ const URL=process.argv[2]||'http://localhost:8765/studio.html';let fail=0;const 
  await pg.reload({waitUntil:'networkidle0'});await go('KPI 卡與評比');gi=await gIdx('KPI 數值＋目標＋Δ');ck('重新整理後仍保留 ▼ −5%',/▼ −5%/.test(await pg.evaluate(gi=>document.querySelector(`g.el[data-g="${gi}"]`).textContent,gi)));
  await pick(gi);await sl(300);await pg.evaluate(()=>document.querySelector('#ebar button[data-a="pptx"]').click());await sl(2500);
  const le=await pg.evaluate(()=>window.__studio.lastElement);ck('下載此元件 .pptx：'+JSON.stringify(le),le&&/KPI/.test(le.name)&&le.size>10000);
- await go('註腳與強調');ck('螢光底在預覽有底色矩形',await pg.evaluate(()=>[...document.querySelectorAll('g.el')].some(g=>g.dataset.name==='螢光底強調'&&g.querySelectorAll('rect:not(.hit)').length>=3)));
+ await go('註腳與強調');ck('螢光底在預覽有底色矩形',await pg.evaluate(()=>[...document.querySelectorAll('g.el')].some(g=>g.dataset.name==='螢光底強調'&&g.querySelectorAll('rect:not(.hit)').length>=2)&&[...document.querySelectorAll('g.el')].some(g=>g.dataset.name==='半高螢光筆'&&g.querySelector('rect.mk'))));
+ gi=await gIdx('底線強調');await pick(gi);await sl(300);await pg.evaluate(()=>document.querySelector('#ebar button[data-a="lbl"]').click());await sl(300);
+ const nm=await pg.evaluate(()=>document.querySelectorAll('#lbList input[data-m]').length);ck('改字面板：強調句有「半高螢光筆」勾選（'+nm+'）',nm>=2);
+ await pg.evaluate(()=>{document.querySelector('#lbList input[data-m]').checked=true;document.querySelector('#lbOk').click();});await sl(700);
+ ck('勾選後預覽出現半高色帶',await pg.evaluate(gi=>!!document.querySelector(`g.el[data-g="${gi}"] rect.mk`),gi));
+ gi=await gIdx('前後值（刪除線）');await pick(gi);await sl(300);await pg.evaluate(()=>document.querySelector('#ebar button[data-a="lbl"]').click());await sl(300);
+ await pg.evaluate(()=>{const t=[...document.querySelectorAll('#lbList textarea')].find(t=>t.value==='1.2%');t.value='2.5%';document.querySelector('#lbOk').click();});await sl(700);
+ ck('前後值改 1.2→2.5%：徽章自動 ↓50%',/↓50%/.test(await pg.evaluate(gi=>document.querySelector(`g.el[data-g="${gi}"]`).textContent,gi)));
  await go('06　標註$');ck('標註頁標題列有 SwiffChart 連結',await pg.evaluate(()=>!!document.querySelector('#sTitle a.chartln[href*="swiffchart-web-preview"]')));
  ck('無 JS 錯誤 '+errs.join(';'),!errs.length);
  console.log(fail?'FAILS '+fail:'ALL OK');await b.close();process.exit(fail?1:0);})();
