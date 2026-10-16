@@ -1,0 +1,34 @@
+// 用法：timeout 180 node tools/style_tab_test.js [URL] [截圖.png]
+// 風格設定獨立分頁：改範本 → 預覽、投影片、表格、圖示庫、Style Kit 一起換，且重新整理後記住
+const puppeteer=require('puppeteer-core');const sl=ms=>new Promise(r=>setTimeout(r,ms));
+const URL=process.argv[2]||'http://localhost:8765/studio.html',SHOT=process.argv[3]||'render/style-tab.png';let fail=0;const ck=(n,c)=>{console.log((c?'OK   ':'FAIL ')+n);if(!c)fail++;};
+(async()=>{const b=await puppeteer.launch({executablePath:process.env.CHROME||'/usr/bin/google-chrome',args:['--no-sandbox']});const pg=await b.newPage();
+ const errs=[];pg.on('pageerror',e=>errs.push(e.message));
+ await pg.setViewport({width:1440,height:900});await pg.goto(URL,{waitUntil:'networkidle0'});await pg.evaluate(()=>localStorage.clear());await pg.goto(URL,{waitUntil:'networkidle0'});
+ ck('上方有「風格設定」分頁',await pg.evaluate(()=>!!document.querySelector('#tabs button[data-tab="style"]')));
+ await pg.click('#tabs button[data-tab="style"]');await sl(500);
+ const v=await pg.evaluate(()=>({vis:!document.querySelector('#vStyle').hidden,inTab:!!document.querySelector('#stHost #tpls'),prev:document.querySelectorAll('#stPrev .sp1 svg').length}));
+ ck(`分頁顯示、設定移入分頁、預覽 ${v.prev} 頁`,v.vis&&v.inTab&&v.prev>=4);
+ const tgt=await pg.evaluate(()=>{const bs=[...document.querySelectorAll('#tpls .tpl')];const cur=window.__studioApi&&0;const b=bs.find(x=>x.dataset.id==='wine')||bs[bs.length-1];return b.dataset.id;});
+ const before=await pg.evaluate(()=>document.querySelector('#stPrev').innerHTML.length+'|'+getComputedStyle(document.querySelector('#dot')).backgroundColor);
+ await pg.evaluate(id=>document.querySelector(`#tpls .tpl[data-id="${id}"]`).click(),tgt);await sl(700);
+ const P=await pg.evaluate(()=>{const c=getComputedStyle(document.querySelector('#dot')).backgroundColor.match(/\d+/g).map(n=>(+n).toString(16).padStart(2,'0')).join('').toUpperCase();return c;});
+ const after=await pg.evaluate(()=>document.querySelector('#stPrev').innerHTML.length+'|'+getComputedStyle(document.querySelector('#dot')).backgroundColor);
+ ck(`套用範本 ${tgt} → 主色 #${P}，預覽更新`,before!==after);
+ ck('預覽頁用新主色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#stPrev').innerHTML),P));
+ await pg.screenshot({path:SHOT});
+ await pg.click('#tabs button[data-tab="slides"]');await sl(500);
+ ck('投影片分頁跟著換色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#big').innerHTML+document.querySelector('#thumbs').innerHTML),P));
+ ck('回投影片時設定面板回到側欄',await pg.evaluate(()=>!!document.querySelector('#panel #stDet')));
+ await pg.click('#tabs button[data-tab="table"]');await sl(800);
+ ck('表格分頁跟著換色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#vTable').innerHTML),P));
+ await pg.click('#tabs button[data-tab="icons"]');await sl(800);
+ ck('圖示庫跟著換色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#vIcons').innerHTML),P));
+ await pg.click('#tabs button[data-tab="kit"]');await sl(1200);
+ ck('Style Kit 跟著換色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#vKit').innerHTML),P));
+ await pg.click('#tabs button[data-tab="style"]');await sl(300);
+ await pg.reload({waitUntil:'networkidle0'});await sl(500);
+ const r=await pg.evaluate(()=>({tab:!document.querySelector('#vStyle').hidden,c:getComputedStyle(document.querySelector('#dot')).backgroundColor}));
+ ck('重新整理後記住分頁與風格',r.tab&&r.c===after.split('|')[1]);
+ ck('無 JS 錯誤 '+errs.join(';'),!errs.length);
+ await b.close();console.log(fail?`✗ ${fail} 項失敗`:'✓ 全部通過');process.exit(fail?1:0);})();

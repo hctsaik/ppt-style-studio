@@ -388,6 +388,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 #pRes{margin:6px 0;border:1px solid #E6E6E6;border-radius:8px;max-height:260px;overflow:auto}#pRes a{display:block;padding:6px 9px;font-size:12.5px;color:var(--ink);text-decoration:none;border-bottom:1px solid #F0F0F0;cursor:pointer}#pRes a:hover{background:#F4F4F4}#pRes a b{color:var(--p);margin-right:6px}#pRes small{color:#8C8C8C;margin-left:4px}#pRes .pempty{padding:10px;font-size:12.5px;color:var(--ink);line-height:1.6}#pRes .pempty small{margin:0;color:#5B6474}
 #pTree details{border-bottom:1px solid #EEE}#pTree summary{cursor:pointer;padding:7px 2px;font-size:13px;font-weight:700;list-style:none;display:flex;gap:7px;align-items:center}#pTree summary::-webkit-details-marker{display:none}#pTree summary i{font-style:normal;background:#333;color:#fff;border-radius:10px;padding:0 7px;font-size:11px}#pTree summary small{color:#8C8C8C;font-weight:400;margin-left:auto}
 #pTree a{display:flex;gap:8px;padding:5px 6px 5px 10px;font-size:12.5px;color:#444;text-decoration:none;border-radius:6px;cursor:pointer}#pTree a b{min-width:34px;color:#8C8C8C;font-weight:600}#pTree a:hover{background:#F4F4F4}#pTree a.on{background:color-mix(in srgb,var(--p) 12%,#fff);color:var(--ink);font-weight:700}#pTree a.on b{color:var(--p)}
+#vStyle .stv{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:18px;padding:14px;align-items:start}#vStyle .sthost{max-height:calc(100vh - 120px);overflow:auto}#vStyle #stDet>summary{display:none}.stprev{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stprev .sp1{border:1px solid #E3E3E3;border-radius:8px;overflow:hidden;background:#fff}.stprev .sp1 span{display:block;font-size:12px;color:#595959;padding:4px 8px;border-top:1px solid #EEE}.stprev svg{display:block;width:100%;height:auto}@media(max-width:800px){#vStyle .stv{grid-template-columns:1fr}}
 #stDet>summary{cursor:pointer;font-weight:700;font-size:13px;padding:8px 0;border-top:2px solid #EEE}
 .guide{padding:18px 22px;overflow:auto;height:100%;box-sizing:border-box}.guide h2{margin:0 0 4px}.guide>p{color:#666;margin:0 0 14px;font-size:13px}.rcps{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
 .rcp{border:1px solid #E3E3E3;border-radius:12px;padding:14px 16px;box-shadow:0 2px 8px #0000000d;background:#fff}.rcp h3{margin:0 0 2px;font-size:15px}.rcp .who{color:#8C8C8C;font-size:12px;margin-bottom:8px}.rcp ol{margin:0;padding-left:20px;font-size:12.5px;line-height:1.75}.rcp a{display:inline-block;background:#333;color:#fff;border-radius:10px;padding:0 7px;margin-right:5px;font-size:11px;text-decoration:none;cursor:pointer}.rcp a:hover{background:var(--p)}.rcp .tip{margin-top:8px;font-size:12px;color:#555;background:#F6F6F6;border-radius:8px;padding:6px 9px}
@@ -404,7 +405,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 
 <header>
  <h1><i id="dot"></i>PPT <span class="hs">Style </span>Studio <small>精緻圖解元件・客製工作室（背景永遠白色）</small></h1>
- <nav class="tabs" id="tabs"><button data-tab="slides" class="on">投影片元件</button><button data-tab="icons">圖示庫</button><button data-tab="table">表格</button><button data-tab="kit" title="PPT 範本 Style Kit：快速樣式＋螢光筆預覽，下載內嵌主題的 .pptx／.potx">範本 Style Kit</button><button data-tab="guide" title="依情境挑元件：週報、8D、提案、面試、作品集、競賽簡報">簡報食譜</button></nav>
+ <nav class="tabs" id="tabs"><button data-tab="slides" class="on">投影片元件</button><button data-tab="style" title="全站共用：投影片、表格、圖示庫、Style Kit 一起換">風格設定</button><button data-tab="icons">圖示庫</button><button data-tab="table">表格</button><button data-tab="kit" title="PPT 範本 Style Kit：快速樣式＋螢光筆預覽，下載內嵌主題的 .pptx／.potx">範本 Style Kit</button><button data-tab="guide" title="依情境挑元件：週報、8D、提案、面試、作品集、競賽簡報">簡報食譜</button></nav>
  <div class="more tools"><button class="btn" id="bTools" aria-haspopup="true" aria-expanded="false">工具 ▾</button><div class="menu" id="mTools" hidden>
   <button data-go="table">▦ 表格工具（風險表／議題／行動／RACI）</button><button data-go="icons">◎ 圖示庫</button><button data-go="kit">🎨 範本 Style Kit（.pptx／.potx）</button><button data-go="guide">📖 簡報食譜</button>
   <a href="https://github.com/hctsaik/swiffchart-web-preview" target="_blank" rel="noopener">📊 圖表 → SwiffChart ↗</a><a href="PPT-Style-Studio.html" download>⬇ 離線單一檔案 .html</a><button data-go="tray">🧺 待選素材</button></div></div>
@@ -427,6 +428,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
  <aside id="panel">
   <div class="pclose"><b>風格設定</b><small>改了即時套用到上方預覽</small><button id="bPanelX">完成</button></div>
   <div id="pnav"><div class="psearch"><input type="search" id="pSearch" placeholder="搜尋元件（按 /）：KPI、對比、地圖、STAR…" aria-label="搜尋元件"></div><div id="pRes" hidden></div><div id="pTree"></div></div>
+  <button class="btn" id="bStyleTab" style="width:100%;margin:8px 0">🎨 風格設定（獨立分頁）→</button>
   <details id="stDet" open><summary>風格設定</summary>
   <div class="cap">範本</div>
   <div class="tpls" id="tpls"></div>
@@ -449,6 +451,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
    <div class="thumbs" id="thumbs"></div>
   </div>
   </section>
+  <section class="view" id="vStyle" hidden><div class="stv"><div class="sthost" id="stHost"><h2 style="margin:0 0 4px">風格設定</h2><p class="hint" style="margin:0 0 8px">在這裡改的範本、顏色、字型會套用到全站：投影片、表格、圖示庫、Style Kit，並自動記住。</p></div><div class="stpw"><h3 style="margin:0 0 8px">即時預覽</h3><div class="stprev" id="stPrev"></div></div></div></section>
   <section class="view" id="vGuide" hidden><div class="guide" id="guide"></div></section>
   <section class="view" id="vIcons" hidden>
    <div class="ibar">
@@ -698,7 +701,7 @@ let S={base:'navy',p:templateParams('navy'),slide:0,autoTone:true,labels:{},exam
 function cleanLabels(o){const out={};if(!o||typeof o!=='object')return out;Object.keys(o).slice(0,200).forEach(k=>{if(!/^[\w-]+:\d+$/.test(k)||!o[k]||typeof o[k]!=='object')return;const L={};
  Object.keys(o[k]).slice(0,60).forEach(i=>{const v=o[k][i];if(/^\d+$/.test(i)&&v&&typeof v==='object'&&typeof v.icon==='string'&&window.Icons&&window.Icons.BY[v.icon])L[i]={from:typeof v.from==='string'?v.from.slice(0,60):null,icon:v.icon};else if(/^\d+$/.test(i)&&v&&typeof v==='object'&&typeof v.to==='string')L[i]={from:typeof v.from==='string'?D.stripCtl(v.from).slice(0,400):null,to:D.stripCtl(v.to).slice(0,400)};});
  if(Object.keys(L).length)out[k]=L;});return out;}
-try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=presetOf(s.base).id;S.p=cleanP(s.p,S.base);S.slideKey=typeof s.key==='string'?s.key:null;/* 位置記憶：以頁面 ID（非索引）記憶，找不到回到 00 總覽 */S.mine=s.mine?D.stripCtl(s.mine).slice(0,40):null;S.autoTone=s.autoTone!==false;S.tab=['slides','icons','table','kit','guide'].includes(s.tab)?s.tab:'slides';S.examples=true;S.labels=cleanLabels(s.labels);}}catch(e){}
+try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=presetOf(s.base).id;S.p=cleanP(s.p,S.base);S.slideKey=typeof s.key==='string'?s.key:null;/* 位置記憶：以頁面 ID（非索引）記憶，找不到回到 00 總覽 */S.mine=s.mine?D.stripCtl(s.mine).slice(0,40):null;S.autoTone=s.autoTone!==false;S.tab=['slides','style','icons','table','kit','guide'].includes(s.tab)?s.tab:'slides';S.examples=true;S.labels=cleanLabels(s.labels);}}catch(e){}
 const persist=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify({base:S.base,p:S.p,slide:S.slide,key:model&&model.slides[S.slide]?model.slides[S.slide].key:S.slideKey,autoTone:S.autoTone,mine:S.mine||null,tab:S.tab||'slides',examples:!!S.examples,labels:S.labels||{}}));}catch(e){}};
 const hex=v=>String(v||'').replace('#','').toUpperCase();
 const toast=(t,ms,html)=>{const e=$('#toast');
@@ -969,11 +972,13 @@ window.__studio=window.__studio||{};
 const I=window.Icons;const ENV=()=>({PptxGenJS:window.PptxGenJS,JSZip:window.JSZip});
 const SK=()=>D.SIZE_K[S.p.size]||1;
 function setTab(t){S.tab=t;document.body.classList.toggle('tabT',t==='table');if(t==='table'&&document.body.classList.contains('pan'))setPanel(false);document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
- $('#vSlides').hidden=t!=='slides';$('#vIcons').hidden=t!=='icons';$('#vTable').hidden=t!=='table';$('#vKit').hidden=t!=='kit';$('#vGuide').hidden=t!=='guide';if(t==='guide')renderGuide();document.body.classList.toggle('tabK',t==='kit'||t==='guide');document.body.classList.toggle('tabK',t==='kit');if(t==='kit'&&window.StyleKit)StyleKit.render(StyleKit.current()||S.base);
+ $('#vSlides').hidden=t!=='slides';$('#vIcons').hidden=t!=='icons';$('#vTable').hidden=t!=='table';$('#vKit').hidden=t!=='kit';$('#vGuide').hidden=t!=='guide';$('#vStyle').hidden=t!=='style';if(t==='style'){const d=$('#stDet');if(d&&d.parentNode!==$('#stHost')){$('#stHost').appendChild(d);d.open=true;}renderStylePrev();}else{const d=$('#stDet'),bt=$('#bStyleTab');if(d&&bt&&d.parentNode!==bt.parentNode)bt.after(d);}if(t==='guide')renderGuide();document.body.classList.toggle('tabK',t==='kit'||t==='guide');document.body.classList.toggle('tabK',t==='kit');if(t==='kit'&&window.StyleKit)StyleKit.render(StyleKit.current()||S.base);
  $('#bOne').style.display=$('#bAll').style.display=t==='slides'?'':'none';
  if(t==='icons')renderIcons();if(t==='table'){syncTableUI();renderTable();}persist();}
 $('#tabs').onclick=e=>{const b=e.target.closest('button[data-tab]');if(b)setTab(b.dataset.tab);};
-function renderExtra(){if(S.tab==='icons')renderIcons();else if(S.tab==='table')renderTable();}
+function renderStylePrev(){const H=$('#stPrev');if(!H||!model)return;const ks=['frame','kpi','cmp2','emph'];H.innerHTML=ks.map(k=>{const i=model.slides.findIndex(x=>x.key===k);if(i<0)return'';const s=model.slides[i];return `<div class="sp1" data-key="${k}">${D.toSvg(s,{id:'sp'+i})}<span>${s.title}</span></div>`;}).join('');}
+$('#bStyleTab').onclick=()=>setTab('style');
+function renderExtra(){if(S.tab==='style')renderStylePrev();else if(S.tab==='icons')renderIcons();else if(S.tab==='table')renderTable();}
 
 /* ---------- 圖示庫 ---------- */
 const IC_COLORS=[['P','主色'],['PD','深主色'],['A','強調色'],['g','灰'],['w','白（深底用）']];
