@@ -388,6 +388,9 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 #stDet>summary{cursor:pointer;font-weight:700;font-size:13px;padding:8px 0;border-top:2px solid #EEE}
 .guide{padding:18px 22px;overflow:auto;height:100%;box-sizing:border-box}.guide h2{margin:0 0 4px}.guide>p{color:#666;margin:0 0 14px;font-size:13px}.rcps{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
 .rcp{border:1px solid #E3E3E3;border-radius:12px;padding:14px 16px;box-shadow:0 2px 8px #0000000d;background:#fff}.rcp h3{margin:0 0 2px;font-size:15px}.rcp .who{color:#8C8C8C;font-size:12px;margin-bottom:8px}.rcp ol{margin:0;padding-left:20px;font-size:12.5px;line-height:1.75}.rcp a{display:inline-block;background:#333;color:#fff;border-radius:10px;padding:0 7px;margin-right:5px;font-size:11px;text-decoration:none;cursor:pointer}.rcp a:hover{background:var(--p)}.rcp .tip{margin-top:8px;font-size:12px;color:#555;background:#F6F6F6;border-radius:8px;padding:6px 9px}
+#pRes .pmulti{display:flex;gap:6px;align-items:center;padding:6px 8px;border-bottom:1px solid #E3E3E3;font-size:11.5px;color:#595959;position:sticky;top:0;background:#fff}#pRes .pmulti span{flex:1}#pRes .pmulti button{font-size:11.5px;border:1px solid var(--p);background:#fff;color:var(--p);border-radius:6px;padding:2px 6px;cursor:pointer}#pRes .pmulti button:disabled{opacity:.4;cursor:default}#pRes .pck{margin:0 6px 0 0;vertical-align:middle}
+#pTree a.on{box-shadow:inset 3px 0 0 var(--p);background:#EEF3FA;color:#1F3864;font-weight:600}
+.rcp .lim{font-size:11.5px;color:#1F3864;margin:-4px 0 8px}.rcp .rdl{margin-top:10px;width:100%;border:1px solid var(--p);background:#fff;color:var(--p);border-radius:8px;padding:6px;font-weight:600;cursor:pointer}.rcp .rdl:hover{background:#EEF3FA}
 .gocards{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 0}.gocards a{border:1px solid #DDD;border-radius:14px;padding:2px 10px;font-size:12px;color:var(--ink);text-decoration:none;cursor:pointer;background:#fff}.gocards a b{color:var(--p);margin-right:4px}.gocards a:hover{border-color:var(--p)}
 .more.tools .menu a{display:block;padding:7px 10px;border-radius:6px;font-size:12.5px;color:var(--ink);text-decoration:none}.more.tools .menu a:hover{background:#F2F2F2}
 </style></head><body><div class="tpop" id="tPop" role="dialog" aria-label="儲存格選單" hidden></div>
@@ -416,7 +419,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <div class="wrap">
  <aside id="panel">
   <div class="pclose"><b>風格設定</b><small>改了即時套用到上方預覽</small><button id="bPanelX">完成</button></div>
-  <div id="pnav"><div class="psearch"><input type="search" id="pSearch" placeholder="搜尋元件：KPI、對比、時間軸、STAR…" aria-label="搜尋元件"></div><div id="pRes" hidden></div><div id="pTree"></div></div>
+  <div id="pnav"><div class="psearch"><input type="search" id="pSearch" placeholder="搜尋元件（按 /）：KPI、對比、地圖、STAR…" aria-label="搜尋元件"></div><div id="pRes" hidden></div><div id="pTree"></div></div>
   <details id="stDet" open><summary>風格設定</summary>
   <div class="cap">範本</div>
   <div class="tpls" id="tpls"></div>
@@ -550,7 +553,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <script src="icons.js?v=f4423941"></script>
 <script src="deck.js?v=4659b7c1"></script>
 <script src="stylekit-data.js?v=9132fa85"></script>
-<script src="stylekit.js?v=5dbe27fa"></script>
+<script src="stylekit.js?v=98c8d04f"></script>
 <script>
 (function(){
  'use strict';
@@ -790,8 +793,13 @@ function buildNav(){const T=$('#pTree');if(!T)return;const open=JSON.parse(local
  const inp=$('#pSearch');inp.oninput=()=>{const qs=expandQ(inp.value),R=$('#pRes');if(!qs.length){R.hidden=true;return;}const hits=[];
   model.slides.forEach((sl,i)=>{const e=D.SLIDES.find(x=>x[0]===sl.key)||[];const ptxt=normQ([e[1],e[2],e[3],sl.title].join(' '));const pm=qs.some(q=>ptxt.includes(q));if(pm)hits.push({i,gi:-1,lab:sl.title,code:e[2]});
    (sl.groups||[]).forEach((g,gi)=>{if(qs.some(q=>normQ(g.name).includes(q)))hits.push({i,gi,lab:g.name,code:e[2],pt:sl.title});});});
-  R.hidden=false;R.innerHTML=hits.length?hits.slice(0,40).map(h=>`<a data-i="${h.i}" data-gi="${h.gi}"><b>${h.code}</b>${escH(h.lab)}${h.pt?`<small>${escH(h.pt)}</small>`:''}</a>`).join(''):'<a>找不到，試試：KPI、比較、時間軸、STAR、作品集</a>';window.__studio.search={q:inp.value,n:hits.length};};
- $('#pRes').onclick=e=>{const a=e.target.closest('a[data-i]');if(!a)return;setTab('slides');go(+a.dataset.i);if(+a.dataset.gi>=0)selectEl(+a.dataset.gi);if(MQ.matches)setPanel(false);};
+  R.hidden=false;const nc=hits.filter(h=>h.gi>=0).length;R.innerHTML=hits.length?(nc?`<div class="pmulti"><span id="pmN">勾選元件可一次取用</span><button id="pmTray" disabled>＋加入待選</button><button id="pmDl" disabled>⬇ 下載所選</button></div>`:'')+hits.slice(0,40).map(h=>`<a data-i="${h.i}" data-gi="${h.gi}">${h.gi>=0?`<input type="checkbox" class="pck" aria-label="勾選 ${escH(h.lab)}">`:''}<b>${h.code}</b>${escH(h.lab)}${h.pt?`<small>${escH(h.pt)}</small>`:''}</a>`).join(''):'<a>找不到，試試：KPI、比較、時間軸、STAR、作品集</a>';window.__studio.search={q:inp.value,n:hits.length};};
+ const pmSel=()=>[...document.querySelectorAll('#pRes .pck:checked')].map(c=>{const a=c.closest('a');const sl=model.slides[+a.dataset.i];const gi=+a.dataset.gi;const gr=sl.groups[gi];const lk=sl.key+':'+gi;const it={kind:'el',key:sl.key,gi,name:gr.full||gr.name};if(S.labels&&S.labels[lk])it.labels={[lk]:clone(S.labels[lk])};return it;});
+ $('#pRes').onchange=()=>{const n=pmSel().length;$('#pmN').textContent=n?`已勾 ${n} 個元件`:'勾選元件可一次取用';$('#pmTray').disabled=$('#pmDl').disabled=!n;};
+ $('#pRes').addEventListener('click',async e=>{const b=e.target.closest('#pmTray,#pmDl');if(!b)return;e.stopPropagation();const its=pmSel();if(!its.length)return;
+  if(b.id==='pmTray'){its.forEach(addTray);toast(`已加入待選 ${its.length} 個元件`);window.__studio.pmTray=its.length;return;}
+  b.disabled=true;try{const a=its.map(it=>Object.assign({uid:Math.random().toString(36).slice(2),params:clone(S.p),style:styleLabel()},it));const m=D.trayDeck(a,{frame:S.p});const r=await D.exportPptx(ENV(),S.p,{model:m});saveBlob(r.data,`搜尋所選-${its.length}項.pptx`);window.__studio.pmDl={n:its.length,size:r.data.size};toast(`已下載 ${its.length} 個元件（每個一頁）`);}catch(err){console.error(err);toast('匯出失敗：'+err.message);}finally{b.disabled=false;}},true);
+ $('#pRes').onclick=e=>{if(e.target.closest('.pck,.pmulti'))return;const a=e.target.closest('a[data-i]');if(!a)return;setTab('slides');go(+a.dataset.i);if(+a.dataset.gi>=0)selectEl(+a.dataset.gi);if(MQ.matches)setPanel(false);};
  T.onclick=e=>{const a=e.target.closest('a[data-k]');if(!a)return;e.preventDefault();goKey(a.dataset.k);if(MQ.matches)setPanel(false);};}
 function goKey(k){const i=model.slides.findIndex(x=>x.key===k);if(i<0)return false;if(S.tab!=='slides')setTab('slides');go(i);return true;}
 function navSync(sl){document.querySelectorAll('#pTree a').forEach(a=>a.classList.toggle('on',a.dataset.k===sl.key));const on=document.querySelector('#pTree a.on');if(on){const d=on.closest('details');if(d&&!d.open)d.open=true;}
@@ -803,16 +811,23 @@ function hashKey(){const m=/^#\/(?:[^/]*\/)?([\w-]+)$/.exec(location.hash||'');r
 addEventListener('hashchange',()=>{const k=hashKey();if(k&&model&&model.slides[S.slide].key!==k&&!goKey(k))goKey('catalog');});
 {const hk=hashKey();if(hk)S.slideKey=hk;}
 const RECIPES=[
- {t:'週報／月報',who:'主管 3 分鐘看完：先結論、再數字、最後要決策',st:[['A0','結論先行標題'],['C1','KPI 數字卡＋燈號'],['C3','進度時間軸'],['D2','改善前後對照'],['D8','需要的決策'],['F9','整頁範例：週報']],tip:'一頁一個訊息；標題寫成完整句子（例如「B 線良率回升至 98.6%」）。'},
- {t:'異常報告／8D',who:'品質、製程、客訴回覆',st:[['A0','問題摘要'],['B1','發生流程'],['D6','魚骨圖／5 Why'],['D7','根因驗證'],['B4','對策步驟'],['C3','矯正時程'],['F8','整頁範例：PCN／變更']],tip:'表格工具 › 行動項目／議題追蹤 預設可直接放對策清單。'},
- {t:'提案與決策簡報',who:'向上爭取資源、選方案',st:[['E4','開場鉤子'],['B6','議程'],['D3','方案比較'],['D5','2×2 優先矩陣'],['C1','效益數字'],['D8','建議與決策請求'],['E4','結尾 CTA']],tip:'把要的決策放在第 2 頁也放在最後一頁。'},
- {t:'求職面試簡報（15 分鐘）',who:'讓面試官 30 秒記住你',st:[['G1','自我介紹／個人檔案'],['C3','職涯時間軸'],['G2','技能矩陣'],['G3','STAR 案例 ×2'],['C1','成就數字'],['G4','作品集'],['E4','結尾 CTA＋聯絡方式']],tip:'每個 STAR 結果都要有數字（↑ 32%、省 37 小時）；最後一頁放聯絡與 QR。'},
- {t:'作品集 Portfolio',who:'設計／工程／研究作品展示',st:[['G1','個人簡介'],['G4','作品圖片網格'],['E3','截圖框＋標註'],['G3','專案 STAR'],['A1','重點卡片'],['E4','引言／推薦語']],tip:'圖片框是真的圖片：在 PowerPoint 右鍵「變更圖片」即可換成作品。'},
- {t:'競賽／得獎簡報',who:'評審看：故事、清楚度、視覺一致',st:[['E4','故事開場（問題的代價）'],['A0','一句話主張'],['D1','前後對比'],['B1','解法流程'],['C1','成果數字'],['E2','強調重點'],['E4','行動呼籲']],tip:'全份只用 1–2 個強調色，同一元件重複使用，評審會覺得「有設計」。'},
- {t:'專案啟動 Kick-off',who:'對齊目標、角色、時程',st:[['A0','專案目標'],['B7','團隊與角色'],['B5','工作分解結構'],['C3','里程碑'],['F7','整頁範例：摘要']],tip:'表格工具 › RACI 預設可直接產生角色分工表。'},
- {t:'策略／框架報告',who:'讓抽象概念一眼懂',st:[['A5','圓形架構'],['B5','層級結構'],['F4','三圓 Why/How/What'],['F5','框架流程'],['F6','能力地圖']],tip:'範例頁下方會列出所用元件，點一下即可跳過去單獨取用。'}];
+ {t:'週報／月報',lim:'3–5 頁｜3 分鐘｜每頁標題 ≤ 25 字',who:'主管 3 分鐘看完：先結論、再數字、最後要決策',st:[['F1','封面'],['A0','結論先行標題'],['C1','KPI 數字卡＋燈號'],['C3','進度時間軸'],['D2','改善前後對照'],['D8','需要的決策'],['F9','整頁範例：週報']],tip:'一頁一個訊息；標題寫成完整句子（例如「B 線良率回升至 98.6%」）。'},
+ {t:'異常報告／8D',lim:'6–8 頁｜10 分鐘｜每頁 ≤ 3 重點',who:'品質、製程、客訴回覆',st:[['F1','封面'],['A0','問題摘要'],['B1','發生流程'],['D6','魚骨圖／5 Why'],['D7','根因驗證'],['B4','對策步驟'],['C3','矯正時程'],['F8','整頁範例：PCN／變更']],tip:'表格工具 › 行動項目／議題追蹤 預設可直接放對策清單。'},
+ {t:'募資／創業提案 Pitch',lim:'10–12 頁｜5–7 分鐘｜每頁 ≤ 30 字',who:'投資人與評審：問題 → 市場 → 方案 → 商業模式 → 團隊 → 財務 → Ask',st:[['F1','封面＋一句話主張'],['E4','問題的代價（故事開場）'],['D10','市場 TAM／SAM／SOM'],['E3','產品截圖／裝置框'],['D9','商業模式圖 BMC'],['D10','單位經濟＋團隊照片牆'],['D10','財務摘要＋里程碑'],['D10','The Ask 募資金額與用途'],['F3','結尾 Q&A＋聯絡']],tip:'The Ask 放倒數第二頁，Q&A 頁保留重點三句，提問時停在這頁。'},
+ {t:'提案與決策簡報',lim:'6–10 頁｜10 分鐘｜決策句放第 2 頁',who:'向上爭取資源、選方案',st:[['F1','封面'],['E4','開場鉤子'],['B6','議程'],['D3','方案比較'],['D5','2×2 優先矩陣'],['C1','效益數字'],['D8','建議與決策請求'],['F3','結尾 Q&A']],tip:'把要的決策放在第 2 頁也放在最後一頁。'},
+ {t:'求職面試簡報（15 分鐘）',lim:'8–10 頁｜15 分鐘｜每個成就都有數字',who:'讓面試官 30 秒記住你',st:[['F1','封面'],['G1','自我介紹／個人檔案'],['C3','職涯時間軸'],['G2','技能矩陣'],['G3','STAR 案例 ×2'],['G4','作品集'],['G5','30-60-90 計畫＋為什麼選我'],['F3','結尾 Q&A＋聯絡方式']],tip:'每個 STAR 結果都要有數字（▲ 32%、省 37 小時）；最後一頁放聯絡與 QR。'},
+ {t:'作品集 Portfolio',lim:'6–12 頁｜每件作品 1 頁｜圖 > 字',who:'設計／工程／研究作品展示',st:[['F1','封面'],['G1','個人簡介'],['G4','作品圖片網格'],['E3','截圖框＋裝置框'],['G3','專案 STAR'],['E4','引言／推薦語']],tip:'圖片框是真的圖片：在 PowerPoint 右鍵「變更圖片」即可換成作品。'},
+ {t:'競賽／得獎簡報',lim:'8–12 頁｜評審 5–8 分鐘｜全份 ≤ 2 強調色',who:'評審看：故事、清楚度、視覺一致',st:[['F1','封面'],['E4','故事開場（問題的代價）'],['A0','一句話主張'],['D1','前後對比'],['B1','解法流程'],['C1','成果數字'],['E2','強調重點'],['F3','結尾＋行動呼籲']],tip:'全份只用 1–2 個強調色，同一元件重複使用，評審會覺得「有設計」。'},
+ {t:'專案啟動 Kick-off',lim:'6–8 頁｜20 分鐘',who:'對齊目標、角色、時程',st:[['F1','封面'],['D9','OKR 目標'],['B7','團隊與角色'],['B5','工作分解結構'],['C3','里程碑'],['F7','整頁範例：摘要']],tip:'表格工具 › RACI 預設可直接產生角色分工表。'},
+ {t:'策略／框架報告',lim:'8–12 頁｜每個框架 1 頁',who:'讓抽象概念一眼懂',st:[['F2','章節頁'],['D9','PESTEL／五力'],['A5','圓形架構'],['B5','層級結構'],['E5','地圖與據點'],['F4','三圓 Why/How/What'],['F6','能力地圖']],tip:'範例頁下方會列出所用元件，點一下即可跳過去單獨取用。'}];
+async function recipeDeck(i,btn){const r=RECIPES[i];const keys=[...new Set(r.st.map(([c])=>(D.SLIDES.find(x=>x[2]===c)||[])[0]).filter(Boolean))];
+ btn.disabled=true;const old=btn.textContent;btn.textContent='產生中…';
+ try{const res=await D.exportPptx({PptxGenJS:window.PptxGenJS,JSZip:window.JSZip},S.p,{only:keys,examples:true,labels:S.labels});saveBlob(res.data,'食譜-'+r.t.replace(/[\\/:*?"<>|（）()]/g,'')+'.pptx');
+  window.__studio.lastRecipe={pages:res.model.slides.length,keys};toast(`已下載「${escH(r.t)}」整份 ${res.model.slides.length} 頁（目前風格）`);}
+ catch(err){console.error(err);toast('匯出失敗：'+err.message);}finally{btn.disabled=false;btn.textContent=old;}}
 function renderGuide(){const g=$('#guide');if(g.dataset.on)return;g.dataset.on=1;const by=c=>D.SLIDES.find(x=>x[2]===c);
- g.innerHTML='<h2>簡報食譜 Deck Recipes</h2><p>選一個情境，照順序點頁碼挑元件、改字、＋待選，最後一次下載。所有元件都是原生可編輯的 PowerPoint 圖形。</p><div class="rcps">'+RECIPES.map(r=>`<div class="rcp"><h3>${r.t}</h3><div class="who">${r.who}</div><ol>${r.st.map(([c,l])=>{const e=by(c);return `<li>${e?`<a data-k="${e[0]}">${c}</a>`:''}${l}</li>`;}).join('')}</ol><div class="tip">💡 ${r.tip}</div></div>`).join('')+'</div>';}
+ g.innerHTML='<h2>簡報食譜 Deck Recipes</h2><p>選一個情境，照順序點頁碼挑元件、改字、＋待選，最後一次下載。所有元件都是原生可編輯的 PowerPoint 圖形。</p><div class="rcps">'+RECIPES.map((r,i)=>`<div class="rcp"><h3>${r.t}</h3><div class="who">${r.who}</div><div class="lim">⏱ ${r.lim}</div><ol>${r.st.map(([c,l])=>{const e=by(c);return `<li>${e?`<a data-k="${e[0]}">${c}</a>`:''}${l}</li>`;}).join('')}</ol><div class="tip">💡 ${r.tip}</div><button class="rdl" data-r="${i}">⬇ 下載整份（${new Set(r.st.map(x=>x[0])).size} 頁，套用目前風格）</button></div>`).join('')+'</div>';
+ g.addEventListener('click',e=>{const b=e.target.closest('.rdl');if(b)recipeDeck(+b.dataset.r,b);});}
 $('#bTools').onclick=e=>{e.stopPropagation();const m=$('#mTools');m.hidden=!m.hidden;$('#bTools').setAttribute('aria-expanded',String(!m.hidden));};
 $('#mTools').onclick=e=>{const b=e.target.closest('[data-go]');$('#mTools').hidden=true;if(!b)return;const g=b.dataset.go;if(g==='tray'){const t=$('#trayBtn');if(t)t.click();}else setTab(g);};
 document.addEventListener('click',e=>{if(!e.target.closest('.more.tools'))$('#mTools').hidden=true;});
@@ -868,7 +883,7 @@ async function copyEl(f){const name=SEL.name;
  else toast(`已複製「${escH(name)}」為 <b>PNG 圖片</b>（此瀏覽器不支援 SVG 剪貼簿，貼上後不可編輯）。要可編輯圖形請按「下載此元件 .pptx」。`,6000,true);
  return{ok:true,types:Object.keys(data)};}
 
-document.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key==='ArrowRight')go(S.slide+1);if(e.key==='ArrowLeft')go(S.slide-1);});
+document.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key==='/'&&S.tab==='slides'&&$('#pSearch')){e.preventDefault();$('#pSearch').focus();return;}if(S.tab!=='slides')return;if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();go(S.slide+1);}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(S.slide-1);}});
 
 /* ---------- 下載／存取 ---------- */
 function saveBlob(blob,name){const url=URL.createObjectURL(blob);const a=document.createElement('a');
@@ -910,6 +925,7 @@ function renderMine(){const a=loadMine();
    <span class="nm" data-a="apply" title="套用">${escH(m.name)}<small>以「${escH(presetOf(m.base).zh)}」為基礎</small></span>
    <button class="ap" data-a="apply">套用</button><button data-a="ren">改名</button><button data-a="exp">匯出</button><button data-a="del">刪除</button></div>`;}).join('')
   :'<div class="mempty">還沒有自訂風格。調整好後在上方命名並按「＋ 儲存」。</div>';}
+document.addEventListener('stylekit-apply',e=>{const d=e.detail||{};S.mine=null;if(presetOf(d.id)&&presetOf(d.id).id===d.id){S.base=d.id;S.p=templateParams(d.id);}else if(d.acc){setColor('P',d.acc[0]);}syncPanel();schedule();setTab('slides');window.__studio.kitApplied=d.id;toast('已把 Style Kit「'+((presetOf(d.id)||{}).zh||d.id)+'」配色套用到全部元件；下載的 .pptx 與 .potx 主題色一致');});
 function applyMine(m){const base=presetOf(m.base).id;S.base=base;S.p=cleanP(m.params||m.changed||{},base);S.mine=m.name;syncPanel();schedule();renderMine();toast('已套用我的風格：'+m.name);}
 function importMine(j,fname){const list=loadMine();let n=0;
  const items=j.type==='my-styles'?(j.styles||[]):[j];

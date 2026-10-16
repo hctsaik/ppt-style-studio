@@ -46,7 +46,7 @@ const CSS=`#vKit{background:#fff;overflow:auto;padding:18px 22px 40px}#vKit .skW
 .skTh{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}.skTh button{border:1px solid #D9D9D9;background:#fff;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12.5px;display:flex;align-items:center;gap:6px;color:#3A3A3A}
 .skTh button i{width:22px;height:12px;border-radius:2px;display:inline-flex;overflow:hidden}.skTh button i b{flex:1}.skTh button.on{border-color:var(--skP);box-shadow:inset 0 0 0 1px var(--skP);font-weight:700;color:var(--skP)}
 .skDl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 16px;padding:12px 14px;border:1px solid #E5E5E5;border-left:4px solid var(--skP);border-radius:6px}
-.skDl a{text-decoration:none;font-size:13px;border:1px solid #D9D9D9;border-radius:7px;padding:7px 12px;color:#3A3A3A}.skDl a.pri{background:var(--skP);border-color:var(--skP);color:#fff;font-weight:700}.skDl small{color:#8C8C8C;font-size:11.5px;flex-basis:100%}
+.skDl a{text-decoration:none;font-size:13px;border:1px solid #D9D9D9;border-radius:7px;padding:7px 12px;color:#3A3A3A}.skDl a.pri{background:var(--skP);border-color:var(--skP);color:#fff;font-weight:700}.skDl .skApply{font-size:13px;border:1px solid var(--skP);background:#fff;color:var(--skP);border-radius:7px;padding:7px 12px;font-weight:700;cursor:pointer}.skDl .skApply:hover{background:#EEF3FA}.skDl small{color:#8C8C8C;font-size:11.5px;flex-basis:100%}
 .skSec{font-size:14px;font-weight:700;color:var(--skP);border-bottom:1.5px solid var(--skP);padding-bottom:4px;margin:18px 0 10px}.skSec small{color:#8C8C8C;font-weight:400;margin-left:6px;font-size:11.5px}
 .skG{display:grid;grid-template-columns:150px repeat(7,1fr);gap:8px 10px;align-items:center}.skCh{font-size:10.5px;color:#8C8C8C;text-align:center;line-height:1.3}.skCh code{font-size:10px}
 .skRh{font-size:12px;font-weight:700;color:#595959;line-height:1.25}.skRh small{display:block;font-weight:400;color:#8C8C8C;font-size:10.5px}
@@ -65,11 +65,12 @@ function render(id,root){root=root||document.getElementById('vKit');if(!root||!T
  root.innerHTML=`<div class="skW"><h2>PPT 範本 Style Kit<small>Template Style Kit · 快速樣式＋螢光筆，下載即用</small></h2>
  <p class="skLead">選一個主題 → 下面預覽就是 PowerPoint〔常用 › 繪圖 › 快速樣式〕會出現的 7×6 樣式與柔和螢光筆。確認後下載 .pptx：佈景主題色彩與 fmtScheme 已內嵌，每一頁的快速樣式都是這組顏色；內含 Style Kit 範例頁，可直接用格式刷取用。<br>Pick a theme → preview the real Quick Styles gallery &amp; soft highlighters → download a .pptx with the theme embedded.</p>
  <div class="skTh" id="skThemes" role="tablist">${T.map(x=>`<button data-sk="${x.id}" class="${x.id===t.id?'on':''}" role="tab" aria-selected="${x.id===t.id}"><i>${x.sc.acc.slice(0,3).map(c=>`<b style="background:#${c}"></b>`).join('')}</i>${esc(x.zh)}</button>`).join('')}</div>
- <div class="skDl" id="skDl"><a class="pri" id="skPptx" href="${href(t.id+'.pptx')}" download="${esc(fn)}.pptx">⬇ 下載 .pptx（${esc(t.zh)}）</a><a id="skPotx" href="${href(t.id+'.potx')}" download="${esc(fn)}.potx">範本 .potx</a><a id="skXml" href="${href(t.id+'_colors.xml')}" download="${esc(fn)}.xml">色彩 .xml</a>
+ <div class="skDl" id="skDl"><a class="pri" id="skPptx" href="${href(t.id+'.pptx')}" download="${esc(fn)}.pptx">⬇ 下載 .pptx（${esc(t.zh)}）</a><a class="pri" id="skPotx" href="${href(t.id+'.potx')}" download="${esc(fn)}.potx">⬇ 範本 .potx（另存成我的範本）</a><button type="button" class="skApply" id="skApply">🎨 一鍵套用到元件庫（全部元件改成這組色）</button><a id="skXml" href="${href(t.id+'_colors.xml')}" download="${esc(fn)}.xml">色彩 .xml</a>
  <small>.pptx：直接開啟使用（4 頁：封面、內容、Style Kit 頁、快速樣式預覽頁）｜.potx：存成個人範本（%APPDATA%\\Microsoft\\Templates）｜.xml：只換色彩，放到 …\\Document Themes\\Theme Colors，套在公司範本上不動母片／Logo</small></div>
  <div class="skSec">快速樣式 Quick Styles<small>常用 › 繪圖 › 快速樣式（Home › Drawing › Quick Styles）· 7 欄 × 6 列</small></div>${gallery(t)}
  <div class="skSec">Style Kit 頁<small>Style Kit sample slide · 格式刷取用（雙擊格式刷可連續刷）</small></div><div class="skK">${kit(t)}</div>
  <p class="skNote">限制：網頁預覽依主題色＋fmtScheme 以 HTML 模擬，與 PowerPoint 實際渲染可能有 1–2 px 線寬／漸層差異；柔和螢光筆是自訂 srgb 色，PowerPoint 的螢光筆選單選不到，只能格式刷／複製；只套色彩 .xml 時，快速樣式的陰影／漸層沿用原範本 fmtScheme。<br>Limits: HTML approximation of PowerPoint rendering; custom highlighter colors are only reachable via Format Painter.</p></div>`;
+ root.querySelector('#skApply').onclick=()=>{document.dispatchEvent(new CustomEvent('stylekit-apply',{detail:{id:t.id,acc:t.sc.acc}}));};
  root.querySelector('#skThemes').onclick=e=>{const b=e.target.closest('button[data-sk]');if(b)render(b.dataset.sk,root);};}
 window.StyleKit={render,themes:T,current:()=>cur,lum,cell};
 })();
