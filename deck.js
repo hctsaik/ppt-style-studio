@@ -23,7 +23,7 @@ const BASE={
  cnW:1.25,cnC:'7F7F7F',cnDash:'solid',cnHead:'triangle',cnTail:'none',cnHs:'med',
  tFont:'Microsoft JhengHei',bFont:'Microsoft JhengHei',nFont:'',tSize:36,tBold:true,lSize:16,lBold:true,nSize:10.5,
  icColor:'P',icVar:'line',icSW:0,
- tbDense:'auto',tbHiColor:'auto',tbHiMode:'auto',tbNeg:false,tbStatus:true,tbLook:'clean',tbCard:'white',tbMinus:'auto',tbThou:true,tbWidth:'auto',tbV:'center',tbH:'center',tbSugTitle:true,tbAuto:true,tbFont:'jh',tbPad:'m',tbTight:false,
+ tbDense:'auto',tbHiColor:'auto',tbHiMode:'auto',tbNeg:false,tbArrow:'mono',tbStatus:true,tbLook:'clean',tbCard:'white',tbMinus:'auto',tbThou:true,tbWidth:'auto',tbV:'center',tbH:'center',tbSugTitle:true,tbAuto:true,tbFont:'jh',tbPad:'m',tbTight:false,
  /* v9：可調數量（04／05 頁）、語意色（與品牌色分開）、最小字級（單一元件／待選素材匯出時放大幾何） */
  nLin:4,nLane:3,nPcc:3,nWhy:5,nCause:4,semWarn:'',semGood:'',semBad:'',minFont:0,
  /* v10 標註顏色：alert＝警示色（預設）／P 主色／A 強調色／ink 深灰 */
@@ -255,10 +255,10 @@ function buildModel(params,opt){
    return{runs,fill:c.fill||null,align:c.align||o.align||'center',size,color:c.color||G.ink,bold:!!c.bold,font:c.font||F,mL:o.mL!=null?o.mL:4,mT:o.mT!=null?o.mT:1,bT:c.bT||null,bB:c.bB||null};}));
   const it={t:'tbl',x,y,w,h,colW:colW.slice(),rowH:rowH.slice(),cells:C,name:o.name||'表格'};cur.items.push(it);return it;}
  /* 圖示（v7）：Material Symbols＝一個填色自訂圖形（多段子路徑、無外框）；tint／solid 變化另加一個底圓。回傳 {bg,glyph} */
- const ICC=c=>({P,PD,A:HASA?A:P,g:G.t2,ink:G.ink}[c]||P);
+ const ICC=c=>({P,PD,A:HASA?A:P,g:G.t2,ink:G.ink,w:'FFFFFF'}[c]||P);
  function icon(id,x,y,s,o){o=o||{};if(!ICONS||!ICONS.BY[id])return{};const ic=ICONS.BY[id];const variant=o.variant||st.icVar||'line';
   const fg0=o.color||ICC(o.tone||st.icColor);const g=ICONS.geom(variant,ICONS.weightOf(st));let fg=fg0,bg=null;
-  if(g.circle){bg=oval(x,y,s,s,{fill:variant==='solid'?fg0:mix(fg0,'FFFFFF',.86),name:'圖示底圓'});if(variant==='solid')fg='FFFFFF';}
+  if(g.circle){const bf=g.dark?fg0:mix(fg0,'FFFFFF',.86);bg=g.shape==='square'?box(x,y,s,s,{fill:bf,r:s*.22,name:'圖示底方'}):g.shape==='ring'?oval(x,y,s,s,{fill:'FFFFFF',line:fg0,lw:Math.max(.75,s*1.3/24*72/72*1.2),name:'圖示外框圓'}):oval(x,y,s,s,{fill:bf,name:'圖示底圓'});if(g.dark)fg='FFFFFF';}
   const glyph=el('custGeom',x,y,s,s,{points:ICONS.points(id,s,g.k,g.off,g.wt),fill:fg,name:'圖示 '+ic.zh});glyph.ic={id,variant,wt:ICONS.weightOf(st)};
   return{bg,glyph};}
  /* ---------- 版面骨架 ---------- */
@@ -1662,7 +1662,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const raw=(T.rows||[])
   const rows=src.map((r,ri)=>r.map((t,c)=>ri<h0||!AU.numC[c]||AU.section[ri]?t:tFmt(t,{dec:fmtC[c].dec,pct:fmtC[c].pct,thou:st.tbThou!==false,minus:st.tbMinus||'auto'})));
   const MK=tableMarks(T,nC,rows.length);const D_E=(a,b)=>{const h=x=>[0,2,4].map(i=>parseInt(x.slice(i,i+2),16));const p=h(a),q=h(b);return Math.abs(p[0]-q[0])+Math.abs(p[1]-q[1])+Math.abs(p[2]-q[2])>120;};// 推薦色：綠／青，跟強調色、警示色都分得開，且在白底上對比 ≥ 3:1（每個風格自動挑）
   const REC=['2E8B57','12808A','3F7D20','00796B','5B8C2A'].map(c=>({c,s:Math.min(hueD(c,EC),hueD(c,AL),hueD(c,P)+15)*(contrastOf(c,'FFFFFF')>=3?1:0)})).sort((a,b)=>b.s-a.s)[0].c;
-  const his=MK.his.map(h=>Object.assign({},h,{C:h.kind==='warn'?(D_E(AL,EC)?AL:'C0504D'):h.kind==='rec'?REC:EC}));   // 意義：重點／推薦＝強調色，警告＝紅；換外觀意義不變
+  const his=MK.his.map(h=>Object.assign({},h,{C:h.kind==='warn'?(D_E(AL,EC)?AL:'9A5F00'):h.kind==='rec'?REC:EC}));   // 意義：重點／推薦＝強調色，警告＝紅；換外觀意義不變
   const hiCol=c=>his.find(h=>h.type==='col'&&h.i===c),hiRow=r=>his.find(h=>h.type==='row'&&h.i===r),hiCell=(r,c)=>his.find(h=>h.type==='cell'&&h.r===r&&h.c===c);
   const TONE={warn:AL,good:GOOD,accent:EC};
   const ruleOf=(ri,c)=>{if(ri<h0||AU.section[ri])return null;const v=tNumVal(src[ri][c]);if(!Number.isFinite(v))return null;return MK.rules.find(R=>R.c===c&&ruleHit(R,v))||null;};
@@ -1789,6 +1789,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const raw=(T.rows||[])
    const s=st.tbStatus===false||!AU.statC[c]?null:statusOf(t);
    if(s){o.color=ST[s];o.bold=true;if(/[A-Za-z\u4e00-\u9fff]/.test(t))o.dot=ST[s];}
    if(isN&&st.tbNeg&&tNumVal(src[ri][c])<0&&!/^[\s(（]*[▲△]/.test(src[ri][c]))o.color=BAD;
+   {const am=/^[\s(（]*([▲△▼▽])/.exec(String(src[ri][c]||''));if(am){const up=/[▲△]/.test(am[1]);o.color=st.tbArrow==='sem'?(up?GOOD:BAD):st.tbArrow==='ink'?G.ink:(up?P:G.t2);o.bold=true;}}
    let hx=hiCell(ri,c),hr=hiRow(ri),hcol=hiCol(c);const wn=[hx,hr,hcol].find(z=>z&&z.kind==='warn');if(wn){hx=wn===hx?hx:null;hcol=wn===hcol?hcol:null;hr=wn===hr?hr:null;}const h=hx||hcol||hr;/* 警告優先、不疊色 */
    const R=ruleOf(ri,c);
    if(h&&!s){
@@ -2435,6 +2436,7 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(k==='zh'){out.zh=stripCtl(v).replace(/[<>&"]/g,'').slice(0,40);return;}
   if(k==='tbLook'){const w=TABLE_LOOK_ALIAS[v]||v;if(TABLE_LOOKS.some(l=>l[0]===w)){out.tbLook=w;if(v==='panel')out.tbCard='grey';}return;}
   if(k==='tbPanel'){out.tbPanel=!!v;return;}
+  if(k==='tbArrow'){out.tbArrow=['mono','sem','ink'].includes(v)?v:'mono';return;}
   if(k==='semWarn'){const h=String(v||'').replace('#','');out.semWarn=/^[0-9A-F]{6}$/i.test(h)?h.toUpperCase():'';return;}
   if(!(k in BASE))return;
   if(enums[k]){if(enums[k].some(o=>String(o)===String(v)))out[k]=typeof d==='number'?+v:v;return;}

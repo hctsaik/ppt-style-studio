@@ -13,4 +13,9 @@ await pg.evaluate(()=>document.querySelectorAll('.rdl')[2].click());await new Pr
 await pg.evaluate(()=>document.querySelector('[data-go="kit"]').click());await new Promise(r=>setTimeout(r,800));
 await pg.evaluate(()=>{document.querySelector('[data-sk="teal"]').click();});await pg.evaluate(()=>document.querySelector('#skApply').click());await new Promise(r=>setTimeout(r,1500));
 ck('Style Kit 一鍵套用',(await pg.evaluate(()=>window.__studio.kitApplied))==='teal');
+await pg.evaluate(()=>document.querySelector('[data-tab="icons"]').click());await new Promise(r=>setTimeout(r,800));
+await pg.click('#iMulti');const ics=await pg.$$('#iGrid .ic');await ics[0].click();await ics[1].click();await ics[2].click();await pg.click('#iMAdd');ck('圖示多選加入待選 3',(await pg.evaluate(()=>window.__studio.iconMulti))===3);
+await pg.click('#iMulti');await pg.type('#iSearch','錢');await new Promise(r=>setTimeout(r,500));ck('圖示搜尋同義詞：錢 → budget 類圖示',await pg.evaluate(()=>!!document.querySelector('#iGrid .ic[data-id="request_quote"]')));
+ck('圖示外框選項 6 種',(await pg.$$eval('#iVar button',b=>b.length))===6);
+await pg.evaluate(()=>document.querySelector('[data-tab="table"]').click());await new Promise(r=>setTimeout(r,800));ck('表格 ▲▼ 符號色選單',await pg.evaluate(()=>!!document.querySelector('#tArrow')&&document.querySelector('#tArrow').value==='mono'));
 ck('無 JS 錯誤',!errs.length);console.log(F?'FAILS '+F:'ALL OK');await b.close();})();
