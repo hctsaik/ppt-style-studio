@@ -396,6 +396,10 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 .rcp .lim{font-size:11.5px;color:#1F3864;margin:-4px 0 8px}.rcp .rdl{margin-top:10px;width:100%;border:1px solid var(--p);background:#fff;color:var(--p);border-radius:8px;padding:6px;font-weight:600;cursor:pointer}.rcp .rdl:hover{background:#EEF3FA}
 .gocards{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 0}.gocards a{border:1px solid #DDD;border-radius:14px;padding:2px 10px;font-size:12px;color:var(--ink);text-decoration:none;cursor:pointer;background:#fff}.gocards a b{color:var(--p);margin-right:4px}.gocards a:hover{border-color:var(--p)}
 .more.tools .menu a{display:block;padding:7px 10px;border-radius:6px;font-size:12.5px;color:var(--ink);text-decoration:none}.more.tools .menu a:hover{background:#F2F2F2}
+#iScn{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:4px 0 6px;font-size:12px}#iScn b{color:#595959;font-weight:600;margin-right:2px}#iScn button{border:1px solid #d9d9d9;background:#fff;border-radius:14px;padding:3px 10px;font-size:12px;cursor:pointer}#iScn button.on{background:#1F3864;color:#fff;border-color:#1F3864}#iScn small{margin-left:4px;opacity:.7}
+.rmeta{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:10px;background:#EEF3FA;color:#1F3864;font-size:12px;font-weight:600}
+#pTree a.sub{padding-left:22px;font-size:12px;color:#595959}#pTree a.sub b{min-width:30px}
+@keyframes hitf{0%,100%{filter:none}50%{filter:drop-shadow(0 0 6px #F2A33A) drop-shadow(0 0 2px #F2A33A)}}g.el.hitflash{animation:hitf .6s ease-in-out 3}
 </style></head><body><div class="tpop" id="tPop" role="dialog" aria-label="儲存格選單" hidden></div>
 
 <header>
@@ -456,7 +460,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
     <span class="hint" id="iInfo" style="margin:0"></span>
     <button class="btn" id="iMulti" aria-pressed="false" title="一次勾選多個圖示加入待選素材">☑ 多選</button><button class="btn" id="iMAdd" hidden disabled>＋加入待選（0）</button><button class="btn" id="iZip" title="目前顏色／樣式的全部圖示：透明 PNG（2×）＋ SVG">全部下載 ZIP</button>
    </div>
-   <div class="icats" id="iCats" role="navigation" aria-label="圖示分類"></div>
+   <div class="iscn" id="iScn" aria-label="情境分類"></div><div class="icats" id="iCats" role="navigation" aria-label="圖示分類"></div>
    <div class="igrid" id="iGrid"></div>
    <div class="ibar2" id="ibar2"><b id="iName"></b><small id="iDim" style="color:#8C8C8C;margin-right:4px"></small><button class="pri" data-a="copy" title="SVG 向量＋透明 PNG">複製</button><button data-a="svg">SVG</button><button data-a="png2">PNG 2×</button><button data-a="png4">PNG 4×</button><button data-a="pic" title="1 頁 .pptx：SVG 向量圖片（PNG 備援），PowerPoint 365 可右鍵「轉換成圖案」">.pptx 圖片</button><button data-a="shape" title="1 頁 .pptx：原生自訂圖案（填色外框），直接可改顏色">.pptx 圖案</button><button data-a="tray" title="加入待選素材（保留目前風格）">＋待選</button><button data-a="x">✕</button></div>
   </section>
@@ -487,6 +491,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 </div>
         <details class="tedit" id="tEdit"><summary id="tEditSum">編輯資料</summary>
         <div class="tgrid" id="tGrid"></div>
+        <div class="trow"><label class="btn" id="tCsvL" title="匯入 .csv／.tsv（逗號或 Tab 分隔，支援引號）">📄 匯入 CSV<input type="file" id="tCsv" accept=".csv,.tsv,.txt,text/csv" hidden></label><small style="color:#595959">也可直接貼上 CSV／Excel／網頁表格</small></div>
         <div class="trow"><button class="btn" data-g="r+">＋列</button><button class="btn" data-g="c+">＋欄</button><button class="btn" data-g="r-">－列</button><button class="btn" data-g="c-">－欄</button><button class="btn" id="tWide" title="暫時用大畫面編輯同一份資料">⤢ 展開編輯</button><button class="btn pri" id="tWideDone">完成，回到預覽</button><button class="btn tclr" id="tClear">清空</button></div>
         </details>
         <label class="ttg tkeep" title="貼上新資料時保留標題、單位／註腳與欄樣式（依欄名，欄數相同時依位置）"><input type="checkbox" id="tKeep"> 沿用目前樣式</label>
@@ -554,7 +559,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <script src="jszip.min.js?v=978d62b5"></script>
 <script src="pptxgen.min.js?v=24808c08"></script>
 <script src="icons.js?v=65c03732"></script>
-<script src="deck.js?v=99a6c7f1"></script>
+<script src="deck.js?v=f6f77079"></script>
 <script src="stylekit-data.js?v=47e8edb0"></script>
 <script src="stylekit.js?v=2a276743"></script>
 <script>
@@ -791,7 +796,7 @@ const normQ=q=>String(q||'').toLowerCase().replace(/\s+/g,'');
 function expandQ(q){q=normQ(q);if(!q)return[];const o=new Set([q]);SYN.forEach(g=>{if(g.some(w=>w.includes(q)||q.includes(w)&&w.length>1))g.forEach(w=>o.add(w));});return[...o];}
 const pageHref=k=>{const e=D.SLIDES.find(x=>x[0]===k);return '#/'+(e?e[2].replace('·','.'):'')+'/'+k;};
 function buildNav(){const T=$('#pTree');if(!T)return;const open=JSON.parse(localStorage.getItem('pss-nav-open')||'null')||{};
- T.innerHTML=D.SECTIONS.map(([g,zh,en])=>{const ps=D.SLIDES.map((e,i)=>[e,i]).filter(([e])=>e[4]===g);if(!ps.length)return '';return `<details data-g="${g}"${open[g]!==false?' open':''}><summary><i>${g==='S'?'00':g}</i>${zh}<small>${en} · ${ps.length}</small></summary>${ps.map(([e])=>`<a data-k="${e[0]}" href="${pageHref(e[0])}"><b>${e[2]}</b>${e[1]}</a>`).join('')}</details>`;}).join('');
+ T.innerHTML=D.SECTIONS.map(([g,zh,en])=>{const ps=D.SLIDES.map((e,i)=>[e,i]).filter(([e])=>e[4]===g);if(!ps.length)return '';return `<details data-g="${g}"${open[g]!==false?' open':''}><summary><i>${g==='S'?'00':g}</i>${zh}<small>${en} · ${ps.length}</small></summary>${ps.map(([e])=>`<a data-k="${e[0]}"${/（[二三四]）/.test(e[1])?' class="sub"':''} href="${pageHref(e[0])}"><b>${e[2]}</b>${e[1]}</a>`).join('')}</details>`;}).join('');
  T.addEventListener('toggle',e=>{const d=e.target;if(d.dataset&&d.dataset.g){open[d.dataset.g]=d.open;try{localStorage.setItem('pss-nav-open',JSON.stringify(open));}catch(x){}}},true);
  const inp=$('#pSearch');inp.oninput=()=>{const qs=expandQ(inp.value),R=$('#pRes');if(!qs.length){R.hidden=true;return;}const hits=[];
   model.slides.forEach((sl,i)=>{const e=D.SLIDES.find(x=>x[0]===sl.key)||[];const ptxt=normQ([e[1],e[2],e[3],sl.title].join(' '));const pm=qs.some(q=>ptxt.includes(q));if(pm)hits.push({i,gi:-1,lab:sl.title,code:e[2]});
@@ -802,7 +807,7 @@ function buildNav(){const T=$('#pTree');if(!T)return;const open=JSON.parse(local
  $('#pRes').addEventListener('click',async e=>{const b=e.target.closest('#pmTray,#pmDl');if(!b)return;e.stopPropagation();const its=pmSel();if(!its.length)return;
   if(b.id==='pmTray'){its.forEach(addTray);toast(`已加入待選 ${its.length} 個元件`);window.__studio.pmTray=its.length;return;}
   b.disabled=true;try{const a=its.map(it=>Object.assign({uid:Math.random().toString(36).slice(2),params:clone(S.p),style:styleLabel()},it));const m=D.trayDeck(a,{frame:S.p});const r=await D.exportPptx(ENV(),S.p,{model:m});saveBlob(r.data,`搜尋所選-${its.length}項.pptx`);window.__studio.pmDl={n:its.length,size:r.data.size};toast(`已下載 ${its.length} 個元件（每個一頁）`);}catch(err){console.error(err);toast('匯出失敗：'+err.message);}finally{b.disabled=false;}},true);
- $('#pRes').onclick=e=>{if(e.target.closest('.pck,.pmulti'))return;const a=e.target.closest('a[data-i]');if(!a)return;setTab('slides');go(+a.dataset.i);if(+a.dataset.gi>=0)selectEl(+a.dataset.gi);if(MQ.matches)setPanel(false);};
+ $('#pRes').onclick=e=>{if(e.target.closest('.pck,.pmulti'))return;const a=e.target.closest('a[data-i]');if(!a)return;setTab('slides');go(+a.dataset.i);if(+a.dataset.gi>=0){selectEl(+a.dataset.gi);setTimeout(()=>{const g=document.querySelector(`g.el[data-g="${a.dataset.gi}"]`);if(g){g.classList.add('hitflash');window.__studio.hitFlash=+a.dataset.gi;setTimeout(()=>g.classList.remove('hitflash'),1800);}},120);}if(MQ.matches)setPanel(false);};
  T.onclick=e=>{const a=e.target.closest('a[data-k]');if(!a)return;e.preventDefault();goKey(a.dataset.k);if(MQ.matches)setPanel(false);};}
 function goKey(k){const i=model.slides.findIndex(x=>x.key===k);if(i<0)return false;if(S.tab!=='slides')setTab('slides');go(i);return true;}
 function navSync(sl){document.querySelectorAll('#pTree a').forEach(a=>a.classList.toggle('on',a.dataset.k===sl.key));const on=document.querySelector('#pTree a.on');if(on){const d=on.closest('details');if(d&&!d.open)d.open=true;}
@@ -816,11 +821,11 @@ addEventListener('hashchange',()=>{const k=hashKey();if(k&&model&&model.slides[S
 const RECIPES=[
  {t:'週報／月報',lim:'3–5 頁｜3 分鐘｜每頁標題 ≤ 25 字',who:'主管 3 分鐘看完：先結論、再數字、最後要決策',st:[['F1','封面'],['A0','結論先行標題'],['C1','KPI 數字卡＋燈號'],['C3','進度時間軸'],['D2','改善前後對照'],['D8','需要的決策'],['F15','整頁範例：週報']],tip:'一頁一個訊息；標題寫成完整句子（例如「B 線良率回升至 98.6%」）。'},
  {t:'異常報告／8D',lim:'6–8 頁｜10 分鐘｜每頁 ≤ 3 重點',who:'品質、製程、客訴回覆',st:[['F1','封面'],['A0','問題摘要'],['B1','發生流程'],['D6','魚骨圖／5 Why'],['D7','根因驗證'],['B6','對策步驟'],['C3','矯正時程'],['F14','整頁範例：PCN／變更']],tip:'表格工具 › 行動項目／議題追蹤 預設可直接放對策清單。'},
- {t:'募資／創業提案 Pitch',lim:'10–12 頁｜5–7 分鐘｜每頁 ≤ 30 字',who:'投資人與評審：問題 → 市場 → 方案 → 商業模式 → 團隊 → 財務 → Ask',st:[['F1','封面＋一句話主張'],['E5','問題的代價（故事開場）'],['D10','市場 TAM／SAM／SOM'],['E4','產品截圖／裝置框'],['D9','商業模式圖 BMC'],['D10','單位經濟＋團隊照片牆'],['D10','財務摘要＋里程碑'],['D10','The Ask 募資金額與用途'],['F7','結尾 Q&A＋聯絡']],tip:'The Ask 放倒數第二頁，Q&A 頁保留重點三句，提問時停在這頁。'},
+ {t:'募資／創業提案 Pitch',lim:'10–12 頁｜5–7 分鐘｜每頁 ≤ 30 字',who:'投資人與評審：問題 → 市場 → 方案 → 商業模式 → 團隊 → 財務 → Ask',st:[['F1','封面＋一句話主張'],['E5','問題的代價（故事開場）'],['D11','市場 TAM／SAM／SOM'],['E4','產品截圖／裝置框'],['D9','商業模式圖 BMC'],['D11','單位經濟＋團隊照片牆'],['D11','財務摘要＋里程碑'],['D11','The Ask 募資金額與用途'],['F7','結尾 Q&A＋聯絡']],tip:'The Ask 放倒數第二頁，Q&A 頁保留重點三句，提問時停在這頁。'},
  {t:'提案與決策簡報',lim:'6–10 頁｜10 分鐘｜決策句放第 2 頁',who:'向上爭取資源、選方案',st:[['F1','封面'],['E5','開場鉤子'],['B8','議程'],['D3','方案比較'],['D5','2×2 優先矩陣'],['C1','效益數字'],['D8','建議與決策請求'],['F7','結尾 Q&A']],tip:'把要的決策放在第 2 頁也放在最後一頁。'},
  {t:'求職面試簡報（15 分鐘）',lim:'8–10 頁｜15 分鐘｜每個成就都有數字',who:'讓面試官 30 秒記住你',st:[['F1','封面'],['G1','自我介紹／個人檔案'],['C3','職涯時間軸'],['G2','技能矩陣'],['G4','STAR 案例 ×2'],['G5','作品集'],['G6','30-60-90 計畫＋為什麼選我'],['F7','結尾 Q&A＋聯絡方式']],tip:'每個 STAR 結果都要有數字（▲ 32%、省 37 小時）；最後一頁放聯絡與 QR。'},
  {t:'作品集 Portfolio',lim:'6–12 頁｜每件作品 1 頁｜圖 > 字',who:'設計／工程／研究作品展示',st:[['F1','封面'],['G1','個人簡介'],['G5','作品圖片網格'],['E4','截圖框＋裝置框'],['G4','專案 STAR'],['E5','引言／推薦語']],tip:'圖片框是真的圖片：在 PowerPoint 右鍵「變更圖片」即可換成作品。'},
- {t:'競賽／得獎簡報',lim:'6 頁｜評審 5–8 分鐘｜每頁 ≤ 40 字、標題 ≤ 20 字',who:'評審看：問題夠痛、解法可行、市場夠大、團隊能做',st:[['F1','封面＋一句話主張（≤ 20 字）'],['D10','問題規模／市場 TAM（≤ 3 數字）'],['D9','解法與商業模式 BMC（每格 ≤ 12 字）'],['C1','成果數字（≤ 4 張 KPI）'],['G6','未來計畫 30-60-90（每欄 ≤ 3 點）'],['F7','結尾＋行動呼籲（≤ 15 字）']],tip:'順序：主張 → 痛點 → 解法 → 證據 → 計畫 → 呼籲；全份只用 1–2 個強調色。'},
+ {t:'競賽／得獎簡報',lim:'6 頁｜評審 5–8 分鐘｜每頁 ≤ 40 字、標題 ≤ 20 字',who:'評審看：問題夠痛、解法可行、市場夠大、團隊能做',st:[['F1','封面＋一句話主張（≤ 20 字）'],['D11','問題規模／市場 TAM（≤ 3 數字）'],['D9','解法與商業模式 BMC（每格 ≤ 12 字）'],['C1','成果數字（≤ 4 張 KPI）'],['G6','未來計畫 30-60-90（每欄 ≤ 3 點）'],['F7','結尾＋行動呼籲（≤ 15 字）']],tip:'順序：主張 → 痛點 → 解法 → 證據 → 計畫 → 呼籲；全份只用 1–2 個強調色。'},
  {t:'專案啟動 Kick-off',lim:'6–8 頁｜20 分鐘',who:'對齊目標、角色、時程',st:[['F1','封面'],['D9','OKR 目標'],['B9','團隊與角色'],['B7','工作分解結構'],['C3','里程碑'],['F13','整頁範例：摘要']],tip:'表格工具 › RACI 預設可直接產生角色分工表。'},
  {t:'策略／框架報告',lim:'8–12 頁｜每個框架 1 頁',who:'讓抽象概念一眼懂',st:[['F4','章節頁'],['D9','PESTEL／五力'],['A9','圓形架構'],['B7','層級結構'],['E9','地圖與據點'],['F10','三圓 Why/How/What'],['F12','能力地圖']],tip:'範例頁下方會列出所用元件，點一下即可跳過去單獨取用。'}];
 async function recipeDeck(i,btn){const r=RECIPES[i];const keys=[...new Set(r.st.map(([c])=>(D.SLIDES.find(x=>x[2]===c)||[])[0]).filter(Boolean))];
@@ -830,7 +835,7 @@ async function recipeDeck(i,btn){const r=RECIPES[i];const keys=[...new Set(r.st.
   window.__studio.lastRecipe={pages:res.model.slides.length,keys};toast(`已下載「${escH(r.t)}」整份 ${res.model.slides.length} 頁（目前風格）`);}
  catch(err){console.error(err);toast('匯出失敗：'+err.message);}finally{btn.disabled=false;btn.textContent=old;}}
 function renderGuide(){const g=$('#guide');if(g.dataset.on)return;g.dataset.on=1;const by=c=>D.SLIDES.find(x=>x[2]===c);
- g.innerHTML='<h2>簡報食譜 Deck Recipes</h2><p>選一個情境，照順序點頁碼挑元件、改字、＋待選，最後一次下載。所有元件都是原生可編輯的 PowerPoint 圖形。</p><div class="rcps">'+RECIPES.map((r,i)=>`<div class="rcp"><h3>${r.t}</h3><div class="who">${r.who}</div><div class="lim">⏱ ${r.lim}</div><ol>${r.st.map(([c,l])=>{const e=by(c);return `<li>${e?`<a data-k="${e[0]}">${c}</a>`:''}${l}</li>`;}).join('')}</ol><div class="tip">💡 ${r.tip}</div><button class="rdl" data-r="${i}">＋整份加入待選並下載（${new Set(r.st.map(x=>x[0])).size} 頁）</button></div>`).join('')+'</div>';
+ g.innerHTML='<h2>簡報食譜 Deck Recipes</h2><p>選一個情境，照順序點頁碼挑元件、改字、＋待選，最後一次下載。所有元件都是原生可編輯的 PowerPoint 圖形。</p><div class="rcps">'+RECIPES.map((r,i)=>`<div class="rcp"><h3>${r.t}<small class="rmeta">${r.st.length} 頁／${((r.lim.match(/([\d–-]+)\s*分鐘/)||[])[1]||"?")} 分鐘</small></h3><div class="who">${r.who}</div><div class="lim">⏱ ${r.lim}</div><ol>${r.st.map(([c,l])=>{const e=by(c);return `<li>${e?`<a data-k="${e[0]}">${c}</a>`:''}${l}</li>`;}).join('')}</ol><div class="tip">💡 ${r.tip}</div><button class="rdl" data-r="${i}">＋整份加入待選並下載（${new Set(r.st.map(x=>x[0])).size} 頁）</button></div>`).join('')+'</div>';
  g.addEventListener('click',e=>{const b=e.target.closest('.rdl');if(b)recipeDeck(+b.dataset.r,b);});}
 $('#bTools').onclick=e=>{e.stopPropagation();const m=$('#mTools');m.hidden=!m.hidden;$('#bTools').setAttribute('aria-expanded',String(!m.hidden));};
 $('#mTools').onclick=e=>{const b=e.target.closest('[data-go]');$('#mTools').hidden=true;if(!b)return;const g=b.dataset.go;if(g==='tray'){const t=$('#trayBtn');if(t)t.click();}else setTab(g);};
@@ -984,7 +989,11 @@ function buildIconBar(){
  $('#iWt').innerHTML=[[0,'跟風格'],[300,'細 300'],[400,'標準 400'],[500,'粗 500']].map(c=>`<button data-v="${c[0]}">${c[1]}</button>`).join('');
  $('#iWt').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.p.icSW=+b.dataset.v;schedule();};
  let tq;$('#iSearch').oninput=()=>{clearTimeout(tq);tq=setTimeout(()=>{IQ=null;renderIcons();$('#iGrid').scrollTop=0;},90);};
- $('#iCats').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const g=$('#iGrid');
+ const ISCN=[['工作',['製造與設備','品質與檢測','任務與專案','時間與排程','工具與設定']],['人',['人員與組織']],['數據',['資料與 IT','分析與圖表','財務與商業']],['溝通',['溝通與會議','文件與檔案','想法與策略']]];
+function scnRender(){const el=$('#iScn');if(!el)return;el.innerHTML='<b>情境</b>'+ISCN.map(([t,cs])=>`<button data-s="${t}">${t}<small>${I.LIST.filter(i=>cs.includes(i.cat)).length}</small></button>`).join('')+'<button data-s="">全部</button>';}
+$('#iScn').onclick=e=>{const b=e.target.closest('button');if(!b)return;const sc=ISCN.find(x=>x[0]===b.dataset.s);$('#iScn').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b&&!!sc));document.querySelectorAll('#iGrid .isec').forEach(sec=>sec.hidden=!!sc&&!sc[1].includes(sec.dataset.c));window.__studio.iconScene=sc?sc[0]:'';};
+setTimeout(scnRender,0);
+$('#iCats').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const g=$('#iGrid');
   if(b.dataset.c==='*'){g.scrollTo({top:0,behavior:'smooth'});return;}const h=g.querySelector(`.isec[data-c="${CSS.escape(b.dataset.c)}"]`);if(h){g.scrollTo({top:h.offsetTop-4,behavior:'smooth'});ICHIP=b.dataset.c;ICHIPT=performance.now()+700;setChip(b.dataset.c);}};}
 let ICHIP=null,ICHIPT=0;function setChip(c){$('#iCats').querySelectorAll('button').forEach(b=>{const on=b.dataset.c===c;b.classList.toggle('on',on);});}
 let ISEL=null;
@@ -1326,7 +1335,8 @@ function buildTableUI(){
   e.preventDefault();loadData(rows);});
  // 資料格：直接改字；貼上多格＝從這一格開始填
  $('#tGrid').addEventListener('input',e=>{const td=e.target.closest('td');if(!td)return;T.rows[+td.dataset.r][+td.dataset.c]=td.innerText.replace(/\n$/,'');saveT();renderTable(true);});
- $('#tGrid').addEventListener('paste',e=>{const td=e.target.closest('td');const t=e.clipboardData.getData('text/plain');if(!td){if(!T.rows.length){e.preventDefault();loadData(parseTSV(t));}return;}if(!/[\t\n]/.test(t))return;e.preventDefault();
+ $('#tCsv').onchange=async e=>{const f=e.target.files[0];if(!f)return;const t=await f.text();const rows=parseTSV(t);if(rows&&rows.length){loadData(rows);window.__studio.csvRows=rows.length;toast(`已匯入 ${escH(f.name)}：${rows.length} 列`);}e.target.value='';};
+$('#tGrid').addEventListener('paste',e=>{const td=e.target.closest('td');const t=e.clipboardData.getData('text/plain');if(!td){if(!T.rows.length){e.preventDefault();loadData(parseTSV(t));}return;}if(!/[\t\n]/.test(t))return;e.preventDefault();
   const r0=+td.dataset.r,c0=+td.dataset.c;if(r0===0&&c0===0){loadData(parseTSV(t));return;}parseTSV(t).forEach((row,i)=>row.forEach((v,j)=>{while(T.rows.length<=r0+i)T.rows.push([]);const R=T.rows[r0+i];while(R.length<=c0+j)R.push('');R[c0+j]=v;}));
   fixT();saveT();document.activeElement.blur();renderAll();});
  $('#tGrid').addEventListener('focusout',()=>setTimeout(()=>{if(!$('#tGrid').contains(document.activeElement))renderGrid();},0));
