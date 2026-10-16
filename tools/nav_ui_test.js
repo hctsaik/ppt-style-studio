@@ -15,7 +15,7 @@ const URL=process.argv[2]||'http://localhost:8765/studio.html';let fail=0;const 
  await pg.evaluate(()=>{const i=document.querySelector('#pSearch');i.value='STAR';i.dispatchEvent(new Event('input'));});await sl(300);
  await pg.evaluate(()=>{const a=[...document.querySelectorAll('#pRes a[data-i]')].find(a=>+a.dataset.gi>=0&&/^G4/.test(a.innerText));a.click();});await sl(500);s=await st();ck('點元件結果 → 跳頁並選取元件 ('+s.k+')',s.k==='star'&&await pg.evaluate(()=>!!(document.querySelector('#eName')||{}).textContent));
  await pg.goto(URL.replace(/#.*$/,'')+'#/D1/cmp',{waitUntil:'networkidle0'});s=await st();ck('深連結 #/D1/cmp 直接開啟',s.k==='cmp');
- await pg.evaluate(()=>{location.hash='#/G4/folio';});await sl(500);s=await st();ck('hashchange → G4 作品集',s.k==='folio');
+ await pg.evaluate(()=>{location.hash='#/G5/folio';});await sl(500);s=await st();ck('hashchange → G5 作品集',s.k==='folio');
  await pg.goto(URL.replace(/#.*$/,''),{waitUntil:'networkidle0'});s=await st();ck('重新開啟記得頁面 ID（folio）',s.k==='folio');
  await pg.goto(URL.replace(/#.*$/,'')+'#/Z9/nope',{waitUntil:'networkidle0'});s=await st();ck('不存在的頁 → 回到 00 總覽',s.k==='catalog');
  await pg.evaluate(()=>document.querySelector('#bTools').click());const tm=await pg.evaluate(()=>({sw:!!document.querySelector('#mTools a[href*="swiffchart"]'),off:!!document.querySelector('#mTools a[href="PPT-Style-Studio.html"]'),kit:!!document.querySelector('#mTools [data-go="kit"]')}));ck('工具選單：SwiffChart、離線單檔、Style Kit '+JSON.stringify(tm),tm.sw&&tm.off&&tm.kit);
