@@ -9,7 +9,7 @@ const URL=process.argv[2]||'http://localhost:8765/studio.html';let fail=0;const 
  const i=await goL();ck('縮圖列有「標籤元件」頁 #'+(i+1),i>=0);
  const pick=gi=>pg.evaluate(gi=>{const h=document.querySelector(`#stage g.el[data-g="${gi}"] .hit`)||document.querySelector(`g.el[data-g="${gi}"] .hit`);h.dispatchEvent(new MouseEvent('click',{bubbles:true}));},gi);
  const info=await pg.evaluate(()=>({n:new Set([...document.querySelectorAll('g.el')].map(g=>g.dataset.g)).size,warns:window.__studio.warns,title:document.querySelector('#sTitle').innerText}));
- ck('標籤元件頁：'+info.n+' 個可選元件、無警告',info.n>=11&&!info.warns&&/標籤元件/.test(info.title));
+ ck('標籤元件頁：'+info.n+' 個可選元件、無警告',info.n>=5&&!info.warns&&/標籤元件/.test(info.title));
  await pick(0);await sl(300);await pg.evaluate(()=>document.querySelector('#ebar button[data-a="lbl"]').click());await sl(300);
  const ed=await pg.evaluate(()=>({open:!document.querySelector('#lbEd').hidden,ic:[...document.querySelectorAll('#lbList input[data-k]')].map(x=>x.value),ta:document.querySelectorAll('#lbList textarea').length}));
  if(process.argv[3])await pg.screenshot({path:process.argv[3]});
@@ -19,6 +19,7 @@ const URL=process.argv[2]||'http://localhost:8765/studio.html';let fail=0;const 
  ck('換圖示＋改字生效（預覽文字、已存檔）',/加入收藏/.test(af.svg)&&/"icon":"star"/.test(af.ls));
  await pg.reload({waitUntil:'networkidle0'});await goL();await pick(0);await sl(300);await pg.evaluate(()=>document.querySelector('#ebar button[data-a="lbl"]').click());await sl(300);
  ck('重新整理後仍保留圖示（改字面板顯示 star）',await pg.evaluate(()=>{const q=document.querySelector('#lbList input[data-k]');const v=q&&q.value;document.querySelector('#lbCancel').click();return v==='star';}));
+ await pg.evaluate(()=>{const t=[...document.querySelectorAll('#thumbs .th')].find(x=>/標籤元件（三）/.test(x.innerText));t.click();});await sl(700);
  const k=await pg.evaluate(()=>[...document.querySelectorAll('g.el')].find(g=>g.dataset.name==='直式標籤清單').dataset.g);await pick(k);await sl(300);
  await pg.evaluate(()=>document.querySelector('#ebar button[data-a="pptx"]').click());await sl(2500);
  const le=await pg.evaluate(()=>window.__studio.lastElement);ck('下載此元件 .pptx：'+JSON.stringify(le),le&&le.name==='直式標籤清單'&&le.items===9&&le.size>10000);

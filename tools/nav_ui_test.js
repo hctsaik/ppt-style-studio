@@ -13,7 +13,7 @@ const URL=process.argv[2]||'http://localhost:8765/studio.html';let fail=0;const 
  await pg.type('#pSearch','VS');await sl(300);let r=await pg.evaluate(()=>[...document.querySelectorAll('#pRes a[data-i]')].map(a=>a.innerText));ck('搜尋「VS」（同義詞→對比）：'+r.length+' 筆',r.some(x=>/對比/.test(x)));
  await pg.evaluate(()=>{const i=document.querySelector('#pSearch');i.value='指標';i.dispatchEvent(new Event('input'));});await sl(300);r=await pg.evaluate(()=>[...document.querySelectorAll('#pRes a[data-i]')].map(a=>a.innerText));ck('搜尋「指標」找到 KPI：'+r.length+' 筆',r.some(x=>/KPI/.test(x)));
  await pg.evaluate(()=>{const i=document.querySelector('#pSearch');i.value='STAR';i.dispatchEvent(new Event('input'));});await sl(300);
- await pg.evaluate(()=>{const a=[...document.querySelectorAll('#pRes a[data-i]')].find(a=>+a.dataset.gi>=0&&/^G3/.test(a.innerText));a.click();});await sl(500);s=await st();ck('點元件結果 → 跳頁並選取元件 ('+s.k+')',s.k==='star'&&await pg.evaluate(()=>!!(document.querySelector('#eName')||{}).textContent));
+ await pg.evaluate(()=>{const a=[...document.querySelectorAll('#pRes a[data-i]')].find(a=>+a.dataset.gi>=0&&/^G4/.test(a.innerText));a.click();});await sl(500);s=await st();ck('點元件結果 → 跳頁並選取元件 ('+s.k+')',s.k==='star'&&await pg.evaluate(()=>!!(document.querySelector('#eName')||{}).textContent));
  await pg.goto(URL.replace(/#.*$/,'')+'#/D1/cmp',{waitUntil:'networkidle0'});s=await st();ck('深連結 #/D1/cmp 直接開啟',s.k==='cmp');
  await pg.evaluate(()=>{location.hash='#/G4/folio';});await sl(500);s=await st();ck('hashchange → G4 作品集',s.k==='folio');
  await pg.goto(URL.replace(/#.*$/,''),{waitUntil:'networkidle0'});s=await st();ck('重新開啟記得頁面 ID（folio）',s.k==='folio');
