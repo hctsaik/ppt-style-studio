@@ -54,6 +54,27 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
   const s5=D.buildModel(nav,{only:['cmp2']}).slides[0];ok(s5.items.some(i=>i.calc&&D.textOf(i)==='↓80%'),'降幅：5%→1% 徽章 ↓80%');
   for(const [kk,gi] of [['cmp',gA],['cmp2',1]]){const em=D.elementModel(nav,kk,gi);await save('compare-'+kk+'-'+gi+'.pptx',nav,{model:em});}
   await save('compare-investor.pptx',D.PRESETS.find(p=>p.id==='investor'),{only:['cmp','cmp2']});}
+ // v12：缺漏元件 4 頁（KPI＋評比、時間軸／甘特、2×2／議程、註腳／強調）：9 風格各頁元件數、無警告、白底、改字重算、螢光底 OOXML、單一元件 .pptx
+ {const PG={kpi:9,tline:4,mtx:6,emph:8};let bad=[];for(const st of D.PRESETS){const m=D.buildModel(st,{only:Object.keys(PG)});
+   m.slides.forEach(s=>{if(s.groups.length<PG[s.key])bad.push(st.id+'/'+s.key+' '+s.groups.length);if(s.items.some(i=>i.name==='畫布面板'))bad.push(st.id+'/'+s.key+' 有畫布');});if(m.warns.length)bad.push(st.id+' '+m.warns.join());}
+  ok(!bad.length,'缺漏元件 4 頁：9 風格各 '+Object.entries(PG).map(([k,v])=>k+'≥'+v).join('／')+'、無排版警告、白底'+(bad.length?'｜'+bad.join('；'):''));
+  const all=D.buildModel(nav).slides.map(s=>s.key);ok(all.indexOf('kpi')===18&&all.indexOf('emph')===21&&all.indexOf('ex1')===22,'頁序：19 KPI … 22 註腳與強調、23 範例');
+  const K=D.buildModel(nav,{only:['kpi']}).slides[0];const gi=n=>K.groups.findIndex(g=>g.name===n);const its=g=>K.items.slice(K.groups[g].from,K.groups[g].to+1);
+  const gB=gi('KPI 數值＋目標＋Δ'),bI=its(gB),kv=bI.findIndex(i=>D.textOf(i)==='96.8 %');ok(kv>=0&&bI.some(i=>i.calc&&D.textOf(i)==='▲ +2%'),'KPI：數值 96.8 %、目標 95.0 %、Δ ▲ +2%');
+  const s2=D.buildModel(nav,{only:['kpi'],labels:{['kpi:'+gB]:{[kv]:{from:'96.8 %',to:'90.0 %'}}}}).slides[0];ok(s2.items.slice(K.groups[gB].from,K.groups[gB].to+1).some(i=>i.calc&&D.textOf(i)==='▼ −5%'),'KPI：改數值 90.0 → Δ 自動 ▼ −5%');
+  const gE=gi('進度條（細）'),eI=its(gE),pk=eI.findIndex(i=>D.textOf(i)==='65%');const s3=D.buildModel(nav,{only:['kpi'],labels:{['kpi:'+gE]:{[pk]:{from:'65%',to:'50%'}}}}).slides[0];
+  const bars=s3.items.slice(K.groups[gE].from,K.groups[gE].to+1).filter(i=>i.calc&&i.calc.m==='pbar');ok(Math.abs(bars[1].w/bars[0].w-.5)<.01,'進度條：65%→50% 長度自動調整');
+  const gH=gi('Harvey ball'),hI=its(gH),hk=hI.findIndex(i=>D.textOf(i)==='25%');const s4=D.buildModel(nav,{only:['kpi'],labels:{['kpi:'+gH]:{[hk]:{from:'25%',to:'75%'}}}}).slides[0];
+  const w4=s4.items.slice(K.groups[gH].from,K.groups[gH].to+1).filter(i=>i.calc&&i.calc.m==='hb');ok(Math.abs(w4[1].points[2].curve.swAng-270)<.01,'Harvey ball：25%→75% 扇形 270°');
+  const gD=gi('1–5 點數'),dI=its(gD),dk=dI.findIndex(i=>D.textOf(i)==='4/5');const s5=D.buildModel(nav,{only:['kpi'],labels:{['kpi:'+gD]:{[dk]:{from:'4/5',to:'2/5'}}}}).slides[0];
+  ok(s5.items.slice(K.groups[gD].from,K.groups[gD].to+1).filter(i=>i.calc&&i.calc.m==='dot'&&i.fill===nav.P).length===2+3+5,'1–5 點數：4/5→2/5 自動上色');
+  const E=D.buildModel(nav,{only:['emph']}).slides[0];const runs=[].concat(...E.items.filter(i=>i.runs).map(i=>i.runs));ok(runs.filter(r=>r.o.hl).length===3&&runs.some(r=>r.o.strike)&&runs.some(r=>r.o.u),'強調：螢光底 3 種、刪除線、底線');
+  const S=D.buildModel(nav,{only:['emph'],labels:{}}).slides[0];ok(S.items.some(i=>i.calc&&D.textOf(i)==='↓76%'),'前後值：5.0%→1.2% 徽章 ↓76%');
+  const r=await save('gap-navy.pptx',nav,{only:Object.keys(PG)});const z=await JSZip.loadAsync(r.data);const x4=await z.file('ppt/slides/slide4.xml').async('string');
+  ok(/<a:highlight><a:srgbClr val="[0-9A-F]{6}"\/><\/a:highlight>/.test(x4)&&/strike="sngStrike"/.test(x4)&&/ u="sng"/.test(x4),'OOXML：自訂 srgb 醒目提示、刪除線、底線');
+  for(const k of Object.keys(PG))for(const g of [0,1]){const em=D.elementModel(nav,k,g);await save('gap-'+k+'-'+g+'.pptx',nav,{model:em});}
+  for(const id of ['investor','wire','charcoal'])await save('gap-'+id+'.pptx',D.PRESETS.find(p=>p.id===id),{only:Object.keys(PG)});
+  ok(D.buildModel(nav,{only:['annot']}).slides[0].items.some(i=>/swiffchart/.test(D.textOf(i))),'標註頁圖表佔位：指向 SwiffChart');}
  // R1：表格重新設計（4 外觀 × 9 風格、單一強調色、狀態字精準比對、合計列、數字格式、門檻建議、貼上重設、舊快照相容）
  {const Y={title:'批次良率',rows:[['Lot','站點','Yield%','Defect','Status'],['A1','CMP','95.2%','12','Pass'],['A2','CMP','88.1%','31','Hold'],['A3','Etch','(86.4%)','40','Scrap'],['A4','Litho','93.7%','15','已完成 60%']],
    his:[{type:'col',i:2,color:'auto'},{type:'row',i:3,color:'alert'},{type:'cell',r:1,c:3,color:'A'},{type:'col',i:1}],rules:[{c:2,op:'<',v:90,tone:'warn',style:'fill'},{c:3,op:'>=',v:30,tone:'warn',style:'box'},{c:3,op:'=',v:12,tone:'good',style:'text'}]};

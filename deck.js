@@ -73,7 +73,8 @@ const LANG_OF={card:{outline:'白底外框',gray:'淺灰實心',soft:'白底無�
  chain:{chev:'漸層 V 形箭號',hex:'六角形鏈',gray:'灰卡＋▶',outline:'細框方塊',hairchev:'空心線框 V 形',home:'五邊形箭號',pill:'膠囊鏈',block:'區塊 V 形'}};
 function langOf(p){return{card:LANG_OF.card[p.card]+(p.card==='outline'?' '+p.cardLW+'pt':'')+(p.sh?'＋陰影':''),tag:LANG_OF.tag[p.tag],badge:LANG_OF.badge[p.badge],sep:LANG_OF.sep[p.sep],
  conn:p.cnW+'pt '+({solid:'實線',sysDot:'點線',sysDash:'虛線',dash:'長虛線'}[p.cnDash]||'')+({triangle:'＋三角箭頭',arrow:'＋開放箭頭',stealth:'＋燕尾箭頭',oval:'＋圓點',none:''}[p.cnHead]||''),chain:LANG_OF.chain[p.chain]};}
-const SLIDES=[['catalog','元件總表'],['patterns','常見組合'],['patterns2','常見組合（二）'],['flex','可調數量'],['rca','原因分析'],['annot','標註'],['icons','圖示庫'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['asis','版型｜As Was／To Be'],['labels','標籤元件'],['cmp','對比式排版'],['cmp2','對比式排版（二）'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
+const WHITE_PG=new Set(['kpi','tline','mtx','emph']);/* v12 新頁一律白底（不畫淺灰畫布面板） */
+const SLIDES=[['catalog','元件總表'],['patterns','常見組合'],['patterns2','常見組合（二）'],['flex','可調數量'],['rca','原因分析'],['annot','標註'],['icons','圖示庫'],['guide','風格規範'],['cards','卡片'],['tags','標籤與編號'],['circles','圓形與流程鏈'],['conn','連接線與箭頭'],['flow','流程圖符號'],['struct','結構元件'],['asis','版型｜As Was／To Be'],['labels','標籤元件'],['cmp','對比式排版'],['cmp2','對比式排版（二）'],['kpi','KPI 卡與評比指標'],['tline','時間軸與甘特'],['mtx','2×2 矩陣與議程'],['emph','註腳與強調'],['ex1','範例｜三圓架構'],['ex2','範例｜框架流程'],['ex3','範例｜分支樹狀']];
 
 /* ---------- 文字寬度估算（Node 端排版檢查用；瀏覽器預覽改用 canvas 實測） ---------- */
 function tw(str,size){let u=0;for(const ch of String(str)){const c=ch.codePointAt(0);
@@ -111,7 +112,7 @@ function buildModel(params,opt){
  function runsOf(text,o){const items=typeof text==='string'?text.split('\n').map((t,i,a)=>({t,br:i<a.length-1})):text;
   const out=[],paras=[[]];
   items.forEach((r,i)=>{r=Object.assign({},r,{t:stripCtl(r.t)});const size=r.s||o.size||14;const ro={size,font:r.f||o.font||F,bold:r.b!=null?!!r.b:!!o.bold,color:r.c||o.color||G.ink};
-   if(r.cs!=null)ro.cs=r.cs;const brk=r.br&&i<items.length-1;if(brk)ro.br=true;
+   if(r.cs!=null)ro.cs=r.cs;if(r.hl)ro.hl=r.hl;if(r.u)ro.u=r.u;if(r.st||o.strike)ro.strike=1;const brk=r.br&&i<items.length-1;if(brk)ro.br=true;
    out.push({t:r.t,o:ro});paras[paras.length-1].push({t:r.t,size});if(brk)paras.push([]);});
   return{out,paras};}
  function lint(paras,w,h,o){const m=Array.isArray(o.margin)?(o.margin[0]+o.margin[1])/72:2*(o.margin||0)/72;
@@ -664,7 +665,7 @@ function buildModel(params,opt){
   const px0=cx+.62,px1=cx+cw-.3,py0=cy+.5,py1=cy+ch-.55,N=26,vy=v=>py1-(v/10)*(py1-py0),vx=i=>px0+i*(px1-px0)/(N-1);
   const V=[4.6,5.3,4.4,5.6,4.9,3.8,5.2,4.7,5.5,4.3,5.0,4.8,4.2,4.9,5.4,5.9,6.4,6.9,7.4,6.1,8.9,5.6,4.4,5.1,4.6,5.3];
   grp('圖表佔位（示意）',()=>{box(cx,cy,cw,ch,{fill:mix(G.fill,'FFFFFF',.35),line:G.l2,lw:.75,name:'圖表佔位'});
-   txt(cx+.15,cy+.08,4,.24,'SPC 管制圖（示意）｜請換成你的圖',{size:8.5,color:G.mute,name:'佔位說明'});
+   txt(cx+.15,cy+.08,cw-.3,.24,'SPC 管制圖（示意）｜請換成你的圖；原生可編輯圖表請用 SwiffChart：github.com/hctsaik/swiffchart-web-preview',{size:8.5,color:G.mute,name:'佔位說明'});
    ln(px0,py0-.1,px0,py1,{c:'A6A6A6',w:.75});ln(px0,py1,px1+.1,py1,{c:'A6A6A6',w:.75});
    [[8,'UCL'],[5,'CL'],[2,'LCL']].forEach(([v,t])=>{ln(px0,vy(v),px1,vy(v),{c:v===5?'8C8C8C':'A6A6A6',w:.75,dash:v===5?'solid':'sysDash'});txt(px0-.55,vy(v)-.1,.5,.2,t,{size:7.5,color:G.mute,align:'right',font:nf,name:'管制線'});});
    path(V.map((v,i)=>[vx(i),vy(v)]),{line:'8C8C8C',lw:1.25,name:'資料線'});V.forEach((v,i)=>circ(vx(i),vy(v),.07,{fill:'7F7F7F',name:'資料點'}));
@@ -941,6 +942,177 @@ function buildModel(params,opt){
    cap(x,y+1.08,cw,'J｜時間軸前後 Timeline（年份標籤）');}
  };
 
+ /* ---------- v12 缺漏元件（KPI 卡、評比指標、時間軸／甘特、2×2 矩陣、議程／章節、註腳與強調）：白底、灰階＋1–2 強調色；每個元件一個群組，改字面板可改文字、數字自動重算 ---------- */
+ const GPK=()=>{const W2='FFFFFF',DARK=G.ink,RAD=st.r>0?Math.min(Math.max(st.r,.06),.12):0,onC=c=>lum(c)>.55?G.ink:W2,cs=Math.max(8,st.nSize-1.5),AC2=HASA?A:PD,TN=(c,t)=>mix(c,'FFFFFF',t==null?.86:t),SF='F2F2F2',AMB='E0A12B';
+  const card=(x,y,w,h,o)=>box(x,y,w,h,Object.assign({fill:W2,line:G.l2,lw:.75,r:RAD,sh:'card',force:1,name:'卡片'},o||{}));
+  const pill=(x,y,w,h,t,fill,o)=>box(x,y,w,h,Object.assign({fill,r:'full',text:t,size:LS(10.5),bold:1,color:onC(fill),margin:0,name:'膠囊標籤'},o||{}));
+  const nm=(x,y,w,zh,en,o)=>txt(x,y,w,.24,[{t:zh,b:1},{t:en?'  '+en:'',s:Math.max(8,LS(9)),b:0,c:G.mute,f:nf}],Object.assign({size:LS(11),color:G.ink,valign:'middle',name:'指標名稱'},o||{}));
+  const num=(x,y,w,h,n,u,c,o)=>{o=o||{};return txt(x,y,w,h,[{t:n,s:o.s||LS(24),b:1,c,f:nf},{t:u?' '+u:'',s:o.us||LS(11),b:0,c:o.uc||G.mute,f:nf}],{valign:'middle',align:o.align||'left',name:o.name||'數值'});};
+  const light=(cx0,cy0,d,c)=>circ(cx0,cy0,d,{fill:c,line:W2,lw:1,sh:'small',name:'燈號'});
+  const cap=(x,y,w,t)=>txt(x,y,w,.22,t,{size:cs,color:G.mute,name:'圖說'});
+  const small=(x,y,w,t,o)=>txt(x,y,w,.2,t,Object.assign({size:Math.max(8,LS(9)),color:G.mute,valign:'middle',name:'說明'},o||{}));
+  const calc1=(it,src,m,extra)=>{it.calc=Object.assign({a:cur.items.indexOf(src),m},extra||{});return it;};
+  const badge=(cx0,cy0,d,t,fill,o)=>circ(cx0,cy0,d,Object.assign({fill,text:t,size:LS(11),bold:1,color:onC(fill),font:nf,margin:0,name:'編號徽章'},o||{}));
+  return{AMB,W2,DARK,RAD,onC,cs,AC2,TN,SF,card,pill,nm,num,light,cap,small,calc1,badge};};
+ SL.kpi=()=>{title('KPI 卡與評比指標 KPI & Rating','數值、目標、Δ、燈號、期間皆可「改字」；Harvey ball／進度條／點數改數字自動重畫');
+  const {AMB,W2,DARK,RAD,TN,card,pill,nm,num,light,cap,small,calc1}=GPK();const g3=.25,y1=1.98,h1=1.3,wA=3.2,wB=4.3,wC=CW-wA-wB-2*g3;
+  // A 單值大數字
+  {const x=X0;grp('KPI 單值大數字',()=>{card(x,y1,wA,h1);nm(x+.2,y1+.14,2.0,'良率','Yield');small(x+wA-1.1,y1+.16,.9,'2026 Q3',{align:'right',font:nf,name:'期間'});
+    num(x+.2,y1+.42,wA-.4,.56,'98.6','%',P,{s:LS(30)});light(x+.28,y1+1.08,.13,GOOD);small(x+.42,y1+.98,2.4,'達標 On target',{name:'燈號說明'});});
+   cap(x,y1+h1+.06,wA,'A｜單值大數字 Single KPI');}
+  // B 數值＋目標＋Δ
+  {const x=X0+wA+g3;grp('KPI 數值＋目標＋Δ',()=>{card(x,y1,wB,h1);nm(x+.2,y1+.14,2.4,'CMP 良率','CMP yield');light(x+wB-1.0,y1+.26,.13,GOOD);small(x+wB-.88,y1+.16,.75,'正常',{name:'燈號說明'});
+    const v=num(x+.2,y1+.44,2.1,.56,'96.8','%',DARK,{s:LS(28)});small(x+.2,y1+1.0,2.0,'W42 · 2026',{font:nf,name:'期間'});
+    const cx0=x+2.45;ln(cx0-.12,y1+.5,cx0-.12,y1+1.16,{c:G.l2,w:.75});small(cx0,y1+.48,1.7,'目標 Target',{name:'欄名'});
+    const t=num(cx0,y1+.66,.9,.26,'95.0','%',G.t2,{s:LS(13),us:LS(9),name:'目標值'});small(cx0,y1+.94,.9,'Δ vs 目標',{name:'欄名'});
+    calc1(box(cx0+.92,y1+.7,.82,.26,{fill:TN(GOOD),r:'full',text:'▲ +2%',size:LS(10),bold:1,color:GOOD,font:nf,margin:0,name:'增減徽章'}),t,'arrow',{b:cur.items.indexOf(v)});
+    const bd=cur.items[cur.items.length-1];bd.calc.b=cur.items.indexOf(v);bd.calc.a=cur.items.indexOf(t);});
+   cap(x,y1+h1+.06,wB,'B｜數值＋目標＋Δ▲▼（Δ 依數值／目標自動算）');}
+  // C 數值＋迷你趨勢
+  {const x=X0+wA+wB+2*g3;grp('KPI 數值＋迷你趨勢',()=>{card(x,y1,wC,h1);nm(x+.2,y1+.14,2.2,'產出','Output');small(x+wC-1.2,y1+.16,1.0,'近 8 週',{align:'right',name:'期間'});
+    num(x+.2,y1+.44,1.9,.5,'1,240','片',DARK,{s:LS(24)});txt(x+.2,y1+.96,1.9,.22,[{t:'▲ 8%',b:1,c:GOOD,f:nf},{t:'  vs 上週',c:G.mute}],{size:Math.max(8,LS(9)),valign:'middle',name:'增減'});
+    const sx=x+2.15,sw=wC-2.4,sy=y1+.5,sh=.62,V=[3.1,3.6,3.3,4.2,3.9,4.6,4.4,5.2],mn=3,mx=5.4,px=i=>sx+i*sw/(V.length-1),py=v=>sy+sh-(v-mn)/(mx-mn)*sh;
+    ln(sx,sy+sh+.04,sx+sw,sy+sh+.04,{c:G.l2,w:.75});path(V.map((v,i)=>[px(i),py(v)]),{line:G.l1,lw:1.5,name:'趨勢線'});path(V.slice(-3).map((v,i)=>[px(i+5),py(v)]),{line:P,lw:2,name:'近期趨勢'});
+    circ(px(7),py(V[7]),.11,{fill:P,line:W2,lw:1,name:'最新點'});});
+   cap(x,y1+h1+.06,wC,'C｜數值＋迷你趨勢 Sparkline（原生線條）');}
+  // D 4 卡橫排
+  const y2=3.86,h2=.98,wD=7.6;{const x=X0,gw=.18,w=(wD-3*gw)/4;grp('KPI 4 卡橫排',()=>{
+    [['良率','Yield','98.6','%','▲ 0.4 pt',GOOD,GOOD],['產出','Output','12.4','K','▲ 3%',GOOD,GOOD],['交期','Lead time','7.2','天','▼ 0.5 天',GOOD,AMB],['客訴','Complaint','3','件','▲ 1 件',BAD,BAD]].forEach(([zh,en,v,u,d,dc,lc],i)=>{const xx=x+i*(w+gw);
+     card(xx,y2,w,h2);box(xx+.14,y2,.42,.05,{fill:i===0?P:G.l1,name:'頂邊色條'});nm(xx+.14,y2+.1,w-.42,zh,en,{size:LS(10)});light(xx+w-.2,y2+.22,.12,lc);
+     num(xx+.14,y2+.36,w-.28,.36,v,u,DARK,{s:LS(18),us:LS(9.5)});txt(xx+.14,y2+.72,w-.28,.18,d,{size:Math.max(8,LS(9)),bold:1,color:dc,font:nf,valign:'middle',name:'增減'});});});
+   cap(x,y2+h2+.06,wD,'D｜4 卡橫排 KPI row（頂邊色條＋燈號）');}
+  // E 進度條（細）
+  {const x=X0+wD+.35,w=CW-wD-.35,lw=1.2,bw=w-lw-.6;grp('進度條（細）',()=>{small(x,y2-.06,w,'進度 Progress',{bold:1,color:G.ink,size:LS(10)});
+    [['設計 Design','100%'],['驗證 Verify','65%'],['量產 Ramp','30%']].forEach(([t,p],i)=>{const yy=y2+.26+i*.27;small(x,yy,lw,t,{color:G.t2,name:'項目'});
+     box(x+lw,yy+.07,bw,.06,{fill:'E6E6E6',r:'full',name:'進度底'});const pt=txt(x+lw+bw+.08,yy,.52,.2,p,{size:Math.max(8,LS(9)),bold:1,color:i===1?P:G.t2,font:nf,align:'right',valign:'middle',name:'百分比'});
+     calc1(box(x+lw,yy+.07,bw*parseFloat(p)/100,.06,{fill:i===1?P:G.l1,r:'full',name:'進度條'}),pt,'pbar',{full:bw});});});
+   cap(x,y2+h2+.06,w,'E｜細進度條＋%（改 % 自動調長度）');}
+  // F Harvey balls
+  const y3=5.3;{const x=X0,w=3.0,d=.42,sp=.6;grp('Harvey ball',()=>{['0%','25%','50%','75%','100%'].forEach((p,i)=>{const cx0=x+.25+i*sp,cy0=y3+.38;
+     circ(cx0,cy0,d,{fill:W2,line:G.t2,lw:1,name:'Harvey 外圈'});const lb=txt(cx0-.3,y3+.7,.6,.2,p,{size:Math.max(8,LS(9)),color:G.t2,font:nf,align:'center',valign:'middle',name:'評分'});
+     calc1(el('custGeom',cx0-d/2,cy0-d/2,d,d,{points:PIE(d/2,parseFloat(p)/100),fill:G.ink,name:'Harvey 扇形'}),lb,'hb');});
+    small(x,y3+.94,w,'0 = 未符合 · 100 = 完全符合',{name:'說明'});});
+   cap(x,y3+1.18,w,'F｜Harvey ball 0／25／50／75／100');}
+  // G 進度條（粗）
+  {const x=X0+3.25,w=3.3,lw=.9,bw=w-lw,bh=.26;grp('進度條（粗）',()=>{[['Q1','90%'],['Q2','60%'],['Q3','35%']].forEach(([t,p],i)=>{const yy=y3+.08+i*.36;small(x,yy+.03,lw,t,{color:G.t2,font:nf,name:'項目'});
+     box(x+lw,yy,bw,bh,{fill:'EDEDED',r:'full',name:'進度底'});const bar=box(x+lw,yy,bw*parseFloat(p)/100,bh,{fill:i===0?P:i===1?mix(P,'FFFFFF',.35):G.l1,r:'full',name:'進度條'});
+     const pt=txt(x+lw+.1,yy,.6,bh,p,{size:Math.max(8,LS(9.5)),bold:1,color:i===2?G.ink:W2,font:nf,valign:'middle',name:'百分比'});calc1(bar,pt,'pbar',{full:bw});});});
+   cap(x,y3+1.18,w,'G｜粗進度條（% 在條內）');}
+  // H 紅黃綠燈號
+  {const x=X0+6.8,w=2.55;grp('紅黃綠燈號',()=>{box(x,y3+.1,.36,.98,{fill:DARK,r:'full',name:'燈號底'});[[GOOD,'正常 On track'],[AMB,'注意 At risk'],[BAD,'異常 Off track']].forEach(([c,t],i)=>{
+     circ(x+.18,y3+.27+i*.32,.2,{fill:c,name:'燈號'});small(x+.5,y3+.17+i*.32,w-.5,t,{color:G.ink,size:LS(10),name:'燈號說明'});});});
+   cap(x,y3+1.18,w,'H｜紅黃綠燈號 Status lights');}
+  // I 1–5 點數
+  {const x=X0+9.55,w=CW-9.55,d=.15;grp('1–5 點數',()=>{[['品質 Quality','4/5'],['成本 Cost','3/5'],['交期 Delivery','5/5']].forEach(([t,v],i)=>{const yy=y3+.1+i*.34;small(x,yy,1.15,t,{color:G.t2,name:'項目'});
+     const vt=txt(x+w-.4,yy,.4,.2,v,{size:Math.max(8,LS(9)),color:G.mute,font:nf,align:'right',valign:'middle',name:'評分'});
+     for(let k=1;k<=5;k++)calc1(circ(x+1.25+(k-1)*.22,yy+.1,d,{fill:k<=parseFloat(v)?P:'E3E3E3',name:'評分點'}),vt,'dot',{k,on:P,off:'E3E3E3'});});});
+   cap(x,y3+1.18,w,'I｜1–5 點數（改 4/5 自動上色）');}
+ };
+ SL.tline=()=>{title('時間軸與甘特 Timeline & Gantt','里程碑、日期、任務名稱皆可「改字」；甘特：灰＝計畫、強調色＝實際、虛線＝今天');
+  const {W2,DARK,RAD,TN,onC,card,pill,small,cap}=GPK();const wL=7.6;
+  // A 水平里程碑
+  {const x=X0,y=1.98,ay=y+.92,n=5,sp=wL/n;grp('水平里程碑時間軸',()=>{ln(x,ay,x+wL,ay,{c:G.line,w:1.25,head:'triangle'});
+    [['01/15','立案','Kick-off'],['03/01','設計凍結','Design freeze'],['05/20','試產','Pilot run'],['08/10','驗證','Qualification'],['10/30','量產','Mass production']].forEach(([d,t,e],i)=>{const cx0=x+sp*(i+.5),up=i%2===0,done=i<2,now=i===2;
+     el('diamond',cx0-.12,ay-.12,.24,.24,{fill:now?P:done?DARK:W2,line:now||done?W2:G.l1,lw:1.5,sh:now?'small':0,name:'里程碑'});
+     ln(cx0,up?ay-.14:ay+.14,cx0,up?ay-.3:ay+.3,{c:G.l2,w:.75});
+     pill(cx0-.42,up?ay-.56:ay+.3,.84,.26,d,now?P:DARK,{font:nf,size:LS(10)});
+     txt(cx0-sp/2+.04,up?y-.04:ay+.62,sp-.08,.24,t,{size:LS(11),bold:1,color:now?P:G.ink,align:'center',valign:'middle',name:'里程碑名稱'});
+     small(cx0-sp/2+.04,up?y+.18:ay+.84,sp-.08,e,{align:'center',font:nf,name:'英文說明'});});});
+   cap(x,y+1.98,wL,'A｜水平里程碑 Milestones（菱形＋日期膠囊、上下交錯）');}
+  // B 週別甘特
+  {const x=X0,y=4.3,lc=1.75,nW=8,cw=(wL-lc)/nW,hh=.3,rh=.32,T=[['需求確認 Spec',0,2,0,2],['設計 Design',1,3,1,3.4],['打樣 Sample',3,2,3.4,2.2],['驗證 Verify',4,3,5.6,.9],['量產準備 Ramp',6,2,null,null]],today=6.5;
+   grp('週別甘特',()=>{const gx=c=>x+lc+c*cw;
+    for(let c=0;c<nW;c++){box(gx(c)+.03,y,cw-.06,hh-.04,{fill:'F2F2F2',r:'full',text:'W'+(36+c),size:Math.max(8,LS(9)),bold:1,color:G.t2,font:nf,margin:0,name:'週'});}
+    txt(x,y,lc,hh-.04,'任務 Task',{size:Math.max(8,LS(9.5)),bold:1,color:G.mute,valign:'middle',name:'欄頭'});
+    for(let c=1;c<nW;c++)ln(gx(c),y+hh,gx(c),y+hh+T.length*rh,{c:'EDEDED',w:.5});
+    T.forEach(([t,ps,pl,as,al],i)=>{const yy=y+hh+i*rh;ln(x,yy+rh,x+wL,yy+rh,{c:G.l2,w:.5});txt(x,yy,lc,rh,t,{size:LS(10),color:G.ink,valign:'middle',name:'任務'});
+     box(gx(ps)+.04,yy+.07,pl*cw-.08,.1,{fill:'D9D9D9',r:'full',name:'計畫'});if(as!=null)box(gx(as)+.04,yy+.19,al*cw-.08,.1,{fill:i===3?AL:P,r:'full',name:'實際'});});
+    el('diamond',gx(8)-.13,y+hh+4*rh+.07,.2,.2,{fill:DARK,name:'里程碑'});
+    const tx0=gx(today);ln(tx0,y+hh-.02,tx0,y+hh+T.length*rh+.04,{c:AL,w:1.25,dash:'sysDash'});pill(tx0-.32,y+hh+T.length*rh+.06,.64,.22,'Today',AL,{font:nf,size:Math.max(8,LS(9))});});
+   const ly=y+hh+T.length*rh+.34;cap(x,ly,4.6,'B｜週別甘特 Weekly Gantt（灰＝計畫、色＝實際、虛線＝今天）');}
+  // C 垂直時間軸
+  {const x=X0+wL+.45,w=CW-wL-.45,y=1.98,rh=.9,lx=x+1.08;grp('垂直時間軸',()=>{ln(lx,y+.2,lx,y+3*rh+.4,{c:G.l2,w:1.25});
+    [['2026 Q1','建立基準','現況良率 95.2%'],['2026 Q2','根因分析','鎖定 CMP 參數'],['2026 Q3','導入對策','良率提升至 98.6%'],['2026 Q4','標準化','擴展至 B 線']].forEach(([d,t,s],i)=>{const yy=y+i*rh,now=i===2,done=i<2;
+     pill(x,yy+.17,.86,.26,d,now?P:done?DARK:'E6E6E6',{font:nf,size:Math.max(8,LS(9))});
+     circ(lx,yy+.3,.16,{fill:now?P:done?DARK:W2,line:now||done?W2:G.l1,lw:1.5,name:'時間點'});
+     card(lx+.2,yy,w-1.3,.66,now?{line:P,lw:1.25}:{});txt(lx+.34,yy+.08,w-1.55,.26,t,{size:LS(11),bold:1,color:now?P:G.ink,valign:'middle',name:'階段'});
+     small(lx+.34,yy+.36,w-1.55,s,{name:'說明'});});});
+   cap(x,y+3*rh+.74,w,'C｜垂直時間軸 Vertical（目前階段＝強調外框）');
+   const py=y+3*rh+1.2,pw=(w+.2)/3;grp('階段 V 形時程',()=>{[['Q1','規劃'],['Q2','執行'],['Q3','驗收']].forEach(([q,t],i)=>{const now=i===1,f=now?P:i<1?DARK:'E6E6E6';
+     el(i===0?'homePlate':'chevron',x+i*(pw-.07),py,pw,.42,{fill:f,adj:.16,text:[{t:q+' ',b:1,f:nf},{t,b:0}],size:LS(10.5),color:onC(f),margin:0,name:'階段'});});});
+   cap(x,py+.5,w,'D｜階段 V 形時程 Phase chevrons');}
+ };
+ SL.mtx=()=>{title('2×2 矩陣與議程 Matrix & Agenda','軸標題、象限標題／內容、議程項目皆可「改字」；高亮一個象限、目前章節');
+  const {W2,DARK,RAD,TN,onC,card,pill,small,cap,badge}=GPK();
+  // A 2×2 矩陣
+  {const x=X0,y=1.98,w=4.7,h=4.42,ox=x+.34,oy=y+h-.34,qw=(w-.5)/2,qh=(h-.72)/2,qx=[ox+.08,ox+.12+qw-.04],qy=[y+.3,y+.34+qh-.04];
+   grp('2×2 矩陣',()=>{ln(ox,oy,ox,y+.04,{c:G.t2,w:1.25,head:'triangle'});ln(ox,oy,x+w,oy,{c:G.t2,w:1.25,head:'triangle'});
+    txt(ox+.1,y-.06,2.6,.24,[{t:'影響程度',b:1},{t:'  Impact',c:G.mute,f:nf,b:0}],{size:LS(10),color:G.ink,valign:'middle',name:'Y 軸標題'});
+    txt(x+w-2.6,oy+.08,2.6,.24,[{t:'執行難度',b:1},{t:'  Effort',c:G.mute,f:nf,b:0}],{size:LS(10),color:G.ink,align:'right',valign:'middle',name:'X 軸標題'});
+    small(x-.06,oy-.22,.36,'低',{align:'center'});small(x-.06,y+.3,.36,'高',{align:'center'});small(ox+.04,oy+.08,.5,'低');
+    [[0,0,'速贏','Quick wins','優先投入資源',1],[1,0,'重大專案','Major projects','分階段規劃'],[0,1,'順手做','Fill-ins','有空再做'],[1,1,'避免','Thankless','暫緩或捨棄']].forEach(([c,r,t,e,s,hi])=>{const xx=qx[c],yy=qy[r];
+     box(xx,yy,qw-.04,qh-.04,{fill:hi?TN(P,.88):'F5F5F5',line:hi?P:null,lw:1.25,r:RAD,name:'象限'});
+     txt(xx+.14,yy+.1,qw-.3,.26,[{t},{t:'  '+e,s:Math.max(8,LS(9)),b:0,c:G.mute,f:nf}],{size:LS(12),bold:1,color:hi?P:G.ink,valign:'middle',name:'象限標題'});small(xx+.14,yy+.38,qw-.3,s,{color:G.t2,name:'象限內容'});});
+    [[qx[0]+.55,qy[0]+1.15,.5,'A',P],[qx[0]+1.45,qy[0]+1.55,.36,'B',P],[qx[1]+.9,qy[0]+1.0,.44,'C',G.t2],[qx[0]+1.2,qy[1]+1.15,.32,'D',G.l1]].forEach(([cx0,cy0,d,t,c])=>circ(cx0,cy0,d,{fill:c,ft:t==='A'?0:10,line:W2,lw:1.5,sh:'small',text:t,size:LS(10),bold:1,color:onC(c),font:nf,margin:0,name:'泡泡'}));});
+   cap(x,y+h+.08,w,'A｜2×2 矩陣（高亮象限＋泡泡標籤）');}
+  // B SWOT
+  {const x=X0+5.0,y=1.98,w=4.1,gw=.12,cw=(w-gw)/2,ch=(4.42-gw)/2;grp('SWOT',()=>{
+    [['S','優勢','Strengths',['製程良率領先','客戶黏著度高'],P],['W','劣勢','Weaknesses',['產能吃緊','人力流動高'],G.t2],['O','機會','Opportunities',['AI 晶片需求','先進封裝'],HASA?A:PD],['T','威脅','Threats',['價格競爭','供應鏈風險'],DARK]].forEach(([k,zh,en,L,c],i)=>{const xx=x+(i%2)*(cw+gw),yy=y+Math.floor(i/2)*(ch+gw);
+     card(xx,yy,cw,ch);box(xx+.16,yy+.18,.5,.5,{fill:c,r:Math.min(RAD,.08),text:k,size:LS(20),bold:1,color:onC(c),font:nf,margin:0,name:'SWOT 字母'});
+     txt(xx+.76,yy+.18,cw-.86,.26,zh,{size:LS(12),bold:1,color:G.ink,valign:'middle',name:'象限標題'});small(xx+.76,yy+.44,cw-.86,en,{font:nf,name:'英文'});
+     ln(xx+.16,yy+.84,xx+cw-.16,yy+.84,{c:G.l2,w:.75});L.forEach((t,j)=>{circ(xx+.24,yy+1.06+j*.32,.06,{fill:c,name:'項目符號'});txt(xx+.36,yy+.95+j*.32,cw-.5,.24,t,{size:LS(10),color:G.ink,valign:'middle',name:'項目'});});});});
+   cap(x,y+4.5,w,'B｜SWOT（2×2 預設標籤）');}
+  // C 議程清單
+  const xr=X0+9.4,wr=CW-9.4;{const y=1.98,rh=.42;grp('議程清單',()=>{[['背景','Background'],['現況分析','Status'],['對策','Actions'],['時程','Timeline'],['結論','Summary']].forEach(([t,e],i)=>{const yy=y+i*(rh+.06),now=i===1;
+     if(now)box(xr,yy,wr,rh,{fill:TN(P,.88),r:'full',name:'目前章節底'});badge(xr+rh/2,yy+rh/2,.32,String(i+1).padStart(2,'0'),now?P:i<1?DARK:'E3E3E3',{color:now||i<1?W2:G.t2,size:LS(9.5)});
+     txt(xr+.5,yy,wr-.6,rh,[{t,b:1},{t:'  '+e,s:Math.max(8,LS(9)),b:0,c:G.mute,f:nf}],{size:LS(11),color:now?P:G.ink,valign:'middle',name:'議程項目'});});});
+   cap(xr,y+5*(rh+.06),wr,'C｜議程清單（目前章節高亮）');}
+  // D 頁首章節標籤＋麵包屑
+  {const y=4.68;grp('頁首章節標籤',()=>{box(xr,y,1.7,.3,{fill:DARK,r:'full',text:'現況分析',size:LS(10),bold:1,color:W2,align:'left',margin:[30,6,0,0],name:'章節標籤'});badge(xr+.17,y+.15,.24,'02',P,{size:Math.max(7.5,LS(8)),line:W2,lw:1});
+     small(xr+1.78,y+.05,wr-1.78,'Status · 2／5',{font:nf,name:'英文'});});
+   grp('進度麵包屑',()=>{const yy=y+.42;let xx=xr;[['背景',0],['現況',1],['對策',0]].forEach(([t,on],i)=>{const ww=.84;box(xx,yy,ww,.24,{fill:on?P:'EDEDED',r:'full',text:t,size:Math.max(8,LS(9)),bold:on,color:on?W2:G.mute,margin:0,name:'麵包屑'});xx+=ww;if(i<2){path([[xx+.07,yy+.06],[xx+.13,yy+.12],[xx+.07,yy+.18]],{line:G.l1,lw:1.25,name:'V 形箭頭'});xx+=.2;}});});
+   cap(xr,y+.72,wr,'D｜頁首章節標籤／麵包屑');}
+  // E 章節分隔
+  {const y=5.72;grp('章節分隔',()=>{txt(xr,y-.08,.9,.62,'02',{size:LS(34),bold:1,color:P,font:nf,valign:'middle',name:'章節編號'});ln(xr+.92,y+.08,xr+.92,y+.5,{c:G.l2,w:1});
+     pill(xr+1.06,y+.03,1.4,.28,'現況分析',DARK,{size:LS(11)});small(xr+1.08,y+.34,wr-1.1,'Current status',{font:nf,name:'英文'});ln(xr,y+.62,xr+wr,y+.62,{c:G.l2,w:.75});});
+   cap(xr,y+.7,wr,'E｜章節分隔 Section divider');}
+ };
+ SL.emph=()=>{title('註腳與強調 Footnote & Emphasis','頁尾來源／註解（¹²）與資料截止日；螢光底、刪除線前後值、放大數字、底線、星號徽章');
+  const {W2,DARK,RAD,TN,onC,card,pill,small,cap,num}=GPK();const cw=5.85,cx=[X0,X1-cw];const HL=[TN(HASA?A:P,.78),TN(P,.8),TN(AL,.75)],bs=LS(13);
+  // A 螢光底
+  {const x=cx[0],y=1.98;grp('螢光底強調',()=>{[['本季良率 ','提升 1.2 pt','，主因 CMP 參數優化',HL[0]],['交期 ','縮短 2 天','，客戶滿意度上升',HL[1]],['仍需注意 ','B 線產能','，下月擴線後改善',HL[2]]].forEach(([a,b,c,h],i)=>
+     txt(x,y+i*.42,cw,.36,[{t:a},{t:b,b:1,hl:h},{t:c}],{size:bs,color:G.ink,valign:'middle',name:'強調句'}));});
+   cap(x,y+1.32,cw,'A｜螢光底 Highlight（3 種淡色，依風格色推算；PowerPoint 原生醒目提示）');}
+  // B 刪除線前後值
+  {const x=cx[0],y=3.72;grp('前後值（刪除線）',()=>{small(x,y,1.4,'不良率 Defect',{color:G.t2,size:LS(10.5)});
+    const o1=txt(x+1.45,y-.06,1.1,.32,'5.0%',{size:LS(16),color:G.mute,font:nf,strike:1,valign:'middle',name:'舊值'});
+    path([[x+2.6,y+.03],[x+2.7,y+.1],[x+2.6,y+.17]],{line:G.l1,lw:1.5,name:'V 形箭頭'});
+    const n1=txt(x+2.85,y-.1,1.3,.4,'1.2%',{size:LS(20),bold:1,color:P,font:nf,valign:'middle',name:'新值'});
+    box(x+4.2,y-.03,.9,.26,{fill:TN(GOOD),r:'full',text:'↓76%',size:LS(10),bold:1,color:GOOD,font:nf,margin:0,name:'增減徽章'}).calc={a:cur.items.indexOf(o1),b:cur.items.indexOf(n1),m:'down'};});
+   cap(x,y+.4,cw,'B｜前後值 Old → New（舊值刪除線）');}
+  // C 放大數字
+  {const x=cx[0],y=4.72;grp('放大數字',()=>{txt(x,y,1.5,.6,[{t:'良率提升',b:1,br:1},{t:'Yield up',c:G.mute,f:nf,s:Math.max(8,LS(9))}],{size:LS(11),color:G.ink,valign:'middle',name:'指標名稱'});
+    ln(x+1.55,y+.06,x+1.55,y+.56,{c:G.l2,w:1});num(x+1.7,y-.04,2.4,.68,'+1.2','pt',P,{s:LS(32),us:LS(13),uc:P});});
+   cap(x,y+.72,cw,'C｜放大數字＋色 Big number');}
+  // D 底線強調
+  {const x=cx[1],y=1.98;grp('底線強調',()=>{txt(x,y,cw,.36,[{t:'下季目標：'},{t:'良率 99%',b:1,u:P,c:P},{t:'、交期 5 天'}],{size:bs,color:G.ink,valign:'middle',name:'強調句'});
+    txt(x,y+.42,cw,.36,[{t:'關鍵：'},{t:'先穩定 CMP',b:1,u:G.ink},{t:'，再擴線'}],{size:bs,color:G.ink,valign:'middle',name:'強調句'});});
+   cap(x,y+.86,cw,'D｜底線強調 Underline（主色／黑）');}
+  // E 星號徽章
+  {const x=cx[1],y=3.3;grp('星號徽章',()=>{circ(x+.22,y+.22,.44,{fill:AL,sh:'small',name:'徽章底'});icon('star',x+.1,y+.1,.24,{variant:'line',color:W2});
+    txt(x+.56,y+.02,cw-.6,.4,[{t:'重點 ',b:1,c:AL},{t:'本月新增 2 條產線',c:G.ink}],{size:bs,valign:'middle',name:'強調句'});});
+   grp('星號小標',()=>{const xx=x+3.8;box(xx,y+.07,1.2,.3,{fill:DARK,r:'full',text:'NEW',size:LS(10),bold:1,color:W2,font:nf,align:'left',margin:[22,6,0,0],name:'膠囊標籤'});icon('star',xx+.07,y+.11,.22,{variant:'line',color:AL});});
+   cap(x,y+.52,cw,'E｜星號徽章 Star badge（圖示可換）');}
+  // F 內文上標
+  {const x=cx[1],y=4.38;grp('內文上標',()=>{txt(x,y,cw,.36,[{t:'平均良率 '},{t:'98.6%',b:1,c:P,f:nf},{t:'¹',c:G.mute},{t:'，較去年提升 1.2 pt'},{t:'²',c:G.mute}],{size:bs,color:G.ink,valign:'middle',name:'強調句'});});
+   cap(x,y+.42,cw,'F｜內文上標 ¹²（對應頁尾註解）');}
+  // G 頁尾來源列
+  {const x=X0,y=5.72,w=CW;grp('頁尾來源／註解',()=>{ln(x,y,x+w,y,{c:G.l2,w:.75});
+    txt(x,y+.08,w-2.4,.2,[{t:'¹ ',c:G.t2},{t:'資料來源 Source：',b:1,c:G.t2},{t:'MES／YMS 系統，2026 W30–W42 晶圓資料'}],{size:Math.max(8,LS(8.5)),color:G.mute,valign:'middle',name:'來源'});
+    txt(x,y+.3,w-2.4,.2,[{t:'² ',c:G.t2},{t:'註 Note：',b:1,c:G.t2},{t:'良率以晶圓數加權；不含工程批'}],{size:Math.max(8,LS(8.5)),color:G.mute,valign:'middle',name:'註解'});
+    box(x+w-2.15,y+.12,2.15,.28,{fill:'F2F2F2',r:'full',text:'資料截止 Data as of 2026/10/16',size:Math.max(8,LS(8.5)),color:G.t2,margin:0,name:'資料截止日'});});
+   cap(x,y+.58,w,'G｜頁尾來源／註解列 Source & note（小字灰、編號 ¹²、資料截止日）');}
+ };
  SL.circles=()=>{title('圓形與流程鏈','大外框圓＋疊放小圓，以及三段式流程鏈');
   section(X0,1.95,5.6,'大圓＋疊圓 Circles');
   const ccx=X0+2.8,ccy=3.95,R=1.38;bigCircle(ccx,ccy,R,'How','如何做到\n三個關鍵');
@@ -1326,7 +1498,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const raw=(T.rows||[])
   cur.table={hcol:!!T.hcol,pad:st.tbPad||'m',orphans,colMin:colMin.map(v=>+v.toFixed(3)),REC,k,colFit:colFit.map(v=>+v.toFixed(3)),tx,ty,tW,tH,colW,rowH,h0,nC,nR:rows.length,look:lookId,grey,hiMode:hiStyle,hiStyle,EC,colNum:AU.numC,colStat:AU.statC,key:[...keySet].sort((a,b)=>a-b),hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,
    ruleCols:[...new Set(MK.rules.map(r=>r.c))],unit:T.unit||'',note:T.note||'',title:T.title||'',font:F,nf:NF,slots,fs,hfs,k};}
  if(opt.compose){sno=0;cur={key:'compose',title:'待選素材',no:1,items:[],groups:[]};slides.push(cur);SL.compose();}
- else SLIDES.forEach(([k,zh],i)=>{if(opt.only&&!opt.only.includes(k))return;if(!opt.only&&opt.examples===false&&/^ex\d/.test(k))return;/* 12–14 範例頁（主題式版面）：studio 預設不含，勾「含範例頁」才加 */sno=i+1;cur={key:k,title:zh,no:i+1,items:[],groups:[]};slides.push(cur);canvas();SL[k]();footer();if(opt.labels)applyLabels(cur,opt.labels);recalc(cur);});
+ else SLIDES.forEach(([k,zh],i)=>{if(opt.only&&!opt.only.includes(k))return;if(!opt.only&&opt.examples===false&&/^ex\d/.test(k))return;/* 12–14 範例頁（主題式版面）：studio 預設不含，勾「含範例頁」才加 */sno=i+1;cur={key:k,title:zh,no:i+1,items:[],groups:[]};slides.push(cur);if(!WHITE_PG.has(k))canvas();SL[k]();footer();if(opt.labels)applyLabels(cur,opt.labels);recalc(cur);});
  const k=SIZE_K[st.size]||1;if(k!==1)slides.forEach(sl=>scaleSlide(sl,k));
  return{slides,warns,params:st,W:W*k,H:H*k,k,sem:{warn:AL,good:GOOD,bad:BAD}};}
 /* ---------- S／M／L 元件尺寸（v5.2）：整頁幾何、字級、線寬、陰影一起等比縮放，投影片也同比例（仍是 16:9）。
@@ -1494,7 +1666,7 @@ function toPptx(pptx,model){
    if(it.adj)p.rectRadius=it.adj;if(it.points&&!it.doc)p.points=it.points;
    if(it.sh)p.shadow={type:'outer',blur:it.sh.blur,offset:it.sh.dist,angle:it.sh.dir,color:it.sh.color,opacity:it.sh.alpha};
    let runs='';
-   if(it.runs){const T=it.tx;runs=it.runs.map(r=>{const o={fontSize:r.o.size,fontFace:r.o.font,bold:r.o.bold,color:r.o.color};if(r.o.cs!=null)o.charSpacing=r.o.cs;if(r.o.br)o.breakLine=true;return{text:r.t,options:o};});
+   if(it.runs){const T=it.tx;runs=it.runs.map(r=>{const o={fontSize:r.o.size,fontFace:r.o.font,bold:r.o.bold,color:r.o.color};if(r.o.cs!=null)o.charSpacing=r.o.cs;if(r.o.hl)o.highlight=r.o.hl;if(r.o.strike)o.strike='sngStrike';if(r.o.u)o.underline=typeof r.o.u==='string'?{style:'sng',color:r.o.u}:{style:'sng'};if(r.o.br)o.breakLine=true;return{text:r.t,options:o};});
     Object.assign(p,{align:T.align,valign:T.valign,margin:it.doc&&Array.isArray(T.margin)?[T.margin[0],T.margin[1],0,T.margin[3]]:T.margin,fontFace:T.font,fontSize:T.size,color:T.color,bold:T.bold});if(T.lsp&&T.lsp!==1)p.lineSpacingMultiple=T.lsp;}
    if(it.runs&&it.name!=='標題')p.fit='shrink';   /* v9：<a:normAutofit/>——在 PowerPoint 裡改長文字時自動縮小，不會溢出圖形 */
    s.addText(runs,p);});});
@@ -1661,7 +1833,10 @@ function keepNums(it,lines,paras){if(lines.length!==paras.length)return false;co
  lines.forEach((ln,j)=>{const nums=ln.match(NUM_RE)||[];let k=0;paras[j].forEach(r=>{r.t=r.t.replace(NUM_RE,()=>nums[k++]);});});return true;}
 /* v11：對比元件的倍數／增減徽章與長條長度，依兩邊數字自動重算（徽章本身被改過字就不動） */
 function numOf(it){if(!it)return NaN;const m=textOf(it).replace(/,/g,'').replace('−','-').match(/-?\d+(?:\.\d+)?/);return m?+m[0]:NaN;}
-function recalc(sl){sl.items.forEach(it=>{const c=it.calc;if(!c||it.edited)return;const a=numOf(sl.items[c.a]),b=numOf(sl.items[c.b]);if(!(isFinite(a)&&isFinite(b)))return;
+const PIE=(r,f)=>{f=Math.max(0,Math.min(1,f));return[{x:r,y:r},{x:r,y:0},{x:0,y:0,curve:{type:'arc',hR:r,wR:r,stAng:270,swAng:Math.max(.01,Math.min(359.9,f*360))}},{close:true}];};
+function recalc(sl){sl.items.forEach(it=>{const c=it.calc;if(!c||it.edited)return;
+  if(c.m==='pbar'||c.m==='hb'||c.m==='dot'){const v=numOf(sl.items[c.a]);if(!isFinite(v))return;
+   if(c.m==='pbar')it.w=Math.max(.02,c.full*Math.max(0,Math.min(1,v/100)));else if(c.m==='hb')it.points=PIE(it.w/2,v/100);else it.fill=c.k<=v?c.on:c.off;return;}const a=numOf(sl.items[c.a]),b=numOf(sl.items[c.b]);if(!(isFinite(a)&&isFinite(b)))return;
   if(c.m==='bar'){const mx=Math.max(Math.abs(a),Math.abs(b));if(mx>0)it.w=Math.max(it.h,c.full*Math.abs(c.side==='a'?a:b)/mx);return;}
   if(!it.runs||!it.runs.length||a===0)return;const r=b/a,d=(b-a)/Math.abs(a)*100,f=v=>String(Math.round(v*10)/10),p=v=>String(Math.round(Math.abs(v)));let t;
   if(c.m==='x')t=r>=1?'×'+f(r):(d>=0?'+':'−')+p(d)+'%';else if(c.m==='pct')t=(d>=0?'+':'−')+p(d)+'%';else if(c.m==='down')t=(d<=0?'↓':'↑')+p(d)+'%';else if(c.m==='arrow')t=(d>=0?'▲ +':'▼ −')+p(d)+'%';else return;
@@ -1783,7 +1958,8 @@ function toSvg(slide,opt){opt=opt||{};const id=(opt.id||'s')+'_';const defs={},p
     if(it.tail){const F=pts[0],Q=pts[1].curve&&pts[1].curve.type==='cubic'?{x:pts[1].curve.x1,y:pts[1].curve.y1}:pts[1];body.push(headShape(X(F.x),Y(F.y),X(Q.x),Y(Q.y),it.tail,it.hs,it.line,it.lw));}}
    if(it.kind==='can'){const x=it.x*PT,y=it.y*PT,w=it.w*PT,e=(it.adj||0)*PT/2;body.push(`<ellipse cx="${x+w/2}" cy="${y+e}" rx="${w/2}" ry="${e}" fill="${it.fill?'#'+mix(it.fill,'FFFFFF',.25):'none'}"${it.line?` stroke="#${it.line}" stroke-width="${it.lw}"`:''}/>`);}}
   if(it.runs){layoutText(it).forEach(l=>{if(!l.runs.length)return;
-   body.push(`<text x="${l.x.toFixed(2)}" y="${l.base.toFixed(2)}" xml:space="preserve">${l.runs.map(r=>`<tspan font-family="${esc(flat?(r.o.font+', '+fstack(r.o.font)).replace(/'/g,''):fstack(r.o.font))}" font-size="${r.o.size}" font-weight="${fweight(r.o.font,r.o.bold)}" fill="#${r.o.color}"${r.o.cs?` letter-spacing="${r.o.cs}"`:''}>${esc(r.t)}</tspan>`).join('')}</text>`);});}
+   if(l.runs.some(r=>r.o.hl)){let xx=l.x;l.runs.forEach(r=>{const w=measure(r.t,r.o.size,r.o.font,r.o.bold)+(r.o.cs||0)*r.t.length;if(r.o.hl)body.push(`<rect x="${(xx-1).toFixed(2)}" y="${(l.base-r.o.size*.95).toFixed(2)}" width="${(w+2).toFixed(2)}" height="${(r.o.size*1.25).toFixed(2)}" fill="#${r.o.hl}"/>`);xx+=w;});}
+   body.push(`<text x="${l.x.toFixed(2)}" y="${l.base.toFixed(2)}" xml:space="preserve">${l.runs.map(r=>`<tspan font-family="${esc(flat?(r.o.font+', '+fstack(r.o.font)).replace(/'/g,''):fstack(r.o.font))}" font-size="${r.o.size}" font-weight="${fweight(r.o.font,r.o.bold)}" fill="#${r.o.color}"${r.o.cs?` letter-spacing="${r.o.cs}"`:''}${r.o.strike||r.o.u?` text-decoration="${r.o.strike?'line-through':'underline'}"`:''}>${esc(r.t)}</tspan>`).join('')}</text>`);});}
   return body.join('');}
  slide.items.forEach((it,idx)=>{parts[idx]=it.t==='tbl'?tblItems(it).map(one).join(''):one(it);});
  /* 互動模式：每個群組包成 <g class="el">，最上層加一個透明命中框 */
