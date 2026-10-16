@@ -399,7 +399,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 #iScn{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:4px 0 6px;font-size:12px}#iScn b{color:#595959;font-weight:600;margin-right:2px}#iScn button{border:1px solid #d9d9d9;background:#fff;border-radius:14px;padding:3px 10px;font-size:12px;cursor:pointer}#iScn button.on{background:#1F3864;color:#fff;border-color:#1F3864}#iScn small{margin-left:4px;opacity:.7}
 .rmeta{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:10px;background:#EEF3FA;color:#1F3864;font-size:12px;font-weight:600}
 #pTree a.sub{padding-left:22px;font-size:12px;color:#595959}#pTree a.sub b{min-width:30px}
-@keyframes hitf{0%,100%{filter:none}50%{filter:drop-shadow(0 0 6px #F2A33A) drop-shadow(0 0 2px #F2A33A)}}g.el.hitflash{animation:hitf .6s ease-in-out 3}
+@keyframes hitf{0%,100%{filter:none}50%{filter:drop-shadow(0 0 7px rgba(31,78,121,.85)) drop-shadow(0 0 2px rgba(31,78,121,.9))}}g.el.hitflash{animation:hitf .6s ease-in-out 3}
 </style></head><body><div class="tpop" id="tPop" role="dialog" aria-label="儲存格選單" hidden></div>
 
 <header>
@@ -559,7 +559,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <script src="jszip.min.js?v=978d62b5"></script>
 <script src="pptxgen.min.js?v=24808c08"></script>
 <script src="icons.js?v=65c03732"></script>
-<script src="deck.js?v=bf29f05d"></script>
+<script src="deck.js?v=f61e3c55"></script>
 <script src="stylekit-data.js?v=47e8edb0"></script>
 <script src="stylekit.js?v=2a276743"></script>
 <script>
@@ -801,7 +801,7 @@ function buildNav(){const T=$('#pTree');if(!T)return;const open=JSON.parse(local
  const inp=$('#pSearch');inp.oninput=()=>{const qs=expandQ(inp.value),R=$('#pRes');if(!qs.length){R.hidden=true;return;}const hits=[];
   model.slides.forEach((sl,i)=>{const e=D.SLIDES.find(x=>x[0]===sl.key)||[];const ptxt=normQ([e[1],e[2],e[3],sl.title].join(' '));const pm=qs.some(q=>ptxt.includes(q));if(pm)hits.push({i,gi:-1,lab:sl.title,code:e[2]});
    (sl.groups||[]).forEach((g,gi)=>{if(qs.some(q=>normQ(g.name).includes(q)))hits.push({i,gi,lab:g.name,code:e[2],pt:sl.title});});});
-  R.hidden=false;const nc=hits.filter(h=>h.gi>=0).length;R.innerHTML=hits.length?(nc?`<div class="pmulti"><span id="pmN">勾選元件可一次取用</span><button id="pmTray" disabled>＋加入待選</button><button id="pmDl" disabled>⬇ 下載所選</button></div>`:'')+hits.slice(0,40).map(h=>`<a data-i="${h.i}" data-gi="${h.gi}">${h.gi>=0?`<input type="checkbox" class="pck" aria-label="勾選 ${escH(h.lab)}">`:''}<b>${h.code}</b>${escH(h.lab)}${h.pt?`<small>${escH(h.pt)}</small>`:''}</a>`).join(''):'<a>找不到，試試：KPI、比較、時間軸、STAR、作品集</a>';window.__studio.search={q:inp.value,n:hits.length};};
+  R.hidden=false;const nc=hits.filter(h=>h.gi>=0).length;R.innerHTML=hits.length?(nc?`<div class="pmulti"><span id="pmN">勾選元件可一次取用</span><button id="pmTray" disabled>＋加入待選</button><button id="pmDl" disabled>⬇ 下載所選</button></div>`:'')+hits.slice(0,40).map(h=>`<a data-i="${h.i}" data-gi="${h.gi}" tabindex="0">${h.gi>=0?`<input type="checkbox" class="pck" aria-label="勾選 ${escH(h.lab)}">`:''}<b>${h.code}</b>${escH(h.lab)}${h.pt?`<small>${escH(h.pt)}</small>`:''}</a>`).join(''):'<a>找不到，試試：KPI、比較、時間軸、STAR、作品集</a>';window.__studio.search={q:inp.value,n:hits.length};};
  const pmSel=()=>[...document.querySelectorAll('#pRes .pck:checked')].map(c=>{const a=c.closest('a');const sl=model.slides[+a.dataset.i];const gi=+a.dataset.gi;const gr=sl.groups[gi];const lk=sl.key+':'+gi;const it={kind:'el',key:sl.key,gi,name:gr.full||gr.name};if(S.labels&&S.labels[lk])it.labels={[lk]:clone(S.labels[lk])};return it;});
  $('#pRes').onchange=()=>{const n=pmSel().length;$('#pmN').textContent=n?`已勾 ${n} 個元件`:'勾選元件可一次取用';$('#pmTray').disabled=$('#pmDl').disabled=!n;};
  $('#pRes').addEventListener('click',async e=>{const b=e.target.closest('#pmTray,#pmDl');if(!b)return;e.stopPropagation();const its=pmSel();if(!its.length)return;
@@ -892,7 +892,7 @@ async function copyEl(f){const name=SEL.name;
  else toast(`已複製「${escH(name)}」為 <b>PNG 圖片</b>（此瀏覽器不支援 SVG 剪貼簿，貼上後不可編輯）。要可編輯圖形請按「下載此元件 .pptx」。`,6000,true);
  return{ok:true,types:Object.keys(data)};}
 
-document.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key==='/'&&S.tab==='slides'&&$('#pSearch')){e.preventDefault();$('#pSearch').focus();return;}if(S.tab!=='slides')return;if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();go(S.slide+1);}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(S.slide-1);}});
+document.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key==='/'&&!e.target.isContentEditable&&$('#pSearch')){e.preventDefault();if(S.tab!=='slides')setTab('slides');$('#pSearch').focus();$('#pSearch').select();return;}if(S.tab!=='slides')return;if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();go(S.slide+1);}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(S.slide-1);}});
 
 /* ---------- 下載／存取 ---------- */
 function saveBlob(blob,name){const url=URL.createObjectURL(blob);const a=document.createElement('a');
@@ -1566,6 +1566,9 @@ mLabels();
 buildTemplates();buildGroups();syncPanel();renderMine();setTab(S.tab||'slides');
 (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(render);
 render();
+/* 搜尋框：↑↓ 在結果間移動、Enter 開啟 */
+$('#pSearch').addEventListener('keydown',e=>{if(e.key!=='ArrowDown'&&e.key!=='ArrowUp')return;const L=[...document.querySelectorAll('#pRes a[data-i]')];if(!L.length)return;e.preventDefault();(e.key==='ArrowDown'?L[0]:L[L.length-1]).focus();});
+$('#pRes').addEventListener('keydown',e=>{const a=document.activeElement;if(e.key==='Enter'&&a&&a.matches('#pRes a[data-i]')){e.preventDefault();a.click();return;}if(e.key!=='ArrowDown'&&e.key!=='ArrowUp')return;const L=[...document.querySelectorAll('#pRes a[data-i]')];const i=L.indexOf(a);if(i<0)return;e.preventDefault();const j=i+(e.key==='ArrowDown'?1:-1);if(j<0)$('#pSearch').focus();else if(L[j])L[j].focus();});
 window.__studioApi={S,render,syncPanel,templateParams};
 })();
 </script></body></html>
