@@ -24,7 +24,7 @@ const URL=process.argv[2]||'http://localhost:8765/studio.html',SHOT=process.argv
  ck('恢復預設 → 回到範本主色',await pg.evaluate(P=>getComputedStyle(document.querySelector('#dot')).backgroundColor.match(/\d+/g).map(n=>(+n).toString(16).padStart(2,'0')).join('').toUpperCase()===P,P));
  await pg.screenshot({path:SHOT});
  await pg.click('#tabs button[data-tab="slides"]');await sl(500);
- ck('投影片分頁跟著換色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#big').innerHTML+document.querySelector('#thumbs').innerHTML),P));
+ ck('投影片分頁跟著換色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#big').innerHTML),P));
  ck('回投影片時設定面板回到側欄',await pg.evaluate(()=>!!document.querySelector('#panel #stDet')));
  await pg.click('#tabs button[data-tab="table"]');await sl(800);
  ck('表格分頁跟著換色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#vTable').innerHTML),P));

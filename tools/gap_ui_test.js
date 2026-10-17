@@ -5,7 +5,7 @@ const URL=process.argv[2]||'http://localhost:8765/studio.html';let fail=0;const 
 (async()=>{const b=await puppeteer.launch({executablePath:process.env.CHROME||'/usr/bin/google-chrome',args:['--no-sandbox']});const pg=await b.newPage();
  const errs=[];pg.on('pageerror',e=>errs.push(e.message));
  await pg.setViewport({width:1366,height:768});await pg.goto(URL,{waitUntil:'networkidle0'});await pg.evaluate(()=>localStorage.clear());await pg.reload({waitUntil:'networkidle0'});
- const go=async re=>{const i=await pg.evaluate(re=>{const t=[...document.querySelectorAll('#thumbs .th')];const i=t.findIndex(x=>new RegExp(re).test(x.innerText));if(i>=0)t[i].click();return i;},re);await sl(700);return i;};
+ const go=async re=>{const i=await pg.evaluate(re=>{const t=[...window.Deck.SLIDES.map((s,i)=>({innerText:String(i+1).padStart(2,'0')+'　'+s[1],click:()=>{const a=document.querySelector(`#pTree a[data-k="${s[0]}"]`);a.click();}}))];const i=t.findIndex(x=>new RegExp(re).test(x.innerText));if(i>=0)t[i].click();return i;},re);await sl(700);return i;};
  const ng=()=>pg.evaluate(()=>new Set([...document.querySelectorAll('g.el')].map(g=>g.dataset.g)).size);
  const gIdx=name=>pg.evaluate(n=>{const g=[...document.querySelectorAll('g.el')].find(g=>g.dataset.name===n);return g?+g.dataset.g:-1;},name);
  const pick=gi=>pg.evaluate(gi=>{document.querySelector(`g.el[data-g="${gi}"] .hit`).dispatchEvent(new MouseEvent('click',{bubbles:true}));},gi);
