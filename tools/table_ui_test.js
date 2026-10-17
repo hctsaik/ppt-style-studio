@@ -44,8 +44,7 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
     const ok1=await pg.evaluate(()=>{const t=window.__studio.table;return t.colW&&t.colMinW&&t.colW.every((w,i)=>w>=t.colMinW[i]-.01);});ck('drag respects longest-word minimum',ok1);}
    const h2=await pg.$('#tPrev .tcw[data-c="0"]');const b2=await h2.boundingBox();await pg.mouse.click(b2.x+b2.width/2,b2.y+b2.height/2,{delay:30});await sleep(60);await pg.mouse.click(b2.x+b2.width/2,b2.y+b2.height/2,{delay:30,clickCount:2});await sleep(500);
    const af2=await pg.evaluate(()=>window.__studio.table.cw);ck('double-click auto-fit changes width '+JSON.stringify(af2),JSON.stringify(af2)!==JSON.stringify(after));}
-  ck('desktop: tray FAB docked into output bar',await pg.evaluate(()=>getComputedStyle(document.querySelector('#trayBtn')).display==='none'&&!!document.querySelector('#tTrayOpen').offsetParent));
-  await pg.click('#tTray');await sleep(300);await pg.click('#tTrayOpen');await sleep(300);await pg.click('#trayRestyle');await sleep(300);ck('tray 全部套用目前樣式',await pg.evaluate(()=>window.__studio.trayRestyled>=1));await pg.click('#trayClose');await sleep(200);
+  ck('desktop: 待選素材已移除',await pg.evaluate(()=>!document.querySelector('#trayBtn')&&!document.querySelector('#tTray')));
   // inspector sections
   await pg.click('.tsteps .stp[data-go="look"]');await sleep(500);await pg.screenshot({path:`${OUT}/d-insp-look.png`});
   await pg.click('.tsteps .stp[data-go="hi"]');await sleep(300);await pg.screenshot({path:`${OUT}/d-insp-hi.png`});
@@ -139,10 +138,8 @@ const ST="項目\t負責人\t狀態\t備註\n新機台驗收\t王小明\t完成\
    ck('mobile paste: sheet collapsed, short toast, not over title/table '+JSON.stringify(ov2),ov2.sheet&&!ov2.cells&&!ov2.title&&ov2.short);
    await pg.screenshot({path:`${OUT}/m-paste.png`});
    const vis=await pg.evaluate(()=>{const c=document.querySelector('#tPrev .tov .tc[data-r="1"]').getBoundingClientRect();return c.left>=-1&&c.left<innerWidth&&c.top>=0&&c.top<innerHeight;});ck('放大 zoom scrolls table body into view',vis);
-   await pg.tap('#tTray');await sleep(400);const tb=await pg.evaluate(()=>{const b=document.querySelector('#tTrayOpen');const r=b.getBoundingClientRect();return{vis:!!b.offsetParent,h:r.height,txt:b.textContent.trim()};});ck('mobile 待選 N › button '+JSON.stringify(tb),tb.vis&&tb.h>=44&&/待選 1 ›/.test(tb.txt));
-   await pg.tap('#tTrayOpen');await sleep(500);const fs=await pg.evaluate(()=>{const t=document.querySelector('#tray');const r=t.getBoundingClientRect();return !t.hidden&&r.width>=innerWidth-1&&r.height>=innerHeight-1;});ck('mobile tray opens full-screen '+JSON.stringify(await pg.evaluate(()=>{const t=document.querySelector('#tray');const r=t.getBoundingClientRect();return [t.hidden,r.width,r.height,innerWidth,innerHeight];})),fs);await pg.screenshot({path:`${OUT}/m-tray.png`});
-   await pg.tap('#trayPptx');await sleep(1500);ck('mobile tray export works',await pg.evaluate(()=>!!(window.__studio.lastTray&&window.__studio.lastTray.size>10000)));await pg.tap('#trayClose');await sleep(300);}
-  ck('mobile tray FAB hidden',await pg.evaluate(()=>getComputedStyle(document.querySelector('#trayBtn')).display==='none'));
+   }
+  ck('mobile: 無待選素材按鈕',await pg.evaluate(()=>!document.querySelector('#trayBtn')));
   await pg.tap('#tPrev .tc[data-r="0"][data-c="2"]');await sleep(400);await pg.screenshot({path:`${OUT}/m-chip.png`});
   {const o=await pg.evaluate(()=>{const m=document.querySelector('#tChip').getBoundingClientRect();return {h:Math.round(m.height),ov:[...document.querySelectorAll('#tPrev .tc')].some(e=>{const r=e.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight&&!(m.bottom<=r.top+1||m.top>=r.bottom-1||m.right<=r.left+1||m.left>=r.right-1)&&e.classList.contains('sel');})};});ck('mobile docked toolbar one row, not over selected cell '+JSON.stringify(o),o.h<=64&&!o.ov);}
   const sz=await pg.evaluate(()=>[...document.querySelectorAll('#tabs button,#vTable button,#vTable select')].filter(b=>b.offsetParent).map(b=>[b.textContent.trim().slice(0,6),Math.round(b.getBoundingClientRect().height)]));const small=sz.filter(x=>x[1]<44);ck('mobile tap targets ≥44 '+JSON.stringify(small),!small.length);

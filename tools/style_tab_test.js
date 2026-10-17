@@ -16,8 +16,8 @@ const URL=process.argv[2]||'http://localhost:8765/studio.html',SHOT=process.argv
  const after=await pg.evaluate(()=>document.querySelector('#stPrev').innerHTML.length+'|'+getComputedStyle(document.querySelector('#dot')).backgroundColor);
  ck(`套用範本 ${tgt} → 主色 #${P}，預覽更新`,before!==after);
  ck('預覽頁用新主色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#stPrev').innerHTML),P));
- const u=await pg.evaluate(()=>({hint:getComputedStyle(document.querySelector('#vStyle .hint')).color,lab:[...document.querySelectorAll('#vStyle .pal')].every(p=>p.getAttribute('aria-label')&&p.title),btn:getComputedStyle(document.querySelector('#bStyleTab')).display,rs:!!document.querySelector('#stReset'),chk:getComputedStyle(document.querySelector('.tpl.on'),'::before').content}));
- ck('說明字 #5B6474、色票有名稱、側欄重複入口隱藏、有恢復預設、選中範本有 ✓',u.hint==='rgb(91, 100, 116)'&&u.lab&&u.btn==='none'&&u.rs&&/✓/.test(u.chk));
+ const u=await pg.evaluate(()=>({hint:getComputedStyle(document.querySelector('#vStyle .hint')).color,lab:[...document.querySelectorAll('#vStyle .pal')].every(p=>p.getAttribute('aria-label')&&p.title),btn:document.querySelector('#bStyleTab')?'present':'none',rs:!!document.querySelector('#stReset'),chk:getComputedStyle(document.querySelector('.tpl.on'),'::before').content}));
+ ck('說明字 #5B6474、色票有名稱、側欄重複入口已移除、有恢復預設、選中範本有 ✓',u.hint==='rgb(91, 100, 116)'&&u.lab&&u.btn==='none'&&u.rs&&/✓/.test(u.chk));
  await pg.evaluate(()=>document.querySelector('#vStyle .pal[data-pal="0"]').click());await sl(500);
  ck('點色票 → 該色票選中外框',await pg.evaluate(()=>document.querySelector('#vStyle .pal[data-pal="0"]').classList.contains('on')));
  await pg.click('#stReset');await sl(500);
@@ -25,7 +25,9 @@ const URL=process.argv[2]||'http://localhost:8765/studio.html',SHOT=process.argv
  await pg.screenshot({path:SHOT});
  await pg.click('#tabs button[data-tab="slides"]');await sl(500);
  ck('投影片分頁跟著換色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#big').innerHTML),P));
- ck('回投影片時設定面板回到側欄',await pg.evaluate(()=>!!document.querySelector('#panel #stDet')));
+ ck('投影片側欄不再有重複風格設定',await pg.evaluate(()=>!document.querySelector('#panel #stDet')&&!!document.querySelector('#stHost #stDet')));
+ ck('預覽下方資訊列已移除、保留相關列',await pg.evaluate(()=>!document.querySelector('#status,#fsNote,#wPrev,#elHint,.foot,#trayBtn')&&!!document.querySelector('#xInfo')&&!!document.querySelector('#bOne')));
+ ck('風格設定為第一個分頁、預設開投影片元件',await pg.evaluate(()=>document.querySelector('#tabs button').dataset.tab==='style'&&document.querySelector('#tabs button.on').dataset.tab==='slides'));
  await pg.click('#tabs button[data-tab="table"]');await sl(800);
  ck('表格分頁跟著換色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#vTable').innerHTML),P));
  await pg.click('#tabs button[data-tab="icons"]');await sl(800);
