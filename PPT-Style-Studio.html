@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%226%22 fill=%22%231F4E79%22/%3E%3C/svg%3E">
-<!-- PPT Style Studio 單檔版（自動產生於 2026-10-17 08:46，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
+<!-- PPT Style Studio 單檔版（自動產生於 2026-10-17 09:15，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
 <title>PPT Style Studio · 圖解元件客製工作室</title>
 <style>
 :root{--ink:#3A3A3A;--t2:#595959;--mu:#8C8C8C;--line:#E4E4E4;--fill:#F6F6F6;--p:#1F4E79}
@@ -406,7 +406,6 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 
 /* v25 新功能 */
 .ecnt small{font-size:11px;color:#8C8C8C;margin:0 3px 0 4px}.ecnt button.on{background:var(--p)!important;color:#fff!important;border-radius:4px}
-.ebar .cpinfo{padding:2px 6px!important;color:#8C8C8C}
 .edb{margin-left:auto;display:inline-flex;align-items:center;gap:4px;border:1px solid #CFE0D6;background:#F4FAF6;color:#2E6B4A;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}.edb small{font-weight:400;color:#5C8A70;font-size:11px}
 .bar{position:relative}.edpop{position:absolute;right:22px;top:40px;z-index:40;width:360px;background:#fff;border:1px solid #E0E0E0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:12px 14px;font-size:12.5px;line-height:1.6}.edpop[hidden]{display:none}.edpop ul{margin:6px 0;padding-left:18px}.edpop small{color:#8C8C8C}
 .stage{position:relative}.fwp{position:absolute;right:22px;top:6px;bottom:6px;width:300px;overflow:auto;background:#fff;border:1px solid #E4E4E4;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.08);padding:12px 14px;font-size:12.5px;line-height:1.6;z-index:20}.fwp[hidden]{display:none}
@@ -459,7 +458,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
  </aside>
  <main>
   <section class="view" id="vSlides">
-  <div class="bar"><h2 id="sTitle"></h2><div class="chips" id="chips"></div><button class="edb" id="edBadge" aria-expanded="false" aria-controls="edPop" title="為什麼保證可編輯？">✓ 保證可編輯<small>Editable</small></button><div class="edpop" id="edPop" role="dialog" aria-label="保證可編輯說明" hidden><b>✓ 保證可編輯 Guaranteed editable</b><ul><li>每個元件都是 PowerPoint <b>原生圖形、文字框、表格與連接線</b>，不是截圖或圖片。</li><li>文字直接點兩下就能改；顏色、線條可用「圖案格式」調整；連接線黏在圖形上，拖動不會斷。</li><li>整個元件已群組，取消群組即可個別移動。</li><li>例外（誠實標示）：照片框、地圖底圖是圖片佔位；陰影在「複製到 PPT（SVG）」時不會帶過去，下載 .pptx 則完整保留。</li></ul><small>對照：很多線上工具匯出 .pptx 時會把形狀轉成圖片，無法再改字。</small></div><button class="zoomb monly" id="bZoom" aria-pressed="false">🔍 放大</button></div>
+  <div class="bar"><h2 id="sTitle"></h2><div class="chips" id="chips"></div><button class="edb" id="edBadge" aria-expanded="false" aria-controls="edPop" title="為什麼保證可編輯？">✓ 保證可編輯<small>Editable</small></button><div class="edpop" id="edPop" role="dialog" aria-label="保證可編輯說明" hidden><b>✓ 保證可編輯 Guaranteed editable</b><ul><li>每個元件都是 PowerPoint <b>原生圖形、文字框、表格與連接線</b>，不是截圖或圖片。</li><li>文字直接點兩下就能改；顏色、線條可用「圖案格式」調整；連接線黏在圖形上，拖動不會斷。</li><li>整個元件已群組，取消群組即可個別移動。</li><li>選取元件 →「⬇ 下載單頁 .pptx（可編輯）」：1 頁只含該元件，套用目前風格與項目數；開啟後 Ctrl+C → 貼到你的簡報，仍是可編輯圖形（含陰影、黏著連接線）。</li><li>例外（誠實標示）：照片框、地圖底圖是圖片佔位，可在 PowerPoint 右鍵「變更圖片」。</li></ul><small>對照：很多線上工具匯出 .pptx 時會把形狀轉成圖片，無法再改字。</small></div><button class="zoomb monly" id="bZoom" aria-pressed="false">🔍 放大</button></div>
   <div class="stage"><div class="slide" id="big"></div><aside class="fwp" id="fwPanel" aria-label="框架使用說明" hidden></aside></div>
   <div class="xinfo" id="xInfo"></div>
   <div class="foot">
@@ -6865,12 +6864,12 @@ function render(){
 function showSlide(){
  const sl=model.slides[S.slide];
  $('#big').innerHTML=D.toSvg(sl,{id:'big',interactive:true})+'<button class="nav l" data-d="-1">‹</button><button class="nav r" data-d="1">›</button>'+
-  '<button class="eladd" id="elAdd" hidden aria-label="加入待選素材">＋</button><div class="ebar" id="ebar"><b id="eName"></b><small id="eDim" style="color:#8C8C8C;margin-right:4px" title="元件實際尺寸（依 S／M／L）"></small><span class="ecnt" id="eCnt" role="group" aria-label="項目數 Items" hidden><small>項目數</small><button data-a="cn3">3</button><button data-a="cn4">4</button><button data-a="cn5">5</button><button data-a="cn6">6</button><b id="eCntN" hidden></b></span><button class="pri" data-a="copy" title="複製到 PowerPoint：SVG 向量（貼上後右鍵「轉換成圖案」）；瀏覽器不支援時自動改下載 1 頁 .pptx">複製到 PPT</button><button class="cpinfo" data-a="cpinfo" title="複製的限制說明" aria-label="複製的限制說明">ⓘ</button><button data-a="tray" title="加入待選素材（保留目前風格）">＋待選</button><button data-a="lbl" title="修改這個元件的文字；有圖示的元件（如標籤元件）也可在這裡換圖示（不重排版面；放不下時字級自動縮小）">改字</button><button data-a="pptx" title="只含這個元件的 1 頁 .pptx，原生可編輯圖形">下載此元件 .pptx</button><button data-a="svg">SVG</button><button data-a="png">PNG</button><button data-a="x" title="關閉">✕</button></div>';
+  '<button class="eladd" id="elAdd" hidden aria-label="加入待選素材">＋</button><div class="ebar" id="ebar"><b id="eName"></b><small id="eDim" style="color:#8C8C8C;margin-right:4px" title="元件實際尺寸（依 S／M／L）"></small><span class="ecnt" id="eCnt" role="group" aria-label="項目數 Items" hidden><small>項目數</small><button data-a="cn3">3</button><button data-a="cn4">4</button><button data-a="cn5">5</button><button data-a="cn6">6</button><b id="eCntN" hidden></b></span><button class="pri" data-a="pptx" title="開啟後 Ctrl+C → 貼到你的簡報，仍是可編輯圖形">⬇ 下載單頁 .pptx（可編輯）</button><button data-a="tray" title="加入待選素材（保留目前風格）">＋待選</button><button data-a="lbl" title="修改這個元件的文字；有圖示的元件（如標籤元件）也可在這裡換圖示（不重排版面；放不下時字級自動縮小）">改字</button><button data-a="svg">SVG</button><button data-a="png">PNG</button><button data-a="x" title="關閉">✕</button></div>';
  SEL=null;
  {const n=D.smallRuns(sl,10);const fe=$('#fsNote');if(fe){fe.textContent=n?`ⓘ 本頁 ${n} 段字小於 10pt`:'';fe.title=n?'投影時可能偏小。單一元件與待選素材可在「字型與字級 › 最小字級」設定 10／12／14pt，匯出時整個元件等比放大。':'';}}
  document.querySelectorAll('.th').forEach(t=>t.classList.toggle('on',+t.dataset.i===S.slide));navSync(sl);
  const on=document.querySelector('.th.on');if(on&&on.scrollIntoView&&S.tab!=='table'&&on.offsetParent)on.scrollIntoView({block:'nearest',inline:'nearest'});/* 表格分頁時不捲動（會連帶捲動畫布造成跳動） */
- const SE=D.SLIDES.find(x=>x[0]===sl.key)||[];$('#sTitle').innerHTML=`<b class="pcode">${SE[2]||''}</b> ${sl.title} · ${String(S.slide+1).padStart(2,'0')}/${model.slides.length}<small>${S.mine?'我的風格：'+escH(S.mine):presetOf(S.base).zh}${isModified()&&!S.mine?'（已微調）':''}</small>${sl.key==='catalog'?gocards():''}${(D.USED&&D.USED[sl.key])?usedLinks(D.USED[sl.key]):''}${sl.key==='annot'||sl.key==='chart'?'<a class="chartln" href="https://github.com/hctsaik/swiffchart-web-preview" target="_blank" rel="noopener" title="原生可編輯圖表（直條／折線／Pareto／瀑布）在另一個專案 SwiffChart">📊 圖表 → SwiffChart</a>':''}`;$('#elHint').textContent=sl.groups&&sl.groups.length?(TOUCH?`👆 點元件＝選取 → 下方工具列：＋待選／下載 .pptx／SVG／PNG（本頁 ${sl.groups.length} 個）`:`👆 點一下＝選取（工具列：複製／下載／＋待選）；雙擊或 ⊕＝加入待選素材（本頁 ${sl.groups.length} 個）`):'';
+ const SE=D.SLIDES.find(x=>x[0]===sl.key)||[];$('#sTitle').innerHTML=`<b class="pcode">${SE[2]||''}</b> ${sl.title} · ${String(S.slide+1).padStart(2,'0')}/${model.slides.length}<small>${S.mine?'我的風格：'+escH(S.mine):presetOf(S.base).zh}${isModified()&&!S.mine?'（已微調）':''}</small>${sl.key==='catalog'?gocards():''}${(D.USED&&D.USED[sl.key])?usedLinks(D.USED[sl.key]):''}${sl.key==='annot'||sl.key==='chart'?'<a class="chartln" href="https://github.com/hctsaik/swiffchart-web-preview" target="_blank" rel="noopener" title="原生可編輯圖表（直條／折線／Pareto／瀑布）在另一個專案 SwiffChart">📊 圖表 → SwiffChart</a>':''}`;$('#elHint').textContent=sl.groups&&sl.groups.length?(TOUCH?`👆 點元件＝選取 → 下方工具列：＋待選／下載 .pptx／SVG／PNG（本頁 ${sl.groups.length} 個）`:`👆 點一下＝選取（工具列：下載單頁 .pptx／＋待選）；雙擊或 ⊕＝加入待選素材（本頁 ${sl.groups.length} 個）`):'';
  featShow(sl);
 }
 /* ---------- 頁面導覽：分組側欄、搜尋（含同義詞）、hash 深連結 ---------- */
@@ -6950,32 +6949,19 @@ function elFiles(){const sl=D.elementModel(S.p,SEL.key,SEL.gi,{labels:S.labels})
  const look=D.elementSvg(sl,gi,{flat:false,bg:false,pad:4,id:'l'});      // PNG 用：含柔和陰影
  return{vec,look,png:()=>svgToPng(look.svg,look.w,look.h,3)};}
 const safeName=t=>String(t).replace(/[\\/:*?"<>|\s]+/g,'_');
-async function elAction(a){if(!SEL)return;const f=/^(x|tray|cnt[-+]|cn\d|lbl|cpinfo)$/.test(a)?null:elFiles();const base=fileBase()+'-'+SEL.key+'-'+safeName(SEL.name);
+async function elAction(a){if(!SEL)return;const f=/^(x|tray|cnt[-+]|cn\d|lbl|pptx)$/.test(a)?null:elFiles();const base=fileBase()+'-'+SEL.key+'-'+safeName(SEL.name);
  if(a==='x'){clearSel();return;}
  if(a==='tray'){trayEl(SEL.gi);return;}
  if(a==='cnt-'||a==='cnt+'){const k=SEL.count;if(!k)return;const v=Math.max(2,Math.min(6,(+S.p[k]||3)+(a==='cnt+'?1:-1)));if(v===+S.p[k])return;const gi=SEL.gi;S.p[k]=v;render();persist();syncPanel();selectEl(gi);return;}
  if(/^cn\d$/.test(a)){const k=SEL.count;if(!k)return;const v=+a.slice(2);if(v===+S.p[k])return;const gi=SEL.gi;S.p[k]=v;render();persist();syncPanel();selectEl(gi);window.__studio.lastCount={k,v};toast(`已改為 ${v} 項並重新排版（預覽、複製、.pptx 都會跟著變）`);return;}
- if(a==='cpinfo'){featCopyInfo();return;}
  if(a==='lbl'){openLabels();return;}
  if(a==='svg'){saveBlob(new Blob([f.vec.svg],{type:'image/svg+xml'}),base+'.svg');toast('已下載 SVG：PowerPoint「插入 › 圖片」後，右鍵「轉換成圖案」即可編輯。');return;}
  if(a==='png'){try{saveBlob(await f.png(),base+'.png');toast('已下載 PNG（含陰影的圖片，不可編輯）。');}catch(err){toast('PNG 產生失敗：'+err.message);}return;}
  if(a==='pptx'){try{const r=await D.exportElement({PptxGenJS:window.PptxGenJS,JSZip:window.JSZip},S.p,SEL.key,SEL.gi,{labels:S.labels});saveBlob(r.data,base+'.pptx');
    window.__studio.lastElement={name:SEL.name,items:r.model.slides[0].items.length,patched:r.patched,size:r.data.size};
-   toast(`已下載「${SEL.name}」單一元件 .pptx（${r.model.slides[0].items.length} 個原生圖形${r.model.slides[0].items.length>1?'、已群組':''}${r.patched?'、含柔和陰影':''}）。開啟後選取 → Ctrl+C → 貼到你的簡報。`,5000);}
+   toast(`已下載「${SEL.name}」單一元件 .pptx（${r.model.slides[0].items.length} 個原生圖形${r.model.slides[0].items.length>1?'、已群組':''}${r.patched?'、含柔和陰影':''}）。開啟後 Ctrl+C → 貼到你的簡報，仍是可編輯圖形。`,5000);}
   catch(err){console.error(err);toast('匯出失敗：'+err.message);}return;}
- if(a==='copy'){const r=await copyEl(f);window.__studio.lastCopy=r;}}
-async function copyEl(f){const name=SEL.name;
- const fail=async why=>{try{await elAction('pptx');}catch(e){}toast(`無法用剪貼簿複製（${why}），<b>已改為下載 1 頁 .pptx</b>：開啟後選取元件 → Ctrl+C → 貼到你的簡報，全部是原生可編輯圖形。`,7000,true);return{ok:false,why,fallback:'pptx'};};
- if(!window.isSecureContext)return fail('此頁不是安全來源');
- if(!navigator.clipboard||!navigator.clipboard.write||!window.ClipboardItem)return fail('瀏覽器不支援圖片剪貼簿');
- const svgOK=typeof ClipboardItem.supports==='function'&&ClipboardItem.supports('image/svg+xml');
- if(!svgOK||window.__forceNoSvg)return fail('此瀏覽器不支援 SVG 剪貼簿');
- const data={'image/png':f.png()};if(svgOK)data['image/svg+xml']=new Blob([f.vec.svg],{type:'image/svg+xml'});
- try{await navigator.clipboard.write([new ClipboardItem(data)]);}
- catch(err){return fail(err.message||err.name);}
- if(svgOK)toast(`已複製「${escH(name)}」（<b>SVG 向量＋PNG</b>）。PowerPoint 365／2019 以上：Ctrl+V 貼上 → 右鍵「<b>轉換成圖案</b>」即成可編輯圖形（陰影不會帶過去）。要 100% 原生圖形與陰影，請按「下載此元件 .pptx」。`,7000,true);
- else toast(`已複製「${escH(name)}」為 <b>PNG 圖片</b>（此瀏覽器不支援 SVG 剪貼簿，貼上後不可編輯）。要可編輯圖形請按「下載此元件 .pptx」。`,6000,true);
- return{ok:true,types:Object.keys(data)};}
+}
 
 document.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key==='/'&&!e.target.isContentEditable&&$('#pSearch')){e.preventDefault();if(S.tab!=='slides')setTab('slides');$('#pSearch').focus();$('#pSearch').select();return;}if(S.tab!=='slides')return;if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();go(S.slide+1);}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(S.slide-1);}});
 
@@ -7706,8 +7692,6 @@ $('#xInfo').addEventListener('click',e=>{const a=e.target.closest('a[data-rk]');
  if(e.target.closest('#fwBtn')){FWOPEN=!FWOPEN;localStorage.setItem('pss-fw-open',FWOPEN?'1':'0');featShow(model.slides[S.slide]);}});
 $('#edBadge').onclick=e=>{e.stopPropagation();const p=$('#edPop');p.hidden=!p.hidden;$('#edBadge').setAttribute('aria-expanded',String(!p.hidden));};
 document.addEventListener('click',e=>{if(!e.target.closest('#edPop,#edBadge')){$('#edPop').hidden=true;$('#edBadge').setAttribute('aria-expanded','false');}});
-function featCopyInfo(){const svgOK=!!(window.ClipboardItem&&typeof ClipboardItem.supports==='function'&&ClipboardItem.supports('image/svg+xml'));
- toast(`<b>「複製到 PPT」怎麼運作</b><br>① ${svgOK?'此瀏覽器<b>支援</b>':'此瀏覽器<b>不支援</b>'} SVG 剪貼簿${svgOK?'：貼進 PowerPoint 365／2019+ 後，右鍵「<b>轉換成圖案</b>」即變成可編輯圖形。':'，按下會<b>自動下載 1 頁 .pptx</b>。'}<br>② 限制：瀏覽器無法直接把「原生 PowerPoint 圖形」放進剪貼簿（Office 專用格式只有桌面程式能寫入）；轉換後陰影、群組名稱、黏著連接線不會保留，文字可能拆成多個文字框。<br>③ 要 100% 原生（含陰影、群組、黏著連接線）：用「下載此元件 .pptx」→ 開啟 → Ctrl+C → 貼上。`,12000,true);window.__studio.copyInfo={svgOK};}
 fReadUrl();setTimeout(fRender,0);
 (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(render);
 render();

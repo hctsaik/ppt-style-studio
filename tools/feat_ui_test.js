@@ -19,15 +19,18 @@ const URL=process.argv[2]||'http://localhost:8765/studio.html';const SHOT=proces
  await pg.evaluate(()=>document.querySelector('#ebar [data-a="pptx"]').click());await sl(1500);let fs=require('fs').readdirSync(dl);ck('6 項元件可匯出 .pptx：'+fs.join(','),fs.some(f=>/編號清單.*6.*\.pptx$/.test(f)));
  await pg.evaluate(()=>document.querySelector('#pTree a[data-k="steps"]').click());await sl(300);nm=await clickGroup('^大編號步驟');await pg.evaluate(()=>document.querySelector('#eCnt [data-a="cn5"]').click());await sl(300);
  ck('步驟元件 5 項：'+await pg.evaluate(()=>document.querySelector('#eName').textContent),await pg.evaluate(()=>window.__studioApi.S.p.nLin===5&&/5/.test(document.querySelector('#eName').textContent)));
- // ① 複製到 PPT（headless 無剪貼簿權限 → 自動下載 .pptx 備援）
- await pg.evaluate(()=>{window.__forceNoSvg=1;});fs.forEach(f=>require('fs').unlinkSync(dl+'/'+f));
- await pg.evaluate(()=>document.querySelector('#ebar [data-a="copy"]').click());await sl(1800);fs=require('fs').readdirSync(dl);
- const lc=await pg.evaluate(()=>window.__studio.lastCopy);ck('複製到 PPT：不支援 SVG 剪貼簿 → 自動下載 1 頁 .pptx（'+fs.join(',')+'）',lc&&lc.fallback==='pptx'&&fs.some(f=>/\.pptx$/.test(f)));
- ck('按鈕文字「複製到 PPT」＋ⓘ 限制說明',await pg.evaluate(()=>document.querySelector('#ebar [data-a="copy"]').textContent==='複製到 PPT'&&!!document.querySelector('#ebar [data-a="cpinfo"]')));
- await pg.evaluate(()=>document.querySelector('#ebar [data-a="cpinfo"]').click());await sl(300);ck('ⓘ 說明列出限制（轉換成圖案、陰影、原生 Office 格式）',await pg.evaluate(()=>/轉換成圖案/.test(document.querySelector('#toast').innerText)&&/陰影/.test(document.querySelector('#toast').innerText)));
- await shot('1-copy');await pg.evaluate(()=>{const t=document.querySelector('#toast');t.className='toast';t.style.opacity='0';});
+ // ① 主按鈕：⬇ 下載單頁 .pptx（可編輯）；無剪貼簿／SVG 複製路徑
+ fs.forEach(f=>require('fs').unlinkSync(dl+'/'+f));
+ const pb=await pg.evaluate(()=>{const b=document.querySelector('#ebar button.pri');return{t:b.textContent,a:b.dataset.a,tip:b.title,copy:!!document.querySelector('#ebar [data-a="copy"],#ebar [data-a="cpinfo"]'),dup:document.querySelectorAll('#ebar [data-a="pptx"]').length};});
+ ck('主按鈕「'+pb.t+'」＋提示「'+pb.tip+'」、無複製／ⓘ',pb.t==='⬇ 下載單頁 .pptx（可編輯）'&&pb.a==='pptx'&&pb.tip==='開啟後 Ctrl+C → 貼到你的簡報，仍是可編輯圖形'&&!pb.copy&&pb.dup===1);
+ await pg.evaluate(()=>document.querySelector('#ebar button.pri').click());await sl(1500);fs=require('fs').readdirSync(dl);
+ const le=await pg.evaluate(()=>window.__studio.lastElement);ck('立即下載 1 頁 .pptx（'+fs.join(',')+'，'+(le&&le.items)+' 個原生圖形、套用 5 項）',fs.some(f=>/大編號步驟（5）.*\.pptx$/.test(f))&&le&&le.items>5);
+ {const JSZip=require('jszip');const z=await JSZip.loadAsync(require('fs').readFileSync(dl+'/'+fs.find(f=>/\.pptx$/.test(f))));const sls=Object.keys(z.files).filter(f=>/^ppt\/slides\/slide\d+\.xml$/.test(f));const x=await z.file(sls[0]).async('string');
+  ck('.pptx 只有 1 頁、原生圖形無圖片（'+sls.length+' 頁）',sls.length===1&&/<p:sp>/.test(x)&&!/<p:pic>/.test(x)&&/>05</.test(x));}
+ ck('程式中已無 SVG／PNG 剪貼簿複製',await pg.evaluate(()=>!/複製到 PPT/.test(document.body.innerHTML)));
+ await shot('1-download');
  // ⑤ 徽章
- await pg.evaluate(()=>document.querySelector('#edBadge').click());await sl(200);ck('保證可編輯徽章 → 說明（原生圖形、例外）',await pg.evaluate(()=>!document.querySelector('#edPop').hidden&&/原生圖形/.test(document.querySelector('#edPop').innerText)&&/例外/.test(document.querySelector('#edPop').innerText)));
+ await pg.evaluate(()=>document.querySelector('#edBadge').click());await sl(200);ck('保證可編輯徽章 → 說明（原生圖形、下載單頁、例外，無 SVG）',await pg.evaluate(()=>{const t=document.querySelector('#edPop').innerText;return !document.querySelector('#edPop').hidden&&/原生圖形/.test(t)&&/下載單頁 \.pptx/.test(t)&&/例外/.test(t)&&!/SVG/.test(t);}));
  await shot('5-badge');await pg.mouse.click(700,600);await sl(100);ck('點別處關閉說明',await pg.evaluate(()=>document.querySelector('#edPop').hidden));
  // ③ 相關
  await pg.evaluate(()=>document.querySelector('#pTree a[data-k="kpi"]').click());await sl(300);
