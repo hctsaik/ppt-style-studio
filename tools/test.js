@@ -26,6 +26,13 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
  // v9：數量 2／6、組版、改字、最小字級、語意色
  for(const st of D.PRESETS)for(const n of [2,6]){const r=await save(`counts-${st.id}-${n}.pptx`,Object.assign({},st,{nLin:n,nLane:n,nPcc:n,nWhy:n,nCause:n}),{only:['flex','rca']});
   const c=r.model.connectors;ok(!r.model.warns.length&&c.fail===0&&c.one===0,`${st.id} 數量 ${n}：無警告、連接線 ${c.both} 條兩端黏著`);}
+ {/* v25：項目數 3–6（清單／步驟）9 風格無警告、不重疊；框架說明寫進備忘稿 */const O=require('./overlap.js');const bad=[];
+  for(const st of D.PRESETS)for(const n of [3,4,5,6]){const m=D.buildModel(Object.assign({},st,{nIcon:n,nList:n,nLin:n}),{only:['lists','steps']});m.warns.forEach(w=>bad.push(st.id+n+w));m.slides.forEach(s=>O.overlaps(s).forEach(o=>bad.push(st.id+n+s.key+o)));
+   const g=m.slides.find(s=>s.key==='lists').groups.find(g=>/^編號清單/.test(g.name));if(!g||g.count!=='nList'||!g.name.includes(n+' 項'))bad.push(st.id+n+' 編號清單數量');}
+  ok(!bad.length,'項目數 3/4/5/6：清單、步驟 9 風格無警告、不重疊'+(bad.length?'｜'+bad.slice(0,4).join('；'):''));
+  for(const n of [3,6]){await save(`counts-list-${n}.pptx`,Object.assign({},nav,{nIcon:n,nList:n,nLin:n}),{only:['lists','steps']});}
+  const fw=await save('framework-notes.pptx',nav,{only:['biz','mtx','rca2']});const z=await JSZip.loadAsync(fs.readFileSync(path.join(OUT,'framework-notes.pptx')));let nn=0;for(const f of Object.keys(z.files).filter(f=>/notesSlide\d+\.xml$/.test(f))){const x=await z.file(f).async('string');nn+=(x.match(/什麼時候用/g)||[]).length;}
+  ok(nn>=10&&D.fwHelp('波特五力').how.length===3,'框架說明：備忘稿含 '+nn+' 份「什麼時候用／怎麼填／示範文案」');}
  const trayE=[{kind:'el',params:nav,key:'patterns',gi:0,name:'三步驟流程'},{kind:'el',params:wine,key:'patterns',gi:1,name:'判斷分岔'},{kind:'el',params:nav,key:'patterns2',gi:2,name:'輸入→處理→輸出'},{kind:'table',params:nav,table:kpi,name:'KPI'}];
  for(const lay of D.TRAY_LAYOUTS.map(l=>l[0])){const m=D.trayModel(trayE,{compose:{title:'CVD 參數優化後，良率提升 1.2 pt',sub:'2026 Q3 晶圓廠 A',foot:'資料來源：MES；期間 7–9 月',layout:lay,margin:'normal',unify:lay==='grid2'},frame:D.PRESETS.find(p=>p.id==='investor')});
   await save(`compose-${lay}.pptx`,nav,{model:m});const b=require('../deck.js');const over=m.slides[0].items.some(it=>it.t!=='ln'&&(it.x<-.01||it.y<-.01||it.x+it.w>13.34||it.y+it.h>7.51));ok(m.tray.n===4&&!over,`組版 ${lay}：4 項、全部在投影片內（×${m.tray.scale}、最小字 ${m.tray.minSize}pt）`);}

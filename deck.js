@@ -25,7 +25,7 @@ const BASE={
  icColor:'P',icVar:'line',icSW:0,
  tbDense:'auto',tbHiColor:'auto',tbHiMode:'auto',tbNeg:false,tbArrow:'mono',tbStatus:true,tbLook:'clean',tbCard:'white',tbMinus:'auto',tbThou:true,tbWidth:'auto',tbV:'center',tbH:'center',tbSugTitle:true,tbAuto:true,tbFont:'jh',tbPad:'m',tbTight:false,
  /* v9：可調數量（04／05 頁）、語意色（與品牌色分開）、最小字級（單一元件／待選素材匯出時放大幾何） */
- nLin:4,nLane:3,nPcc:3,nWhy:5,nCause:4,semWarn:'',semGood:'',semBad:'',minFont:0,
+ nLin:4,nLane:3,nPcc:3,nWhy:5,nCause:4,nIcon:3,nList:4,semWarn:'',semGood:'',semBad:'',minFont:0,
  /* v10 標註顏色：alert＝警示色（預設）／P 主色／A 強調色／ink 深灰 */
  anC:'alert'
 };
@@ -1156,19 +1156,22 @@ function buildModel(params,opt){
  /* A2·3 清單與勾選 */
  SL.lists=()=>{title('清單與勾選 Lists & Checklists','圖示＋文字（直／橫／2×2）、三態勾選、編號清單、關鍵詞清單：3–6 項最易讀');
   const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(3,2,Y0,Y1);
-  const IT=[['speed','縮短交期','Lead time −30%'],['verified','提升良率','Yield +1.2 pt'],['savings','降低成本','Cost −8%'],['groups','跨部門協作','4 teams aligned']];
-  comp('A','圖示＋文字（直式）','Icon list',C[0],(x,y,w,h)=>{IT.slice(0,3).forEach(([ic,a,b],i)=>{const yy=y+.06+i*.66;icon(ic,x,yy,.5,{variant:'tint'});T(x+.64,yy,w-.64,.28,a,{size:Z(12),bold:1,color:G.ink,name:'項目'});T(x+.64,yy+.26,w-.64,.26,b,{size:10.5,font:nf,name:'說明'});});});
-  comp('B','圖示＋文字（橫式 3 欄）','Icon row',C[1],(x,y,w,h)=>{const cw=w/3;IT.slice(0,3).forEach(([ic,a,b],i)=>{const cx0=x+cw*i+cw/2;icon(ic,cx0-.3,y+.1,.6,{variant:i===1?'solid':'tint'});
-   T(cx0-cw/2,y+.82,cw,.3,a,{size:Z(12),bold:1,color:G.ink,align:'center',name:'項目'});T(cx0-cw/2,y+1.12,cw,.5,b,{size:10,align:'center',valign:'top',font:nf,name:'說明'});});});
-  comp('C','圖示＋文字 2×2','Icon grid',C[2],(x,y,w,h)=>{IT.forEach(([ic,a,b],i)=>{const xx=x+(i%2)*w/2,yy=y+.06+Math.floor(i/2)*.98;box(xx,yy,w/2-.12,.86,{fill:'F7F7F7',r:.06,name:'淺灰面板'});icon(ic,xx+.14,yy+.2,.44);
+  const IT=[['speed','縮短交期','Lead time −30%'],['verified','提升良率','Yield +1.2 pt'],['savings','降低成本','Cost −8%'],['groups','團隊協作','4 teams aligned'],['schedule','準時交貨','OTD 98%'],['shield','安全零災','0 incidents']];
+  const nI=NUM('nIcon',3,3),nL=NUM('nList',4,3);
+  comp('A',`圖示＋文字（直式 ${nI} 項）`,'Icon list',C[0],(x,y,w,h)=>{const sp=Math.min(.66,(h-.06)/nI),d=Math.min(.5,sp-.12);IT.slice(0,nI).forEach(([ic,a,b],i)=>{const yy=y+.06+i*sp;icon(ic,x,yy,d,{variant:'tint'});
+   if(nI<=4){T(x+.64,yy,w-.64,.28,a,{size:Z(12),bold:1,color:G.ink,name:'項目'});T(x+.64,yy+.26,w-.64,.26,b,{size:10.5,font:nf,name:'說明'});}
+   else T(x+d+.14,yy,w-d-.14,d,[{t:a,b:1,c:G.ink},{t:'  '+b,s:10,c:G.mute,f:nf}],{size:Z(11.5),valign:'middle',wrap:0,name:'項目'});});},{count:'nIcon'});
+  comp('B',`圖示＋文字（橫式 ${nI} 欄）`,'Icon row',C[1],(x,y,w,h)=>{const cw=w/nI,d=nI>4?.48:.6,fs=nI>4?10:12;IT.slice(0,nI).forEach(([ic,a,b],i)=>{const cx0=x+cw*i+cw/2;icon(ic,cx0-d/2,y+.1,d,{variant:i===1?'solid':'tint'});
+   T(cx0-cw/2,y+.82,cw,.3,a,{size:Z(fs),bold:1,color:G.ink,align:'center',wrap:0,name:'項目'});T(cx0-cw/2,y+1.12,cw,.5,b,{size:nI>4?9:10,align:'center',valign:'top',font:nf,name:'說明'});});},{count:'nIcon'});
+  comp('C','圖示＋文字 2×2','Icon grid',C[2],(x,y,w,h)=>{IT.slice(0,4).forEach(([ic,a,b],i)=>{const xx=x+(i%2)*w/2,yy=y+.06+Math.floor(i/2)*.98;box(xx,yy,w/2-.12,.86,{fill:'F7F7F7',r:.06,name:'淺灰面板'});icon(ic,xx+.14,yy+.2,.44);
    T(xx+.66,yy+.12,w/2-.84,.3,a,{size:Z(11.5),bold:1,color:G.ink,name:'項目'});T(xx+.66,yy+.44,w/2-.84,.3,b,{size:10,font:nf,name:'說明'});});});
   comp('D','勾選清單三態','Checklist',C[3],(x,y,w,h)=>{[['done','SPC 管制圖更新','完成'],['done','CMP 參數鎖定','完成'],['todo','B 線擴線評估','進行中'],['no','舊機台改造','不做']].forEach(([k,t,s],i)=>{const yy=y+.08+i*.46,d=.28;
    if(k==='done')box(x,yy,d,d,{fill:P,r:.05,text:'✓',size:12,bold:1,color:W2,margin:0,name:'已完成'});else if(k==='todo')box(x,yy,d,d,{fill:W2,line:G.t2,lw:1.25,r:.05,name:'未完成'});else box(x,yy,d,d,{fill:'EDEDED',r:.05,text:'✕',size:11,bold:1,color:G.mute,margin:0,name:'不做'});
    T(x+.42,yy-.02,w-1.5,.32,t,{size:Z(12),color:k==='no'?G.mute:G.ink,strike:k==='no',name:'項目'});T(x+w-1.0,yy-.02,1.0,.32,s,{size:10,color:k==='done'?GOOD:k==='todo'?P:G.mute,bold:1,align:'right',name:'狀態'});});});
-  comp('E','編號清單＋分隔線','Numbered list',C[4],(x,y,w,h)=>{['釐清目的與受眾','拆解成 3 個論點','每點配一個證據','結論放在第一頁'].forEach((t,i)=>{const yy=y+.04+i*.46;txt(x,yy,.5,.36,two(i+1),{size:Z(16),bold:1,color:i===0?P:G.l1,font:nf,valign:'middle',name:'編號'});
-   T(x+.56,yy,w-.56,.36,t,{size:Z(12),color:G.ink,name:'項目'});if(i<3)ln(x,yy+.42,x+w,yy+.42,{c:'EDEDED',w:.75});});});
-  comp('F','關鍵詞清單','Keyword bullets',C[5],(x,y,w,h)=>{[['聚焦','一頁只講一個重點'],['具體','用數字與例子說話'],['結構','先結論、後理由'],['一致','同類資訊同一格式']].forEach(([a,b],i)=>{const yy=y+.06+i*.46;circ(x+.07,yy+.17,.1,{fill:i===0?AC2:G.l1,name:'項目符號'});
-   T(x+.24,yy,w-.24,.34,[{t:a+'　',b:1,c:G.ink},{t:b}],{size:Z(12),name:'項目'});});});};
+  comp('E',`編號清單＋分隔線（${nL} 項）`,'Numbered list',C[4],(x,y,w,h)=>{const sp=Math.min(.46,(h-.04)/nL),bh=Math.min(.36,sp-.06);['釐清目的與受眾','拆解成 3 個論點','每點配一個證據','結論放在第一頁','預演並計時','收集回饋再修'].slice(0,nL).forEach((t,i)=>{const yy=y+.04+i*sp;txt(x,yy,.5,bh,two(i+1),{size:Z(nL>4?13:16),bold:1,color:i===0?P:G.l1,font:nf,valign:'middle',name:'編號'});
+   T(x+.56,yy,w-.56,bh,t,{size:Z(nL>4?11:12),color:G.ink,name:'項目'});if(i<nL-1)ln(x,yy+sp-.03,x+w,yy+sp-.03,{c:'EDEDED',w:.75});});},{count:'nList'});
+  comp('F',`關鍵詞清單（${nL} 項）`,'Keyword bullets',C[5],(x,y,w,h)=>{const sp=Math.min(.46,(h-.06)/nL),bh=Math.min(.34,sp-.06);[['聚焦','一頁只講一個重點'],['具體','用數字與例子說話'],['結構','先結論、後理由'],['一致','同類資訊同一格式'],['留白','元素之間留出呼吸'],['對比','重點用顏色拉開']].slice(0,nL).forEach(([a,b],i)=>{const yy=y+.06+i*sp;circ(x+.07,yy+bh/2,.1,{fill:i===0?AC2:G.l1,name:'項目符號'});
+   T(x+.24,yy,w-.24,bh,[{t:a+'　',b:1,c:G.ink},{t:b}],{size:Z(nL>4?11:12),name:'項目'});});},{count:'nList'});};
  /* A3 圓形與流程鏈 */
  SL.circles=()=>{title('圓形與流程鏈 Circles & Chains','大圓疊圓、Why／How／What、同心圓、放射、流程鏈、垂直鏈、文氏圖：全部可選');
   const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(4,2,Y0,Y1);
@@ -1251,10 +1254,10 @@ function buildModel(params,opt){
    const sx=x+hw+.35,st2=(w-hw-.7-1.1)/4,bw=1.1,bh=.34;const P5=[[0,'提出需求','term'],[1,'審核','dec'],[2,'評估工時','proc'],[1,'核准排程','proc'],[0,'收到通知','doc']];const N=P5.map(([l,t,k],i)=>sym(k,sx+i*st2,y+l*lh+(lh-bh)/2-(k==='dec'?.04:0),bw,bh+(k==='dec'?.08:0),t,{size:10,strong:i===0}));
    for(let i=0;i<4;i++){const a1=P5[i][0],b1=P5[i+1][0];link(N[i],a1===b1?3:(b1>a1?2:0),N[i+1],a1===b1?1:(b1>a1?1:1));}});};
  /* B3·2 編號步驟 */
- SL.steps=()=>{const n=NUM('nLin',4,3);title('編號步驟 Numbered Steps','大編號、垂直步驟、大數字直式、圓形鏈、時間軸、V 形階段：數量跟「可調數量」同步 3–6（選取後按 − ＋）');
-  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(3,2,Y0,Y1);const ST=[['釐清目的','Purpose'],['蒐集事實','Facts'],['分析根因','Analyze'],['導入對策','Act'],['標準化','Standardize'],['擴散','Scale']].slice(0,n);
+ SL.steps=()=>{const n=NUM('nLin',4,3);title('編號步驟 Numbered Steps','大編號、垂直步驟、大數字直式、圓形鏈、時間軸、V 形階段：數量 3–6：選取後在工具列切換 3／4／5／6');
+  const {Z,comp,T,H,pill,bdg,GRID,TN,DARK,W2,AC2,card,light,calc1,ph,av,chev,chevD,RAD}=UK();const C=GRID(3,2,Y0,Y1);const ST=[['釐清目的','Purpose'],['蒐集事實','Facts'],['分析根因','Analyze'],['導入對策','Act'],['標準化','Codify'],['擴散','Scale']].slice(0,n);
   comp('A',`大編號步驟（${n}）`,'Big-number steps',C[0],(x,y,w,h)=>{const cw=w/n;ST.forEach(([t,e],i)=>{const xx=x+i*cw;txt(xx,y,cw,.6,two(i+1),{size:Z(n>4?24:30),bold:1,color:i===0?P:G.l1,font:nf,valign:'middle',name:'大編號'});box(xx,y+.66,cw-.16,.04,{fill:i===0?P:G.l2,name:'色條'});
-   T(xx,y+.78,cw-.1,.3,t,{size:Z(n>4?10.5:12),bold:1,color:G.ink,wrap:0,name:'步驟'});T(xx,y+1.08,cw-.1,.26,e,{size:10,color:G.mute,font:nf,wrap:0,name:'英文'});});},{count:'nLin'});
+   T(xx,y+.78,cw-.06,.3,t,{size:Z(n>5?9.5:n>4?10.5:12),bold:1,color:G.ink,wrap:0,name:'步驟'});T(xx,y+1.08,cw-.06,.26,e,{size:n>4?9:10,color:G.mute,font:nf,wrap:0,name:'英文'});});},{count:'nLin'});
   comp('B',`垂直步驟（${n}）`,'Vertical steps',C[1],(x,y,w,h)=>{const rh=h/n;ln(x+.18,y+.18,x+.18,y+h-rh/2,{c:G.l2,w:1.25});ST.forEach(([t,e],i)=>{const yy=y+i*rh;bdg(x+.18,yy+.18,.32,String(i+1),i===0?P:DARK,{size:10});T(x+.46,yy,w-.46,.34,[{t,b:1,c:G.ink},{t:'  '+e,s:10,c:G.mute,f:nf}],{size:Z(11.5),wrap:0,name:'步驟'});});},{count:'nLin'});
   comp('C',`大數字直式步驟（${n}）`,'Big-number vertical',C[2],(x,y,w,h)=>{const rh=h/n;ST.forEach(([t,e],i)=>{const yy=y+i*rh;txt(x,yy,.7,rh,two(i+1),{size:Z(n>4?16:20),bold:1,color:i===n-1?P:G.l1,font:nf,valign:'middle',name:'大編號'});ln(x+.74,yy+rh*.2,x+.74,yy+rh*.8,{c:G.l2,w:1});
    T(x+.86,yy,w-.86,rh,[{t,b:1,c:i===n-1?P:G.ink},{t:'  '+e,s:10,c:G.mute,f:nf}],{size:Z(11.5),wrap:0,name:'步驟'});});},{count:'nLin'});
@@ -2161,6 +2164,27 @@ function bboxOf(items){let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
   else{x0=Math.min(x0,it.x);y0=Math.min(y0,it.y);x1=Math.max(x1,it.x+it.w);y1=Math.max(y1,it.y+it.h);}});
  return{x:x0,y:y0,w:Math.max(x1-x0,.01),h:Math.max(y1-y0,.01)};}
 function ahType(t,sz){return t?(sz&&sz!=='med'?`${t}" w="${sz}" len="${sz}`:t):undefined;}
+/* ---------- v25：商業框架「什麼時候用／怎麼填」＋示範文案（網站說明面板、.pptx 備忘稿共用） ---------- */
+const FW_HELP=[
+ ['商業模式圖 BMC','Business Model Canvas','說明一門生意怎麼賺錢：新事業提案、募資、年度策略盤點。',['先填右半：目標客群 → 價值主張 → 通路 → 顧客關係 → 收入來源','再填左半：關鍵活動、關鍵資源、關鍵夥伴、成本結構','每格 1–3 個名詞片語，數字放收入／成本格'],'價值主張：交期縮短 30%、良率 ≥ 98.5%｜目標客群：車用 IC 設計公司｜收入來源：代工費＋一次性工程費'],
+ ['PESTEL','PESTEL','進入新市場、寫年度計畫前，盤點外部環境的機會與威脅。',['六格各寫 1 個最重要的趨勢，不要列滿','每格寫「趨勢＋影響」，例如「電價上漲 → 成本 +3%」','用主色標出對你影響最大的 1 格'],'政治：在地化補助延長兩年｜經濟：匯率波動 ±5%｜科技：AI 晶片需求年增 40%'],
+ ['OKR','OKR','對齊一季的團隊目標：O 是方向、KR 是可量化的終點線。',['O 寫成一句有企圖心、不含數字的話','KR 3 個以內，每個都有數字和期限','進度條填實際達成率，季中檢討時更新'],'O：B 線良率達到業界前段班｜KR1：良率 ≥ 98.5%｜KR2：客訴 ≤ 2 件／月｜KR3：SOP 100% 更新'],
+ ['波特五力','Porter\'s Five Forces','評估一個產業值不值得進入、利潤會被誰吃掉。',['中間寫產業名稱，四周五力各寫一句判斷','用「高／中／低」標強度，最強的一力用主色','最後一句結論：利潤壓力主要來自哪裡'],'買方議價：高（前 3 大客戶占營收 60%）｜替代品：低｜新進入者：中（設備投資門檻高）'],
+ ['精實畫布','Lean Canvas','新創或內部新專案的一頁假設：問題、解法、指標。',['從「問題」與「客群」開始，最多 3 個問題','獨特價值用一句話，最好有數字','「指標」只放 1 個北極星指標'],'問題：良率靠人工判讀、耗時｜獨特價值：判片時間 −80%｜指標：誤判率 < 1%'],
+ ['價值鏈','Value Chain','找出在哪個環節創造或流失價值、該投資哪裡。',['主要活動由左到右照實際流程填','支援活動只寫跟本次議題有關的','把要改善的環節用主色標出'],'主要活動：進料 → 製造 → 出貨 → 銷售 → 服務｜改善重點：製造（良率）'],
+ ['SWOT','SWOT','策略規劃起手式：內部優劣勢 × 外部機會威脅。',['S／W 寫內部、可控制的；O／T 寫外部、不可控的','每格 2–3 點，具體到可以驗證','下一頁接「SO／WT 對策」，SWOT 本身不是結論'],'優勢：良率領先 1.2 pt｜劣勢：產能吃緊｜機會：車用需求成長｜威脅：新競爭者降價'],
+ ['2×2 矩陣','2×2 Matrix','把一堆選項分成四類，快速決定優先順序。',['先定兩個軸（例：影響 × 投入），軸名寫在外側','每個選項放成一個點或卡片','右上角用主色，標題直接寫「先做右上 3 項」'],'X 軸：投入成本｜Y 軸：影響程度｜右上：自動判片、預防保養、SOP 數位化'],
+ ['5×5 風險熱圖','Risk Heat Map','專案或營運風險盤點，讓主管一眼看到最大的風險。',['X＝發生機率、Y＝影響程度，各 1–5 分','每個風險放編號，旁邊或下方附清單','紅區（高×高）的風險都要有負責人與對策'],'R1 關鍵設備交期延誤（4×5）｜R2 主要供應商斷料（2×5）｜R3 人力流動（3×3）'],
+ ['魚骨圖 6M','Fishbone (6M)','異常或客訴的原因發散：先把可能原因列全，再驗證。',['魚頭寫「問題＝現象＋數字」','六根骨依人、機、料、法、環、測各列 1–3 個原因','已驗證為根因的用主色，其餘保持灰色'],'問題：B 線良率 7 月下降 1.5 pt｜機：CMP 墊片壽命過長（已驗證）｜料：漿料批次差異'],
+ ['8D 步驟條','8D Problem Solving','客訴或重大異常的正式回覆流程。',['D1–D8 依序，一頁標出目前在第幾步','每一步旁邊寫負責人與完成日','D4 根因、D5 對策是主管最在意的兩步'],'D3 暫時對策：全數加檢（已完成）｜D4 根因：墊片壽命設定錯誤｜D5 永久對策：改為 300 片更換'],
+ ['RACI 分工表','RACI Matrix','專案啟動時釐清誰負責、誰決策，避免三不管。',['列＝工作項目、欄＝角色','每列只能有 1 個 A（最終負責）','R 太多的列，代表需要再拆工作'],'需求定義：PM＝A、工程＝R、品保＝C、業務＝I'],
+ ['PDCA 循環','PDCA Cycle','持續改善的進度報告：現在走到哪一步、下一步做什麼。',['四格各寫一句本輪的重點','目前所在的步驟用主色','Act 寫成下一輪的 Plan'],'Plan：目標良率 98.5%｜Do：導入新墊片｜Check：良率 98.7%｜Act：擴到 C 線'],
+ ['5 Why 追問','5 Whys','從現象一路追到可以行動的根因。',['第一層寫看得到的現象，不要直接寫原因','每一層都回答上一層的「為什麼」','追到可以下對策、而且是流程或制度的層級就停'],'良率下降 → 刮傷增加 → 墊片磨耗 → 更換週期太長 → 規格沒隨新製程更新'],
+ ['市場規模 TAM／SAM／SOM','TAM / SAM / SOM','募資或新事業提案時說明市場有多大、你能拿多少。',['TAM＝全市場、SAM＝你能服務的、SOM＝3 年內實際拿得到的','每層都寫金額與計算依據（一行）','SOM 要保守、可驗證'],'TAM：全球晶圓檢測 USD 80 億｜SAM：亞洲 12 吋廠 USD 20 億｜SOM：3 年 USD 4,000 萬'],
+ ['30-60-90 天計畫','30-60-90 Day Plan','面試或新職就任時，說明你前三個月要做什麼。',['30 天：學習與建立關係','60 天：找到 1–2 個快速見效的改善','90 天：交付可量化的成果'],'30 天：熟悉產線與 KPI｜60 天：完成良率分析看板｜90 天：主導一項改善，良率 +0.5 pt']];
+function fwHelp(name){name=String(name||'');const h=FW_HELP.find(([k])=>name.indexOf(k)===0);return h?{name:h[0],en:h[1],when:h[2],how:h[3],sample:h[4]}:null;}
+function fwNotes(sl){const seen=new Set();const out=[];(sl.groups||[]).forEach(g=>{const h=fwHelp(g.name);if(!h||seen.has(h.name))return;seen.add(h.name);
+ out.push(`【${h.name}｜${h.en}】\n什麼時候用：${h.when}\n怎麼填：\n${h.how.map((t,i)=>(i+1)+'. '+t).join('\n')}\n示範文案：${h.sample}`);});return out.join('\n\n');}
 function toPptx(pptx,model){
  if(model.W&&Math.abs(model.W-W)>.001){pptx.defineLayout({name:'KIT_'+model.k,width:model.W,height:model.H});pptx.layout='KIT_'+model.k;}else pptx.layout='LAYOUT_WIDE';pptx.title='精緻圖解元件庫 · '+(model.params.zh||'自訂風格');pptx.author='PPT Style Studio';
  const KI={};model.slides.forEach((sl,i)=>{if(!(sl.key in KI))KI[sl.key]=i+1;});
@@ -2316,9 +2340,15 @@ async function fixOoxml(zip){
  const cf=zip.file('[Content_Types].xml');if(cf){let x=await cf.async('string');
   x=x.replace(/<Override PartName="\/([^"]+)"[^>]*\/>/g,(m,part)=>zip.file(part)?m:'');
   if(addTheme2&&!/theme2\.xml/.test(x))x=x.replace('</Types>','<Override PartName="/ppt/theme/theme2.xml" ContentType="application/vnd.openxmlformats-officedocument.theme+xml"/></Types>');zip.file('[Content_Types].xml',x);}}
+async function addFwNotes(zip,model){const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));let n=0;
+ for(let i=0;i<model.slides.length;i++){const nt=fwNotes(model.slides[i]);if(!nt)continue;const f='ppt/notesSlides/notesSlide'+(i+1)+'.xml';const z=zip.file(f);if(!z)continue;let x=await z.async('string');
+  const ps=nt.split('\n').map(l=>l?`<a:p><a:r><a:rPr lang="zh-TW" altLang="en-US" sz="1200"${/^【/.test(l)?' b="1"':''} dirty="0"/><a:t>${esc(l)}</a:t></a:r></a:p>`:'<a:p><a:endParaRPr lang="zh-TW" altLang="en-US" sz="1200" dirty="0"/></a:p>').join('');
+  const y=x.replace(/(<p:ph type="body" idx="1"\/><\/p:nvPr><\/p:nvSpPr><p:spPr\/><p:txBody><a:bodyPr\/><a:lstStyle\/>)[\s\S]*?(<\/p:txBody>)/,(m,a,b)=>a+ps+b);if(y!==x){zip.file(f,y);n++;}}
+ return n;}
 async function exportPptx(env,params,opt){opt=opt||{};const model=opt.model||buildModel(params,{only:opt.only,examples:opt.examples,labels:opt.labels});
  const pptx=new env.PptxGenJS();toPptx(pptx,model);
  const buf=await pptx.write({outputType:'arraybuffer'});const zip=await env.JSZip.loadAsync(buf);const patched=await patchZip(zip,model);
+ await addFwNotes(zip,model);
  // 重新打包成像 PowerPoint 存出的 zip：[Content_Types].xml 第一個、不含資料夾項目（空的 charts/、media/ 等）
  const out=new env.JSZip();const names=Object.keys(zip.files).filter(n=>!zip.files[n].dir).sort((x,y)=>(y==='[Content_Types].xml')-(x==='[Content_Types].xml')||(y==='_rels/.rels')-(x==='_rels/.rels'));
  for(const n of names)out.file(n,await zip.file(n).async('uint8array'),{createFolders:false,date:new Date(Date.UTC(2026,0,1))});
@@ -2600,6 +2630,6 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
  if(p.tbPanel&&!p.tbLook){out.tbLook='card';out.tbCard='grey';}if(p.tbLook==='panel')out.tbCard='grey';
  return out;}
-const api={SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
+const api={FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);

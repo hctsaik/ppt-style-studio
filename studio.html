@@ -401,7 +401,20 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 #iScn{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:4px 0 6px;font-size:12px}#iScn b{color:#595959;font-weight:600;margin-right:2px}#iScn button{border:1px solid #d9d9d9;background:#fff;border-radius:14px;padding:3px 10px;font-size:12px;cursor:pointer}#iScn button.on{background:#1F3864;color:#fff;border-color:#1F3864}#iScn small{margin-left:4px;opacity:.7}
 .rmeta{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:10px;background:#EEF3FA;color:#1F3864;font-size:12px;font-weight:600}
 #pTree a.sub{padding-left:22px;font-size:12px;color:#595959}#pTree a.sub b{min-width:30px}
-@keyframes hitf{0%,100%{filter:none}50%{filter:drop-shadow(0 0 7px rgba(31,78,121,.85)) drop-shadow(0 0 2px rgba(31,78,121,.9))}}g.el.hitflash{animation:hitf .6s ease-in-out 3}
+@keyframes hitf{0%,100%{filter:none}50%{filter:drop-shadow(0 0 7px rgba(31,78,121,.85)) drop-shadow(0 0 2px rgba(31,78,121,.9))}}g.el.hitflash{animation:hitf .6s ease-in-out 3}.rcp.hitflash{outline:2px solid var(--p);outline-offset:2px}
+
+/* v25 新功能 */
+.ecnt small{font-size:11px;color:#8C8C8C;margin:0 3px 0 4px}.ecnt button.on{background:var(--p)!important;color:#fff!important;border-radius:4px}
+.ebar .cpinfo{padding:2px 6px!important;color:#8C8C8C}
+.edb{margin-left:auto;display:inline-flex;align-items:center;gap:4px;border:1px solid #CFE0D6;background:#F4FAF6;color:#2E6B4A;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}.edb small{font-weight:400;color:#5C8A70;font-size:11px}
+.bar{position:relative}.edpop{position:absolute;right:22px;top:40px;z-index:40;width:360px;background:#fff;border:1px solid #E0E0E0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:12px 14px;font-size:12.5px;line-height:1.6}.edpop[hidden]{display:none}.edpop ul{margin:6px 0;padding-left:18px}.edpop small{color:#8C8C8C}
+.stage{position:relative}.fwp{position:absolute;right:22px;top:6px;bottom:6px;width:300px;overflow:auto;background:#fff;border:1px solid #E4E4E4;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.08);padding:12px 14px;font-size:12.5px;line-height:1.6;z-index:20}.fwp[hidden]{display:none}
+.fwp h4{margin:0 0 2px;font-size:14px}.fwp h4 small{color:#8C8C8C;font-weight:400;margin-left:6px;font-size:11.5px}.fwp .fwx{position:absolute;right:8px;top:6px;border:0;background:none;font-size:15px;cursor:pointer;color:#8C8C8C}
+.fwp dl{margin:6px 0 12px}.fwp dt{font-weight:700;color:var(--p);font-size:12px;margin-top:6px}.fwp dd{margin:2px 0 0}.fwp ol{margin:2px 0 0;padding-left:18px}.fwp .smp{background:#F6F6F6;border-left:3px solid var(--p);padding:6px 8px;border-radius:4px}.fwp .fwn{color:#8C8C8C;font-size:11.5px;border-top:1px solid #EEE;padding-top:6px}
+.xinfo{flex:none;display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:2px 22px 0;font-size:12px;color:#595959;min-height:26px}.xinfo:empty{display:none}.xinfo b{font-size:12px;color:var(--ink);margin-right:2px}.xinfo a{display:inline-flex;gap:4px;align-items:center;border:1px solid #E4E4E4;border-radius:999px;padding:1px 9px;color:var(--ink);text-decoration:none;cursor:pointer;background:#fff}.xinfo a:hover{border-color:var(--p)}.xinfo a em{font-style:normal;font-weight:700;color:var(--p);font-size:11px}.xinfo a.rc{background:#F6F6F6}.xinfo .sep{width:1px;height:14px;background:#DDD;margin:0 4px}.xinfo .fwb{margin-left:auto;border:1px solid var(--p);color:var(--p);background:#fff;border-radius:6px;padding:2px 10px;font-weight:700;cursor:pointer}
+.pfilt{margin:8px 0 4px;display:flex;flex-direction:column;gap:5px}.pfilt .fr{display:flex;flex-wrap:wrap;gap:4px;align-items:center}.pfilt .fl{font-size:11px;color:#8C8C8C;width:54px;flex:none}.pfilt button{border:1px solid #DADADA;background:#fff;border-radius:999px;padding:1px 8px;font-size:11.5px;cursor:pointer}.pfilt button.on{background:var(--p);border-color:var(--p);color:#fff}
+.pfilt .fact{display:flex;gap:4px;flex-wrap:wrap;align-items:center;font-size:11.5px}.pfilt .fact[hidden]{display:none}.pfilt .fact span{background:#EEF2F6;border-radius:999px;padding:1px 4px 1px 8px}.pfilt .fact span button{border:0;background:none;padding:0 4px;color:#595959}
+#fRes{margin:4px 0 8px;border:1px solid #E6E6E6;border-radius:8px;max-height:280px;overflow:auto}#fRes[hidden]{display:none}#fRes .fh{position:sticky;top:0;background:#fff;padding:5px 9px;font-size:11.5px;color:#595959;border-bottom:1px solid #EEE}#fRes a{display:block;padding:5px 9px;font-size:12.5px;color:var(--ink);text-decoration:none;border-bottom:1px solid #F2F2F2;cursor:pointer}#fRes a:hover{background:#F6F6F6}#fRes a b{color:var(--p);margin-right:6px;font-size:11.5px}#fRes a small{color:#8C8C8C;margin-left:6px}
 </style></head><body><div class="tpop" id="tPop" role="dialog" aria-label="儲存格選單" hidden></div>
 
 <header>
@@ -428,7 +441,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <div class="wrap">
  <aside id="panel">
   <div class="pclose"><b>風格設定</b><small>改了即時套用到上方預覽</small><button id="bPanelX">完成</button></div>
-  <div id="pnav"><div class="psearch"><input type="search" id="pSearch" placeholder="搜尋元件（按 /）：KPI、對比、地圖、STAR…" aria-label="搜尋元件"></div><div id="pRes" hidden></div><div id="pTree"></div></div>
+  <div id="pnav"><div class="psearch"><input type="search" id="pSearch" placeholder="搜尋元件（按 /）：KPI、對比、地圖、STAR…" aria-label="搜尋元件"></div><div id="pRes" hidden></div><div class="pfilt" id="pFilt" aria-label="多重篩選 Filters"></div><div id="fRes" hidden></div><div id="pTree"></div></div>
   <button class="btn" id="bStyleTab" style="width:100%;margin:8px 0">🎨 風格設定（獨立分頁）→</button>
   <details id="stDet" open><summary>風格設定</summary>
   <div class="cap">範本</div>
@@ -445,8 +458,9 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
  </aside>
  <main>
   <section class="view" id="vSlides">
-  <div class="bar"><h2 id="sTitle"></h2><div class="chips" id="chips"></div><button class="zoomb monly" id="bZoom" aria-pressed="false">🔍 放大</button></div>
-  <div class="stage"><div class="slide" id="big"></div></div>
+  <div class="bar"><h2 id="sTitle"></h2><div class="chips" id="chips"></div><button class="edb" id="edBadge" aria-expanded="false" aria-controls="edPop" title="為什麼保證可編輯？">✓ 保證可編輯<small>Editable</small></button><div class="edpop" id="edPop" role="dialog" aria-label="保證可編輯說明" hidden><b>✓ 保證可編輯 Guaranteed editable</b><ul><li>每個元件都是 PowerPoint <b>原生圖形、文字框、表格與連接線</b>，不是截圖或圖片。</li><li>文字直接點兩下就能改；顏色、線條可用「圖案格式」調整；連接線黏在圖形上，拖動不會斷。</li><li>整個元件已群組，取消群組即可個別移動。</li><li>例外（誠實標示）：照片框、地圖底圖是圖片佔位；陰影在「複製到 PPT（SVG）」時不會帶過去，下載 .pptx 則完整保留。</li></ul><small>對照：很多線上工具匯出 .pptx 時會把形狀轉成圖片，無法再改字。</small></div><button class="zoomb monly" id="bZoom" aria-pressed="false">🔍 放大</button></div>
+  <div class="stage"><div class="slide" id="big"></div><aside class="fwp" id="fwPanel" aria-label="框架使用說明" hidden></aside></div>
+  <div class="xinfo" id="xInfo"></div>
   <div class="foot">
    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><div class="status" id="status" style="margin:0"></div><span class="hint2 fsn" id="fsNote"></span><label class="wprev" title="只影響預覽：拿掉淺灰畫布面板，看元件放在白色投影片上的真實樣子（單一元件、待選素材匯出本來就是白底）"><input type="checkbox" id="wPrev"> 白底預覽</label><span class="hint2" id="elHint"></span></div>
    <div class="thumbs" id="thumbs"></div>
@@ -563,7 +577,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <script src="jszip.min.js?v=978d62b5"></script>
 <script src="pptxgen.min.js?v=24808c08"></script>
 <script src="icons.js?v=65c03732"></script>
-<script src="deck.js?v=5647dbba"></script>
+<script src="deck.js?v=3a7522a9"></script>
 <script src="stylekit-data.js?v=47e8edb0"></script>
 <script src="stylekit.js?v=2a276743"></script>
 <script>
@@ -665,13 +679,15 @@ const G=[
   {k:'cnHead',l:'箭頭',type:'seg',opts:[['triangle','三角'],['arrow','開放'],['stealth','燕尾'],['oval','圓點'],['none','無']]},
   {k:'cnTail',l:'起點',type:'seg',opts:[['none','無'],['oval','圓點'],['triangle','三角'],['arrow','開放']]},
   {k:'cnHs',l:'箭頭大小',type:'seg',opts:[['sm','小'],['med','中'],['lg','大']]}]},
- {t:'數量（04 可調數量／05 原因分析）',rows:[
+ {t:'數量（清單、步驟、流程、原因分析）',rows:[
   {k:'nLin',l:'線性流程步數',type:'range',min:2,max:6,step:1,fmt:v=>v+' 步'},
   {k:'nLane',l:'泳道數',type:'range',min:2,max:6,step:1,fmt:v=>v+' 道'},
   {k:'nPcc',l:'問題→原因→對策',type:'range',min:2,max:6,step:1,fmt:v=>v+' 項'},
   {k:'nWhy',l:'5 Why 層數',type:'range',min:2,max:6,step:1,fmt:v=>v+' 層'},
   {k:'nCause',l:'多因→問題',type:'range',min:2,max:6,step:1,fmt:v=>v+' 個'},
-  {hintText:'也可以在 04／05 頁選取元件後，用工具列的 − ＋ 直接調整。'}]},
+  {k:'nIcon',l:'圖示清單／橫列',type:'range',min:3,max:6,step:1,fmt:v=>v+' 項'},
+  {k:'nList',l:'編號／關鍵詞清單',type:'range',min:3,max:6,step:1,fmt:v=>v+' 項'},
+  {hintText:'也可以選取清單、步驟、流程元件後，用工具列的「項目數 3／4／5／6」直接切換。'}]},
  {t:'語意色（警示／變好／變差）・標註',rows:[
   {k:'semWarn',l:'警示色',type:'color',auto:1},
   {k:'semGood',l:'變好（良）',type:'color'},
@@ -788,12 +804,13 @@ function render(){
 function showSlide(){
  const sl=model.slides[S.slide];
  $('#big').innerHTML=D.toSvg(sl,{id:'big',interactive:true})+'<button class="nav l" data-d="-1">‹</button><button class="nav r" data-d="1">›</button>'+
-  '<button class="eladd" id="elAdd" hidden aria-label="加入待選素材">＋</button><div class="ebar" id="ebar"><b id="eName"></b><small id="eDim" style="color:#8C8C8C;margin-right:4px" title="元件實際尺寸（依 S／M／L）"></small><span class="ecnt" id="eCnt" hidden><button data-a="cnt-" title="減少一個">−</button><b id="eCntN"></b><button data-a="cnt+" title="增加一個">＋</button></span><button class="pri" data-a="copy" title="複製到剪貼簿（SVG 向量＋PNG）">複製</button><button data-a="tray" title="加入待選素材（保留目前風格）">＋待選</button><button data-a="lbl" title="修改這個元件的文字；有圖示的元件（如標籤元件）也可在這裡換圖示（不重排版面；放不下時字級自動縮小）">改字</button><button data-a="pptx" title="只含這個元件的 1 頁 .pptx，原生可編輯圖形">下載此元件 .pptx</button><button data-a="svg">SVG</button><button data-a="png">PNG</button><button data-a="x" title="關閉">✕</button></div>';
+  '<button class="eladd" id="elAdd" hidden aria-label="加入待選素材">＋</button><div class="ebar" id="ebar"><b id="eName"></b><small id="eDim" style="color:#8C8C8C;margin-right:4px" title="元件實際尺寸（依 S／M／L）"></small><span class="ecnt" id="eCnt" role="group" aria-label="項目數 Items" hidden><small>項目數</small><button data-a="cn3">3</button><button data-a="cn4">4</button><button data-a="cn5">5</button><button data-a="cn6">6</button><b id="eCntN" hidden></b></span><button class="pri" data-a="copy" title="複製到 PowerPoint：SVG 向量（貼上後右鍵「轉換成圖案」）；瀏覽器不支援時自動改下載 1 頁 .pptx">複製到 PPT</button><button class="cpinfo" data-a="cpinfo" title="複製的限制說明" aria-label="複製的限制說明">ⓘ</button><button data-a="tray" title="加入待選素材（保留目前風格）">＋待選</button><button data-a="lbl" title="修改這個元件的文字；有圖示的元件（如標籤元件）也可在這裡換圖示（不重排版面；放不下時字級自動縮小）">改字</button><button data-a="pptx" title="只含這個元件的 1 頁 .pptx，原生可編輯圖形">下載此元件 .pptx</button><button data-a="svg">SVG</button><button data-a="png">PNG</button><button data-a="x" title="關閉">✕</button></div>';
  SEL=null;
  {const n=D.smallRuns(sl,10);const fe=$('#fsNote');if(fe){fe.textContent=n?`ⓘ 本頁 ${n} 段字小於 10pt`:'';fe.title=n?'投影時可能偏小。單一元件與待選素材可在「字型與字級 › 最小字級」設定 10／12／14pt，匯出時整個元件等比放大。':'';}}
  document.querySelectorAll('.th').forEach(t=>t.classList.toggle('on',+t.dataset.i===S.slide));navSync(sl);
  const on=document.querySelector('.th.on');if(on&&on.scrollIntoView&&S.tab!=='table'&&on.offsetParent)on.scrollIntoView({block:'nearest',inline:'nearest'});/* 表格分頁時不捲動（會連帶捲動畫布造成跳動） */
  const SE=D.SLIDES.find(x=>x[0]===sl.key)||[];$('#sTitle').innerHTML=`<b class="pcode">${SE[2]||''}</b> ${sl.title} · ${String(S.slide+1).padStart(2,'0')}/${model.slides.length}<small>${S.mine?'我的風格：'+escH(S.mine):presetOf(S.base).zh}${isModified()&&!S.mine?'（已微調）':''}</small>${sl.key==='catalog'?gocards():''}${(D.USED&&D.USED[sl.key])?usedLinks(D.USED[sl.key]):''}${sl.key==='annot'||sl.key==='chart'?'<a class="chartln" href="https://github.com/hctsaik/swiffchart-web-preview" target="_blank" rel="noopener" title="原生可編輯圖表（直條／折線／Pareto／瀑布）在另一個專案 SwiffChart">📊 圖表 → SwiffChart</a>':''}`;$('#elHint').textContent=sl.groups&&sl.groups.length?(TOUCH?`👆 點元件＝選取 → 下方工具列：＋待選／下載 .pptx／SVG／PNG（本頁 ${sl.groups.length} 個）`:`👆 點一下＝選取（工具列：複製／下載／＋待選）；雙擊或 ⊕＝加入待選素材（本頁 ${sl.groups.length} 個）`):'';
+ featShow(sl);
 }
 /* ---------- 頁面導覽：分組側欄、搜尋（含同義詞）、hash 深連結 ---------- */
 const SYN=[['kpi','指標','數字','metric','達成','成果','數據'],['比較','對比','vs','compare','差異','優劣'],['時間軸','時程','timeline','里程碑','甘特','路線圖','roadmap','經歷','職涯'],['流程','process','步驟','steps','程序','sop'],['矩陣','2x2','象限','matrix','優先'],['原因','魚骨','rca','5why','why','根因','8d'],['履歷','求職','面試','自我介紹','profile','個人','about'],['作品集','portfolio','圖片','截圖','照片','screenshot'],['技能','skills','能力','skill'],['star','案例','case','專案'],['引言','故事','hook','開場','quote','story'],['結尾','cta','行動','closing','謝謝','聯絡','contact','qr'],['標籤','tag','膠囊','capsule'],['圖示','icon'],['表格','table','raci','風險'],['圖表','chart','swiffchart','長條','折線'],['決策','decide','建議','選項'],['前後','before','after','改善','asis','tobe'],['組織','人員','team','團隊','人'],['議程','agenda','目錄','章節','divider','分隔'],['評分','rating','星','進度','harvey']];
@@ -861,9 +878,9 @@ function selectEl(gi){clearSel();const sl=model.slides[S.slide];const g=sl.group
  const el=document.querySelector(`#big .el[data-g="${gi}"]`);if(el)el.classList.add('sel');
  const bar=$('#ebar'),big=$('#big'),k=big.clientWidth/((model.W||D.W)*72);$('#eName').textContent=g.name;let dim=`${(g.w*2.54).toFixed(1)}×${(g.h*2.54).toFixed(1)} cm`;
  if(+S.p.minFont>0){try{const em=D.elementModel(S.p,sl.key,gi,{labels:S.labels});const E=em.element;if(E.scale>1)dim+=`・匯出 ×${E.scale}（最小字 ${E.minSize}pt${E.capped?'，已到投影片上限':''}）`;}catch(e){}}
- $('#eDim').textContent=dim;$('#eCnt').hidden=!g.count;if(g.count)$('#eCntN').textContent=S.p[g.count];SEL.count=g.count||null;bar.classList.add('on');
+ $('#eDim').textContent=dim;$('#eCnt').hidden=!g.count;if(g.count){$('#eCntN').textContent=S.p[g.count];$('#eCnt').querySelectorAll('button').forEach(b=>{const on=+b.dataset.a.slice(2)===+S.p[g.count];b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));});}SEL.count=g.count||null;bar.classList.add('on');
  let x=(g.x*72)*k,y=(g.y+g.h)*72*k+8;const bw=bar.offsetWidth,bh=bar.offsetHeight;
- if(y+bh>big.clientHeight-4)y=g.y*72*k-bh-8;x=Math.max(4,Math.min(x,big.clientWidth-bw-4));bar.style.left=x+'px';bar.style.top=Math.max(4,y)+'px';}
+ if(y+bh>big.clientHeight-4)y=g.y*72*k-bh-8;x=Math.max(4,Math.min(x,big.clientWidth-bw-4));bar.style.left=x+'px';bar.style.top=Math.max(4,y)+'px';featSel(sl,g);}
 function svgToPng(svg,wpt,hpt,scale){return new Promise((res,rej)=>{const img=new Image();const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
  img.onload=()=>{try{const c=document.createElement('canvas');c.width=Math.round(wpt*4/3*scale);c.height=Math.round(hpt*4/3*scale);const x=c.getContext('2d');x.drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);c.toBlob(b=>b?res(b):rej(new Error('PNG 轉換失敗')),'image/png');}catch(err){rej(err);}};
  img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('SVG 無法繪製'));};img.src=url;});}
@@ -872,10 +889,12 @@ function elFiles(){const sl=D.elementModel(S.p,SEL.key,SEL.gi,{labels:S.labels})
  const look=D.elementSvg(sl,gi,{flat:false,bg:false,pad:4,id:'l'});      // PNG 用：含柔和陰影
  return{vec,look,png:()=>svgToPng(look.svg,look.w,look.h,3)};}
 const safeName=t=>String(t).replace(/[\\/:*?"<>|\s]+/g,'_');
-async function elAction(a){if(!SEL)return;const f=/^(x|tray|cnt[-+]|lbl)$/.test(a)?null:elFiles();const base=fileBase()+'-'+SEL.key+'-'+safeName(SEL.name);
+async function elAction(a){if(!SEL)return;const f=/^(x|tray|cnt[-+]|cn\d|lbl|cpinfo)$/.test(a)?null:elFiles();const base=fileBase()+'-'+SEL.key+'-'+safeName(SEL.name);
  if(a==='x'){clearSel();return;}
  if(a==='tray'){trayEl(SEL.gi);return;}
  if(a==='cnt-'||a==='cnt+'){const k=SEL.count;if(!k)return;const v=Math.max(2,Math.min(6,(+S.p[k]||3)+(a==='cnt+'?1:-1)));if(v===+S.p[k])return;const gi=SEL.gi;S.p[k]=v;render();persist();syncPanel();selectEl(gi);return;}
+ if(/^cn\d$/.test(a)){const k=SEL.count;if(!k)return;const v=+a.slice(2);if(v===+S.p[k])return;const gi=SEL.gi;S.p[k]=v;render();persist();syncPanel();selectEl(gi);window.__studio.lastCount={k,v};toast(`已改為 ${v} 項並重新排版（預覽、複製、.pptx 都會跟著變）`);return;}
+ if(a==='cpinfo'){featCopyInfo();return;}
  if(a==='lbl'){openLabels();return;}
  if(a==='svg'){saveBlob(new Blob([f.vec.svg],{type:'image/svg+xml'}),base+'.svg');toast('已下載 SVG：PowerPoint「插入 › 圖片」後，右鍵「轉換成圖案」即可編輯。');return;}
  if(a==='png'){try{saveBlob(await f.png(),base+'.png');toast('已下載 PNG（含陰影的圖片，不可編輯）。');}catch(err){toast('PNG 產生失敗：'+err.message);}return;}
@@ -885,14 +904,14 @@ async function elAction(a){if(!SEL)return;const f=/^(x|tray|cnt[-+]|lbl)$/.test(
   catch(err){console.error(err);toast('匯出失敗：'+err.message);}return;}
  if(a==='copy'){const r=await copyEl(f);window.__studio.lastCopy=r;}}
 async function copyEl(f){const name=SEL.name;
- const fail=why=>{toast(`無法寫入剪貼簿（${why}）。請改用工具列的「<b>下載此元件 .pptx</b>」（原生可編輯）或「SVG／PNG」。`,6000,true);return{ok:false,why};};
+ const fail=async why=>{try{await elAction('pptx');}catch(e){}toast(`無法用剪貼簿複製（${why}），<b>已改為下載 1 頁 .pptx</b>：開啟後選取元件 → Ctrl+C → 貼到你的簡報，全部是原生可編輯圖形。`,7000,true);return{ok:false,why,fallback:'pptx'};};
  if(!window.isSecureContext)return fail('此頁不是安全來源');
  if(!navigator.clipboard||!navigator.clipboard.write||!window.ClipboardItem)return fail('瀏覽器不支援圖片剪貼簿');
  const svgOK=typeof ClipboardItem.supports==='function'&&ClipboardItem.supports('image/svg+xml');
+ if(!svgOK||window.__forceNoSvg)return fail('此瀏覽器不支援 SVG 剪貼簿');
  const data={'image/png':f.png()};if(svgOK)data['image/svg+xml']=new Blob([f.vec.svg],{type:'image/svg+xml'});
  try{await navigator.clipboard.write([new ClipboardItem(data)]);}
- catch(err){if(svgOK){try{await navigator.clipboard.write([new ClipboardItem({'image/png':f.png()})]);toast(`已複製「${escH(name)}」為 <b>PNG 圖片</b>（不可編輯）。要可編輯圖形請按「下載此元件 .pptx」。`,6000,true);return{ok:true,types:['image/png']};}catch(e2){return fail(e2.message||e2.name);}}
-  return fail(err.message||err.name);}
+ catch(err){return fail(err.message||err.name);}
  if(svgOK)toast(`已複製「${escH(name)}」（<b>SVG 向量＋PNG</b>）。PowerPoint 365／2019 以上：Ctrl+V 貼上 → 右鍵「<b>轉換成圖案</b>」即成可編輯圖形（陰影不會帶過去）。要 100% 原生圖形與陰影，請按「下載此元件 .pptx」。`,7000,true);
  else toast(`已複製「${escH(name)}」為 <b>PNG 圖片</b>（此瀏覽器不支援 SVG 剪貼簿，貼上後不可編輯）。要可編輯圖形請按「下載此元件 .pptx」。`,6000,true);
  return{ok:true,types:Object.keys(data)};}
@@ -1572,12 +1591,70 @@ if(TOUCH){$('#trayBtn').title='待選素材：選取元件後按工具列「＋�
 window.__studio.mobile={mq:MQ.matches,touch:TOUCH};
 mLabels();
 buildTemplates();buildGroups();syncPanel();renderMine();setTab(S.tab||'slides');
+/* ================= v25：多重篩選、相關元件、框架說明、可編輯徽章、複製說明 ================= */
+const FT={type:{l:'類型',opts:D.SECTIONS.filter(x=>!/[SX]/.test(x[0])).map(([c,zh,en])=>[c,zh,en])},
+ n:{l:'項目數',opts:[['2','2–3','2–3'],['4','4','4'],['5','5','5'],['6','6+','6+']]},
+ o:{l:'方向',opts:[['h','橫式','Wide'],['v','直式','Tall'],['s','方形','Square']]},
+ c:{l:'強調色',opts:[['g','灰階','Gray'],['p','主色','Primary'],['pa','主色＋強調','Two-tone']]}};
+const FS={type:new Set(),n:new Set(),o:new Set(),c:new Set()};
+function fReadUrl(){const q=new URLSearchParams(location.search);Object.keys(FS).forEach(k=>{FS[k]=new Set((q.get(k)||'').split(',').filter(v=>FT[k].opts.some(o=>o[0]===v)));});}
+function fWriteUrl(){const q=new URLSearchParams(location.search);Object.keys(FS).forEach(k=>{if(FS[k].size)q.set(k,[...FS[k]].join(','));else q.delete(k);});const qs=q.toString();history.replaceState(null,'',location.pathname+(qs?'?'+qs:'')+location.hash);}
+const fActive=()=>Object.values(FS).some(x=>x.size);
+const NAMEN=/(\d+)\s*(?:格|步|項|欄|層|個|點|面向|道|張|段|大|種|根)|（(\d+)）|(\d)\s*[×x]\s*(\d)/;
+function compMeta(sl,g){const its=sl.items.slice(g.from,g.to+1);const SE=D.SLIDES.find(x=>x[0]===sl.key)||D.SLIDES.find(x=>sl.key.indexOf(x[0])===0)||[];
+ let n=g.count?+S.p[g.count]:0;if(!n){const m=NAMEN.exec(g.name);if(m)n=m[3]?(+m[3])*(+m[4]):+(m[1]||m[2]);}
+ if(!n){const c={};its.forEach(i=>{if(i.runs&&i.name&&!/標題|說明|英文|圖例|註|副/.test(i.name))c[i.name]=(c[i.name]||0)+1;});n=Math.max(0,...Object.values(c));}
+ const nb=n<=1?'':n<=3?'2':n===4?'4':n===5?'5':'6';const r=g.w/Math.max(.01,g.h);const o=r>1.7?'h':r<.95?'v':'s';
+ const P=String(S.p.P).toUpperCase(),PD=String(S.p.PD).toUpperCase(),A=S.p.useA?String(S.p.A).toUpperCase():'';let hp=0,ha=0;
+ its.forEach(i=>{const cs=[i.fill,i.line].concat((i.runs||[]).map(r=>r.o&&r.o.color));cs.forEach(c=>{c=String(c||'').toUpperCase();if(!c)return;if(c===P||c===PD)hp=1;if(A&&c===A&&A!==P)ha=1;});});
+ return{type:SE[4]||'',n:nb,o,c:hp&&ha?'pa':hp||ha?'p':'g',code:SE[2]||''};}
+function fMatches(){const out=[];if(!model)return out;model.slides.forEach((sl,i)=>(sl.groups||[]).forEach((g,gi)=>{const m=compMeta(sl,g);if(!m.type||/[SX]/.test(m.type))return;
+ if(Object.keys(FS).every(k=>!FS[k].size||FS[k].has(m[k])))out.push({i,gi,sl,g,m});}));return out;}
+function fRender(){const F=$('#pFilt');if(!F)return;
+ F.innerHTML='<div class="fr" style="justify-content:space-between"><b style="font-size:12px">多重篩選 <small style="color:#8C8C8C;font-weight:400">Filters</small></b></div>'+Object.keys(FT).map(k=>`<div class="fr" data-k="${k}"><span class="fl">${FT[k].l}</span>${FT[k].opts.map(([v,zh,en])=>`<button data-k="${k}" data-v="${v}" class="${FS[k].has(v)?'on':''}" aria-pressed="${FS[k].has(v)}" title="${escH(en)}">${escH(zh)}</button>`).join('')}</div>`).join('')+
+  `<div class="fact" ${fActive()?'':'hidden'}>${Object.keys(FS).map(k=>[...FS[k]].map(v=>{const o=FT[k].opts.find(x=>x[0]===v);return `<span>${FT[k].l}：${escH(o[1])}<button data-x="${k}:${v}" aria-label="移除">✕</button></span>`;}).join('')).join('')}<button data-clr="1">全部清除</button></div>`;
+ const R=$('#fRes');if(!fActive()){R.hidden=true;R.innerHTML='';window.__studio.filter={n:0,active:false};return;}
+ const hits=fMatches();R.hidden=false;R.innerHTML=`<div class="fh">符合 ${hits.length} 個元件（點一下跳過去並選取）</div>`+(hits.length?hits.slice(0,80).map(h=>`<a data-i="${h.i}" data-gi="${h.gi}" tabindex="0"><b>${h.m.code}</b>${escH(h.g.name)}<small>${FT.o.opts.find(o=>o[0]===h.m.o)[1]}${h.m.n?'・'+FT.n.opts.find(o=>o[0]===h.m.n)[1]+' 項':''}</small></a>`).join(''):'<div class="fh" style="position:static;border:0">沒有符合的元件，試著移除一個條件。</div>');
+ window.__studio.filter={n:hits.length,active:true,q:location.search};}
+$('#pFilt').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.clr){Object.values(FS).forEach(x=>x.clear());}else if(b.dataset.x){const [k,v]=b.dataset.x.split(':');FS[k].delete(v);}else if(b.dataset.k){const st=FS[b.dataset.k];st.has(b.dataset.v)?st.delete(b.dataset.v):st.add(b.dataset.v);}else return;
+ fWriteUrl();fRender();});
+$('#fRes').onclick=e=>{const a=e.target.closest('a[data-i]');if(!a)return;setTab('slides');go(+a.dataset.i);selectEl(+a.dataset.gi);if(MQ.matches)setPanel(false);};
+$('#fRes').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('a[data-i]')){e.preventDefault();e.target.click();}});
+/* 相關／常一起用：同一份食譜或範例頁一起出現的頁面（次數越多越前面），不足時補同區段 */
+function related(key){const SE=D.SLIDES.find(x=>x[0]===key);if(!SE)return{pages:[],recipes:[]};const code=SE[2],sc={};const add=(c,w)=>{const e=D.SLIDES.find(x=>x[2]===c.replace(/·[A-Z]$/,''));if(e&&e[0]!==key&&e[4]!=='S'&&e[4]!=='X')sc[e[0]]=(sc[e[0]]||0)+w;};
+ const recipes=[];RECIPES.forEach((r,i)=>{const cs=r.st.map(x=>x[0]);if(cs.includes(code)){recipes.push(i);cs.forEach(c=>add(c,2));}});
+ Object.entries(D.USED||{}).forEach(([k,cs])=>{const ek=(D.SLIDES.find(x=>x[0]===k)||[])[2];const all=cs.concat(ek?[ek]:[]);if(all.some(c=>c.replace(/·[A-Z]$/,'')===code))all.forEach(c=>add(c,1));});
+ let pages=Object.entries(sc).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);D.SLIDES.filter(x=>x[4]===SE[4]&&x[0]!==key).forEach(x=>{if(!pages.includes(x[0]))pages.push(x[0]);});
+ return{pages:pages.slice(0,4),recipes:recipes.slice(0,2)};}
+let FWOPEN=localStorage.getItem('pss-fw-open')!=='0',FWSEL=null;
+function fwList(sl){const seen=new Set(),out=[];(sl.groups||[]).forEach(g=>{const h=D.fwHelp(g.name);if(h&&!seen.has(h.name)){seen.add(h.name);out.push(h);}});return out;}
+function fwRender(sl){const P=$('#fwPanel');const L=fwList(sl);if(!L.length){P.hidden=true;return L;}
+ const pick=FWSEL&&L.find(h=>h.name===FWSEL)?L.filter(h=>h.name===FWSEL).concat(L.filter(h=>h.name!==FWSEL)):L;
+ P.innerHTML='<button class="fwx" aria-label="收起說明" title="收起">✕</button>'+pick.map(h=>`<h4>${escH(h.name)}<small>${escH(h.en)}</small></h4><dl><dt>什麼時候用 When to use</dt><dd>${escH(h.when)}</dd><dt>怎麼填 How to fill</dt><dd><ol>${h.how.map(t=>`<li>${escH(t)}</li>`).join('')}</ol></dd><dt>示範文案 Sample copy</dt><dd class="smp">${escH(h.sample)}</dd></dl>`).join('')+'<div class="fwn">📝 下載的 .pptx 會把這份說明放進<b>投影片備忘稿</b>，簡報時對著填就好。</div>';
+ P.hidden=!FWOPEN;window.__studio.fw={n:L.length,open:FWOPEN,first:pick[0].name};return L;}
+$('#fwPanel').addEventListener('click',e=>{if(e.target.closest('.fwx')){FWOPEN=false;localStorage.setItem('pss-fw-open','0');featShow(model.slides[S.slide]);}});
+function featShow(sl){FWSEL=null;const X=$('#xInfo');if(!X)return;const R=related(sl.key);const L=fwRender(sl);
+ X.innerHTML=(R.pages.length?'<b>相關／常一起用</b><small style="color:#8C8C8C;margin-right:2px">Related</small>'+R.pages.map(k=>{const e=D.SLIDES.find(x=>x[0]===k);return `<a data-rk="${k}" title="${escH(e[3])}"><em>${e[2]}</em>${escH(e[1])}</a>`;}).join(''):'')+
+  (R.recipes.length?'<span class="sep"></span><b>出現在食譜</b>'+R.recipes.map(i=>`<a class="rc" data-ri="${i}">🍳 ${escH(RECIPES[i].t)}</a>`).join(''):'')+
+  (L.length?`<button class="fwb" id="fwBtn" aria-expanded="${FWOPEN}" aria-controls="fwPanel">📘 怎麼用・怎麼填（${L.length}）</button>`:'');
+ window.__studio.related={key:sl.key,pages:R.pages,recipes:R.recipes.map(i=>RECIPES[i].t)};if(fActive())fRender();}
+function featSel(sl,g){const h=D.fwHelp(g.name);if(h){FWSEL=h.name;fwRender(sl);}}
+$('#xInfo').addEventListener('click',e=>{const a=e.target.closest('a[data-rk]');if(a){goKey(a.dataset.rk);return;}
+ const r=e.target.closest('a[data-ri]');if(r){setTab('guide');setTimeout(()=>{const c=document.querySelectorAll('.rcp')[+r.dataset.ri];if(c){c.scrollIntoView({block:'center'});c.classList.add('hitflash');setTimeout(()=>c.classList.remove('hitflash'),1800);}},60);return;}
+ if(e.target.closest('#fwBtn')){FWOPEN=!FWOPEN;localStorage.setItem('pss-fw-open',FWOPEN?'1':'0');featShow(model.slides[S.slide]);}});
+$('#edBadge').onclick=e=>{e.stopPropagation();const p=$('#edPop');p.hidden=!p.hidden;$('#edBadge').setAttribute('aria-expanded',String(!p.hidden));};
+document.addEventListener('click',e=>{if(!e.target.closest('#edPop,#edBadge')){$('#edPop').hidden=true;$('#edBadge').setAttribute('aria-expanded','false');}});
+function featCopyInfo(){const svgOK=!!(window.ClipboardItem&&typeof ClipboardItem.supports==='function'&&ClipboardItem.supports('image/svg+xml'));
+ toast(`<b>「複製到 PPT」怎麼運作</b><br>① ${svgOK?'此瀏覽器<b>支援</b>':'此瀏覽器<b>不支援</b>'} SVG 剪貼簿${svgOK?'：貼進 PowerPoint 365／2019+ 後，右鍵「<b>轉換成圖案</b>」即變成可編輯圖形。':'，按下會<b>自動下載 1 頁 .pptx</b>。'}<br>② 限制：瀏覽器無法直接把「原生 PowerPoint 圖形」放進剪貼簿（Office 專用格式只有桌面程式能寫入）；轉換後陰影、群組名稱、黏著連接線不會保留，文字可能拆成多個文字框。<br>③ 要 100% 原生（含陰影、群組、黏著連接線）：用「下載此元件 .pptx」→ 開啟 → Ctrl+C → 貼上。`,12000,true);window.__studio.copyInfo={svgOK};}
+fReadUrl();setTimeout(fRender,0);
 (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(render);
 render();
 /* 搜尋框：↑↓ 在結果間移動、Enter 開啟 */
 const pClr=()=>{const i=$('#pSearch');i.value='';i.oninput();i.focus();};
 $('#pSearch').addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();pClr();return;}if(e.key!=='ArrowDown'&&e.key!=='ArrowUp')return;const L=[...document.querySelectorAll('#pRes a[data-i]')];if(!L.length)return;e.preventDefault();(e.key==='ArrowDown'?L[0]:L[L.length-1]).focus();});
 $('#pRes').addEventListener('keydown',e=>{const a=document.activeElement;if(e.key==='Escape'){e.preventDefault();pClr();return;}if(e.key==='Enter'&&a&&a.matches('#pRes a[data-i]')){e.preventDefault();a.click();return;}if(e.key!=='ArrowDown'&&e.key!=='ArrowUp')return;const L=[...document.querySelectorAll('#pRes a[data-i]')];const i=L.indexOf(a);if(i<0)return;e.preventDefault();const j=i+(e.key==='ArrowDown'?1:-1);if(j<0)$('#pSearch').focus();else if(L[j])L[j].focus();});
+
 window.__studioApi={S,render,syncPanel,templateParams};
 })();
 </script></body></html>
