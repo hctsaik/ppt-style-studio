@@ -17,7 +17,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
   const r=D.buildModel(nav,{table:T_SAMPLES.issue}).slides[0];ok(r.items.some(i=>i.t==='tbl'),'議題追蹤：原生表格');
   {const T2={rows:[['項目','變化'],['良率','▲ 2%'],['成本','▼ 3%']]};const cl=o=>D.buildModel(Object.assign({},nav,o),{table:T2}).slides[0].items.find(i=>i.t==='tbl').cells;const c1=cl({}),c2=cl({tbArrow:'sem'});const col=(c,r)=>c[r][1].color||((c[r][1].runs||[])[0]||{o:{}}).o.color;ok(col(c1,1)===nav.P&&col(c1,2)===nav.t2&&col(c2,2)==='A15C00','表格 ▲▼ 預設主色＋灰（不用紅綠），可切換好壞色');}}
  const big={rows:[['項目','數值','說明']].concat(Array.from({length:60},(_,i)=>['列'+i,String(i*1234),'這是一段很長的說明文字，用來測試欄寬上限與列高下限'.repeat(i%3?1:3)]))};
- const m2=D.buildModel(wine,{table:big});await save('table-big.pptx',wine,{model:m2});ok(m2.slides.length>1&&m2.slides.every(s=>s.table.exportComplete)&&JSON.stringify(m2.slides.flatMap(s=>s.table.bodySourceRows))===JSON.stringify(Array.from({length:60},(_,i)=>i+1)),'60 列表格：原生分頁、保留字級、全部資料依序匯出一次');
+ const m2=D.buildModel(wine,{table:big});await save('table-big.pptx',wine,{model:m2});ok(m2.slides.length===1&&m2.slides.every(s=>s.table.exportComplete)&&JSON.stringify(m2.slides.flatMap(s=>s.table.bodySourceRows))===JSON.stringify(Array.from({length:60},(_,i)=>i+1)),'60 列表格：單張完整原生表格、保留字級、全部資料依序匯出一次');
  const tray=D.trayModel([{kind:'el',params:nav,key:'patterns',gi:5,name:'平行分流'},{kind:'icon',params:wine,icon:{id:'wafer',variant:'tint'},name:'晶圓'},{kind:'table',params:nav,table:kpi,name:'KPI'},{kind:'el',params:D.PRESETS[8],key:'patterns',gi:3,name:'審核迴圈'}]);
  await save('tray.pptx',nav,{model:tray});ok(tray.tray.n===4,'待選素材 4 項');
  const em=D.elementModel(nav,'patterns2',1);await save('element.pptx',nav,{model:em});
@@ -155,7 +155,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
   // 舊資料相容
   {ok(D.buildModel(nav,{table:{rows:Y.rows,hi:{type:'col',i:1}}}).slides[0].table.his.length===1,'舊版 T.hi 仍可用');
    const old=D.sanitizeParams(Object.assign({},nav,{tbLook:'panel'}),nav);const old2=D.sanitizeParams(Object.assign({},nav,{tbLook:'minimal'}),nav);const old3=D.sanitizeParams({P:nav.P,tbPanel:true},nav);
-   ok(old.tbLook==='card'&&old.tbCard==='grey'&&old2.tbLook==='clean'&&old3.tbLook==='card','舊外觀（灰底面板／極簡／tbPanel）自動轉成新外觀');
+   ok(old.tbLook==='card'&&old.tbCard==='white'&&old2.tbLook==='clean'&&old3.tbLook==='card','舊外觀（灰底面板／極簡／tbPanel）自動轉成新外觀');
    const tr=D.trayModel([{kind:'table',params:Object.assign({},nav,{tbLook:'panel',tbHiColor:'alert',tbHiMode:'box'}),table:Y,name:'良率（舊快照）'},{kind:'table',params:Object.assign({},nav,{tbLook:'minimal'}),table:{rows:[['a','b'],['1','2']]},name:'極簡'},{kind:'el',params:wine,key:'annot',gi:3,name:'標註'}]);await save('tray-marks.pptx',nav,{model:tr});ok(tr.tray.n===3,'待選素材：舊表格快照（灰底面板／極簡）仍可重建＋標註');}
   // 四個驗收案例（LibreOffice 也會畫）
   // R9：第一欄表頭、儲存格邊界、預設微軟正黑體、重點不再限 3 個
@@ -185,7 +185,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    const fx=D.buildModel(Object.assign({},nav,{tbNeg:true,tbThou:false,tbMinus:'paren',tbStatus:false}),{table:C.pl}),f0=D.buildModel(nav,{table:C.pl});ok(JSON.stringify(fx.slides[0].items.find(i=>i.t==='tbl').cells)===JSON.stringify(f0.slides[0].items.find(i=>i.t==='tbl').cells),'舊設定的格式選項被忽略（④格式已移除）');}
   // R8：壓力範例 12/16/20 列（長中文表頭與內文、% 與負數、多行註腳）× 4 外觀 × 3 密度 × S/M/L × 9 風格
   {const C=require('./table-cases.js');let bad=[];for(const st of D.PRESETS)for(const k of ['s12','s16','s20'])for(const lk of ['clean','band','card','zebra'])for(const dn of ['comfy','normal','dense'])for(const size of ['S','M','L']){const m=D.buildModel(Object.assign({},st,{tbLook:lk,tbDense:dn,size}),{table:C[k]});const tb=m.slides[0].table;const bot=Math.max(...m.slides[0].items.map(i=>i.y+i.h));
-    if(tb.orphans.length||tb.fs<10||bot>7.5-.15||tb.tx+tb.tW>13.333-.4||m.warns.some(w=>/放不下|太寬/.test(w)))bad.push(st.id+k+lk+dn+size);}
+    if(tb.orphans.length||tb.fs<10||bot>(m.slides[0].h||D.H)-.15||tb.tx+tb.tW>(m.slides[0].w||D.W)-.4||m.warns.some(w=>/放不下|太寬/.test(w)))bad.push(st.id+k+lk+dn+size);}
    ok(!bad.length,`壓力範例：無孤字、無溢出、內文 ≥10pt（${bad.length} 失敗）${bad.slice(0,3).join(' ')}`);
    // 編輯提示（placeholder／📌）不會進 pptx 或複製的 HTML
    const em=D.buildModel(nav,{table:Object.assign({},C.yield,{title:'',unit:'',note:''})});const html=D.tableHtml(em);
@@ -249,7 +249,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    ok(den[0].fs>den[1].fs&&den[1].fs>den[2].fs&&den[0].rowH[1]>den[2].rowH[1]&&den[0].rowH[1]/den[2].rowH[1]!==den[0].fs/den[2].fs,'表格：密度 舒適>標準>密集（字級、列高非等比）');
    // 壓力：長中文表頭、空白、負數、百分比、14 列 → 不溢出、內文 ≥ 10pt
    let sb=[];for(const lk of ['clean','band','card','zebra'])for(const dn of ['comfy','normal','dense'])for(const size of ['S','M','L']){const {m,t}=tb({tbLook:lk,tbDense:dn,size},C.stress);const bot=Math.max(...m.slides[0].items.map(i=>i.y+i.h));const right=Math.max(...m.slides[0].items.map(i=>i.x+i.w));
-    if(bot>7.5-.2||right>13.333-.3||t.fs<10||m.warns.some(w=>/放不下|太寬/.test(w)))sb.push(`${lk}/${dn}/${size} fs${t.fs} bot${bot.toFixed(2)}`);}
+    if(bot>(m.slides[0].h||D.H)-.2||right>(m.slides[0].w||D.W)-.3||t.fs<10||m.warns.some(w=>/放不下|太寬/.test(w)))sb.push(`${lk}/${dn}/${size} fs${t.fs} bot${bot.toFixed(2)}`);}
    ok(!sb.length,'表格壓力測試 36 組：不溢出、內文 ≥ 10pt'+(sb.length?'｜'+sb.slice(0,4).join('；'):''));}
   {const C=require('./table-cases.js');for(const [k,T] of Object.entries(C))for(const lk of ['clean','band','card','zebra']){const m=D.buildModel(Object.assign({},nav,{tbLook:lk}),{table:T});await save(`table-case-${k}-${lk}.pptx`,nav,{model:m});}}
  }
