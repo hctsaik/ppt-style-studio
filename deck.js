@@ -1757,7 +1757,7 @@ function buildModel(params,opt){
  /* 使用者表格（R1 重新設計）：貼上的資料 → 原生 PowerPoint 表格。
     版面固定：標題 x0.6 y0.5（24pt）→ 單位（12pt）→ 表格 y1.45（≥5 欄滿版 12.13"，否則依內容、最少 6"、靠左）→ 註腳（10pt）。
     外觀 4 種：clean 細線（FT 式 1.5／0.75／0.25／0.75／1.5）、band 主色表頭、card 卡片（白／灰底）、zebra 斑馬密集。
-    數字一律無襯線等寬數字、千分位、U+2212 負號（可改）、同欄小數位對齊；狀態＝小圓點＋上色文字（不填底）；
+    數字預設保留原始文字；只有明確指定數字欄與千分位時才加入分隔符，絕不經浮點數轉換；狀態＝小圓點＋上色文字（不填底）；
     重點只用一種強調色（紅色只留給警示／條件），不疊色；文字對底色自動加深到 4.5:1。預覽、匯出、HTML 複製共用這份 model。 */
  function hueOf(x){const [r,g,b]=[0,2,4].map(i=>parseInt(x.slice(i,i+2),16)/255);const mx=Math.max(r,g,b),mn=Math.min(r,g,b),dd=mx-mn;if(!dd)return -1;let h=mx===r?((g-b)/dd)%6:mx===g?(b-r)/dd+2:(r-g)/dd+4;return (h*60+360)%360;}
 function hueD(a,b){const x=hueOf(a),y=hueOf(b);if(x<0||y<0)return 90;const d=Math.abs(x-y);return Math.min(d,360-d);}
@@ -1768,10 +1768,10 @@ function userTable(T,k){const n0=cur.items.length,w0=warns.length;userTable0(T,k
   for(let b=1.1;b<=2.6;b=+(b+.1).toFixed(2)){const prev=cur.table;const FCAP={comfy:24,dense:20}[st.tbDense]||22;if(prev.fs>=FCAP||(prev.tW>=.62*CW&&prev.tH>=.45*(H-1.5)))break;cur.items.length=n0;warns.length=w0;userTable0(T,k,b);const t=cur.table;
    if(!fits(t)||t.fs>FCAP+.01||t.orphans.length>prev.orphans.length){cur.items.length=n0;warns.length=w0;userTable0(T,k,best);break;}best=b;}
   cur.table.boost=best;}
-function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const raw=(T.rows||[]).filter(r=>r&&r.some(c=>String(c==null?'':c).trim()!==''));if(!raw.length)return;
-  const nC=Math.max(...raw.map(r=>r.length));const src=raw.map(r=>{const a=r.map(c=>String(c==null?'':c).replace(/\r/g,'').trim());while(a.length<nC)a.push('');return a;});
-  let AU=tableAuto(src,T);const head=T.header==null||T.header==='auto'?AU.head:!!T.header,h0=head?1:0;
-  const MAXR=25;if(src.length-h0>MAXR){const n=src.length-h0;src.length=h0+MAXR;AU=tableAuto(src,T);warn('表格列數過多',`共 ${n} 列，只放前 ${MAXR} 列；請拆成多張表或先摘要`);}
+function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSource(T);const {nC,h0}=source;const src=source.previewRows;if(!src.length||!nC)return;
+  // Do not filter empty rows: editor, marks and export all use the same source indices.
+  const AU=source.auto;
+  if(!source.exportComplete)warn('表格列數過多',`共 ${source.bodyRows} 列，預覽 ${TABLE_PREVIEW_BODY_ROWS} 列；已停用匯出，請拆表`);
   // 列數少→字大一點、列數多→維持（S／M／L 仍是基準）；tbAuto=false 關閉
   if(st.tbAuto!==false){const nb=src.length-h0;k=Math.min(1.45,k*(nb<=5?1.3:nb<=9?1.15:1));if(nb>=12&&k>1)k=1;}if(boost>1)k*=boost;   // 12 列以上 L 也不放大，避免縮字
   const lookId=tableLookOf(st);const grey=st.tbLook==='panel'||st.tbCard==='grey'||(st.tbPanel&&!st.tbLook);
@@ -1800,10 +1800,9 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const raw=(T.rows||[])
   const bold=new Set((Array.isArray(T.bold)?T.bold:AU.key).map(Number));
   const keySet=new Set(AU.key);if(Array.isArray(T.bold))T.bold.forEach(r=>keySet.add(+r));
   const al=T.align||{};
-  const colAl=Array.from({length:nC},(_,c)=>al[c]||(c===0?'left':AU.numC[c]?'right':AU.statC[c]?'left':'left'));
-  // 數字格式：每欄小數位對齊（只補不砍）、千分位、負號樣式
-  const fmtC=Array.from({length:nC},(_,c)=>{return{dec:tableColDec(src,c,h0,AU),pct:false};/* R9：小數位／% 已移除，沿用貼上資料的格式 */});
-  const rows=src.map((r,ri)=>r.map((t,c)=>ri<h0||!AU.numC[c]||AU.section[ri]?t:tFmt(t,{dec:fmtC[c].dec,pct:fmtC[c].pct,thou:st.tbThou!==false,minus:st.tbMinus||'auto'})));
+  const colAl=Array.from({length:nC},(_,c)=>al[c]||((T.types||{})[c]==='number'?'right':c===0?'left':AU.numC[c]?'right':'left'));
+  // Raw is the default, including inferred numeric columns. Legacy fmt/dec settings stay ignored.
+  const rows=src.map((r,ri)=>r.map((t,c)=>ri<h0||AU.section[ri]?t:tableFormatValue(t,(T.types||{})[c],(T.formats||{})[c])));
   const MK=tableMarks(T,nC,rows.length);const D_E=(a,b)=>{const h=x=>[0,2,4].map(i=>parseInt(x.slice(i,i+2),16));const p=h(a),q=h(b);return Math.abs(p[0]-q[0])+Math.abs(p[1]-q[1])+Math.abs(p[2]-q[2])>120;};// 推薦色：綠／青，跟強調色、警示色都分得開，且在白底上對比 ≥ 3:1（每個風格自動挑）
   const REC=['2E8B57','12808A','3F7D20','00796B','5B8C2A'].map(c=>({c,s:Math.min(hueD(c,EC),hueD(c,AL),hueD(c,P)+15)*(contrastOf(c,'FFFFFF')>=3?1:0)})).sort((a,b)=>b.s-a.s)[0].c;
   const his=MK.his.map(h=>Object.assign({},h,{C:h.kind==='warn'?(D_E(AL,EC)?AL:'9A5F00'):h.kind==='rec'?REC:EC}));   // 意義：重點／推薦＝強調色，警告＝紅；換外觀意義不變
@@ -1971,7 +1970,15 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const raw=(T.rows||[])
    if(ls.some(l=>mw(l,sz0,b)>av+.01))orphans.push({r:ri,c,t:s,why:'auto-wrap'});else if(ls.length>1&&vis(s)>4&&ls.some((l,i)=>vis(l)<=1||vis(l)<=2&&i>0&&!/[：:；;，,、)）\s]$/.test(ls[i-1])&&!/^[（(]/.test(l)))orphans.push({r:ri,c,t:s,why:'orphan'});}));
   // 第一欄為表頭：粗體＋淡底（依外觀取色），不覆蓋重點底色
   if(T.hcol){const it=cur.items.filter(i=>i.t==='tbl').pop();if(it){const tint=LK.hdr&&LK.hdr.fill?mix(P,'FFFFFF',.88):mix(G.fill||'F2F2F2','FFFFFF',.2);it.cells.forEach((r,ri)=>{if(ri<h0||AU.section[ri])return;const cl=r[0];if(!cl)return;cl.bold=true;(cl.runs||[]).forEach(x=>{x.o=Object.assign({},x.o,{bold:true});});if(!cl.fill)cl.fill=tint;});}}
-  cur.table={hcol:!!T.hcol,pad:st.tbPad||'m',orphans,colMin:colMin.map(v=>+v.toFixed(3)),REC,k,colFit:colFit.map(v=>+v.toFixed(3)),tx,ty,tW,tH,colW,rowH,h0,nC,nR:rows.length,look:lookId,grey,hiMode:hiStyle,hiStyle,EC,colNum:AU.numC,colStat:AU.statC,key:[...keySet].sort((a,b)=>a-b),hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,
+  // Validate final table and visible metadata only after all slide content exists.
+  const boundsItems=[tb,...cur.items.filter(it=>['表格標題','單位','註腳','圖例'].includes(it.name))];
+  const layoutOverflow=boundsItems.some(it=>it.x<-.01||it.y<-.01||it.x+it.w>W+.01||it.y+it.h>H+.01);
+  const exportComplete=source.exportComplete&&!layoutOverflow;
+  const exportReason=source.exportReason||(layoutOverflow?'表格或標題／註腳超出投影片邊界，已停用 PowerPoint 與表格複製以避免內容被裁切。原始資料完整保留；請縮短內容、減少列數或拆成多份表格，也可下載完整 TSV。':'');
+  if(layoutOverflow)warn('表格無法完整匯出','表格或標題／註腳超出投影片邊界，已停用匯出；請縮短內容或拆表');
+  // Composed trays discard slide metadata, so retain the same integrity on the native table.
+  tb.dataIntegrity={rawRowCount:source.nR,rawBodyRows:source.bodyRows,renderedRowCount:rows.length,exportComplete,exportReason,layoutOverflow};
+  cur.table={rawRows:source.rows,rawRowCount:source.nR,rawBodyRows:source.bodyRows,sourceRows:source.sourceRows,previewBodyRows:src.length-h0,exportComplete,exportReason,layoutOverflow,types:Object.assign({},T.types),formats:Object.assign({},T.formats),hcol:!!T.hcol,pad:st.tbPad||'m',orphans,colMin:colMin.map(v=>+v.toFixed(3)),REC,k,colFit:colFit.map(v=>+v.toFixed(3)),tx,ty,tW,tH,colW,rowH,h0,nC,nR:rows.length,look:lookId,grey,hiMode:hiStyle,hiStyle,EC,colNum:AU.numC,colStat:AU.statC,key:[...keySet].sort((a,b)=>a-b),hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,
    ruleCols:[...new Set(MK.rules.map(r=>r.c))],unit:T.unit||'',note:T.note||'',title:T.title||'',font:F,nf:NF,slots,fs,hfs,k};}
 
  /* v13：每頁 ≤6 個變體——超過的頁拆成子頁（同一 SL 函式畫完後，依分組挑選元件並重新排版） */
@@ -2020,7 +2027,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const raw=(T.rows||[])
    所以每一頁都放得下；把元件複製到標準 13.33×7.5 吋簡報時，實際大小就是 ×0.8／×1／×1.25。 ---------- */
 /* ---------- 表格：自動判斷（R1）——表頭、數字欄、狀態欄、小節列、合計列；外觀；數字格式；建議（重點欄、門檻） ---------- */
 const TABLE_LOOKS=[['clean','細線'],['band','主色表頭'],['card','卡片'],['zebra','斑馬'],['hair','只有細橫線']];
-/* ④格式 已移除：數字格式固定為 同原始負號、負數不標紅、千分位、狀態字上色（舊設定的其他值直接忽略） */
+/* 舊版全域數字格式已移除；新格式只讀 T.types / T.formats，預設不改原始值。 */
 function TBL_FIXED(s){return Object.assign({},s,{tbMinus:'auto',tbNeg:false,tbThou:true,tbStatus:true});}
 const TABLE_LOOK_ALIAS={minimal:'clean',panel:'card'};
 const tableLookOf=p=>{const v=TABLE_LOOK_ALIAS[p.tbLook]||p.tbLook;return TABLE_LOOKS.some(l=>l[0]===v)?v:(p.tbPanel?'card':'clean');};
@@ -2036,26 +2043,54 @@ const ST_MAP=(()=>{const m=new Map();for(const k in ST_WORDS)ST_WORDS[k].forEach
 function statusOf(t){t=String(t||'').trim().replace(/\s+/g,' ');if(!t||t.length>14)return null;return ST_MAP.get(t.toLowerCase())||null;}
 // 合計／平均列
 const T_SUM=/^(合計|總計|小計|總額|總和|全年|累計|平均|週平均|月平均|日平均|年平均|稅後淨利|本期淨利|淨利|每股盈餘|EPS|Total|Grand total|Subtotal|Sum|Avg|Average|Mean|Net income|Net profit|YTD)(\b|[\s（(：:]|$)|^.{0,6}(合計|總計|小計|平均)$/i;
-function tableAuto(rows,T){const nC=Math.max(0,...rows.map(r=>r.length));const cell=(r,c)=>String((rows[r]||[])[c]==null?'':rows[r][c]).trim();
- const r0=Array.from({length:nC},(_,c)=>cell(0,c)).filter(t=>t);const head=rows.length>1&&r0.length>0&&r0.filter(tIsNum).length/r0.length<.34;const h0=head?1:0;
+function tableAuto(rows,T){const nC=rows.reduce((n,r)=>Math.max(n,Array.isArray(r)?r.length:0),0);const cell=(r,c)=>String((rows[r]||[])[c]==null?'':rows[r][c]).trim();
+ const r0=Array.from({length:nC},(_,c)=>cell(0,c)).filter(t=>t);const inferredHead=rows.length>1&&r0.length>0&&r0.filter(tIsNum).length/r0.length<.34;
+ const head=T&&T.header!=null&&T.header!=='auto'?!!T.header:inferredHead,h0=head?1:0;
  const section=rows.map((r,ri)=>ri>=h0&&nC>=3&&cell(ri,0)!==''&&Array.from({length:nC-1},(_,c)=>cell(ri,c+1)).every(t=>t===''));
  const colStat=(c,f)=>{let n=0,y=0;for(let r=h0;r<rows.length;r++){if(section[r])continue;const t=cell(r,c);if(tBlank(t))continue;n++;if(f(t))y++;}return n>0&&y/n>=.6;};
- const numC=Array.from({length:nC},(_,c)=>c>0&&colStat(c,tIsNum));
- const statC=Array.from({length:nC},(_,c)=>c>0&&!numC[c]&&colStat(c,t=>!!statusOf(t)));
+ const types=T&&T.types||{};
+ const numC=Array.from({length:nC},(_,c)=>types[c]==='number'||types[c]!=='text'&&c>0&&colStat(c,tIsNum));
+ const statC=Array.from({length:nC},(_,c)=>types[c]!=='text'&&types[c]!=='number'&&c>0&&!numC[c]&&colStat(c,t=>!!statusOf(t)));
  const key=[];rows.forEach((r,ri)=>{if(ri>=h0&&!section[ri]&&T_SUM.test(cell(ri,0)))key.push(ri);});
  if(T&&T.lastTotal&&rows.length-1>=h0+1&&!key.includes(rows.length-1))key.push(rows.length-1);
  if(T&&T.lastTotal===false&&key.includes(rows.length-1))key.splice(key.indexOf(rows.length-1),1);
  const kind=numC.filter(Boolean).length>=Math.max(1,(nC-1)/2)?'number':statC.some(Boolean)?'status':'text';
  return{nC,head,numC,statC,section,key,kind};}
+
+// One lossless source for editor and preview. Row numbers are never renumbered by filtering.
+const TABLE_PREVIEW_BODY_ROWS=25;
+function tableSource(T){T=T||{};const input=Array.isArray(T.rows)?T.rows:[];
+ const nC=input.reduce((n,r)=>Math.max(n,Array.isArray(r)?r.length:0),0);
+ const rows=Array.from(input,r=>Array.from({length:nC},(_,c)=>String(Array.isArray(r)&&r[c]!=null?r[c]:'').replace(/\r\n?/g,'\n')));
+ const auto=tableAuto(rows,T),h0=auto.head?1:0,nR=rows.length,bodyRows=Math.max(0,nR-h0);
+ const previewRows=rows.slice(0,h0+TABLE_PREVIEW_BODY_ROWS),exportComplete=bodyRows<=TABLE_PREVIEW_BODY_ROWS;
+ const exportReason=exportComplete?'':`資料共 ${bodyRows} 列，目前只能預覽前 ${TABLE_PREVIEW_BODY_ROWS} 列。為避免遺漏資料，已停用 PowerPoint 與表格複製；請先拆成每份最多 ${TABLE_PREVIEW_BODY_ROWS} 列，或下載完整 TSV。`;
+ return{rows,rawRows:rows,nC,nR,h0,bodyRows,rawRowCount:nR,rawBodyRows:bodyRows,auto,previewRows,sourceRows:previewRows.map((_,r)=>r),exportComplete,exportReason};}
+// Group only the digit substring, preserving precision, leading zeroes, signs, units and spacing.
+function tableFormatValue(value,type,format){const t=String(value==null?'':value);if(type!=='number'||format!=='grouped')return t;
+ const m=t.match(T_PARTS);if(!m||!/\d/.test(m[4]))return t;
+ const [integer,fraction]=m[4].split('.'),grouped=integer.replace(/,/g,'').replace(/\B(?=(\d{3})+(?!\d))/g,',')+(fraction==null?'':'.'+fraction);
+ const start=m.index+m[0].indexOf(m[4]);return t.slice(0,start)+grouped+t.slice(start+m[4].length);}
+// Reject partial models in every public export route, not just disabled UI buttons.
+function assertTableExportComplete(model){for(const sl of model&&model.slides||[]){
+ const infos=[sl.table,...(sl.items||[]).filter(it=>it.t==='tbl').map(it=>it.dataIntegrity)].filter(Boolean);
+ for(const info of infos){if(info.exportComplete===false||Number.isFinite(info.rawRowCount)&&Number.isFinite(info.renderedRowCount)&&info.rawRowCount>info.renderedRowCount){
+  const err=new Error(info.exportReason||'表格預覽不完整，已停用匯出以避免資料遺漏。');err.code='TABLE_EXPORT_INCOMPLETE';err.rawRowCount=info.rawRowCount;err.rawBodyRows=info.rawBodyRows;throw err;}}}
+ return model;}
+
 // 數字格式：拆成 前綴／正負／貨幣／數字／單位 → 依設定重組
 const T_PARTS=/^\s*([(（]?)\s*([-−+±▲▼△▽]?)\s*(NT\$|US\$|\$|＄|€|¥)?\s*((?:\d{1,3}(?:,\d{3})+|\d+)?(?:\.\d+)?)\s*(%|％|x|X|倍|ppts?|pts?|bps|[KkMmBb]|億|萬|元|天|週|日|h|hr|小時|件|台|片|顆)?\s*([)）]?)\s*$/;
 function tParts(t){const m=String(t==null?'':t).match(T_PARTS);if(!m||!/\d/.test(m[4]))return null;
  const paren=!!(m[1]&&m[6]);const sign=m[2]||'';return{paren,sign,cur:m[3]||'',num:m[4],unit:m[5]||'',neg:paren||sign==='-'||sign==='−',dec:(m[4].split('.')[1]||'').length,sp:/\d\s+\S+$/.test(String(t).trim())&&!!m[5]};}
 function tFmt(t,o){o=o||{};const p=tParts(t);if(!p)return String(t==null?'':t);
- let n=parseFloat(p.num.replace(/,/g,''));if(!Number.isFinite(n))return String(t);
- let unit=p.unit;if(o.pct&&!unit){if(Math.abs(n)<=1.5&&p.dec>=2){n*=100;}unit='%';}
- const dec=Number.isInteger(o.dec)?o.dec:p.dec;let s=n.toFixed(Math.max(0,Math.min(6,dec)));
- if(o.thou!==false){const [i,f]=s.split('.');s=i.replace(/\B(?=(\d{3})+(?!\d))/g,',')+(f!=null?'.'+f:'');}
+ // Legacy explicit formatting API, also lossless: never parse a decimal through Number.
+ let [integer,fraction='']=p.num.replace(/,/g,'').split('.');integer=integer||'0';let unit=p.unit;
+ if(o.pct&&!unit){const whole=integer.replace(/^0+(?=\d)/g,'');const small=whole==='0'||whole==='1'&&(!fraction||fraction.padEnd(1,'0')<='5'+'0'.repeat(Math.max(0,fraction.length-1)));
+  if(small&&p.dec>=2){const digits=integer+fraction.padEnd(2,'0'),point=integer.length+2;integer=digits.slice(0,point).replace(/^0+(?=\d)/g,'');fraction=digits.slice(point);}unit='%';}
+ const dec=Number.isInteger(o.dec)?Math.max(0,Math.min(100,o.dec)):p.dec;
+ if(fraction.length>dec){const round=fraction[dec]>='5';fraction=fraction.slice(0,dec);if(round){let ds=(integer+fraction).split(''),carry=1;for(let i=ds.length-1;i>=0&&carry;i--){const v=+ds[i]+carry;ds[i]=String(v%10);carry=v>9?1:0;}if(carry)ds.unshift('1');const digits=ds.join('');integer=dec?digits.slice(0,-dec)||'0':digits;fraction=dec?digits.slice(-dec):'';}}
+ else fraction=fraction.padEnd(dec,'0');
+ let s=(o.thou!==false?integer.replace(/\B(?=(\d{3})+(?!\d))/g,','):integer)+(dec?'.'+fraction:'');
  const cur=p.cur,u=unit?(p.sp?' ':'')+unit:'';const body=cur+s+u;
  if(/[▲▼△▽+±]/.test(p.sign))return p.sign+(p.sign==='+'||p.sign==='±'?'':' ')+body;
  if(!p.neg)return body;let ms=o.minus||'auto';if(ms==='auto')ms=p.paren?'paren':'minus';
@@ -2085,9 +2120,9 @@ function tableSuggest(rows){const A=tableAuto(rows);const h0=A.head?1:0;const nC
   if(pc.length>=2){const key=t=>{t=String(t).trim();let y=+(t.match(/(?:19|20)?(\d{2})(?!.*\d{2})/)||[0,0])[1],q=+(t.match(/([1-4])Q|Q([1-4])/i)||[0,0,0]).slice(1).find(Boolean)||0,m=+(t.match(/(\d{1,2})\s?月/)||[0,0])[1];return y*100+q*10+m;};
    period=pc.slice().sort((a,b)=>key(rows[0][b])-key(rows[0][a])||a-b)[0];}}
  return{rule,period,kind:A.kind,auto:A};}
-// 新貼上的資料：標題／單位／註腳／重點／規則全部重設（除非標題被 📌 釘住）；財報表自動把最新期別欄設為重點
+// 新資料清除標題／單位／註腳；只有 mode='update' 明確保留。keep 只沿用欄位外觀。
 // 建議標題（重點句）：重點欄＋第一列／合計列的數字＋變化欄；門檻命中；狀態統計
-function tableTitleSuggest(T){const rows=(T.rows||[]).filter(r=>r&&r.some(c=>String(c||'').trim()));if(rows.length<2)return '';const A=tableAuto(rows,T);const h0=A.head?1:0;const nC=A.nC;
+function tableTitleSuggest(T){const rows=tableSource(T).rows;if(rows.length<2)return '';const A=tableAuto(rows,T);const h0=A.head?1:0;const nC=A.nC;
  const hdr=c=>h0?String(rows[0][c]||'').trim():'';const cell=(r,c)=>String((rows[r]||[])[c]||'').trim();const MK=tableMarks(T,nC,rows.length);
  const CHG=/QoQ|YoY|MoM|WoW|Δ|增減|變化|成長/i;
  const hc=MK.his.find(h=>h.type==='col'&&A.numC[h.i]);
@@ -2113,17 +2148,17 @@ function tableTitleSuggest(T){const rows=(T.rows||[]).filter(r=>r&&r.some(c=>Str
    const VL=s=>[...s].reduce((n,ch)=>n+(/[\u0000-\u024f]/.test(ch)?.55:1),0);let out=`${H} ${low?'最低':'最高'}：${lab}${l2?' '+l2:''} ${V}`.replace(/\s+/g,' ').trim();if(VL(out)>24)out=`${H} ${low?'最低':'最高'}：${lab} ${V}`.replace(/\s+/g,' ').trim();
    if(VL(out)>24)out=`${low?'最低':'最高'}：${lab} ${V}`;return out;}}
  return h0&&hdr(0)?`${hdr(0)} 一覽`:'';}
-function tableFromPaste(rows,prev){prev=prev||{};const S=tableSuggest(rows);const keep=prev.keep!==false;const keepTitle=(keep||!!prev.pin)&&!!prev.title;
+function tableFromPaste(rows,prev,mode){prev=prev||{};rows=tableSource({rows}).rows;const S=tableSuggest(rows);const keep=prev.keep!==false,update=mode==='update';const keepTitle=update&&!!prev.title;
  const his=S.period!=null&&S.kind==='number'?[{type:'col',i:S.period,color:'auto'}]:[];const nR=rows.length;
  // 表頭／合計：自動判斷的結果直接寫進狀態（核取方塊＝唯一真相）
- const out={rows,title:keepTitle?prev.title:'',pin:keepTitle&&!!prev.pin,unit:'',note:'',his,rules:[],bold:S.auto.key,align:{},fmt:{},header:!!S.auto.head,lastTotal:S.auto.key.includes(nR-1),hcol:!!prev.hcol,cw:null,hiStyle:prev.hiStyle||null,keep};
+ const out={rows,title:keepTitle?prev.title:'',pin:keepTitle&&!!prev.pin,unit:update?prev.unit||'':'',note:update?prev.note||'':'',his,rules:[],bold:S.auto.key,align:{},fmt:{},types:{},formats:{},header:!!S.auto.head,lastTotal:S.auto.key.includes(nR-1),hcol:!!prev.hcol,cw:null,hiStyle:prev.hiStyle||null,keep};
  // 沿用目前樣式（預設開）：依「欄名」對應；欄名對不上但欄數相同時依位置對應
  if(keep&&Array.isArray(prev.rows)&&prev.rows[0]){const oh=prev.rows[0].map(x=>String(x).trim()),nh=(rows[0]||[]).map(x=>String(x).trim());const same=oh.length===nh.length;
   const map=c=>{const n=oh[c];const j=n?nh.indexOf(n):-1;if(j>=0)return j;return same&&c<nh.length?c:-1;};
   out.rules=(prev.rules||[]).map(r=>{const c=map(r.c);return c>0?Object.assign({},r,{c}):null;}).filter(Boolean);
   const hs=(prev.his||[]).filter(h=>h.type==='col').map(h=>{const i=map(h.i);return i>=0?Object.assign({},h,{i}):null;}).filter(Boolean);if(hs.length)out.his=hs;
-  const mv=o=>{const r={};Object.entries(o||{}).forEach(([c,v])=>{const j=map(+c);if(j>=0)r[j]=v;});return r;};out.fmt=mv(prev.fmt);out.align=mv(prev.align);
-  out.unit=prev.unit||'';out.note=prev.note||'';if(prev.legend)out.legend=prev.legend;}
+  const mv=o=>{const r={};Object.entries(o||{}).forEach(([c,v])=>{const j=map(+c);if(j>=0)r[j]=v;});return r;};out.fmt=mv(prev.fmt);out.align=mv(prev.align);out.types=mv(prev.types);out.formats=mv(prev.formats);
+  if(prev.legend)out.legend=prev.legend;}
  return out;}
 /* v10 表格強調（最多 3 個：欄／列／單格，各自選色）＋條件規則（最多 3 條：數字欄 比較 值 → 上色）。
    T.his=[{type:'col'|'row'|'cell',i,r,c,color:'auto'|'P'|'A'|'alert'}]；舊版 T.hi={type,i} 自動轉換。
@@ -2186,6 +2221,7 @@ function fwHelp(name){name=String(name||'');const h=FW_HELP.find(([k])=>name.ind
 function fwNotes(sl){const seen=new Set();const out=[];(sl.groups||[]).forEach(g=>{const h=fwHelp(g.name);if(!h||seen.has(h.name))return;seen.add(h.name);
  out.push(`【${h.name}｜${h.en}】\n什麼時候用：${h.when}\n怎麼填：\n${h.how.map((t,i)=>(i+1)+'. '+t).join('\n')}\n示範文案：${h.sample}`);});return out.join('\n\n');}
 function toPptx(pptx,model){
+ assertTableExportComplete(model);
  if(model.W&&Math.abs(model.W-W)>.001){pptx.defineLayout({name:'KIT_'+model.k,width:model.W,height:model.H});pptx.layout='KIT_'+model.k;}else pptx.layout='LAYOUT_WIDE';pptx.title='精緻圖解元件庫 · '+(model.params.zh||'自訂風格');pptx.author='PPT Style Studio';
  const KI={};model.slides.forEach((sl,i)=>{if(!(sl.key in KI))KI[sl.key]=i+1;});
  model.slides.forEach(sl=>{const s=pptx.addSlide();s.background={color:'FFFFFF'};
@@ -2345,7 +2381,8 @@ async function addFwNotes(zip,model){const esc=t=>String(t).replace(/[&<>"]/g,c=
   const ps=nt.split('\n').map(l=>l?`<a:p><a:r><a:rPr lang="zh-TW" altLang="en-US" sz="1200"${/^【/.test(l)?' b="1"':''} dirty="0"/><a:t>${esc(l)}</a:t></a:r></a:p>`:'<a:p><a:endParaRPr lang="zh-TW" altLang="en-US" sz="1200" dirty="0"/></a:p>').join('');
   const y=x.replace(/(<p:ph type="body" idx="1"\/><\/p:nvPr><\/p:nvSpPr><p:spPr\/><p:txBody><a:bodyPr\/><a:lstStyle\/>)[\s\S]*?(<\/p:txBody>)/,(m,a,b)=>a+ps+b);if(y!==x){zip.file(f,y);n++;}}
  return n;}
-async function exportPptx(env,params,opt){opt=opt||{};const model=opt.model||buildModel(params,{only:opt.only,examples:opt.examples,labels:opt.labels});
+async function exportPptx(env,params,opt){opt=opt||{};const model=opt.model||buildModel(params,{only:opt.only,examples:opt.examples,labels:opt.labels,table:opt.table});
+ assertTableExportComplete(model);
  const pptx=new env.PptxGenJS();toPptx(pptx,model);
  const buf=await pptx.write({outputType:'arraybuffer'});const zip=await env.JSZip.loadAsync(buf);const patched=await patchZip(zip,model);
  await addFwNotes(zip,model);
@@ -2599,7 +2636,7 @@ function trayModel(entries,opt){opt=opt||{};const C=opt.compose||{};const parts=
  return{slides:[{key:'tray',title:'待選素材',no:1,items,groups,frameN:frame?frame.items.length:0}],warns:[],params:Object.assign({},(parts[0]||{}).params||BASE,{zh:'待選素材'}),
   tray:{n:parts.length,skipped,scale:ks.length?Math.round(Math.min(...ks)*100)/100:1,layout,minSize,notes:warns,unify:!!C.unify}};}
 /* 表格 → 剪貼簿 HTML（貼到 PowerPoint 會成為原生表格；強調框改成該欄／列的外框線，灰色底板不帶過去） */
-function tableHtml(model){const sl=model.slides[0];const tb=sl.items.find(i=>i.t==='tbl');if(!tb)return '';const T=sl.table||{};const BX=T.boxes||(T.hi?[T.hi]:[]);const n=tb.cells.length;
+function tableHtml(model){assertTableExportComplete(model);const sl=model.slides[0];if(!sl)return ''; const tb=sl.items.find(i=>i.t==='tbl');if(!tb)return '';const T=sl.table||{};const BX=T.boxes||(T.hi?[T.hi]:[]);const n=tb.cells.length;
  const pt=v=>+(v*72).toFixed(1)+'pt';
  let h=`<table style="border-collapse:collapse;table-layout:fixed;width:${pt(tb.w)};font-family:${fstack(T.font||'Microsoft JhengHei').replace(/"/g,"'")}">`;
  h+='<colgroup>'+tb.colW.map(w=>`<col style="width:${pt(w)}">`).join('')+'</colgroup>';
@@ -2630,6 +2667,6 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
  if(p.tbPanel&&!p.tbLook){out.tbLook='card';out.tbCard='grey';}if(p.tbLook==='panel')out.tbCard='grey';
  return out;}
-const api={FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
+const api={FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);

@@ -6,13 +6,19 @@
   "scripts": {
     "gen": "node gen.js",
     "review": "bash review.sh",
-    "test": "python3 tools/stylekit_assets_test.py && node tools/test.js"
+    "test": "python3 tools/stylekit_assets_test.py && npm run test:table && node tools/test.js",
+    "test:table": "node tools/table_model_integrity_test.js && node tools/table_workbench_test.js --model-only && node tools/table_workbench_test.js --dom-only",
+    "test:table-ui": "node tools/table_workbench_test.js --browser-only",
+    "test:table-dom": "node tools/table_workbench_test.js --dom-only"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "pptxgenjs": "3.12.0",
-    "jszip": "3.10.2"
+    "jszip": "3.10.2",
+    "pptxgenjs": "3.12.0"
+  },
+  "devDependencies": {
+    "jsdom": "26.1.0"
   }
 }
