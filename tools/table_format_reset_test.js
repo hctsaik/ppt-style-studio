@@ -1,0 +1,76 @@
+/* Table reset and preview decoration: source/bundle DOM + native export regressions.
+ * These checks do not certify real-browser pointer layout or PowerPoint rendering. */
+'use strict';
+const fs=require('fs'),path=require('path'),assert=require('assert/strict');
+const {JSDOM,VirtualConsole,ResourceLoader}=require('jsdom');
+const D=require('../deck.js'),JSZip=require('jszip'),PptxGenJS=require('pptxgenjs');
+const ROOT=path.resolve(__dirname,'..');
+async function main(){
+ const errors=[],vc=new VirtualConsole();vc.on('jsdomError',e=>{if(!/navigation|HTMLCanvasElement|scrollTo/.test(e.message))errors.push(e.message);});
+ class Resources extends ResourceLoader{fetch(url){const p=path.join(ROOT,path.basename(new URL(url).pathname));return fs.existsSync(p)?Promise.resolve(fs.readFileSync(p)):null;}}
+ const source=fs.readFileSync(path.join(ROOT,process.env.STUDIO_HTML||'studio.html'),'utf8').replace('function buildTableUI(){','window.__resetEval=code=>eval(code);function buildTableUI(){');
+ const dom=new JSDOM(source,{url:'http://reset.test/studio.html',runScripts:'dangerously',resources:new Resources(),pretendToBeVisual:true,virtualConsole:vc,beforeParse(w){w.matchMedia=q=>({matches:false,media:q,addListener(){},addEventListener(){}});w.HTMLElement.prototype.scrollIntoView=function(){};w.HTMLElement.prototype.animate=()=>({finished:Promise.resolve()});w.HTMLCanvasElement.prototype.getContext=()=>({font:'',measureText:t=>({width:String(t).length*50})});w.scrollTo=()=>{};w.confirm=()=>true;}});
+ const w=dom.window,d=w.document,sleep=ms=>new Promise(r=>setTimeout(r,ms));
+ const $=s=>{const el=d.querySelector(s);assert(el,'Missing '+s);return el;},click=s=>$(s).click(),run=code=>w.__resetEval(code),json=code=>JSON.parse(run('JSON.stringify('+code+')')),snap=()=>run('snapT()'),hist=()=>json('HIST.a'),svg=()=>$('#tPrev .tsvg').innerHTML;
+ const event=(el,type,props={})=>el.dispatchEvent(new w.MouseEvent(type,{bubbles:true,cancelable:true,...props}));
+ const key=(el,k,props={})=>el.dispatchEvent(new w.KeyboardEvent('keydown',{bubbles:true,cancelable:true,key:k,...props}));
+ const cell=(r=1,c=1)=>$(`#tPrev .tc[data-r="${r}"][data-c="${c}"]`),preview=()=>run("RANGE_OPEN=true;RANGE_TOUCH=false;renderRangePanel();previewRangePreset('rose')");
+ const seed=(extra='')=>run(`cancelRangePreview();closeChip();T={rows:[['名稱','數值','代碼'],['項目 A','9007199254740993','00123'],['多行\\n名稱','0.1234567890',''],['合計','1000.12300',' A B ']],title:' 精確標題 ',unit:' 原單位 ',note:'註腳\\n來源',pin:true,keep:false,legend:{focus:'自訂圖例'},his:[{type:'range',r0:1,c0:1,r1:2,c1:2,presetId:'mint',kind:'focus',color:'auto'},{type:'col',i:1,kind:'rec',color:'auto'}],hi:{type:'col',i:2},rules:[{c:1,op:'<',v:3,tone:'warn',style:'text'}],bold:[1,3],align:{1:'center'},fmt:{1:{dec:1,pct:true}},types:{1:'number'},formats:{1:'grouped'},header:false,lastTotal:false,hcol:true,cw:[3,4,2],hiStyle:'box'};S.base='navy';S.p=Object.assign(templateParams(S.base),{size:'L',P:'226677',A:'C36334',bFont:'Arial',tbPad:'l',tbH:'left',tbDense:'dense',tbLook:'zebra',tbMinus:'bracket',tbNeg:true,tbArrow:'sem',tbThou:false,tbStatus:false,tbWidth:'fill',tbV:'top',tbAuto:false,tbFont:'noto',tbTight:true,tbHiColor:'alert',tbHiMode:'box',tbCard:'grey',tbSugTitle:false,tbPanel:true,tbTitleInk:'FF0000'});${extra};HIST.a=[];HIST.i=-1;HIST.lock=false;clearTimeout(HIST.t);saveT();pushHist(true);renderGrid(true);renderTable();showSec('look');persist();`);
+ const defaults={his:[],rules:[],bold:[],align:{},fmt:{},types:{},formats:{},header:'auto',lastTotal:null,hcol:false,cw:null,hiStyle:null};
+ let passed=0;async function test(name,fn){await fn();passed++;console.log('PASS '+name);}
+ try{
+ await new Promise(r=>w.addEventListener('load',r));await sleep(120);click('#tabs [data-tab="table"]');await sleep(60);
+ await test('reset action is only inside Appearance and has data-preserving tooltip',()=>{assert.equal($('#tFormatReset').textContent,'還原全部格式');assert.equal($('#tFormatReset').title,'保留資料，還原此表格格式');assert.equal($('#tFormatReset').closest('.tsec').dataset.sec,'look');click('.tinsTabs [data-t="data"]');assert.equal(w.getComputedStyle($('#tFormatReset').closest('.tsec')).display,'none');click('.tinsTabs [data-t="look"]');assert.notEqual(w.getComputedStyle($('#tFormatReset').closest('.tsec')).display,'none');});
+ await test('reset clears every table format and legacy alias but preserves exact content and all globals',()=>{
+  seed();const before=json('T'),globals=json('Object.fromEntries(Object.entries(S.p).filter(([k])=>!TABLE_FORMAT_KEYS.includes(k)))'),base=run('S.base'),slides=json('D.buildModel(S.p,{examples:true,labels:S.labels}).slides');
+  const count=hist().length;click('#tFormatReset');const after=json('T');for(const [k,v]of Object.entries(defaults))assert.deepEqual(after[k],v,k);assert(!Object.hasOwn(after,'hi'));for(const k of ['rows','title','unit','note','pin','keep','legend'])assert.deepEqual(after[k],before[k],k);
+  assert.equal(run('S.base'),base);assert.deepEqual(json('Object.fromEntries(Object.entries(S.p).filter(([k])=>!TABLE_FORMAT_KEYS.includes(k)))'),globals);assert.deepEqual(json('D.buildModel(S.p,{examples:true,labels:S.labels}).slides'),slides);
+  assert(run('TABLE_FORMAT_KEYS.every(k=>JSON.stringify(S.p[k])===JSON.stringify(templateParams(S.base)[k]))'));assert(!run("Object.prototype.hasOwnProperty.call(S.p,'tbPanel')||Object.prototype.hasOwnProperty.call(S.p,'tbTitleInk')"));assert.equal($('#tArrow').value,run('S.p.tbArrow'));assert.equal(hist().length,count+1);
+ });
+ await test('one undo restores all legacy formatting exactly; immediate redo and repeated reset are stable',async()=>{
+  seed();const before=snap(),count=hist().length;click('#tFormatReset');const after=snap();assert.equal(hist().length,count+1);click('#tUndo');assert.equal(snap(),before);assert.equal(w.localStorage.getItem('ppt-studio-table'),run('JSON.stringify(T)'));click('#tRedo');assert.equal(snap(),after);const history=hist();click('#tFormatReset');assert.deepEqual(hist(),history);await sleep(400);assert.deepEqual(hist(),history);assert.equal(snap(),after);
+ });
+ await test('history restores absence as well as presence for legacy table parameters',()=>{
+  seed();run("delete S.p.tbPanel;delete S.p.tbTitleInk;HIST.a=[];HIST.i=-1;pushHist(true);S.p.tbPanel=true;S.p.tbTitleInk='ABCDEF';pushHist(true)");click('#tUndo');assert(!run("Object.prototype.hasOwnProperty.call(S.p,'tbPanel')||Object.prototype.hasOwnProperty.call(S.p,'tbTitleInk')"));click('#tRedo');assert.equal(run('S.p.tbPanel'),true);assert.equal(run('S.p.tbTitleInk'),'ABCDEF');click('#tFormatReset');click('#tUndo');assert.equal(run('S.p.tbPanel'),true);assert.equal(run('S.p.tbTitleInk'),'ABCDEF');
+ });
+ await test('a pending previous edit is flushed before reset, with no extra reset undo step',()=>{
+  seed();run("T.align[2]='right';saveT()");const before=snap(),count=hist().length;click('#tFormatReset');assert.equal(hist().length,count+2);click('#tUndo');assert.equal(snap(),before);const count2=hist().length;click('#tFormatReset');assert.equal(hist().length,count2);click('#tUndo');assert.equal(snap(),before);
+ });
+ await test('raw ragged matrix, blank rows and precision survive reset plus undo without normalization',()=>{
+  seed("T.rows=[['碼','數值','備註'],['00123','9007199254740993'],[],['','0.000000000123','末列\\n']] ");const before=snap(),rows=run('JSON.stringify(T.rows)');click('#tFormatReset');assert.equal(run('JSON.stringify(T.rows)'),rows);click('#tUndo');assert.equal(snap(),before);assert.equal(run('JSON.stringify(T.rows)'),rows);
+ });
+ await test('an already-default table and an empty table create no undo entries',()=>{
+  for(const rows of ["[['a','b'],['c','d']]",'[]']){run(`closeChip();T={rows:${rows},title:'',unit:'',note:'',his:[],rules:[],fmt:{},header:'auto',cw:null};S.p=templateParams(S.base);HIST.a=[];HIST.i=-1;saveT();pushHist(true);renderTable();`);const before=snap(),history=hist();click('#tFormatReset');assert.equal(snap(),before);assert.deepEqual(hist(),history);}
+ });
+ await test('inline edit commits before reset and reset undo never discards the new raw text',()=>{
+  seed();event(cell(),'dblclick');const ed=$('.trange-editor');ed.value='00123\n新資料';const before=json('T'),count=hist().length;click('#tFormatReset');assert(!d.querySelector('.trange-editor'));assert.equal(json('T').rows[1][1],'00123\n新資料');assert.equal(hist().length,count+2);click('#tUndo');const restored=json('T');before.rows[1][1]='00123\n新資料';assert.deepEqual(restored,before);click('#tUndo');assert.equal(json('T').rows[1][1],'9007199254740993');
+ });
+ await test('IME composition blocks reset and retains editor, pending characters and history',()=>{
+  seed();event(cell(),'dblclick');const ed=$('.trange-editor'),before=snap(),history=hist();ed.dispatchEvent(new w.CompositionEvent('compositionstart',{bubbles:true}));ed.value='輸入中';click('#tFormatReset');assert.strictEqual($('.trange-editor'),ed);assert.equal(ed.value,'輸入中');assert.equal(snap(),before);assert.deepEqual(hist(),history);assert($('#tRangeStatus').textContent.includes('完成中文輸入'));ed.dispatchEvent(new w.CompositionEvent('compositionend',{bubbles:true}));click('#tFormatReset');assert.equal(json('T').rows[1][1],'輸入中');click('#tUndo');assert.equal(json('T').rows[1][1],'輸入中');
+ });
+ await test('workbench IME composition also blocks reset',()=>{seed();const ed=$('#tGrid td[data-r="1"][data-c="1"]');ed.dispatchEvent(new w.CompositionEvent('compositionstart',{bubbles:true}));const before=snap();click('#tFormatReset');assert.equal(snap(),before);ed.dispatchEvent(new w.CompositionEvent('compositionend',{bubbles:true}));click('#tFormatReset');assert.notEqual(snap(),before);});
+ await test('all four previews hide only selection chrome, retaining logical selection and native candidate paint',()=>{
+  seed();run('setRange({r:1,c:0},{r:2,c:2});RANGE_OPEN=true;renderRangePanel()');const before=snap(),history=hist(),committed=svg(),selection=json('TRANGE'),model=json('TM'),selected=d.querySelectorAll('#tPrev .tc[aria-selected="true"]').length;
+  for(const family of ['fill','outline','underline','side']){run(`RANGE_FAMILY='${family}';renderRangePanel()`);assert.notEqual(w.getComputedStyle($('.trange-outline')).visibility,'hidden');preview();assert($('#tPrev').classList.contains('range-preview'));assert.equal(w.getComputedStyle($('.trange-outline')).visibility,'hidden');assert.equal(w.getComputedStyle($('#tPrev .tcw')).visibility,'hidden');assert.equal(d.querySelectorAll('#tPrev .tc[aria-selected="true"]').length,selected);assert.deepEqual(json('TRANGE'),selection);assert($('#tHLHint').textContent.includes('6'));assert.notEqual(svg(),committed);assert.equal(snap(),before);assert.deepEqual(hist(),history);assert.deepEqual(json('TM'),model);
+   const expected=run("D.toSvg((()=>{const next=D.tableApplyRange(T,TRANGE,'rose',RANGE_FAMILY),sl=D.buildModel(S.p,{table:Object.assign({},T,{his:next.his})}).slides[TPAGE];return Object.assign({},sl,{items:sl.items.filter(i=>!['表格標題','單位','註腳'].includes(i.name))});})(),{id:'tp'})");const probe=d.createElement('div');probe.innerHTML=expected;assert.equal(svg(),probe.innerHTML);assert.notEqual(w.getComputedStyle($('#tPrev .tsvg')).visibility,'hidden');run('cancelRangePreview()');assert.equal(svg(),committed);assert.notEqual(w.getComputedStyle($('.trange-outline')).visibility,'hidden');assert(!$('#tPrev').classList.contains('range-preview'));
+  }
+ });
+ await test('leave, Escape, Cancel, family switch, blur, render and reset restore decoration without stale preview',()=>{
+  seed();run('setRange({r:1,c:1},{r:2,c:2});RANGE_OPEN=true;renderRangePanel()');const selected=json('TRANGE');
+  const actions=[()=>event($('[data-range-preset="rose"]'),'pointerout'),()=>key($('[data-range-preset="rose"]'),'Escape'),()=>click('[data-range-action="cancel"]'),()=>click('[data-range-family="outline"]'),()=>w.dispatchEvent(new w.Event('blur')),()=>run('renderTable(true)'),()=>click('#tFormatReset')];
+  for(const action of actions){preview();assert($('#tPrev').classList.contains('range-preview'));action();assert.equal(run('RANGE_PREVIEW'),null);assert(!$('#tPrev').classList.contains('range-preview'));assert.deepEqual(json('TRANGE'),selected);assert.notEqual(w.getComputedStyle($('.trange-outline')).visibility,'hidden');}
+  preview();click('.tinsTabs [data-t="data"]');assert.equal(run('RANGE_PREVIEW'),null);assert(!$('#tPrev').classList.contains('range-preview'));click('.tinsTabs [data-t="look"]');assert(!$('#tPrev').classList.contains('range-preview'));
+ });
+ await test('touch Apply and no-op apply restore selection chrome; opening a palette alone never hides it',()=>{
+  seed();run('setRange({r:1,c:1},{r:2,c:2});RANGE_TOUCH=true;RANGE_OPEN=true;renderRangePanel()');assert(!$('#tPrev').classList.contains('range-preview'));click('[data-range-preset="amber"]');assert($('#tPrev').classList.contains('range-preview'));click('[data-range-action="apply"]');assert(!$('#tPrev').classList.contains('range-preview'));const history=hist();click('[data-range-preset="amber"]');assert($('#tPrev').classList.contains('range-preview'));click('[data-range-action="apply"]');assert(!$('#tPrev').classList.contains('range-preview'));assert.deepEqual(hist(),history);assert.notEqual(w.getComputedStyle($('.trange-outline')).visibility,'hidden');
+ });
+ await test('a rejected candidate never hides the selection outline',()=>{seed("T.his=Array.from({length:12},(_,i)=>({type:'range',r0:Math.floor(i/3),r1:Math.floor(i/3),c0:i%3,c1:i%3,presetId:'mint',kind:'focus',color:'auto'}))");run("setRange({r:0,c:0},{r:3,c:2});RANGE_FAMILY='side';RANGE_OPEN=true;renderRangePanel();previewRangePreset('rose')");assert.equal(run('RANGE_PREVIEW'),null);assert(!$('#tPrev').classList.contains('range-preview'));assert.notEqual(w.getComputedStyle($('.trange-outline')).visibility,'hidden');});
+ await test('reset native PPTX keeps all original text; active preview never enters HTML/model export',async()=>{
+  seed();click('#tFormatReset');const table=json('T'),params=json('S.p'),model=json('TM'),baseHtml=D.tableHtml(model);run('setRange({r:1,c:1},{r:2,c:2})');preview();assert.equal(D.tableHtml(json('TM')),baseHtml);assert.deepEqual(json('T'),table);assert.deepEqual(json('TM'),model);
+  const result=await D.exportPptx({PptxGenJS,JSZip},params,{model,type:'nodebuffer'}),zip=await JSZip.loadAsync(result.data),xml=await zip.file('ppt/slides/slide1.xml').async('string');const x=new JSDOM(xml,{contentType:'application/xml'}).window.document;
+  assert.equal(x.getElementsByTagName('a:tbl').length,1);const matrix=Array.from(x.getElementsByTagName('a:tr'),row=>Array.from(row.getElementsByTagName('a:tc'),c=>Array.from(c.getElementsByTagName('a:p'),p=>Array.from(p.getElementsByTagName('a:t'),t=>t.textContent).join('')).join('\n')));assert.deepEqual(matrix,table.rows);assert(!xml.includes('trange-outline'));assert(!xml.includes('2563EB'));for(const v of [table.title.trim(),table.unit.trim(),'註腳','來源'])assert(xml.includes(v));run('cancelRangePreview()');
+ });
+ assert.deepEqual(errors,[]);console.log(`${passed} reset/preview checks passed (${process.env.STUDIO_HTML||'studio.html'}; not real-browser certification).`);
+ }finally{dom.window.close();}
+}
+main().catch(e=>{console.error(e);process.exitCode=1;});

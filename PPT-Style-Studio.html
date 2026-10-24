@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%226%22 fill=%22%231F4E79%22/%3E%3C/svg%3E">
-<!-- PPT Style Studio 單檔版（自動產生於 2026-10-25 07:28，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
+<!-- PPT Style Studio 單檔版（自動產生於 2026-10-25 07:39，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
 <title>PPT Style Studio · 圖解元件客製工作室｜新需求請寄信給 HCTSAIK，謝謝</title>
 <style>
 :root{--ink:#3A3A3A;--t2:#595959;--mu:#8C8C8C;--line:#E4E4E4;--fill:#F6F6F6;--p:#1F4E79}
@@ -403,6 +403,8 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 #tPrev .tov{user-select:none}#tPrev .tc{touch-action:pan-x pan-y}
 #tPrev.range-active .tc.sel,#tPrev.range-active .tc.gsel,#tPrev.range-active .tc:hover{background:transparent;box-shadow:none;outline:none}
 .trange-outline{position:absolute;pointer-events:none;z-index:5;border:2px solid #2563EB;box-shadow:0 0 0 1px #FFFFFF;box-sizing:border-box;background:transparent}
+#tPrev.range-preview .trange-outline,#tPrev.range-preview .tcw{visibility:hidden}
+#tPrev.range-preview .tc{background:transparent;box-shadow:none;outline:none}
 .trange-outline::after{content:"";position:absolute;width:5px;height:5px;right:-3px;bottom:-3px;background:#2563EB;border:1px solid white}
 .trange-label{font-size:12px;color:#526477;line-height:1.5}.trange-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:10px 0}.trange-actions button{min-height:36px}
 .trange-palette{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}.trange-card{border:1px solid #DDE3EB;border-radius:9px;background:white;padding:8px;text-align:left;cursor:pointer;min-width:0;color:#243750}
@@ -536,6 +538,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
         <div id="tRules" hidden></div>
 </section>
 <h3>外觀</h3>
+      <div class="trow"><button class="btn" id="tFormatReset" title="保留資料，還原此表格格式">還原全部格式</button></div>
       <div class="tbar1"><div class="tlstrip" id="tLStrip" role="group" aria-label="外觀（快速切換）"></div></div><div class="tlooks" id="tLooks" hidden></div>
         <div class="trow"><label>風格</label><select id="tStyle" aria-label="風格（顏色、字型）"></select></div>
         <div class="trow"><label>尺寸</label><span class="tseg" data-tp="size"><button data-v="S">S</button><button data-v="M">M</button><button data-v="L">L</button></span><label class="ttg"><input type="checkbox" data-tk="tbAuto"> 列少自動放大</label></div>
@@ -7507,13 +7510,15 @@ const sampleOf=k=>{const t=clone(T_SAMPLES[k]);const A=D.tableAuto(t.rows);retur
 let T=(()=>{try{const t=JSON.parse(localStorage.getItem(TKEY)||'null');if(t&&Array.isArray(t.rows)){t.rows=t.rows.filter(Array.isArray).map(r=>r.map(c=>D.stripCtl(c)));['title','unit','note'].forEach(k=>t[k]=D.stripCtl(t[k]));return t;}}catch(e){}return sampleOf('yield');})();
 const saveT=()=>{try{localStorage.setItem(TKEY,JSON.stringify(T));}catch(e){}pushHist();};
 // 復原／重做：表格資料＋表格相關設定（外觀、寬度、位置、字型、負數…）
-const HKEYS=['tbPad','tbH','tbDense','tbLook','tbMinus','tbNeg','tbArrow','tbThou','tbStatus','tbWidth','tbV','tbAuto','tbFont','tbTight','size'];
+// Only table-specific parameters reset; global size/theme also affect other slides.
+const TABLE_FORMAT_KEYS=[...Object.keys(D.BASE).filter(k=>k.startsWith('tb')),'tbPanel','tbTitleInk'];
+const HKEYS=[...TABLE_FORMAT_KEYS,'size'];
 const HIST={a:[],i:-1,t:0,lock:false};
 const snapT=()=>JSON.stringify({T,p:Object.fromEntries(HKEYS.map(k=>[k,S.p[k]]))});
 function pushHist(now){if(HIST.lock)return;clearTimeout(HIST.t);const go=()=>{const v=snapT();if(HIST.a[HIST.i]===v)return;HIST.a=HIST.a.slice(0,HIST.i+1);HIST.a.push(v);if(HIST.a.length>80)HIST.a.shift();HIST.i=HIST.a.length-1;histBtns();};if(now)go();else HIST.t=setTimeout(go,350);}
 function histBtns(){['tUndo','tWorkUndo'].forEach(id=>{const el=$('#'+id);if(el)el.disabled=HIST.i<=0;});['tRedo','tWorkRedo'].forEach(id=>{const el=$('#'+id);if(el)el.disabled=HIST.i>=HIST.a.length-1;});}
 function histGo(d){cancelRangePreview();clearTimeout(HIST.t);const v=snapT();if(HIST.a[HIST.i]!==v){HIST.a=HIST.a.slice(0,HIST.i+1);HIST.a.push(v);HIST.i=HIST.a.length-1;}
- const j=HIST.i+d;if(j<0||j>=HIST.a.length)return;HIST.i=j;const o=JSON.parse(HIST.a[j]);HIST.lock=true;T=o.T;Object.assign(S.p,o.p);try{localStorage.setItem(TKEY,JSON.stringify(T));}catch(e){}closeChip();renderGrid(true);renderAll();schedule();setTimeout(()=>{HIST.lock=false;},60);histBtns();toast(d<0?'已復原':'已重做',1200);}
+ const j=HIST.i+d;if(j<0||j>=HIST.a.length)return;HIST.i=j;const o=JSON.parse(HIST.a[j]);HIST.lock=true;T=o.T;HKEYS.forEach(k=>{if(Object.prototype.hasOwnProperty.call(o.p,k))S.p[k]=o.p[k];else delete S.p[k];});try{localStorage.setItem(TKEY,JSON.stringify(T));}catch(e){}closeChip();renderGrid(true);renderTable();syncPanel();schedule();HIST.lock=false;histBtns();toast(d<0?'已復原':'已重做',1200);}
 // Quoted CSV/TSV parser: delimiter detection never treats an identifier as a thousands group.
 let IMPORT_ERROR='';
 function importNotice(text){IMPORT_ERROR=text||'';const el=$('#tImportNotice');if(el)el.textContent=IMPORT_ERROR;window.__studio.importNotice=IMPORT_ERROR;}
@@ -7636,9 +7641,9 @@ function syncTableUI(){fixT();renderGrid();renderTableOpts();}
 function renderTableOpts(){const hv=T.header==null||T.header==='auto'?'auto':T.header?'1':'0';
  $('#tHead').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===hv)));{const AU=D.tableAuto(T.rows.map(r=>r.map(c=>String(c))),T);$('#tHRow').checked=T.header==null||T.header==='auto'?AU.head:!!T.header;$('#tLast').checked=T.lastTotal!=null?!!T.lastTotal:AU.key.includes(T.rows.length-1);$('#tHCol').checked=!!T.hcol;
   const sec=document.querySelector('.tsec[data-sec="data"]');if(sec)sec.classList.toggle('empty',!T.rows.length);$('#tUndoPaste').hidden=!PREV_T;}
- if(S.p.tbFont==='noto')S.p.tbFont='jh';/* Noto 選項已移除 → 微軟正黑體 */
- document.querySelectorAll('[data-tp]').forEach(el=>{const k=el.dataset.tp;const v=String((k==='tbDense'&&(S.p[k]==='auto'||S.p[k]==='compact')?(S.p[k]==='compact'?'dense':''):S.p[k])||({size:'M',tbMinus:'auto',tbWidth:'auto',tbV:'center',tbH:'center',tbFont:'jh',tbPad:'m',tbDense:'normal'})[k]);el.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));});
+ document.querySelectorAll('[data-tp]').forEach(el=>{const k=el.dataset.tp;const v=String((k==='tbFont'&&S.p[k]==='noto'?'jh':k==='tbDense'&&(S.p[k]==='auto'||S.p[k]==='compact')?(S.p[k]==='compact'?'dense':''):S.p[k])||({size:'M',tbMinus:'auto',tbWidth:'auto',tbV:'center',tbH:'center',tbFont:'jh',tbPad:'m',tbDense:'normal'})[k]);el.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));});
  document.querySelectorAll('[data-tk]').forEach(el=>{const k=el.dataset.tk;el.checked=k==='tbNeg'||k==='tbTight'?!!S.p[k]:S.p[k]!==false;});
+ $('#tArrow').value=S.p.tbArrow||'mono';
  const ss=$('#tStyle');if(!ss.options.length)ss.innerHTML=D.PRESETS.map(p=>`<option value="${p.id}">${escH(p.zh)}</option>`).join('');ss.value=S.base;}
 function renderAll(){syncTableUI();renderTable();}
 const pc=(v,t)=>(v/t*100).toFixed(3)+'%';
@@ -7722,7 +7727,7 @@ let RANGE_PREVIEW=null,RANGE_DRAG=null,RANGE_FRAME=0,RANGE_SUPPRESS_CLICK=false,
 const rangeKey=q=>q?`${q.r0}:${q.c0}:${q.r1}:${q.c1}`:'';
 function updateHLLauncher(){const b=$('#tHLLauncher button'),hint=$('#tHLHint');if(!b)return;b.disabled=false;b.setAttribute('aria-expanded',String(RANGE_OPEN));b.classList.toggle('pri',RANGE_OPEN);if(hint)hint.textContent=TRANGE?`已選 ${(TRANGE.r1-TRANGE.r0+1)*(TRANGE.c1-TRANGE.c0+1)} 格`:'先框選儲存格再套用';}
 function rangeStatus(text){document.querySelectorAll('#tRangeStatus,#tPop [data-range-status]').forEach(e=>e.textContent=text||'');}
-function cancelRangePreview(){if(!RANGE_PREVIEW)return;const p=RANGE_PREVIEW;RANGE_PREVIEW=null;const box=$('#tPrev .tsvg');if(box&&p.original!=null)box.innerHTML=p.original;rangeStatus('');document.querySelectorAll('.trange-card').forEach(b=>b.removeAttribute('data-preview'));}
+function cancelRangePreview(){const host=$('#tPrev');if(host)host.classList.remove('range-preview');if(!RANGE_PREVIEW)return;const p=RANGE_PREVIEW;RANGE_PREVIEW=null;const box=$('#tPrev .tsvg');if(box&&p.original!=null)box.innerHTML=p.original;rangeStatus('');document.querySelectorAll('.trange-card').forEach(b=>b.removeAttribute('data-preview'));}
 function stopRangeDrag(){if(RANGE_FRAME)cancelAnimationFrame(RANGE_FRAME);RANGE_FRAME=0;const d=RANGE_DRAG;RANGE_DRAG=null;if(d)try{$('#tPrev').releasePointerCapture(d.id);}catch(_){}document.body.classList.remove('range-dragging');}
 function clearRangeSelection(){cancelRangePreview();stopRangeDrag();TRANGE=RANGE_ANCHOR=RANGE_FOCUS=null;window.__studio.rangeSelection=null;RANGE_OPEN=false;RANGE_EXTEND=false;const P=$('#tPrev');if(P){P.classList.remove('range-active');P.querySelectorAll('.trange-outline').forEach(e=>e.remove());P.querySelectorAll('[aria-selected="true"]').forEach(e=>e.setAttribute('aria-selected','false'));}rangeStatus('');updateHLLauncher();}
 function rangeFromPoints(a,b){return D.tableNormalizeRange({r0:a.r,c0:a.c,r1:b.r,c1:b.c},T.rows.length,nCols());}
@@ -7737,7 +7742,7 @@ function rangeFamilyLabel(){return D.TABLE_HIGHLIGHT_FAMILIES.find(f=>f.id===RAN
 function rangeError(error){return error==='MARK_LIMIT'?'已達 12 個高亮範圍，請先清除不需要的範圍。':['INVALID_PRESET','INVALID_FAMILY'].includes(error)?'無法使用這個樣式。':'選取範圍已改變，請重新框選。';}
 function previewRangePreset(id){if(!TRANGE||!RANGE_OPEN||!rangePreset(id))return;const next=D.tableApplyRange(T,TRANGE,id,RANGE_FAMILY);if(next.error){cancelRangePreview();rangeStatus(rangeError(next.error));return;}const key=rangeKey(TRANGE);if(RANGE_PREVIEW&&RANGE_PREVIEW.id===id&&RANGE_PREVIEW.key===key&&RANGE_PREVIEW.family===RANGE_FAMILY)return;cancelRangePreview();const box=$('#tPrev .tsvg'),original=box.innerHTML;
  // Build a disposable model. TM remains the committed model used by every export path.
- const model=D.buildModel(S.p,{table:Object.assign({},T,{his:next.his})}),sl=model.slides[TPAGE];if(!sl)return;RANGE_PREVIEW={id,key,original,family:RANGE_FAMILY};box.innerHTML=D.toSvg(Object.assign({},sl,{items:sl.items.filter(i=>!['表格標題','單位','註腳'].includes(i.name))}),{id:'tp'});rangeStatus(`預覽：${rangeFamilyLabel()}・${rangePreset(id).label||rangePreset(id).name||id}，尚未套用`);const card=$(`[data-range-preset="${id}"]`);if(card)card.dataset.preview='true';}
+ const model=D.buildModel(S.p,{table:Object.assign({},T,{his:next.his})}),sl=model.slides[TPAGE];if(!sl)return;RANGE_PREVIEW={id,key,original,family:RANGE_FAMILY};$('#tPrev').classList.add('range-preview');box.innerHTML=D.toSvg(Object.assign({},sl,{items:sl.items.filter(i=>!['表格標題','單位','註腳'].includes(i.name))}),{id:'tp'});rangeStatus(`預覽：${rangeFamilyLabel()}・${rangePreset(id).label||rangePreset(id).name||id}，尚未套用`);const card=$(`[data-range-preset="${id}"]`);if(card)card.dataset.preview='true';}
 function commitRangePreset(id){if(!TRANGE){rangeStatus('先框選儲存格再套用。');return;}const target={...TRANGE},focusPreset=document.activeElement&&document.activeElement.dataset.rangePreset;cancelRangePreview();const next=id===null?D.tableClearRange(T,target):D.tableApplyRange(T,target,id,RANGE_FAMILY);if(next.error){rangeStatus(rangeError(next.error));return;}if(!next.changed){rangeStatus(id===null?'選取範圍沒有高亮配色。':'已經套用這個樣式。');return;}
  // Flush previous edits and commit immediately: one click is one history transaction.
  pushHist(true);T.his=next.his;saveT();pushHist(true);renderTable(true);if(focusPreset){const b=$(`[data-range-preset="${focusPreset}"]`);if(b){RANGE_SUPPRESS_FOCUS=true;b.focus({preventScroll:true});RANGE_SUPPRESS_FOCUS=false;}}rangeStatus(id===null?'已清除選取範圍的高亮配色。':'已套用，可按 Ctrl+Z 復原。');}
@@ -7752,7 +7757,7 @@ function renderRangePanel(){updateHLLauncher();const host=matchMedia('(max-width
 function rangeSampleStyle(p){if(RANGE_FAMILY==='fill')return `background:#${p.fill};color:#${p.color};border:1px solid #${p.border};`;
  const edge=RANGE_FAMILY==='underline'?'border-bottom':RANGE_FAMILY==='side'?'border-left':'border';return `background:#FFFFFF;color:#243750;border:0 solid transparent;${edge}:${p.borderWidth}pt solid #${p.stroke};`;
 }
-let CELL_EDIT=null;
+let CELL_EDIT=null,GRID_COMPOSING=false;
 function finishCellEdit(commit,redraw=true){const ed=CELL_EDIT;if(!ed)return false;if(ed.composing&&commit)return false;CELL_EDIT=null;const value=D.stripCtl(ed.el.value);ed.el.remove();if(commit&&T.rows[ed.r]&&T.rows[ed.r][ed.c]!==value){pushHist(true);T.rows[ed.r][ed.c]=value;saveT();pushHist(true);if(redraw)renderTable(true);}const cell=$(`#tPrev .tc[data-r="${ed.r}"][data-c="${ed.c}"]`);if(cell)cell.focus({preventScroll:true});return true;}
 function startCellEdit(cell){if(!cell)return;cancelRangePreview();finishCellEdit(true);const r=+cell.dataset.r,c=+cell.dataset.c;setRange({r,c},{r,c});const el=document.createElement('textarea');el.className='trange-editor';el.setAttribute('aria-label',`編輯 ${colLetter(c)}${r+1}，Enter 儲存，Esc 取消，Alt Enter 換行`);el.spellcheck=false;el.value=String(T.rows[r][c]??'');Object.assign(el.style,{left:cell.style.left,top:cell.style.top,width:cell.style.width,height:cell.style.height});const P=$('#tPrev');
  P.querySelector('.tov').appendChild(el);CELL_EDIT={r,c,el,composing:false};el.addEventListener('compositionstart',()=>{if(CELL_EDIT)CELL_EDIT.composing=true;});el.addEventListener('compositionend',()=>{if(CELL_EDIT)CELL_EDIT.composing=false;});el.addEventListener('keydown',e=>{e.stopPropagation();if(e.isComposing||e.keyCode===229||CELL_EDIT&&CELL_EDIT.composing)return;if(e.key==='Escape'){e.preventDefault();finishCellEdit(false);}else if(e.key==='Enter'&&!e.altKey&&!e.shiftKey){e.preventDefault();finishCellEdit(true);}else if(e.key==='Tab'){e.preventDefault();finishCellEdit(true);const nc=Math.max(0,Math.min(nCols()-1,c+(e.shiftKey?-1:1)));setRange({r,c:nc},{r,c:nc});const next=$(`#tPrev .tc[data-r="${r}"][data-c="${nc}"]`);if(next)next.focus();}});el.addEventListener('blur',()=>{if(CELL_EDIT&&CELL_EDIT.el===el)finishCellEdit(true);});el.focus();el.select();rangeStatus('編輯文字：Enter 儲存，Esc 取消；Alt＋Enter 換行。');}
@@ -7851,6 +7856,23 @@ function showSec(k){if(k==='data'){cancelRangePreview();RANGE_OPEN=false;for(con
  if(k==='look'&&(TRANGE||RANGE_OPEN))renderRangePanel();
  document.querySelectorAll('.tsteps .stp').forEach(b=>{if(b.dataset.go===k)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
  if(matchMedia('(max-width:900px)').matches)$('#tIns').classList.add('open');else{const sc=document.querySelector('#tIns .tsecs');if(sc)sc.scrollTop=0;}}
+// Reset is a table-only formatting transaction, not a reimport or sample load.
+// Do not call fixT/renderAll here: normalization can alter legacy marks or raw rows.
+function resetTableFormat(){
+ cancelRangePreview();
+ if(GRID_COMPOSING||CELL_EDIT&&CELL_EDIT.composing){rangeStatus('請先完成中文輸入，再還原格式。');return false;}
+ const edited=finishCellEdit(true,false),base=templateParams(S.base),nextT=Object.assign({},T),nextP=Object.assign({},S.p);
+ const defaults={his:[],rules:[],bold:[],align:{},fmt:{},types:{},formats:{},header:'auto',lastTotal:null,hcol:false,cw:null,hiStyle:null};
+ // Absent overrides already mean defaults, so an untouched table stays a no-op.
+ Object.entries(defaults).forEach(([k,v])=>{if(Object.prototype.hasOwnProperty.call(T,k))nextT[k]=clone(v);});
+ delete nextT.hi;
+ TABLE_FORMAT_KEYS.forEach(k=>{if(Object.prototype.hasOwnProperty.call(base,k))nextP[k]=clone(base[k]);else delete nextP[k];});
+ const changed=JSON.stringify(T)!==JSON.stringify(nextT)||TABLE_FORMAT_KEYS.some(k=>JSON.stringify(S.p[k])!==JSON.stringify(nextP[k]));
+ if(!changed){if(edited){renderGrid(true);renderTable(true);}toast('此表格已是預設格式',1800);return false;}
+ pushHist(true);T=nextT;TABLE_FORMAT_KEYS.forEach(k=>{if(Object.prototype.hasOwnProperty.call(nextP,k))S.p[k]=nextP[k];else delete S.p[k];});
+ saveT();pushHist(true);renderGrid(true);renderTable();syncPanel();persist();
+ toast('已還原此表格格式，資料保持不變；可按 Ctrl+Z 復原',2600);return true;
+}
 function buildTableUI(){
  const rawPaste=$('#tRawPaste');
  // Display the canonical matrix, not a second editable TSV draft. Keep native
@@ -7873,7 +7895,8 @@ function buildTableUI(){
  grid.addEventListener('click',e=>{const td=e.target.closest('td');if(td)selectGrid(+td.dataset.r,+td.dataset.c,false);});
  grid.addEventListener('focusin',e=>{const td=e.target.closest('td');if(!td)return;td._before=T.rows[+td.dataset.r][+td.dataset.c];pushHist(true);selectGrid(+td.dataset.r,+td.dataset.c,false);});
  grid.addEventListener('input',e=>{const td=e.target.closest('td');if(!td)return;T.rows[+td.dataset.r][+td.dataset.c]=D.stripCtl(td.textContent);if(!e.isComposing)gridTail(td);saveT();if(!e.isComposing){renderTable(true);selectGrid(+td.dataset.r,+td.dataset.c,false);}});
- grid.addEventListener('compositionend',()=>renderTable(true));
+ grid.addEventListener('compositionstart',()=>{GRID_COMPOSING=true;});
+ grid.addEventListener('compositionend',()=>{GRID_COMPOSING=false;renderTable(true);});
  grid.addEventListener('keydown',e=>{const td=e.target.closest('td');if(!td||e.isComposing||e.keyCode===229)return;const r=+td.dataset.r,c=+td.dataset.c;
   if((e.ctrlKey||e.metaKey)&&['z','y'].includes(e.key.toLowerCase())){e.preventDefault();e.stopPropagation();td.blur();histGo(e.key.toLowerCase()==='y'||e.shiftKey?1:-1);return;}
   if(e.key==='Escape'){e.preventDefault();e.stopPropagation();T.rows[r][c]=td._before??T.rows[r][c];td.textContent=T.rows[r][c];saveT();renderTable(true);td.blur();return;}
@@ -7892,6 +7915,8 @@ function buildTableUI(){
  $('#tWorkbenchPreview').onclick=e=>{const td=e.target.closest('.tc');if(td)selectGrid(+td.dataset.r,+td.dataset.c,true);};
  document.querySelectorAll('.twork-meta [data-meta]').forEach(el=>el.oninput=()=>{T[el.dataset.meta]=D.stripCtl(el.value);saveT();renderTable(true);});
  // 外觀
+ $('#tFormatReset').addEventListener('pointerdown',e=>{if(CELL_EDIT)e.preventDefault();});
+ $('#tFormatReset').onclick=e=>{e.stopPropagation();resetTableFormat();};
  $('#tArrow').value=S.p.tbArrow||'mono';$('#tArrow').onchange=e=>{S.p.tbArrow=e.target.value;schedule();pushHist();};
  $('#tLStrip').onclick=e=>{const b=e.target.closest('button[data-v]');if(!b)return;S.p.tbLook=b.dataset.v;schedule();pushHist();};
  $('#tLooks').onclick=e=>{const b=e.target.closest('.tlook');if(!b)return;S.p.tbLook=b.dataset.v;schedule();pushHist();};
