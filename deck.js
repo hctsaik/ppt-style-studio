@@ -1888,7 +1888,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   const MK=tableMarks(T,nC,rows.length),REC='176B70',WARN='875B1A';
   const his=MK.his.map(h=>Object.assign({},h,{C:h.type==='range'?tableHighlightPreset(h.presetId,st).color:h.kind==='warn'?WARN:h.kind==='rec'?REC:EC}));
   const hiCol=(r,c)=>his.find(h=>h.type==='col'&&tableMarkContains(h,r,c)),hiRow=(r,c)=>his.find(h=>h.type==='row'&&tableMarkContains(h,r,c)),hiCell=(r,c)=>his.find(h=>h.type==='cell'&&tableMarkContains(h,r,c));
-  const rangeAt=(r,c)=>r>=0&&r<rows.length&&c>=0&&c<nC?tableRangeWinner(his,r,c):null;
+  const rangeAt=(r,c)=>r>=0&&r<rows.length&&c>=0&&c<nC?tableRangeWinner(his,r,c,'fill'):null;
   const rangePaint=(o,r,c)=>{const mark=rangeAt(r,c);if(!mark)return o;const preset=tableHighlightPreset(mark.presetId,st);
    o.fill=preset.fill;o.color=preset.color;if(preset.bold!=null)o.bold=!!preset.bold;
    if(preset.border){const border={c:preset.border,w:preset.borderWidth||1.5};
@@ -2052,7 +2052,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    const ins=(st.tbPad==='none'?-3:3)*k/72,rad=4*k/72,blw=1.5*k;
    // Visual H/L never changes semantic marks. Mask legacy box paint only while
    // a visible manual range covers it; clearing that range reveals the semantics.
-   const visualRegions=his.filter(h=>h.type==='range').flatMap(h=>tableMarkRegions(h,rows.length,nC));
+   const visualRegions=his.filter(h=>h.type==='range'&&tableHighlightFamily(h)==='fill').flatMap(h=>tableMarkRegions(h,rows.length,nC));
    const localMarks=his.filter(h=>h.type!=='range').map(h=>visualRegions.length?Object.assign({},h,{excludes:[...(h.excludes||[]),...visualRegions]}):h).map(h=>{if(h.type==='col')return h;const local=sourceRows.indexOf(h.type==='row'?h.i:h.r);return local<0?null:Object.assign({},h,h.type==='row'?{i:local}:{r:local});}).filter(Boolean);
    if(hiStyle==='box')localMarks.forEach(h=>{
     if(h.excludes&&h.excludes.length){tableMarkRegions(h,sourceRows.length,nC).forEach(q=>{const bx=cx0(q.c0),by=ry0(q.r0),bw0=colW.slice(q.c0,q.c1+1).reduce((a,b)=>a+b,0),bh=rowH.slice(q.r0,q.r1+1).reduce((a,b)=>a+b,0);
@@ -2066,6 +2066,14 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    sourceRows.forEach(ri=>rows[ri].forEach((t,c)=>{const str=String(t);if(!str.trim())return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri),av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0),ls=str.split('\n'),vis=x=>x.replace(/\s/g,'').length;
     if(ls.some(l=>mw(l,sz0,b)>av+.01))orphans.push({r:ri,c,t:str,why:'auto-wrap'});else if(ls.length>1&&vis(str)>4&&ls.some((l,i)=>vis(l)<=1||vis(l)<=2&&i>0&&!/[：:；;，,、)）\s]$/.test(ls[i-1])&&!/^[（(]/.test(l)))orphans.push({r:ri,c,t:str,why:'orphan'});}));
    if(T.hcol){const tint=LK.hdr&&LK.hdr.fill?mix(P,'FFFFFF',.88):mix(G.fill||'F2F2F2','FFFFFF',.2);tb.cells.forEach((r,ri)=>{const raw=sourceRows[ri];if(raw<h0||AU.section[raw])return;const cl=r[0];if(!cl)return;cl.bold=true;(cl.runs||[]).forEach(x=>{x.o=Object.assign({},x.o,{bold:true});});if(!cl.fill&&!rangeAt(raw,0))cl.fill=tint;});}
+   // Apply line-only families after every semantic/header/first-column fill has
+   // resolved. All render/export paths consume these same native cell borders.
+   const edgeOffsets=[['bT',-1,0],['bR',0,1],['bB',1,0],['bL',0,-1]];
+   for(const [order,mark] of his.entries()){const family=tableHighlightFamily(mark);if(mark.type!=='range'||family==='fill')continue;const preset=tableHighlightPreset(mark.presetId,st,family);
+    tb.cells.forEach((row,ri)=>row.forEach((cell,c)=>{const r=sourceRows[ri];for(const [edge,dr,dc]of edgeOffsets){if(!tableRangeEdge(mark,r,c,edge))continue;
+     const neighbor=tb.cells[ri+dr]&&tb.cells[ri+dr][c+dc];cell[edge]={c:tableHighlightStroke(preset.stroke,[cell.fill,neighbor&&neighbor.fill]),w:preset.borderWidth};if(!cell.highlightEdges)cell.highlightEdges=[];if(!cell.highlightEdges.includes(edge))cell.highlightEdges.push(edge);if(!cell.highlightOrder)cell.highlightOrder={};cell.highlightOrder[edge]=order;
+    }}));
+   }
    const layoutOverflow=!!exportReason||cur.items.some(it=>it.t!=='ln'&&(it.x<-.01||it.y<-.01||it.x+it.w>canvasW+.01||it.y+it.h>canvasH+.01));
    const complete=!layoutOverflow,reason=exportReason||(layoutOverflow?'表格或標題／註腳超出投影片邊界，已停用匯出。請縮短內容或調整欄寬；原始資料仍可下載完整 TSV。':'');
    if(layoutOverflow)warn('表格無法完整匯出',reason);
@@ -2320,8 +2328,31 @@ const TABLE_HIGHLIGHT_PRESETS=Object.freeze([
  Object.freeze({id:'rose',label:'玫瑰紅',fill:'F6E0E2',color:'7A1F2B',border:'B07980',mode:'fill',bold:null}),
  Object.freeze({id:'slate',label:'中性灰',fill:'EDEDED',color:'3A3A3A',border:'999999',mode:'fill',bold:null})
 ]);
+const TABLE_HIGHLIGHT_FAMILIES=Object.freeze([
+ Object.freeze({id:'fill',label:'底色',width:1.5}),Object.freeze({id:'outline',label:'外框',width:1.5}),
+ Object.freeze({id:'underline',label:'底線',width:2}),Object.freeze({id:'side',label:'側線',width:3})
+]);
+const TABLE_HIGHLIGHT_STROKES=Object.freeze({'theme-light':'52779B','theme-dark':'1F4E79',mint:'267A76',amber:'9B6B12',rose:'A14553',slate:'666666'});
+// Missing styleId is the legacy fill schema. Reject unknown values, never hydrate CSS.
+function tableHighlightFamily(value){const id=typeof value==='object'&&value?value.styleId??value.family??'fill':value??'fill';return TABLE_HIGHLIGHT_FAMILIES.some(f=>f.id===id)?id:null;}
+function tableRangeEdge(mark,r,c,edge){if(!tableMarkContains(mark,r,c))return false;const family=tableHighlightFamily(mark);
+ return family==='outline'?(edge==='bT'?r===mark.r0:edge==='bB'?r===mark.r1:edge==='bL'?c===mark.c0:edge==='bR'?c===mark.c1:false):family==='underline'?edge==='bB'&&r===mark.r1:family==='side'?edge==='bL'&&c===mark.c0:false;
+}
+function tableRangeEdgeRegions(mark){const family=tableHighlightFamily(mark),q=(r0,c0,r1,c1)=>({r0,c0,r1,c1});
+ return family==='outline'?[q(mark.r0,mark.c0,mark.r0,mark.c1),q(mark.r1,mark.c0,mark.r1,mark.c1),q(mark.r0,mark.c0,mark.r1,mark.c0),q(mark.r0,mark.c1,mark.r1,mark.c1)]:family==='underline'?[q(mark.r1,mark.c0,mark.r1,mark.c1)]:family==='side'?[q(mark.r0,mark.c0,mark.r1,mark.c0)]:[];
+}
+function tableMarkPaintRegions(mark,nR,nC){const regions=tableMarkRegions(mark,nR,nC);if(mark.type!=='range'||tableHighlightFamily(mark)==='fill')return regions;
+ return regions.flatMap(q=>tableRangeEdgeRegions(mark).map(edge=>tableRangeIntersection(q,edge)).filter(Boolean));
+}
+// Prefer the exact token. If an edge touches dark cells, choose the closest tint or
+// shade meeting 3:1 against both sides; retain the strongest minimum if impossible.
+function tableHighlightStroke(stroke,backgrounds){const bgs=[...new Set(backgrounds.map(c=>c||'FFFFFF'))],score=c=>Math.min(...bgs.map(b=>contrastOf(c,b)));
+ if(score(stroke)>=3)return stroke;let best=stroke,bestScore=score(stroke);
+ for(let i=1;i<=100;i++)for(const to of ['FFFFFF','000000']){const c=mix(stroke,to,i/100),v=score(c);if(v>=3)return c;if(v>bestScore){best=c;bestScore=v;}}return best;
+}
 const HI_COLORS=['auto','P','A','alert'],RULE_OPS=['<','<=','>','>=','='],RULE_TONES=['warn','good','accent'],RULE_STYLES=['fill','text','box'];
-function tableHighlightPreset(id,params){const preset=TABLE_HIGHLIGHT_PRESETS.find(p=>p.id===id);if(!preset)return null;
+function tableHighlightPreset(id,params,family='fill'){family=tableHighlightFamily(family);if(!family)return null;const preset=TABLE_HIGHLIGHT_PRESETS.find(p=>p.id===id);if(!preset)return null;
+ if(family!=='fill')return Object.assign({},preset,{family,mode:family,fill:null,color:null,border:TABLE_HIGHLIGHT_STROKES[id],stroke:TABLE_HIGHLIGHT_STROKES[id],borderWidth:TABLE_HIGHLIGHT_FAMILIES.find(f=>f.id===family).width});
  const out=Object.assign({},preset),p=params&&/^[0-9A-F]{6}$/i.test(params.P||'')?params.P.toUpperCase():BASE.P;
  if(p!==BASE.P&&id==='theme-light'){out.fill=mix(p,'FFFFFF',.86);out.color=ensureContrast(p,out.fill,4.5);out.border=mix(p,'FFFFFF',.4);}
  if(id==='theme-dark'){out.fill=ensureContrast(p,'FFFFFF',4.5);out.color='FFFFFF';out.border=out.fill;}
@@ -2352,26 +2383,42 @@ function tableMarkContains(mark,r,c){if(!mark||!Number.isInteger(r)||!Number.isI
 function tableMarkRegions(mark,nR,nC){const bounds=tableMarkBounds(mark,nR,nC);let regions=bounds?[bounds]:[];
  for(const q of mark&&mark.excludes||[])regions=regions.flatMap(a=>tableRangeSubtract(a,q));return regions;
 }
-function tableRangeWinner(his,r,c){for(let i=(his||[]).length-1;i>=0;i--)if(his[i].type==='range'&&tableMarkContains(his[i],r,c))return his[i];return null;}
+function tableRangeWinner(his,r,c,family){for(let i=(his||[]).length-1;i>=0;i--)if(his[i].type==='range'&&(!family||tableHighlightFamily(his[i])===family)&&tableMarkContains(his[i],r,c))return his[i];return null;}
 function tableClearRange(T,range){T=T||{};const source=tableSource(T),his=tableMarks(T,source.nC,source.nR).his,q=tableNormalizeRange(range,source.nR,source.nC);
  if(!q)return{his,changed:false,error:'INVALID_RANGE'};
  let changed=false;const next=his.map(mark=>{if(mark.type!=='range')return mark;const regions=tableMarkRegions(mark,source.nR,source.nC);if(!regions.some(a=>tableRangeIntersection(a,q)))return mark;
   changed=true;const intersection=tableRangeIntersection(tableMarkBounds(mark,source.nR,source.nC),q);const out=Object.assign({},mark,{excludes:[...(mark.excludes||[]).filter(a=>!(a.r0>=intersection.r0&&a.r1<=intersection.r1&&a.c0>=intersection.c0&&a.c1<=intersection.c1)),intersection]});
-  return tableMarkRegions(out,source.nR,source.nC).length?out:null;}).filter(Boolean);
+  return tableMarkPaintRegions(out,source.nR,source.nC).length?out:null;}).filter(Boolean);
  return{his:next,changed};
 }
 // Resolve topmost visual coverage geometrically, without iterating every cell.
 function tableRangeUsesPreset(his,range,presetId,nR,nC){let remaining=[range];
  for(let i=his.length-1;i>=0&&remaining.length;i--){const mark=his[i];if(mark.type!=='range')continue;
+  if(tableHighlightFamily(mark)!=='fill'){if(tableMarkPaintRegions(mark,nR,nC).some(q=>tableRangeIntersection(q,range)))return false;continue;}
   for(const region of tableMarkRegions(mark,nR,nC)){if(!remaining.some(q=>tableRangeIntersection(q,region)))continue;
-   if(mark.presetId!==presetId)return false;remaining=remaining.flatMap(q=>tableRangeSubtract(q,region));}}
+   if(tableHighlightFamily(mark)!=='fill'||mark.presetId!==presetId)return false;remaining=remaining.flatMap(q=>tableRangeSubtract(q,region));}}
  return !remaining.length;
 }
-function tableApplyRange(T,range,presetId){T=T||{};const source=tableSource(T),his=tableMarks(T,source.nC,source.nR).his,q=tableNormalizeRange(range,source.nR,source.nC);
- if(!q)return{his,changed:false,error:'INVALID_RANGE'};if(!tableHighlightPreset(presetId))return{his,changed:false,error:'INVALID_PRESET'};
- if(tableRangeUsesPreset(his,q,presetId,source.nR,source.nC))return{his,changed:false};
- const cleared=tableClearRange(T,q);if(cleared.his.filter(h=>h.type==='range').length>=TABLE_HIGHLIGHT_LIMIT)return{his,changed:false,error:'MARK_LIMIT'};
- const next=[...cleared.his,Object.assign({type:'range'},q,{presetId,color:'auto',kind:'focus'})];return{his:next,changed:JSON.stringify(next)!==JSON.stringify(his)};
+// Line no-op identity includes family AND actual perimeter, not filled-area coverage.
+function tableRangeUsesLine(his,range,presetId,family){const edges=[];
+ if(family==='outline'){for(let c=range.c0;c<=range.c1;c++){edges.push([range.r0,c,'bT'],[range.r1,c,'bB']);}for(let r=range.r0;r<=range.r1;r++){edges.push([r,range.c0,'bL'],[r,range.c1,'bR']);}}
+ else if(family==='underline')for(let c=range.c0;c<=range.c1;c++)edges.push([range.r1,c,'bB']);
+ else for(let r=range.r0;r<=range.r1;r++)edges.push([r,range.c0,'bL']);
+ return edges.every(([r,c,edge])=>{const [dr,dc,opposite]={bT:[-1,0,'bB'],bR:[0,1,'bL'],bB:[1,0,'bT'],bL:[0,-1,'bR']}[edge];
+  for(let i=his.length-1;i>=0;i--){const h=his[i];if(h.type!=='range')continue;
+   if(tableRangeEdge(h,r,c,edge)||tableRangeEdge(h,r+dr,c+dc,opposite))return h.presetId===presetId&&tableHighlightFamily(h)===family;
+  }return false;});
+}
+function tableApplyRange(T,range,presetId,family='fill'){T=T||{};const source=tableSource(T),his=tableMarks(T,source.nC,source.nR).his,q=tableNormalizeRange(range,source.nR,source.nC);family=tableHighlightFamily(family);
+ if(!q)return{his,changed:false,error:'INVALID_RANGE'};if(!family)return{his,changed:false,error:'INVALID_FAMILY'};if(!tableHighlightPreset(presetId))return{his,changed:false,error:'INVALID_PRESET'};
+ if(family==='fill'?tableRangeUsesPreset(his,q,presetId,source.nR,source.nC):tableRangeUsesLine(his,q,presetId,family))return{his,changed:false};
+ // Fill retains its historical replacement behavior. Lines only write their edges,
+ // keeping underlying fill/text and other families' edges. Exact same-family range
+ // replacement compacts obsolete paint without consuming another range slot.
+ const previous=family==='fill'?tableClearRange(T,q).his:his.filter(h=>!(h.type==='range'&&tableHighlightFamily(h)===family&&['r0','c0','r1','c1'].every(k=>h[k]===q[k])));
+ if(previous.filter(h=>h.type==='range').length>=TABLE_HIGHLIGHT_LIMIT)return{his,changed:false,error:'MARK_LIMIT'};
+ const mark=Object.assign({type:'range'},q,{presetId,color:'auto',kind:'focus'});if(family!=='fill')mark.styleId=family;
+ const next=[...previous,mark];return{his:next,changed:JSON.stringify(next)!==JSON.stringify(his)};
 }
 /* nR/nC are the dimensions AFTER inserting/removing one row or column. Insertions
    inside an existing rectangle expand it; deletion of its sole row/column drops it. */
@@ -2394,11 +2441,11 @@ function tableMarks(T,nC,nR){T=T||{};const int=v=>v!==null&&v!==''&&typeof v!=='
  let his=Array.isArray(T.his)?T.his:(T.hi&&(T.hi.type==='col'||T.hi.type==='row')?[T.hi]:[]);
  his=his.filter(h=>h&&typeof h==='object').map(h=>{const type=['col','row','cell','range'].includes(h.type)?h.type:null,color=HI_COLORS.includes(h.color)?h.color:'auto';
   const kind=['focus','rec','warn'].includes(h.kind)?h.kind:(h.color==='alert'?'warn':'focus');let mark;
-  if(type==='range'){const q=tableNormalizeRange(h,nR,nC);if(!q||!tableHighlightPreset(h.presetId))return null;mark=Object.assign({type},q,{presetId:h.presetId,color,kind});}
+  if(type==='range'){const q=tableNormalizeRange(h,nR,nC);const family=tableHighlightFamily(h);if(!q||!tableHighlightPreset(h.presetId)||!family)return null;mark=Object.assign({type},q,{presetId:h.presetId,color,kind});if(family!=='fill')mark.styleId=family;}
   else mark=type==='cell'?{type,r:int(h.r),c:int(h.c),color,kind}:{type,i:int(h.i),color,kind};
   const bounds=tableMarkBounds(mark,nR,nC);if(!bounds)return null;
   if(Array.isArray(h.excludes)){const excludes=h.excludes.map(q=>tableRangeIntersection(bounds,tableNormalizeRange(q,nR,nC))).filter(Boolean);if(excludes.length)mark.excludes=excludes;}
-  return tableMarkRegions(mark,nR,nC).length?mark:null;}).filter(Boolean);
+  return tableMarkPaintRegions(mark,nR,nC).length?mark:null;}).filter(Boolean);
  // Imported snapshots are never silently truncated. Mutation helpers enforce the
  // visual range limit atomically, separate from preserved legacy semantics,
  // allowing an exact replacement even at capacity.
@@ -2459,7 +2506,7 @@ function toPptx(pptx,model){
  model.slides.forEach(sl=>{const s=pptx.addSlide();s.background={color:'FFFFFF'};
   sl.items.forEach(it=>{
    if(it.t==='tbl'){const bd=b=>b?{type:'solid',pt:b.w,color:b.c}:{type:'none'};
-    const rows=it.cells.map(r=>r.map(c=>({text:c.runs.map(rn=>({text:rn.t,options:Object.assign({fontSize:rn.o.size,fontFace:rn.o.font,bold:rn.o.bold,color:rn.o.color},rn.o.br?{breakLine:true}:{})})),
+    const rows=tableResolvedBorders(it).map(r=>r.map(c=>({text:c.runs.map(rn=>({text:rn.t,options:Object.assign({fontSize:rn.o.size,fontFace:rn.o.font,bold:rn.o.bold,color:rn.o.color},rn.o.br?{breakLine:true}:{})})),
      options:Object.assign({align:c.align,valign:'middle',margin:[c.mT,c.mR!=null?c.mR:c.mL,c.mT,c.mL],border:[bd(c.bT),bd(c.bR),bd(c.bB),bd(c.bL)]},c.fill?{fill:{color:c.fill}}:{})})));
     s.addTable(rows,{x:it.x,y:it.y,w:it.w,colW:it.colW,rowH:it.rowH,autoPage:false});return;}
    if(it.t==='pic'){s.addImage({data:it.png,x:it.x,y:it.y,w:it.w,h:it.h,rounding:!!it.round,objectName:it.name||'圖片'});return;}
@@ -2754,16 +2801,29 @@ function headShape(tx,ty,fx,fy,type,sz,color,w){const f={sm:2,med:3,lg:5}[sz]||3
   case 'arrow':return `<polyline points="${P([[1,1],[9,5],[1,9]])}" fill="none" stroke="#${color}" stroke-width="${(1.6*k).toFixed(2)}"/>`;
   case 'oval':{const c=T(5,5);return `<circle cx="${c[0]}" cy="${c[1]}" r="${(4.2*k).toFixed(2)}" fill="#${color}"/>`;}
   default:return '';}}
+// One physical grid edge must have one paint across SVG, native PPTX and HTML.
+// Mirror only in this read-only renderer projection: source mark ownership and
+// unselected cell appearance stay untouched. Lines overlay fill/semantic borders;
+// chronology resolves only competing line edges. Legacy fill-only XML is unchanged.
+function tableResolvedBorders(table){if(!table.cells.some(row=>row.some(c=>(c.highlightEdges||[]).length)))return table.cells;
+ const cells=table.cells.map(row=>row.map(c=>Object.assign({},c,{highlightEdges:[...(c.highlightEdges||[])]})));
+ const resolve=(a,ae,b,be)=>{if(!a.highlightEdges.includes(ae)&&!b.highlightEdges.includes(be))return;
+  const order=(c,e)=>c.highlightOrder&&c.highlightOrder[e]!=null?c.highlightOrder[e]:-1;
+  const border=order(a,ae)>=order(b,be)?a[ae]:b[be];a[ae]=border;b[be]=border;if(!a.highlightEdges.includes(ae))a.highlightEdges.push(ae);if(!b.highlightEdges.includes(be))b.highlightEdges.push(be);
+ };
+ cells.forEach((row,r)=>row.forEach((c,k)=>{if(k+1<row.length)resolve(c,'bR',row[k+1],'bL');if(r+1<cells.length)resolve(c,'bB',cells[r+1][k],'bT');}));return cells;
+}
 /* 表格 → 預覽用的儲存格矩形＋框線（pptx 端是原生 <a:tbl>） */
-function tblItems(it){const out=[],lines=[];let yy=it.y;
- it.cells.forEach((r,ri)=>{let xx=it.x;const rh=it.rowH[ri];
+function tblItems(it){const out=[],lines=[],highlights=[];let yy=it.y;
+ tableResolvedBorders(it).forEach((r,ri)=>{let xx=it.x;const rh=it.rowH[ri];
   r.forEach((c,ci)=>{const cw=it.colW[ci];
    out.push({t:'sp',kind:'rect',x:xx,y:yy,w:cw,h:rh,fill:c.fill,line:null,lw:0,runs:c.runs,tx:{align:c.align,valign:'middle',margin:[c.mL,c.mR!=null?c.mR:c.mL,c.mT,c.mT],lsp:1,size:c.size,font:F0(c),color:c.color,bold:c.bold}});
-   if(c.bT)lines.push({t:'ln',x1:xx,y1:yy,x2:xx+cw,y2:yy,color:c.bT.c,w:c.bT.w,dash:'solid'});
-   if(c.bB)lines.push({t:'ln',x1:xx,y1:yy+rh,x2:xx+cw,y2:yy+rh,color:c.bB.c,w:c.bB.w,dash:'solid'});
-   if(c.bL)lines.push({t:'ln',x1:xx,y1:yy,x2:xx,y2:yy+rh,color:c.bL.c,w:c.bL.w,dash:'solid'});
-   if(c.bR)lines.push({t:'ln',x1:xx+cw,y1:yy,x2:xx+cw,y2:yy+rh,color:c.bR.c,w:c.bR.w,dash:'solid'});xx+=cw;});yy+=rh;});
- return out.concat(lines);}
+   const edgeLines=edge=>(c.highlightEdges||[]).includes(edge)?highlights:lines;
+   if(c.bT)edgeLines('bT').push({t:'ln',x1:xx,y1:yy,x2:xx+cw,y2:yy,color:c.bT.c,w:c.bT.w,dash:'solid'});
+   if(c.bB)edgeLines('bB').push({t:'ln',x1:xx,y1:yy+rh,x2:xx+cw,y2:yy+rh,color:c.bB.c,w:c.bB.w,dash:'solid'});
+   if(c.bL)edgeLines('bL').push({t:'ln',x1:xx,y1:yy,x2:xx,y2:yy+rh,color:c.bL.c,w:c.bL.w,dash:'solid'});
+   if(c.bR)edgeLines('bR').push({t:'ln',x1:xx+cw,y1:yy,x2:xx+cw,y2:yy+rh,color:c.bR.c,w:c.bR.w,dash:'solid'});xx+=cw;});yy+=rh;});
+ return out.concat(lines,highlights);}
 const F0=c=>(c.runs[0]&&c.runs[0].o.font)||'Microsoft JhengHei';
 function toSvg(slide,opt){opt=opt||{};const id=(opt.id||'s')+'_';const defs={},parts=[];let fi=0,mi=0;const flat=!!opt.flat;
  const marker=(type,sz,color)=>{const k='m'+type+sz+color;if(defs[k])return defs[k].id;const mid=id+'m'+(mi++);const f={sm:2,med:3,lg:5}[sz]||3;
@@ -2884,14 +2944,14 @@ function tableHtml(model,opt){const sl=tableCopyPage(model,opt);if(!sl)return ''
  const pt=v=>+(v*72).toFixed(1)+'pt';
  let h=`<table style="border-collapse:collapse;table-layout:fixed;width:${pt(tb.w)};font-family:${fstack(T.font||'Microsoft JhengHei').replace(/"/g,"'")}">`;
  h+='<colgroup>'+tb.colW.map(w=>`<col style="width:${pt(w)}">`).join('')+'</colgroup>';
- tb.cells.forEach((r,ri)=>{h+=`<tr style="height:${pt(tb.rowH[ri])}">`;
+ tableResolvedBorders(tb).forEach((r,ri)=>{h+=`<tr style="height:${pt(tb.rowH[ri])}">`;
   r.forEach((c,ci)=>{const f=(c.runs[0]&&c.runs[0].o.font)||T.font;const bd=(side,b)=>b?`border-${side}:${b.w}pt solid #${b.c};`:'';let hb='';
    BX.forEach(b=>{const HB=`${b.rule?1.5:1.75}pt solid #${b.color}`;
     if(b.type==='col'&&b.i===ci)hb+=`border-left:${HB};border-right:${HB};`+(ri===0?`border-top:${HB};`:'')+(ri===n-1?`border-bottom:${HB};`:'');
     if(b.type==='row'&&b.i===ri)hb+=`border-top:${HB};border-bottom:${HB};`+(ci===0?`border-left:${HB};`:'')+(ci===r.length-1?`border-right:${HB};`:'');
     if(b.type==='cell'&&b.r===ri&&b.c===ci)hb+=`border:${HB};`;
     if(b.type==='range'&&ri>=b.r0&&ri<=b.r1&&ci>=b.c0&&ci<=b.c1)hb+=(ri===b.r0?`border-top:${HB};`:'')+(ri===b.r1?`border-bottom:${HB};`:'')+(ci===b.c0?`border-left:${HB};`:'')+(ci===b.c1?`border-right:${HB};`:'');});
-   const css=`${c.fill?`background:#${c.fill};`:''}color:#${c.color};font-size:${c.size}pt;font-weight:${c.bold?700:400};text-align:${c.align};vertical-align:middle;padding:${c.mT}pt ${c.mR!=null?c.mR:c.mL}pt ${c.mT}pt ${c.mL}pt;font-family:${fstack(f).replace(/"/g,"'")};`+bd('top',c.bT)+bd('bottom',c.bB)+bd('left',c.bL)+bd('right',c.bR)+hb;
+   const css=`${c.fill?`background:#${c.fill};`:''}color:#${c.color};font-size:${c.size}pt;font-weight:${c.bold?700:400};text-align:${c.align};vertical-align:middle;padding:${c.mT}pt ${c.mR!=null?c.mR:c.mL}pt ${c.mT}pt ${c.mL}pt;font-family:${fstack(f).replace(/"/g,"'")};`+bd('top',c.bT)+bd('bottom',c.bB)+bd('left',c.bL)+bd('right',c.bR)+hb+(c.highlightEdges||[]).map(edge=>bd({bT:'top',bR:'right',bB:'bottom',bL:'left'}[edge],c[edge])).join('');
    const one=x=>{const t=esc(x.t).replace(/\n/g,'<br>');const dif=x.o.size!==c.size||x.o.color!==c.color||!!x.o.bold!==!!c.bold;return (dif?`<span style="font-size:${x.o.size}pt;color:#${x.o.color};font-weight:${x.o.bold?700:400}">${t}</span>`:t)+(x.o.br?'<br>':'');};
    h+=`<td style="${css}">${c.runs.map(one).join('')}</td>`;});h+='</tr>';});
  return h+'</table>';}
@@ -2913,6 +2973,6 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
  if(p.tbPanel&&!p.tbLook)out.tbLook='card';out.tbCard='white';
  return out;}
-const api={iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,tableHighlightPreset,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
+const api={iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,TABLE_HIGHLIGHT_FAMILIES,tableHighlightFamily,tableHighlightStroke,tableResolvedBorders,tableRangeEdge,tableHighlightPreset,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);
