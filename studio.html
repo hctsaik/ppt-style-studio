@@ -132,6 +132,10 @@ main{display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff
 .ic{position:relative}.iadd{position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;background:var(--p);color:#fff;font:700 12px/18px sans-serif;font-style:normal;display:none}.ic:hover .iadd{display:block}
 .ic:hover{border-color:#D6D6D6;background:#FAFAFA}.ic.sel{border-color:var(--p);box-shadow:0 0 0 1px var(--p) inset;background:#fff}
 .ic svg{width:44px;height:44px;display:block;margin:0 auto 5px}.ic span{font-size:11px;color:var(--t2);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ipack{display:flex;align-items:center;gap:12px;margin:8px 14px;padding:10px 12px;border:1px solid #D6DDE8;border-radius:10px;background:#F7F9FC;flex-shrink:0}
+.ipack-icon{display:flex;align-items:center;justify-content:center;flex:0 0 40px;width:40px;height:40px;border:1px solid #CCD6E3;border-radius:9px;background:#fff;color:#7B8795;font-size:22px}
+.ipack-icon svg{width:28px;height:28px}.ipack-copy{flex:1;min-width:0}.ipack-copy strong{font-size:13px;display:block}.ipack-copy small{display:block;color:#595959;font-size:11px;line-height:1.5;margin-top:2px}.ipack .btn{white-space:normal;line-height:1.5;flex-shrink:0}.ipack .btn:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:700px){.ipack{margin:6px 8px;gap:8px;padding:8px;flex-wrap:wrap}.ipack .btn{width:100%}.ipack-icon{flex-basis:34px;width:34px;height:34px}}
 .ibar2{position:absolute;z-index:6;display:none;align-items:center;gap:4px;background:#fff;border:1px solid #D6D6D6;border-radius:8px;box-shadow:0 4px 14px #0000001f;padding:4px 5px;font-size:11.5px;white-space:nowrap}
 .ibar2.on{display:flex}.ibar2 b{margin:0 4px}.ibar2 button{border:1px solid #DADADA;background:#fff;border-radius:6px;padding:3px 8px;cursor:pointer;font-size:11.5px}
 .ibar2 button:hover{border-color:#999}.ibar2 button.pri{background:var(--p);border-color:var(--p);color:#fff;font-weight:700}
@@ -434,6 +438,10 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
     <span class="hint" id="iInfo" style="margin:0"></span>
     <button class="btn" id="iZip" title="目前顏色／樣式的全部圖示：透明 PNG（2×）＋ SVG">全部下載 ZIP</button>
    </div>
+   <div class="ipack" id="iPack" aria-label="下載所選圖示的底座與組合元件">
+    <span class="ipack-icon" id="iPackIcon" aria-hidden="true">＋</span><div class="ipack-copy"><strong id="iPackName">先選一個圖示</strong><small id="iPackSummary">24 款底座＋9 種組合・共 2 頁，每組皆為可編輯 PPT 元件</small><small id="iPackStatus" role="status">套用目前風格與字重；底座與組合保留各自配色，不改動已儲存元件。</small></div>
+    <button class="btn pri" id="iPackDownload" disabled>下載底座＋組合元件 (.pptx)</button>
+   </div>
    <div class="iscn" id="iScn" aria-label="情境分類"></div><div class="icats" id="iCats" role="navigation" aria-label="圖示分類"></div>
    <div class="igrid" id="iGrid"></div>
    <div class="ibar2" id="ibar2"><b id="iName"></b><small id="iDim" style="color:#8C8C8C;margin-right:4px"></small><button class="pri" data-a="copy" title="SVG 向量＋透明 PNG">複製</button><button data-a="svg">SVG</button><button data-a="png2">PNG 2×</button><button data-a="png4">PNG 4×</button><button data-a="pic" title="1 頁 .pptx：SVG 向量圖片（PNG 備援），PowerPoint 365 可右鍵「轉換成圖案」">.pptx 圖片</button><button data-a="shape" title="1 頁 .pptx：原生自訂圖案（填色外框），直接可改顏色">.pptx 圖案</button><button data-a="x">✕</button></div>
@@ -520,7 +528,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <script src="jszip.min.js?v=978d62b5"></script>
 <script src="pptxgen.min.js?v=24808c08"></script>
 <script src="icons.js?v=65c03732"></script>
-<script src="deck.js?v=b096fdfe"></script>
+<script src="deck.js?v=de34689d"></script>
 <script src="stylekit-data.js?v=47e8edb0"></script>
 <script src="stylekit.js?v=2a276743"></script>
 <script>
@@ -814,10 +822,10 @@ $('#big').onclick=e=>{const b=e.target.closest('.nav');if(b){go(S.slide+ +b.data
 let SEL=null;
 const escH=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function clearSel(){SEL=null;document.querySelectorAll('#big .el.sel').forEach(x=>x.classList.remove('sel'));const b=$('#ebar');if(b)b.classList.remove('on');}
-function selectEl(gi){closeLabelEditor(false);clearSel();const sl=model.slides[S.slide];const g=sl.groups[gi];if(!g)return;SEL={gi,key:sl.key,name:g.name};
+function selectEl(gi){closeLabelEditor(false);clearSel();const sl=model.slides[S.slide];const g=sl.groups[gi];if(!g)return;SEL={gi,key:sl.key,name:g.iconStyle?D.iconComponentName(g.iconStyle):g.name};
  const el=document.querySelector(`#big .el[data-g="${gi}"]`);if(el)el.classList.add('sel');
  const edit=$('#ebar button[data-a="lbl"]');edit.textContent=g.iconStyle?'換圖示／底色':sl.items.slice(g.from,g.to+1).some(it=>it.ic)?'換圖示／改字':'改字';
- const bar=$('#ebar'),big=$('#big'),k=big.clientWidth/((model.W||D.W)*72);$('#eName').textContent=g.name;let dim=`${(g.w*2.54).toFixed(1)}×${(g.h*2.54).toFixed(1)} cm`;
+ const bar=$('#ebar'),big=$('#big'),k=big.clientWidth/((model.W||D.W)*72);$('#eName').textContent=SEL.name;let dim=`${(g.w*2.54).toFixed(1)}×${(g.h*2.54).toFixed(1)} cm`;
  if(+S.p.minFont>0){try{const em=D.elementModel(S.p,sl.key,gi,{labels:S.labels});const E=em.element;if(E.scale>1)dim+=`・匯出 ×${E.scale}（最小字 ${E.minSize}pt${E.capped?'，已到投影片上限':''}）`;}catch(e){}}
  $('#eDim').textContent=dim;$('#eCnt').hidden=!g.count;if(g.count){$('#eCntN').textContent=S.p[g.count];$('#eCnt').querySelectorAll('button').forEach(b=>{const on=+b.dataset.a.slice(2)===+S.p[g.count];b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));});}SEL.count=g.count||null;bar.classList.add('on');
  let x=(g.x*72)*k,y=(g.y+g.h)*72*k+8;const bw=bar.offsetWidth,bh=bar.offsetHeight;
@@ -952,7 +960,15 @@ setTimeout(scnRender,0);
 $('#iCats').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const g=$('#iGrid');
   if(b.dataset.c==='*'){g.scrollTo({top:0,behavior:'smooth'});return;}const h=g.querySelector(`.isec[data-c="${CSS.escape(b.dataset.c)}"]`);if(h){g.scrollTo({top:h.offsetTop-4,behavior:'smooth'});ICHIP=b.dataset.c;ICHIPT=performance.now()+700;setChip(b.dataset.c);}};}
 let ICHIP=null,ICHIPT=0;function setChip(c){$('#iCats').querySelectorAll('button').forEach(b=>{const on=b.dataset.c===c;b.classList.toggle('on',on);});}
-let ISEL=null;
+let ISEL=null,IPACK_JOB=null;
+const validIcon=id=>typeof id==='string'&&Object.prototype.hasOwnProperty.call(I.BY,id);
+function renderIconPack(){const ic=validIcon(ISEL)?I.BY[ISEL]:null,b=$('#iPackDownload');
+ $('#iPackName').textContent=ic?'已選：'+ic.zh:'先選一個圖示';$('#iPackIcon').innerHTML=ic?I.svg(ISEL,{variant:'line',wt:I.weightOf(S.p),fg:S.p.P,px:28}):'＋';
+ b.disabled=!ic||!!IPACK_JOB;b.textContent=IPACK_JOB?'製作中…':'下載底座＋組合元件 (.pptx)';$('#iPack').setAttribute('aria-busy',String(!!IPACK_JOB));
+ $('#iPackStatus').textContent=IPACK_JOB?'正在製作「'+IPACK_JOB.name+'」的元件組…':'套用目前風格與字重；底座與組合保留各自配色，不改動已儲存元件。';}
+$('#iPackDownload').onclick=async()=>{if(!validIcon(ISEL)||IPACK_JOB)return;const id=ISEL,params=clone(S.p),job={id,name:I.BY[id].zh};IPACK_JOB=job;renderIconPack();
+ try{const model=D.iconPackModel(params,id),r=await D.exportPptx(ENV(),params,{model});saveBlob(r.data,D.iconPackFilename(id));window.__studio.lastIconPack=Object.assign({},model.iconPack,{size:r.data.size});toast('已下載「'+job.name+'」：24 款底座＋9 種組合，共 2 頁，全部是原生可編輯群組。',5000);}
+ catch(err){console.error(err);toast('元件組下載失敗：'+err.message);}finally{if(IPACK_JOB===job)IPACK_JOB=null;renderIconPack();}};
 // 500 個圖示：結構（分類區塊＋按鈕）只在搜尋字改變時重建；SVG 只畫捲到附近的分類區塊（IntersectionObserver），換顏色／樣式時只重畫已畫過的區塊
 let IQ=null,IKEY='',IIO=null;
 function iconKey(L){return [L.variant,L.wt,L.fg,L.bg].join('|');}
@@ -977,19 +993,19 @@ function renderIcons(){const L=iconLook();const q=$('#iSearch').value.trim().toL
  }else n=G.querySelectorAll('.ic').length;
  const k=iconKey(L);if(k!==IKEY){IKEY=k;G.querySelectorAll('.isec').forEach(x=>{if(x._vis)fillSec(x,L);else delete x.dataset.k;});}
  $('#iInfo').textContent=`${n} 個・匯出 ${(0.6*SK()*2.54).toFixed(2)} cm／PNG ${icPx()*2}–${icPx()*4} px（元件尺寸 ${S.p.size||'M'}）`;
- if(ISEL&&!document.querySelector(`.ic[data-id="${ISEL}"]`))clearISel();else if(ISEL)placeIBar();}
+ if(ISEL&&!document.querySelector(`.ic[data-id="${ISEL}"]`))clearISel();else if(ISEL)placeIBar();renderIconPack();}
 // 捲動時標示目前分類（scroll-spy）
 function spy(){if(ICHIP&&performance.now()<ICHIPT)return;const G=$('#iGrid');if(!G.querySelector('.isec'))return;const top=G.getBoundingClientRect().top+40;let cur=null;
  if(G.scrollTop<4&&!IQ){setChip('*');return;}
  G.querySelectorAll('.isec').forEach(x=>{if(x.getBoundingClientRect().top<=top)cur=x.dataset.c;});if(!cur)cur=G.querySelector('.isec').dataset.c;setChip(cur);}
-function clearISel(){ISEL=null;$('#ibar2').classList.remove('on');document.querySelectorAll('.ic.sel').forEach(x=>x.classList.remove('sel'));}
-function placeIBar(){const t=document.querySelector(`.ic[data-id="${ISEL}"]`);if(!t)return;const bar=$('#ibar2'),v=$('#vIcons').getBoundingClientRect(),r=t.getBoundingClientRect();
+function clearISel(){ISEL=null;renderIconPack();$('#ibar2').classList.remove('on');document.querySelectorAll('.ic.sel').forEach(x=>x.classList.remove('sel'));}
+function placeIBar(){if(!validIcon(ISEL)){clearISel();return;}renderIconPack();const t=document.querySelector(`.ic[data-id="${ISEL}"]`);if(!t)return;const bar=$('#ibar2'),v=$('#vIcons').getBoundingClientRect(),r=t.getBoundingClientRect();
  $('#iName').textContent=I.BY[ISEL].zh;$('#iDim').textContent=`${(0.6*SK()*2.54).toFixed(2)} cm`;bar.classList.add('on');
  let x=r.left-v.left,y=r.bottom-v.top+6;if(y+bar.offsetHeight>v.height-6)y=r.top-v.top-bar.offsetHeight-6;x=Math.max(6,Math.min(x,v.width-bar.offsetWidth-6));bar.style.left=x+'px';bar.style.top=y+'px';}
 $('#iGrid').onclick=e=>{const t=e.target.closest('.ic');if(!t){clearISel();return;}
  document.querySelectorAll('.ic.sel').forEach(x=>x.classList.remove('sel'));t.classList.add('sel');ISEL=t.dataset.id;placeIBar();};   // 點一下＝選取（複製改按工具列）
 let ISPY=0;$('#iGrid').onscroll=()=>{if(ISEL)placeIBar();if(!ISPY)ISPY=requestAnimationFrame(()=>{ISPY=0;spy();});};
-$('#ibar2').onclick=e=>{const b=e.target.closest('button');if(b)iconAction(b.dataset.a);};
+$('#ibar2').onclick=e=>{const b=e.target.closest('button');if(b&&!b.disabled)iconAction(b.dataset.a);};
 function svgPng(svg,px){return new Promise((res,rej)=>{const img=new Image();const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
  img.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=px;c.getContext('2d').drawImage(img,0,0,px,px);URL.revokeObjectURL(url);c.toBlob(b=>b?res(b):rej(new Error('PNG 轉換失敗')),'image/png');}catch(err){rej(err);}};
  img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('SVG 無法繪製'));};img.src=url;});}
@@ -997,7 +1013,7 @@ const blobUrl=b=>new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.resul
 async function iconPptx(id,pic){const L=iconLook();let o={id,variant:L.variant};
  if(pic){const svg=icSvg(id,icPx()*4);o=Object.assign(o,{pic:true,svg,png:await blobUrl(await svgPng(svg,icPx()*4))});}
  const model=D.buildModel(S.p,{icon:o});return D.exportPptx(ENV(),S.p,{model});}
-async function iconAction(a){if(!ISEL)return;const id=ISEL,ic=I.BY[id],base='icon-'+id+'-'+(S.p.icColor||'P')+'-'+(S.p.icVar||'line');const px=icPx();
+async function iconAction(a){if(!validIcon(ISEL))return;const id=ISEL,ic=I.BY[id],base='icon-'+id+'-'+(S.p.icColor||'P')+'-'+(S.p.icVar||'line');const px=icPx();
  try{
  if(a==='x'){clearISel();return;}
  if(a==='svg'){saveBlob(new Blob([icSvg(id,px)],{type:'image/svg+xml'}),base+'.svg');toast('已下載 SVG（透明背景）。PowerPoint「插入 › 圖片」後可右鍵「轉換成圖案」。');return;}
@@ -1466,7 +1482,7 @@ function openLabels(){if(!SEL)return;const raw=D.buildModel(S.p,{only:[SEL.key]}
 function labelVariantControls(){const group=(key,title,choices)=>`<label>${title}<select data-vstyle="${key}">${choices.map(x=>`<option value="${x[0]}"${LB.variant[key]===x[0]?' selected':''}>${escH(x[1])}</option>`).join('')}</select></label>`;return `<section class="lbvariant" aria-label="底座外觀與狀態">${group('base','底座',D.ICON_BASES)}${group('look','外觀',D.ICON_LOOKS)}${group('state','底色／狀態',D.ICON_STATES)}<div id="lbVariantPreview" aria-label="組合即時預覽"></div><small id="lbVariantNote"></small><small>棋盤格表示透明區域。按「套用」才儲存。</small></section>`;}
 function refreshLabelVariant(){if(!LB||!LB.variant)return;const chosen={};document.querySelectorAll('#lbList select[data-vstyle]').forEach(e=>chosen[e.dataset.vstyle]=e.value);LB.variant=D.cleanIconStyle(chosen,LB.variant);const paint=D.iconComponentPaint(LB.variant,S.p.P),patch=clone((S.labels||{})[LB.lk]||{});patch._iconStyle=clone(LB.variant);
  LB.ics.forEach((r,j)=>{r.color=paint.fg;const q=$(`#lbList input[data-k="${j}"]`);if(!q)return;const id=labelIconId(q.value);if(id){q.previousElementSibling.innerHTML=labelIconSvg(id,22,r);patch[r.ix]={from:r.orig,icon:id};}});
- const m=D.elementModel(S.p,LB.key,LB.gi,{labels:{[LB.lk]:patch}});$('#lbVariantPreview').innerHTML=D.elementSvg(m.slides[0],0,{flat:true,bg:false,pad:8}).svg;const state=D.ICON_STATES.find(x=>x[0]===LB.variant.state);$('#lbVariantNote').textContent=state[1]+'：'+state[4]+'。狀態名稱同步更新。';}
+ const m=D.elementModel(S.p,LB.key,LB.gi,{labels:{[LB.lk]:patch}});$('#lbVariantPreview').innerHTML=D.elementSvg(m.slides[0],0,{flat:true,bg:false,pad:8}).svg;$('#lbName').textContent='換圖示／底色：'+D.iconComponentName(LB.variant);const state=D.ICON_STATES.find(x=>x[0]===LB.variant.state);$('#lbVariantNote').textContent=state[1]+'：'+state[4]+'。狀態名稱同步更新。';}
 $('#lbList').addEventListener('change',e=>{if(e.target.matches('select[data-vstyle]'))refreshLabelVariant();});
 function labelIconId(value){const v=String(value||'').trim();return Object.prototype.hasOwnProperty.call(I.BY,v)?v:((I.LIST.find(ic=>ic.zh===v)||{}).id);}
 function labelIconSvg(id,px,row){return I.svg(id,{variant:'line',wt:row.wt,fg:row.color,px,title:I.BY[id].zh});}

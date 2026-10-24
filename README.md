@@ -38,6 +38,10 @@ S／M／L 對照（上：整頁；下：同一個 PDCA 元件下載後放在標�
 
 ## Icon 元件與底座變體
 
+**先選圖示、一次下載完整元件組：** 開啟「圖示庫」→ 點選任一圖示 →「下載底座＋組合元件 (.pptx)」。第一頁包含 24 款底座（4 種形狀、4 種外觀與 6 種狀態的代表款），第二頁包含 9 種組合。兩頁共 40 個圖示位置全部使用剛選的圖示，每款獨立群組，底座、圖示、文字及連接線均為原生可編輯內容，不是圖片。檔名與頁面標題包含所選圖示的中文名稱。
+
+元件組使用點擊下載時的風格、尺寸及圖示字重，保留各款既有語意配色；圖示庫的單圖顏色／底樣式只影響既有 SVG／單圖 PPT 等下載。匯出不會覆寫 A13／A14 已儲存的編輯、待選素材或收藏。製作中按鈕會暫停，避免重複下載；即使切換圖示，已開始的下載仍使用當時選取的圖示。
+
 「投影片元件 → A 基礎元件」新增 A13 Icon 元件與 A14 Icon 底座變體，原有 70 頁保持不變。也可在目錄搜尋「圖示元件」或「底座」。
 
 - A14 有 24 個可獨立下載的起點：一般、成功、注意、警示、危險、停用六種狀態 × 線框透明、淡色底、實心底、淡底＋線框四種外觀。點元件 →「換圖示／底色」，可選圓角方塊、圓形、膠囊、六角形，合共 96 種搭配。
@@ -49,7 +53,7 @@ S／M／L 對照（上：整頁；下：同一個 PDCA 元件下載後放在標�
 - 元件工具列的「下載單頁 .pptx（可編輯）」下載已組好的底座＋圖示＋文字。圖示是原生自訂圖形，不是嵌入圖片；取消群組後可分別編輯。瀏覽器的 SVG／PNG 下載仍沿用既有功能，PNG 不可編輯。
 - 新頁與圖示挑選器也包含在離線單檔。圖示授權沿用 [Apache 2.0](LICENSE-material-symbols.txt)。
 
-專項測試：`npm run test:icons`。離線事件測試：`STUDIO_HTML=PPT-Style-Studio.html node tools/icon_components_test.js --dom-only` 及 `STUDIO_HTML=PPT-Style-Studio.html node tools/icon_variants_test.js --dom-only`。DOM 測試涵蓋搜尋、逐一替換、取消、Escape、無結果、錯誤名稱、SVG 下載選擇、導覽及還原；不等於實際瀏覽器的排版／下載認證。
+專項測試：`npm run test:icons`（含 `tools/icon_pack_test.js`）。離線事件測試：`STUDIO_HTML=PPT-Style-Studio.html node tools/icon_components_test.js --dom-only` 及 `STUDIO_HTML=PPT-Style-Studio.html node tools/icon_variants_test.js --dom-only`。DOM 測試涵蓋搜尋、逐一替換、取消、Escape、無結果、錯誤名稱、SVG 下載選擇、導覽及還原；不等於實際瀏覽器的排版／下載認證。
 
 ## v11 全站重構：A–G 分組、43 頁、求職與作品集、簡報食譜
 

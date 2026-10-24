@@ -13,6 +13,8 @@ const ICON_LOOKS=[['outline','只有線框'],['soft','淡色底'],['solid','實�
 const ICON_STATES=[['brand','一般','', 'groups','一般內容，跟隨主色'],['success','成功','207345','task_alt','已完成或已通過'],['attention','注意','806000','info','需留意，尚未形成問題'],['warning','警示','A14D00','warning','已有問題，需要處理'],['danger','危險','B3261E','error','重大風險，需要立即處理'],['neutral','停用','596675','pause','暫不使用或尚未開放']];
 function cleanIconStyle(value,fallback){const out=Object.assign({base:'round',look:'outline',state:'brand'},fallback||{});value=value&&typeof value==='object'?value:{};
  for(const [k,choices] of [['base',ICON_BASES],['look',ICON_LOOKS],['state',ICON_STATES]]){if(choices.some(x=>x[0]===value[k]))out[k]=value[k];if(!choices.some(x=>x[0]===out[k]))out[k]=choices[0][0];}return out;}
+// Display/download labels are derived; catalog group names remain stable for stored selections.
+function iconComponentName(value){const s=cleanIconStyle(value);return ICON_LOOKS.find(x=>x[0]===s.look)[1]+'・'+ICON_STATES.find(x=>x[0]===s.state)[1];}
 function iconComponentPaint(value,brand){const s=cleanIconStyle(value),state=ICON_STATES.find(x=>x[0]===s.state),tone=state[2]||brand||BASE.P;
  const fill=s.look==='outline'?null:s.look==='solid'?tone:mix(tone,'FFFFFF',.89),line=s.look==='outline'||s.look==='softborder'?tone:null;
  const fg=s.look==='solid'?(contrastOf('FFFFFF',tone)>=contrastOf('000000',tone)?'FFFFFF':'000000'):ensureContrast(tone,fill||'FFFFFF',4.5);
@@ -286,7 +288,7 @@ function buildModel(params,opt){
  function footer(){const y=st.canvas?6.9:7.0;if(st.footRule)ln(.4,y-.05,W-.4,y-.05,{c:P,w:1.25});
   txt(.6,y,6,.24,[{t:st.zh||'自訂風格',b:1,c:G.t2},{t:'｜精緻圖解元件庫',c:G.mute}],{size:9});
   txt(W-.6-1.5,y,1.5,.24,String(sno).padStart(2,'0')+' / '+String(NSL).padStart(2,'0'),{size:9,color:G.mute,align:'right',font:nf});}
- function title(t,sub0){if(cur.part>1)t=String(t).replace(/^(.*?[\u3000-\u9fff\uff00-\uffef])(\s+[A-Za-z]|$)/,'$1'+'（'+['','','二','三','四'][cur.part]+'）$2');const T=st.bracket?'《'+t+'》':t;const ts=cur.tsz||st.tSize;const S=!!(sub0&&String(sub0).trim());const sub=S?sub0:'';
+ function title(t,sub0){if(opt.iconPackName&&(cur.key==='iconvariants'||cur.key==='iconcomponents')){const bases=cur.key==='iconvariants';t=opt.iconPackName+'｜'+(bases?'24 款底座':'9 種組合元件');sub0=bases?'線框透明・淡底・實心・淡底＋線框｜4 種形狀，6 種狀態':'同一圖示套用每個位置｜卡片、KPI、膠囊、步驟、時間軸，皆可編輯';}if(cur.part>1)t=String(t).replace(/^(.*?[\u3000-\u9fff\uff00-\uffef])(\s+[A-Za-z]|$)/,'$1'+'（'+['','','二','三','四'][cur.part]+'）$2');const T=st.bracket?'《'+t+'》':t;const ts=cur.tsz||st.tSize;const S=!!(sub0&&String(sub0).trim());const sub=S?sub0:'';
   const txt0=txt,txt1=(x,y,w,h,v,o)=>S?txt0(x,y,w,h,v,o):null;
   const tt=(x,y,w,o)=>txt(x,y,w,.72,T,Object.assign({size:ts,bold:st.tBold,color:titleColor,font:st.tFont,name:'標題'},o||{}));
   switch(st.bar){
@@ -2116,6 +2118,18 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
  else SLIDES.forEach(([k,zh],i)=>{if(opt.only&&!opt.only.includes(k))return;if(!opt.only&&opt.examples===false&&/^ex\d/.test(k))return;/* 12–14 範例頁（主題式版面）：studio 預設不含，勾「含範例頁」才加 */sno=i+1;cur={key:k,title:zh,no:i+1,items:[],groups:[],mkC:mix(A,'FFFFFF',.62)};slides.push(cur);const SPx=SPLIT_KEY[k];if(SPx)cur.part=SPx[1];if(!WHITE_PG.has(k))canvas();SL[SPx?SPx[0]:k]();if((SPx||SPLIT_PARTS[k])&&!opt.nosplit)splitSlide(cur,SPLIT_PARTS[SPx?SPx[0]:k],SPx?SPx[1]:1);footer();if(opt.labels)applyLabels(cur,opt.labels);recalc(cur);});
  const k=SIZE_K[st.size]||1;if(k!==1)slides.forEach(sl=>scaleSlide(sl,k));
  return{slides,warns,params:st,W:W*k,H:H*k,k,sem:{warn:AL,good:GOOD,bad:BAD}};}
+/* Selected-icon pack: reuse both catalog builders in a fresh model, never the user's labels.
+   All ic slots are replaceable glyphs. Native connectors and other geometry stay untouched. */
+function iconPackFilename(id){if(!ICONS||typeof id!=='string'||!Object.prototype.hasOwnProperty.call(ICONS.BY,id))throw new Error('請先選擇有效圖示');
+ const name=stripCtl(ICONS.BY[id].zh).replace(/[\\/:*?"<>|\s]+/g,'_').replace(/^[. _]+|[. _]+$/g,'').slice(0,60)||'圖示';return name+'-底座與組合元件.pptx';}
+function iconPackModel(params,id){iconPackFilename(id);const name=ICONS.BY[id].zh,model=buildModel(params,{only:['iconvariants','iconcomponents'],iconPackName:name});
+ model.slides.sort((a,b)=>Number(a.key!=='iconvariants')-Number(b.key!=='iconvariants'));
+ model.slides.forEach((sl,page)=>{const patches={};sl.groups.forEach((g,gi)=>{const patch={};sl.items.slice(g.from,g.to+1).forEach((it,ix)=>{if(it.ic)patch[ix]={from:it.ic.id,icon:id};});patches[sl.key+':'+gi]=patch;});applyLabels(sl,patches);
+  const bases=sl.key==='iconvariants',foot=sl.items.find(it=>textOf(it)===String(sl.no).padStart(2,'0')+' / '+String(SLIDES.length).padStart(2,'0'));
+  const put=(it,text)=>{if(!it||!it.runs||!it.runs.length)return;it.runs=[{t:text,o:Object.assign({},it.runs[0].o)}];autoShrink(it);};
+  sl.title=name+'｜'+(bases?'24 款底座':'9 種組合元件');put(foot,String(page+1).padStart(2,'0')+' / 02');sl.no=page+1;
+ });
+ model.iconPack={id,name,bases:model.slides[0].groups.length,components:model.slides[1].groups.length,pages:model.slides.length};return model;}
 /* ---------- S／M／L 元件尺寸（v5.2）：整頁幾何、字級、線寬、陰影一起等比縮放，投影片也同比例（仍是 16:9）。
    所以每一頁都放得下；把元件複製到標準 13.33×7.5 吋簡報時，實際大小就是 ×0.8／×1／×1.25。 ---------- */
 /* ---------- 表格：自動判斷（R1）——表頭、數字欄、狀態欄、小節列、合計列；外觀；數字格式；建議（重點欄、門檻） ---------- */
@@ -2691,7 +2705,7 @@ function toSvg(slide,opt){opt=opt||{};const id=(opt.id||'s')+'_';const defs={},p
  let out=parts;
  if(opt.interactive&&slide.groups&&slide.groups.length){out=parts.slice();const pad=4;
   slide.groups.forEach((g,gi)=>{const x=g.x*PT-pad,y=g.y*PT-pad,w=g.w*PT+2*pad,h=g.h*PT+2*pad;
-   out[g.from]=`<g class="el" data-g="${gi}" data-name="${esc(g.name)}">`+out[g.from];
+   out[g.from]=`<g class="el" data-g="${gi}" data-name="${esc(g.iconStyle?iconComponentName(g.iconStyle):g.name)}">`+out[g.from];
    out[g.to]=out[g.to]+`<rect class="hit" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="4"/></g>`;});}
  const vb=opt.viewBox||`0 0 ${(slide.W||W)*PT} ${(slide.H||H)*PT}`;
  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" ${opt.attrs||''}><defs>${Object.values(defs).map(d=>d.xml).join('')}</defs>${opt.bg===false?'':'<rect width="100%" height="100%" fill="#FFFFFF"/>'}${out.join('')}</svg>`;}
@@ -2700,7 +2714,7 @@ function elementSvg(slide,gi,opt){opt=opt||{};const g=slide.groups[gi];const pad
  const items=slide.items.slice(g.from,g.to+1);const hasSh=items.some(i=>i.sh);const m=pad+(hasSh&&!opt.flat?16:0);
  const x=g.x*PT-m,y=g.y*PT-m,w=g.w*PT+2*m,h=g.h*PT+2*m;
  const svg=toSvg({items},{id:opt.id||'e',flat:opt.flat,bg:opt.bg,viewBox:`${x.toFixed(2)} ${y.toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)}`,attrs:`width="${(w*(opt.scale||1)).toFixed(1)}pt" height="${(h*(opt.scale||1)).toFixed(1)}pt"`.replace(/pt"/g,opt.px?'"':'pt"')});
- return{svg,w,h,name:g.name};}
+ return{svg,w,h,name:g.iconStyle?iconComponentName(g.iconStyle):g.name};}
 /* ================= 待選素材（v6）：多個元件（各自保留加入當時的風格參數）排到同一張投影片 =================
    entries[i]={kind:'el'|'icon'|'table',params:{…完整風格…},key,gi | icon:{id,variant} | table:{rows,…},name}
    每項先用自己的 params 建 model（顏色、圓角、陰影、線寬、S/M/L 都已算進圖形）→ 依外框做「分列排版」，放不下就整體等比縮小 → 合併成一頁。 */
@@ -2805,6 +2819,6 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
  if(p.tbPanel&&!p.tbLook){out.tbLook='card';out.tbCard='grey';}if(p.tbLook==='panel')out.tbCard='grey';
  return out;}
-const api={ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
+const api={iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);

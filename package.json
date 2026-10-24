@@ -10,7 +10,7 @@
     "test:table": "node tools/table_model_integrity_test.js && node tools/table_workbench_test.js --model-only && node tools/table_workbench_test.js --dom-only",
     "test:table-ui": "node tools/table_workbench_test.js --browser-only",
     "test:table-dom": "node tools/table_workbench_test.js --dom-only",
-    "test:icons": "node tools/icon_components_test.js && node tools/icon_variants_test.js"
+    "test:icons": "node tools/icon_components_test.js && node tools/icon_variants_test.js && node tools/icon_pack_test.js"
   },
   "keywords": [],
   "author": "",

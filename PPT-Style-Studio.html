@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%226%22 fill=%22%231F4E79%22/%3E%3C/svg%3E">
-<!-- PPT Style Studio 單檔版（自動產生於 2026-10-24 21:59，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
+<!-- PPT Style Studio 單檔版（自動產生於 2026-10-24 22:28，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
 <title>PPT Style Studio · 圖解元件客製工作室｜新需求請寄信給 HCTSAIK，謝謝</title>
 <style>
 :root{--ink:#3A3A3A;--t2:#595959;--mu:#8C8C8C;--line:#E4E4E4;--fill:#F6F6F6;--p:#1F4E79}
@@ -133,6 +133,10 @@ main{display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff
 .ic{position:relative}.iadd{position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;background:var(--p);color:#fff;font:700 12px/18px sans-serif;font-style:normal;display:none}.ic:hover .iadd{display:block}
 .ic:hover{border-color:#D6D6D6;background:#FAFAFA}.ic.sel{border-color:var(--p);box-shadow:0 0 0 1px var(--p) inset;background:#fff}
 .ic svg{width:44px;height:44px;display:block;margin:0 auto 5px}.ic span{font-size:11px;color:var(--t2);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ipack{display:flex;align-items:center;gap:12px;margin:8px 14px;padding:10px 12px;border:1px solid #D6DDE8;border-radius:10px;background:#F7F9FC;flex-shrink:0}
+.ipack-icon{display:flex;align-items:center;justify-content:center;flex:0 0 40px;width:40px;height:40px;border:1px solid #CCD6E3;border-radius:9px;background:#fff;color:#7B8795;font-size:22px}
+.ipack-icon svg{width:28px;height:28px}.ipack-copy{flex:1;min-width:0}.ipack-copy strong{font-size:13px;display:block}.ipack-copy small{display:block;color:#595959;font-size:11px;line-height:1.5;margin-top:2px}.ipack .btn{white-space:normal;line-height:1.5;flex-shrink:0}.ipack .btn:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:700px){.ipack{margin:6px 8px;gap:8px;padding:8px;flex-wrap:wrap}.ipack .btn{width:100%}.ipack-icon{flex-basis:34px;width:34px;height:34px}}
 .ibar2{position:absolute;z-index:6;display:none;align-items:center;gap:4px;background:#fff;border:1px solid #D6D6D6;border-radius:8px;box-shadow:0 4px 14px #0000001f;padding:4px 5px;font-size:11.5px;white-space:nowrap}
 .ibar2.on{display:flex}.ibar2 b{margin:0 4px}.ibar2 button{border:1px solid #DADADA;background:#fff;border-radius:6px;padding:3px 8px;cursor:pointer;font-size:11.5px}
 .ibar2 button:hover{border-color:#999}.ibar2 button.pri{background:var(--p);border-color:var(--p);color:#fff;font-weight:700}
@@ -434,6 +438,10 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
     <span class="sp" style="flex:1"></span>
     <span class="hint" id="iInfo" style="margin:0"></span>
     <button class="btn" id="iZip" title="目前顏色／樣式的全部圖示：透明 PNG（2×）＋ SVG">全部下載 ZIP</button>
+   </div>
+   <div class="ipack" id="iPack" aria-label="下載所選圖示的底座與組合元件">
+    <span class="ipack-icon" id="iPackIcon" aria-hidden="true">＋</span><div class="ipack-copy"><strong id="iPackName">先選一個圖示</strong><small id="iPackSummary">24 款底座＋9 種組合・共 2 頁，每組皆為可編輯 PPT 元件</small><small id="iPackStatus" role="status">套用目前風格與字重；底座與組合保留各自配色，不改動已儲存元件。</small></div>
+    <button class="btn pri" id="iPackDownload" disabled>下載底座＋組合元件 (.pptx)</button>
    </div>
    <div class="iscn" id="iScn" aria-label="情境分類"></div><div class="icats" id="iCats" role="navigation" aria-label="圖示分類"></div>
    <div class="igrid" id="iGrid"></div>
@@ -3871,6 +3879,8 @@ const ICON_LOOKS=[['outline','只有線框'],['soft','淡色底'],['solid','實�
 const ICON_STATES=[['brand','一般','', 'groups','一般內容，跟隨主色'],['success','成功','207345','task_alt','已完成或已通過'],['attention','注意','806000','info','需留意，尚未形成問題'],['warning','警示','A14D00','warning','已有問題，需要處理'],['danger','危險','B3261E','error','重大風險，需要立即處理'],['neutral','停用','596675','pause','暫不使用或尚未開放']];
 function cleanIconStyle(value,fallback){const out=Object.assign({base:'round',look:'outline',state:'brand'},fallback||{});value=value&&typeof value==='object'?value:{};
  for(const [k,choices] of [['base',ICON_BASES],['look',ICON_LOOKS],['state',ICON_STATES]]){if(choices.some(x=>x[0]===value[k]))out[k]=value[k];if(!choices.some(x=>x[0]===out[k]))out[k]=choices[0][0];}return out;}
+// Display/download labels are derived; catalog group names remain stable for stored selections.
+function iconComponentName(value){const s=cleanIconStyle(value);return ICON_LOOKS.find(x=>x[0]===s.look)[1]+'・'+ICON_STATES.find(x=>x[0]===s.state)[1];}
 function iconComponentPaint(value,brand){const s=cleanIconStyle(value),state=ICON_STATES.find(x=>x[0]===s.state),tone=state[2]||brand||BASE.P;
  const fill=s.look==='outline'?null:s.look==='solid'?tone:mix(tone,'FFFFFF',.89),line=s.look==='outline'||s.look==='softborder'?tone:null;
  const fg=s.look==='solid'?(contrastOf('FFFFFF',tone)>=contrastOf('000000',tone)?'FFFFFF':'000000'):ensureContrast(tone,fill||'FFFFFF',4.5);
@@ -4144,7 +4154,7 @@ function buildModel(params,opt){
  function footer(){const y=st.canvas?6.9:7.0;if(st.footRule)ln(.4,y-.05,W-.4,y-.05,{c:P,w:1.25});
   txt(.6,y,6,.24,[{t:st.zh||'自訂風格',b:1,c:G.t2},{t:'｜精緻圖解元件庫',c:G.mute}],{size:9});
   txt(W-.6-1.5,y,1.5,.24,String(sno).padStart(2,'0')+' / '+String(NSL).padStart(2,'0'),{size:9,color:G.mute,align:'right',font:nf});}
- function title(t,sub0){if(cur.part>1)t=String(t).replace(/^(.*?[\u3000-\u9fff\uff00-\uffef])(\s+[A-Za-z]|$)/,'$1'+'（'+['','','二','三','四'][cur.part]+'）$2');const T=st.bracket?'《'+t+'》':t;const ts=cur.tsz||st.tSize;const S=!!(sub0&&String(sub0).trim());const sub=S?sub0:'';
+ function title(t,sub0){if(opt.iconPackName&&(cur.key==='iconvariants'||cur.key==='iconcomponents')){const bases=cur.key==='iconvariants';t=opt.iconPackName+'｜'+(bases?'24 款底座':'9 種組合元件');sub0=bases?'線框透明・淡底・實心・淡底＋線框｜4 種形狀，6 種狀態':'同一圖示套用每個位置｜卡片、KPI、膠囊、步驟、時間軸，皆可編輯';}if(cur.part>1)t=String(t).replace(/^(.*?[\u3000-\u9fff\uff00-\uffef])(\s+[A-Za-z]|$)/,'$1'+'（'+['','','二','三','四'][cur.part]+'）$2');const T=st.bracket?'《'+t+'》':t;const ts=cur.tsz||st.tSize;const S=!!(sub0&&String(sub0).trim());const sub=S?sub0:'';
   const txt0=txt,txt1=(x,y,w,h,v,o)=>S?txt0(x,y,w,h,v,o):null;
   const tt=(x,y,w,o)=>txt(x,y,w,.72,T,Object.assign({size:ts,bold:st.tBold,color:titleColor,font:st.tFont,name:'標題'},o||{}));
   switch(st.bar){
@@ -5974,6 +5984,18 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
  else SLIDES.forEach(([k,zh],i)=>{if(opt.only&&!opt.only.includes(k))return;if(!opt.only&&opt.examples===false&&/^ex\d/.test(k))return;/* 12–14 範例頁（主題式版面）：studio 預設不含，勾「含範例頁」才加 */sno=i+1;cur={key:k,title:zh,no:i+1,items:[],groups:[],mkC:mix(A,'FFFFFF',.62)};slides.push(cur);const SPx=SPLIT_KEY[k];if(SPx)cur.part=SPx[1];if(!WHITE_PG.has(k))canvas();SL[SPx?SPx[0]:k]();if((SPx||SPLIT_PARTS[k])&&!opt.nosplit)splitSlide(cur,SPLIT_PARTS[SPx?SPx[0]:k],SPx?SPx[1]:1);footer();if(opt.labels)applyLabels(cur,opt.labels);recalc(cur);});
  const k=SIZE_K[st.size]||1;if(k!==1)slides.forEach(sl=>scaleSlide(sl,k));
  return{slides,warns,params:st,W:W*k,H:H*k,k,sem:{warn:AL,good:GOOD,bad:BAD}};}
+/* Selected-icon pack: reuse both catalog builders in a fresh model, never the user's labels.
+   All ic slots are replaceable glyphs. Native connectors and other geometry stay untouched. */
+function iconPackFilename(id){if(!ICONS||typeof id!=='string'||!Object.prototype.hasOwnProperty.call(ICONS.BY,id))throw new Error('請先選擇有效圖示');
+ const name=stripCtl(ICONS.BY[id].zh).replace(/[\\/:*?"<>|\s]+/g,'_').replace(/^[. _]+|[. _]+$/g,'').slice(0,60)||'圖示';return name+'-底座與組合元件.pptx';}
+function iconPackModel(params,id){iconPackFilename(id);const name=ICONS.BY[id].zh,model=buildModel(params,{only:['iconvariants','iconcomponents'],iconPackName:name});
+ model.slides.sort((a,b)=>Number(a.key!=='iconvariants')-Number(b.key!=='iconvariants'));
+ model.slides.forEach((sl,page)=>{const patches={};sl.groups.forEach((g,gi)=>{const patch={};sl.items.slice(g.from,g.to+1).forEach((it,ix)=>{if(it.ic)patch[ix]={from:it.ic.id,icon:id};});patches[sl.key+':'+gi]=patch;});applyLabels(sl,patches);
+  const bases=sl.key==='iconvariants',foot=sl.items.find(it=>textOf(it)===String(sl.no).padStart(2,'0')+' / '+String(SLIDES.length).padStart(2,'0'));
+  const put=(it,text)=>{if(!it||!it.runs||!it.runs.length)return;it.runs=[{t:text,o:Object.assign({},it.runs[0].o)}];autoShrink(it);};
+  sl.title=name+'｜'+(bases?'24 款底座':'9 種組合元件');put(foot,String(page+1).padStart(2,'0')+' / 02');sl.no=page+1;
+ });
+ model.iconPack={id,name,bases:model.slides[0].groups.length,components:model.slides[1].groups.length,pages:model.slides.length};return model;}
 /* ---------- S／M／L 元件尺寸（v5.2）：整頁幾何、字級、線寬、陰影一起等比縮放，投影片也同比例（仍是 16:9）。
    所以每一頁都放得下；把元件複製到標準 13.33×7.5 吋簡報時，實際大小就是 ×0.8／×1／×1.25。 ---------- */
 /* ---------- 表格：自動判斷（R1）——表頭、數字欄、狀態欄、小節列、合計列；外觀；數字格式；建議（重點欄、門檻） ---------- */
@@ -6549,7 +6571,7 @@ function toSvg(slide,opt){opt=opt||{};const id=(opt.id||'s')+'_';const defs={},p
  let out=parts;
  if(opt.interactive&&slide.groups&&slide.groups.length){out=parts.slice();const pad=4;
   slide.groups.forEach((g,gi)=>{const x=g.x*PT-pad,y=g.y*PT-pad,w=g.w*PT+2*pad,h=g.h*PT+2*pad;
-   out[g.from]=`<g class="el" data-g="${gi}" data-name="${esc(g.name)}">`+out[g.from];
+   out[g.from]=`<g class="el" data-g="${gi}" data-name="${esc(g.iconStyle?iconComponentName(g.iconStyle):g.name)}">`+out[g.from];
    out[g.to]=out[g.to]+`<rect class="hit" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="4"/></g>`;});}
  const vb=opt.viewBox||`0 0 ${(slide.W||W)*PT} ${(slide.H||H)*PT}`;
  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" ${opt.attrs||''}><defs>${Object.values(defs).map(d=>d.xml).join('')}</defs>${opt.bg===false?'':'<rect width="100%" height="100%" fill="#FFFFFF"/>'}${out.join('')}</svg>`;}
@@ -6558,7 +6580,7 @@ function elementSvg(slide,gi,opt){opt=opt||{};const g=slide.groups[gi];const pad
  const items=slide.items.slice(g.from,g.to+1);const hasSh=items.some(i=>i.sh);const m=pad+(hasSh&&!opt.flat?16:0);
  const x=g.x*PT-m,y=g.y*PT-m,w=g.w*PT+2*m,h=g.h*PT+2*m;
  const svg=toSvg({items},{id:opt.id||'e',flat:opt.flat,bg:opt.bg,viewBox:`${x.toFixed(2)} ${y.toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)}`,attrs:`width="${(w*(opt.scale||1)).toFixed(1)}pt" height="${(h*(opt.scale||1)).toFixed(1)}pt"`.replace(/pt"/g,opt.px?'"':'pt"')});
- return{svg,w,h,name:g.name};}
+ return{svg,w,h,name:g.iconStyle?iconComponentName(g.iconStyle):g.name};}
 /* ================= 待選素材（v6）：多個元件（各自保留加入當時的風格參數）排到同一張投影片 =================
    entries[i]={kind:'el'|'icon'|'table',params:{…完整風格…},key,gi | icon:{id,variant} | table:{rows,…},name}
    每項先用自己的 params 建 model（顏色、圓角、陰影、線寬、S/M/L 都已算進圖形）→ 依外框做「分列排版」，放不下就整體等比縮小 → 合併成一頁。 */
@@ -6663,7 +6685,7 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
  if(p.tbPanel&&!p.tbLook){out.tbLook='card';out.tbCard='grey';}if(p.tbLook==='panel')out.tbCard='grey';
  return out;}
-const api={ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
+const api={iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);
 
@@ -7050,10 +7072,10 @@ $('#big').onclick=e=>{const b=e.target.closest('.nav');if(b){go(S.slide+ +b.data
 let SEL=null;
 const escH=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function clearSel(){SEL=null;document.querySelectorAll('#big .el.sel').forEach(x=>x.classList.remove('sel'));const b=$('#ebar');if(b)b.classList.remove('on');}
-function selectEl(gi){closeLabelEditor(false);clearSel();const sl=model.slides[S.slide];const g=sl.groups[gi];if(!g)return;SEL={gi,key:sl.key,name:g.name};
+function selectEl(gi){closeLabelEditor(false);clearSel();const sl=model.slides[S.slide];const g=sl.groups[gi];if(!g)return;SEL={gi,key:sl.key,name:g.iconStyle?D.iconComponentName(g.iconStyle):g.name};
  const el=document.querySelector(`#big .el[data-g="${gi}"]`);if(el)el.classList.add('sel');
  const edit=$('#ebar button[data-a="lbl"]');edit.textContent=g.iconStyle?'換圖示／底色':sl.items.slice(g.from,g.to+1).some(it=>it.ic)?'換圖示／改字':'改字';
- const bar=$('#ebar'),big=$('#big'),k=big.clientWidth/((model.W||D.W)*72);$('#eName').textContent=g.name;let dim=`${(g.w*2.54).toFixed(1)}×${(g.h*2.54).toFixed(1)} cm`;
+ const bar=$('#ebar'),big=$('#big'),k=big.clientWidth/((model.W||D.W)*72);$('#eName').textContent=SEL.name;let dim=`${(g.w*2.54).toFixed(1)}×${(g.h*2.54).toFixed(1)} cm`;
  if(+S.p.minFont>0){try{const em=D.elementModel(S.p,sl.key,gi,{labels:S.labels});const E=em.element;if(E.scale>1)dim+=`・匯出 ×${E.scale}（最小字 ${E.minSize}pt${E.capped?'，已到投影片上限':''}）`;}catch(e){}}
  $('#eDim').textContent=dim;$('#eCnt').hidden=!g.count;if(g.count){$('#eCntN').textContent=S.p[g.count];$('#eCnt').querySelectorAll('button').forEach(b=>{const on=+b.dataset.a.slice(2)===+S.p[g.count];b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));});}SEL.count=g.count||null;bar.classList.add('on');
  let x=(g.x*72)*k,y=(g.y+g.h)*72*k+8;const bw=bar.offsetWidth,bh=bar.offsetHeight;
@@ -7188,7 +7210,15 @@ setTimeout(scnRender,0);
 $('#iCats').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const g=$('#iGrid');
   if(b.dataset.c==='*'){g.scrollTo({top:0,behavior:'smooth'});return;}const h=g.querySelector(`.isec[data-c="${CSS.escape(b.dataset.c)}"]`);if(h){g.scrollTo({top:h.offsetTop-4,behavior:'smooth'});ICHIP=b.dataset.c;ICHIPT=performance.now()+700;setChip(b.dataset.c);}};}
 let ICHIP=null,ICHIPT=0;function setChip(c){$('#iCats').querySelectorAll('button').forEach(b=>{const on=b.dataset.c===c;b.classList.toggle('on',on);});}
-let ISEL=null;
+let ISEL=null,IPACK_JOB=null;
+const validIcon=id=>typeof id==='string'&&Object.prototype.hasOwnProperty.call(I.BY,id);
+function renderIconPack(){const ic=validIcon(ISEL)?I.BY[ISEL]:null,b=$('#iPackDownload');
+ $('#iPackName').textContent=ic?'已選：'+ic.zh:'先選一個圖示';$('#iPackIcon').innerHTML=ic?I.svg(ISEL,{variant:'line',wt:I.weightOf(S.p),fg:S.p.P,px:28}):'＋';
+ b.disabled=!ic||!!IPACK_JOB;b.textContent=IPACK_JOB?'製作中…':'下載底座＋組合元件 (.pptx)';$('#iPack').setAttribute('aria-busy',String(!!IPACK_JOB));
+ $('#iPackStatus').textContent=IPACK_JOB?'正在製作「'+IPACK_JOB.name+'」的元件組…':'套用目前風格與字重；底座與組合保留各自配色，不改動已儲存元件。';}
+$('#iPackDownload').onclick=async()=>{if(!validIcon(ISEL)||IPACK_JOB)return;const id=ISEL,params=clone(S.p),job={id,name:I.BY[id].zh};IPACK_JOB=job;renderIconPack();
+ try{const model=D.iconPackModel(params,id),r=await D.exportPptx(ENV(),params,{model});saveBlob(r.data,D.iconPackFilename(id));window.__studio.lastIconPack=Object.assign({},model.iconPack,{size:r.data.size});toast('已下載「'+job.name+'」：24 款底座＋9 種組合，共 2 頁，全部是原生可編輯群組。',5000);}
+ catch(err){console.error(err);toast('元件組下載失敗：'+err.message);}finally{if(IPACK_JOB===job)IPACK_JOB=null;renderIconPack();}};
 // 500 個圖示：結構（分類區塊＋按鈕）只在搜尋字改變時重建；SVG 只畫捲到附近的分類區塊（IntersectionObserver），換顏色／樣式時只重畫已畫過的區塊
 let IQ=null,IKEY='',IIO=null;
 function iconKey(L){return [L.variant,L.wt,L.fg,L.bg].join('|');}
@@ -7213,19 +7243,19 @@ function renderIcons(){const L=iconLook();const q=$('#iSearch').value.trim().toL
  }else n=G.querySelectorAll('.ic').length;
  const k=iconKey(L);if(k!==IKEY){IKEY=k;G.querySelectorAll('.isec').forEach(x=>{if(x._vis)fillSec(x,L);else delete x.dataset.k;});}
  $('#iInfo').textContent=`${n} 個・匯出 ${(0.6*SK()*2.54).toFixed(2)} cm／PNG ${icPx()*2}–${icPx()*4} px（元件尺寸 ${S.p.size||'M'}）`;
- if(ISEL&&!document.querySelector(`.ic[data-id="${ISEL}"]`))clearISel();else if(ISEL)placeIBar();}
+ if(ISEL&&!document.querySelector(`.ic[data-id="${ISEL}"]`))clearISel();else if(ISEL)placeIBar();renderIconPack();}
 // 捲動時標示目前分類（scroll-spy）
 function spy(){if(ICHIP&&performance.now()<ICHIPT)return;const G=$('#iGrid');if(!G.querySelector('.isec'))return;const top=G.getBoundingClientRect().top+40;let cur=null;
  if(G.scrollTop<4&&!IQ){setChip('*');return;}
  G.querySelectorAll('.isec').forEach(x=>{if(x.getBoundingClientRect().top<=top)cur=x.dataset.c;});if(!cur)cur=G.querySelector('.isec').dataset.c;setChip(cur);}
-function clearISel(){ISEL=null;$('#ibar2').classList.remove('on');document.querySelectorAll('.ic.sel').forEach(x=>x.classList.remove('sel'));}
-function placeIBar(){const t=document.querySelector(`.ic[data-id="${ISEL}"]`);if(!t)return;const bar=$('#ibar2'),v=$('#vIcons').getBoundingClientRect(),r=t.getBoundingClientRect();
+function clearISel(){ISEL=null;renderIconPack();$('#ibar2').classList.remove('on');document.querySelectorAll('.ic.sel').forEach(x=>x.classList.remove('sel'));}
+function placeIBar(){if(!validIcon(ISEL)){clearISel();return;}renderIconPack();const t=document.querySelector(`.ic[data-id="${ISEL}"]`);if(!t)return;const bar=$('#ibar2'),v=$('#vIcons').getBoundingClientRect(),r=t.getBoundingClientRect();
  $('#iName').textContent=I.BY[ISEL].zh;$('#iDim').textContent=`${(0.6*SK()*2.54).toFixed(2)} cm`;bar.classList.add('on');
  let x=r.left-v.left,y=r.bottom-v.top+6;if(y+bar.offsetHeight>v.height-6)y=r.top-v.top-bar.offsetHeight-6;x=Math.max(6,Math.min(x,v.width-bar.offsetWidth-6));bar.style.left=x+'px';bar.style.top=y+'px';}
 $('#iGrid').onclick=e=>{const t=e.target.closest('.ic');if(!t){clearISel();return;}
  document.querySelectorAll('.ic.sel').forEach(x=>x.classList.remove('sel'));t.classList.add('sel');ISEL=t.dataset.id;placeIBar();};   // 點一下＝選取（複製改按工具列）
 let ISPY=0;$('#iGrid').onscroll=()=>{if(ISEL)placeIBar();if(!ISPY)ISPY=requestAnimationFrame(()=>{ISPY=0;spy();});};
-$('#ibar2').onclick=e=>{const b=e.target.closest('button');if(b)iconAction(b.dataset.a);};
+$('#ibar2').onclick=e=>{const b=e.target.closest('button');if(b&&!b.disabled)iconAction(b.dataset.a);};
 function svgPng(svg,px){return new Promise((res,rej)=>{const img=new Image();const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
  img.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=px;c.getContext('2d').drawImage(img,0,0,px,px);URL.revokeObjectURL(url);c.toBlob(b=>b?res(b):rej(new Error('PNG 轉換失敗')),'image/png');}catch(err){rej(err);}};
  img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('SVG 無法繪製'));};img.src=url;});}
@@ -7233,7 +7263,7 @@ const blobUrl=b=>new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.resul
 async function iconPptx(id,pic){const L=iconLook();let o={id,variant:L.variant};
  if(pic){const svg=icSvg(id,icPx()*4);o=Object.assign(o,{pic:true,svg,png:await blobUrl(await svgPng(svg,icPx()*4))});}
  const model=D.buildModel(S.p,{icon:o});return D.exportPptx(ENV(),S.p,{model});}
-async function iconAction(a){if(!ISEL)return;const id=ISEL,ic=I.BY[id],base='icon-'+id+'-'+(S.p.icColor||'P')+'-'+(S.p.icVar||'line');const px=icPx();
+async function iconAction(a){if(!validIcon(ISEL))return;const id=ISEL,ic=I.BY[id],base='icon-'+id+'-'+(S.p.icColor||'P')+'-'+(S.p.icVar||'line');const px=icPx();
  try{
  if(a==='x'){clearISel();return;}
  if(a==='svg'){saveBlob(new Blob([icSvg(id,px)],{type:'image/svg+xml'}),base+'.svg');toast('已下載 SVG（透明背景）。PowerPoint「插入 › 圖片」後可右鍵「轉換成圖案」。');return;}
@@ -7702,7 +7732,7 @@ function openLabels(){if(!SEL)return;const raw=D.buildModel(S.p,{only:[SEL.key]}
 function labelVariantControls(){const group=(key,title,choices)=>`<label>${title}<select data-vstyle="${key}">${choices.map(x=>`<option value="${x[0]}"${LB.variant[key]===x[0]?' selected':''}>${escH(x[1])}</option>`).join('')}</select></label>`;return `<section class="lbvariant" aria-label="底座外觀與狀態">${group('base','底座',D.ICON_BASES)}${group('look','外觀',D.ICON_LOOKS)}${group('state','底色／狀態',D.ICON_STATES)}<div id="lbVariantPreview" aria-label="組合即時預覽"></div><small id="lbVariantNote"></small><small>棋盤格表示透明區域。按「套用」才儲存。</small></section>`;}
 function refreshLabelVariant(){if(!LB||!LB.variant)return;const chosen={};document.querySelectorAll('#lbList select[data-vstyle]').forEach(e=>chosen[e.dataset.vstyle]=e.value);LB.variant=D.cleanIconStyle(chosen,LB.variant);const paint=D.iconComponentPaint(LB.variant,S.p.P),patch=clone((S.labels||{})[LB.lk]||{});patch._iconStyle=clone(LB.variant);
  LB.ics.forEach((r,j)=>{r.color=paint.fg;const q=$(`#lbList input[data-k="${j}"]`);if(!q)return;const id=labelIconId(q.value);if(id){q.previousElementSibling.innerHTML=labelIconSvg(id,22,r);patch[r.ix]={from:r.orig,icon:id};}});
- const m=D.elementModel(S.p,LB.key,LB.gi,{labels:{[LB.lk]:patch}});$('#lbVariantPreview').innerHTML=D.elementSvg(m.slides[0],0,{flat:true,bg:false,pad:8}).svg;const state=D.ICON_STATES.find(x=>x[0]===LB.variant.state);$('#lbVariantNote').textContent=state[1]+'：'+state[4]+'。狀態名稱同步更新。';}
+ const m=D.elementModel(S.p,LB.key,LB.gi,{labels:{[LB.lk]:patch}});$('#lbVariantPreview').innerHTML=D.elementSvg(m.slides[0],0,{flat:true,bg:false,pad:8}).svg;$('#lbName').textContent='換圖示／底色：'+D.iconComponentName(LB.variant);const state=D.ICON_STATES.find(x=>x[0]===LB.variant.state);$('#lbVariantNote').textContent=state[1]+'：'+state[4]+'。狀態名稱同步更新。';}
 $('#lbList').addEventListener('change',e=>{if(e.target.matches('select[data-vstyle]'))refreshLabelVariant();});
 function labelIconId(value){const v=String(value||'').trim();return Object.prototype.hasOwnProperty.call(I.BY,v)?v:((I.LIST.find(ic=>ic.zh===v)||{}).id);}
 function labelIconSvg(id,px,row){return I.svg(id,{variant:'line',wt:row.wt,fg:row.color,px,title:I.BY[id].zh});}
