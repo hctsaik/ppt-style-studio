@@ -2380,7 +2380,9 @@ function toPptx(pptx,model){
    const p={x:it.x,y:it.y,w:it.w,h:it.h};if(it.name)p.objectName=it.name;
    if(it.kind){p.shape=it.doc?'flowChartDocument':it.kind;p.fill=it.fill?{color:it.fill,transparency:it.ft||0}:{type:'none'};
     p.line=it.line?{color:it.line,width:it.lw,dashType:it.dash}:{type:'none'};if(it.line&&it.head)p.line.endArrowType=ahType(it.head,it.hs);if(it.line&&it.tail)p.line.beginArrowType=ahType(it.tail,it.hs);}
-   if(it.adj)p.rectRadius=it.adj;if(it.points&&!it.doc)p.points=it.points;
+   // PowerPoint repaired away icon-base groups with an explicit hexagon adj guide.
+   // Native defaults are confirmed usable; preserve adjustments of unrelated catalog shapes.
+   if(it.adj&&!(it.kind==='hexagon'&&it.iconBase))p.rectRadius=it.adj;if(it.points&&!it.doc)p.points=it.points;
    if(it.sh)p.shadow={type:'outer',blur:it.sh.blur,offset:it.sh.dist,angle:it.sh.dir,color:it.sh.color,opacity:it.sh.alpha};
    let runs='';
    if(it.runs){const T=it.tx;runs=it.runs.map(r=>{const o={fontSize:r.o.size,fontFace:r.o.font,bold:r.o.bold,color:r.o.color};if(r.o.cs!=null)o.charSpacing=r.o.cs;if(r.o.hl)o.highlight=r.o.hl;if(r.o.strike)o.strike='sngStrike';if(r.o.u)o.underline=typeof r.o.u==='string'?{style:'sng',color:r.o.u}:{style:'sng'};if(r.o.br)o.breakLine=true;if(r.o.link&&KI[r.o.link])o.hyperlink={slide:KI[r.o.link],tooltip:'跳到該頁'};return{text:r.t,options:o};});
