@@ -867,7 +867,8 @@ document.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target
 function saveBlob(blob,name){const url=URL.createObjectURL(blob);const a=document.createElement('a');
  // iOS Safari 13+／Android Chrome 支援 <a download>；iOS 會先跳「下載？」確認框，blob URL 太早釋放會下載失敗 → 保留 60 秒
  if(!('download' in a)){const w=window.open(url,'_blank');if(!w)location.href=url;setTimeout(()=>URL.revokeObjectURL(url),60000);return;}
- a.href=url;a.download=name;a.rel='noopener';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},60000);
+ a.href=url;a.download=name;a.rel='noopener';a.tabIndex=-1;a.hidden=true;document.body.appendChild(a);
+ try{a.click();}finally{a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);}
  if(TOUCH&&!saveBlob.tip&&/\.pptx$/i.test(name)&&(saveBlob.tip=1))setTimeout(()=>toast(`已下載 <b>${escH(name)}</b>。iPhone：「檔案 › 下載項目」點開 → 分享 → PowerPoint；Android：通知列或「下載」資料夾。`,6500,true),1800);}
 const fileBase=()=>'kit-'+S.base+(isModified()?'-custom':'');
 async function download(one){

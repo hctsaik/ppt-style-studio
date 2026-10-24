@@ -440,6 +440,30 @@ async function browserSuite(options = {}) {
       assert(el('#tPptx').getBoundingClientRect().height >= 36, 'Primary action became too small');
     }
   });
+  await run('Download anchors leave no keyboard stops and defer URL release', async () => {
+    if (visual) return; // Instrumented helper test; actual downloads are covered by live browser QA.
+    const create = URL.createObjectURL, revoke = URL.revokeObjectURL, click = HTMLAnchorElement.prototype.click, timer = window.setTimeout;
+    const pending = [], released = [], downloads = []; let seq = 0;
+    URL.createObjectURL = () => 'blob:download-cleanup-' + (++seq);
+    URL.revokeObjectURL = url => released.push(url);
+    window.setTimeout = (fn, ms) => { pending.push({ fn, ms }); return 0; };
+    HTMLAnchorElement.prototype.click = function () {
+      assert(this.isConnected && this.hidden && this.tabIndex === -1, 'Transient download anchor is visible or keyboard focusable');
+      downloads.push(this.download);
+    };
+    try {
+      window.__testSaveBlob(new Blob(['test']), 'test.tsv'); window.__testSaveBlob(new Blob(['test']), 'test.pptx');
+      assert(downloads.join(',') === 'test.tsv,test.pptx', 'Download activation was lost');
+      assert(!document.querySelector('a[href^="blob:download-cleanup-"]'), 'Download anchors remain in DOM');
+      assert(released.length === 0 && pending.filter(x => x.ms === 60000).length === 2, 'Blob URLs released before Safari can start downloading');
+      pending.filter(x => x.ms === 60000).forEach(x => x.fn());
+      assert(released.length === 2, 'Download URLs were not eventually released');
+      HTMLAnchorElement.prototype.click = () => { throw new Error('simulated click failure'); };
+      try { window.__testSaveBlob(new Blob(['test']), 'failure.tsv'); } catch (error) { assert(error.message === 'simulated click failure', 'Unexpected failure'); }
+      assert(!document.querySelector('a[href^="blob:download-cleanup-"]'), 'Failed download leaked its anchor');
+      assert(pending.filter(x => x.ms === 60000).length === 3, 'Failed download leaked its URL');
+    } finally { URL.createObjectURL = create; URL.revokeObjectURL = revoke; HTMLAnchorElement.prototype.click = click; window.setTimeout = timer; }
+  });
   await run('Full TSV keeps original values and every row after display formatting', async () => {
     await reset();
     const rows = [['Key', 'Amount'], ...Array.from({ length: 60 }, (_, r) => [`raw${r + 1}`, r === 59 ? '9007199254740993' : String(1234000 + r)])];
@@ -469,7 +493,7 @@ async function domSuite() {
   const virtualConsole = new VirtualConsole();
   const pageErrors = [];
   virtualConsole.on('jsdomError', error => { if (!/navigation|HTMLCanvasElement|window.scrollTo/.test(error.message)) pageErrors.push(error.message); });
-  const html = fs.readFileSync(path.resolve(ROOT, process.env.STUDIO_HTML || 'studio.html'), 'utf8');
+  const html = fs.readFileSync(path.resolve(ROOT, process.env.STUDIO_HTML || 'studio.html'), 'utf8').replace('function saveBlob(blob,name)', 'window.__testSaveBlob=saveBlob;function saveBlob(blob,name)');
   const dom = new JSDOM(html, {
     url: 'http://studio.test/studio.html',
     runScripts: 'dangerously', resources: new LocalResources(), pretendToBeVisual: true, virtualConsole,
