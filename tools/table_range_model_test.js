@@ -149,9 +149,7 @@ async function check(name, fn) { await fn(); checks++; console.log('  ✓ ' + na
     for (let r = 0; r < 8; r++) for (let c = 0; c < 7; c++) assert.equal(native(marked).cells[r][c].bold, native(base).cells[r][c].bold);
     const semantic = { ...T, his: [{ type: 'col', i: 0, kind: 'rec' }, { type: 'col', i: 6, kind: 'warn' }] };
     const mixed = model(apply(semantic, rect(2, 2, 4, 4), 'mint'));
-    const legend = mixed.slides[0].items.find(it => it.name === '圖例');
-    const text = legend.runs.map(r => r.t).join('');
-    assert(text.includes('推薦') && text.includes('警告')); assert(!text.includes('重點'));
+    assert.equal(mixed.slides[0].items.filter(it => it.name === '圖例').length, 0);
     assert.deepEqual(native(mixed).colW, native(model(semantic)).colW);
     assert.equal(native(mixed).y, native(model(semantic)).y);
   });
@@ -171,6 +169,18 @@ async function check(name, fn) { await fn(); checks++; console.log('  ✓ ' + na
     assert.equal(native(covered).y, native(base).y); assert.deepEqual(native(covered).rowH, native(base).rowH);
     assert.equal(covered.slides[0].table.boxes.length, 0);
     assert.deepEqual(model({ ...all, his: D.tableClearRange(all, rect(0, 0, 7, 6)).his }), base);
+  });
+  await check('table semantic footer legend is absent from model, SVG and native PPTX without losing marks or values', async () => {
+    const T = {header:true,title:'Original table',note:'Original source note',rows:[['Item','Value','Status'],['重點','00123','Pass'],['推薦','9007199254740993','Hold']],his:[{type:'row',i:1,kind:'focus'},{type:'row',i:2,kind:'rec'},{type:'cell',r:2,c:2,kind:'warn'}],legend:{focus:'LEGEND_ONLY_FOCUS',rec:'LEGEND_ONLY_REC',warn:'LEGEND_ONLY_WARN'}};
+    const before=JSON.stringify(T),m=model(T),sl=m.slides[0],tb=native(m);
+    assert.equal(m.slides.length,1);assert.deepEqual(sl.table.rawRows,T.rows);assert.equal(sl.table.his.length,3);assert.equal(JSON.stringify(T),before);
+    assert(!sl.items.some(it=>it.name==='圖例'));assert.equal(sl.table.slots.note.w,sl.table.tW);
+    const withoutLabels=model({...T,legend:{}});assert.deepEqual(native(withoutLabels),tb);
+    const plain=native(model({...T,his:[]}));assert.notEqual(tb.cells[1][0].fill,plain.cells[1][0].fill);assert.notEqual(tb.cells[2][0].fill,plain.cells[2][0].fill);
+    const svg=D.toSvg(sl);assert(!svg.includes('LEGEND_ONLY_'));assert(svg.includes('重點')&&svg.includes('推薦'));
+    const out=await D.exportPptx({PptxGenJS,JSZip},params,{model:m,type:'nodebuffer'}),zip=await JSZip.loadAsync(out.data),xml=await zip.file('ppt/slides/slide1.xml').async('string');
+    assert(!xml.includes('LEGEND_ONLY_'));assert(!xml.includes('name="圖例"'));assert(xml.includes('00123')&&xml.includes('9007199254740993')&&xml.includes('重點')&&xml.includes('推薦'));
+    const doc=new JSDOM(xml,{contentType:'application/xml'}).window.document;assert.equal(doc.getElementsByTagName('a:tbl').length,1);assert.equal(doc.getElementsByTagName('a:tc').length,9);
   });
   await check('full 61×12 source persists on one canvas and all range styles export as editable native cells', async () => {
     const T = makeTable(61, 12); T.rows[10] = Array(12).fill(''); T.rows[60][11] = '9007199254740993';

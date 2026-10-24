@@ -1974,15 +1974,11 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   const titleWidth=titleRaw&&mw(titleRaw,tfsT,1)>metaW?maxW:metaW;
   const ttl=fitLines(semBreak(titleRaw,tfsT,1,titleWidth),tfsT,1,titleWidth),titH=metaH(ttl,tfsT,.5*k);
   const unitText=wrapMeta(T.unit,ufs,0,metaW),unitH=T.unit?metaH(unitText,ufs,.27*k):.04;
-  const kinds=[...new Set(his.filter(h=>h.type!=='range').map(h=>h.kind))],LG=T.legend&&typeof T.legend==='object'?T.legend:{};
-  const KZ={focus:String(LG.focus||'重點'),rec:String(LG.rec||'推薦'),warn:String(LG.warn||'警告')};
-  const legend=kinds.length>=2?kinds.map(kind=>({kind,C:his.find(h=>h.type!=='range'&&h.kind===kind).C,text:'■ '+KZ[kind]})):[];
-  // Reserve the actual legend width before measuring the note, not just its explicit newlines.
-  const legW=legend.length?Math.min(T.note?tW*.5:tW,Math.max(...legend.map(l=>mw(l.text,nfs,0)))+.1):0;
-  const noteW=legW?Math.max(.2,tW-legW-.18):tW;
+  // Table-only footer legend is intentionally omitted. Legacy legend labels stay
+  // compatible in stored data, but do not reserve space or alter cell formatting.
+  const noteW=tW;
   const noteText=wrapMeta(T.note,nfs,0,noteW),noteH=T.note?metaH(noteText,nfs):0;
-  legend.forEach(l=>{l.text=wrapMeta(l.text,nfs,0,Math.max(.2,legW));l.h=metaH(l.text,nfs);});
-  const legendH=legend.reduce((n,l)=>n+l.h,0),afterH=Math.max(noteH,legendH),noteGap=afterH?.11*k:0;
+  const afterH=noteH,noteGap=afterH?.11*k:0;
   const TOP=.4,GAP=.30,ty0=TOP+titH+unitH+(T.unit?.02:0)+GAP;
   const bottom=.4,footerH=.26,footerGap=.12,headerH=h0?rowHAll[0]:0;
   let blockedRow=null,blockedReasonCode='',exportReason='';
@@ -2048,7 +2044,6 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    const noteY=ty+tH+frame+noteGap;
    slots.note={x:X,y:noteY,w:noteW,h:Math.max(noteH,.26*k),size:nfs,color:G.mute};
    if(T.note)txt(X,noteY,noteW,noteH,noteText,{size:nfs,color:G.mute,valign:'top',wrap:1,lsp:1,name:'註腳'});
-   if(legend.length)txt(X+tW-legW,noteY,legW,legendH,legend.map((l,i)=>({t:l.text+(i<legend.length-1?'\n':''),c:l.C,s:nfs})),{size:nfs,align:'right',valign:'top',wrap:1,name:'圖例'});
    const bodyStart=bodySourceRows.length?bodySourceRows[0]:h0,bodyEnd=bodySourceRows.length?bodySourceRows[bodySourceRows.length-1]:h0-1;
    if(hasFooter){const label=`第 ${pageIndex+1}／${pageCount} 頁 · 資料列 ${bodyStart-h0+1}–${bodyEnd-h0+1}／${source.bodyRows}`;
     const footerW=Math.min(W-1.2,Math.max(tW,mw(label,10,0)+.12)),footerX=Math.max(.6,X+tW-footerW);

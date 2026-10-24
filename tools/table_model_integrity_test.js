@@ -405,7 +405,7 @@ function assertRejected(m) {
     const blockedTray = D.trayDeck([{ kind: 'table', params, table: t }]);
     await assert.rejects(D.exportPptx(env, params, { model: blockedTray }), { code: 'TABLE_EXPORT_INCOMPLETE' });
   }
-  check('ordinary title, unit, note and legend remain exportable', () => {
+  check('ordinary title, unit and note remain exportable with semantic cell marks', () => {
     const m = model({ header: true, title: '季度摘要', unit: '單位：萬元', note: '資料來源：營運報表', rows: [['項目', '值'], ['A', '123'], ['B', '456']], his: [{ type: 'col', i: 1, kind: 'focus' }, { type: 'row', i: 2, kind: 'warn' }] });
     assert.equal(m.slides[0].table.exportComplete, true);
     assert(D.tableHtml(m));

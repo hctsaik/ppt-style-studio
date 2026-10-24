@@ -23,6 +23,58 @@ async function main(){
  await test('range cap rejects both preview and commit without changing committed state',async()=>{w.__rangeTestEval(`cancelRangePreview();closeChip();T=sampleOf('yield');T.his=Array.from({length:12},(_,i)=>({type:'range',r0:Math.floor(i/5),r1:Math.floor(i/5),c0:i%5,c1:i%5,presetId:'mint',kind:'focus',color:'auto'}));saveT();pushHist(true);renderTable(true);`);pointer(cell(6,4),'pointerdown',0,0,{pointerType:'touch'});cell(6,4).click();click('[data-range-action="palette"]');const raw=state(),before=svg(),hist=w.__rangeTestEval('JSON.stringify(HIST.a)');click('[data-range-preset="rose"]');assert.equal(svg(),before);assert.equal(state(),raw);assert($('#tRangeStatus').textContent.includes('12'));w.__rangeTestEval(`commitRangePreset('rose')`);assert.equal(state(),raw);assert.equal(w.__rangeTestEval('JSON.stringify(HIST.a)'),hist);});
  await test('responsive palette targets visible host and mobile errors stay visible',async()=>{const media=w.matchMedia;w.matchMedia=q=>({matches:q.includes('max-width:900px'),media:q,addListener(){},addEventListener(){}});w.__rangeTestEval('renderRangePanel()');assert.equal($('#tSelPanel').innerHTML,'');assert(!$('#tPop').hidden);w.__rangeTestEval(`commitRangePreset('rose')`);assert($('#tPop [data-range-status]').textContent.includes('12'));w.matchMedia=media;w.__rangeTestEval('renderRangePanel()');assert.equal($('#tPop').innerHTML,'');cell(6,4).focus();key(cell(6,4),'h');assert($('#tSelPanel').contains(d.activeElement));});
  await test('Data tab shows only Excel paste and no redundant highlight/legend settings',async()=>{click('.tinsTabs [data-t="data"]');const section=$('.tsec[data-sec="data"]');assert.equal(w.getComputedStyle($('#tDrop')).display,'block');for(const e of section.children)if(e.id!=='tDrop')assert.equal(w.getComputedStyle(e).display,'none',e.id+' remains visible');assert(!d.querySelector('#tHil,#tLgF,.tmark-settings'));});
+ await test('one persistent H/L entry is discoverable, disabled until selection, and automatic from Data',async()=>{
+  w.__rangeTestEval('closeChip()');click('.tinsTabs [data-t="look"]');
+  const launcher=$('#tHLLauncher'),button=$('#tHLLauncher button'),raw=state(),hist=w.__rangeTestEval('JSON.stringify(HIST.a)');
+  assert(!launcher.hidden);assert(button.disabled);assert.equal($('#tHLHint').textContent,'選取儲存格');button.click();assert.equal(state(),raw);assert.equal(w.__rangeTestEval('JSON.stringify(HIST.a)'),hist);assert(!w.__rangeTestEval('RANGE_OPEN'));
+  click('.tinsTabs [data-t="data"]');assert(launcher.hidden);cell(1,1).click();assert.equal($('.tinsTabs [data-t="look"]').getAttribute('aria-pressed'),'true');assert(!launcher.hidden&&!button.disabled);assert.strictEqual($('#tHLLauncher button'),button);assert.equal(d.querySelectorAll('[data-range-action="palette"]').length,1);
+  button.click();assert.equal(d.querySelectorAll('#tSelPanel [data-range-preset]').length,6);click('[data-range-action="close"]');assert(button.disabled);assert(!launcher.hidden);assert.equal($('#tHLHint').textContent,'選取儲存格');assert.equal(state(),raw);
+  click('.tinsTabs [data-t="data"]');assert(launcher.hidden);assert.equal(w.getComputedStyle($('#tDrop')).display,'block');
+ });
+ await test('fit and 100% keep transformed pointer hitboxes, editor geometry, and source/export model intact',async()=>{
+  w.__rangeTestEval(`closeChip();T=sampleOf('yield');T.title='完整標題';T.unit='原始單位';T.note='原始註腳';saveT();pushHist(true);renderTable(true);`);
+  const canvas=$('#tCanvas'),P=$('#tPrev'),rect=P.getBoundingClientRect,descriptors=['clientWidth','clientHeight'].map(k=>[k,Object.getOwnPropertyDescriptor(canvas,k)]);let width=760,height=340;
+  Object.defineProperty(canvas,'clientWidth',{configurable:true,get:()=>width});Object.defineProperty(canvas,'clientHeight',{configurable:true,get:()=>height});
+  P.getBoundingClientRect=()=>{const v=w.__studio.tableViewport,sl=w.__rangeTestEval('tableSlide()'),px=v.pixelsPerInch,left=40-v.x0*px-73,top=65-v.y0*px-39;return{left,top,width:sl.w*px,height:sl.h*px,right:left+sl.w*px,bottom:top+sl.h*px};};
+  const point=(r,c)=>{const b=P.getBoundingClientRect(),q=w.__rangeTestEval(`(()=>{const tb=tableMeta();return{x:tb.tx+tb.colW.slice(0,${c}).reduce((a,b)=>a+b,0)+tb.colW[${c}]/2,y:tb.ty+tb.rowH.slice(0,${r}).reduce((a,b)=>a+b,0)+tb.rowH[${r}]/2};})()`),px=w.__studio.tableViewport.pixelsPerInch;return{x:b.left+q.x*px,y:b.top+q.y*px};};
+  const raw=state(),model=w.__rangeTestEval('JSON.stringify(TM)'),hist=w.__rangeTestEval('JSON.stringify(HIST.a)');
+  try{for(const mode of ['fit','100']){
+   click(`.tzoom [data-z="${mode}"]`);await sleep(40);const v=w.__studio.tableViewport;
+   assert.equal(v.zoom,mode);if(mode==='100')assert.equal(v.pixelsPerInch,90);else assert(v.width<=v.availableWidth+.001&&v.height<=v.availableHeight+.001);
+   const slots=w.__rangeTestEval('tableMeta().slots');for(const k of ['title','unit','note']){const q=slots[k];assert(q.x>=v.x0&&q.y>=v.y0&&q.x+q.w<=v.x1+.001&&q.y+q.h<=v.y1+.001,k+' is cropped');}
+   const a=point(1,0),b=point(3,2);pointer(cell(1,0),'pointerdown',a.x,a.y);pointer(P,'pointermove',b.x,b.y);pointer(P,'pointerup',b.x,b.y);ev(P,'click');assert.deepEqual(JSON.parse(JSON.stringify(w.__studio.rangeSelection)),{r0:1,c0:0,r1:3,c1:2});
+   ev(cell(2,1),'dblclick');const editor=$('.trange-editor');for(const k of ['left','top','width','height'])assert.equal(editor.style[k],cell(2,1).style[k]);editor.value='pending value';height-=20;width-=30;w.dispatchEvent(new w.Event('resize'));await sleep(60);assert.strictEqual($('.trange-editor'),editor,'Resize ended the active editor');assert.equal(state(),raw);key(editor,'Escape');
+   assert.equal(state(),raw);assert.equal(w.__rangeTestEval('JSON.stringify(TM)'),model);assert.equal(w.__rangeTestEval('JSON.stringify(HIST.a)'),hist);
+  }}finally{P.getBoundingClientRect=rect;for(const [k,q]of descriptors){if(q)Object.defineProperty(canvas,k,q);else delete canvas[k];}click('.tzoom [data-z="fit"]');}
+ });
+ await test('mobile fit uses bounded visible height, closes settings, and stays content-independent',async()=>{
+  const media=w.matchMedia,canvas=$('#tCanvas'),ins=$('#tIns'),cr=canvas.getBoundingClientRect,ir=ins.getBoundingClientRect,descriptors=['clientWidth','clientHeight'].map(k=>[k,Object.getOwnPropertyDescriptor(canvas,k)]);
+  w.matchMedia=q=>({matches:q.includes('max-width:900px'),media:q,addListener(){},addEventListener(){}});
+  canvas.getBoundingClientRect=()=>({left:0,top:100,width:375,height:parseFloat(canvas.style.height)||0});ins.getBoundingClientRect=()=>({left:0,top:ins.classList.contains('open')?210:650,width:375,height:ins.classList.contains('open')?558:118});
+  Object.defineProperty(canvas,'clientWidth',{configurable:true,get:()=>375});Object.defineProperty(canvas,'clientHeight',{configurable:true,get:()=>parseFloat(canvas.style.height)||0});
+  try{ins.classList.add('open');click('.tzoom [data-z="fit"]');await sleep(60);assert(!ins.classList.contains('open'));assert.equal(canvas.style.height,'550px');const v=w.__studio.tableViewport;assert(v.height<=v.availableHeight&&v.width<=v.availableWidth);
+   w.__rangeTestEval(`T.rows.push(...Array.from({length:80},(_,i)=>['row '+i,'1','2','3','4']));saveT();renderTable(true);`);assert.equal(canvas.style.height,'550px');const tall=w.__studio.tableViewport;assert(tall.height<=tall.availableHeight+.001);assert.equal(w.__studio.table.pageCount,1);
+   click('.tzoom [data-z="100"]');assert.equal(w.__studio.tableViewport.pixelsPerInch,90);assert(w.__studio.tableViewport.height>w.__studio.tableViewport.availableHeight);
+  }finally{w.matchMedia=media;canvas.getBoundingClientRect=cr;ins.getBoundingClientRect=ir;for(const [k,q]of descriptors){if(q)Object.defineProperty(canvas,k,q);else delete canvas[k];}click('.tzoom [data-z="fit"]');}
+ });
+ await test('returning to Data hides every H/L control and cancels hover without changing the document',async()=>{cell(1,1).click();click('[data-range-action="palette"]');pointer($('[data-range-preset="rose"]'),'pointerover',0,0);const raw=state();click('.tinsTabs [data-t="data"]');assert.equal(w.__rangeTestEval('RANGE_PREVIEW'),null);assert.equal(state(),raw);const look=$('.tsec[data-sec="look"]');assert(look.contains($('#tHLLauncher'))&&look.contains($('#tSelection')));assert.equal(w.getComputedStyle(look).display,'none');assert($('#tPop').hidden);w.__rangeTestEval('renderTable(true)');assert($('.tsec[data-sec="data"]').classList.contains('on'));assert.equal(w.getComputedStyle(look).display,'none');});
+ await test('Data paste area mirrors canonical raw strings, inline edits and undo/redo without a second draft',async()=>{
+  click('.tinsTabs [data-t="data"]');const area=$('#tRawPaste');assert.equal(area.value,w.__rangeTestEval('toTSV(T.rows)'));
+  const rows=[['項目','值','說明'],['A','00123','first\nsecond'],['B','9007199254740993','a"b'],['C','','']];
+  const paste=(text,html='')=>{const e=new w.Event('paste',{bubbles:true,cancelable:true});Object.defineProperty(e,'clipboardData',{value:{getData:k=>k==='text/html'?html:text}});area.dispatchEvent(e);};
+  const tsv=w.__rangeTestEval('toTSV('+JSON.stringify(rows)+')');area.focus();paste(tsv);await sleep(70);assert.deepEqual(JSON.parse(state()).rows,rows);assert.equal(area.value,tsv);
+  area.setSelectionRange(3,9);area.scrollTop=20;w.__rangeTestEval('renderTable(true)');assert.equal(area.selectionStart,3);assert.equal(area.selectionEnd,9);
+  const raw=state(),input=new w.InputEvent('beforeinput',{bubbles:true,cancelable:true,inputType:'insertText',data:'x'});area.dispatchEvent(input);assert(input.defaultPrevented);assert.equal(state(),raw);assert.equal(area.value,tsv);
+  ev(cell(1,1),'dblclick');const ed=$('.trange-editor');ed.value='00999';key(ed,'Enter');assert(area.value.includes('00999'));assert.equal(area.value,w.__rangeTestEval('toTSV(T.rows)'));
+  click('.tinsTabs [data-t="data"]');area.focus();key(area,'z',{ctrlKey:true});await sleep(80);assert.equal(JSON.parse(state()).rows[1][1],'00123');assert.equal(area.value,tsv);
+  key(area,'y',{ctrlKey:true});await sleep(80);assert.equal(JSON.parse(state()).rows[1][1],'00999');assert.equal(area.value,w.__rangeTestEval('toTSV(T.rows)'));
+  ev(cell(1,1),'dblclick');$('.trange-editor').value='01234';w.__rangeTestEval('renderTable(true)');assert.equal(JSON.parse(state()).rows[1][1],'01234');assert.equal(area.value,w.__rangeTestEval('toTSV(T.rows)'));
+  const before=state(),shown=area.value;paste('Header\t"unclosed');assert.equal(state(),before);assert.equal(area.value,shown);
+ });
+ await test('Data area restores persisted matrix on a fresh app load',async()=>{
+  const saved=state(),expected=$('#tRawPaste').value;const fresh=new JSDOM(fs.readFileSync(path.join(ROOT,process.env.STUDIO_HTML||'studio.html'),'utf8'),{url:'http://range-restore.test/studio.html',runScripts:'dangerously',resources:new Resources(),pretendToBeVisual:true,virtualConsole:vc,beforeParse(v){v.localStorage.setItem('ppt-studio-table',saved);v.matchMedia=q=>({matches:false,media:q,addListener(){},addEventListener(){}});v.HTMLElement.prototype.scrollIntoView=function(){};v.HTMLElement.prototype.animate=()=>({finished:Promise.resolve()});v.HTMLCanvasElement.prototype.getContext=()=>({font:'',measureText:t=>({width:String(t).length*50})});v.scrollTo=()=>{};v.confirm=()=>true;}});
+  try{await new Promise(r=>fresh.window.addEventListener('load',r));await sleep(100);fresh.window.document.querySelector('#tabs [data-tab="table"]').click();await sleep(100);assert.equal(fresh.window.document.querySelector('#tRawPaste').value,expected);}finally{fresh.window.close();}
+ });
  assert.deepEqual(errors,[]);console.log(`${passed} range UI event checks passed (not real-browser certification).`);
  }finally{dom.window.close();}
 }

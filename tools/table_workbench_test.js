@@ -115,6 +115,7 @@ async function browserSuite(options = {}) {
     if (document.querySelector('#tImportMode')) await choose('#tImportMode', 'new');
     if (document.querySelector('#tDelimiter')) await choose('#tDelimiter', 'auto');
     document.activeElement?.blur();
+    await click('.tzoom [data-z="fit"]');
   };
   const setMark = async (r, c, scope, kind) => {
     if(window.__testLegacyMark){window.__testLegacyMark(r,c,scope,kind);await sleep(400);return;}
@@ -127,16 +128,18 @@ async function browserSuite(options = {}) {
   };
   await click('#tabs button[data-tab="table"]');
   await sleep(300);
-  await run('Table-first workspace keeps options in inspector and defaults to full-data closeup', async () => {
+  await run('Table-first workspace exposes exactly two preview-only zoom choices', async () => {
     await reset();
     for (const id of ['tLStrip','tView','tArrow','tCleanV']) assert(el('#tIns').contains(el('#'+id)), id+' still occupies canvas space');
-    assert(el('#tView [data-v="close"]').getAttribute('aria-pressed') === 'true', 'Closeup is not default');
+    assert(!visible(el('#tView')), 'Redundant full-slide/closeup controls remain visible');
+    assert([...document.querySelectorAll('.tzoom button')].map(e => e.textContent).join('|') === '顯示整個表格|原始尺寸 100%', 'Preview does not expose the requested two choices');
+    assert(el('.tzoom [data-z="fit"]').getAttribute('aria-pressed') === 'true', 'Fit-all is not default');
     assert(!el('#tCanvas').querySelector('button,select,input'), 'Canvas contains settings or pagination');
     assert(!document.querySelector('.tinsTabs [data-t="hi"]'), 'Emphasis still requires a tab');
   });
-  await run('Closeup retains legend bounds and clearing restores the empty viewport', async () => {
+  await run('Table crop retains complete content bounds and clearing restores the empty viewport', async () => {
     await reset(); await paste('Key\tValue\nfirst\t00123\nlast\t9007199254740993');
-    await setMark(1,0,'row','focus'); await setMark(2,1,'cell','rec'); await sleep(100);
+    for (const [k, value] of [['title','Complete table title'],['unit','Original unit'],['note','Original source note']]) { const field = el('.twork-meta [data-meta="'+k+'"]'); field.value = value; field.dispatchEvent(new Event('input', {bubbles:true})); } await sleep(100);
     const bounds = window.__studio.tableViewport;
     assert(bounds && bounds.y1 > 0 && bounds.y1 > bounds.y0, 'Closeup did not expose full content bounds');
     el('#tPrev').style.transform='scale(3)'; el('.tstagew').style.height='3000px';
@@ -145,43 +148,57 @@ async function browserSuite(options = {}) {
     assert(window.__studio.table.rows === 0, 'Clear did not reach empty state');
     await reset();
   });
-  await run('Browser fit keeps final column visible and wide-table edge reachable', async () => {
+  await run('Browser fit shows every row and column; original 100% makes both far edges reachable', async () => {
     if (!visual) return;
-    await reset(); await paste('Plan\tGoogle AI Pro\tGoogle AI Ultra 20x\nPrice\tNT$650\tNT$6,500\nStorage\t2 TB\t30 TB');
-    await click('#tView [data-v="close"]'); await click('.tzoom [data-z="fit"]');
-    const canvas = el('#tCanvas'); await sleep(200);
-    const bounds = canvas.getBoundingClientRect(), last = el('#tPrev .tc[data-r="0"][data-c="2"]').getBoundingClientRect();
-    assert(canvas.scrollWidth <= canvas.clientWidth + 1, 'Normal table has unexpected horizontal overflow');
-    assert(last.right <= bounds.left + canvas.clientWidth - 8, 'Final column touches or crosses scrollbar');
-    const rows = [Array.from({length: 30}, (_, i) => 'Column ' + i), Array.from({length: 30}, (_, i) => String(i))];
-    await paste(rows.map(r => r.join('\t')).join('\n')); await sleep(200);
-    assert(canvas.scrollWidth > canvas.clientWidth, 'Wide-table horizontal scroll missing');
-    canvas.scrollLeft = canvas.scrollWidth; await sleep(50);
-    const edge = el('#tPrev .tc[data-r="0"][data-c="29"]').getBoundingClientRect();
-    assert(edge.right <= bounds.left + canvas.clientWidth && edge.left >= bounds.left, 'Final wide-table column is unreachable at maximum scroll');
+    await reset();
+    const canvas = el('#tCanvas'), fits = () => {
+      const v = window.__studio.tableViewport, c = canvas.getBoundingClientRect(), crop = el('.tstagew').getBoundingClientRect();
+      assert(v.width <= v.availableWidth + .01 && v.height <= v.availableHeight + .01, 'Fit exceeds usable width or height');
+      assert(canvas.scrollWidth <= canvas.clientWidth + 1 && canvas.scrollHeight <= canvas.clientHeight + 1, 'Fit-all introduced scroll overflow');
+      assert(crop.left >= c.left && crop.top >= c.top && crop.right <= c.left + canvas.clientWidth + 1 && crop.bottom <= c.top + canvas.clientHeight + 1, 'Fitted crop is outside its scroll viewport');
+    };
+    await paste('Plan\tGoogle AI Pro\tGoogle AI Ultra 20x\nPrice\tNT$650\tNT$6,500\nStorage\t2 TB\t30 TB'); await sleep(150); fits();
+    const wide = [Array.from({length: 30}, (_, c) => 'Column ' + c), Array.from({length: 30}, (_, c) => String(c))];
+    await paste(wide.map(r => r.join('\t')).join('\n')); await sleep(150); fits();
+    const rows = [wide[0], ...Array.from({length:60}, (_, r) => wide[1].map((_, c) => `R${r + 1}C${c}`))];
+    await paste(rows.map(r => r.join('\t')).join('\n')); await sleep(150); fits();
+    const before = JSON.stringify(state()), model = JSON.stringify(window.__studio.table);
+    await click('.tzoom [data-z="100"]'); await sleep(150);
+    assert(window.__studio.tableViewport.pixelsPerInch === 90, '100% is not fixed at 90 CSS px/inch');
+    assert(canvas.scrollWidth > canvas.clientWidth && canvas.scrollHeight > canvas.clientHeight, 'Original-size overflow is missing');
+    canvas.scrollLeft = canvas.scrollWidth; canvas.scrollTop = canvas.scrollHeight; await sleep(50);
+    const c = canvas.getBoundingClientRect(), edge = el('#tPrev .tc[data-r="60"][data-c="29"]').getBoundingClientRect();
+    assert(edge.right <= c.left + canvas.clientWidth && edge.left >= c.left && edge.bottom <= c.top + canvas.clientHeight && edge.top >= c.top, 'Final original-size cell is unreachable');
+    await click('.tzoom [data-z="fit"]'); fits();
+    assert(canvas.scrollLeft === 0 && canvas.scrollTop === 0, 'Fit-all retained old scroll offset');
+    assert(JSON.stringify(state()) === before && JSON.stringify(window.__studio.table) === model, 'Zoom changed data or export geometry');
     await reset();
   });
-  await run('Fit closeup responds to canvas width without clipping normal tables', async () => {
+  await run('Fit responds to width and height; 100% remains fixed through resize without changing the model', async () => {
     if (visual) return;
     await reset(); await paste('Plan\tGoogle AI Pro\tGoogle AI Ultra 20x\nPrice\tNT$650\tNT$6,500\nStorage\t2 TB\t30 TB');
-    const canvas = el('#tCanvas'), original = Object.getOwnPropertyDescriptor(canvas, 'clientWidth');
-    const before = JSON.stringify(state()); let width = 860;
+    const canvas = el('#tCanvas'), originals = ['clientWidth', 'clientHeight'].map(k => [k, Object.getOwnPropertyDescriptor(canvas, k)]);
+    const before = JSON.stringify(state()), model = JSON.stringify(window.__studio.table); let width = 860, height = 450;
     Object.defineProperty(canvas, 'clientWidth', { configurable: true, get: () => width });
+    Object.defineProperty(canvas, 'clientHeight', { configurable: true, get: () => height });
+    const checkFit = () => { const v = window.__studio.tableViewport, css = getComputedStyle(canvas), aw = width - parseFloat(css.paddingLeft) - parseFloat(css.paddingRight), ah = height - parseFloat(css.paddingTop) - parseFloat(css.paddingBottom); const px = Math.min(aw / (v.x1 - v.x0), ah / (v.y1 - v.y0)); assert(Math.abs(v.pixelsPerInch - px) < .001 && v.width <= aw + .001 && v.height <= ah + .001, 'Fit did not use both available dimensions'); };
     try {
-      window.dispatchEvent(new Event('resize')); await sleep(120);
-      const padding = parseFloat(getComputedStyle(canvas).paddingLeft) + parseFloat(getComputedStyle(canvas).paddingRight);
-      assert(Math.abs(window.__studio.tableViewport.width - (width - padding)) < 1, 'Fit mode overflows a normal-width table');
-      width = 620; window.dispatchEvent(new Event('resize')); await sleep(120);
-      assert(Math.abs(window.__studio.tableViewport.width - (width - padding)) < 1, 'Closeup scale is stale after resize');
-      width = 600; const observer = window.__testResizeObservers.find(x => x.target === canvas);
-      assert(observer, 'Canvas resize observer missing'); observer.callback(); await sleep(120);
-      assert(Math.abs(window.__studio.tableViewport.width - (width - padding)) < 1, 'Scrollbar/panel width change left stale closeup scale');
-      assert(JSON.stringify(state()) === before, 'Resizing changed original table values');
-      const rows = [Array.from({length: 30}, (_, i) => 'Column ' + i), Array.from({length: 30}, (_, i) => String(i))];
-      await paste(rows.map(r => r.join('\t')).join('\n'));
-      assert(window.__studio.tableViewport.width > width - padding, 'Truly wide table was squeezed instead of scrollable');
-      assert(state().rows[0].length === 30, 'Wide table lost columns');
-    } finally { if (original) Object.defineProperty(canvas, 'clientWidth', original); else delete canvas.clientWidth; }
+      window.dispatchEvent(new Event('resize')); await sleep(120); checkFit();
+      width = 620; window.dispatchEvent(new Event('resize')); await sleep(120); checkFit();
+      const observer = window.__testResizeObservers.find(x => x.targets.includes(canvas)); assert(observer, 'Canvas resize observer missing');
+      width = 600; observer.callback(); await sleep(120); checkFit();
+      height = 180; observer.callback(); await sleep(120); checkFit();
+      assert(window.__studio.tableViewport.height === height - 48, 'Height-only panel resize did not refit');
+      await click('.tzoom [data-z="100"]'); const original = {...window.__studio.tableViewport};
+      assert(original.pixelsPerInch === 90 && window.__studio.closeScale === 1, '100% has an extra enlargement factor');
+      width = 480; height = 600; observer.callback(); await sleep(120);
+      const resized = window.__studio.tableViewport; assert(resized.width === original.width && resized.height === original.height && resized.pixelsPerInch === 90, 'Original scale changed with viewport size');
+      assert(JSON.stringify(state()) === before && JSON.stringify(window.__studio.table) === model, 'Resizing changed table values or export geometry');
+      await click('.tzoom [data-z="fit"]');
+      const rows = [Array.from({length:30}, (_, c) => 'Column ' + c), ...Array.from({length:60}, (_, r) => Array.from({length:30}, (_, c) => `R${r}C${c}`))];
+      await paste(rows.map(r => r.join('\t')).join('\n')); checkFit();
+      assert(state().rows.length === 61 && state().rows[0].length === 30 && window.__studio.table.pageCount === 1, 'Fit dropped data or paginated the original');
+    } finally { for (const [k, original] of originals) { if (original) Object.defineProperty(canvas, k, original); else delete canvas[k]; } }
     await reset();
   });
   await run('Combined header-card look switches, preserves data, and supports undo / redo', async () => {
@@ -539,7 +556,7 @@ async function domSuite() {
     runScripts: 'dangerously', resources: new LocalResources(), pretendToBeVisual: true, virtualConsole,
     beforeParse(window) {
       window.matchMedia = query => ({ matches: false, media: query, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {} });
-      window.__testResizeObservers=[]; window.ResizeObserver = class { constructor(callback) { this.callback=callback; window.__testResizeObservers.push(this); } observe(target) { this.target=target; } disconnect() {} unobserve() {} };
+      window.__testResizeObservers=[]; window.ResizeObserver = class { constructor(callback) { this.callback=callback; this.targets=[]; window.__testResizeObservers.push(this); } observe(target) { this.targets.push(target); } disconnect() {} unobserve() {} };
       window.HTMLElement.prototype.scrollIntoView = function () {};
       window.HTMLElement.prototype.animate = function () { return { finished: Promise.resolve(), cancel() {} }; };
       Object.defineProperty(window.HTMLElement.prototype, 'innerText', { get() { return this.textContent; }, set(value) { this.textContent = value; }, configurable: true });
@@ -578,9 +595,12 @@ async function main() {
       const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
       const page = await context.newPage(); const errors = []; page.on('pageerror', e => errors.push(e.message));
       await page.goto(url, { waitUntil: 'load' }); await page.evaluate(() => localStorage.clear()); await page.reload({ waitUntil: 'load' });
-      results.push(...await page.evaluate(browserSuite, { visual: true }));
-      for (const viewport of [{ width: 1440, height: 600 }, { width: 844, height: 390 }, { width: 900, height: 375 }]) {
+      results.push(...await page.evaluate(browserSuite, { visual: true, only: process.env.SUITE_FILTER }));
+      if (await page.locator('#tEdit.wide').count()) await page.locator('#tWideDone').click();
+      for (const viewport of [{ width: 1440, height: 600 }, { width: 844, height: 390 }, { width: 900, height: 375 }, { width: 375, height: 812 }]) {
         await page.setViewportSize(viewport);
+        const zoomResults = await page.evaluate(browserSuite, {visual:true, only:'Browser fit shows'});
+        results.push(...zoomResults.map(r => ({...r, name:r.name+' at '+viewport.width+' × '+viewport.height})));
         await page.locator('.tinsTabs button[data-t="data"]').click();
         await page.locator('.tinsTabs button[data-t="look"]').click();
         await page.waitForTimeout(200);

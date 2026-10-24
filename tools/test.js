@@ -217,7 +217,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    const t1=tb({},Object.assign({},C.yield,{cw:[1,.25,1,1,1]})).table;ok(t1.colW[1]>=t1.colMin[1]-.002&&t1.colMin[1]>.5,'拖曳欄寬：不小於最長字（'+t1.colMin[1].toFixed(2)+'"）');
    const c1=tb({},C.yield).table,l1=tb({tbH:'left'},C.yield).table;ok(Math.abs(c1.tx+c1.tW/2-13.333/2)<.6&&Math.abs(l1.tx-.6)<1e-6,'左右：預設置中、置左＝0.6"');
    const s1=tb({},C.status);const cells=s1.items.find(i=>i.t==='tbl');const t2=s1.table;ok(t2.colW[4]>=t2.colMin[4]&&!t2.rowH.slice(1).some(h=>h>t2.rowH[1]*1.3),'有空間不換行（已完成 60% 一行）');
-   const g1=tb({},Object.assign({},C.pl,{his:[{type:'col',i:1,kind:'rec'},{type:'col',i:2}],legend:{rec:'建議方案',focus:'本季'}})).items.find(i=>i.name==='圖例');const gt=D.textOf(g1);ok(/建議方案/.test(gt)&&/本季/.test(gt)&&!/警告/.test(gt),'圖例：只列用到的意義、文字可改（'+gt.trim()+'）');
+   const g1=tb({},Object.assign({},C.pl,{his:[{type:'col',i:1,kind:'rec'},{type:'col',i:2}],legend:{rec:'建議方案',focus:'本季'}})).items.find(i=>i.name==='圖例');ok(!g1,'表格圖例：保留舊標籤資料但不產生右下角圖例');
    const dk=D.trayDeck([{kind:'table',table:Object.assign({},C.status,{title:''}),params:nv}]);const dk2=D.trayDeck([{kind:'table',table:Object.assign({},C.status,{title:''}),params:nv}],{sugTitle:false});
    ok(!!dk.slides[0].items.find(i=>i.name==='表格標題')&&!dk2.slides[0].items.find(i=>i.name==='表格標題'),'待選匯出：沒標題時用建議標題（可關）');
    const bd=tb({tbLook:'band'},Object.assign({},C.pl,{his:[{type:'col',i:1}]}));const hc=bd.items.find(i=>i.t==='tbl').cells[0][1];ok(hc.bB&&hc.bB.w===3&&hc.fill===bd.items.find(i=>i.t==='tbl').cells[0][3].fill,'主色表頭重點：3pt 強調色底線、不換填色');
@@ -232,7 +232,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    ok(!gb.length,'標題／單位／表格＝同一區塊（間距 0.2–0.5"），置中時整組移動'+(gb.length?'｜'+gb.join('；'):''));
    let rb=[];for(const st of D.PRESETS){const t=D.buildModel(st,{table:Object.assign({},C.pl,{his:[{type:'col',i:1,kind:'rec'},{type:'col',i:2,kind:'focus'},{type:'row',i:3,kind:'warn'}]})}).slides[0].table;const [r,f,w]=t.his.map(h=>h.C);if(r===f||r===w||D.contrastOf(r,'FFFFFF')<3)rb.push(st.id);}
    ok(!rb.length,'推薦色：9 風格都跟重點／警告不同色、白底對比 ≥ 3:1'+(rb.length?'｜'+rb.join():''));
-   const lg=D.buildModel(nv,{table:Object.assign({},C.pl,{his:[{type:'col',i:1,kind:'rec'},{type:'col',i:2}]})}).slides[0].items.find(i=>i.name==='圖例');ok(lg&&/推薦/.test(D.textOf(lg))&&/重點/.test(D.textOf(lg)),'兩種以上意義 → 註腳列有圖例');
+   const lg=D.buildModel(nv,{table:Object.assign({},C.pl,{his:[{type:'col',i:1,kind:'rec'},{type:'col',i:2}]})}).slides[0].items.find(i=>i.name==='圖例');ok(!lg,'兩種以上語意標示仍保留儲存格樣式，但不產生圖例');
    const fn=D.shortName('3Q25 稅後淨利 452.3，QoQ +13.6%、YoY +39.0%');ok([...fn].length<=20&&!/[，、%+\s]/.test(fn),'檔名：去標點、≤ 20 字（'+fn+'）');
    const prev=Object.assign({},C.yield,{keep:true,rules:[{c:2,op:'<',v:90,tone:'warn',style:'text'}],his:[{type:'col',i:2,kind:'rec'}],unit:'U',note:'N'});
    const nx=D.tableFromPaste([['Lot','Yield%','Station'],['B1','80%','CMP']],prev);ok(nx.his[0].i===1&&nx.unit==='','沿用目前樣式：依欄名帶入重點，不帶入新資料的舊單位');
