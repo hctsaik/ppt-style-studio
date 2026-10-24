@@ -7,11 +7,11 @@
     "gen": "node gen.js",
     "review": "bash review.sh",
     "test": "python3 tools/stylekit_assets_test.py && npm run test:table && npm run test:icons && node tools/test.js",
-    "test:table": "node tools/table_model_integrity_test.js && node tools/table_range_model_test.js && node tools/table_range_ui_test.js && node tools/table_workbench_test.js --model-only && node tools/table_workbench_test.js --dom-only",
+    "test:table": "node tools/table_model_integrity_test.js && node tools/table_range_model_test.js && node tools/table_range_family_test.js && node tools/table_range_ui_test.js && node tools/table_workbench_test.js --model-only && node tools/table_workbench_test.js --dom-only",
     "test:table-ui": "node tools/table_workbench_test.js --browser-only",
     "test:table-dom": "node tools/table_workbench_test.js --dom-only",
     "test:icons": "node tools/icon_components_test.js && node tools/icon_variants_test.js && node tools/icon_pack_test.js && node tools/hexagon_export_test.js",
-    "test:range": "node tools/table_range_model_test.js && node tools/table_range_ui_test.js"
+    "test:range": "node tools/table_range_model_test.js && node tools/table_range_family_test.js && node tools/table_range_ui_test.js"
   },
   "keywords": [],
   "author": "",

@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%226%22 fill=%22%231F4E79%22/%3E%3C/svg%3E">
-<!-- PPT Style Studio 單檔版（自動產生於 2026-10-25 07:20，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
+<!-- PPT Style Studio 單檔版（自動產生於 2026-10-25 07:28，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
 <title>PPT Style Studio · 圖解元件客製工作室｜新需求請寄信給 HCTSAIK，謝謝</title>
 <style>
 :root{--ink:#3A3A3A;--t2:#595959;--mu:#8C8C8C;--line:#E4E4E4;--fill:#F6F6F6;--p:#1F4E79}
@@ -407,7 +407,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 .trange-label{font-size:12px;color:#526477;line-height:1.5}.trange-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:10px 0}.trange-actions button{min-height:36px}
 .trange-palette{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}.trange-card{border:1px solid #DDE3EB;border-radius:9px;background:white;padding:8px;text-align:left;cursor:pointer;min-width:0;color:#243750}
 .trange-card:hover,.trange-card:focus-visible{border-color:#2563EB;outline:2px solid #2563EB;outline-offset:1px}.trange-card[aria-pressed="true"]{border-color:#2563EB;box-shadow:inset 0 0 0 1px #2563EB}
-.trange-card b{display:block;font-size:12px;margin-top:6px}.trange-sample{height:32px;display:grid;grid-template-columns:1.2fr 1fr;align-items:center;border-radius:4px;padding:0 5px;font-size:11px;font-variant-numeric:tabular-nums;overflow:hidden}.trange-sample span:last-child{text-align:right}
+.trange-card b{display:block;font-size:12px;margin-top:6px}.trange-sample{box-sizing:border-box;height:32px;display:grid;grid-template-columns:1.2fr 1fr;align-items:center;border-radius:0;padding:0 5px;font-size:11px;font-variant-numeric:tabular-nums;overflow:hidden}.trange-sample span:last-child{text-align:right}
 .trange-status{font-size:12px;line-height:1.5;color:#526477}.trange-status:empty{display:none}.trange-touch{display:flex;gap:8px;margin-top:9px}.trange-touch[hidden],.trange-palette[hidden]{display:none}
 #tSelection:has(.trange-panel) #tDock{display:none}.trange-panel{padding:0}.trange-panel .phd{display:flex;align-items:center;justify-content:space-between;gap:10px}.trange-panel .phd button{min-width:32px;min-height:32px}
 @media(pointer:coarse){.trange-card{min-height:72px}.trange-actions button,.trange-touch button{min-height:44px}}
@@ -419,7 +419,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 
 .trange-editor{position:absolute;z-index:8;box-sizing:border-box;min-height:28px;border:2px solid #2563EB;border-radius:2px;background:#FFFFFF;color:#1F2937;font:inherit;font-size:14px;line-height:1.3;padding:3px;resize:none;white-space:pre-wrap;user-select:text;touch-action:auto}
 
-.trange-entry{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 12px;border-bottom:1px solid #E5E7EB}.trange-entry[hidden]{display:none}.trange-entry button{min-height:38px}.trange-entry button:disabled{opacity:.55;cursor:not-allowed}
+.trange-entry{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 12px;border-bottom:1px solid #E5E7EB}.trange-entry[hidden]{display:none}.trange-entry button{min-height:38px}.trange-families{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:10px}.trange-families[hidden]{display:none}.trange-families button{padding:7px 3px;min-width:0;min-height:36px;font-size:12px}.trange-families button[aria-pressed="true"]{background:#E9F0F8;border-color:#52779B;color:#1F4E79}.trange-card[aria-disabled="true"]{cursor:default}.trange-actions[hidden]{display:none}
 
 #tDrop{border:0;padding:0;text-align:left;background:transparent}#tDrop label{display:block;font-size:12px;color:#526477;margin-bottom:8px}#tRawPaste{display:block;box-sizing:border-box;width:100%;min-height:240px;height:45vh;max-height:520px;padding:10px;border:1px solid #CCD6E0;border-radius:8px;background:white;color:#243750;font:12px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:4;resize:vertical;white-space:pre;overflow:auto}#tRawPaste:focus{outline:2px solid #2563EB;outline-offset:1px}@media(max-width:900px){#tRawPaste{font-size:16px;height:32dvh;min-height:150px}}
 
@@ -528,7 +528,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
         <div class="trow"><label>最後一列</label><label class="ttg"><input type="checkbox" id="tLast"> 是合計（粗體＋上方線）</label></div>
        </section>
        <section class="tsec" data-sec="look">
-       <div id="tHLLauncher" class="trange-entry"><button class="btn" data-range-action="palette" aria-expanded="false" disabled><span aria-hidden="true">▰ ▯</span> 重點樣式 H/L</button><span class="trange-label" id="tHLHint">選取儲存格</span></div>
+       <div id="tHLLauncher" class="trange-entry"><button class="btn" data-range-action="palette" aria-expanded="false"><span aria-hidden="true">▰ ▯</span> 重點樣式 H/L</button><span class="trange-label" id="tHLHint">先框選儲存格再套用</span></div>
        <section class="tselection" id="tSelection"><div class="tdock" id="tDock"><span class="tseltxt" id="tSelTxt" aria-live="polite"></span><div class="tchip" id="tChip" role="toolbar" aria-label="重點工具列" hidden></div></div>
 
         <div class="tselp tpop tpanel" id="tSelPanel" hidden></div><p class="tsteps2" hidden></p>
@@ -5792,7 +5792,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   const MK=tableMarks(T,nC,rows.length),REC='176B70',WARN='875B1A';
   const his=MK.his.map(h=>Object.assign({},h,{C:h.type==='range'?tableHighlightPreset(h.presetId,st).color:h.kind==='warn'?WARN:h.kind==='rec'?REC:EC}));
   const hiCol=(r,c)=>his.find(h=>h.type==='col'&&tableMarkContains(h,r,c)),hiRow=(r,c)=>his.find(h=>h.type==='row'&&tableMarkContains(h,r,c)),hiCell=(r,c)=>his.find(h=>h.type==='cell'&&tableMarkContains(h,r,c));
-  const rangeAt=(r,c)=>r>=0&&r<rows.length&&c>=0&&c<nC?tableRangeWinner(his,r,c):null;
+  const rangeAt=(r,c)=>r>=0&&r<rows.length&&c>=0&&c<nC?tableRangeWinner(his,r,c,'fill'):null;
   const rangePaint=(o,r,c)=>{const mark=rangeAt(r,c);if(!mark)return o;const preset=tableHighlightPreset(mark.presetId,st);
    o.fill=preset.fill;o.color=preset.color;if(preset.bold!=null)o.bold=!!preset.bold;
    if(preset.border){const border={c:preset.border,w:preset.borderWidth||1.5};
@@ -5956,7 +5956,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    const ins=(st.tbPad==='none'?-3:3)*k/72,rad=4*k/72,blw=1.5*k;
    // Visual H/L never changes semantic marks. Mask legacy box paint only while
    // a visible manual range covers it; clearing that range reveals the semantics.
-   const visualRegions=his.filter(h=>h.type==='range').flatMap(h=>tableMarkRegions(h,rows.length,nC));
+   const visualRegions=his.filter(h=>h.type==='range'&&tableHighlightFamily(h)==='fill').flatMap(h=>tableMarkRegions(h,rows.length,nC));
    const localMarks=his.filter(h=>h.type!=='range').map(h=>visualRegions.length?Object.assign({},h,{excludes:[...(h.excludes||[]),...visualRegions]}):h).map(h=>{if(h.type==='col')return h;const local=sourceRows.indexOf(h.type==='row'?h.i:h.r);return local<0?null:Object.assign({},h,h.type==='row'?{i:local}:{r:local});}).filter(Boolean);
    if(hiStyle==='box')localMarks.forEach(h=>{
     if(h.excludes&&h.excludes.length){tableMarkRegions(h,sourceRows.length,nC).forEach(q=>{const bx=cx0(q.c0),by=ry0(q.r0),bw0=colW.slice(q.c0,q.c1+1).reduce((a,b)=>a+b,0),bh=rowH.slice(q.r0,q.r1+1).reduce((a,b)=>a+b,0);
@@ -5970,6 +5970,14 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    sourceRows.forEach(ri=>rows[ri].forEach((t,c)=>{const str=String(t);if(!str.trim())return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri),av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0),ls=str.split('\n'),vis=x=>x.replace(/\s/g,'').length;
     if(ls.some(l=>mw(l,sz0,b)>av+.01))orphans.push({r:ri,c,t:str,why:'auto-wrap'});else if(ls.length>1&&vis(str)>4&&ls.some((l,i)=>vis(l)<=1||vis(l)<=2&&i>0&&!/[：:；;，,、)）\s]$/.test(ls[i-1])&&!/^[（(]/.test(l)))orphans.push({r:ri,c,t:str,why:'orphan'});}));
    if(T.hcol){const tint=LK.hdr&&LK.hdr.fill?mix(P,'FFFFFF',.88):mix(G.fill||'F2F2F2','FFFFFF',.2);tb.cells.forEach((r,ri)=>{const raw=sourceRows[ri];if(raw<h0||AU.section[raw])return;const cl=r[0];if(!cl)return;cl.bold=true;(cl.runs||[]).forEach(x=>{x.o=Object.assign({},x.o,{bold:true});});if(!cl.fill&&!rangeAt(raw,0))cl.fill=tint;});}
+   // Apply line-only families after every semantic/header/first-column fill has
+   // resolved. All render/export paths consume these same native cell borders.
+   const edgeOffsets=[['bT',-1,0],['bR',0,1],['bB',1,0],['bL',0,-1]];
+   for(const [order,mark] of his.entries()){const family=tableHighlightFamily(mark);if(mark.type!=='range'||family==='fill')continue;const preset=tableHighlightPreset(mark.presetId,st,family);
+    tb.cells.forEach((row,ri)=>row.forEach((cell,c)=>{const r=sourceRows[ri];for(const [edge,dr,dc]of edgeOffsets){if(!tableRangeEdge(mark,r,c,edge))continue;
+     const neighbor=tb.cells[ri+dr]&&tb.cells[ri+dr][c+dc];cell[edge]={c:tableHighlightStroke(preset.stroke,[cell.fill,neighbor&&neighbor.fill]),w:preset.borderWidth};if(!cell.highlightEdges)cell.highlightEdges=[];if(!cell.highlightEdges.includes(edge))cell.highlightEdges.push(edge);if(!cell.highlightOrder)cell.highlightOrder={};cell.highlightOrder[edge]=order;
+    }}));
+   }
    const layoutOverflow=!!exportReason||cur.items.some(it=>it.t!=='ln'&&(it.x<-.01||it.y<-.01||it.x+it.w>canvasW+.01||it.y+it.h>canvasH+.01));
    const complete=!layoutOverflow,reason=exportReason||(layoutOverflow?'表格或標題／註腳超出投影片邊界，已停用匯出。請縮短內容或調整欄寬；原始資料仍可下載完整 TSV。':'');
    if(layoutOverflow)warn('表格無法完整匯出',reason);
@@ -6224,8 +6232,31 @@ const TABLE_HIGHLIGHT_PRESETS=Object.freeze([
  Object.freeze({id:'rose',label:'玫瑰紅',fill:'F6E0E2',color:'7A1F2B',border:'B07980',mode:'fill',bold:null}),
  Object.freeze({id:'slate',label:'中性灰',fill:'EDEDED',color:'3A3A3A',border:'999999',mode:'fill',bold:null})
 ]);
+const TABLE_HIGHLIGHT_FAMILIES=Object.freeze([
+ Object.freeze({id:'fill',label:'底色',width:1.5}),Object.freeze({id:'outline',label:'外框',width:1.5}),
+ Object.freeze({id:'underline',label:'底線',width:2}),Object.freeze({id:'side',label:'側線',width:3})
+]);
+const TABLE_HIGHLIGHT_STROKES=Object.freeze({'theme-light':'52779B','theme-dark':'1F4E79',mint:'267A76',amber:'9B6B12',rose:'A14553',slate:'666666'});
+// Missing styleId is the legacy fill schema. Reject unknown values, never hydrate CSS.
+function tableHighlightFamily(value){const id=typeof value==='object'&&value?value.styleId??value.family??'fill':value??'fill';return TABLE_HIGHLIGHT_FAMILIES.some(f=>f.id===id)?id:null;}
+function tableRangeEdge(mark,r,c,edge){if(!tableMarkContains(mark,r,c))return false;const family=tableHighlightFamily(mark);
+ return family==='outline'?(edge==='bT'?r===mark.r0:edge==='bB'?r===mark.r1:edge==='bL'?c===mark.c0:edge==='bR'?c===mark.c1:false):family==='underline'?edge==='bB'&&r===mark.r1:family==='side'?edge==='bL'&&c===mark.c0:false;
+}
+function tableRangeEdgeRegions(mark){const family=tableHighlightFamily(mark),q=(r0,c0,r1,c1)=>({r0,c0,r1,c1});
+ return family==='outline'?[q(mark.r0,mark.c0,mark.r0,mark.c1),q(mark.r1,mark.c0,mark.r1,mark.c1),q(mark.r0,mark.c0,mark.r1,mark.c0),q(mark.r0,mark.c1,mark.r1,mark.c1)]:family==='underline'?[q(mark.r1,mark.c0,mark.r1,mark.c1)]:family==='side'?[q(mark.r0,mark.c0,mark.r1,mark.c0)]:[];
+}
+function tableMarkPaintRegions(mark,nR,nC){const regions=tableMarkRegions(mark,nR,nC);if(mark.type!=='range'||tableHighlightFamily(mark)==='fill')return regions;
+ return regions.flatMap(q=>tableRangeEdgeRegions(mark).map(edge=>tableRangeIntersection(q,edge)).filter(Boolean));
+}
+// Prefer the exact token. If an edge touches dark cells, choose the closest tint or
+// shade meeting 3:1 against both sides; retain the strongest minimum if impossible.
+function tableHighlightStroke(stroke,backgrounds){const bgs=[...new Set(backgrounds.map(c=>c||'FFFFFF'))],score=c=>Math.min(...bgs.map(b=>contrastOf(c,b)));
+ if(score(stroke)>=3)return stroke;let best=stroke,bestScore=score(stroke);
+ for(let i=1;i<=100;i++)for(const to of ['FFFFFF','000000']){const c=mix(stroke,to,i/100),v=score(c);if(v>=3)return c;if(v>bestScore){best=c;bestScore=v;}}return best;
+}
 const HI_COLORS=['auto','P','A','alert'],RULE_OPS=['<','<=','>','>=','='],RULE_TONES=['warn','good','accent'],RULE_STYLES=['fill','text','box'];
-function tableHighlightPreset(id,params){const preset=TABLE_HIGHLIGHT_PRESETS.find(p=>p.id===id);if(!preset)return null;
+function tableHighlightPreset(id,params,family='fill'){family=tableHighlightFamily(family);if(!family)return null;const preset=TABLE_HIGHLIGHT_PRESETS.find(p=>p.id===id);if(!preset)return null;
+ if(family!=='fill')return Object.assign({},preset,{family,mode:family,fill:null,color:null,border:TABLE_HIGHLIGHT_STROKES[id],stroke:TABLE_HIGHLIGHT_STROKES[id],borderWidth:TABLE_HIGHLIGHT_FAMILIES.find(f=>f.id===family).width});
  const out=Object.assign({},preset),p=params&&/^[0-9A-F]{6}$/i.test(params.P||'')?params.P.toUpperCase():BASE.P;
  if(p!==BASE.P&&id==='theme-light'){out.fill=mix(p,'FFFFFF',.86);out.color=ensureContrast(p,out.fill,4.5);out.border=mix(p,'FFFFFF',.4);}
  if(id==='theme-dark'){out.fill=ensureContrast(p,'FFFFFF',4.5);out.color='FFFFFF';out.border=out.fill;}
@@ -6256,26 +6287,42 @@ function tableMarkContains(mark,r,c){if(!mark||!Number.isInteger(r)||!Number.isI
 function tableMarkRegions(mark,nR,nC){const bounds=tableMarkBounds(mark,nR,nC);let regions=bounds?[bounds]:[];
  for(const q of mark&&mark.excludes||[])regions=regions.flatMap(a=>tableRangeSubtract(a,q));return regions;
 }
-function tableRangeWinner(his,r,c){for(let i=(his||[]).length-1;i>=0;i--)if(his[i].type==='range'&&tableMarkContains(his[i],r,c))return his[i];return null;}
+function tableRangeWinner(his,r,c,family){for(let i=(his||[]).length-1;i>=0;i--)if(his[i].type==='range'&&(!family||tableHighlightFamily(his[i])===family)&&tableMarkContains(his[i],r,c))return his[i];return null;}
 function tableClearRange(T,range){T=T||{};const source=tableSource(T),his=tableMarks(T,source.nC,source.nR).his,q=tableNormalizeRange(range,source.nR,source.nC);
  if(!q)return{his,changed:false,error:'INVALID_RANGE'};
  let changed=false;const next=his.map(mark=>{if(mark.type!=='range')return mark;const regions=tableMarkRegions(mark,source.nR,source.nC);if(!regions.some(a=>tableRangeIntersection(a,q)))return mark;
   changed=true;const intersection=tableRangeIntersection(tableMarkBounds(mark,source.nR,source.nC),q);const out=Object.assign({},mark,{excludes:[...(mark.excludes||[]).filter(a=>!(a.r0>=intersection.r0&&a.r1<=intersection.r1&&a.c0>=intersection.c0&&a.c1<=intersection.c1)),intersection]});
-  return tableMarkRegions(out,source.nR,source.nC).length?out:null;}).filter(Boolean);
+  return tableMarkPaintRegions(out,source.nR,source.nC).length?out:null;}).filter(Boolean);
  return{his:next,changed};
 }
 // Resolve topmost visual coverage geometrically, without iterating every cell.
 function tableRangeUsesPreset(his,range,presetId,nR,nC){let remaining=[range];
  for(let i=his.length-1;i>=0&&remaining.length;i--){const mark=his[i];if(mark.type!=='range')continue;
+  if(tableHighlightFamily(mark)!=='fill'){if(tableMarkPaintRegions(mark,nR,nC).some(q=>tableRangeIntersection(q,range)))return false;continue;}
   for(const region of tableMarkRegions(mark,nR,nC)){if(!remaining.some(q=>tableRangeIntersection(q,region)))continue;
-   if(mark.presetId!==presetId)return false;remaining=remaining.flatMap(q=>tableRangeSubtract(q,region));}}
+   if(tableHighlightFamily(mark)!=='fill'||mark.presetId!==presetId)return false;remaining=remaining.flatMap(q=>tableRangeSubtract(q,region));}}
  return !remaining.length;
 }
-function tableApplyRange(T,range,presetId){T=T||{};const source=tableSource(T),his=tableMarks(T,source.nC,source.nR).his,q=tableNormalizeRange(range,source.nR,source.nC);
- if(!q)return{his,changed:false,error:'INVALID_RANGE'};if(!tableHighlightPreset(presetId))return{his,changed:false,error:'INVALID_PRESET'};
- if(tableRangeUsesPreset(his,q,presetId,source.nR,source.nC))return{his,changed:false};
- const cleared=tableClearRange(T,q);if(cleared.his.filter(h=>h.type==='range').length>=TABLE_HIGHLIGHT_LIMIT)return{his,changed:false,error:'MARK_LIMIT'};
- const next=[...cleared.his,Object.assign({type:'range'},q,{presetId,color:'auto',kind:'focus'})];return{his:next,changed:JSON.stringify(next)!==JSON.stringify(his)};
+// Line no-op identity includes family AND actual perimeter, not filled-area coverage.
+function tableRangeUsesLine(his,range,presetId,family){const edges=[];
+ if(family==='outline'){for(let c=range.c0;c<=range.c1;c++){edges.push([range.r0,c,'bT'],[range.r1,c,'bB']);}for(let r=range.r0;r<=range.r1;r++){edges.push([r,range.c0,'bL'],[r,range.c1,'bR']);}}
+ else if(family==='underline')for(let c=range.c0;c<=range.c1;c++)edges.push([range.r1,c,'bB']);
+ else for(let r=range.r0;r<=range.r1;r++)edges.push([r,range.c0,'bL']);
+ return edges.every(([r,c,edge])=>{const [dr,dc,opposite]={bT:[-1,0,'bB'],bR:[0,1,'bL'],bB:[1,0,'bT'],bL:[0,-1,'bR']}[edge];
+  for(let i=his.length-1;i>=0;i--){const h=his[i];if(h.type!=='range')continue;
+   if(tableRangeEdge(h,r,c,edge)||tableRangeEdge(h,r+dr,c+dc,opposite))return h.presetId===presetId&&tableHighlightFamily(h)===family;
+  }return false;});
+}
+function tableApplyRange(T,range,presetId,family='fill'){T=T||{};const source=tableSource(T),his=tableMarks(T,source.nC,source.nR).his,q=tableNormalizeRange(range,source.nR,source.nC);family=tableHighlightFamily(family);
+ if(!q)return{his,changed:false,error:'INVALID_RANGE'};if(!family)return{his,changed:false,error:'INVALID_FAMILY'};if(!tableHighlightPreset(presetId))return{his,changed:false,error:'INVALID_PRESET'};
+ if(family==='fill'?tableRangeUsesPreset(his,q,presetId,source.nR,source.nC):tableRangeUsesLine(his,q,presetId,family))return{his,changed:false};
+ // Fill retains its historical replacement behavior. Lines only write their edges,
+ // keeping underlying fill/text and other families' edges. Exact same-family range
+ // replacement compacts obsolete paint without consuming another range slot.
+ const previous=family==='fill'?tableClearRange(T,q).his:his.filter(h=>!(h.type==='range'&&tableHighlightFamily(h)===family&&['r0','c0','r1','c1'].every(k=>h[k]===q[k])));
+ if(previous.filter(h=>h.type==='range').length>=TABLE_HIGHLIGHT_LIMIT)return{his,changed:false,error:'MARK_LIMIT'};
+ const mark=Object.assign({type:'range'},q,{presetId,color:'auto',kind:'focus'});if(family!=='fill')mark.styleId=family;
+ const next=[...previous,mark];return{his:next,changed:JSON.stringify(next)!==JSON.stringify(his)};
 }
 /* nR/nC are the dimensions AFTER inserting/removing one row or column. Insertions
    inside an existing rectangle expand it; deletion of its sole row/column drops it. */
@@ -6298,11 +6345,11 @@ function tableMarks(T,nC,nR){T=T||{};const int=v=>v!==null&&v!==''&&typeof v!=='
  let his=Array.isArray(T.his)?T.his:(T.hi&&(T.hi.type==='col'||T.hi.type==='row')?[T.hi]:[]);
  his=his.filter(h=>h&&typeof h==='object').map(h=>{const type=['col','row','cell','range'].includes(h.type)?h.type:null,color=HI_COLORS.includes(h.color)?h.color:'auto';
   const kind=['focus','rec','warn'].includes(h.kind)?h.kind:(h.color==='alert'?'warn':'focus');let mark;
-  if(type==='range'){const q=tableNormalizeRange(h,nR,nC);if(!q||!tableHighlightPreset(h.presetId))return null;mark=Object.assign({type},q,{presetId:h.presetId,color,kind});}
+  if(type==='range'){const q=tableNormalizeRange(h,nR,nC);const family=tableHighlightFamily(h);if(!q||!tableHighlightPreset(h.presetId)||!family)return null;mark=Object.assign({type},q,{presetId:h.presetId,color,kind});if(family!=='fill')mark.styleId=family;}
   else mark=type==='cell'?{type,r:int(h.r),c:int(h.c),color,kind}:{type,i:int(h.i),color,kind};
   const bounds=tableMarkBounds(mark,nR,nC);if(!bounds)return null;
   if(Array.isArray(h.excludes)){const excludes=h.excludes.map(q=>tableRangeIntersection(bounds,tableNormalizeRange(q,nR,nC))).filter(Boolean);if(excludes.length)mark.excludes=excludes;}
-  return tableMarkRegions(mark,nR,nC).length?mark:null;}).filter(Boolean);
+  return tableMarkPaintRegions(mark,nR,nC).length?mark:null;}).filter(Boolean);
  // Imported snapshots are never silently truncated. Mutation helpers enforce the
  // visual range limit atomically, separate from preserved legacy semantics,
  // allowing an exact replacement even at capacity.
@@ -6363,7 +6410,7 @@ function toPptx(pptx,model){
  model.slides.forEach(sl=>{const s=pptx.addSlide();s.background={color:'FFFFFF'};
   sl.items.forEach(it=>{
    if(it.t==='tbl'){const bd=b=>b?{type:'solid',pt:b.w,color:b.c}:{type:'none'};
-    const rows=it.cells.map(r=>r.map(c=>({text:c.runs.map(rn=>({text:rn.t,options:Object.assign({fontSize:rn.o.size,fontFace:rn.o.font,bold:rn.o.bold,color:rn.o.color},rn.o.br?{breakLine:true}:{})})),
+    const rows=tableResolvedBorders(it).map(r=>r.map(c=>({text:c.runs.map(rn=>({text:rn.t,options:Object.assign({fontSize:rn.o.size,fontFace:rn.o.font,bold:rn.o.bold,color:rn.o.color},rn.o.br?{breakLine:true}:{})})),
      options:Object.assign({align:c.align,valign:'middle',margin:[c.mT,c.mR!=null?c.mR:c.mL,c.mT,c.mL],border:[bd(c.bT),bd(c.bR),bd(c.bB),bd(c.bL)]},c.fill?{fill:{color:c.fill}}:{})})));
     s.addTable(rows,{x:it.x,y:it.y,w:it.w,colW:it.colW,rowH:it.rowH,autoPage:false});return;}
    if(it.t==='pic'){s.addImage({data:it.png,x:it.x,y:it.y,w:it.w,h:it.h,rounding:!!it.round,objectName:it.name||'圖片'});return;}
@@ -6658,16 +6705,29 @@ function headShape(tx,ty,fx,fy,type,sz,color,w){const f={sm:2,med:3,lg:5}[sz]||3
   case 'arrow':return `<polyline points="${P([[1,1],[9,5],[1,9]])}" fill="none" stroke="#${color}" stroke-width="${(1.6*k).toFixed(2)}"/>`;
   case 'oval':{const c=T(5,5);return `<circle cx="${c[0]}" cy="${c[1]}" r="${(4.2*k).toFixed(2)}" fill="#${color}"/>`;}
   default:return '';}}
+// One physical grid edge must have one paint across SVG, native PPTX and HTML.
+// Mirror only in this read-only renderer projection: source mark ownership and
+// unselected cell appearance stay untouched. Lines overlay fill/semantic borders;
+// chronology resolves only competing line edges. Legacy fill-only XML is unchanged.
+function tableResolvedBorders(table){if(!table.cells.some(row=>row.some(c=>(c.highlightEdges||[]).length)))return table.cells;
+ const cells=table.cells.map(row=>row.map(c=>Object.assign({},c,{highlightEdges:[...(c.highlightEdges||[])]})));
+ const resolve=(a,ae,b,be)=>{if(!a.highlightEdges.includes(ae)&&!b.highlightEdges.includes(be))return;
+  const order=(c,e)=>c.highlightOrder&&c.highlightOrder[e]!=null?c.highlightOrder[e]:-1;
+  const border=order(a,ae)>=order(b,be)?a[ae]:b[be];a[ae]=border;b[be]=border;if(!a.highlightEdges.includes(ae))a.highlightEdges.push(ae);if(!b.highlightEdges.includes(be))b.highlightEdges.push(be);
+ };
+ cells.forEach((row,r)=>row.forEach((c,k)=>{if(k+1<row.length)resolve(c,'bR',row[k+1],'bL');if(r+1<cells.length)resolve(c,'bB',cells[r+1][k],'bT');}));return cells;
+}
 /* 表格 → 預覽用的儲存格矩形＋框線（pptx 端是原生 <a:tbl>） */
-function tblItems(it){const out=[],lines=[];let yy=it.y;
- it.cells.forEach((r,ri)=>{let xx=it.x;const rh=it.rowH[ri];
+function tblItems(it){const out=[],lines=[],highlights=[];let yy=it.y;
+ tableResolvedBorders(it).forEach((r,ri)=>{let xx=it.x;const rh=it.rowH[ri];
   r.forEach((c,ci)=>{const cw=it.colW[ci];
    out.push({t:'sp',kind:'rect',x:xx,y:yy,w:cw,h:rh,fill:c.fill,line:null,lw:0,runs:c.runs,tx:{align:c.align,valign:'middle',margin:[c.mL,c.mR!=null?c.mR:c.mL,c.mT,c.mT],lsp:1,size:c.size,font:F0(c),color:c.color,bold:c.bold}});
-   if(c.bT)lines.push({t:'ln',x1:xx,y1:yy,x2:xx+cw,y2:yy,color:c.bT.c,w:c.bT.w,dash:'solid'});
-   if(c.bB)lines.push({t:'ln',x1:xx,y1:yy+rh,x2:xx+cw,y2:yy+rh,color:c.bB.c,w:c.bB.w,dash:'solid'});
-   if(c.bL)lines.push({t:'ln',x1:xx,y1:yy,x2:xx,y2:yy+rh,color:c.bL.c,w:c.bL.w,dash:'solid'});
-   if(c.bR)lines.push({t:'ln',x1:xx+cw,y1:yy,x2:xx+cw,y2:yy+rh,color:c.bR.c,w:c.bR.w,dash:'solid'});xx+=cw;});yy+=rh;});
- return out.concat(lines);}
+   const edgeLines=edge=>(c.highlightEdges||[]).includes(edge)?highlights:lines;
+   if(c.bT)edgeLines('bT').push({t:'ln',x1:xx,y1:yy,x2:xx+cw,y2:yy,color:c.bT.c,w:c.bT.w,dash:'solid'});
+   if(c.bB)edgeLines('bB').push({t:'ln',x1:xx,y1:yy+rh,x2:xx+cw,y2:yy+rh,color:c.bB.c,w:c.bB.w,dash:'solid'});
+   if(c.bL)edgeLines('bL').push({t:'ln',x1:xx,y1:yy,x2:xx,y2:yy+rh,color:c.bL.c,w:c.bL.w,dash:'solid'});
+   if(c.bR)edgeLines('bR').push({t:'ln',x1:xx+cw,y1:yy,x2:xx+cw,y2:yy+rh,color:c.bR.c,w:c.bR.w,dash:'solid'});xx+=cw;});yy+=rh;});
+ return out.concat(lines,highlights);}
 const F0=c=>(c.runs[0]&&c.runs[0].o.font)||'Microsoft JhengHei';
 function toSvg(slide,opt){opt=opt||{};const id=(opt.id||'s')+'_';const defs={},parts=[];let fi=0,mi=0;const flat=!!opt.flat;
  const marker=(type,sz,color)=>{const k='m'+type+sz+color;if(defs[k])return defs[k].id;const mid=id+'m'+(mi++);const f={sm:2,med:3,lg:5}[sz]||3;
@@ -6788,14 +6848,14 @@ function tableHtml(model,opt){const sl=tableCopyPage(model,opt);if(!sl)return ''
  const pt=v=>+(v*72).toFixed(1)+'pt';
  let h=`<table style="border-collapse:collapse;table-layout:fixed;width:${pt(tb.w)};font-family:${fstack(T.font||'Microsoft JhengHei').replace(/"/g,"'")}">`;
  h+='<colgroup>'+tb.colW.map(w=>`<col style="width:${pt(w)}">`).join('')+'</colgroup>';
- tb.cells.forEach((r,ri)=>{h+=`<tr style="height:${pt(tb.rowH[ri])}">`;
+ tableResolvedBorders(tb).forEach((r,ri)=>{h+=`<tr style="height:${pt(tb.rowH[ri])}">`;
   r.forEach((c,ci)=>{const f=(c.runs[0]&&c.runs[0].o.font)||T.font;const bd=(side,b)=>b?`border-${side}:${b.w}pt solid #${b.c};`:'';let hb='';
    BX.forEach(b=>{const HB=`${b.rule?1.5:1.75}pt solid #${b.color}`;
     if(b.type==='col'&&b.i===ci)hb+=`border-left:${HB};border-right:${HB};`+(ri===0?`border-top:${HB};`:'')+(ri===n-1?`border-bottom:${HB};`:'');
     if(b.type==='row'&&b.i===ri)hb+=`border-top:${HB};border-bottom:${HB};`+(ci===0?`border-left:${HB};`:'')+(ci===r.length-1?`border-right:${HB};`:'');
     if(b.type==='cell'&&b.r===ri&&b.c===ci)hb+=`border:${HB};`;
     if(b.type==='range'&&ri>=b.r0&&ri<=b.r1&&ci>=b.c0&&ci<=b.c1)hb+=(ri===b.r0?`border-top:${HB};`:'')+(ri===b.r1?`border-bottom:${HB};`:'')+(ci===b.c0?`border-left:${HB};`:'')+(ci===b.c1?`border-right:${HB};`:'');});
-   const css=`${c.fill?`background:#${c.fill};`:''}color:#${c.color};font-size:${c.size}pt;font-weight:${c.bold?700:400};text-align:${c.align};vertical-align:middle;padding:${c.mT}pt ${c.mR!=null?c.mR:c.mL}pt ${c.mT}pt ${c.mL}pt;font-family:${fstack(f).replace(/"/g,"'")};`+bd('top',c.bT)+bd('bottom',c.bB)+bd('left',c.bL)+bd('right',c.bR)+hb;
+   const css=`${c.fill?`background:#${c.fill};`:''}color:#${c.color};font-size:${c.size}pt;font-weight:${c.bold?700:400};text-align:${c.align};vertical-align:middle;padding:${c.mT}pt ${c.mR!=null?c.mR:c.mL}pt ${c.mT}pt ${c.mL}pt;font-family:${fstack(f).replace(/"/g,"'")};`+bd('top',c.bT)+bd('bottom',c.bB)+bd('left',c.bL)+bd('right',c.bR)+hb+(c.highlightEdges||[]).map(edge=>bd({bT:'top',bR:'right',bB:'bottom',bL:'left'}[edge],c[edge])).join('');
    const one=x=>{const t=esc(x.t).replace(/\n/g,'<br>');const dif=x.o.size!==c.size||x.o.color!==c.color||!!x.o.bold!==!!c.bold;return (dif?`<span style="font-size:${x.o.size}pt;color:#${x.o.color};font-weight:${x.o.bold?700:400}">${t}</span>`:t)+(x.o.br?'<br>':'');};
    h+=`<td style="${css}">${c.runs.map(one).join('')}</td>`;});h+='</tr>';});
  return h+'</table>';}
@@ -6817,7 +6877,7 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
  if(p.tbPanel&&!p.tbLook)out.tbLook='card';out.tbCard='white';
  return out;}
-const api={iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,tableHighlightPreset,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
+const api={iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,TABLE_HIGHLIGHT_FAMILIES,tableHighlightFamily,tableHighlightStroke,tableResolvedBorders,tableRangeEdge,tableHighlightPreset,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);
 
@@ -7610,7 +7670,7 @@ function renderTable0(light){renderTableOpts();const nR=T.rows.length,nC=nCols()
  const warn=TM.warns.map(w=>w.replace(/^\[[^\]]*\]\s*/,''));
  const issue=tableBlocked(),blocked=!!issue;const blockedRow=issue&&issue.table.blockedRow;$('#tBlockedRow').hidden=!Number.isInteger(blockedRow);$('#tBlockedRow').textContent=Number.isInteger(blockedRow)?`檢查原始第 ${blockedRow+1} 列`:'定位超高列';$('#tPptx').disabled=blocked;$('#tExportBlocked').hidden=!blocked;
  const fullWarning=blocked&&issue.table.exportReason?issue.table.exportReason:warn.join('；');$('#tOut').classList.toggle('blocked',blocked);$('#tMsg').className='msg'+(fullWarning?' w':'');$('#tMsg').tabIndex=fullWarning?0:-1;$('#tMsg').textContent=fullWarning?'⚠ '+fullWarning:`原生可編輯表格・${D.TABLE_LOOKS.find(l=>l[0]===lookOf(S.p))[1]}・尺寸 ${S.p.size||'M'}`;$('#tMsg').title=$('#tMsg').textContent;$('#tMsg').setAttribute('aria-label',$('#tMsg').textContent);
- renderHiPanel();if(TRANGE){drawRangeSelection();renderRangePanel();}else if(SELC)placeChip();stepState();selText();
+ renderHiPanel();if(TRANGE)drawRangeSelection();if(TRANGE||RANGE_OPEN)renderRangePanel();else if(SELC)placeChip();stepState();selText();
  {const L=$('#tLStrip');if(L.children.length!==D.TABLE_LOOKS.length)L.innerHTML=D.TABLE_LOOKS.map(([k,zh])=>`<button data-v="${k}">${zh}</button>`).join('');L.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===lookOf(S.p))));}
  window.__studio.table={pageIndex:TPAGE,pageCount:TM.slides.length,sourceRows:tb&&tb.sourceRows?tb.sourceRows.slice():[],blockedRow,blockedReasonCode:issue&&issue.table.blockedReasonCode,bodyStart:tb&&tb.bodyStart,bodyEnd:tb&&tb.bodyEnd,exportComplete:!blocked,previewRows:tb?tb.nR:0,rawRows:nR,colMinW:tb&&tb.colMin?tb.colMin.slice():null,cw:T.cw?T.cw.slice():null,colW:tb?tb.colW.map(v=>+v.toFixed(3)):null,rows:nR,cols:nC,warns:TM.warns.length,warnText:warn,look:lookOf(S.p),auto:{head:hd,num:nNum,status:nSt,section:A.section.filter(Boolean).length,key:tb?tb.key:[]},his:clone(T.his||[]),rules:clone(T.rules||[]),ruleHits:tb?tb.ruleHits:0,boxes:tb?tb.boxes.length:0,cells:tb?tb.colW.length*tb.rowH.length:0,
   title:T.title||'',unit:T.unit||'',note:T.note||'',hiStyle:tb?tb.hiStyle:null,fs:tb?tb.fs:0,colW:tb?tb.colW.map(v=>+v.toFixed(3)):[],tW:tb?+tb.tW.toFixed(3):0};}
@@ -7626,7 +7686,7 @@ function fitPrev(){const c=$('#tCanvas'),P=$('#tPrev');if(!c||!P)return;P.style.
  const top=c.getBoundingClientRect().top,ins=$('#tIns').getBoundingClientRect(),vv=window.visualViewport;
  const bottom=Math.min(innerHeight,vv?vv.offsetTop+vv.height:innerHeight,ins.height>0?ins.top:innerHeight),height=Math.max(0,bottom-top);
  const px=height+'px';if(c.style.height!==px)c.style.height=px;}
-let fitRaf=0;function queueTableFit(){if(S.tab!=='table'||fitRaf)return;fitRaf=requestAnimationFrame(()=>{fitRaf=0;fitPrev();applyView(tableMeta());});}
+let fitRaf=0;function queueTableFit(){if(S.tab!=='table'||fitRaf)return;fitRaf=requestAnimationFrame(()=>{fitRaf=0;fitPrev();applyView(tableMeta());const host=matchMedia('(max-width:900px)').matches?$('#tPop'):$('#tSelPanel'),other=host.id==='tPop'?$('#tSelPanel'):$('#tPop');if((TRANGE||RANGE_OPEN)&&other.querySelector('.trange-panel')){cancelRangePreview();renderRangePanel();}});}
 addEventListener('resize',queueTableFit);if(window.visualViewport){visualViewport.addEventListener('resize',queueTableFit);visualViewport.addEventListener('scroll',queueTableFit);}
 // Coalesce width AND height changes (scrollbars, panel/footer changes, header wrap).
 // Refit only the preview transform: do not rebuild data, end an edit, or cancel a hover preview.
@@ -7657,10 +7717,10 @@ function renderSlots(tb){fitPrev();applyView(tb);SUG=D.tableTitleSuggest(T);cons
   return `<div class="tslot${v?'':' empty'}" contenteditable="plaintext-only" spellcheck="false" role="textbox" aria-label="${escH(ph)}" data-k="${k}" data-ph="${escH(ph2)}" style="left:${pc(s.x,W)};top:${pc(s.y,H)};width:${pc(!v&&k!=='title'?Math.min(s.w,tb.tW+(tb.tx-s.x>0?tb.tx-s.x:0)):s.w,W)};height:${pc(s.h,H)};font-size:${(s.size*pxPt).toFixed(1)}px;line-height:1.25;color:#${s.color||'3A3A3A'};font-family:${fontCss(s.font)};${k==='title'?'font-weight:700;display:flex;align-items:flex-end':''}">${escH(v)}</div>`;}).join('')
   ;}
 // All range interaction state stays outside T/S, persistence, history, and export.
-let TRANGE=null,RANGE_ANCHOR=null,RANGE_FOCUS=null,RANGE_OPEN=false,RANGE_EXTEND=false;
+let TRANGE=null,RANGE_ANCHOR=null,RANGE_FOCUS=null,RANGE_OPEN=false,RANGE_EXTEND=false,RANGE_FAMILY='fill';
 let RANGE_PREVIEW=null,RANGE_DRAG=null,RANGE_FRAME=0,RANGE_SUPPRESS_CLICK=false,RANGE_TOUCH=false,RANGE_SUPPRESS_FOCUS=false;
 const rangeKey=q=>q?`${q.r0}:${q.c0}:${q.r1}:${q.c1}`:'';
-function updateHLLauncher(){const b=$('#tHLLauncher button'),hint=$('#tHLHint');if(!b)return;b.disabled=!TRANGE;b.setAttribute('aria-expanded',String(!!TRANGE&&RANGE_OPEN));b.classList.toggle('pri',!!TRANGE&&RANGE_OPEN);if(hint)hint.textContent=TRANGE?`已選 ${(TRANGE.r1-TRANGE.r0+1)*(TRANGE.c1-TRANGE.c0+1)} 格`:'選取儲存格';}
+function updateHLLauncher(){const b=$('#tHLLauncher button'),hint=$('#tHLHint');if(!b)return;b.disabled=false;b.setAttribute('aria-expanded',String(RANGE_OPEN));b.classList.toggle('pri',RANGE_OPEN);if(hint)hint.textContent=TRANGE?`已選 ${(TRANGE.r1-TRANGE.r0+1)*(TRANGE.c1-TRANGE.c0+1)} 格`:'先框選儲存格再套用';}
 function rangeStatus(text){document.querySelectorAll('#tRangeStatus,#tPop [data-range-status]').forEach(e=>e.textContent=text||'');}
 function cancelRangePreview(){if(!RANGE_PREVIEW)return;const p=RANGE_PREVIEW;RANGE_PREVIEW=null;const box=$('#tPrev .tsvg');if(box&&p.original!=null)box.innerHTML=p.original;rangeStatus('');document.querySelectorAll('.trange-card').forEach(b=>b.removeAttribute('data-preview'));}
 function stopRangeDrag(){if(RANGE_FRAME)cancelAnimationFrame(RANGE_FRAME);RANGE_FRAME=0;const d=RANGE_DRAG;RANGE_DRAG=null;if(d)try{$('#tPrev').releasePointerCapture(d.id);}catch(_){}document.body.classList.remove('range-dragging');}
@@ -7672,27 +7732,33 @@ function drawRangeSelection(){const P=$('#tPrev'),tb=tableMeta(),sl=tableSlide()
  const paintKey=rangeKey(TRANGE)+'|'+(RANGE_FOCUS?RANGE_FOCUS.r+':'+RANGE_FOCUS.c:'');if(fresh||P.dataset.rangeKey!==paintKey){P.dataset.rangeKey=paintKey;P.querySelectorAll('.tc').forEach(el=>{const r=+el.dataset.r,c=+el.dataset.c,on=r>=TRANGE.r0&&r<=TRANGE.r1&&c>=TRANGE.c0&&c<=TRANGE.c1;el.setAttribute('aria-selected',String(on));el.tabIndex=RANGE_FOCUS&&r===RANGE_FOCUS.r&&c===RANGE_FOCUS.c?0:-1;el.classList.remove('sel','gsel','scopeon');});}
  window.__studio.rangeSelection={...TRANGE};updateHLLauncher();document.querySelectorAll('[data-range-count]').forEach(e=>e.textContent=`已選 ${(TRANGE.r1-TRANGE.r0+1)*(TRANGE.c1-TRANGE.c0+1)} 格 · ${colLetter(TRANGE.c0)}${TRANGE.r0+1}:${colLetter(TRANGE.c1)}${TRANGE.r1+1}`);
 }
-function rangePreset(id){return D.tableHighlightPreset(id,S.p);}
-function rangeError(error){return error==='MARK_LIMIT'?'已達 12 個高亮範圍，請先清除不需要的範圍。':error==='INVALID_PRESET'?'無法使用這個樣式。':'選取範圍已改變，請重新框選。';}
-function previewRangePreset(id){if(!TRANGE||!RANGE_OPEN||!rangePreset(id))return;const next=D.tableApplyRange(T,TRANGE,id);if(next.error){cancelRangePreview();rangeStatus(rangeError(next.error));return;}const key=rangeKey(TRANGE);if(RANGE_PREVIEW&&RANGE_PREVIEW.id===id&&RANGE_PREVIEW.key===key)return;cancelRangePreview();const box=$('#tPrev .tsvg'),original=box.innerHTML;
+function rangePreset(id){return D.tableHighlightPreset(id,S.p,RANGE_FAMILY);}
+function rangeFamilyLabel(){return D.TABLE_HIGHLIGHT_FAMILIES.find(f=>f.id===RANGE_FAMILY).label;}
+function rangeError(error){return error==='MARK_LIMIT'?'已達 12 個高亮範圍，請先清除不需要的範圍。':['INVALID_PRESET','INVALID_FAMILY'].includes(error)?'無法使用這個樣式。':'選取範圍已改變，請重新框選。';}
+function previewRangePreset(id){if(!TRANGE||!RANGE_OPEN||!rangePreset(id))return;const next=D.tableApplyRange(T,TRANGE,id,RANGE_FAMILY);if(next.error){cancelRangePreview();rangeStatus(rangeError(next.error));return;}const key=rangeKey(TRANGE);if(RANGE_PREVIEW&&RANGE_PREVIEW.id===id&&RANGE_PREVIEW.key===key&&RANGE_PREVIEW.family===RANGE_FAMILY)return;cancelRangePreview();const box=$('#tPrev .tsvg'),original=box.innerHTML;
  // Build a disposable model. TM remains the committed model used by every export path.
- const model=D.buildModel(S.p,{table:Object.assign({},T,{his:next.his})}),sl=model.slides[TPAGE];if(!sl)return;RANGE_PREVIEW={id,key,original};box.innerHTML=D.toSvg(Object.assign({},sl,{items:sl.items.filter(i=>!['表格標題','單位','註腳'].includes(i.name))}),{id:'tp'});rangeStatus(`預覽：${rangePreset(id).label||rangePreset(id).name||id}，尚未套用`);const card=$(`[data-range-preset="${id}"]`);if(card)card.dataset.preview='true';}
-function commitRangePreset(id){if(!TRANGE)return;const target={...TRANGE},focusPreset=document.activeElement&&document.activeElement.dataset.rangePreset;cancelRangePreview();const next=id===null?D.tableClearRange(T,target):D.tableApplyRange(T,target,id);if(next.error){rangeStatus(rangeError(next.error));return;}if(!next.changed){rangeStatus(id===null?'選取範圍沒有高亮配色。':'已經套用這個樣式。');return;}
+ const model=D.buildModel(S.p,{table:Object.assign({},T,{his:next.his})}),sl=model.slides[TPAGE];if(!sl)return;RANGE_PREVIEW={id,key,original,family:RANGE_FAMILY};box.innerHTML=D.toSvg(Object.assign({},sl,{items:sl.items.filter(i=>!['表格標題','單位','註腳'].includes(i.name))}),{id:'tp'});rangeStatus(`預覽：${rangeFamilyLabel()}・${rangePreset(id).label||rangePreset(id).name||id}，尚未套用`);const card=$(`[data-range-preset="${id}"]`);if(card)card.dataset.preview='true';}
+function commitRangePreset(id){if(!TRANGE){rangeStatus('先框選儲存格再套用。');return;}const target={...TRANGE},focusPreset=document.activeElement&&document.activeElement.dataset.rangePreset;cancelRangePreview();const next=id===null?D.tableClearRange(T,target):D.tableApplyRange(T,target,id,RANGE_FAMILY);if(next.error){rangeStatus(rangeError(next.error));return;}if(!next.changed){rangeStatus(id===null?'選取範圍沒有高亮配色。':'已經套用這個樣式。');return;}
  // Flush previous edits and commit immediately: one click is one history transaction.
  pushHist(true);T.his=next.his;saveT();pushHist(true);renderTable(true);if(focusPreset){const b=$(`[data-range-preset="${focusPreset}"]`);if(b){RANGE_SUPPRESS_FOCUS=true;b.focus({preventScroll:true});RANGE_SUPPRESS_FOCUS=false;}}rangeStatus(id===null?'已清除選取範圍的高亮配色。':'已套用，可按 Ctrl+Z 復原。');}
-function renderRangePanel(){updateHLLauncher();if(!TRANGE)return;const host=matchMedia('(max-width:900px)').matches?$('#tPop'):$('#tSelPanel'),other=host.id==='tPop'?$('#tSelPanel'):$('#tPop');other.hidden=true;other.innerHTML='';$('#tChip').hidden=true;$('#tSelTxt').hidden=true;$('#tSelection').hidden=false;if(host.id==='tPop'&&!RANGE_OPEN){host.hidden=true;host.innerHTML='';document.body.classList.remove('tpopon');return;}const q=TRANGE,label=`${colLetter(q.c0)}${q.r0+1}:${colLetter(q.c1)}${q.r1+1}`,count=(q.r1-q.r0+1)*(q.c1-q.c0+1);const presets=(D.TABLE_HIGHLIGHT_PRESETS||[]).map(p=>D.tableHighlightPreset(p.id,S.p));
- const current=(T.his||[]).findLast?T.his.findLast(h=>h.type==='range'&&rangeKey(h)===rangeKey(q)&&!(h.excludes||[]).length):null;
- host.innerHTML=`<div class="trange-panel"><div class="phd"><b data-range-count>已選 ${count} 格 · ${label}</b><button class="btn" data-range-action="close" aria-label="關閉選取">✕</button></div><div class="trange-actions"><button class="btn" data-range-action="clear">清除高亮</button>${RANGE_TOUCH?`<button class="btn" data-range-action="extend" aria-pressed="${RANGE_EXTEND}">${RANGE_EXTEND?'點選範圍終點':'延伸選取'}</button>`:''}</div><div class="trange-palette" role="group" aria-label="重點配色，移過預覽，點選套用" ${RANGE_OPEN?'':'hidden'}>${presets.map(p=>`<button class="trange-card" data-range-preset="${p.id}" aria-pressed="${!!current&&current.presetId===p.id}" aria-label="${escH(p.label||p.name||p.id)}，預覽後按 Enter 套用"><span class="trange-sample" style="${rangeSampleStyle(p)}"><span>項目</span><span>98.5%</span></span><b>${escH(p.label||p.name||p.id)}${current&&current.presetId===p.id?' ✓':''}</b></button>`).join('')}</div>${host.id==='tPop'?'<div class="trange-status" data-range-status role="status" aria-live="polite"></div>':''}<div class="trange-label">${RANGE_OPEN?(RANGE_TOUCH?'點選樣式預覽，再按套用。':'移過預覽，點選套用；Esc 取消預覽。'):'拖曳框選或 Shift＋方向鍵延伸選取。'}</div><div class="trange-touch" ${RANGE_OPEN&&RANGE_TOUCH?'':'hidden'}><button class="btn pri" data-range-action="apply">套用</button><button class="btn" data-range-action="cancel">取消</button></div></div>`;
+function renderRangePanel(){updateHLLauncher();const host=matchMedia('(max-width:900px)').matches?$('#tPop'):$('#tSelPanel'),other=host.id==='tPop'?$('#tSelPanel'):$('#tPop');other.hidden=true;other.innerHTML='';
+ if(!document.querySelector('.tsec[data-sec="look"]').classList.contains('on')||(!TRANGE&&!RANGE_OPEN)){host.hidden=true;host.innerHTML='';document.body.classList.remove('tpopon');return;}
+ $('#tChip').hidden=true;$('#tSelTxt').hidden=true;$('#tSelection').hidden=false;if(host.id==='tPop'&&!RANGE_OPEN){host.hidden=true;host.innerHTML='';document.body.classList.remove('tpopon');return;}
+ const q=TRANGE,label=q?`${colLetter(q.c0)}${q.r0+1}:${colLetter(q.c1)}${q.r1+1}`:'',count=q?(q.r1-q.r0+1)*(q.c1-q.c0+1):0,presets=(D.TABLE_HIGHLIGHT_PRESETS||[]).map(p=>rangePreset(p.id));
+ const current=q?[...(T.his||[])].reverse().find(h=>h.type==='range'&&D.tableHighlightFamily(h)===RANGE_FAMILY&&rangeKey(h)===rangeKey(q)&&!(h.excludes||[]).length):null;
+ host.innerHTML=`<div class="trange-panel"><div class="phd"><b data-range-count>${q?`已選 ${count} 格 · ${label}`:'重點樣式'}</b><button class="btn" data-range-action="close" aria-label="${q?'關閉選取':'關閉樣式'}">✕</button></div><div class="trange-actions" ${q?'':'hidden'}><button class="btn" data-range-action="clear">清除高亮</button>${RANGE_TOUCH?`<button class="btn" data-range-action="extend" aria-pressed="${RANGE_EXTEND}">${RANGE_EXTEND?'點選範圍終點':'延伸選取'}</button>`:''}</div><div class="trange-families" role="group" aria-label="重點樣式類型" ${RANGE_OPEN?'':'hidden'}>${D.TABLE_HIGHLIGHT_FAMILIES.map(f=>`<button class="btn" data-range-family="${f.id}" aria-pressed="${f.id===RANGE_FAMILY}">${f.label}</button>`).join('')}</div><div class="trange-palette" role="group" aria-label="${rangeFamilyLabel()}配色，移過預覽，點選套用" ${RANGE_OPEN?'':'hidden'}>${presets.map(p=>`<button class="trange-card" data-range-preset="${p.id}" aria-disabled="${!q}" aria-pressed="${!!current&&current.presetId===p.id}" aria-label="${rangeFamilyLabel()}・${escH(p.label||p.name||p.id)}，${q?'預覽後按 Enter 套用':'先框選儲存格再套用'}"><span class="trange-sample" style="${rangeSampleStyle(p)}"><span>項目</span><span>98.5%</span></span><b>${escH(p.label||p.name||p.id)}${current&&current.presetId===p.id?' ✓':''}</b></button>`).join('')}</div>${host.id==='tPop'?'<div class="trange-status" data-range-status role="status" aria-live="polite"></div>':''}<div class="trange-label">${!q?'先框選儲存格再套用。':RANGE_OPEN?(RANGE_TOUCH?'點選樣式預覽，再按套用。':'移過預覽，點選套用；Esc 取消預覽。'):'拖曳框選或 Shift＋方向鍵延伸選取。'}</div><div class="trange-touch" ${q&&RANGE_OPEN&&RANGE_TOUCH?'':'hidden'}><button class="btn pri" data-range-action="apply">套用</button><button class="btn" data-range-action="cancel">取消</button></div></div>`;
  host.hidden=false;if(host.id==='tPop'){document.body.classList.add('tpopon');placePop();}else document.body.classList.remove('tpopon');
 }
-function rangeSampleStyle(p){const fill=p.fill||p.bg||'EDF4FA',color=p.text||p.textColor||p.color||'243750',border=p.border||p.stroke;return `background:#${fill};color:#${color};${p.bold?'font-weight:700;':''}${border?`border:1px solid #${border};`:''}`;}
+function rangeSampleStyle(p){if(RANGE_FAMILY==='fill')return `background:#${p.fill};color:#${p.color};border:1px solid #${p.border};`;
+ const edge=RANGE_FAMILY==='underline'?'border-bottom':RANGE_FAMILY==='side'?'border-left':'border';return `background:#FFFFFF;color:#243750;border:0 solid transparent;${edge}:${p.borderWidth}pt solid #${p.stroke};`;
+}
 let CELL_EDIT=null;
 function finishCellEdit(commit,redraw=true){const ed=CELL_EDIT;if(!ed)return false;if(ed.composing&&commit)return false;CELL_EDIT=null;const value=D.stripCtl(ed.el.value);ed.el.remove();if(commit&&T.rows[ed.r]&&T.rows[ed.r][ed.c]!==value){pushHist(true);T.rows[ed.r][ed.c]=value;saveT();pushHist(true);if(redraw)renderTable(true);}const cell=$(`#tPrev .tc[data-r="${ed.r}"][data-c="${ed.c}"]`);if(cell)cell.focus({preventScroll:true});return true;}
 function startCellEdit(cell){if(!cell)return;cancelRangePreview();finishCellEdit(true);const r=+cell.dataset.r,c=+cell.dataset.c;setRange({r,c},{r,c});const el=document.createElement('textarea');el.className='trange-editor';el.setAttribute('aria-label',`編輯 ${colLetter(c)}${r+1}，Enter 儲存，Esc 取消，Alt Enter 換行`);el.spellcheck=false;el.value=String(T.rows[r][c]??'');Object.assign(el.style,{left:cell.style.left,top:cell.style.top,width:cell.style.width,height:cell.style.height});const P=$('#tPrev');
  P.querySelector('.tov').appendChild(el);CELL_EDIT={r,c,el,composing:false};el.addEventListener('compositionstart',()=>{if(CELL_EDIT)CELL_EDIT.composing=true;});el.addEventListener('compositionend',()=>{if(CELL_EDIT)CELL_EDIT.composing=false;});el.addEventListener('keydown',e=>{e.stopPropagation();if(e.isComposing||e.keyCode===229||CELL_EDIT&&CELL_EDIT.composing)return;if(e.key==='Escape'){e.preventDefault();finishCellEdit(false);}else if(e.key==='Enter'&&!e.altKey&&!e.shiftKey){e.preventDefault();finishCellEdit(true);}else if(e.key==='Tab'){e.preventDefault();finishCellEdit(true);const nc=Math.max(0,Math.min(nCols()-1,c+(e.shiftKey?-1:1)));setRange({r,c:nc},{r,c:nc});const next=$(`#tPrev .tc[data-r="${r}"][data-c="${nc}"]`);if(next)next.focus();}});el.addEventListener('blur',()=>{if(CELL_EDIT&&CELL_EDIT.el===el)finishCellEdit(true);});el.focus();el.select();rangeStatus('編輯文字：Enter 儲存，Esc 取消；Alt＋Enter 換行。');}
 
 function bindRangeSelection(P){
- $('#tHLLauncher').addEventListener('click',e=>{if(!e.target.closest('[data-range-action="palette"]')||!TRANGE)return;e.stopPropagation();cancelRangePreview();RANGE_OPEN=!RANGE_OPEN;renderRangePanel();});
+ $('#tHLLauncher').addEventListener('click',e=>{if(!e.target.closest('[data-range-action="palette"]'))return;e.stopPropagation();cancelRangePreview();RANGE_OPEN=!RANGE_OPEN;renderRangePanel();});
  const cellPoint=el=>({r:+el.dataset.r,c:+el.dataset.c});
  const hit=(x,y)=>{const tb=tableMeta(),sl=tableSlide(),b=P.getBoundingClientRect();if(!tb||!sl||!b.width||!b.height)return null;const px=(x-b.left)/b.width*(sl.w||D.W),py=(y-b.top)/b.height*(sl.h||D.H);let xx=tb.tx,yy=tb.ty,c=0,r=0;while(c<tb.nC-1&&px>xx+tb.colW[c])xx+=tb.colW[c++];while(r<tb.nR-1&&py>yy+tb.rowH[r])yy+=tb.rowH[r++];return{r:tableRawRow(tb,r),c};};
  function dragFrame(){RANGE_FRAME=0;const d=RANGE_DRAG;if(!d||!d.moved)return;const ancestors=[];for(let e=P.parentElement;e&&e!==document.body;e=e.parentElement)if(e.scrollHeight>e.clientHeight+2||e.scrollWidth>e.clientWidth+2)ancestors.push(e);let moved=false;for(const e of ancestors){const b=e.getBoundingClientRect(),margin=28;const dx=d.x<b.left+margin?-12:d.x>b.right-margin?12:0,dy=d.y<b.top+margin?-12:d.y>b.bottom-margin?12:0;if(dx&&e.scrollWidth>e.clientWidth){const before=e.scrollLeft;e.scrollLeft+=dx;moved=moved||before!==e.scrollLeft;}if(dy&&e.scrollHeight>e.clientHeight){const before=e.scrollTop;e.scrollTop+=dy;moved=moved||before!==e.scrollTop;}}const end=hit(d.x,d.y);if(end&&rangeKey(rangeFromPoints(d.anchor,end))!==rangeKey(TRANGE)){RANGE_FOCUS=end;TRANGE=rangeFromPoints(d.anchor,end);}drawRangeSelection();if(moved||RANGE_DRAG)RANGE_FRAME=requestAnimationFrame(dragFrame);}
@@ -7707,11 +7773,11 @@ function bindRangeSelection(P){
   host.addEventListener('pointerout',e=>{const card=e.target.closest('[data-range-preset]');if(card&&!card.contains(e.relatedTarget)&&!RANGE_TOUCH)cancelRangePreview();});
   host.addEventListener('focusin',e=>{const card=e.target.closest('[data-range-preset]');if(card&&!RANGE_TOUCH&&!RANGE_SUPPRESS_FOCUS)previewRangePreset(card.dataset.rangePreset);});
   host.addEventListener('focusout',e=>{if(e.target.closest('[data-range-preset]')&&!RANGE_TOUCH)cancelRangePreview();});
-  host.addEventListener('click',e=>{const card=e.target.closest('[data-range-preset]'),button=e.target.closest('[data-range-action]');if(card){e.stopPropagation();if(RANGE_TOUCH)previewRangePreset(card.dataset.rangePreset);else commitRangePreset(card.dataset.rangePreset);return;}if(!button)return;e.stopPropagation();const action=button.dataset.rangeAction;if(action==='palette'){cancelRangePreview();RANGE_OPEN=!RANGE_OPEN;renderRangePanel();}else if(action==='clear')commitRangePreset(null);else if(action==='close')closeChip();else if(action==='extend'){RANGE_EXTEND=!RANGE_EXTEND;renderRangePanel();}else if(action==='apply'){if(RANGE_PREVIEW)commitRangePreset(RANGE_PREVIEW.id);else rangeStatus('請先點選一個樣式。');}else if(action==='cancel')cancelRangePreview();});
+  host.addEventListener('click',e=>{const family=e.target.closest('[data-range-family]');if(family){e.stopPropagation();cancelRangePreview();RANGE_FAMILY=family.dataset.rangeFamily;renderRangePanel();host.querySelector(`[data-range-family="${RANGE_FAMILY}"]`).focus({preventScroll:true});return;}const card=e.target.closest('[data-range-preset]'),button=e.target.closest('[data-range-action]');if(card){e.stopPropagation();if(!TRANGE){rangeStatus('先框選儲存格再套用。');return;}if(RANGE_TOUCH)previewRangePreset(card.dataset.rangePreset);else commitRangePreset(card.dataset.rangePreset);return;}if(!button)return;e.stopPropagation();const action=button.dataset.rangeAction;if(action==='palette'){cancelRangePreview();RANGE_OPEN=!RANGE_OPEN;renderRangePanel();}else if(action==='clear')commitRangePreset(null);else if(action==='close')closeChip();else if(action==='extend'){RANGE_EXTEND=!RANGE_EXTEND;renderRangePanel();}else if(action==='apply'){if(RANGE_PREVIEW)commitRangePreset(RANGE_PREVIEW.id);else rangeStatus('請先點選一個樣式。');}else if(action==='cancel')cancelRangePreview();});
   host.addEventListener('keydown',e=>{const card=e.target.closest('[data-range-preset]');if(card&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();const list=[...host.querySelectorAll('[data-range-preset]')],i=list.indexOf(card),delta={ArrowLeft:-1,ArrowRight:1,ArrowUp:-2,ArrowDown:2}[e.key];list[Math.max(0,Math.min(list.length-1,i+delta))].focus();}if(card&&e.key==='Enter'){e.preventDefault();e.stopPropagation();commitRangePreset(card.dataset.rangePreset);}});
  }
  P.addEventListener('dblclick',e=>{const cell=e.target.closest('.tc');if(!cell)return;e.preventDefault();startCellEdit(cell);});
- document.addEventListener('keydown',e=>{if(e.key!=='Escape'||S.tab!=='table'||e.isComposing)return;if(CELL_EDIT){if(CELL_EDIT.composing)return;e.preventDefault();e.stopImmediatePropagation();finishCellEdit(false);return;}if(RANGE_PREVIEW){e.preventDefault();e.stopImmediatePropagation();cancelRangePreview();}else if(TRANGE){e.preventDefault();e.stopImmediatePropagation();closeChip();}},true);
+ document.addEventListener('keydown',e=>{if(e.key!=='Escape'||S.tab!=='table'||e.isComposing)return;if(CELL_EDIT){if(CELL_EDIT.composing)return;e.preventDefault();e.stopImmediatePropagation();finishCellEdit(false);return;}if(RANGE_PREVIEW){e.preventDefault();e.stopImmediatePropagation();cancelRangePreview();}else if(TRANGE||RANGE_OPEN){e.preventDefault();e.stopImmediatePropagation();closeChip();}},true);
  addEventListener('blur',()=>{cancelRangePreview();stopRangeDrag();});document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelRangePreview();stopRangeDrag();}});
 }
 
@@ -7780,8 +7846,9 @@ function chipAct(a,v){if(!SELC)return;const {r,c,kind}=SELC;
  if(a==='rule'){if((T.rules||[]).length>=3){toast('數字門檻最多 3 條：請先在右側「重點」移除一條。',3500);return;}T.rules.push(suggestRule(c));showSec('hi');toast(`已加門檻：${escH(colName(c))}（右側「重點」可改數值與效果）`,2800,true);}
  saveT();renderTable(true);renderChip();placeChip();}
 function curDec(c){let d=0;(TM?TM.slides:[]).forEach(sl=>{const tb=sl.table,cells=sl.items.find(i=>i.t==='tbl').cells;cells.forEach((row,ri)=>{if(ri<tb.h0)return;const t=row[c].runs.map(x=>x.t).join('');const m=t.match(/\d\.(\d+)/);if(m)d=Math.max(d,m[1].length);});});return d;}
-function showSec(k){if(k==='data'){cancelRangePreview();RANGE_OPEN=false;$('#tPop').hidden=true;document.body.classList.remove('tpopon');updateHLLauncher();}if(['data','look'].includes(k)&&$('#tHLLauncher'))$('#tHLLauncher').hidden=k!=='look';if(k==='hi'){$('#tSelection').hidden=false;if(matchMedia('(max-width:900px)').matches)$('#tIns').classList.add('open');return;}if(k==='out'){$('#tPptx').focus();$('#tOut').animate([{boxShadow:'0 0 0 3px #1F4E7966'},{boxShadow:'0 0 0 0 transparent'}],{duration:900});return;}
+function showSec(k){if(k==='data'){cancelRangePreview();RANGE_OPEN=false;for(const host of [$('#tPop'),$('#tSelPanel')]){host.hidden=true;host.innerHTML='';}document.body.classList.remove('tpopon');updateHLLauncher();}if(['data','look'].includes(k)&&$('#tHLLauncher'))$('#tHLLauncher').hidden=k!=='look';if(k==='hi'){$('#tSelection').hidden=false;if(matchMedia('(max-width:900px)').matches)$('#tIns').classList.add('open');return;}if(k==='out'){$('#tPptx').focus();$('#tOut').animate([{boxShadow:'0 0 0 3px #1F4E7966'},{boxShadow:'0 0 0 0 transparent'}],{duration:900});return;}
  document.querySelectorAll('#tIns .tsec').forEach(s=>s.classList.toggle('on',s.dataset.sec===k));document.querySelectorAll('.tinsTabs button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.t===k)));
+ if(k==='look'&&(TRANGE||RANGE_OPEN))renderRangePanel();
  document.querySelectorAll('.tsteps .stp').forEach(b=>{if(b.dataset.go===k)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
  if(matchMedia('(max-width:900px)').matches)$('#tIns').classList.add('open');else{const sc=document.querySelector('#tIns .tsecs');if(sc)sc.scrollTop=0;}}
 function buildTableUI(){
