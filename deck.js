@@ -1831,7 +1831,7 @@ function buildModel(params,opt){
   grp(ic.zh,()=>icon(o.id,x,y,s,{variant:o.variant}));}
  /* 使用者表格（R1 重新設計）：貼上的資料 → 原生 PowerPoint 表格。
     版面固定：標題 x0.6 y0.5（24pt）→ 單位（12pt）→ 表格 y1.45（≥5 欄滿版 12.13"，否則依內容、最少 6"、靠左）→ 註腳（10pt）。
-    外觀 4 種：clean 細線（FT 式 1.5／0.75／0.25／0.75／1.5）、band 主色表頭、card 卡片（白／灰底）、zebra 斑馬密集。
+    外觀：bandcard 主色表頭＋卡片、hair 細橫線，以及 clean 細線（FT 式 1.5／0.75／0.25／0.75／1.5）、band 主色表頭、card 卡片（白卡＋陰影）、zebra 斑馬密集。
     數字預設保留原始文字；只有明確指定數字欄與千分位時才加入分隔符，絕不經浮點數轉換；狀態＝小圓點＋上色文字（不填底）；
     重點只用一種強調色（紅色只留給警示／條件），不疊色；文字對底色自動加深到 4.5:1。預覽、匯出、HTML 複製共用這份 model。 */
  function hueOf(x){const [r,g,b]=[0,2,4].map(i=>parseInt(x.slice(i,i+2),16)/255);const mx=Math.max(r,g,b),mn=Math.min(r,g,b),dd=mx-mn;if(!dd)return -1;let h=mx===r?((g-b)/dd)%6:mx===g?(b-r)/dd+2:(r-g)/dd+4;return (h*60+360)%360;}
@@ -1841,35 +1841,36 @@ function stO_(){return st;}
 function userTable(T,k){const first=cur,slideStart=slides.indexOf(first),n0=first.items.length,w0=warns.length;
   const reset=()=>{slides.splice(slideStart+1);cur=first;cur.items.length=n0;warns.length=w0;delete cur.table;};
   userTable0(T,k,1);
-  // A document is measured once at its selected size. Only a genuinely single-page
-  // small table may auto-enlarge; a candidate that creates pages is rolled back.
+  // Only genuinely small tables may auto-enlarge within the ordinary canvas.
   if(st.tbAuto===false||!first.table||first.table.pageCount>1||!first.table.exportComplete||(Array.isArray(T.cw)&&T.cw.length)||st.tbDense==='dense'||st.tbDense==='compact')return;
   const CW=W-1.2;let best=1;
   for(let b=1.1;b<=2.6;b=+(b+.1).toFixed(2)){const prev=first.table;const FCAP={comfy:24,dense:20}[st.tbDense]||22;
    if(prev.fs>=FCAP||(prev.tW>=.62*CW&&prev.tH>=.45*(H-1.5)))break;
    reset();userTable0(T,k,b);const t=first.table;
-   if(!t||t.pageCount>1||!t.exportComplete||t.tW>CW+.01||t.fs>FCAP+.01||t.orphans.length>prev.orphans.length){reset();userTable0(T,k,best);break;}best=b;}
+   if(!t||t.pageCount>1||!t.exportComplete||t.tW>CW+.01||first.h>H+.01||t.fs>FCAP+.01||t.orphans.length>prev.orphans.length){reset();userTable0(T,k,best);break;}best=b;}
   first.table.boost=best;cur=first;}
 function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSource(T);const {nC,h0}=source;const src=source.previewRows;if(!src.length||!nC)return;
   // Do not filter empty rows: editor, marks and export all use the same source indices.
   const AU=source.auto;
   // 列數少→字大一點、列數多→維持（S／M／L 仍是基準）；tbAuto=false 關閉
   if(st.tbAuto!==false){const nb=src.length-h0;k=Math.min(1.45,k*(nb<=5?1.3:nb<=9?1.15:1));}if(boost>1)k*=boost;   // 文件長度不會降低使用者選擇的尺寸
-  const lookId=tableLookOf(st);const grey=st.tbLook==='panel'||st.tbCard==='grey'||(st.tbPanel&&!st.tbLook);
+  const lookId=tableLookOf(st);const grey=['card','bandcard'].includes(lookId)?false:st.tbLook==='panel'||st.tbCard==='grey'||(st.tbPanel&&!st.tbLook); // Table cards always use the white shadow backing, including legacy snapshots.
   const sz=v=>Math.round(v*k*2)/2;
   const TF=st.tbFont==='arial'?'Arial':(st.tbFont==='jh'||st.tbFont==='noto')?'Microsoft JhengHei':F;   // 表格文字字型（arial＝拉丁 Arial＋中文正黑：a:ea 會自動補成中文字型）
   const NF=st.tbFont==='arial'?'Arial':tableNumFont((st.tbFont==='jh'||st.tbFont==='noto')?'Microsoft JhengHei':nf);
   const tidy=t=>st.tbTight?String(t).replace(/([A-Za-z0-9%)\]])[ \u00A0]+(?=[\u3400-\u9fff])/g,'$1').replace(/([\u3400-\u9fff])[ \u00A0]+(?=[A-Za-z0-9(\[])/g,'$1'):t;
-  const EC=HASA?A:P;                                     // 唯一強調色
+  const EC=P;                                     // 唯一強調色
   const ECd=mix(EC,'000000',.18);
-  const LK={
+  const looks={
    clean:{hdr:{color:G.ink,bT:{c:G.ink,w:1.5},bB:{c:G.ink,w:.75}},row:{c:G.line,w:.25},last:{c:G.ink,w:1.5},key:{c:G.ink,w:.75},hi:'fill',padL0:1},
    band:{hdr:{fill:P,color:'FFFFFF'},row:{c:G.l2,w:.5},last:{c:P,w:1},key:{c:P,w:.75},keyFill:mix(P,'FFFFFF',.92),hi:'fill',tint:.94,hh:.40},
    card:{card:1,hdr:{color:PD,bB:{c:P,w:1}},row:grey?{c:'FFFFFF',w:1.25}:{c:G.l2,w:.5},last:null,key:{c:grey?G.t2:G.ink,w:.75},hi:'fill',padL0:1},
    hair:{hdr:{color:G.ink,bB:{c:'D9D9D9',w:.4}},row:{c:'D9D9D9',w:.4},last:{c:'D9D9D9',w:.4},key:{c:'D9D9D9',w:.4},hi:'bold',padL0:1},
-   zebra:{dense:1,hdr:{color:G.t2,bB:{c:G.line,w:1}},row:null,zebra:mix(G.fill,'000000',.035),last:{c:G.t2,w:1},key:{c:G.t2,w:.75},hi:'bold'}}[lookId];
+   zebra:{dense:1,hdr:{color:G.t2,bB:{c:G.line,w:1}},row:null,zebra:mix(G.fill,'000000',.035),last:{c:G.t2,w:1},key:{c:G.t2,w:.75},hi:'bold'}};
+  // Compose the colored header with the existing card backing, without changing geometry.
+  const LK=lookId==='bandcard'?Object.assign({},looks.band,{card:1,row:looks.card.row,last:null}):looks[lookId];
   let hiStyle=['fill','box','bold'].includes(T.hiStyle)?T.hiStyle:(st.tbHiMode==='fill'||st.tbHiMode==='box')?st.tbHiMode:LK.hi;
-  if(lookId==='band'&&hiStyle==='box')hiStyle='fill';   // 主色表頭：重點＝表頭填強調色＋內文 6% 淡底，不再疊外框（避免壓在表頭色帶與合計底色上）
+  if(LK.hdr.fill&&hiStyle==='box')hiStyle='fill';   // 主色表頭：重點＝表頭填強調色＋內文 6% 淡底，不再疊外框（避免壓在表頭色帶與合計底色上）
   // 密度：舒適／標準／密集＝字級、列高、左右邊距各自調整（不是等比縮放）；斑馬外觀預設密集
   const DEN={comfy:{fs:14,hfs:12,rh:.48,hh:.48,pad:12},normal:{fs:13,hfs:11,rh:.34,hh:.38,pad:9},dense:{fs:11.5,hfs:10.5,rh:.28,hh:.32,pad:7}};
   const dn=DEN[st.tbDense==='compact'?'dense':st.tbDense]&&st.tbDense!=='normal'?DEN[st.tbDense==='compact'?'dense':st.tbDense]:DEN.normal;   /* 密度與外觀脫鉤：斑馬不再強制密集 */
@@ -1884,11 +1885,10 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   const colAl=Array.from({length:nC},(_,c)=>al[c]||((T.types||{})[c]==='number'?'right':c===0?'left':AU.numC[c]?'right':'left'));
   // Raw is the default, including inferred numeric columns. Legacy fmt/dec settings stay ignored.
   const rows=src.map((r,ri)=>r.map((t,c)=>ri<h0||AU.section[ri]?t:tableFormatValue(t,(T.types||{})[c],(T.formats||{})[c])));
-  const MK=tableMarks(T,nC,rows.length);const D_E=(a,b)=>{const h=x=>[0,2,4].map(i=>parseInt(x.slice(i,i+2),16));const p=h(a),q=h(b);return Math.abs(p[0]-q[0])+Math.abs(p[1]-q[1])+Math.abs(p[2]-q[2])>120;};// 推薦色：綠／青，跟強調色、警示色都分得開，且在白底上對比 ≥ 3:1（每個風格自動挑）
-  const REC=['2E8B57','12808A','3F7D20','00796B','5B8C2A'].map(c=>({c,s:Math.min(hueD(c,EC),hueD(c,AL),hueD(c,P)+15)*(contrastOf(c,'FFFFFF')>=3?1:0)})).sort((a,b)=>b.s-a.s)[0].c;
-  const his=MK.his.map(h=>Object.assign({},h,{C:h.kind==='warn'?(D_E(AL,EC)?AL:'9A5F00'):h.kind==='rec'?REC:EC}));   // 意義：重點／推薦＝強調色，警告＝紅；換外觀意義不變
+  const MK=tableMarks(T,nC,rows.length),REC='176B70',WARN='875B1A';
+  const his=MK.his.map(h=>Object.assign({},h,{C:h.kind==='warn'?WARN:h.kind==='rec'?REC:EC}));
   const hiCol=c=>his.find(h=>h.type==='col'&&h.i===c),hiRow=r=>his.find(h=>h.type==='row'&&h.i===r),hiCell=(r,c)=>his.find(h=>h.type==='cell'&&h.r===r&&h.c===c);
-  const TONE={warn:AL,good:GOOD,accent:EC};
+  const TONE={warn:WARN,good:REC,accent:EC};
   const ruleOf=(ri,c)=>{if(ri<h0||AU.section[ri])return null;const v=tNumVal(src[ri][c]);if(!Number.isFinite(v))return null;return MK.rules.find(R=>R.c===c&&ruleHit(R,v))||null;};
   let ruleHits=0;const ruleBoxes=[];
   // 欄寬：數字欄＝內容＋18pt、同寬；第一欄吸收剩餘；單欄最多 45%
@@ -1900,7 +1900,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   // 語意斷行：優先在 ：/:/空白/（ 前/中英交界 斷；每行都放得下、不留 1–2 字孤行
   const semBreak=(t,size,b,av,dp=0)=>{t=String(t);if(/\n/.test(t)||mw(t,size,b)<=av||dp>8||t.length>160)return t;const L=[...t];const vis=s=>s.replace(/\s/g,'').length;
    const cands=[];for(let i=1;i<L.length;i++){const a=L[i-1],z=L[i];let sc=0;if(/[：:；;，,、]/.test(a))sc=3;else if(/\s/.test(a)||/\s/.test(z))sc=2.5;else if(/[（(]/.test(z))sc=2.8;else if(/[)）]/.test(a))sc=2.2;else if(/[\u3400-\u9fff]/.test(a)!==/[\u3400-\u9fff]/.test(z)&&!/[\-./%]/.test(a+z))sc=1.6;else if(/[\u3400-\u9fff]/.test(a)&&/[\u3400-\u9fff]/.test(z))sc=.5;if(sc)cands.push({i,sc});}
-   let best=null;for(const {i,sc} of cands){const p1=L.slice(0,i).join('').replace(/\s+$/,''),p2=L.slice(i).join('').replace(/^\s+/,'');if(vis(p1)<2||vis(p2)<(sc>=2.2?2:3)&&vis(t)>4)continue;const w1=mw(p1,size,b),w2=mw(p2,size,b);
+   let best=null;for(const {i,sc} of cands){const p1=L.slice(0,i).join(''),p2=L.slice(i).join('');if(vis(p1)<2||vis(p2)<(sc>=2.2?2:3)&&vis(t)>4)continue;const w1=mw(p1,size,b),w2=mw(p2,size,b);
     const fit=Math.max(w1,w2)<=av?0:1;const score=fit*100-sc*2+Math.abs(w1-w2)/Math.max(.1,av)*1.5+(w2>av?Math.ceil(w2/av):0);if(!best||score<best.s)best={s:score,p1,p2};}
    if(!best)return t;const rest=mw(best.p2,size,b)>av?semBreak(best.p2,size,b,av,dp+1):best.p2;return best.p1+'\n'+rest;};
   // 表頭兩行最小寬：優先用語意最好的斷點（：、空白、（），不是最平均的斷點
@@ -1937,7 +1937,6 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   // 太寬：先讓文字欄換行（每欄至少 1.3"），數字欄不動；還是放不下才縮字
   {let sum=colW.reduce((a,b)=>a+b,0);if(sum>maxW+.001&&!uw){const tc=colW.map((_,c)=>c).filter(c=>!AU.numC[c]);const mn=1.3*k;
    for(let it=0;it<4;it++){sum=colW.reduce((a,b)=>a+b,0);if(sum<=maxW+.001)break;const M=c=>Math.max(mn,colMin[c]);const flex=tc.filter(c=>colW[c]>M(c)+.001);if(!flex.length)break;const fsum=flex.reduce((a,c)=>a+colW[c]-M(c),0);const need=sum-maxW;const f=Math.max(0,1-need/fsum);flex.forEach(c=>colW[c]=M(c)+(colW[c]-M(c))*f);}}}
-  {let sum=colW.reduce((a,b)=>a+b,0);if(sum>maxW+.001){const f=maxW/sum;colW=colW.map(w=>w*f);if(f<.82){fs=Math.max(10,sz(fs/k*Math.max(.8,f)));hfs=Math.max(9.5,sz(hfs/k*Math.max(.85,f)));warn('表格太寬','字級已縮小，或請減少欄位');}}}
   const lines=t=>String(t).split('\n').length;
   const wrapN=(t,size,b,cw,c)=>String(t).split('\n').reduce((a,l)=>a+Math.max(1,Math.ceil(mw(l,size,b)/Math.max(.01,cw-padOf(c)/72-.03)-.02)),0);
   const cellN=(r,ri)=>Math.max(...r.map((t,c)=>wrapN(t,ri<h0?hfs:fs,ri<h0||bold.has(ri)||keySet.has(ri)||AU.section[ri]||T.hcol&&c===0,colW[c]-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0),c)));
@@ -1959,9 +1958,8 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   const rowsO=rows.map(r=>r.slice());
   const brk=()=>rows.forEach((r,ri)=>r.forEach((_,c)=>{const t=rowsO[ri][c];if(AU.numC[c]&&ri>=h0)return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri);const av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0);const safeAv=ri>=h0&&mw(t,sz0,b)>av*.92&&String(t).length>10?av*.92:av;r[c]=tParts(t)||/^[A-Za-z0-9_.-]+$/.test(String(t))?String(t):fitLines(semBreak(t,sz0,b,safeAv),sz0,b,safeAv);}));   // 長字串接近欄寬時預留 8%（PowerPoint／LibreOffice 實際字寬較寬）
   const calcH=(g=1)=>{brk();return rows.map((r,ri)=>{const base=(ri<h0?hh:AU.section[ri]?rh*.95:rh)*g;return Math.max(base,minH(cellN(r,ri),ri<h0?hfs:fs));});};
-  // Freeze the full-source widths, wrapped display strings and typography before packing.
+  // Freeze full-source widths, wrapped display strings and typography before sizing the canvas.
   // Never shrink type or row padding merely because the document has many rows.
-  if(colW.reduce((a,b)=>a+b,0)>maxW){const f=maxW/colW.reduce((a,b)=>a+b,0);colW=colW.map(w=>w*f);}
   const rowHAll=calcH(),tW=colW.reduce((a,b)=>a+b,0),frame=GC?.18*k:0;
   const wrapMeta=(value,size,b,width)=>String(value||'').split('\n').map(line=>{let out='',part='';for(const ch of [...line]){if(part&&mw(part+ch,size,b)>width){out+=part+'\n';part='';}part+=ch;}return out+part;}).join('\n');
   const metaH=(text,size,min=0)=>Math.max(min,Math.max(1,String(text).split('\n').length)*size*1.45/72+.05);
@@ -1971,7 +1969,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   const ttl=fitLines(semBreak(titleRaw,tfsT,1,titleWidth),tfsT,1,titleWidth),titH=metaH(ttl,tfsT,.5*k);
   const unitText=wrapMeta(T.unit,ufs,0,metaW),unitH=T.unit?metaH(unitText,ufs,.27*k):.04;
   const kinds=[...new Set(his.map(h=>h.kind))],LG=T.legend&&typeof T.legend==='object'?T.legend:{};
-  const KZ={focus:String(LG.focus||'重點').slice(0,12),rec:String(LG.rec||'推薦').slice(0,12),warn:String(LG.warn||'警告').slice(0,12)};
+  const KZ={focus:String(LG.focus||'重點'),rec:String(LG.rec||'推薦'),warn:String(LG.warn||'警告')};
   const legend=kinds.length>=2?kinds.map(kind=>({kind,C:his.find(h=>h.kind===kind).C,text:'■ '+KZ[kind]})):[];
   // Reserve the actual legend width before measuring the note, not just its explicit newlines.
   const legW=legend.length?Math.min(T.note?tW*.5:tW,Math.max(...legend.map(l=>mw(l.text,nfs,0)))+.1):0;
@@ -1982,21 +1980,17 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   const TOP=.4,GAP=.30,ty0=TOP+titH+unitH+(T.unit?.02:0)+GAP;
   const bottom=.4,footerH=.26,footerGap=.12,headerH=h0?rowHAll[0]:0;
   let blockedRow=null,blockedReasonCode='',exportReason='';
-  const pack=withFooter=>{const capacity=H-bottom-ty0-frame-noteGap-afterH-(withFooter?footerH+footerGap:0),pages=[];let page=h0?[0]:[],height=headerH;
-   if(capacity<headerH+.01){blockedReasonCode='metadata';exportReason='標題、單位、註腳或圖例過長，沒有足夠空間放入表格。已停用匯出；請縮短說明或下載完整 TSV。';return{pages:[source.sourceRows.slice()],capacity};}
-   for(let raw=h0;raw<rows.length;raw++){
-    if(headerH+rowHAll[raw]>capacity+.001){blockedRow=raw;blockedReasonCode='row';exportReason=`資料第 ${raw+1} 列（內文第 ${raw-h0+1} 列）在目前字級與欄寬下，單列已超過一頁可用高度。已停用匯出；請縮短這列內容、調整欄寬或下載完整 TSV。`;return{pages:[source.sourceRows.slice()],capacity};}
-    if(page.length>h0&&height+rowHAll[raw]>capacity+.001){pages.push(page);page=h0?[0]:[];height=headerH;}
-    page.push(raw);height+=rowHAll[raw];
-   }
-   if(page.length||!pages.length)pages.push(page);return{pages,capacity};};
-  let planned=pack(false);if(!exportReason&&planned.pages.length>1)planned=pack(true);
-  const pageCount=planned.pages.length,hasFooter=pageCount>1;
-  const maxPageH=Math.max(...planned.pages.map(ids=>ids.reduce((n,r)=>n+rowHAll[r],0)));
-  // Every page shares one anchor, including a shorter final page.
-  const off=st.tbV==='top'||hasFooter||exportReason?0:Math.max(0,(planned.capacity-maxPageH)*.38);
-  if(st.tbH!=='left')X=Math.max(.6+frame,(W-Math.max(tW,titleRaw?titleWidth:0))/2);
+  // One source table is one canvas. Physical PowerPoint limits never truncate the web model.
+  const totalH=rowHAll.reduce((n,h)=>n+h,0);
+  const canvasW=Math.max(W,tW+2*(.6+frame),titleWidth+1.2);
+  const canvasH=Math.max(H,ty0+totalH+frame+noteGap+afterH+bottom);
+  if(canvasW>56||canvasH>56){blockedReasonCode='slide-size';exportReason=`完整表格需要 ${canvasW.toFixed(2)} × ${canvasH.toFixed(2)} 吋，超過 PowerPoint 單張投影片最大 56 × 56 吋。網頁仍完整呈現原始表格；不分頁、不刪列、不縮小文字，已停用 PPTX 匯出。`;}
+  const planned={pages:[source.sourceRows.slice()],capacity:canvasH-bottom-ty0-frame-noteGap-afterH};
+  const pageCount=1,hasFooter=false;
+  const off=st.tbV==='top'?0:Math.max(0,(planned.capacity-totalH)*.38);
+  if(st.tbH!=='left')X=Math.max(.6+frame,(canvasW-Math.max(tW,titleRaw?titleWidth:0))/2);
   const tx=X,ty=ty0+off,Y0=TOP+off;
+  cur.w=canvasW;cur.h=canvasH;
   const documentId='table-doc-0';
   const bw=b=>b?{c:b.c,w:b.w<.5?.5:Math.max(.25,Math.round(b.w*k*4)/4)}:null;
   // 對比：文字對底色至少 4.5:1，不夠就加深
@@ -2005,7 +1999,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   const cells=rows.map((r,ri)=>r.map((t,c)=>{const align=colAl[c];const isN=isNumFont(ri,c);const font=isN?NF:TF;t=isN?t:tidy(t);const mL=c===0?padL0:padH;
    if(ri<h0){const o={t,bold:1,size:hfs,align,font:TF,color:LK.hdr.color,fill:LK.hdr.fill||null,bT:bw(LK.hdr.bT),bB:bw(LK.hdr.bB),mL,mR:padH};
     const hc=hiCol(c)||hiCell(ri,c);
-    if(hc){if(LK.hdr.fill){o.bB={c:hc.C,w:3};/* 主色表頭：重點欄只加 3pt 強調色底線 */}else{if(hiStyle==='fill')o.fill=mix(hc.C,'FFFFFF',.9);o.color=ensureContrast(mix(hc.C,'000000',.18),o.fill||'FFFFFF',5);}}
+    if(hc){if(LK.hdr.fill){o.bB={c:contrastOf(hc.C,LK.hdr.fill)>=3?hc.C:ensureContrast(mix(hc.C,'FFFFFF',.85),LK.hdr.fill,3),w:3};/* 主色表頭：重點欄只加 3pt 強調色底線 */}else{if(hiStyle==='fill')o.fill=mix(hc.C,'FFFFFF',.9);o.color=ensureContrast(mix(hc.C,'000000',.18),o.fill||'FFFFFF',5);}}
     o.color=cc(o.color,o.fill);return o;}
    const last=ri===rows.length-1,key=keySet.has(ri)||bold.has(ri),sec=AU.section[ri];
    const o={t,size:fs,align,font,bold:key||sec,color:sec?PD:G.ink,fill:null,bB:bw(last?(LK.last||LK.row):LK.row),mL,mR:padH};
@@ -2066,11 +2060,11 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    sourceRows.forEach(ri=>rows[ri].forEach((t,c)=>{const str=String(t);if(!str.trim())return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri),av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0),ls=str.split('\n'),vis=x=>x.replace(/\s/g,'').length;
     if(ls.some(l=>mw(l,sz0,b)>av+.01))orphans.push({r:ri,c,t:str,why:'auto-wrap'});else if(ls.length>1&&vis(str)>4&&ls.some((l,i)=>vis(l)<=1||vis(l)<=2&&i>0&&!/[：:；;，,、)）\s]$/.test(ls[i-1])&&!/^[（(]/.test(l)))orphans.push({r:ri,c,t:str,why:'orphan'});}));
    if(T.hcol){const tint=LK.hdr&&LK.hdr.fill?mix(P,'FFFFFF',.88):mix(G.fill||'F2F2F2','FFFFFF',.2);tb.cells.forEach((r,ri)=>{const raw=sourceRows[ri];if(raw<h0||AU.section[raw])return;const cl=r[0];if(!cl)return;cl.bold=true;(cl.runs||[]).forEach(x=>{x.o=Object.assign({},x.o,{bold:true});});if(!cl.fill)cl.fill=tint;});}
-   const layoutOverflow=!!exportReason||cur.items.some(it=>it.t!=='ln'&&(it.x<-.01||it.y<-.01||it.x+it.w>W+.01||it.y+it.h>H+.01));
+   const layoutOverflow=!!exportReason||cur.items.some(it=>it.t!=='ln'&&(it.x<-.01||it.y<-.01||it.x+it.w>canvasW+.01||it.y+it.h>canvasH+.01));
    const complete=!layoutOverflow,reason=exportReason||(layoutOverflow?'表格或標題／註腳超出投影片邊界，已停用匯出。請縮短內容或調整欄寬；原始資料仍可下載完整 TSV。':'');
    if(layoutOverflow)warn('表格無法完整匯出',reason);
    const displayRows=tb.cells.map(row=>row.map(c=>c.runs.map(r=>r.t+(r.o&&r.o.br?'\n':'')).join('')));
-   const integrity={documentId,pageIndex,pageCount,h0,nC,displayRows,bodyStart,bodyEnd,sourceRows:sourceRows.slice(),bodySourceRows:bodySourceRows.slice(),rawRowCount:source.nR,rawBodyRows:source.bodyRows,renderedRowCount:sourceRows.length,renderedBodyRows:bodySourceRows.length,exportComplete:complete,exportReason:reason,layoutOverflow,blockedRow,blockedReasonCode};
+   const integrity={documentId,pageIndex,pageCount,h0,nC,sourceValues:source.rows.map(row=>row.slice()),displayRows,bodyStart,bodyEnd,sourceRows:sourceRows.slice(),bodySourceRows:bodySourceRows.slice(),rawRowCount:source.nR,rawBodyRows:source.bodyRows,renderedRowCount:sourceRows.length,renderedBodyRows:bodySourceRows.length,exportComplete:complete,exportReason:reason,layoutOverflow,blockedRow,blockedReasonCode};
    tb.dataIntegrity=Object.assign({},integrity);
    cur.table=Object.assign({},integrity,{rawRows:source.rows,previewBodyRows:bodySourceRows.length,types:Object.assign({},T.types),formats:Object.assign({},T.formats),hcol:!!T.hcol,pad:st.tbPad||'m',orphans,colMin:colMin.map(v=>+v.toFixed(3)),REC,k,colFit:colFit.map(v=>+v.toFixed(3)),tx,ty,tW,tH,colW:colW.slice(),rowH,h0,nC,nR:sourceRows.length,look:lookId,grey,hiMode:hiStyle,hiStyle,EC,colNum:AU.numC,colStat:AU.statC,key:[...keySet].sort((a,b)=>a-b),hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,
     ruleCols:[...new Set(MK.rules.map(r=>r.c))],unit:T.unit||'',note:T.note||'',title:T.title||'',font:TF,nf:NF,slots,fs,hfs,k});
@@ -2133,7 +2127,7 @@ function iconPackModel(params,id){iconPackFilename(id);const name=ICONS.BY[id].z
 /* ---------- S／M／L 元件尺寸（v5.2）：整頁幾何、字級、線寬、陰影一起等比縮放，投影片也同比例（仍是 16:9）。
    所以每一頁都放得下；把元件複製到標準 13.33×7.5 吋簡報時，實際大小就是 ×0.8／×1／×1.25。 ---------- */
 /* ---------- 表格：自動判斷（R1）——表頭、數字欄、狀態欄、小節列、合計列；外觀；數字格式；建議（重點欄、門檻） ---------- */
-const TABLE_LOOKS=[['clean','細線'],['band','主色表頭'],['card','卡片'],['zebra','斑馬'],['hair','只有細橫線']];
+const TABLE_LOOKS=[['clean','細線'],['band','主色表頭'],['card','卡片'],['bandcard','主色表頭＋卡片'],['zebra','斑馬'],['hair','只有細橫線']];
 /* 舊版全域數字格式已移除；新格式只讀 T.types / T.formats，預設不改原始值。 */
 function TBL_FIXED(s){return Object.assign({},s,{tbMinus:'auto',tbNeg:false,tbThou:true,tbStatus:true});}
 const TABLE_LOOK_ALIAS={minimal:'clean',panel:'card'};
@@ -2179,7 +2173,7 @@ function tableFormatValue(value,type,format){const t=String(value==null?'':value
  const start=m.index+m[0].indexOf(m[4]);return t.slice(0,start)+grouped+t.slice(start+m[4].length);}
 // Reject partial models in every public export route, not just disabled UI buttons.
 function assertTableExportComplete(model){const docs=new Map(),isPage=info=>info&&['pageIndex','pageCount','documentId'].some(k=>Object.prototype.hasOwnProperty.call(info,k));
- const fail=(info,why)=>{const err=new Error(info&&info.exportReason||`表格分頁資料不完整（${why}），已停用匯出以避免資料遺漏。`);err.code='TABLE_EXPORT_INCOMPLETE';err.reason=why;if(info){err.rawRowCount=info.rawRowCount;err.rawBodyRows=info.rawBodyRows;err.documentId=info.documentId;err.pageIndex=info.pageIndex;}throw err;};
+ const fail=(info,why)=>{const err=new Error(info&&info.exportReason||`表格資料不完整（${why}），已停用匯出以避免資料遺漏。`);err.code='TABLE_EXPORT_INCOMPLETE';err.reason=why;if(info){err.rawRowCount=info.rawRowCount;err.rawBodyRows=info.rawBodyRows;err.documentId=info.documentId;err.pageIndex=info.pageIndex;}throw err;};
  const same=(a,b)=>Array.isArray(a)&&Array.isArray(b)&&a.length===b.length&&a.every((v,i)=>v===b[i]);
  const sameRows=(a,b)=>Array.isArray(a)&&Array.isArray(b)&&a.length===b.length&&a.every((row,i)=>same(row,b[i]));
  const mirror=['documentId','pageIndex','pageCount','rawRowCount','rawBodyRows','h0','nC','bodyStart','bodyEnd','renderedRowCount','exportComplete'];
@@ -2190,8 +2184,10 @@ function assertTableExportComplete(model){const docs=new Map(),isPage=info=>info
   if(isPage(sl.table)){const matched=tables.filter(tb=>tb.dataIntegrity&&tb.dataIntegrity.documentId===sl.table.documentId);if(matched.length!==1)fail(sl.table,'missing or duplicate native table');
    const info=matched[0].dataIntegrity;if(mirror.some(k=>sl.table[k]!==info[k])||!same(sl.table.sourceRows,info.sourceRows)||!sameRows(sl.table.displayRows,info.displayRows)||sl.table.renderedBodyRows!==info.renderedBodyRows||sl.table.bodySourceRows&&!same(sl.table.bodySourceRows,info.bodySourceRows))fail(sl.table,'slide/native metadata mismatch');
    if(!Array.isArray(sl.table.rawRows)||sl.table.rawRows.length!==info.rawRowCount||sl.table.rawRows.some(r=>!Array.isArray(r)||r.length!==info.nC))fail(info,'invalid full source');
+   if(info.sourceValues&&!sameRows(sl.table.rawRows,info.sourceValues))fail(info,'full source values mismatch');
    if(sl.table.nR!==info.renderedRowCount)fail(info,'slide/native row count mismatch');}
   for(const tb of tables){const info=tb.dataIntegrity;if(!isPage(info))continue;
+   if(info.pageCount!==1||info.pageIndex!==0)fail(info,'table pagination is not permitted');
    if(typeof info.documentId!=='string'||!info.documentId||!Number.isInteger(info.pageIndex)||!Number.isInteger(info.pageCount)||info.pageCount<1||info.pageIndex<0||info.pageIndex>=info.pageCount)fail(info,'invalid page identity');
    if(!Number.isInteger(info.rawRowCount)||!Number.isInteger(info.rawBodyRows)||info.rawRowCount<0||info.rawBodyRows<0||![0,1].includes(info.h0)||info.rawRowCount-info.h0!==info.rawBodyRows||!Number.isInteger(info.nC)||info.nC<1)fail(info,'invalid source counts');
    if(info.exportComplete!==true||!Number.isInteger(info.renderedRowCount)||!Array.isArray(info.sourceRows)||info.renderedRowCount!==info.sourceRows.length)fail(info,'invalid rendered counts');
@@ -2201,7 +2197,8 @@ function assertTableExportComplete(model){const docs=new Map(),isPage=info=>info
    if(!Array.isArray(tb.cells)||tb.cells.length!==info.renderedRowCount||tb.cells.some(r=>!Array.isArray(r)||r.length!==info.nC||r.some(c=>!c||!Array.isArray(c.runs)||c.runs.some(run=>!run||typeof run.t!=='string'||!run.o||typeof run.o!=='object'))))fail(info,'native cell count mismatch');
    if(!Array.isArray(info.displayRows)||info.displayRows.length!==info.renderedRowCount||info.displayRows.some(r=>!Array.isArray(r)||r.length!==info.nC||r.some(t=>typeof t!=='string'))||!sameRows(info.displayRows,tb.cells.map(r=>r.map(c=>c.runs.map(run=>run.t+(run.o&&run.o.br?'\n':'')).join('')))))fail(info,'native cell content mismatch');
    if(!Array.isArray(tb.rowH)||tb.rowH.length!==info.renderedRowCount||!Array.isArray(tb.colW)||tb.colW.length!==info.nC||[...tb.rowH,...tb.colW].some(v=>!Number.isFinite(v)||v<=0))fail(info,'invalid native grid');
-   const width=sl.W||model.W||W,height=sl.H||model.H||H;
+   const width=sl.w||sl.W||model.W||W,height=sl.h||sl.H||model.H||H;
+   if(!Number.isFinite(width)||!Number.isFinite(height)||width>56||height>56)fail(info,'PowerPoint slide size exceeds 56 inches');
    if([tb.x,tb.y,tb.w,tb.h].some(v=>!Number.isFinite(v))||tb.x<-.01||tb.y<-.01||tb.x+tb.w>width+.01||tb.y+tb.h>height+.01||Math.abs(tb.colW.reduce((a,b)=>a+b,0)-tb.w)>.01||Math.abs(tb.rowH.reduce((a,b)=>a+b,0)-tb.h)>.01)fail(info,'native table outside slide bounds');
    if(isPage(sl.table)&&(sl.items||[]).some(it=>['表格標題','單位','註腳','圖例','表格頁碼'].includes(it.name)&&([it.x,it.y,it.w,it.h].some(v=>!Number.isFinite(v))||it.x<-.01||it.y<-.01||it.x+it.w>width+.01||it.y+it.h>height+.01)))fail(info,'table metadata outside slide bounds');
    let doc=docs.get(info.documentId);if(!doc){doc={info,pages:0,nextRow:info.h0,colW:tb.colW.slice(),rawRows:null};docs.set(info.documentId,doc);}
@@ -2366,7 +2363,10 @@ function fwNotes(sl){const seen=new Set();const out=[];(sl.groups||[]).forEach(g
  out.push(`【${h.name}｜${h.en}】\n什麼時候用：${h.when}\n怎麼填：\n${h.how.map((t,i)=>(i+1)+'. '+t).join('\n')}\n示範文案：${h.sample}`);});return out.join('\n\n');}
 function toPptx(pptx,model){
  assertTableExportComplete(model);
- if(model.W&&Math.abs(model.W-W)>.001){pptx.defineLayout({name:'KIT_'+model.k,width:model.W,height:model.H});pptx.layout='KIT_'+model.k;}else pptx.layout='LAYOUT_WIDE';pptx.title='精緻圖解元件庫 · '+(model.params.zh||'自訂風格');pptx.author='PPT Style Studio';
+ // PowerPoint has one presentation-wide size. Expand the shared canvas, never rescale tables.
+ const exportW=Math.max(model.W||W,...model.slides.map(sl=>sl.w||sl.W||model.W||W)),exportH=Math.max(model.H||H,...model.slides.map(sl=>sl.h||sl.H||model.H||H));
+ if(exportW>56||exportH>56||!Number.isFinite(exportW)||!Number.isFinite(exportH)){const err=new Error('完整內容超過 PowerPoint 56 × 56 吋投影片限制，無法忠實匯出。');err.code='TABLE_EXPORT_INCOMPLETE';throw err;}
+ if(model.slides.some(sl=>sl.w||sl.h)){pptx.defineLayout({name:'FULL_CONTENT',width:exportW,height:exportH});pptx.layout='FULL_CONTENT';}else if(model.W&&Math.abs(model.W-W)>.001){pptx.defineLayout({name:'KIT_'+model.k,width:model.W,height:model.H});pptx.layout='KIT_'+model.k;}else pptx.layout='LAYOUT_WIDE';pptx.title='精緻圖解元件庫 · '+(model.params.zh||'自訂風格');pptx.author='PPT Style Studio';
  const KI={};model.slides.forEach((sl,i)=>{if(!(sl.key in KI))KI[sl.key]=i+1;});
  model.slides.forEach(sl=>{const s=pptx.addSlide();s.background={color:'FFFFFF'};
   sl.items.forEach(it=>{
@@ -2709,7 +2709,7 @@ function toSvg(slide,opt){opt=opt||{};const id=(opt.id||'s')+'_';const defs={},p
   slide.groups.forEach((g,gi)=>{const x=g.x*PT-pad,y=g.y*PT-pad,w=g.w*PT+2*pad,h=g.h*PT+2*pad;
    out[g.from]=`<g class="el" data-g="${gi}" data-name="${esc(g.iconStyle?iconComponentName(g.iconStyle):g.name)}">`+out[g.from];
    out[g.to]=out[g.to]+`<rect class="hit" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="4"/></g>`;});}
- const vb=opt.viewBox||`0 0 ${(slide.W||W)*PT} ${(slide.H||H)*PT}`;
+ const vb=opt.viewBox||`0 0 ${(slide.w||slide.W||W)*PT} ${(slide.h||slide.H||H)*PT}`;
  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" ${opt.attrs||''}><defs>${Object.values(defs).map(d=>d.xml).join('')}</defs>${opt.bg===false?'':'<rect width="100%" height="100%" fill="#FFFFFF"/>'}${out.join('')}</svg>`;}
 /* 單一元件 SVG：只取群組內的圖形，裁切到外框（含留白）；flat=剪貼簿相容版（無濾鏡、箭頭實體化、透明背景） */
 function elementSvg(slide,gi,opt){opt=opt||{};const g=slide.groups[gi];const pad=(opt.pad!=null?opt.pad:6);
@@ -2728,7 +2728,7 @@ function nativeTableDocuments(items){return(items||[]).filter(it=>it.t==='tbl'&&
 function trayPart(e,o){o=o||{};
  if(e.kind==='el')return elementModel(e.params,e.key,e.gi,{labels:e.labels,minFont:0,name:e.name}).slides[0];
  if(e.kind==='icon')return buildModel(e.params,{icon:{id:e.icon.id,variant:e.icon.variant}}).slides[0];
- if(e.kind==='table'){const model=buildModel(e.params,{table:e.table});assertTableExportComplete(model);if(model.slides.length>1){const err=new Error('這張表格含多頁資料，不能只取第一頁合併成一頁；請改用完整分頁下載。');err.code='TABLE_MULTIPAGE_COMPOSITION';err.pageCount=model.slides.length;throw err;}return model.slides[0];}
+ if(e.kind==='table'){const model=buildModel(e.params,{table:e.table});assertTableExportComplete(model);if(model.slides.length>1||model.slides[0].w>W+.001||model.slides[0].h>H+.001){const err=new Error('完整表格超出一般投影片大小，不能縮小合併；請使用每項一頁的完整表格下載。');err.code='TABLE_CANVAS_COMPOSITION';err.pageCount=model.slides.length;throw err;}return model.slides[0];}
  throw new Error('未知的素材種類 '+e.kind);}
 /* 待選素材 → 一頁（v9 組版）：
    opt.compose = {title 重點句, sub 副標, foot 註解, layout:'auto'|'row'|'grid2'|'main', margin:'narrow'|'normal'|'wide', unify 統一字級, minFont}
@@ -2806,10 +2806,11 @@ function tableHtml(model,opt){const sl=tableCopyPage(model,opt);if(!sl)return ''
  return h+'</table>';}
 /* 參數驗證（匯入 JSON、localStorage、待選素材快照）：只收 BASE 有的鍵（＋zh／tbLook／tbPanel），顏色必須是 6 碼 hex，數字必須是有限值（可給範圍），
    列舉值必須在清單內（enums 由 studio 的選項表提供）；不合格的值改回 fallback（範本預設）。擋住 "/><img onerror=…> 這類注入。 */
-function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=enums||{};ranges=ranges||{};const out=clone(fallback);if(!p||typeof p!=='object')return out;
+function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=enums||{};ranges=ranges||{};const out=clone(fallback);out.tbCard='white';if(!p||typeof p!=='object')return out;
  Object.keys(p).forEach(k=>{const v=p[k],d=fallback[k];
   if(k==='zh'){out.zh=stripCtl(v).replace(/[<>&"]/g,'').slice(0,40);return;}
-  if(k==='tbLook'){const w=TABLE_LOOK_ALIAS[v]||v;if(TABLE_LOOKS.some(l=>l[0]===w)){out.tbLook=w;if(v==='panel')out.tbCard='grey';}return;}
+  if(k==='tbLook'){const w=TABLE_LOOK_ALIAS[v]||v;if(TABLE_LOOKS.some(l=>l[0]===w)){out.tbLook=w;}return;}
+  if(k==='tbCard'){out.tbCard='white';return;}
   if(k==='tbPanel'){out.tbPanel=!!v;return;}
   if(k==='tbArrow'){out.tbArrow=['mono','sem','ink'].includes(v)?v:'mono';return;}
   if(k==='semWarn'){const h=String(v||'').replace('#','');out.semWarn=/^[0-9A-F]{6}$/i.test(h)?h.toUpperCase():'';return;}
@@ -2819,7 +2820,7 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(typeof BASE[k]==='number'){const n=+v;if(!Number.isFinite(n))return;const r=ranges[k];out[k]=r?Math.min(r[1],Math.max(r[0],n)):n;return;}
   if(typeof BASE[k]==='string'&&/^[0-9A-F]{6}$/i.test(BASE[k])){const h=String(v).replace('#','');if(/^[0-9A-F]{6}$/i.test(h))out[k]=h.toUpperCase();return;}
   if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
- if(p.tbPanel&&!p.tbLook){out.tbLook='card';out.tbCard='grey';}if(p.tbLook==='panel')out.tbCard='grey';
+ if(p.tbPanel&&!p.tbLook)out.tbLook='card';out.tbCard='white';
  return out;}
 const api={iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;

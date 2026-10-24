@@ -117,7 +117,8 @@ async function browserSuite(options = {}) {
     document.activeElement?.blur();
   };
   const setMark = async (r, c, scope, kind) => {
-    await click(`#tPrev .tc[data-r="${r}"][data-c="${c}"]`);
+    const target = el(`#tPrev .tc[data-r="${r}"][data-c="${c}"]`);
+    if (!target.classList.contains('sel') || (!visible(el('#tSelPanel')) && !visible(el('#tPop')))) await click(`#tPrev .tc[data-r="${r}"][data-c="${c}"]`);
     const prefix = visible(el('#tSelPanel')) ? '#tSelPanel' : '#tPop';
     await click(`${prefix} [data-a="scope"][data-v="${scope}"]`);
     await click(`${prefix} [data-a="star"][data-v="${kind}"]`);
@@ -125,6 +126,38 @@ async function browserSuite(options = {}) {
   };
   await click('#tabs button[data-tab="table"]');
   await sleep(300);
+  await run('Table-first workspace keeps options in inspector and defaults to full-data closeup', async () => {
+    await reset();
+    for (const id of ['tLStrip','tView','tArrow','tCleanV']) assert(el('#tIns').contains(el('#'+id)), id+' still occupies canvas space');
+    assert(el('#tView [data-v="close"]').getAttribute('aria-pressed') === 'true', 'Closeup is not default');
+    assert(!el('#tCanvas').querySelector('button,select,input'), 'Canvas contains settings or pagination');
+    assert(!document.querySelector('.tinsTabs [data-t="hi"]'), 'Emphasis still requires a tab');
+  });
+  await run('Closeup retains legend bounds and clearing restores the empty viewport', async () => {
+    await reset(); await paste('Key\tValue\nfirst\t00123\nlast\t9007199254740993');
+    await setMark(1,0,'row','focus'); await setMark(2,1,'cell','rec'); await sleep(100);
+    const bounds = window.__studio.tableViewport;
+    assert(bounds && bounds.y1 > 0 && bounds.y1 > bounds.y0, 'Closeup did not expose full content bounds');
+    el('#tPrev').style.transform='scale(3)'; el('.tstagew').style.height='3000px';
+    await click('#tClear'); await sleep(150);
+    assert(!el('#tPrev').style.transform && !el('.tstagew').style.height, 'Empty state retained stale crop geometry');
+    assert(window.__studio.table.rows === 0, 'Clear did not reach empty state');
+    await reset();
+  });
+  await run('Combined header-card look switches, preserves data, and supports undo / redo', async () => {
+    await reset();
+    await click('#tLStrip button[data-v="card"]'); await sleep(400);
+    const before = JSON.stringify(state());
+    await click('#tLStrip button[data-v="bandcard"]'); await sleep(400);
+    assert(window.__studio.table.look === 'bandcard', 'Combined look was not selected');
+    assert(!document.querySelector('#tCardRow,[data-tp="tbCard"]'), 'Removed card backing settings remain');
+    assert(JSON.stringify(state()) === before, 'Appearance changed source data or metadata');
+    await click('#tUndo'); await sleep(400);
+    assert(window.__studio.table.look === 'card', 'Undo did not restore the previous look');
+    await click('#tRedo'); await sleep(400);
+    assert(window.__studio.table.look === 'bandcard', 'Redo lost the combined look');
+    await click('#tLStrip button[data-v="clean"]'); await sleep(400);
+  });
   await run('Expanded A1 paste immediately renders all 6 × 8 cells', async () => {
     await reset(); await click(document.querySelector('#tWorkbench') ? '#tWorkbench' : '#tWide');
     assert(document.querySelector('#tEdit.wide'), 'Expanded workbench did not open');
@@ -243,21 +276,16 @@ async function browserSuite(options = {}) {
     key(el('#tWideDone'), 'Escape'); await sleep(100);
     assert(!document.querySelector('#tEdit.wide') && document.activeElement === el('#tWorkbench'), 'Escape did not close and return focus');
   });
-  await run('Single oversized row blocks export and links to the exact original row', async () => {
-    await reset(); const rows = [['Key', 'Description'], ['short row', 'fits'], ...Array.from({ length: 4 }, (_, r) => ['Row' + r, '長文字'.repeat(200)])];
+  await run('Over-limit original table stays fully visible with a clear PPTX-only blocker', async () => {
+    await reset(); const rows = [['Key', 'Description'], ...Array.from({ length: 180 }, (_, r) => ['Row' + r, 'Original value ' + r])];
     await paste(rows.map(r => r.join('\t')).join('\n'));
-    assert(JSON.stringify(state().rows) === JSON.stringify(rows), 'Oversized layout changed the source data');
-    assert(el('#tCopy').disabled && el('#tPptx').disabled, 'Off-slide content remains exportable');
-    assert(/版面待調整/.test(el('#tAuto').textContent), 'Layout problem is misreported as a row-capacity issue');
-    assert(visible(el('#tExportBlocked')), 'Raw-data recovery actions are unavailable');
-    assert(window.__studio.table.blockedRow === 2 && visible(el('#tBlockedRow')), 'Oversized row is not identified by its original grid index');
-    const issue = window.Deck.buildModel(window.__studioApi.S.p, { table: state() }).slides.find(s => s.table && s.table.exportComplete === false);
+    assert(JSON.stringify(state().rows) === JSON.stringify(rows), 'Export limit changed original data');
+    assert(window.__studio.table.pageCount === 1 && document.querySelectorAll('#tPrev .tc').length === rows.length * 2, 'Export limit hid or split preview cells');
+    assert(el('#tPptx').disabled, 'Over-limit native PPTX is still enabled');
     const message = el('#tMsg');
-    assert(issue && message.textContent.includes(issue.table.exportReason), 'Warning text was truncated instead of showing full recovery advice');
-    assert(message.title === message.textContent && message.getAttribute('aria-label') === message.textContent, 'Full warning is unavailable to tooltip or assistive technology');
-    assert(getComputedStyle(message).whiteSpace === 'normal' && getComputedStyle(message).overflowWrap === 'anywhere', 'Warning cannot wrap within narrow output panel');
-    await click('#tBlockedRow');
-    assert(window.__studio.gridSelection.r === 2 && document.activeElement === cell(2, 0), 'Inspect-row action did not focus the exact original row');
+    assert(message.textContent.length > 20 && /PowerPoint|PPTX|56/.test(message.textContent), 'Physical export limit is not clearly described');
+    assert(message.tabIndex === 0 && getComputedStyle(message).whiteSpace === 'normal', 'Blocking reason is not accessible');
+    await click('#tBlockedEdit'); assert(el('#tEdit').classList.contains('wide'), 'Full data editor is unavailable');
   });
   await run('Explicit number formatting groups strings without changing stored values', async () => {
     await reset(); await paste('Code\tAmount\n00123\t9007199254740993\n00002\t1.123456789'); await click('#tWorkbench');
@@ -268,67 +296,50 @@ async function browserSuite(options = {}) {
     assert(el('#tWorkbenchPreview').textContent.includes('1.123456789'), 'Grouped preview rounded decimal');
     await choose('#tColFormat', 'raw'); assert(el('#tWorkbenchPreview').textContent.includes('9007199254740993'), 'Raw format did not restore original display');
   });
-  await run('25/26/60 body-row UI retains all cells and exposes every exportable page', async () => {
+  await run('25/26/60 body-row UI shows one complete original table without pagination', async () => {
     for (const count of [25, 26, 60]) {
       await reset();
       const rows = [Array.from({ length: 12 }, (_, c) => `Header${c + 1}`), ...Array.from({ length: count }, (_, r) => Array.from({ length: 12 }, (_, c) => `R${r + 1}C${c + 1}`))];
       await paste(rows.map(r => r.join('\t')).join('\n'));
       el('#tHRow').checked = true; el('#tHRow').dispatchEvent(new Event('change', { bubbles: true }));
       assert(JSON.stringify(state().rows) === JSON.stringify(rows), `${count} body rows lost source data`);
+      assert(window.__studio.table.pageCount === 1, 'Full original table was split');
+      assert(!document.querySelector('[data-table-page]'), 'Pagination controls remain');
+      assert(document.querySelectorAll('#tPrev .tc[data-r][data-c]').length === (count + 1) * 12, 'Preview omitted source cells');
       await click('#tWorkbench');
       assert(document.querySelectorAll('#tGrid td[data-r][data-c]').length === (count + 1) * 12, `${count} body rows are incomplete in editor`);
-      assert(cell(count, 11).textContent === `R${count}C12`, `${count} final cell missing`);
-      const first = window.__studio.table;
-      assert(first.pageIndex === 0 && first.pageCount >= 1, `${count} page state not initialized`);
-      assert(/原始列/.test(el('#tWorkPageInfo').textContent) && el('#tAuto').textContent.includes(`資料 ${count} 列`), 'Source-row and body-row labels are ambiguous');
-      if (count > 25) assert(first.pageCount > 1, `${count} long table was not paginated`);
-      assert(el('#tWorkPagePrev').disabled, 'Previous-page control should be disabled on first page');
       focus(count, 11); await sleep(120);
-      assert(window.__studio.table.sourceRows.includes(count), `${count} selection did not reveal its page`);
-      assert(el(`#tWorkbenchPreview .tc[data-r="${count}"][data-c="11"]`).classList.contains('gsel'), 'Preview failed to select the raw final row');
-      assert(window.__studio.gridSelection.r === count, 'Grid selection was changed to a page-local row');
-      if (window.__studio.table.pageCount > 1) {
-        const lastPage = window.__studio.table.pageIndex;
-        await click('#tWorkPagePrev'); await sleep(120);
-        assert(window.__studio.table.pageIndex === lastPage - 1, 'Manual page navigation snapped back to the selected row');
-        assert(window.__studio.gridSelection.r === count, 'Manual navigation changed the data selection');
-        assert(/不在本頁/.test(el('#tWorkbenchStatus').textContent), 'Off-page selection is not explained');
-        focus(count, 11); await sleep(120);
-        assert(window.__studio.table.pageIndex === lastPage, 'Clicking an already selected off-page cell did not reveal it');
-      }
-      assert(el('#tWorkPageNext').disabled, 'Next-page control should be disabled on last page');
+      assert(el(`#tWorkbenchPreview .tc[data-r="${count}"][data-c="11"]`).classList.contains('gsel'), 'Preview failed to select final raw row');
       await click('#tWideDone');
-      assert(!el('#tCopy').disabled && !el('#tPptx').disabled, `${count} complete paginated export is disabled`);
-      assert(!visible(el('#tExportBlocked')), `${count} complete table shows an export-blocked warning`);
+      assert(!el('#tPptx').disabled, `${count} supported full-table export is disabled`);
+      const before = JSON.stringify(state().rows);
+      for (const kind of ['focus', 'rec', 'warn']) {
+        await setMark(count, 11, 'cell', kind);
+        assert(JSON.stringify(state().rows) === before && window.__studio.table.pageCount === 1, 'Mark changed or split source data');
+        assert(window.__studio.table.sourceRows.length === rows.length, 'Mark hid original rows');
+      }
     }
   });
-  await run('Page 2 preview keyboard and repeated header map to raw source rows', async () => {
+  await run('Full-table keyboard movement and selected-range inspector retain raw row IDs', async () => {
     await reset();
     await paste([['Key', 'Value'], ...Array.from({ length: 60 }, (_, r) => [`row${r + 1}`, String(r + 1)])].map(r => r.join('\t')).join('\n'));
-    await click('#tPageNext'); const page = JSON.parse(JSON.stringify(window.__studio.table));
-    const firstBody = page.sourceRows.find(r => r !== 0), header = el('#tPrev .tc[data-r="0"][data-c="1"]');
-    header.focus(); key(header, 'ArrowDown');
-    assert(+document.activeElement.dataset.r === firstBody && +document.activeElement.dataset.localR === 1, 'ArrowDown from repeated header targeted page-local row 1 as a raw row');
-    key(document.activeElement, 'ArrowUp'); assert(+document.activeElement.dataset.r === 0, 'ArrowUp did not return to repeated header');
-    await click('#tPrev .tc[data-r="0"][data-c="1"]'); assert(window.__studio.table.pageIndex === 1, 'Selecting repeated header jumped to page 1');
-    const target = el(`#tPrev .tc[data-r="${firstBody}"][data-c="1"]`); target.focus(); key(target, 'Enter');
-    assert(window.__studio.gridSelection.r === firstBody, 'Preview Enter selected a page-local row in the full grid');
+    const header = el('#tPrev .tc[data-r="0"][data-c="1"]'); header.focus(); key(header, 'ArrowDown');
+    assert(+document.activeElement.dataset.r === 1, 'Header navigation did not target original row 1');
+    key(document.activeElement, 'ArrowUp'); assert(+document.activeElement.dataset.r === 0, 'ArrowUp did not return to original header');
+    const target = el('#tPrev .tc[data-r="26"][data-c="1"]'); target.focus(); key(target, 'Enter');
+    assert(window.__studio.gridSelection.r === 26, 'Selection remapped a raw row');
+    assert(!document.querySelector('.tinsTabs [data-t="hi"]'), 'Removed emphasis tab remains');
+    assert(visible(el('#tSelPanel')), 'Selected-cell controls are not directly available in the inspector');
+    assert(el('#tSelPanel').contains(document.activeElement), 'Keyboard focus was sent to hidden controls');
     await click('#tSelPanel [data-a="star"][data-v="warn"]');
-    assert(state().his.some(h => h.type === 'cell' && h.r === firstBody && h.c === 1 && h.kind === 'warn'), 'Preview keyboard mark stored the wrong raw row');
-    const colors = [...document.querySelectorAll('#tHil .it i')].map(i => i.style.background);
-    await click('#tPagePrev');
-    assert(JSON.stringify([...document.querySelectorAll('#tHil .it i')].map(i => i.style.background)) === JSON.stringify(colors), 'Mark colors changed when its row moved off-page');
-    const lastFirstPage = window.__studio.table.sourceRows.slice(-1)[0]; await click('#tWorkbench');
-    let gridCell = focus(lastFirstPage, 1); key(gridCell, 'Enter'); await sleep(100);
-    assert(window.__studio.table.pageIndex === 1 && +document.activeElement.dataset.r === lastFirstPage + 1, 'Grid Enter did not follow the next source row across the page boundary');
-    gridCell = document.activeElement; key(gridCell, 'Enter', { shiftKey: true }); await sleep(100);
-    assert(window.__studio.table.pageIndex === 0 && +document.activeElement.dataset.r === lastFirstPage, 'Grid Shift+Enter did not return across the page boundary');
+    assert(state().his.some(h => h.type === 'cell' && h.r === 26 && h.c === 1 && h.kind === 'warn'), 'Mark targeted the wrong raw row');
+    await click('#tWorkbench'); let td=focus(25,1); key(td,'Enter'); await sleep(100);
+    assert(+document.activeElement.dataset.r === 26, 'Enter crossed an artificial table boundary');
+    key(document.activeElement,'Enter',{shiftKey:true}); await sleep(100);
+    assert(+document.activeElement.dataset.r === 25, 'Shift+Enter did not return to original row');
     await click('#tWideDone');
-    el('#tHRow').checked = false; el('#tHRow').dispatchEvent(new Event('change', { bubbles: true })); await click('#tPageNext');
-    const noHeader = window.__studio.table.sourceRows; const first = el(`#tPrev .tc[data-r="${noHeader[0]}"][data-c="1"]`); first.focus(); key(first, 'ArrowDown');
-    assert(+document.activeElement.dataset.r === noHeader[1], 'Headerless page keyboard movement is not mapped to raw rows');
   });
-  await run('Paginated row insertion, deletion and undo preserve raw-row marks at 25/26/60 boundaries', async () => {
+  await run('Long-table insertion, deletion and undo preserve raw-row marks at 25/26/60 rows', async () => {
     for (const count of [25, 26, 60]) {
       await reset();
       const rows = [['Key', 'Value'], ...Array.from({ length: count }, (_, r) => [`row${r + 1}`, String(1000 + r)])];
@@ -417,40 +428,25 @@ async function browserSuite(options = {}) {
     td.dispatchEvent(new CompositionEvent('compositionend', { bubbles: true, data: '輸入中' })); key(td, 'Enter'); await sleep(100);
     assert(state().rows[2][1] === '輸入中', 'IME text was lost');
   });
-  await run('Clipboard metadata exclusion is clear before copying', async () => {
+  await run('Compact output exposes only native PPTX, not table clipboard', async () => {
     await reset();
-    const copy = el('#tCopy');
-    assert(/僅|只|表格本體|不含/.test(copy.textContent + ' ' + copy.title), 'Copy button does not warn that it copies only the table');
-    const candidates = [...document.querySelectorAll('#tOut *,#tDock *,#tCopyNote')].filter(e => !e.querySelector('*') && visible(e));
-    assert(candidates.some(e => /標題/.test(e.textContent) && /單位/.test(e.textContent) && /註腳|註解|備註/.test(e.textContent) && /不含|不包含|僅|下載/.test(e.textContent)), 'No visible pre-action note explains metadata exclusion');
-    assert(!window.__studio.lastTableCopy, 'Fixture already invoked clipboard action');
+    assert(!document.querySelector('#tCopy'), 'Removed table copy action is still present');
+    assert(/可編輯 PPTX/.test(el('#tPptx').textContent), 'Primary action is not clearly an editable PPTX');
+    assert(/完整原表/.test(el('#tOut').textContent), 'Download scope is missing');
+    assert(!/HTML|貼上/.test(el('#tOut').textContent), 'Obsolete clipboard help remains');
+    if (visual && innerWidth > 900) {
+      const footer = el('#tOut').getBoundingClientRect(), panel = el('#tIns').getBoundingClientRect();
+      assert(footer.height < panel.height * .25, 'Footer still crowds out settings');
+      assert(el('#tPptx').getBoundingClientRect().height >= 36, 'Primary action became too small');
+    }
   });
-  await run('Page 2 copy uses page-only display values while TSV keeps each original row once', async () => {
+  await run('Full TSV keeps original values and every row after display formatting', async () => {
     await reset();
     const rows = [['Key', 'Amount'], ...Array.from({ length: 60 }, (_, r) => [`raw${r + 1}`, r === 59 ? '9007199254740993' : String(1234000 + r)])];
     await paste(rows.map(r => r.join('\t')).join('\n')); await click('#tWorkbench');
     focus(1, 1); await choose('#tColType', 'number'); await choose('#tColFormat', 'grouped'); await click('#tWideDone');
-    await click('#tPageNext');
-    const page = JSON.parse(JSON.stringify(window.__studio.table));
-    assert(page.pageIndex === 1 && page.pageCount > 1, 'Page 2 fixture is missing');
-    let copied;
-    const clipboard = Object.getOwnPropertyDescriptor(navigator, 'clipboard'), oldItem = window.ClipboardItem;
-    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { write: async items => { copied = items[0].data; } } });
-    window.ClipboardItem = class { constructor(data) { this.data = data; } };
+    assert(window.__studio.table.pageCount === 1 && window.__studio.table.sourceRows.length === rows.length, 'Full source table is missing');
     const read = blob => new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(String(reader.result)); reader.onerror = reject; reader.readAsText(blob); });
-    try {
-      await click('#tCopy'); assert(copied, 'Copy handler did not provide both clipboard types');
-      const html = await read(copied['text/html']), text = await read(copied['text/plain']);
-      const parsed = new DOMParser().parseFromString(html, 'text/html');
-      const htmlRows = [...parsed.querySelectorAll('tr')].map(tr => [...tr.querySelectorAll('th,td')].map(td => td.textContent));
-      const expected = page.sourceRows.map(r => rows[r].map((v, c) => r && c === 1 ? v.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : v));
-      assert(JSON.stringify(htmlRows) === JSON.stringify(expected), 'HTML includes another page or differs from displayed grouped values');
-      assert(text === expected.map(r => r.join('\t')).join('\n'), 'Plaintext differs from this page’s HTML display values');
-      assert(window.__studio.lastTableCopy.pageIndex === 1, 'Clipboard diagnostics did not record the chosen page');
-      const oldExec = document.execCommand, fallback = {}; navigator.clipboard.write = async () => { throw new Error('Test fallback'); };
-      document.execCommand = command => { if (command !== 'copy') return false; const event = new Event('copy', { bubbles: true, cancelable: true }); Object.defineProperty(event, 'clipboardData', { value: { setData(type, value) { fallback[type] = value; } } }); document.dispatchEvent(event); return true; };
-      try { await click('#tCopy'); assert(fallback['text/html'] === html && fallback['text/plain'] === text && window.__studio.lastTableCopy.fallback, 'Legacy clipboard path differs in scope or display values'); } finally { document.execCommand = oldExec; }
-    } finally { if (clipboard) Object.defineProperty(navigator, 'clipboard', clipboard); else delete navigator.clipboard; window.ClipboardItem = oldItem; }
     let captured; const create = URL.createObjectURL, revoke = URL.revokeObjectURL;
     URL.createObjectURL = blob => { captured = blob; return 'blob:table-page-copy-test'; }; URL.revokeObjectURL = () => {};
     try {
@@ -519,6 +515,18 @@ async function main() {
       const page = await context.newPage(); const errors = []; page.on('pageerror', e => errors.push(e.message));
       await page.goto(url, { waitUntil: 'load' }); await page.evaluate(() => localStorage.clear()); await page.reload({ waitUntil: 'load' });
       results.push(...await page.evaluate(browserSuite, { visual: true }));
+      for (const viewport of [{ width: 1440, height: 600 }, { width: 844, height: 390 }, { width: 900, height: 375 }]) {
+        await page.setViewportSize(viewport);
+        await page.locator('.tinsTabs button[data-t="data"]').click();
+        await page.locator('.tinsTabs button[data-t="look"]').click();
+        await page.waitForTimeout(200);
+        const layout = await page.evaluate(() => {
+          const settings = document.querySelector('.tsecs').getBoundingClientRect();
+          const button = document.querySelector('#tPptx').getBoundingClientRect();
+          return { settings: settings.height, button: button.height, bottom: button.bottom, viewport: innerHeight };
+        });
+        results.push({ name: `Settings remain usable at ${viewport.width} × ${viewport.height}`, pass: layout.settings >= 120 && layout.button >= 36 && layout.bottom <= layout.viewport, detail: JSON.stringify(layout) });
+      }
       results.push({ name: 'Real browser has no uncaught page errors', pass: errors.length === 0, detail: errors.join('\n') });
     } finally { await browser.close(); }
   }
