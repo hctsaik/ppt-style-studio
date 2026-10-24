@@ -117,6 +117,7 @@ async function browserSuite(options = {}) {
     document.activeElement?.blur();
   };
   const setMark = async (r, c, scope, kind) => {
+    if(window.__testLegacyMark){window.__testLegacyMark(r,c,scope,kind);await sleep(400);return;}
     const target = el(`#tPrev .tc[data-r="${r}"][data-c="${c}"]`);
     if (!target.classList.contains('sel') || (!visible(el('#tSelPanel')) && !visible(el('#tPop')))) await click(`#tPrev .tc[data-r="${r}"][data-c="${c}"]`);
     const prefix = visible(el('#tSelPanel')) ? '#tSelPanel' : '#tPop';
@@ -142,6 +143,45 @@ async function browserSuite(options = {}) {
     await click('#tClear'); await sleep(150);
     assert(!el('#tPrev').style.transform && !el('.tstagew').style.height, 'Empty state retained stale crop geometry');
     assert(window.__studio.table.rows === 0, 'Clear did not reach empty state');
+    await reset();
+  });
+  await run('Browser fit keeps final column visible and wide-table edge reachable', async () => {
+    if (!visual) return;
+    await reset(); await paste('Plan\tGoogle AI Pro\tGoogle AI Ultra 20x\nPrice\tNT$650\tNT$6,500\nStorage\t2 TB\t30 TB');
+    await click('#tView [data-v="close"]'); await click('.tzoom [data-z="fit"]');
+    const canvas = el('#tCanvas'); await sleep(200);
+    const bounds = canvas.getBoundingClientRect(), last = el('#tPrev .tc[data-r="0"][data-c="2"]').getBoundingClientRect();
+    assert(canvas.scrollWidth <= canvas.clientWidth + 1, 'Normal table has unexpected horizontal overflow');
+    assert(last.right <= bounds.left + canvas.clientWidth - 8, 'Final column touches or crosses scrollbar');
+    const rows = [Array.from({length: 30}, (_, i) => 'Column ' + i), Array.from({length: 30}, (_, i) => String(i))];
+    await paste(rows.map(r => r.join('\t')).join('\n')); await sleep(200);
+    assert(canvas.scrollWidth > canvas.clientWidth, 'Wide-table horizontal scroll missing');
+    canvas.scrollLeft = canvas.scrollWidth; await sleep(50);
+    const edge = el('#tPrev .tc[data-r="0"][data-c="29"]').getBoundingClientRect();
+    assert(edge.right <= bounds.left + canvas.clientWidth && edge.left >= bounds.left, 'Final wide-table column is unreachable at maximum scroll');
+    await reset();
+  });
+  await run('Fit closeup responds to canvas width without clipping normal tables', async () => {
+    if (visual) return;
+    await reset(); await paste('Plan\tGoogle AI Pro\tGoogle AI Ultra 20x\nPrice\tNT$650\tNT$6,500\nStorage\t2 TB\t30 TB');
+    const canvas = el('#tCanvas'), original = Object.getOwnPropertyDescriptor(canvas, 'clientWidth');
+    const before = JSON.stringify(state()); let width = 860;
+    Object.defineProperty(canvas, 'clientWidth', { configurable: true, get: () => width });
+    try {
+      window.dispatchEvent(new Event('resize')); await sleep(120);
+      const padding = parseFloat(getComputedStyle(canvas).paddingLeft) + parseFloat(getComputedStyle(canvas).paddingRight);
+      assert(Math.abs(window.__studio.tableViewport.width - (width - padding)) < 1, 'Fit mode overflows a normal-width table');
+      width = 620; window.dispatchEvent(new Event('resize')); await sleep(120);
+      assert(Math.abs(window.__studio.tableViewport.width - (width - padding)) < 1, 'Closeup scale is stale after resize');
+      width = 600; const observer = window.__testResizeObservers.find(x => x.target === canvas);
+      assert(observer, 'Canvas resize observer missing'); observer.callback(); await sleep(120);
+      assert(Math.abs(window.__studio.tableViewport.width - (width - padding)) < 1, 'Scrollbar/panel width change left stale closeup scale');
+      assert(JSON.stringify(state()) === before, 'Resizing changed original table values');
+      const rows = [Array.from({length: 30}, (_, i) => 'Column ' + i), Array.from({length: 30}, (_, i) => String(i))];
+      await paste(rows.map(r => r.join('\t')).join('\n'));
+      assert(window.__studio.tableViewport.width > width - padding, 'Truly wide table was squeezed instead of scrollable');
+      assert(state().rows[0].length === 30, 'Wide table lost columns');
+    } finally { if (original) Object.defineProperty(canvas, 'clientWidth', original); else delete canvas.clientWidth; }
     await reset();
   });
   await run('Combined header-card look switches, preserves data, and supports undo / redo', async () => {
@@ -331,8 +371,8 @@ async function browserSuite(options = {}) {
     assert(!document.querySelector('.tinsTabs [data-t="hi"]'), 'Removed emphasis tab remains');
     assert(visible(el('#tSelPanel')), 'Selected-cell controls are not directly available in the inspector');
     assert(el('#tSelPanel').contains(document.activeElement), 'Keyboard focus was sent to hidden controls');
-    await click('#tSelPanel [data-a="star"][data-v="warn"]');
-    assert(state().his.some(h => h.type === 'cell' && h.r === 26 && h.c === 1 && h.kind === 'warn'), 'Mark targeted the wrong raw row');
+    await click('#tSelPanel [data-range-preset="amber"]');
+    assert(state().his.some(h => h.type === 'range' && h.r0 === 26 && h.c0 === 1 && h.presetId === 'amber'), 'Mark targeted the wrong raw row');
     await click('#tWorkbench'); let td=focus(25,1); key(td,'Enter'); await sleep(100);
     assert(+document.activeElement.dataset.r === 26, 'Enter crossed an artificial table boundary');
     key(document.activeElement,'Enter',{shiftKey:true}); await sleep(100);
@@ -493,13 +533,13 @@ async function domSuite() {
   const virtualConsole = new VirtualConsole();
   const pageErrors = [];
   virtualConsole.on('jsdomError', error => { if (!/navigation|HTMLCanvasElement|window.scrollTo/.test(error.message)) pageErrors.push(error.message); });
-  const html = fs.readFileSync(path.resolve(ROOT, process.env.STUDIO_HTML || 'studio.html'), 'utf8').replace('function saveBlob(blob,name)', 'window.__testSaveBlob=saveBlob;function saveBlob(blob,name)');
+  const html = fs.readFileSync(path.resolve(ROOT, process.env.STUDIO_HTML || 'studio.html'), 'utf8').replace('function toggleHi(h,kind)', 'window.__testLegacyMark=(r,c,type,kind)=>{clearRangeSelection();toggleHi(type==="cell"?{type,r,c}:{type,i:type==="row"?r:c},kind);saveT();renderTable(true);};function toggleHi(h,kind)').replace('function saveBlob(blob,name)', 'window.__testSaveBlob=saveBlob;function saveBlob(blob,name)');
   const dom = new JSDOM(html, {
     url: 'http://studio.test/studio.html',
     runScripts: 'dangerously', resources: new LocalResources(), pretendToBeVisual: true, virtualConsole,
     beforeParse(window) {
       window.matchMedia = query => ({ matches: false, media: query, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {} });
-      window.ResizeObserver = class { observe() {} disconnect() {} unobserve() {} };
+      window.__testResizeObservers=[]; window.ResizeObserver = class { constructor(callback) { this.callback=callback; window.__testResizeObservers.push(this); } observe(target) { this.target=target; } disconnect() {} unobserve() {} };
       window.HTMLElement.prototype.scrollIntoView = function () {};
       window.HTMLElement.prototype.animate = function () { return { finished: Promise.resolve(), cancel() {} }; };
       Object.defineProperty(window.HTMLElement.prototype, 'innerText', { get() { return this.textContent; }, set(value) { this.textContent = value; }, configurable: true });
