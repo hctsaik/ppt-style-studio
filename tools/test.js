@@ -17,7 +17,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
   const r=D.buildModel(nav,{table:T_SAMPLES.issue}).slides[0];ok(r.items.some(i=>i.t==='tbl'),'議題追蹤：原生表格');
   {const T2={rows:[['項目','變化'],['良率','▲ 2%'],['成本','▼ 3%']]};const cl=o=>D.buildModel(Object.assign({},nav,o),{table:T2}).slides[0].items.find(i=>i.t==='tbl').cells;const c1=cl({}),c2=cl({tbArrow:'sem'});const col=(c,r)=>c[r][1].color||((c[r][1].runs||[])[0]||{o:{}}).o.color;ok(col(c1,1)===nav.P&&col(c1,2)===nav.t2&&col(c2,2)==='A15C00','表格 ▲▼ 預設主色＋灰（不用紅綠），可切換好壞色');}}
  const big={rows:[['項目','數值','說明']].concat(Array.from({length:60},(_,i)=>['列'+i,String(i*1234),'這是一段很長的說明文字，用來測試欄寬上限與列高下限'.repeat(i%3?1:3)]))};
- const m2=D.buildModel(wine,{table:big});let blocked=false;try{await save('table-big.pptx',wine,{model:m2});}catch(e){blocked=e.code==='TABLE_EXPORT_INCOMPLETE';}ok(blocked&&m2.slides[0].table.rawBodyRows===60&&m2.warns.some(w=>/列數過多/.test(w)),'60 列表格：保留完整來源，只預覽 25 列且禁止不完整匯出');
+ const m2=D.buildModel(wine,{table:big});await save('table-big.pptx',wine,{model:m2});ok(m2.slides.length>1&&m2.slides.every(s=>s.table.exportComplete)&&JSON.stringify(m2.slides.flatMap(s=>s.table.bodySourceRows))===JSON.stringify(Array.from({length:60},(_,i)=>i+1)),'60 列表格：原生分頁、保留字級、全部資料依序匯出一次');
  const tray=D.trayModel([{kind:'el',params:nav,key:'patterns',gi:5,name:'平行分流'},{kind:'icon',params:wine,icon:{id:'wafer',variant:'tint'},name:'晶圓'},{kind:'table',params:nav,table:kpi,name:'KPI'},{kind:'el',params:D.PRESETS[8],key:'patterns',gi:3,name:'審核迴圈'}]);
  await save('tray.pptx',nav,{model:tray});ok(tray.tray.n===4,'待選素材 4 項');
  const em=D.elementModel(nav,'patterns2',1);await save('element.pptx',nav,{model:em});
@@ -209,7 +209,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    const sg=['yield','pl','status','dense','stress'].map(k=>D.tableTitleSuggest(Object.assign({},C[k],{rules:[],his:[]})));ok(sg.every(Boolean)&&/最低/.test(sg[4]),'每種表都有建議標題（'+sg[4]+'）');
    ok(D.tableTitleSuggest({rows:[['機台','WK41 Yield'],['EQ-01','95.1%'],['EQ-02','86.9%']]})==='WK41 Yield 最低：EQ-02 86.9%','通用：Yield 最低：EQ-02 86.9%');
    const dk=D.trayDeck([{kind:'table',table:Object.assign({},C.stress,{title:''}),params:nv}]);ok(!!dk.slides[0].items.find(i=>i.name==='表格標題'),'待選：沒有期別/狀態欄的表也拿到建議標題');
-   const LT='3Q25 稅後淨利 452.3，QoQ +13.6%、YoY +39.0%，營收與毛利率同步創新高';const s=tb({},Object.assign({},C.pl,{title:LT}));const ti=s.items.find(i=>i.name==='表格標題');ok(ti.x+ti.w<=s.table.tx+Math.max(s.table.tW,6.5)+.01&&ti.x>=s.table.tx-.01,'長標題不懸出表格（換行到表寬）');
+   const LT='3Q25 稅後淨利 452.3，QoQ +13.6%、YoY +39.0%，營收與毛利率同步創新高';const s=tb({},Object.assign({},C.pl,{title:LT}));const ti=s.items.find(i=>i.name==='表格標題');ok(ti.x+ti.w<=D.W-.59&&ti.x>=s.table.tx-.01&&ti.y+ti.h<s.table.ty,'長標題使用已量測的說明區，不出投影片或重疊表格');
    const y=tb({},Object.assign({},C.yield,{title:''})).table,top=y.slots.title.y-.5,bot=7.5-.45-(y.slots.note?y.slots.note.y+y.slots.note.h:y.ty+y.tH);ok(top>0&&top/(top+bot)>.3&&top/(top+bot)<.46,'置中＝上方留白約 38%（'+(top/(top+bot)).toFixed(2)+'）');
    const w=tb({},Object.assign({},C.pl,{hiStyle:'fill',his:[{type:'col',i:1,kind:'rec'},{type:'col',i:2},{type:'row',i:3,kind:'warn'}]})).items.find(i=>i.t==='tbl').cells[3];ok(new Set(w.map(c=>c.fill)).size===1,'警告列跨重點/推薦欄：只用警告色、不疊色');}
   // R4：最小欄寬、水平置中、不必要的換行、圖例只列用到的、建議標題、底線、舒適密度
@@ -225,7 +225,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
   // R3：待選每項一頁、區塊間距、推薦色、檔名、套用上次樣式、標題平衡
   {const C=require('./table-cases.js');const nv=D.PRESETS[0];
    const es=['yield','pl','status','stress'].map(k=>({kind:'table',table:C[k],params:nv}));es.push({kind:'el',key:'patterns',gi:0,params:nv});
-   const dk=D.trayDeck(es);ok(dk.slides.length===5&&dk.tray.pages===5&&dk.slides.slice(0,4).every((s,i)=>Math.abs(s.table.tx-D.buildModel(nv,{table:es[i].table}).slides[0].table.tx)<1e-6),'待選：每項一頁（5 頁），表格位置與單張匯出一致');
+   const dk=D.trayDeck(es),expectedPages=es.slice(0,4).reduce((n,e)=>n+D.buildModel(nv,{table:e.table}).slides.length,1);ok(dk.slides.length===expectedPages&&dk.tray.pages===expectedPages&&dk.slides.filter(s=>s.table).every(s=>s.table.exportComplete),'待選：表格展開全部分頁，其他元件各一頁（'+expectedPages+' 頁）');
    await save('tray-deck.pptx',nv,{model:dk});
    let gb=[];for(const v of ['top','center'])for(const c of ['yield','pl','status']){const t=D.buildModel(Object.assign({},nv,{tbV:v}),{table:C[c]}).slides[0].table;const u=t.slots.unit,gap=t.ty-(u.y+u.h)-(t.look==='card'?.25:0);const s=t.slots.title;
      if(Math.abs(t.ty-(s.y+s.h+.3+.35*0+(C[c].unit?0:0)))>.6||gap<.2||gap>.5)gb.push(v+c+' gap'+gap.toFixed(2));if(v==='center'&&Math.abs((s.y-.5)-(7.5-.45-(t.ty+t.tH)-(t.slots.note?0:0)))>1.2)gb.push(v+c+' off');}

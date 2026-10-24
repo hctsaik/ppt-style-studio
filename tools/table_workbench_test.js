@@ -51,17 +51,17 @@ async function modelSuite() {
       const source = D.tableSource(table);
       check(`${count} body rows × 12 preserve every source cell`, JSON.stringify(source.rawRows) === JSON.stringify(rows));
       check(`${count} body rows × 12 preview retains all columns`, cells(model).every(r => r.length === 12));
-      if (count <= 25) {
-        const { xml } = await xmlOf(model);
-        check('25 body rows × 12 export contains every source cell', rows.flat().every(v => xml.join('').includes('>' + v + '<')));
-        check('25 body rows exports a native editable table', xml.every(x => /<a:tbl>/.test(x)));
-      } else {
-        check(`${count} body rows are explicitly flagged incomplete`, source.exportComplete === false && !!source.exportReason);
-        let pptxError; try { await xmlOf(model); } catch (e) { pptxError = e; }
-        check(`${count} body rows cannot silently truncate PPT export`, pptxError?.code === 'TABLE_EXPORT_INCOMPLETE', pptxError?.message);
-        let htmlError; try { D.tableHtml(model); } catch (e) { htmlError = e; }
-        check(`${count} body rows cannot silently truncate clipboard HTML`, htmlError?.code === 'TABLE_EXPORT_INCOMPLETE', htmlError?.message);
+      check(`${count} body rows are complete and exportable`, source.exportComplete !== false && model.slides.every(s => s.table.exportComplete !== false));
+      const { xml } = await xmlOf(model);
+      check(`${count} body rows × 12 export contains every source cell`, rows.flat().every(v => xml.join('').includes('>' + v + '<')));
+      check(`${count} body rows export native editable tables on every page`, xml.length === model.slides.length && xml.every(x => /<a:tbl>/.test(x)));
+      const sourceRows = model.slides.flatMap(s => s.table.sourceRows.filter(r => r >= s.table.h0));
+      check(`${count} body rows occur on exactly one page each`, JSON.stringify(sourceRows) === JSON.stringify(Array.from({ length: count }, (_, r) => r + 1)));
+      if (model.slides.length > 1) {
+        let scopeError; try { D.tableHtml(model); } catch (e) { scopeError = e; }
+        check(`${count} body rows require explicit clipboard page`, scopeError?.code === 'TABLE_COPY_SCOPE_REQUIRED', scopeError?.message);
       }
+      check(`${count} body rows allow explicit per-page HTML copy`, model.slides.every((_, pageIndex) => /<table/.test(D.tableHtml(model, { pageIndex }))));
     } catch (e) { check(`${count} × 12 integrity check completes`, false, e.stack || e.message); }
   }
   try {
@@ -108,7 +108,7 @@ async function browserSuite(options = {}) {
     }
     return !visual || (element.getBoundingClientRect().width > 0 && element.getBoundingClientRect().height > 0);
   };
-  const run = async (name, fn) => { try { await fn(); check(name, true); } catch (e) { check(name, false, e.message); } };
+  const run = async (name, fn) => { if (options.only && !name.includes(options.only)) return; try { await fn(); check(name, true); } catch (e) { check(name, false, e.message); } };
   const reset = async () => {
     if (document.querySelector('#tEdit.wide')) await click('#tWideDone');
     await choose('#tSample', 'yield');
@@ -243,13 +243,16 @@ async function browserSuite(options = {}) {
     key(el('#tWideDone'), 'Escape'); await sleep(100);
     assert(!document.querySelector('#tEdit.wide') && document.activeElement === el('#tWorkbench'), 'Escape did not close and return focus');
   });
-  await run('Unresolvable layout overflow blocks export even below the row limit', async () => {
-    await reset(); const rows = [['Key', 'Description'], ...Array.from({ length: 4 }, (_, r) => ['Row' + r, '長文字'.repeat(200)])];
+  await run('Single oversized row blocks export and links to the exact original row', async () => {
+    await reset(); const rows = [['Key', 'Description'], ['short row', 'fits'], ...Array.from({ length: 4 }, (_, r) => ['Row' + r, '長文字'.repeat(200)])];
     await paste(rows.map(r => r.join('\t')).join('\n'));
     assert(JSON.stringify(state().rows) === JSON.stringify(rows), 'Oversized layout changed the source data');
     assert(el('#tCopy').disabled && el('#tPptx').disabled, 'Off-slide content remains exportable');
     assert(/版面待調整/.test(el('#tAuto').textContent), 'Layout problem is misreported as a row-capacity issue');
     assert(visible(el('#tExportBlocked')), 'Raw-data recovery actions are unavailable');
+    assert(window.__studio.table.blockedRow === 2 && visible(el('#tBlockedRow')), 'Oversized row is not identified by its original grid index');
+    await click('#tBlockedRow');
+    assert(window.__studio.gridSelection.r === 2 && document.activeElement === cell(2, 0), 'Inspect-row action did not focus the exact original row');
   });
   await run('Explicit number formatting groups strings without changing stored values', async () => {
     await reset(); await paste('Code\tAmount\n00123\t9007199254740993\n00002\t1.123456789'); await click('#tWorkbench');
@@ -260,7 +263,7 @@ async function browserSuite(options = {}) {
     assert(el('#tWorkbenchPreview').textContent.includes('1.123456789'), 'Grouped preview rounded decimal');
     await choose('#tColFormat', 'raw'); assert(el('#tWorkbenchPreview').textContent.includes('9007199254740993'), 'Raw format did not restore original display');
   });
-  await run('25/26/60 body-row UI preserves all 12 columns and blocks incomplete export', async () => {
+  await run('25/26/60 body-row UI retains all cells and exposes every exportable page', async () => {
     for (const count of [25, 26, 60]) {
       await reset();
       const rows = [Array.from({ length: 12 }, (_, c) => `Header${c + 1}`), ...Array.from({ length: count }, (_, r) => Array.from({ length: 12 }, (_, c) => `R${r + 1}C${c + 1}`))];
@@ -270,16 +273,76 @@ async function browserSuite(options = {}) {
       await click('#tWorkbench');
       assert(document.querySelectorAll('#tGrid td[data-r][data-c]').length === (count + 1) * 12, `${count} body rows are incomplete in editor`);
       assert(cell(count, 11).textContent === `R${count}C12`, `${count} final cell missing`);
-      await click('#tWideDone');
-      assert(el('#tCopy').disabled === (count > 25) && el('#tPptx').disabled === (count > 25), `${count} export availability disagrees with completeness`);
-      if (count > 25) {
-        assert(visible(el('#tExportBlocked')), `${count} overflow recovery controls are hidden`);
-        assert(/25/.test(el('#tMsg').textContent) && /停用|無法|超出|超過|避免遺漏/.test(el('#tMsg').textContent), `${count} overflow reason is not clear`);
-        assert(!el('#tBlockedData').disabled, `${count} complete TSV recovery is unavailable`);
+      const first = window.__studio.table;
+      assert(first.pageIndex === 0 && first.pageCount >= 1, `${count} page state not initialized`);
+      assert(/原始列/.test(el('#tWorkPageInfo').textContent) && el('#tAuto').textContent.includes(`資料 ${count} 列`), 'Source-row and body-row labels are ambiguous');
+      if (count > 25) assert(first.pageCount > 1, `${count} long table was not paginated`);
+      assert(el('#tWorkPagePrev').disabled, 'Previous-page control should be disabled on first page');
+      focus(count, 11); await sleep(120);
+      assert(window.__studio.table.sourceRows.includes(count), `${count} selection did not reveal its page`);
+      assert(el(`#tWorkbenchPreview .tc[data-r="${count}"][data-c="11"]`).classList.contains('gsel'), 'Preview failed to select the raw final row');
+      assert(window.__studio.gridSelection.r === count, 'Grid selection was changed to a page-local row');
+      if (window.__studio.table.pageCount > 1) {
+        const lastPage = window.__studio.table.pageIndex;
+        await click('#tWorkPagePrev'); await sleep(120);
+        assert(window.__studio.table.pageIndex === lastPage - 1, 'Manual page navigation snapped back to the selected row');
+        assert(window.__studio.gridSelection.r === count, 'Manual navigation changed the data selection');
+        assert(/不在本頁/.test(el('#tWorkbenchStatus').textContent), 'Off-page selection is not explained');
+        focus(count, 11); await sleep(120);
+        assert(window.__studio.table.pageIndex === lastPage, 'Clicking an already selected off-page cell did not reveal it');
       }
+      assert(el('#tWorkPageNext').disabled, 'Next-page control should be disabled on last page');
+      await click('#tWideDone');
+      assert(!el('#tCopy').disabled && !el('#tPptx').disabled, `${count} complete paginated export is disabled`);
+      assert(!visible(el('#tExportBlocked')), `${count} complete table shows an export-blocked warning`);
     }
   });
-  await run('Overflow TSV recovery includes every source row and quoted multiline cells', async () => {
+  await run('Page 2 preview keyboard and repeated header map to raw source rows', async () => {
+    await reset();
+    await paste([['Key', 'Value'], ...Array.from({ length: 60 }, (_, r) => [`row${r + 1}`, String(r + 1)])].map(r => r.join('\t')).join('\n'));
+    await click('#tPageNext'); const page = JSON.parse(JSON.stringify(window.__studio.table));
+    const firstBody = page.sourceRows.find(r => r !== 0), header = el('#tPrev .tc[data-r="0"][data-c="1"]');
+    header.focus(); key(header, 'ArrowDown');
+    assert(+document.activeElement.dataset.r === firstBody && +document.activeElement.dataset.localR === 1, 'ArrowDown from repeated header targeted page-local row 1 as a raw row');
+    key(document.activeElement, 'ArrowUp'); assert(+document.activeElement.dataset.r === 0, 'ArrowUp did not return to repeated header');
+    await click('#tPrev .tc[data-r="0"][data-c="1"]'); assert(window.__studio.table.pageIndex === 1, 'Selecting repeated header jumped to page 1');
+    const target = el(`#tPrev .tc[data-r="${firstBody}"][data-c="1"]`); target.focus(); key(target, 'Enter');
+    assert(window.__studio.gridSelection.r === firstBody, 'Preview Enter selected a page-local row in the full grid');
+    await click('#tSelPanel [data-a="star"][data-v="warn"]');
+    assert(state().his.some(h => h.type === 'cell' && h.r === firstBody && h.c === 1 && h.kind === 'warn'), 'Preview keyboard mark stored the wrong raw row');
+    const colors = [...document.querySelectorAll('#tHil .it i')].map(i => i.style.background);
+    await click('#tPagePrev');
+    assert(JSON.stringify([...document.querySelectorAll('#tHil .it i')].map(i => i.style.background)) === JSON.stringify(colors), 'Mark colors changed when its row moved off-page');
+    const lastFirstPage = window.__studio.table.sourceRows.slice(-1)[0]; await click('#tWorkbench');
+    let gridCell = focus(lastFirstPage, 1); key(gridCell, 'Enter'); await sleep(100);
+    assert(window.__studio.table.pageIndex === 1 && +document.activeElement.dataset.r === lastFirstPage + 1, 'Grid Enter did not follow the next source row across the page boundary');
+    gridCell = document.activeElement; key(gridCell, 'Enter', { shiftKey: true }); await sleep(100);
+    assert(window.__studio.table.pageIndex === 0 && +document.activeElement.dataset.r === lastFirstPage, 'Grid Shift+Enter did not return across the page boundary');
+    await click('#tWideDone');
+    el('#tHRow').checked = false; el('#tHRow').dispatchEvent(new Event('change', { bubbles: true })); await click('#tPageNext');
+    const noHeader = window.__studio.table.sourceRows; const first = el(`#tPrev .tc[data-r="${noHeader[0]}"][data-c="1"]`); first.focus(); key(first, 'ArrowDown');
+    assert(+document.activeElement.dataset.r === noHeader[1], 'Headerless page keyboard movement is not mapped to raw rows');
+  });
+  await run('Paginated row insertion, deletion and undo preserve raw-row marks at 25/26/60 boundaries', async () => {
+    for (const count of [25, 26, 60]) {
+      await reset();
+      const rows = [['Key', 'Value'], ...Array.from({ length: count }, (_, r) => [`row${r + 1}`, String(1000 + r)])];
+      await paste(rows.map(r => r.join('\t')).join('\n'));
+      await click('#tWorkbench'); focus(count, 1); await sleep(100); await click('#tWideDone');
+      await setMark(count, 1, 'cell', 'warn');
+      const original = state();
+      await click('#tWorkbench'); focus(count, 1); await click('[data-g="r-before"]');
+      assert(state().rows[count + 1][0] === `row${count}` && state().his.some(h => h.type === 'cell' && h.r === count + 1 && h.kind === 'warn'), `${count} insert shifted the wrong raw mark`);
+      assert(window.__studio.table.sourceRows.includes(count), `${count} inserted row is absent from selected preview page`);
+      await click('#tWorkUndo');
+      assert(JSON.stringify(state().rows) === JSON.stringify(original.rows) && JSON.stringify(state().his.map(h => Object.entries(h).sort())) === JSON.stringify(original.his.map(h => Object.entries(h).sort())), `${count} insert undo lost raw rows or marks`);
+      focus(count - 1, 1); await click('[data-g="r-"]');
+      assert(state().rows[count - 1][0] === `row${count}` && state().his.some(h => h.type === 'cell' && h.r === count - 1 && h.kind === 'warn'), `${count} delete shifted the wrong raw mark`);
+      await click('#tWorkUndo');
+      assert(JSON.stringify(state().rows) === JSON.stringify(original.rows) && JSON.stringify(state().his.map(h => Object.entries(h).sort())) === JSON.stringify(original.his.map(h => Object.entries(h).sort())), `${count} delete undo lost raw rows or marks`);
+    }
+  });
+  await run('Full TSV download includes every source row and quoted multiline cells', async () => {
     await reset();
     const rows = [['Key', 'Description'], ...Array.from({ length: 60 }, (_, r) => [`row${r + 1}`, r === 59 ? 'last line\nwith "quote"' : `value${r + 1}`])];
     const tsv = rows.map(r => r.map(v => /[\t\n"]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v).join('\t')).join('\n');
@@ -289,7 +352,7 @@ async function browserSuite(options = {}) {
     URL.createObjectURL = blob => { captured = blob; return create ? create.call(URL, blob) : 'blob:table-regression'; };
     URL.revokeObjectURL = () => {};
     try {
-      await click('#tBlockedData'); assert(captured, 'Recovery action did not create a data download');
+      await click('#tWorkbench'); await click('#tDataDownload'); assert(captured, 'Full data action did not create a data download');
       const text = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.onerror = reject; reader.readAsText(captured); });
       assert(String(text).replace(/^\uFEFF/, '') === tsv, 'Complete TSV omitted, reformatted or misquoted source cells');
     } finally { if (create) URL.createObjectURL = create; else delete URL.createObjectURL; if (revoke) URL.revokeObjectURL = revoke; else delete URL.revokeObjectURL; }
@@ -319,15 +382,31 @@ async function browserSuite(options = {}) {
     assert(state().rows[1][1] === 'committed' && cell(1, 1).textContent === 'committed', 'Escape did not restore pre-edit value');
     assert(document.querySelector('#tEdit.wide'), 'Cell Escape incorrectly closed the workbench');
   });
-  await run('Alt+Enter makes a newline without moving; IME Enter does not commit', async () => {
-    await reset(); await paste('Key\tValue\nfirst\tline\nsecond\tother');
-    await click(document.querySelector('#tWorkbench') ? '#tWorkbench' : '#tWide');
-    let td = focus(1, 1); const range = document.createRange(); range.selectNodeContents(td); range.collapse(false); const selection = getSelection(); selection.removeAllRanges(); selection.addRange(range);
-    key(td, 'Enter', { altKey: true }); await sleep(100);
+  await run('Alt+Enter at end, middle and repeated blank lines places subsequent typing after the newline', async () => {
+    await reset(); await paste('Key\tValue\nfirst\tAlpha\nsecond\tother'); await click('#tWorkbench');
+    const typeAtCaret = text => {
+      const selection = getSelection(), range = selection.getRangeAt(0); range.deleteContents();
+      const node = document.createTextNode(text); range.insertNode(node); range.setStart(node, node.length); range.collapse(true); selection.removeAllRanges(); selection.addRange(range);
+      document.activeElement.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertText', data: text }));
+    };
+    const caret = (td, offset) => { const range = document.createRange(); range.setStart(td.firstChild, offset); range.collapse(true); getSelection().removeAllRanges(); getSelection().addRange(range); };
+    let td = focus(1, 1); caret(td, 5); key(td, 'Enter', { altKey: true }); await sleep(100);
     assert(document.activeElement === td, 'Alt+Enter moved focus');
-    assert(/\n/.test(td.innerText || td.textContent), 'Alt+Enter did not insert a line break');
-    key(td, 'Enter'); await sleep(100); assert(/\n/.test(state().rows[1][1]), 'Committed line break was lost');
-    td = focus(2, 1); td.dispatchEvent(new CompositionEvent('compositionstart', { bubbles: true })); edit(td, '輸入中');
+    assert(td.textContent === 'Alpha\n' && td.querySelector('br[data-grid-tail]'), 'Trailing newline has no rendered empty-line anchor');
+    assert(getSelection().anchorNode.nodeType === Node.TEXT_NODE && getSelection().anchorOffset === getSelection().anchorNode.length, 'Caret is outside the inserted newline text node');
+    typeAtCaret('Beta'); assert(state().rows[1][1] === 'Alpha\nBeta', 'Typing after Alt+Enter landed before the newline');
+    assert(!td.querySelector('br[data-grid-tail]'), 'Nonempty final line retained a stale caret sentinel');
+    key(td, 'Enter', { altKey: true }); key(td, 'Enter', { altKey: true }); typeAtCaret('Gamma');
+    assert(state().rows[1][1] === 'Alpha\nBeta\n\nGamma', 'Repeated Alt+Enter did not preserve an empty line');
+    key(td, 'Enter'); await sleep(100); assert(state().rows[1][1] === 'Alpha\nBeta\n\nGamma', 'Committed line breaks were lost');
+    td = focus(1, 1); edit(td, 'AlphaBeta'); caret(td, 5); key(td, 'Enter', { altKey: true }); typeAtCaret('middle');
+    assert(state().rows[1][1] === 'Alpha\nmiddleBeta', 'Mid-cell line break moved the following text or caret');
+    const range = document.createRange(); range.setStart(td.firstChild, 2); range.setEnd(td.lastChild, Math.min(2, td.lastChild.length)); getSelection().removeAllRanges(); getSelection().addRange(range);
+    key(td, 'Enter', { altKey: true }); typeAtCaret('selected'); assert(state().rows[1][1].includes('\nselected'), 'Selection replacement did not leave the caret after the newline');
+  });
+  await run('IME Enter does not commit or leave the current cell', async () => {
+    await reset(); await paste('Key\tValue\nfirst\tline\nsecond\tother'); await click('#tWorkbench');
+    const td = focus(2, 1); td.dispatchEvent(new CompositionEvent('compositionstart', { bubbles: true })); edit(td, '輸入中');
     key(td, 'Enter', { isComposing: true, keyCode: 229 }); await sleep(100);
     assert(document.activeElement === td, 'IME confirmation moved to another row');
     td.dispatchEvent(new CompositionEvent('compositionend', { bubbles: true, data: '輸入中' })); key(td, 'Enter'); await sleep(100);
@@ -340,6 +419,39 @@ async function browserSuite(options = {}) {
     const candidates = [...document.querySelectorAll('#tOut *,#tDock *,#tCopyNote')].filter(e => !e.querySelector('*') && visible(e));
     assert(candidates.some(e => /標題/.test(e.textContent) && /單位/.test(e.textContent) && /註腳|註解|備註/.test(e.textContent) && /不含|不包含|僅|下載/.test(e.textContent)), 'No visible pre-action note explains metadata exclusion');
     assert(!window.__studio.lastTableCopy, 'Fixture already invoked clipboard action');
+  });
+  await run('Page 2 copy uses page-only display values while TSV keeps each original row once', async () => {
+    await reset();
+    const rows = [['Key', 'Amount'], ...Array.from({ length: 60 }, (_, r) => [`raw${r + 1}`, r === 59 ? '9007199254740993' : String(1234000 + r)])];
+    await paste(rows.map(r => r.join('\t')).join('\n')); await click('#tWorkbench');
+    focus(1, 1); await choose('#tColType', 'number'); await choose('#tColFormat', 'grouped'); await click('#tWideDone');
+    await click('#tPageNext');
+    const page = JSON.parse(JSON.stringify(window.__studio.table));
+    assert(page.pageIndex === 1 && page.pageCount > 1, 'Page 2 fixture is missing');
+    let copied;
+    const clipboard = Object.getOwnPropertyDescriptor(navigator, 'clipboard'), oldItem = window.ClipboardItem;
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { write: async items => { copied = items[0].data; } } });
+    window.ClipboardItem = class { constructor(data) { this.data = data; } };
+    const read = blob => new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(String(reader.result)); reader.onerror = reject; reader.readAsText(blob); });
+    try {
+      await click('#tCopy'); assert(copied, 'Copy handler did not provide both clipboard types');
+      const html = await read(copied['text/html']), text = await read(copied['text/plain']);
+      const parsed = new DOMParser().parseFromString(html, 'text/html');
+      const htmlRows = [...parsed.querySelectorAll('tr')].map(tr => [...tr.querySelectorAll('th,td')].map(td => td.textContent));
+      const expected = page.sourceRows.map(r => rows[r].map((v, c) => r && c === 1 ? v.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : v));
+      assert(JSON.stringify(htmlRows) === JSON.stringify(expected), 'HTML includes another page or differs from displayed grouped values');
+      assert(text === expected.map(r => r.join('\t')).join('\n'), 'Plaintext differs from this page’s HTML display values');
+      assert(window.__studio.lastTableCopy.pageIndex === 1, 'Clipboard diagnostics did not record the chosen page');
+      const oldExec = document.execCommand, fallback = {}; navigator.clipboard.write = async () => { throw new Error('Test fallback'); };
+      document.execCommand = command => { if (command !== 'copy') return false; const event = new Event('copy', { bubbles: true, cancelable: true }); Object.defineProperty(event, 'clipboardData', { value: { setData(type, value) { fallback[type] = value; } } }); document.dispatchEvent(event); return true; };
+      try { await click('#tCopy'); assert(fallback['text/html'] === html && fallback['text/plain'] === text && window.__studio.lastTableCopy.fallback, 'Legacy clipboard path differs in scope or display values'); } finally { document.execCommand = oldExec; }
+    } finally { if (clipboard) Object.defineProperty(navigator, 'clipboard', clipboard); else delete navigator.clipboard; window.ClipboardItem = oldItem; }
+    let captured; const create = URL.createObjectURL, revoke = URL.revokeObjectURL;
+    URL.createObjectURL = blob => { captured = blob; return 'blob:table-page-copy-test'; }; URL.revokeObjectURL = () => {};
+    try {
+      await click('#tWorkbench'); await click('#tDataDownload');
+      assert((await read(captured)).replace(/^\uFEFF/, '') === rows.map(r => r.join('\t')).join('\n'), 'Full TSV repeated page headers or reformatted original values');
+    } finally { if (create) URL.createObjectURL = create; else delete URL.createObjectURL; if (revoke) URL.revokeObjectURL = revoke; else delete URL.revokeObjectURL; }
   });
   return results;
 }
@@ -381,7 +493,7 @@ async function domSuite() {
     await new Promise((resolve, reject) => { const timer = setTimeout(() => reject(new Error('jsdom load timeout')), 20000); dom.window.addEventListener('load', () => { clearTimeout(timer); resolve(); }); });
     await new Promise(resolve => setTimeout(resolve, 300));
     const run = dom.window.eval('(' + browserSuite.toString() + ')');
-    const results = await run({ visual: false });
+    const results = await run({ visual: false, only: process.env.SUITE_FILTER });
     results.push({ name: 'DOM event harness has no uncaught page errors', pass: pageErrors.length === 0, detail: pageErrors.join('\n') });
     return results;
   } finally { dom.window.close(); }
