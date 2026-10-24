@@ -17,7 +17,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
   const r=D.buildModel(nav,{table:T_SAMPLES.issue}).slides[0];ok(r.items.some(i=>i.t==='tbl'),'議題追蹤：原生表格');
   {const T2={rows:[['項目','變化'],['良率','▲ 2%'],['成本','▼ 3%']]};const cl=o=>D.buildModel(Object.assign({},nav,o),{table:T2}).slides[0].items.find(i=>i.t==='tbl').cells;const c1=cl({}),c2=cl({tbArrow:'sem'});const col=(c,r)=>c[r][1].color||((c[r][1].runs||[])[0]||{o:{}}).o.color;ok(col(c1,1)===nav.P&&col(c1,2)===nav.t2&&col(c2,2)==='A15C00','表格 ▲▼ 預設主色＋灰（不用紅綠），可切換好壞色');}}
  const big={rows:[['項目','數值','說明']].concat(Array.from({length:60},(_,i)=>['列'+i,String(i*1234),'這是一段很長的說明文字，用來測試欄寬上限與列高下限'.repeat(i%3?1:3)]))};
- const m2=D.buildModel(wine,{table:big});await save('table-big.pptx',wine,{model:m2});ok(m2.warns.some(w=>/列數過多/.test(w)),'60 列表格：只放 25 列並提示');
+ const m2=D.buildModel(wine,{table:big});let blocked=false;try{await save('table-big.pptx',wine,{model:m2});}catch(e){blocked=e.code==='TABLE_EXPORT_INCOMPLETE';}ok(blocked&&m2.slides[0].table.rawBodyRows===60&&m2.warns.some(w=>/列數過多/.test(w)),'60 列表格：保留完整來源，只預覽 25 列且禁止不完整匯出');
  const tray=D.trayModel([{kind:'el',params:nav,key:'patterns',gi:5,name:'平行分流'},{kind:'icon',params:wine,icon:{id:'wafer',variant:'tint'},name:'晶圓'},{kind:'table',params:nav,table:kpi,name:'KPI'},{kind:'el',params:D.PRESETS[8],key:'patterns',gi:3,name:'審核迴圈'}]);
  await save('tray.pptx',nav,{model:tray});ok(tray.tray.n===4,'待選素材 4 項');
  const em=D.elementModel(nav,'patterns2',1);await save('element.pptx',nav,{model:em});
@@ -133,7 +133,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
   // 數字格式
   ok(D.tFmt('(1234.5)',{})==='(1,234.5)'&&D.tFmt('(1234.5)',{minus:'minus'})==='\u22121,234.5'&&D.tFmt('-0.5%',{minus:'paren'})==='(0.5%)'&&D.tFmt('-2',{minus:'hyphen'})==='-2'&&D.tFmt('+6.0%',{})==='+6.0%'&&D.tFmt('▼ 4.1',{})==='▼ 4.1'&&D.tFmt('91%',{dec:1})==='91.0%'&&D.tFmt('0.952',{pct:1,dec:1})==='95.2%'&&D.tFmt('1234567',{thou:false})==='1234567'&&D.tFmt('+0.9 ppts',{})==='+0.9 ppts'&&D.tFmt('NT$1200',{})==='NT$1,200','數字格式：U+2212／-／( ) 負號（預設保留原樣）、千分位、小數位、%、ppts、貨幣');
   {const R=[['Lot','Yield'],['A','95.2%'],['B','91%'],['C','88.4%']];ok(D.tableColDec(R,1,1,D.tableAuto(R))===1&&D.tableColDec([['x','v'],['a','989.9'],['b','17.44'],['c','1.2'],['d','3']],1,1,null)===null,'同欄小數位：眾數 ≥60% 才補齊，只補不砍');
-   const m=D.buildModel(nav,{table:{rows:R}});ok(m.slides[0].items.find(i=>i.t==='tbl').cells[2][1].runs[0].t==='91.0%','預覽／匯出：91% → 91.0%');
+   const m=D.buildModel(nav,{table:{rows:R}});ok(m.slides[0].items.find(i=>i.t==='tbl').cells[2][1].runs[0].t==='91%','預覽／匯出：91% 保留原始小數位');
    const ft=m.slides[0].items.find(i=>i.t==='tbl').cells[1][1].font;ok(!/Georgia|Times/.test(D.buildModel(D.PRESETS.find(p=>p.nFont==='Georgia')||nav,{table:{rows:R}}).slides[0].items.find(i=>i.t==='tbl').cells[1][1].font),'數字一律無襯線（Georgia 風格的表格數字改 Arial）');}
   // 門檻建議
   {const s1=D.tableSuggest([['Lot','片數','Yield%','Defect'],['A','25','95.2%','12'],['B','25','88.1%','31'],['C','24','91.0%','18']]);ok(s1.rule.c===2&&s1.rule.v===90&&s1.rule.op==='<'&&s1.rule.style==='text','門檻預設：挑 Yield% 欄、門檻 90（不是第一個數字欄、不是平均）');
@@ -142,8 +142,9 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
   // 貼上重設
   {const prev={rows:[['a','b'],['1','2']],title:'舊標題',unit:'單位：新台幣十億元（EPS 除外）',note:'舊註',his:[{type:'col',i:1}],rules:[{c:1,op:'<',v:1}],pin:false};
    const n1=D.tableFromPaste([['項目','狀態'],['A','完成']],Object.assign({},prev,{keep:false}));ok(n1.title===''&&n1.unit===''&&n1.note===''&&!n1.his.length&&!n1.rules.length,'關閉沿用目前樣式：標題／單位／註腳／重點／門檻全部重設');
-   const n2=D.tableFromPaste([['項目','狀態'],['A','完成']],Object.assign({},prev,{pin:true,keep:false}));ok(n2.title==='舊標題'&&n2.unit==='','📌 釘住標題：只保留標題');
-   const n0=D.tableFromPaste([['項目','狀態'],['A','完成']],prev);ok(n0.title==='舊標題'&&n0.unit===prev.unit&&n0.keep===true,'沿用目前樣式預設開：保留標題／單位');
+   const n2=D.tableFromPaste([['項目','狀態'],['A','完成']],Object.assign({},prev,{pin:true,keep:false}));ok(n2.title===''&&n2.unit==='','新資料：不因舊版釘住狀態保留不相關標題');
+   const n0=D.tableFromPaste([['項目','狀態'],['A','完成']],prev);ok(n0.title===''&&n0.unit===''&&n0.note===''&&n0.keep===true,'沿用目前樣式預設開：不沿用新資料的標題／單位／註腳');
+   const nu=D.tableFromPaste([['項目','狀態'],['A','完成']],prev,'update');ok(nu.title===prev.title&&nu.unit===prev.unit&&nu.note===prev.note,'明確更新資料：保留標題／單位／註腳');
    const pa=[['2026 Q3 各廠良率','',''],['單位：%','',''],['廠區','7月','8月'],['F12','95.2','96.1'],['合計','93.1','94.2']];const n4=D.tableFromPaste(pa.map(r=>r.slice()),{});ok(JSON.stringify(n4.rows)===JSON.stringify(pa)&&n4.lastTotal===true&&JSON.stringify(n4.bold)==='[4]','貼上照原樣：不抽標題／單位列；合計自動偵測→lastTotal 勾起');
    ok(D.tableAuto([['a','b'],['x','1'],['合計','2']],{lastTotal:false}).key.length===0,'取消勾「最後一列是合計」：不再自動加粗');
    const n3=D.tableFromPaste([['','3Q25','2Q25'],['營收','989.9','933.8'],['淨利','452.3','398.3']],Object.assign({},prev,{keep:false}));ok(n3.his.length===1&&n3.his[0].i===1&&JSON.stringify(n3.bold)==='[2]','財報表貼上：自動把最新期別欄設為重點、合計列加粗');}
@@ -234,7 +235,7 @@ const files=[];const save=async(name,params,opt)=>{const r=await D.exportPptx(en
    const lg=D.buildModel(nv,{table:Object.assign({},C.pl,{his:[{type:'col',i:1,kind:'rec'},{type:'col',i:2}]})}).slides[0].items.find(i=>i.name==='圖例');ok(lg&&/推薦/.test(D.textOf(lg))&&/重點/.test(D.textOf(lg)),'兩種以上意義 → 註腳列有圖例');
    const fn=D.shortName('3Q25 稅後淨利 452.3，QoQ +13.6%、YoY +39.0%');ok([...fn].length<=20&&!/[，、%+\s]/.test(fn),'檔名：去標點、≤ 20 字（'+fn+'）');
    const prev=Object.assign({},C.yield,{keep:true,rules:[{c:2,op:'<',v:90,tone:'warn',style:'text'}],his:[{type:'col',i:2,kind:'rec'}],unit:'U',note:'N'});
-   const nx=D.tableFromPaste([['Lot','Yield%','Station'],['B1','80%','CMP']],prev);ok(nx.his[0].i===1&&nx.unit==='U','沿用目前樣式：依欄名帶入門檻／重點／單位');
+   const nx=D.tableFromPaste([['Lot','Yield%','Station'],['B1','80%','CMP']],prev);ok(nx.his[0].i===1&&nx.unit==='','沿用目前樣式：依欄名帶入重點，不帶入新資料的舊單位');
    ok(!D.tableFromPaste([['Lot','Yield%'],['B1','80%']],Object.assign({},prev,{keep:false})).rules.length,'關閉沿用目前樣式：照常重設');
    const lt=D.buildModel(nv,{table:Object.assign({},C.pl,{title:'3Q25 稅後淨利 452.3 億元，QoQ +13.6%、YoY +39.0%，營收與毛利率雙雙創下歷史新高，第四季展望持續樂觀'})}).slides[0].items.find(i=>i.name==='表格標題');const tl=D.textOf(lt).split('\n');
    ok(tl.length===2&&lt.tx.size<=20&&Math.abs(D.tw(tl[0],20)-D.tw(tl[1],20))<=D.tw(tl[0],20)*.35&&!/[0-9.%]$/.test(tl[0])||tl.length===1,'長標題：降到 20pt 並平衡斷成兩行（寬 '+tl.map(x=>D.tw(x,20).toFixed(1)).join('/')+'"）');}
