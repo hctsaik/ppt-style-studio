@@ -274,7 +274,7 @@ function buildModel(params,opt){
  function table(x,y,colW,rowH,cells,o){o=o||{};const w=colW.reduce((a,b)=>a+b,0),h=rowH.reduce((a,b)=>a+b,0);
   const C=cells.map(r=>r.map(c=>{c=typeof c==='string'?{t:c}:c;const size=c.size||o.size||10;
    const runs=runsOf(c.t==null?'':c.t,{size,color:c.color||G.ink,bold:!!c.bold,font:c.font||F}).out;
-   return{runs,fill:c.fill||null,align:c.align||o.align||'center',size,color:c.color||G.ink,bold:!!c.bold,font:c.font||F,mL:o.mL!=null?o.mL:4,mT:o.mT!=null?o.mT:1,bT:c.bT||null,bB:c.bB||null};}));
+   return{runs,fill:c.fill||null,align:c.align||o.align||'center',size,color:c.color||G.ink,bold:!!c.bold,font:c.font||F,mL:o.mL!=null?o.mL:4,mT:o.mT!=null?o.mT:1,bT:c.bT||null,bB:c.bB||null,bL:c.bL||null,bR:c.bR||null};}));
   const it={t:'tbl',x,y,w,h,colW:colW.slice(),rowH:rowH.slice(),cells:C,name:o.name||'表格'};cur.items.push(it);return it;}
  /* 圖示（v7）：Material Symbols＝一個填色自訂圖形（多段子路徑、無外框）；tint／solid 變化另加一個底圓。回傳 {bg,glyph} */
  const ICC=c=>({P,PD,A:HASA?A:P,g:G.t2,ink:G.ink,w:'FFFFFF'}[c]||P);
@@ -1886,8 +1886,14 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   // Raw is the default, including inferred numeric columns. Legacy fmt/dec settings stay ignored.
   const rows=src.map((r,ri)=>r.map((t,c)=>ri<h0||AU.section[ri]?t:tableFormatValue(t,(T.types||{})[c],(T.formats||{})[c])));
   const MK=tableMarks(T,nC,rows.length),REC='176B70',WARN='875B1A';
-  const his=MK.his.map(h=>Object.assign({},h,{C:h.kind==='warn'?WARN:h.kind==='rec'?REC:EC}));
-  const hiCol=c=>his.find(h=>h.type==='col'&&h.i===c),hiRow=r=>his.find(h=>h.type==='row'&&h.i===r),hiCell=(r,c)=>his.find(h=>h.type==='cell'&&h.r===r&&h.c===c);
+  const his=MK.his.map(h=>Object.assign({},h,{C:h.type==='range'?tableHighlightPreset(h.presetId,st).color:h.kind==='warn'?WARN:h.kind==='rec'?REC:EC}));
+  const hiCol=(r,c)=>his.find(h=>h.type==='col'&&tableMarkContains(h,r,c)),hiRow=(r,c)=>his.find(h=>h.type==='row'&&tableMarkContains(h,r,c)),hiCell=(r,c)=>his.find(h=>h.type==='cell'&&tableMarkContains(h,r,c));
+  const rangeAt=(r,c)=>r>=0&&r<rows.length&&c>=0&&c<nC?tableRangeWinner(his,r,c):null;
+  const rangePaint=(o,r,c)=>{const mark=rangeAt(r,c);if(!mark)return o;const preset=tableHighlightPreset(mark.presetId,st);
+   o.fill=preset.fill;o.color=preset.color;if(preset.bold!=null)o.bold=!!preset.bold;
+   if(preset.border){const border={c:preset.border,w:preset.borderWidth||1.5};
+    if(rangeAt(r-1,c)!==mark)o.bT=border;if(rangeAt(r+1,c)!==mark)o.bB=border;if(rangeAt(r,c-1)!==mark)o.bL=border;if(rangeAt(r,c+1)!==mark)o.bR=border;}
+   return o;};
   const TONE={warn:WARN,good:REC,accent:EC};
   const ruleOf=(ri,c)=>{if(ri<h0||AU.section[ri])return null;const v=tNumVal(src[ri][c]);if(!Number.isFinite(v))return null;return MK.rules.find(R=>R.c===c&&ruleHit(R,v))||null;};
   let ruleHits=0;const ruleBoxes=[];
@@ -1968,9 +1974,9 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   const titleWidth=titleRaw&&mw(titleRaw,tfsT,1)>metaW?maxW:metaW;
   const ttl=fitLines(semBreak(titleRaw,tfsT,1,titleWidth),tfsT,1,titleWidth),titH=metaH(ttl,tfsT,.5*k);
   const unitText=wrapMeta(T.unit,ufs,0,metaW),unitH=T.unit?metaH(unitText,ufs,.27*k):.04;
-  const kinds=[...new Set(his.map(h=>h.kind))],LG=T.legend&&typeof T.legend==='object'?T.legend:{};
+  const kinds=[...new Set(his.filter(h=>h.type!=='range').map(h=>h.kind))],LG=T.legend&&typeof T.legend==='object'?T.legend:{};
   const KZ={focus:String(LG.focus||'重點'),rec:String(LG.rec||'推薦'),warn:String(LG.warn||'警告')};
-  const legend=kinds.length>=2?kinds.map(kind=>({kind,C:his.find(h=>h.kind===kind).C,text:'■ '+KZ[kind]})):[];
+  const legend=kinds.length>=2?kinds.map(kind=>({kind,C:his.find(h=>h.type!=='range'&&h.kind===kind).C,text:'■ '+KZ[kind]})):[];
   // Reserve the actual legend width before measuring the note, not just its explicit newlines.
   const legW=legend.length?Math.min(T.note?tW*.5:tW,Math.max(...legend.map(l=>mw(l.text,nfs,0)))+.1):0;
   const noteW=legW?Math.max(.2,tW-legW-.18):tW;
@@ -1998,9 +2004,9 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   const firstKey=ri=>keySet.has(ri)&&!keySet.has(ri-1);
   const cells=rows.map((r,ri)=>r.map((t,c)=>{const align=colAl[c];const isN=isNumFont(ri,c);const font=isN?NF:TF;t=isN?t:tidy(t);const mL=c===0?padL0:padH;
    if(ri<h0){const o={t,bold:1,size:hfs,align,font:TF,color:LK.hdr.color,fill:LK.hdr.fill||null,bT:bw(LK.hdr.bT),bB:bw(LK.hdr.bB),mL,mR:padH};
-    const hc=hiCol(c)||hiCell(ri,c);
+    const hc=hiCol(ri,c)||hiCell(ri,c);
     if(hc){if(LK.hdr.fill){o.bB={c:contrastOf(hc.C,LK.hdr.fill)>=3?hc.C:ensureContrast(mix(hc.C,'FFFFFF',.85),LK.hdr.fill,3),w:3};/* 主色表頭：重點欄只加 3pt 強調色底線 */}else{if(hiStyle==='fill')o.fill=mix(hc.C,'FFFFFF',.9);o.color=ensureContrast(mix(hc.C,'000000',.18),o.fill||'FFFFFF',5);}}
-    o.color=cc(o.color,o.fill);return o;}
+    o.color=cc(o.color,o.fill);return rangePaint(o,ri,c);}
    const last=ri===rows.length-1,key=keySet.has(ri)||bold.has(ri),sec=AU.section[ri];
    const o={t,size:fs,align,font,bold:key||sec,color:sec?PD:G.ink,fill:null,bB:bw(last?(LK.last||LK.row):LK.row),mL,mR:padH};
    if(LK.zebra&&(ri-h0)%2===1)o.fill=LK.zebra;
@@ -2011,26 +2017,26 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    if(s){o.color=ST[s];o.bold=true;if(/[A-Za-z\u4e00-\u9fff]/.test(t))o.dot=ST[s];}
    if(isN&&st.tbNeg&&tNumVal(src[ri][c])<0&&!/^[\s(（]*[▲△]/.test(src[ri][c]))o.color=BAD;
    {const am=/^[\s(（]*([▲△▼▽])/.exec(String(src[ri][c]||''));if(am){const up=/[▲△]/.test(am[1]);o.color=st.tbArrow==='sem'?(up?GOOD:BAD):st.tbArrow==='ink'?G.ink:(up?P:G.t2);o.bold=true;}}
-   let hx=hiCell(ri,c),hr=hiRow(ri),hcol=hiCol(c);const wn=[hx,hr,hcol].find(z=>z&&z.kind==='warn');if(wn){hx=wn===hx?hx:null;hcol=wn===hcol?hcol:null;hr=wn===hr?hr:null;}const h=hx||hcol||hr;/* 警告優先、不疊色 */
+   let hx=hiCell(ri,c),hr=hiRow(ri,c),hcol=hiCol(ri,c);const wn=[hx,hr,hcol].find(z=>z&&z.kind==='warn');if(wn){hx=wn===hx?hx:null;hcol=wn===hcol?hcol:null;hr=wn===hr?hr:null;}const h=hx||hcol||hr;/* 警告優先、不疊色 */
    const R=ruleOf(ri,c);
-   if(h&&!s){
-    if(hiStyle==='fill'){const onKey=key&&LK.keyFill;if((!R||R.style!=='fill')&&!onKey)o.fill=mix(h.C,'FFFFFF',h.kind==='warn'?(hx?.88:.94):hx?.84:(LK.tint||.9));
-     if(hx){o.bold=true;o.color=mix(h.C,'000000',.18);}else if(hr&&c===0)o.bold=true;}   // 粗體只給標籤（stub）與關鍵值
-    else if(hiStyle==='bold'){if(hx||hcol)o.color=mix(h.C,'000000',.18);if(hx||(hr&&c===0))o.bold=true;}
+   if(h){
+    if(hiStyle==='fill'){if(!R||R.style!=='fill')o.fill=mix(h.C,'FFFFFF',h.kind==='warn'?(hx?.88:.94):hx?.84:(LK.tint||.9));
+     if(hx){o.bold=true;if(!s)o.color=mix(h.C,'000000',.18);}else if(hr&&c===0)o.bold=true;}   // 粗體只給標籤（stub）與關鍵值
+    else if(hiStyle==='bold'){if((hx||hcol)&&!s)o.color=mix(h.C,'000000',.18);if(hx||hr)o.bold=true;if(hr)o.fill=mix(hr.C,'FFFFFF',.9);}
     else{o.bold=hx||(hr&&c===0)?true:o.bold;}}
    if(R){ruleHits++;const C=TONE[R.tone];o.bold=true;
     if(R.style==='fill'){o.fill=mix(C,'FFFFFF',.86);o.color=mix(C,'000000',.25);}
     else if(R.style==='text'){o.color=C;if(LK.dense)o.t=(/[<]/.test(R.op)?'▼ ':'▲ ')+o.t;}
     else ruleBoxes.push({r:ri,c,color:C});}
    o.color=cc(o.color,o.fill);
-   return o;}));
+   return rangePaint(o,ri,c);}));
   const firstSlide=cur;
   planned.pages.forEach((sourceRows,pageIndex)=>{
    if(pageIndex){cur={key:'table',title:'表格',no:slides.length+1,items:[],groups:[]};slides.push(cur);}else cur=firstSlide;
    const rowH=sourceRows.map(r=>rowHAll[r]),tH=rowH.reduce((a,b)=>a+b,0),bodySourceRows=sourceRows.slice(h0);
    const pageCells=sourceRows.map(raw=>cells[raw].map(c=>Object.assign({},c)));
    // A page closing border is visual punctuation, never a subtotal or lastTotal.
-   if(pageCells.length>h0&&LK.last)pageCells[pageCells.length-1].forEach(c=>{c.bB=bw(LK.last);});
+   if(pageCells.length>h0&&LK.last)pageCells[pageCells.length-1].forEach((c,ci)=>{if(!rangeAt(sourceRows[sourceRows.length-1],ci))c.bB=bw(LK.last);});
    const slots={title:{x:X,y:Y0,w:titleWidth,h:titH,size:tfsT,font:(st.tbFont==='jh'||st.tbFont==='noto')?'Microsoft JhengHei':st.tFont,color:G.ink,bold:1},
     unit:{x:X,y:Y0+titH+.02,w:metaW,h:Math.max(unitH,.27*k),size:ufs,color:G.t2}};
    if(T.title)txt(X,Y0,titleWidth,titH,ttl,{size:tfsT,bold:1,color:st.tbTitleInk?G.ink:P,font:slots.title.font,name:'表格標題',valign:'bottom'});
@@ -2049,8 +2055,13 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
     slots.footer={x:footerX,y:H-bottom-footerH,w:footerW,h:footerH,size:10,color:G.mute};txt(footerX,slots.footer.y,footerW,footerH,label,{size:10,color:G.mute,align:'right',valign:'top',name:'表格頁碼'});}
    const cx0=c=>tx+colW.slice(0,c).reduce((a,b)=>a+b,0),ry0=r=>ty+rowH.slice(0,r).reduce((a,b)=>a+b,0),boxes=[];
    const ins=(st.tbPad==='none'?-3:3)*k/72,rad=4*k/72,blw=1.5*k;
-   const localMarks=his.map(h=>{if(h.type==='col')return h;const local=sourceRows.indexOf(h.type==='row'?h.i:h.r);return local<0?null:Object.assign({},h,h.type==='row'?{i:local}:{r:local});}).filter(Boolean);
+   // Visual H/L never changes semantic marks. Mask legacy box paint only while
+   // a visible manual range covers it; clearing that range reveals the semantics.
+   const visualRegions=his.filter(h=>h.type==='range').flatMap(h=>tableMarkRegions(h,rows.length,nC));
+   const localMarks=his.filter(h=>h.type!=='range').map(h=>visualRegions.length?Object.assign({},h,{excludes:[...(h.excludes||[]),...visualRegions]}):h).map(h=>{if(h.type==='col')return h;const local=sourceRows.indexOf(h.type==='row'?h.i:h.r);return local<0?null:Object.assign({},h,h.type==='row'?{i:local}:{r:local});}).filter(Boolean);
    if(hiStyle==='box')localMarks.forEach(h=>{
+    if(h.excludes&&h.excludes.length){tableMarkRegions(h,sourceRows.length,nC).forEach(q=>{const bx=cx0(q.c0),by=ry0(q.r0),bw0=colW.slice(q.c0,q.c1+1).reduce((a,b)=>a+b,0),bh=rowH.slice(q.r0,q.r1+1).reduce((a,b)=>a+b,0);
+      const segIns=Math.max(blw/144,ins);box(bx+segIns,by+segIns,bw0-2*segIns,bh-2*segIns,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});boxes.push(Object.assign({type:'range',color:h.C,kind:h.kind},q));});return;}
     if(h.type==='col'){const y0=LK.hdr.fill&&h0?ty+rowH[0]:ty;box(cx0(h.i)+ins,y0+ins,colW[h.i]-2*ins,ty+tH-y0-2*ins,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});}
     else if(h.type==='row')box(tx+ins,ry0(h.i)+ins,tW-2*ins,rowH[h.i]-2*ins,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});
     else box(cx0(h.c)+ins,ry0(h.r)+ins,colW[h.c]-2*ins,rowH[h.r]-2*ins,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});
@@ -2059,7 +2070,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    const b0=boxes.find(b=>!b.rule&&b.type!=='cell'),orphans=[];
    sourceRows.forEach(ri=>rows[ri].forEach((t,c)=>{const str=String(t);if(!str.trim())return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri),av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0),ls=str.split('\n'),vis=x=>x.replace(/\s/g,'').length;
     if(ls.some(l=>mw(l,sz0,b)>av+.01))orphans.push({r:ri,c,t:str,why:'auto-wrap'});else if(ls.length>1&&vis(str)>4&&ls.some((l,i)=>vis(l)<=1||vis(l)<=2&&i>0&&!/[：:；;，,、)）\s]$/.test(ls[i-1])&&!/^[（(]/.test(l)))orphans.push({r:ri,c,t:str,why:'orphan'});}));
-   if(T.hcol){const tint=LK.hdr&&LK.hdr.fill?mix(P,'FFFFFF',.88):mix(G.fill||'F2F2F2','FFFFFF',.2);tb.cells.forEach((r,ri)=>{const raw=sourceRows[ri];if(raw<h0||AU.section[raw])return;const cl=r[0];if(!cl)return;cl.bold=true;(cl.runs||[]).forEach(x=>{x.o=Object.assign({},x.o,{bold:true});});if(!cl.fill)cl.fill=tint;});}
+   if(T.hcol){const tint=LK.hdr&&LK.hdr.fill?mix(P,'FFFFFF',.88):mix(G.fill||'F2F2F2','FFFFFF',.2);tb.cells.forEach((r,ri)=>{const raw=sourceRows[ri];if(raw<h0||AU.section[raw])return;const cl=r[0];if(!cl)return;cl.bold=true;(cl.runs||[]).forEach(x=>{x.o=Object.assign({},x.o,{bold:true});});if(!cl.fill&&!rangeAt(raw,0))cl.fill=tint;});}
    const layoutOverflow=!!exportReason||cur.items.some(it=>it.t!=='ln'&&(it.x<-.01||it.y<-.01||it.x+it.w>canvasW+.01||it.y+it.h>canvasH+.01));
    const complete=!layoutOverflow,reason=exportReason||(layoutOverflow?'表格或標題／註腳超出投影片邊界，已停用匯出。請縮短內容或調整欄寬；原始資料仍可下載完整 TSV。':'');
    if(layoutOverflow)warn('表格無法完整匯出',reason);
@@ -2301,21 +2312,103 @@ function tableFromPaste(rows,prev,mode){prev=prev||{};rows=tableSource({rows}).r
   const mv=o=>{const r={};Object.entries(o||{}).forEach(([c,v])=>{const j=map(+c);if(j>=0)r[j]=v;});return r;};out.fmt=mv(prev.fmt);out.align=mv(prev.align);out.types=mv(prev.types);out.formats=mv(prev.formats);
   if(prev.legend)out.legend=prev.legend;}
  return out;}
-/* v10 表格強調（最多 3 個：欄／列／單格，各自選色）＋條件規則（最多 3 條：數字欄 比較 值 → 上色）。
-   T.his=[{type:'col'|'row'|'cell',i,r,c,color:'auto'|'P'|'A'|'alert'}]；舊版 T.hi={type,i} 自動轉換。
-   T.rules=[{c,op:'<'|'<='|'>'|'>='|'=',v,tone:'warn'|'good'|'accent',style:'fill'|'text'|'box'}] */
+/* Table highlights retain source coordinates, including blank rows. One user range is
+   one mark, regardless of its cell count. Exclusions preserve all style outside a
+   cleared/replaced visual intersection without expanding marks into individual cells.
+   Visual H/L does not erase legacy semantic marks; clearing reveals them again. */
+const TABLE_HIGHLIGHT_LIMIT=12;
+const TABLE_HIGHLIGHT_PRESETS=Object.freeze([
+ Object.freeze({id:'theme-light',label:'主題淡色',fill:'D9E6F2',color:'1F3864',border:'7995AF',mode:'fill',bold:null}),
+ Object.freeze({id:'theme-dark',label:'主題深色',fill:'1F4E79',color:'FFFFFF',border:'1F4E79',mode:'fill',bold:null}),
+ Object.freeze({id:'mint',label:'薄荷綠',fill:'DDEDED',color:'0B5E61',border:'6C9B9D',mode:'fill',bold:null}),
+ Object.freeze({id:'amber',label:'琥珀黃',fill:'FFF1D6',color:'6B4700',border:'BA9A5C',mode:'fill',bold:null}),
+ Object.freeze({id:'rose',label:'玫瑰紅',fill:'F6E0E2',color:'7A1F2B',border:'B07980',mode:'fill',bold:null}),
+ Object.freeze({id:'slate',label:'中性灰',fill:'EDEDED',color:'3A3A3A',border:'999999',mode:'fill',bold:null})
+]);
 const HI_COLORS=['auto','P','A','alert'],RULE_OPS=['<','<=','>','>=','='],RULE_TONES=['warn','good','accent'],RULE_STYLES=['fill','text','box'];
+function tableHighlightPreset(id,params){const preset=TABLE_HIGHLIGHT_PRESETS.find(p=>p.id===id);if(!preset)return null;
+ const out=Object.assign({},preset),p=params&&/^[0-9A-F]{6}$/i.test(params.P||'')?params.P.toUpperCase():BASE.P;
+ if(p!==BASE.P&&id==='theme-light'){out.fill=mix(p,'FFFFFF',.86);out.color=ensureContrast(p,out.fill,4.5);out.border=mix(p,'FFFFFF',.4);}
+ if(id==='theme-dark'){out.fill=ensureContrast(p,'FFFFFF',4.5);out.color='FFFFFF';out.border=out.fill;}
+ out.color=ensureContrast(out.color,out.fill,4.5);return out;
+}
+function tableNormalizeRange(range,nR,nC){
+ if(!range||typeof range!=='object'||!Number.isInteger(nR)||!Number.isInteger(nC)||nR<1||nC<1)return null;
+ const keys=['r0','c0','r1','c1'];if(keys.some(k=>range[k]===null||range[k]===''||typeof range[k]==='boolean'||!Number.isInteger(+range[k])))return null;
+ const a=Math.min(+range.r0,+range.r1),b=Math.max(+range.r0,+range.r1),c=Math.min(+range.c0,+range.c1),d=Math.max(+range.c0,+range.c1);
+ if(b<0||a>=nR||d<0||c>=nC)return null;
+ return{r0:Math.max(0,a),c0:Math.max(0,c),r1:Math.min(nR-1,b),c1:Math.min(nC-1,d)};
+}
+function tableRangeIntersection(a,b){if(!a||!b)return null;const r0=Math.max(a.r0,b.r0),c0=Math.max(a.c0,b.c0),r1=Math.min(a.r1,b.r1),c1=Math.min(a.c1,b.c1);return r0<=r1&&c0<=c1?{r0,c0,r1,c1}:null;}
+function tableRangeSubtract(a,b){const q=tableRangeIntersection(a,b);if(!q)return[a];const out=[];
+ if(a.r0<q.r0)out.push({r0:a.r0,c0:a.c0,r1:q.r0-1,c1:a.c1});
+ if(q.r1<a.r1)out.push({r0:q.r1+1,c0:a.c0,r1:a.r1,c1:a.c1});
+ if(a.c0<q.c0)out.push({r0:q.r0,c0:a.c0,r1:q.r1,c1:q.c0-1});
+ if(q.c1<a.c1)out.push({r0:q.r0,c0:q.c1+1,r1:q.r1,c1:a.c1});return out;
+}
+function tableMarkBounds(mark,nR,nC){if(!mark)return null;
+ const rect=mark.type==='range'?mark:mark.type==='row'?{r0:mark.i,c0:0,r1:mark.i,c1:nC-1}:mark.type==='col'?{r0:0,c0:mark.i,r1:nR-1,c1:mark.i}:mark.type==='cell'?{r0:mark.r,c0:mark.c,r1:mark.r,c1:mark.c}:null;
+ return tableNormalizeRange(rect,nR,nC);
+}
+function tableMarkContains(mark,r,c){if(!mark||!Number.isInteger(r)||!Number.isInteger(c)||r<0||c<0)return false;
+ const inside=mark.type==='range'?r>=mark.r0&&r<=mark.r1&&c>=mark.c0&&c<=mark.c1:mark.type==='row'?r===mark.i:mark.type==='col'?c===mark.i:mark.type==='cell'?r===mark.r&&c===mark.c:false;
+ return inside&&!(mark.excludes||[]).some(q=>r>=q.r0&&r<=q.r1&&c>=q.c0&&c<=q.c1);
+}
+function tableMarkRegions(mark,nR,nC){const bounds=tableMarkBounds(mark,nR,nC);let regions=bounds?[bounds]:[];
+ for(const q of mark&&mark.excludes||[])regions=regions.flatMap(a=>tableRangeSubtract(a,q));return regions;
+}
+function tableRangeWinner(his,r,c){for(let i=(his||[]).length-1;i>=0;i--)if(his[i].type==='range'&&tableMarkContains(his[i],r,c))return his[i];return null;}
+function tableClearRange(T,range){T=T||{};const source=tableSource(T),his=tableMarks(T,source.nC,source.nR).his,q=tableNormalizeRange(range,source.nR,source.nC);
+ if(!q)return{his,changed:false,error:'INVALID_RANGE'};
+ let changed=false;const next=his.map(mark=>{if(mark.type!=='range')return mark;const regions=tableMarkRegions(mark,source.nR,source.nC);if(!regions.some(a=>tableRangeIntersection(a,q)))return mark;
+  changed=true;const intersection=tableRangeIntersection(tableMarkBounds(mark,source.nR,source.nC),q);const out=Object.assign({},mark,{excludes:[...(mark.excludes||[]).filter(a=>!(a.r0>=intersection.r0&&a.r1<=intersection.r1&&a.c0>=intersection.c0&&a.c1<=intersection.c1)),intersection]});
+  return tableMarkRegions(out,source.nR,source.nC).length?out:null;}).filter(Boolean);
+ return{his:next,changed};
+}
+// Resolve topmost visual coverage geometrically, without iterating every cell.
+function tableRangeUsesPreset(his,range,presetId,nR,nC){let remaining=[range];
+ for(let i=his.length-1;i>=0&&remaining.length;i--){const mark=his[i];if(mark.type!=='range')continue;
+  for(const region of tableMarkRegions(mark,nR,nC)){if(!remaining.some(q=>tableRangeIntersection(q,region)))continue;
+   if(mark.presetId!==presetId)return false;remaining=remaining.flatMap(q=>tableRangeSubtract(q,region));}}
+ return !remaining.length;
+}
+function tableApplyRange(T,range,presetId){T=T||{};const source=tableSource(T),his=tableMarks(T,source.nC,source.nR).his,q=tableNormalizeRange(range,source.nR,source.nC);
+ if(!q)return{his,changed:false,error:'INVALID_RANGE'};if(!tableHighlightPreset(presetId))return{his,changed:false,error:'INVALID_PRESET'};
+ if(tableRangeUsesPreset(his,q,presetId,source.nR,source.nC))return{his,changed:false};
+ const cleared=tableClearRange(T,q);if(cleared.his.filter(h=>h.type==='range').length>=TABLE_HIGHLIGHT_LIMIT)return{his,changed:false,error:'MARK_LIMIT'};
+ const next=[...cleared.his,Object.assign({type:'range'},q,{presetId,color:'auto',kind:'focus'})];return{his:next,changed:JSON.stringify(next)!==JSON.stringify(his)};
+}
+/* nR/nC are the dimensions AFTER inserting/removing one row or column. Insertions
+   inside an existing rectangle expand it; deletion of its sole row/column drops it. */
+function tableShiftMarks(his,axis,index,remove,nR,nC){if(!['row','col'].includes(axis)||!Number.isInteger(index)||index<0)return tableMarks({his},nC,nR).his;
+ const coord=axis==='row'?'r':'c',lo=coord+'0',hi=coord+'1',deleted=!!remove;
+ const point=n=>deleted?(n===index?null:n>index?n-1:n):(n>=index?n+1:n);
+ const rect=q=>{const out=Object.assign({},q);if(deleted){if(q[lo]===index&&q[hi]===index)return null;out[lo]=q[lo]>index?q[lo]-1:q[lo];out[hi]=q[hi]>=index?q[hi]-1:q[hi];}
+  else{out[lo]=q[lo]>=index?q[lo]+1:q[lo];out[hi]=q[hi]>=index?q[hi]+1:q[hi];}return out;};
+ const next=(his||[]).map(mark=>{let out=Object.assign({},mark);
+  if(mark.type==='range'){out=rect(out);if(!out)return null;}
+  else if(mark.type===axis){out.i=point(mark.i);if(out.i===null)return null;}
+  else if(mark.type==='cell'){out[coord]=point(mark[coord]);if(out[coord]===null)return null;}
+  if(mark.excludes)out.excludes=mark.excludes.map(rect).filter(Boolean);return out;}).filter(Boolean);
+ return tableMarks({his:next},nC,nR).his;
+}
 function tNumVal(t){t=String(t==null?'':t).trim();if(!tIsNum(t))return NaN;const m=t.replace(/[,，\s]/g,'').match(/\d+(?:\.\d+)?|\.\d+/);if(!m)return NaN;
  const neg=/^[(（]/.test(t)||/^[(（]?\s*[-−▼▽]/.test(t);const v=parseFloat(m[0]);return neg?-v:v;}
 function ruleHit(R,v){if(!Number.isFinite(v)||!Number.isFinite(R.v))return false;switch(R.op){case '<':return v<R.v-1e-9;case '<=':return v<=R.v+1e-9;case '>':return v>R.v+1e-9;case '>=':return v>=R.v-1e-9;default:return Math.abs(v-R.v)<1e-9;}}
-function tableMarks(T,nC,nR){T=T||{};const int=v=>Number.isInteger(+v)?+v:-1;
+function tableMarks(T,nC,nR){T=T||{};const int=v=>v!==null&&v!==''&&typeof v!=='boolean'&&Number.isInteger(+v)?+v:-1;
  let his=Array.isArray(T.his)?T.his:(T.hi&&(T.hi.type==='col'||T.hi.type==='row')?[T.hi]:[]);
- his=his.filter(h=>h&&typeof h==='object').map(h=>{const type=['col','row','cell'].includes(h.type)?h.type:null,color=HI_COLORS.includes(h.color)?h.color:'auto';
-  const kind=['focus','rec','warn'].includes(h.kind)?h.kind:(h.color==='alert'?'warn':'focus');return type==='cell'?{type,r:int(h.r),c:int(h.c),color,kind}:{type,i:int(h.i),color,kind};})
-  .filter(h=>h.type==='col'?h.i>=0&&h.i<nC:h.type==='row'?h.i>=0&&h.i<nR:h.type==='cell'?h.r>=0&&h.r<nR&&h.c>=0&&h.c<nC:false);
- const seen=new Set();his=his.filter(h=>{const k=h.type+':'+(h.type==='cell'?h.r+','+h.c:h.i);if(seen.has(k))return false;seen.add(k);return true;}).slice(0,12);
- const rules=([])/* R9：門檻上色已移除，舊快照的 rules 直接忽略 */.filter(r=>r&&typeof r==='object').map(r=>({c:int(r.c),op:RULE_OPS.includes(r.op)?r.op:'<',v:r.v===''||r.v==null?NaN:+r.v,
-  tone:RULE_TONES.includes(r.tone)?r.tone:'warn',style:RULE_STYLES.includes(r.style)?r.style:'fill'})).filter(r=>r.c>=0&&r.c<nC).slice(0,3);
+ his=his.filter(h=>h&&typeof h==='object').map(h=>{const type=['col','row','cell','range'].includes(h.type)?h.type:null,color=HI_COLORS.includes(h.color)?h.color:'auto';
+  const kind=['focus','rec','warn'].includes(h.kind)?h.kind:(h.color==='alert'?'warn':'focus');let mark;
+  if(type==='range'){const q=tableNormalizeRange(h,nR,nC);if(!q||!tableHighlightPreset(h.presetId))return null;mark=Object.assign({type},q,{presetId:h.presetId,color,kind});}
+  else mark=type==='cell'?{type,r:int(h.r),c:int(h.c),color,kind}:{type,i:int(h.i),color,kind};
+  const bounds=tableMarkBounds(mark,nR,nC);if(!bounds)return null;
+  if(Array.isArray(h.excludes)){const excludes=h.excludes.map(q=>tableRangeIntersection(bounds,tableNormalizeRange(q,nR,nC))).filter(Boolean);if(excludes.length)mark.excludes=excludes;}
+  return tableMarkRegions(mark,nR,nC).length?mark:null;}).filter(Boolean);
+ // Imported snapshots are never silently truncated. Mutation helpers enforce the
+ // visual range limit atomically, separate from preserved legacy semantics,
+ // allowing an exact replacement even at capacity.
+ const seen=new Set();his=his.filter(h=>{if(h.type==='range')return true;const k=h.type+':'+(h.type==='cell'?h.r+','+h.c:h.i);if(seen.has(k))return false;seen.add(k);return true;});
+ const rules=[]; // Legacy threshold rules remain retired.
  return{his,rules};}
 const SIZE_K={S:.8,M:1,L:1.25};
 function scaleSlide(sl,k){const r2=v=>Math.round(v*k*2)/2,f=v=>v*k,r100=v=>Math.round(v*k*100)/100;
@@ -2324,7 +2417,7 @@ function scaleSlide(sl,k){const r2=v=>Math.round(v*k*2)/2,f=v=>v*k,r100=v=>Math.
   if(it.t==='ln'){it.x1=f(it.x1);it.y1=f(it.y1);it.x2=f(it.x2);it.y2=f(it.y2);it.w=r100(it.w);return;}
   it.x=f(it.x);it.y=f(it.y);it.w=f(it.w);it.h=f(it.h);
   if(it.t==='tbl'){it.colW=it.colW.map(f);it.rowH=it.rowH.map(f);
-   it.cells.forEach(r=>r.forEach(c=>{runs(c.runs);c.size=r2(c.size);c.mL=Math.max(1,r100(c.mL));c.mT=Math.max(1,r100(c.mT));   /* PptxGenJS：表格 margin[0]<1 會被當成英吋 → 下限 1pt */['bT','bB'].forEach(b=>{if(c[b])c[b]=Object.assign({},c[b],{w:r100(c[b].w)});});}));return;}
+   it.cells.forEach(r=>r.forEach(c=>{runs(c.runs);c.size=r2(c.size);c.mL=Math.max(1,r100(c.mL));c.mT=Math.max(1,r100(c.mT));   /* PptxGenJS：表格 margin[0]<1 會被當成英吋 → 下限 1pt */['bT','bB','bL','bR'].forEach(b=>{if(c[b])c[b]=Object.assign({},c[b],{w:r100(c[b].w)});});}));return;}
   if(it.adj)it.adj=f(it.adj);if(it.lw)it.lw=r100(it.lw);
   if(it.sites)it.sites=it.sites.map(q=>[f(q[0]),f(q[1]),q[2]]);
   if(it.points)it.points.forEach(p=>{if(p.close)return;p.x=f(p.x);p.y=f(p.y);const c=p.curve;if(c){['x1','y1','x2','y2','hR','wR'].forEach(q=>{if(c[q]!=null)c[q]=f(c[q]);});}});
@@ -2372,7 +2465,7 @@ function toPptx(pptx,model){
   sl.items.forEach(it=>{
    if(it.t==='tbl'){const bd=b=>b?{type:'solid',pt:b.w,color:b.c}:{type:'none'};
     const rows=it.cells.map(r=>r.map(c=>({text:c.runs.map(rn=>({text:rn.t,options:Object.assign({fontSize:rn.o.size,fontFace:rn.o.font,bold:rn.o.bold,color:rn.o.color},rn.o.br?{breakLine:true}:{})})),
-     options:Object.assign({align:c.align,valign:'middle',margin:[c.mT,c.mR!=null?c.mR:c.mL,c.mT,c.mL],border:[bd(c.bT),{type:'none'},bd(c.bB),{type:'none'}]},c.fill?{fill:{color:c.fill}}:{})})));
+     options:Object.assign({align:c.align,valign:'middle',margin:[c.mT,c.mR!=null?c.mR:c.mL,c.mT,c.mL],border:[bd(c.bT),bd(c.bR),bd(c.bB),bd(c.bL)]},c.fill?{fill:{color:c.fill}}:{})})));
     s.addTable(rows,{x:it.x,y:it.y,w:it.w,colW:it.colW,rowH:it.rowH,autoPage:false});return;}
    if(it.t==='pic'){s.addImage({data:it.png,x:it.x,y:it.y,w:it.w,h:it.h,rounding:!!it.round,objectName:it.name||'圖片'});return;}
    if(it.t==='ln'){const L={color:it.color,width:it.w,dashType:it.dash};if(it.head)L.endArrowType=ahType(it.head,it.hs);if(it.tail)L.beginArrowType=ahType(it.tail,it.hs);
@@ -2672,7 +2765,9 @@ function tblItems(it){const out=[],lines=[];let yy=it.y;
   r.forEach((c,ci)=>{const cw=it.colW[ci];
    out.push({t:'sp',kind:'rect',x:xx,y:yy,w:cw,h:rh,fill:c.fill,line:null,lw:0,runs:c.runs,tx:{align:c.align,valign:'middle',margin:[c.mL,c.mR!=null?c.mR:c.mL,c.mT,c.mT],lsp:1,size:c.size,font:F0(c),color:c.color,bold:c.bold}});
    if(c.bT)lines.push({t:'ln',x1:xx,y1:yy,x2:xx+cw,y2:yy,color:c.bT.c,w:c.bT.w,dash:'solid'});
-   if(c.bB)lines.push({t:'ln',x1:xx,y1:yy+rh,x2:xx+cw,y2:yy+rh,color:c.bB.c,w:c.bB.w,dash:'solid'});xx+=cw;});yy+=rh;});
+   if(c.bB)lines.push({t:'ln',x1:xx,y1:yy+rh,x2:xx+cw,y2:yy+rh,color:c.bB.c,w:c.bB.w,dash:'solid'});
+   if(c.bL)lines.push({t:'ln',x1:xx,y1:yy,x2:xx,y2:yy+rh,color:c.bL.c,w:c.bL.w,dash:'solid'});
+   if(c.bR)lines.push({t:'ln',x1:xx+cw,y1:yy,x2:xx+cw,y2:yy+rh,color:c.bR.c,w:c.bR.w,dash:'solid'});xx+=cw;});yy+=rh;});
  return out.concat(lines);}
 const F0=c=>(c.runs[0]&&c.runs[0].o.font)||'Microsoft JhengHei';
 function toSvg(slide,opt){opt=opt||{};const id=(opt.id||'s')+'_';const defs={},parts=[];let fi=0,mi=0;const flat=!!opt.flat;
@@ -2799,8 +2894,9 @@ function tableHtml(model,opt){const sl=tableCopyPage(model,opt);if(!sl)return ''
    BX.forEach(b=>{const HB=`${b.rule?1.5:1.75}pt solid #${b.color}`;
     if(b.type==='col'&&b.i===ci)hb+=`border-left:${HB};border-right:${HB};`+(ri===0?`border-top:${HB};`:'')+(ri===n-1?`border-bottom:${HB};`:'');
     if(b.type==='row'&&b.i===ri)hb+=`border-top:${HB};border-bottom:${HB};`+(ci===0?`border-left:${HB};`:'')+(ci===r.length-1?`border-right:${HB};`:'');
-    if(b.type==='cell'&&b.r===ri&&b.c===ci)hb+=`border:${HB};`;});
-   const css=`${c.fill?`background:#${c.fill};`:''}color:#${c.color};font-size:${c.size}pt;font-weight:${c.bold?700:400};text-align:${c.align};vertical-align:middle;padding:${c.mT}pt ${c.mR!=null?c.mR:c.mL}pt ${c.mT}pt ${c.mL}pt;font-family:${fstack(f).replace(/"/g,"'")};`+bd('top',c.bT)+bd('bottom',c.bB)+hb;
+    if(b.type==='cell'&&b.r===ri&&b.c===ci)hb+=`border:${HB};`;
+    if(b.type==='range'&&ri>=b.r0&&ri<=b.r1&&ci>=b.c0&&ci<=b.c1)hb+=(ri===b.r0?`border-top:${HB};`:'')+(ri===b.r1?`border-bottom:${HB};`:'')+(ci===b.c0?`border-left:${HB};`:'')+(ci===b.c1?`border-right:${HB};`:'');});
+   const css=`${c.fill?`background:#${c.fill};`:''}color:#${c.color};font-size:${c.size}pt;font-weight:${c.bold?700:400};text-align:${c.align};vertical-align:middle;padding:${c.mT}pt ${c.mR!=null?c.mR:c.mL}pt ${c.mT}pt ${c.mL}pt;font-family:${fstack(f).replace(/"/g,"'")};`+bd('top',c.bT)+bd('bottom',c.bB)+bd('left',c.bL)+bd('right',c.bR)+hb;
    const one=x=>{const t=esc(x.t).replace(/\n/g,'<br>');const dif=x.o.size!==c.size||x.o.color!==c.color||!!x.o.bold!==!!c.bold;return (dif?`<span style="font-size:${x.o.size}pt;color:#${x.o.color};font-weight:${x.o.bold?700:400}">${t}</span>`:t)+(x.o.br?'<br>':'');};
    h+=`<td style="${css}">${c.runs.map(one).join('')}</td>`;});h+='</tr>';});
  return h+'</table>';}
@@ -2822,6 +2918,6 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
  if(p.tbPanel&&!p.tbLook)out.tbLook='card';out.tbCard='white';
  return out;}
-const api={iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
+const api={iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,tableHighlightPreset,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);
