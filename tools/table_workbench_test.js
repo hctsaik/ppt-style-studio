@@ -251,6 +251,11 @@ async function browserSuite(options = {}) {
     assert(/版面待調整/.test(el('#tAuto').textContent), 'Layout problem is misreported as a row-capacity issue');
     assert(visible(el('#tExportBlocked')), 'Raw-data recovery actions are unavailable');
     assert(window.__studio.table.blockedRow === 2 && visible(el('#tBlockedRow')), 'Oversized row is not identified by its original grid index');
+    const issue = window.Deck.buildModel(window.__studioApi.S.p, { table: state() }).slides.find(s => s.table && s.table.exportComplete === false);
+    const message = el('#tMsg');
+    assert(issue && message.textContent.includes(issue.table.exportReason), 'Warning text was truncated instead of showing full recovery advice');
+    assert(message.title === message.textContent && message.getAttribute('aria-label') === message.textContent, 'Full warning is unavailable to tooltip or assistive technology');
+    assert(getComputedStyle(message).whiteSpace === 'normal' && getComputedStyle(message).overflowWrap === 'anywhere', 'Warning cannot wrap within narrow output panel');
     await click('#tBlockedRow');
     assert(window.__studio.gridSelection.r === 2 && document.activeElement === cell(2, 0), 'Inspect-row action did not focus the exact original row');
   });
