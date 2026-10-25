@@ -12,7 +12,7 @@ const STYLES=[
  ['01','短底線＋全寬細線'],['02','短直線標記'],['03','中性淡底帶'],['04','開放式底角框'],
  ['05','置中斷線標題'],['07','頂線標示'],['08','細框主題'],['09','字標與主題'],
  ['03A','淡色小圓角'],['03B','白底輕陰影'],['03C','深色實心'],['03D','線框與短色條'],
- ['03E','強調色實心'],['03F','淡灰與側色條']
+ ['03E','主題色實心'],['03F','淡灰與側色條']
 ];
 const BODY=['分批交付，逐階確認。','集中交付，一次驗收。'],env={PptxGenJS,JSZip};
 let checks=0,nativeExports=0;
@@ -23,8 +23,10 @@ const digest=x=>crypto.createHash('sha256').update(JSON.stringify(x)).digest('he
 // corners, native item types, group addressing and layout metadata.
 const geometry=x=>JSON.parse(JSON.stringify(x,function(k,v){return ['name','fill','line','color','mkC'].includes(k)||(k==='t'&&this.o)?undefined:v;}));
 function expectedPaint(p,id,body){
- const roles=Object.fromEntries(['main','deep','light','accent'].map(r=>[r,D.tableHighlightPreset('v4-role-'+r,p)]));
- const solid=['03C','03E'].includes(id),band=id==='03C'?roles.main:roles.accent,badge=id==='03C'?roles.deep:roles.main,bg=id==='03A'?roles.light.fill:id==='03'?'F1F4F6':id==='03F'?'F1F3F5':'FFFFFF';
+ const roles=Object.fromEntries(['main','deep','light'].map(r=>[r,D.tableHighlightPreset('v4-role-'+r,p)]));
+ let mid=D.tableHighlightPreset('v3-theme-deep',p).fill;if(D.contrastOf(mid,p.P)<1.5){const seed=mid;outer:for(const target of ['FFFFFF','000000'])for(let n=1;n<=100;n++){const c=D.mix(seed,target,n/100);if(D.contrastOf(c,p.P)>=1.5){mid=c;break outer;}}}
+ const medium=D.tableHighlightPreset('v4-role-main',{...p,P:mid});
+ const solid=['03C','03E'].includes(id),band=id==='03C'?roles.main:medium,badge=id==='03C'?roles.deep:roles.main,bg=id==='03A'?roles.light.fill:id==='03'?'F1F4F6':id==='03F'?'F1F3F5':'FFFFFF';
  return {title:solid?badge.color:D.ensureContrast(roles.main.fill,bg,4.5),body:solid?band.color:D.ensureContrast(D.ensureContrast(p.t2,'FFFFFF',4.5),bg,4.5),titleBg:solid?badge.fill:bg,bodyBg:solid?band.fill:bg,band:body?band.fill:badge.fill};
 }
 const close=(a,b,label,eps=1e-6)=>assert(Math.abs(a-b)<=eps,label+': '+a+' != '+b);
@@ -143,6 +145,21 @@ async function native(model,expectedGroups,dimensions){
   }
  });
  for(const theme of D.PRESETS)for(const size of ['S','M','L']){const p={...theme,size},k=D.SIZE_K[size],m=D.buildModel(p,{only:KEYS});await native(m,[28,28,28,28],[13.333*k,17.5*k]);check(p.id+'/'+size+': all catalogue SVG/native primitive colors match the shared theme role model',()=>{});}
+ check('03E design acceptance: blue/purple/green/wine follow P hue, never share fixed warning amber',()=>{
+  const hue=c=>{const [r,g,b]=[0,2,4].map(i=>parseInt(c.slice(i,i+2),16)/255),hi=Math.max(r,g,b),lo=Math.min(r,g,b),d=hi-lo;if(d<.02)return null;const h=hi===r?((g-b)/d)%6:hi===g?(b-r)/d+2:(r-g)/d+4;return (h*60+360)%360;};
+  const fills=new Map();
+  for(const p of D.PRESETS){
+   const m=D.buildModel(p,{only:KEYS});for(const sl of m.slides.filter(s=>s.key==='schemebody'||s.key==='schemeiconbody'))for(const g of sl.groups.filter(g=>g.schemeStyle==='03E')){
+    const its=items(sl,g),band=its.find(it=>it.kind==='roundRect'),title=its.find(it=>/^方案 [AB]$/.test(text(it))),body=its.find(it=>BODY.includes(text(it)));
+    assert(D.contrastOf(band.fill,p.P)>=1.5,p.id+': visibly distinct title/body fills');assert(D.contrastOf(band.fill,paint(body))>=4.5,p.id+': readable body');assert(D.contrastOf(p.P,paint(title))>=4.5,p.id+': readable title');
+    assert.notEqual(band.fill,D.tableHighlightPreset('v4-role-accent',p).fill,p.id+': decoration must not accidentally use warning amber');
+    const hp=hue(p.P),hb=hue(band.fill);if(hp!==null){assert(hb!==null);const delta=Math.abs(hp-hb);assert(Math.min(delta,360-delta)<2,p.id+': retains main hue rather than a warning/secondary hue');}else assert.equal(hb,null,p.id+': neutral theme remains neutral');
+    fills.set(p.id,band.fill);
+   }
+   const changed=D.buildModel({...p,semWarn:'12AB34',A:'FF00FF',useA:!p.useA},{only:KEYS});m.slides.forEach((sl,i)=>{assert.deepEqual(changed.slides[i].items,sl.items,'Warning/A edits never repaint decorative catalogue bars');assert.deepEqual(changed.slides[i].groups,sl.groups);});
+  }
+  assert.equal(fills.get('navy'),'2E75B6','Original navy medium blue retained');assert.equal(new Set(['navy','wire','green','wine'].map(k=>fills.get(k))).size,4,'Blue, purple, green and wine have distinct body colors');
+ });
  check('All editable topic/body labels remain independent and retain bold/regular roles',()=>{
   reference.slides.forEach(s=>s.groups.forEach((g,gi)=>{
    const its=items(s,g),topic=its.findIndex(i=>/^方案 [AB]$/.test(text(i))),body=its.findIndex(i=>BODY.includes(text(i))),patch={};
