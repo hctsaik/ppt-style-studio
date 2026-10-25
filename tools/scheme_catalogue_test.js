@@ -6,19 +6,27 @@
 'use strict';
 const assert=require('assert/strict'),crypto=require('crypto');
 const D=require('../deck'),PptxGenJS=require('pptxgenjs'),JSZip=require('jszip');
-const LEGACY=require('./fixtures/scheme_catalogue_legacy.json');
+const LEGACY=require('./fixtures/scheme_catalogue_legacy.json'),GEOMETRY=require('./fixtures/scheme_catalogue_geometry.json');
 const KEYS=['schemeemphasis','schemebody','schemeicon','schemeiconbody'];
 const STYLES=[
  ['01','短底線＋全寬細線'],['02','短直線標記'],['03','中性淡底帶'],['04','開放式底角框'],
  ['05','置中斷線標題'],['07','頂線標示'],['08','細框主題'],['09','字標與主題'],
- ['03A','淡藍小圓角'],['03B','白底輕陰影'],['03C','深藍實心'],['03D','線框與短色條'],
- ['03E','中藍實心'],['03F','淡灰與側色條']
+ ['03A','淡色小圓角'],['03B','白底輕陰影'],['03C','深色實心'],['03D','線框與短色條'],
+ ['03E','強調色實心'],['03F','淡灰與側色條']
 ];
 const BODY=['分批交付，逐階確認。','集中交付，一次驗收。'],env={PptxGenJS,JSZip};
 let checks=0,nativeExports=0;
 function check(name,fn){fn();checks++;console.log('PASS '+name);}
 const plain=x=>JSON.parse(JSON.stringify(x));
 const digest=x=>crypto.createHash('sha256').update(JSON.stringify(x)).digest('hex');
+// Omit paint and display text only; retain all geometry, typography, shadow,
+// corners, native item types, group addressing and layout metadata.
+const geometry=x=>JSON.parse(JSON.stringify(x,function(k,v){return ['name','fill','line','color','mkC'].includes(k)||(k==='t'&&this.o)?undefined:v;}));
+function expectedPaint(p,id,body){
+ const roles=Object.fromEntries(['main','deep','light','accent'].map(r=>[r,D.tableHighlightPreset('v4-role-'+r,p)]));
+ const solid=['03C','03E'].includes(id),band=id==='03C'?roles.main:roles.accent,badge=id==='03C'?roles.deep:roles.main,bg=id==='03A'?roles.light.fill:id==='03'?'F1F4F6':id==='03F'?'F1F3F5':'FFFFFF';
+ return {title:solid?badge.color:D.ensureContrast(roles.main.fill,bg,4.5),body:solid?band.color:D.ensureContrast(D.ensureContrast(p.t2,'FFFFFF',4.5),bg,4.5),titleBg:solid?badge.fill:bg,bodyBg:solid?band.fill:bg,band:body?band.fill:badge.fill};
+}
 const close=(a,b,label,eps=1e-6)=>assert(Math.abs(a-b)<=eps,label+': '+a+' != '+b);
 const items=(s,g)=>s.items.slice(g.from,g.to+1);
 const text=i=>D.textOf(i);
@@ -62,6 +70,15 @@ async function native(model,expectedGroups,dimensions){
   assert(!/<p:pic\b|<a:blip\b|asvg:svgBlip/.test(s),'All contents remain editable native shapes/text');
   assert(!/\b(?:NaN|Infinity)\b/.test(s),'No invalid coordinates');
   const ids=[...s.matchAll(/<p:cNvPr\b[^>]*\bid="(\d+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length,'Unique drawing IDs');
+  const primitives=new Map([...s.matchAll(/<p:(sp|cxnSp)\b[\s\S]*?<\/p:\1>/g)].map(m=>[+m[0].match(/<p:cNvPr\b[^>]*id="(\d+)"/)[1],m[0]])),svg=D.toSvg(model.slides[i]);
+  const colorOf=xml=>xml&&xml.match(/<a:solidFill>\s*<a:srgbClr val="([^"]+)"/)?xml.match(/<a:solidFill>\s*<a:srgbClr val="([^"]+)"/)[1]:null;
+  model.slides[i].items.forEach((it,index)=>{
+   const shape=primitives.get(index+2);assert(shape,'Native primitive retains model identity '+index);
+   const sp=shape.match(/<p:spPr>[\s\S]*?<\/p:spPr>/)[0],line=sp.match(/<a:ln\b[\s\S]*?<\/a:ln>/);
+   if(it.runs){const runs=[...shape.matchAll(/<a:r>[\s\S]*?<\/a:r>/g)];assert.equal(runs.length,it.runs.length);runs.forEach((r,j)=>{assert.equal(colorOf(r[0]),it.runs[j].o.color,'Native text uses preview/model role color');assert(svg.includes('fill="#'+it.runs[j].o.color+'"'));});}
+   else if(it.t==='ln'){assert.equal(colorOf(line&&line[0]),it.color);assert(svg.includes('stroke="#'+it.color+'"'));}
+   else {const face=sp.replace(/<a:ln\b[\s\S]*?<\/a:ln>/g,'').replace(/<a:effectLst>[\s\S]*?<\/a:effectLst>/g,'');assert.equal(colorOf(face),it.fill||null);assert.equal(colorOf(line&&line[0]),it.line||null);if(it.fill)assert(svg.includes('fill="#'+it.fill+'"'));if(it.line)assert(svg.includes('stroke="#'+it.line+'"'));}
+  });
  }
  assert.equal(result.model.connectors.fail,0);assert.equal(result.model.connectors.one,0);
  nativeExports++;return {zip,xml};
@@ -81,7 +98,7 @@ async function native(model,expectedGroups,dimensions){
  for(const preset of D.PRESETS)for(const size of ['S','M','L']){
   const params={...preset,size},before=JSON.stringify(params),m=D.buildModel(params,{only:KEYS}),k=D.SIZE_K[size];
   check(preset.id+'/'+size+': all 56 style/category cases preserve order, symmetry, typography and bounds',()=>{
-   assert.equal(JSON.stringify(params),before);assert.deepEqual(m.warns,[]);assert.equal(m.slides.length,4);
+   assert.equal(JSON.stringify(params),before);assert.deepEqual(m.warns,[]);assert.equal(m.slides.length,4);assert.equal(digest(geometry(m.slides)),GEOMETRY.scenarios[size],'Complete original geometry/type/shadow/typography unchanged');
    m.slides.forEach((s,page)=>{
     const withBody=page%2===1,withIcon=page>=2;assert.equal(s.groups.length,28);close(s.w||s.W,13.333*k,'sheet width');close(s.h||s.H,17.5*k,'sheet height');inBounds(s);
     assert(s.items.every(it=>it.t!=='pic'),'No pictures in source model');
@@ -95,8 +112,8 @@ async function native(model,expectedGroups,dimensions){
       const its=items(s,g),topic=its.find(it=>text(it)==='方案 '+(side?'B':'A')),body=its.find(it=>text(it)===BODY[side]);
       assert(topic,'Separate topic text shape');assert.equal(!!body,withBody,'Body presence matches category');assert.equal(topic.runs.length,1);assert(topic.runs[0].o.bold);
       close(topic.runs[0].o.size,Math.round(18*k*2)/2,'topic size');assert.equal(topic.runs[0].o.font,'Microsoft JhengHei');
-      assert.equal(paint(topic),['03C','03E'].includes(STYLES[i][0])?'FFFFFF':'23547A','Approved topic role color');
-      if(body){assert.notEqual(topic,body);assert.equal(body.runs.length,1);assert(!body.runs[0].o.bold);assert.equal(body.runs[0].o.font,'Microsoft JhengHei');close(body.runs[0].o.size,Math.round(18*k*2)/2,'body size');assert.equal(paint(body),['03C','03E'].includes(STYLES[i][0])?'FFFFFF':'667681');}
+      const colors=expectedPaint(params,STYLES[i][0],withBody);assert.equal(paint(topic),colors.title,'Existing theme role determines title foreground');assert(D.contrastOf(paint(topic),colors.titleBg)>=4.5);
+      if(body){assert.notEqual(topic,body);assert.equal(body.runs.length,1);assert(!body.runs[0].o.bold);assert.equal(body.runs[0].o.font,'Microsoft JhengHei');close(body.runs[0].o.size,Math.round(18*k*2)/2,'body size');assert.equal(paint(body),colors.body);assert(D.contrastOf(paint(body),colors.bodyBg)>=4.5);}
      }
     }
    });
@@ -108,11 +125,24 @@ async function native(model,expectedGroups,dimensions){
    if(/^03[A-F]$/.test(g.schemeStyle)){assert.equal(rounds.length,1);close(rounds[0].adj,.04,'businesslike corner radius',2e-5);}else assert.equal(rounds.length,0,'Non-rounded original styles stay square');
    assert.equal(shadows.length,g.schemeStyle==='03B'?1:0,'Only white shadow style has shadow');
    if(shadows.length){close(shadows[0].sh.alpha,.15,'shadow opacity');close(shadows[0].sh.blur,3,'shadow blur');close(shadows[0].sh.dist,1,'shadow distance');close(shadows[0].sh.dir,90,'shadow direction');}
-   if(dark){const band=rounds[0];assert.equal(band.fill,page%2?g.schemeStyle==='03C'?'23547A':'2F75B5':g.schemeStyle==='03C'?'1B405D':'23547A');}
+   if(dark){const band=rounds[0];assert.equal(band.fill,expectedPaint(D.PRESETS[0],g.schemeStyle,page%2).band);}
    const noIconPage=reference.slides[page%2],noIcon=items(noIconPage,noIconPage.groups[gi]);
    if(page>=2)assert.equal(its.length-noIcon.length,g.schemeStyle==='09'?3:4,'Briefcase uses four native primitives; style09 replaces the marker letter');
   }));
  });
+ check('Custom roles and light/dark fills resolve live with readable text, fixed neutrals and unchanged geometry',()=>{
+  for(const p of [
+   {...D.PRESETS[5],P:'5F1234',PD:'35001A',PT:'F3DCE8',semWarn:'E5C441',t2:'454545',mute:'555555'},
+   {...D.PRESETS[0],P:'FFFFFF',PD:'FFFFEE',PT:'101010',semWarn:'000000',t2:'FFFFFF'},
+   {...D.PRESETS[0],P:'000000',PD:'010101',PT:'FFFFFF',semWarn:'FFFFFF',t2:'EEEEEE'}
+  ]){const m=D.buildModel(p,{only:KEYS});assert.equal(digest(geometry(m.slides)),GEOMETRY.scenarios.M);
+   m.slides.forEach((sl,page)=>sl.groups.forEach(g=>{const its=items(sl,g),c=expectedPaint(p,g.schemeStyle,page%2),topic=its.find(i=>/^方案 [AB]$/.test(text(i))),body=its.find(i=>BODY.includes(text(i)));
+    assert.equal(paint(topic),c.title);assert(D.contrastOf(paint(topic),c.titleBg)>=4.5);if(body){assert.equal(paint(body),c.body);assert(D.contrastOf(paint(body),c.bodyBg)>=4.5);}
+    const base=its.find(i=>i.kind==='roundRect');if(g.schemeStyle==='03A')assert.equal(base.fill,p.PT);if(g.schemeStyle==='03B')assert.equal(base.fill,'FFFFFF');if(g.schemeStyle==='03F')assert.equal(base.fill,'F1F3F5');
+   }));
+  }
+ });
+ for(const theme of D.PRESETS)for(const size of ['S','M','L']){const p={...theme,size},k=D.SIZE_K[size],m=D.buildModel(p,{only:KEYS});await native(m,[28,28,28,28],[13.333*k,17.5*k]);check(p.id+'/'+size+': all catalogue SVG/native primitive colors match the shared theme role model',()=>{});}
  check('All editable topic/body labels remain independent and retain bold/regular roles',()=>{
   reference.slides.forEach(s=>s.groups.forEach((g,gi)=>{
    const its=items(s,g),topic=its.findIndex(i=>/^方案 [AB]$/.test(text(i))),body=its.findIndex(i=>BODY.includes(text(i))),patch={};
@@ -121,6 +151,8 @@ async function native(model,expectedGroups,dimensions){
    assert.equal(text(ei[topic]),'新方案');assert(ei[topic].runs.every(r=>r.o.bold));assert.equal(paint(ei[topic]),paint(its[topic]));
    if(body>=0){assert.equal(text(ei[body]),'新的說明');assert(ei[body].runs.every(r=>!r.o.bold));assert.equal(paint(ei[body]),paint(its[body]));}
    assert.deepEqual(edited.groups.map(x=>[x.from,x.to]),s.groups.map(x=>[x.from,x.to]),'Editing does not change persistent group/shape addressing');
+   const wine=D.PRESETS.find(p=>p.id==='wine'),rethemed=D.buildModel(wine,{only:[s.key],labels}).slides[0],ri=items(rethemed,rethemed.groups[gi]),pc=expectedPaint(wine,g.schemeStyle,g.schemeBody);
+   assert.equal(text(ri[topic]),'新方案');assert.equal(paint(ri[topic]),pc.title);if(body>=0){assert.equal(text(ri[body]),'新的說明');assert.equal(paint(ri[body]),pc.body);}assert.deepEqual(geometry(ri),geometry(ei),'Theme change retains edits and all geometry/typography');
    const next=gi%2?gi-1:gi+1;assert.deepEqual(items(edited,edited.groups[next]),items(s,s.groups[next]),'Editing one half does not mutate the other');
    const stale=D.buildModel(D.PRESETS[0],{only:[s.key],labels:{[s.key+':'+gi]:{[topic]:{from:'stale source',to:'不該套用'}}}}).slides[0];assert.equal(text(items(stale,stale.groups[gi])[topic]),text(its[topic]));
   }));
@@ -148,6 +180,7 @@ async function native(model,expectedGroups,dimensions){
    for(let page=0;page<4;page++){assert.equal((r.xml[page].match(/<a:t>分批交付，逐階確認。<\/a:t>/g)||[]).length,page%2?14:0);assert.equal((r.xml[page].match(/<a:t>集中交付，一次驗收。<\/a:t>/g)||[]).length,page%2?14:0);}
   });
  }
+ const beforeIndividuals=nativeExports;
  for(const s of reference.slides)for(let gi=0;gi<s.groups.length;gi++){
   const em=D.elementModel(D.PRESETS[0],s.key,gi),g=em.slides[0].groups[0];
   assert.equal(em.slides.length,1);assert.equal(em.slides[0].groups.length,1);inBounds(em.slides[0]);
@@ -157,7 +190,7 @@ async function native(model,expectedGroups,dimensions){
   sameGeometry(normalizedHalf(em.slides[0],centered),normalizedHalf(s,sourceGroup),'Individual extraction preserves source geometry at centered logical bounds');
   const r=await native(em,[1],[40/3,D.H]);assert(r.xml[0].includes('方案 '),'Native editable text is retained');
  }
- check('All 112 individual native exports remain grouped on regular 16:9 slides',()=>assert.equal(nativeExports,115));
+ check('All 112 individual native exports remain grouped on regular 16:9 slides',()=>assert.equal(nativeExports-beforeIndividuals,112));
  const entries=reference.slides.map(s=>({kind:'el',key:s.key,gi:27,params:D.PRESETS[0],name:s.groups[27].name}));
  for(const mode of ['deck','compose']){
   const m=mode==='deck'?D.trayDeck(entries):D.trayModel(entries,{compose:{layout:'grid2'}});m.slides.forEach(inBounds);assert.equal(m.tray.skipped.length,0);

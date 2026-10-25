@@ -177,7 +177,7 @@ const SLIDES=[['catalog', '總覽', '00', 'Overview', 'S'],
 const SCHEME_CATALOGUE_KEYS=['schemeemphasis','schemebody','schemeicon','schemeiconbody'];
 const SCHEME_CATALOGUE_TITLES=['01  沒有內文：只有強調','02  有內文＋強調','03  Icon＋沒有內文','04  Icon＋有內文＋強調'];
 // [approved ID, name, title x, title width], relative to each 5.8465-inch half.
-const SCHEME_CATALOGUE_STYLES=[['01','短底線＋全寬細線',0,2.1],['02','短直線標記',.2,1.9],['03','中性淡底帶',.17,1.76],['04','開放式底角框',.15,1.8],['05','置中斷線標題',.35,1.4],['07','頂線標示',0,2.1],['08','細框主題',.18,1.74],['09','字標與主題',.66,1.44],['03A','淡藍小圓角',.18,1.74],['03B','白底輕陰影',.18,1.74],['03C','深藍實心',.18,1.74],['03D','線框與短色條',.34,1.58],['03E','中藍實心',.18,1.74],['03F','淡灰與側色條',.24,1.68]];
+const SCHEME_CATALOGUE_STYLES=[['01','短底線＋全寬細線',0,2.1],['02','短直線標記',.2,1.9],['03','中性淡底帶',.17,1.76],['04','開放式底角框',.15,1.8],['05','置中斷線標題',.35,1.4],['07','頂線標示',0,2.1],['08','細框主題',.18,1.74],['09','字標與主題',.66,1.44],['03A','淡色小圓角',.18,1.74],['03B','白底輕陰影',.18,1.74],['03C','深色實心',.18,1.74],['03D','線框與短色條',.34,1.58],['03E','強調色實心',.18,1.74],['03F','淡灰與側色條',.24,1.68]];
 
 const USED={ex1:['A8·A','A8·B','A3·C','A4·B'],ex2:['A2','A3·D','A10·E','B7'],ex3:['B7·A','B7·E','A3·D','A10'],sum:['A0','A2·F','A4·A','C1'],pcn:['A0','D6','D8','A4·C'],weekly:['A0','C1·D','D8·A','A4·A']};
 const SWIFF="data:image/png;base64,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";
@@ -1310,20 +1310,20 @@ function buildModel(params,opt){
   });
  };
 
- /* A15–A18: approved four-sheet catalogue. Fixed source palette/type/radius are
-    intentional: changing a global theme must not silently redesign these styles.
+ /* A15–A18: approved four-sheet catalogue geometry/type/radius, with colors
+    linked to the existing theme-role resolver (same roles as table emphasis).
     Geometry is transcribed from 方案元件-四頁分類.pptx (Library source SHA256
     5fd6377ccfc1c67f1bdb5e75a495d16b6e84d70ad31d1ec9a7e96708c3514067).
     Every half is an independent native group; title/body stay separate text boxes. */
  function schemeCatalogue(page){
-  const body=page%2===1,withIcon=page>=2,ink='23547A',muted='667681',rule='D5DDE2',font='Microsoft JhengHei',hw=5.8465,hh=.65;
+  const body=page%2===1,withIcon=page>=2,roles=Object.fromEntries(['main','deep','light','accent'].map(r=>[r,tableHighlightPreset('v4-role-'+r,st)])),ink=roles.main.fill,muted=ensureContrast(G.t2,'FFFFFF',4.5),caption=ensureContrast(G.mute,'FFFFFF',4.5),rule='D5DDE2',font='Microsoft JhengHei',hw=5.8465,hh=.65;
   cur.w=W;cur.h=17.5;cur.schemeCatalogue=true;
   const text=(x,y,w,h,t,size,color,bold,align)=>txt(x,y,w,h,t,{size,color,bold:!!bold,font,align:align||'left',margin:0,valign:'middle',name:t,wrap:1});
-  text(.6,.38,12,.6,SCHEME_CATALOGUE_TITLES[page],28,ink,true);
-  text(.6,1.04,12,.29,'14 種樣式 · 左右對稱 · 方案 A／方案 B',13,muted,false);
+  text(.6,.38,12,.6,SCHEME_CATALOGUE_TITLES[page],28,ensureContrast(ink,'FFFFFF',4.5),true);
+  text(.6,1.04,12,.29,'14 種樣式 · 左右對稱 · 方案 A／方案 B',13,caption,false);
   SCHEME_CATALOGUE_STYLES.forEach(([id,name,tx,tw0],row)=>{
-   const y=1.75+row*1.08;text(.6,y-.3,12,.23,id+'  '+name,12,muted,false);
-   ['A','B'].forEach((side,col)=>{const x=.6+col*(hw+.44),dark=id==='03C'||id==='03E',fg=dark?'FFFFFF':ink;
+   const y=1.75+row*1.08;text(.6,y-.3,12,.23,id+'  '+name,12,caption,false);
+   ['A','B'].forEach((side,col)=>{const x=.6+col*(hw+.44),dark=id==='03C'||id==='03E',band=id==='03C'?roles.main:roles.accent,badge=id==='03C'?roles.deep:roles.main,background=id==='03A'?roles.light.fill:id==='03'?'F1F4F6':id==='03F'?'F1F3F5':'FFFFFF',fg=dark?badge.color:ensureContrast(ink,background,4.5);
     grp(id+' '+name+'・方案 '+side,()=>{
      const rect=(dx,dy,w,h,fill,line,lw,r)=>box(x+dx,y+dy,w,h,{fill,line,lw,r:r||0,name:name+'底座'});
      const line=(x1,y1,x2,y2,c,lw)=>ln(x+x1,y+y1,x+x2,y+y2,{c,w:lw});
@@ -1337,10 +1337,10 @@ function buildModel(params,opt){
       case '05':{const d=body?0:(hw-2.1)/2;line(0,hh,.35+d,hh,rule,1);line(1.75+d,hh,hw,hh,rule,1);align='center';titleX=.35+d;glyphX=.45+d;if(withIcon){titleX=.85+d;titleW=.8;}break;}
       case '07':line(0,0,hw,0,ink,1.8);break;
       case '08':rect(0,0,hw,hh,null,ink,.9);break;
-      case '09':bottom(rule,.8);rect(0,.08,.46,.46,null,ink,1);if(!withIcon)text(x,y+.08,.46,.46,side,17,ink,true,'center');break;
-      case '03A':rect(0,0,hw,hh,'DFEAF5',null,0,.04);break;
+      case '09':bottom(rule,.8);rect(0,.08,.46,.46,null,ink,1);if(!withIcon)text(x,y+.08,.46,.46,side,17,fg,true,'center');break;
+      case '03A':rect(0,0,hw,hh,roles.light.fill,null,0,.04);break;
       case '03B':{const b=rect(0,0,hw,hh,'FFFFFF','D9E0E5',.6,.04);b.sh={blur:3,dist:1,dir:90,alpha:.15,scale:1,color:'000000',kind:'drop'};break;}
-      case '03C':case '03E':{const fill=id==='03C'?'23547A':'2F75B5',badge=id==='03C'?'1B405D':'23547A';rect(0,0,hw,hh,body?fill:badge,null,0,.04);if(body)rect(.025,.025,2.075,.6,badge);break;}
+      case '03C':case '03E':{rect(0,0,hw,hh,body?band.fill:badge.fill,null,0,.04);if(body)rect(.025,.025,2.075,.6,badge.fill);break;}
       case '03D':rect(0,0,hw,hh,'FFFFFF',ink,1.5,.04);rect(.14,.15,.045,.34,ink);break;
       case '03F':rect(0,0,hw,hh,'F1F3F5',null,0,.04);rect(0,.07,.065,.51,ink);break;
      }
@@ -1351,7 +1351,7 @@ function buildModel(params,opt){
       else{rect(glyphX+.014,.25,.245,.175,null,fg,1);rect(glyphX+.077,.194,.112,.056,null,fg,1);line(glyphX+.014,.313,glyphX+.259,.313,fg,1);line(glyphX+.1365,.306,glyphX+.1365,.348,fg,1);if(id!=='05'){titleX+=.4;titleW-=.4;}}
      }
      text(x+titleX,y+.08,titleW,.46,'方案 '+side,18,fg,true,align);
-     if(body)text(x+2.28,y+.115,3.4065,.46,side==='A'?'分批交付，逐階確認。':'集中交付，一次驗收。',18,dark?'FFFFFF':muted,false);
+     if(body)text(x+2.28,y+.115,3.4065,.46,side==='A'?'分批交付，逐階確認。':'集中交付，一次驗收。',18,dark?band.color:ensureContrast(muted,background,4.5),false);
     },{x,y,w:hw,h:hh,schemeStyle:id,schemeSide:side,schemeBody:body,schemeIcon:withIcon});
    });
   });
@@ -1984,7 +1984,8 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
   const his=MK.his.map(h=>Object.assign({},h,{C:h.type==='range'?tableHighlightPreset(h.presetId,st).color:h.kind==='warn'?WARN:h.kind==='rec'?REC:EC}));
   const hiCol=(r,c)=>his.find(h=>h.type==='col'&&tableMarkContains(h,r,c)),hiRow=(r,c)=>his.find(h=>h.type==='row'&&tableMarkContains(h,r,c)),hiCell=(r,c)=>his.find(h=>h.type==='cell'&&tableMarkContains(h,r,c));
   const rangeAt=(r,c)=>r>=0&&r<rows.length&&c>=0&&c<nC?tableRangeWinner(his,r,c,'fill'):null;
-  const rangePaint=(o,r,c)=>{const mark=rangeAt(r,c);if(!mark)return o;const preset=tableHighlightPreset(mark.presetId,st);
+  const rangeBoldAt=(r,c)=>his.some(h=>tableMarkBoldAt(h,r,c));
+  const rangePaint=(o,r,c)=>{if(rangeBoldAt(r,c))o.bold=true;const mark=rangeAt(r,c);if(!mark)return o;const preset=tableHighlightPreset(mark.presetId,st);
    o.fill=preset.fill;o.color=preset.color;if(preset.bold!=null)o.bold=!!preset.bold;
    if(preset.border){const border={c:preset.border,w:preset.borderWidth||1.5};
     if(rangeAt(r-1,c)!==mark)o.bT=border;if(rangeAt(r+1,c)!==mark)o.bB=border;if(rangeAt(r,c-1)!==mark)o.bL=border;if(rangeAt(r,c+1)!==mark)o.bR=border;}
@@ -1994,7 +1995,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
   let ruleHits=0;const ruleBoxes=[];
   // 欄寬：數字欄＝內容＋18pt、同寬；第一欄吸收剩餘；單欄最多 45%
   const isNumFont=(ri,c)=>ri>=h0&&AU.numC[c]&&!AU.section[ri];
-  const layoutBold=(ri,c,t)=>ri<h0||bold.has(ri)||keySet.has(ri)||fixedWidth&&(AU.section[ri]||T.hcol&&c===0||AU.statC[c]&&statusOf(src[ri][c])||/^\s*[▲△▼▽]/.test(t)||hiStyle==='fill'&&(hiCell(ri,c)||c===0&&hiRow(ri,c)));
+  const layoutBold=(ri,c,t)=>ri<h0||bold.has(ri)||keySet.has(ri)||rangeBoldAt(ri,c)||fixedWidth&&(AU.section[ri]||T.hcol&&c===0||AU.statC[c]&&statusOf(src[ri][c])||/^\s*[▲△▼▽]/.test(t)||hiStyle==='fill'&&(hiCell(ri,c)||c===0&&hiRow(ri,c)));
   const measureW=(t,size,b)=>Math.max(...String(t).split('\n').map(l=>tw(l,size)*(b?1.08:1)));
   const padOf=c=>padH+padH;   /* 欄寬與每欄實際內距一致，且不隨外觀改變 */
   // 中英混排寬度（含 PowerPoint／LibreOffice 的中英自動間距）
@@ -2010,7 +2011,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
    for(let i=1;i<L.length;i++){const a=L[i-1],z=L[i];let sc=0;if(/[：:；;，,、]/.test(a))sc=3;else if(/[（(]/.test(z))sc=2.8;else if(/\s/.test(a)||/\s/.test(z))sc=2.5;else if(/[)）]/.test(a))sc=2.2;else if(/[\u3400-\u9fff]/.test(a)!==/[\u3400-\u9fff]/.test(z)&&!/[\-./%]/.test(a+z))sc=1.6;else if(/[\u3400-\u9fff]/.test(a)&&/[\u3400-\u9fff]/.test(z))sc=.5;if(!sc)continue;
     const p1=L.slice(0,i).join('').replace(/\s+$/,''),p2=L.slice(i).join('').replace(/^\s+/,'');if(vis(p1)<2||vis(p2)<(sc>=2.2?2:3)&&vis(t)>4)continue;const w=Math.max(mw(p1,size,b),mw(p2,size,b));if(w>full*.85)continue;const s=-sc+w/full*1.2;if(!best||s<best.s)best={s,w};}
    return best?best.w+.005:full;};
-  let colW=Array.from({length:nC},(_,c)=>{const body=Math.max(0,...rows.map((r,ri)=>ri<h0||AU.section[ri]&&c===0?0:Math.max(...String(r[c]).split('\n').map(l=>mw(l,fs,bold.has(ri)||keySet.has(ri))))+(AU.statC[c]&&ri>=h0&&statusOf(r[c])?.14*k:0)));
+  let colW=Array.from({length:nC},(_,c)=>{const body=Math.max(0,...rows.map((r,ri)=>ri<h0||AU.section[ri]&&c===0?0:Math.max(...String(r[c]).split('\n').map(l=>mw(l,fs,bold.has(ri)||keySet.has(ri)||rangeBoldAt(ri,c))))+(AU.statC[c]&&ri>=h0&&statusOf(r[c])?.14*k:0)));
    // 表頭可以換行（最多約 3 行）：長中文表頭不把數字欄撐寬
    const hw=h0?measureW(rows[0][c],hfs,1):0;const m=Math.max(body,/[\u3400-\u9fff]/.test(rows[0][c]||'')?Math.min(hw,Math.max(body,hw/3,.7*k)):hw);
    return m+Math.max(18*k,padOf(c))/72+.06*k;});
@@ -2046,7 +2047,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
   const cellN=(r,ri)=>Math.max(...r.map((t,c)=>wrapN(t,ri<h0?hfs:fs,layoutBold(ri,c,t)||AU.section[ri]||T.hcol&&c===0,colW[c]-(AU.statC[c]&&ri>=h0&&statusOf(sizing.version===2?src[ri][c]:t)?.14*k:0),c)));
   let mpad=2.5/72;const minH=(n,size)=>n*size*1.45/72+mpad;   // 1.45＝CJK 字型行高（Noto／正黑），上下邊距各 1pt
   // 有空間就不要換行（例：已完成 60%）：文字欄若會折行而且還有剩餘寬度，加寬到一行放得下
-  if(!uw&&wMode!=='compact'){let spare=maxW-colW.reduce((a,b)=>a+b,0);colW.forEach((w,c)=>{if(AU.numC[c])return;let need=0;rows.forEach((r,ri)=>{if(ri<h0)return;const b=bold.has(ri)||keySet.has(ri);const tr=st.tbTight?0:(String(r[c]).match(/[\u3400-\u9fff][A-Za-z0-9]|[A-Za-z0-9][\u3400-\u9fff]/g)||[]).length;const mx=/[\u3400-\u9fff]/.test(r[c])&&/[A-Za-z0-9]/.test(r[c])?1.12:1;need=Math.max(need,measureW(r[c],fs,b)*(b?1.08:1)*mx+tr*fs*.3/72+padOf(c)/72+.05);/* 中英交界留自動間距 */});
+  if(!uw&&wMode!=='compact'){let spare=maxW-colW.reduce((a,b)=>a+b,0);colW.forEach((w,c)=>{if(AU.numC[c])return;let need=0;rows.forEach((r,ri)=>{if(ri<h0)return;const b=bold.has(ri)||keySet.has(ri)||rangeBoldAt(ri,c);const tr=st.tbTight?0:(String(r[c]).match(/[\u3400-\u9fff][A-Za-z0-9]|[A-Za-z0-9][\u3400-\u9fff]/g)||[]).length;const mx=/[\u3400-\u9fff]/.test(r[c])&&/[A-Za-z0-9]/.test(r[c])?1.12:1;need=Math.max(need,measureW(r[c],fs,b)*(b?1.08:1)*mx+tr*fs*.3/72+padOf(c)/72+.05);/* 中英交界留自動間距 */});
     if(need>w&&need-w<=spare+1e-6){spare-=need-w;colW[c]=need;}});}
   // 表頭也一樣：有空間就加寬到一行
   if(!uw&&wMode!=='compact'&&h0){let spare=maxW-colW.reduce((a,b)=>a+b,0);colW.forEach((w,c)=>{const t0=rows[0][c];const full=mw(t0,hfs,1);const need=full+padOf(c)/72+.05;if(need>w&&need-w<=spare+1e-6){spare-=need-w;colW[c]=need;return;}
@@ -2171,7 +2172,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
     boxes.push(Object.assign({color:h.C,kind:h.kind},h.type==='cell'?{type:'cell',r:h.r,c:h.c}:{type:h.type,i:h.i}));});
    ruleBoxes.forEach(b=>{const r=sourceRows.indexOf(b.r);if(r<0)return;box(cx0(b.c)+ins,ry0(r)+ins,colW[b.c]-2*ins,rowH[r]-2*ins,{line:b.color,lw:blw,r:rad,name:'條件框'});boxes.push({type:'cell',r,c:b.c,color:b.color,rule:1});});
    const b0=boxes.find(b=>!b.rule&&b.type!=='cell'),orphans=[];
-   sourceRows.forEach(ri=>rows[ri].forEach((t,c)=>{const str=String(t);if(!str.trim())return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri),av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0),ls=str.split('\n'),vis=x=>x.replace(/\s/g,'').length;
+   sourceRows.forEach(ri=>rows[ri].forEach((t,c)=>{const str=String(t);if(!str.trim())return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri)||rangeBoldAt(ri,c),av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0),ls=str.split('\n'),vis=x=>x.replace(/\s/g,'').length;
     if(ls.some(l=>mw(l,sz0,b)>av+.01))orphans.push({r:ri,c,t:str,why:'auto-wrap'});else if(ls.length>1&&vis(str)>4&&ls.some((l,i)=>vis(l)<=1||vis(l)<=2&&i>0&&!/[：:；;，,、)）\s]$/.test(ls[i-1])&&!/^[（(]/.test(l)))orphans.push({r:ri,c,t:str,why:'orphan'});}));
    if(T.hcol){const tint=legacyLK.hdr&&legacyLK.hdr.fill?mix(P,'FFFFFF',.88):mix(G.fill||'F2F2F2','FFFFFF',.2);tb.cells.forEach((r,ri)=>{const raw=sourceRows[ri];if(raw<h0||AU.section[raw])return;const cl=r[0];if(!cl)return;cl.bold=true;(cl.runs||[]).forEach(x=>{x.o=Object.assign({},x.o,{bold:true});});if(!cl.fill&&!rangeAt(raw,0))cl.fill=tint;});}
    // The new deep theme fill has a light top rule on each visible region/page.
@@ -2187,7 +2188,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
    const edgeOffsets=[['bT',-1,0],['bR',0,1],['bB',1,0],['bL',0,-1]];
    for(const [order,mark] of his.entries()){const family=tableHighlightFamily(mark);if(mark.type!=='range'||family==='fill')continue;const preset=tableHighlightPreset(mark.presetId,st,family);
     tb.cells.forEach((row,ri)=>row.forEach((cell,c)=>{const r=sourceRows[ri];for(const [edge,dr,dc]of edgeOffsets){if(!tableRangeEdge(mark,r,c,edge))continue;
-     const neighbor=tb.cells[ri+dr]&&tb.cells[ri+dr][c+dc];cell[edge]={c:tableHighlightStroke(preset.stroke,[cell.fill,neighbor&&neighbor.fill]),w:preset.borderWidth};if(!cell.highlightEdges)cell.highlightEdges=[];if(!cell.highlightEdges.includes(edge))cell.highlightEdges.push(edge);if(!cell.highlightOrder)cell.highlightOrder={};cell.highlightOrder[edge]=order;
+     const neighbor=tb.cells[ri+dr]&&tb.cells[ri+dr][c+dc];cell[edge]={c:tableHighlightStroke(preset.stroke,[cell.fill,neighbor&&neighbor.fill]),w:tableHighlightBorderWidth(mark)};if(!cell.highlightEdges)cell.highlightEdges=[];if(!cell.highlightEdges.includes(edge))cell.highlightEdges.push(edge);if(!cell.highlightOrder)cell.highlightOrder={};cell.highlightOrder[edge]=order;
     }}));
    }
    const layoutOverflow=!!exportReason||cur.items.some(it=>it.t!=='ln'&&(it.x<-.01||it.y<-.01||it.x+it.w>canvasW+.01||it.y+it.h>canvasH+.01));
@@ -2533,6 +2534,8 @@ const TABLE_HIGHLIGHT_FAMILIES=Object.freeze([
  Object.freeze({id:'fill',label:'底色',width:1.5}),Object.freeze({id:'outline',label:'外框',width:2.25}),
  Object.freeze({id:'underline',label:'底線',width:2}),Object.freeze({id:'side',label:'側線',width:3})
 ]);
+const TABLE_HIGHLIGHT_BORDER_WIDTHS=Object.freeze([1,1.5,2.25,3]);
+function tableHighlightBorderWidth(mark){const family=tableHighlightFamily(mark);return family==='outline'&&TABLE_HIGHLIGHT_BORDER_WIDTHS.includes(mark&&mark.borderWidth)?mark.borderWidth:TABLE_HIGHLIGHT_FAMILIES.find(f=>f.id===family)?.width;}
 const TABLE_HIGHLIGHT_STROKES=Object.freeze({'theme-light':'52779B','theme-dark':'1F4E79',mint:'267A76',amber:'9B6B12',rose:'A14553',slate:'666666'});
 // Missing styleId is the legacy fill schema. Reject unknown values, never hydrate CSS.
 function tableHighlightFamily(value){const id=typeof value==='object'&&value?value.styleId??value.family??'fill':value??'fill';return TABLE_HIGHLIGHT_FAMILIES.some(f=>f.id===id)?id:null;}
@@ -2572,7 +2575,7 @@ function tableRangeEdgeRegions(mark){const family=tableHighlightFamily(mark),q=(
  return family==='outline'?[q(mark.r0,mark.c0,mark.r0,mark.c1),q(mark.r1,mark.c0,mark.r1,mark.c1),q(mark.r0,mark.c0,mark.r1,mark.c0),q(mark.r0,mark.c1,mark.r1,mark.c1)]:family==='underline'?[q(mark.r1,mark.c0,mark.r1,mark.c1)]:family==='side'?[q(mark.r0,mark.c0,mark.r1,mark.c0)]:[];
 }
 function tableMarkPaintRegions(mark,nR,nC){const regions=tableMarkRegions(mark,nR,nC);if(mark.type!=='range'||tableHighlightFamily(mark)==='fill')return regions;
- return regions.flatMap(q=>tableRangeEdgeRegions(mark).map(edge=>tableRangeIntersection(q,edge)).filter(Boolean));
+ return regions.flatMap(q=>tableRangeEdgeRegions(mark).map(edge=>tableRangeIntersection(q,edge)).filter(Boolean)).concat(tableMarkBoldRegions(mark,nR,nC));
 }
 // Prefer the exact token. If an edge touches dark cells, choose the closest tint or
 // shade meeting 3:1 against both sides; retain the strongest minimum if impossible.
@@ -2629,6 +2632,36 @@ function tableMarkContains(mark,r,c){if(!mark||!Number.isInteger(r)||!Number.isI
 function tableMarkRegions(mark,nR,nC){const bounds=tableMarkBounds(mark,nR,nC);let regions=bounds?[bounds]:[];
  for(const q of mark&&mark.excludes||[])regions=regions.flatMap(a=>tableRangeSubtract(a,q));return regions;
 }
+// Optional per-mark text emphasis never forces regular weight. Regions describe
+// only overrides inside an existing mark; they never add a fill or an inner edge.
+function tableMarkBoldAt(mark,r,c){return mark?.type==='range'&&tableMarkContains(mark,r,c)&&(mark.bold===true||(mark.boldRegions||[]).some(q=>r>=q.r0&&r<=q.r1&&c>=q.c0&&c<=q.c1));}
+function tableMarkBoldRegions(mark,nR,nC){if(mark?.type!=='range')return[];const coverage=tableMarkRegions(mark,nR,nC);if(mark.bold===true)return coverage;
+ return coverage.flatMap(a=>(mark.boldRegions||[]).map(q=>tableRangeIntersection(a,q)).filter(Boolean));
+}
+function tableRegionUnion(regions){const out=[];for(const region of regions){let rest=[region];for(const old of out)rest=rest.flatMap(q=>tableRangeSubtract(q,old));out.push(...rest);}return out;}
+function tableRegionsCover(coverage,regions){let rest=coverage;for(const q of regions)rest=rest.flatMap(a=>tableRangeSubtract(a,q));return !rest.length;}
+function tableWithBoldRegions(mark,regions,nR,nC){const next=Object.assign({},mark);delete next.bold;delete next.boldRegions;const coverage=tableMarkRegions(mark,nR,nC),bold=tableRegionUnion(coverage.flatMap(a=>regions.map(q=>tableRangeIntersection(a,q)).filter(Boolean)));
+ if(bold.length){if(tableRegionsCover(coverage,bold))next.bold=true;else next.boldRegions=bold;}return next;
+}
+function tableRangeBoldState(T,range){T=T||{};const source=tableSource(T),q=tableNormalizeRange(range,source.nR,source.nC);if(!q)return null;
+ const marks=tableMarks(T,source.nC,source.nR).his.filter(h=>h.type==='range'),coverage=marks.flatMap(h=>tableMarkRegions(h,source.nR,source.nC).map(a=>tableRangeIntersection(a,q)).filter(Boolean));if(!coverage.length)return null;
+ const bold=marks.flatMap(h=>tableMarkBoldRegions(h,source.nR,source.nC).map(a=>tableRangeIntersection(a,q)).filter(Boolean));return !bold.length?false:tableRegionsCover(coverage,bold)?true:'mixed';
+}
+function tableSetRangeBold(T,range,bold){T=T||{};const source=tableSource(T),his=tableMarks(T,source.nC,source.nR).his,q=tableNormalizeRange(range,source.nR,source.nC);
+ if(!q)return{his,changed:false,error:'INVALID_RANGE'};if(typeof bold!=='boolean')return{his,changed:false,error:'INVALID_BOLD'};
+ const next=his.map(mark=>{if(mark.type!=='range')return mark;const coverage=tableMarkRegions(mark,source.nR,source.nC),hit=coverage.map(a=>tableRangeIntersection(a,q)).filter(Boolean);if(!hit.length)return mark;
+  const before=tableMarkBoldRegions(mark,source.nR,source.nC);return tableWithBoldRegions(mark,bold?[...before,...hit]:before.flatMap(a=>tableRangeSubtract(a,q)),source.nR,source.nC);}).filter(mark=>tableMarkPaintRegions(mark,source.nR,source.nC).length);
+ return{his:next,changed:JSON.stringify(next)!==JSON.stringify(his)};
+}
+function tableRangeBorderWidth(T,range){T=T||{};const source=tableSource(T),q=tableNormalizeRange(range,source.nR,source.nC);if(!q)return null;
+ const mark=tableMarks(T,source.nC,source.nR).his.slice().reverse().find(h=>h.type==='range'&&tableHighlightFamily(h)==='outline'&&['r0','c0','r1','c1'].every(k=>h[k]===q[k]));return mark?tableHighlightBorderWidth(mark):null;
+}
+function tableSetRangeBorderWidth(T,range,width){T=T||{};const source=tableSource(T),his=tableMarks(T,source.nC,source.nR).his,q=tableNormalizeRange(range,source.nR,source.nC);
+ if(!q)return{his,changed:false,error:'INVALID_RANGE'};if(!TABLE_HIGHLIGHT_BORDER_WIDTHS.includes(width))return{his,changed:false,error:'INVALID_BORDER_WIDTH'};
+ let index=-1;for(let i=his.length-1;i>=0;i--)if(his[i].type==='range'&&tableHighlightFamily(his[i])==='outline'&&['r0','c0','r1','c1'].every(k=>his[i][k]===q[k])){index=i;break;}
+ if(index<0)return{his,changed:false,error:'NO_OUTLINE_RANGE'};if(tableHighlightBorderWidth(his[index])===width)return{his,changed:false};
+ const next=his.slice(),mark=Object.assign({},his[index]);if(width===2.25)delete mark.borderWidth;else mark.borderWidth=width;next[index]=mark;return{his:next,changed:true};
+}
 function tableRangeWinner(his,r,c,family){for(let i=(his||[]).length-1;i>=0;i--)if(his[i].type==='range'&&(!family||tableHighlightFamily(his[i])===family)&&tableMarkContains(his[i],r,c))return his[i];return null;}
 function tableClearRange(T,range){T=T||{};const source=tableSource(T),his=tableMarks(T,source.nC,source.nR).his,q=tableNormalizeRange(range,source.nR,source.nC);
  if(!q)return{his,changed:false,error:'INVALID_RANGE'};
@@ -2646,7 +2679,7 @@ function tableRangeUsesPreset(his,range,presetId,nR,nC){let remaining=[range];
  return !remaining.length;
 }
 // Line no-op identity includes family AND actual perimeter, not filled-area coverage.
-function tableRangeUsesLine(his,range,presetId,family){const edges=[];
+function tableRangeUsesLine(his,range,presetId,family,width){const edges=[];
  // V2 fill tones share exactly one line paint; preserve imported IDs on no-op.
  const lineKey=id=>{const p=TABLE_HIGHLIGHT_PRESETS_V2.find(p=>p.id===id)||TABLE_HIGHLIGHT_PRESETS_V3.find(p=>p.id===id);return p?'v2-'+p.hue:id;},wanted=lineKey(presetId);
  if(family==='outline'){for(let c=range.c0;c<=range.c1;c++){edges.push([range.r0,c,'bT'],[range.r1,c,'bB']);}for(let r=range.r0;r<=range.r1;r++){edges.push([r,range.c0,'bL'],[r,range.c1,'bR']);}}
@@ -2654,18 +2687,22 @@ function tableRangeUsesLine(his,range,presetId,family){const edges=[];
  else for(let r=range.r0;r<=range.r1;r++)edges.push([r,range.c0,'bL']);
  return edges.every(([r,c,edge])=>{const [dr,dc,opposite]={bT:[-1,0,'bB'],bR:[0,1,'bL'],bB:[1,0,'bT'],bL:[0,-1,'bR']}[edge];
   for(let i=his.length-1;i>=0;i--){const h=his[i];if(h.type!=='range')continue;
-   if(tableRangeEdge(h,r,c,edge)||tableRangeEdge(h,r+dr,c+dc,opposite))return lineKey(h.presetId)===wanted&&tableHighlightFamily(h)===family;
+   if(tableRangeEdge(h,r,c,edge)||tableRangeEdge(h,r+dr,c+dc,opposite))return lineKey(h.presetId)===wanted&&tableHighlightFamily(h)===family&&tableHighlightBorderWidth(h)===width;
   }return false;});
 }
-function tableApplyRange(T,range,presetId,family='fill'){T=T||{};const source=tableSource(T),his=tableMarks(T,source.nC,source.nR).his,q=tableNormalizeRange(range,source.nR,source.nC);family=tableHighlightFamily(family);
+function tableApplyRange(T,range,presetId,family='fill',options={}){T=T||{};options=options||{};const source=tableSource(T),his=tableMarks(T,source.nC,source.nR).his,q=tableNormalizeRange(range,source.nR,source.nC);family=tableHighlightFamily(family);
  if(!q)return{his,changed:false,error:'INVALID_RANGE'};if(!family)return{his,changed:false,error:'INVALID_FAMILY'};if(!tableHighlightPreset(presetId))return{his,changed:false,error:'INVALID_PRESET'};
- if(family==='fill'?tableRangeUsesPreset(his,q,presetId,source.nR,source.nC):tableRangeUsesLine(his,q,presetId,family))return{his,changed:false};
+ if(options.bold!==undefined&&typeof options.bold!=='boolean')return{his,changed:false,error:'INVALID_BOLD'};
+ const borderWidth=family==='outline'?(options.borderWidth??2.25):TABLE_HIGHLIGHT_FAMILIES.find(f=>f.id===family).width;if(family==='outline'&&!TABLE_HIGHLIGHT_BORDER_WIDTHS.includes(borderWidth))return{his,changed:false,error:'INVALID_BORDER_WIDTH'};
+ const samePaint=family==='fill'?tableRangeUsesPreset(his,q,presetId,source.nR,source.nC):tableRangeUsesLine(his,q,presetId,family,borderWidth);
+ if(samePaint&&(options.bold===undefined||tableRangeBoldState(Object.assign({},T,{his:his.filter(h=>h.type==='range'&&tableHighlightFamily(h)===family)}),q)===options.bold))return{his,changed:false};
  // Fill retains its historical replacement behavior. Lines only write their edges,
  // keeping underlying fill/text and other families' edges. Exact same-family range
  // replacement compacts obsolete paint without consuming another range slot.
  const previous=family==='fill'?tableClearRange(T,q).his:his.filter(h=>!(h.type==='range'&&tableHighlightFamily(h)===family&&['r0','c0','r1','c1'].every(k=>h[k]===q[k])));
  if(previous.filter(h=>h.type==='range').length>=TABLE_HIGHLIGHT_LIMIT)return{his,changed:false,error:'MARK_LIMIT'};
- const mark=Object.assign({type:'range'},q,{presetId,color:'auto',kind:'focus'});if(family!=='fill')mark.styleId=family;
+ let mark=Object.assign({type:'range'},q,{presetId,color:'auto',kind:'focus'});if(family!=='fill')mark.styleId=family;if(options.bold===true)mark.bold=true;if(family==='outline'&&borderWidth!==2.25)mark.borderWidth=borderWidth;
+ if(options.bold===undefined)mark=tableWithBoldRegions(mark,his.flatMap(h=>tableMarkBoldRegions(h,source.nR,source.nC)),source.nR,source.nC);
  const next=[...previous,mark];return{his:next,changed:JSON.stringify(next)!==JSON.stringify(his)};
 }
 /* nR/nC are the dimensions AFTER inserting/removing one row or column. Insertions
@@ -2679,7 +2716,7 @@ function tableShiftMarks(his,axis,index,remove,nR,nC){if(!['row','col'].includes
   if(mark.type==='range'){out=rect(out);if(!out)return null;}
   else if(mark.type===axis){out.i=point(mark.i);if(out.i===null)return null;}
   else if(mark.type==='cell'){out[coord]=point(mark[coord]);if(out[coord]===null)return null;}
-  if(mark.excludes)out.excludes=mark.excludes.map(rect).filter(Boolean);return out;}).filter(Boolean);
+  if(mark.excludes)out.excludes=mark.excludes.map(rect).filter(Boolean);if(mark.boldRegions)out.boldRegions=mark.boldRegions.map(rect).filter(Boolean);return out;}).filter(Boolean);
  return tableMarks({his:next},nC,nR).his;
 }
 function tNumVal(t){t=String(t==null?'':t).trim();if(!tIsNum(t))return NaN;const m=t.replace(/[,，\s]/g,'').match(/\d+(?:\.\d+)?|\.\d+/);if(!m)return NaN;
@@ -2693,6 +2730,8 @@ function tableMarks(T,nC,nR){T=T||{};const int=v=>v!==null&&v!==''&&typeof v!=='
   else mark=type==='cell'?{type,r:int(h.r),c:int(h.c),color,kind}:{type,i:int(h.i),color,kind};
   const bounds=tableMarkBounds(mark,nR,nC);if(!bounds)return null;
   if(Array.isArray(h.excludes)){const excludes=h.excludes.map(q=>tableRangeIntersection(bounds,tableNormalizeRange(q,nR,nC))).filter(Boolean);if(excludes.length)mark.excludes=excludes;}
+  if(type==='range'){if(tableHighlightFamily(mark)==='outline'&&TABLE_HIGHLIGHT_BORDER_WIDTHS.includes(h.borderWidth)&&h.borderWidth!==2.25)mark.borderWidth=h.borderWidth;
+   const regions=h.bold===true?tableMarkRegions(mark,nR,nC):Array.isArray(h.boldRegions)?h.boldRegions.map(q=>tableRangeIntersection(bounds,tableNormalizeRange(q,nR,nC))).filter(Boolean):[];if(regions.length)mark=tableWithBoldRegions(mark,regions,nR,nC);}
   return tableMarkPaintRegions(mark,nR,nC).length?mark:null;}).filter(Boolean);
  // Imported snapshots are never silently truncated. Mutation helpers enforce the
  // visual range limit atomically, separate from preserved legacy semantics,
@@ -3236,6 +3275,6 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
  if(p.tbPanel&&!p.tbLook)out.tbLook='card';out.tbCard='white';
  return out;}
-const api={SCHEME_CATALOGUE_KEYS,SCHEME_CATALOGUE_STYLES,TABLE_SIZING_DEFAULTS,TABLE_SIZING_KEYS,tableSizingOf,tableSizingFontOf,adoptTableSizing,iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,TABLE_HIGHLIGHT_HUES,TABLE_HIGHLIGHT_PRESETS_V2,TABLE_HIGHLIGHT_PRESETS_V3,TABLE_HIGHLIGHT_ROLES,TABLE_HIGHLIGHT_PRESETS_V4,TABLE_HIGHLIGHT_FAMILIES,tableHighlightFamily,tableHighlightStroke,tableResolvedBorders,tableRangeEdge,tableHighlightPreset,tableHighlightPresetId,tableHighlightRolePresets,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,TABLE_APPEARANCE_KEYS,TABLE_APPEARANCE_DEFAULTS,tableAppearanceOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
+const api={SCHEME_CATALOGUE_KEYS,SCHEME_CATALOGUE_STYLES,TABLE_SIZING_DEFAULTS,TABLE_SIZING_KEYS,tableSizingOf,tableSizingFontOf,adoptTableSizing,iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,TABLE_HIGHLIGHT_HUES,TABLE_HIGHLIGHT_PRESETS_V2,TABLE_HIGHLIGHT_PRESETS_V3,TABLE_HIGHLIGHT_ROLES,TABLE_HIGHLIGHT_PRESETS_V4,TABLE_HIGHLIGHT_FAMILIES,TABLE_HIGHLIGHT_BORDER_WIDTHS,tableHighlightBorderWidth,tableRangeBorderWidth,tableSetRangeBorderWidth,tableRangeBoldState,tableSetRangeBold,tableHighlightFamily,tableHighlightStroke,tableResolvedBorders,tableRangeEdge,tableHighlightPreset,tableHighlightPresetId,tableHighlightRolePresets,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,TABLE_APPEARANCE_KEYS,TABLE_APPEARANCE_DEFAULTS,tableAppearanceOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);
