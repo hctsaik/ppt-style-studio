@@ -5,7 +5,7 @@ const { JSDOM } = require('jsdom');
 const JSZip = require('jszip'), PptxGenJS = require('pptxgenjs');
 const D = require('../deck');
 const clone = x => JSON.parse(JSON.stringify(x));
-const fixed = { blue:['D7E5F5','285785'], green:['D8EACF','356343'], red:['F3D0D0','8B3535'], yellow:['F6E4AD','745313'] };
+const fixed = { blue:['D7E5F5','285785'], green:['D8EACF','356343'], red:['F3D0D0','8B3535'], yellow:['F6E4AD','745313'], gray:['E6E6E6','595959'] };
 const families = ['fill','outline','underline','side'];
 const themes = [...D.PRESETS, ...['FFFFFF','000000','FFFFCC','FFE0F0','00FFFF'].map(P=>({ ...D.PRESETS[0], P }))];
 const table = { header:true, lastTotal:true, rows:[['Item','Value','Code'],['Alpha','00123','9007199254740993'],['Total','0.1234567890','last\nline']] };
@@ -43,12 +43,12 @@ async function assertSerializations(model, theme) {
  dom.window.close();htmlDom.window.close();
 }
 (async()=>{
- await check('five whitelisted hues, ten versioned fills; legacy catalog is untouched',()=>{
-  assert.deepEqual(D.TABLE_HIGHLIGHT_HUES.map(h=>h.id),['theme','blue','green','red','yellow']);
+ await check('six whitelisted hues, twelve v2 fills; legacy catalog is untouched',()=>{
+  assert.deepEqual(D.TABLE_HIGHLIGHT_HUES.map(h=>h.id),['theme','blue','green','red','yellow','gray']);
   assert.deepEqual(D.TABLE_HIGHLIGHT_PRESETS.map(p=>p.id),['theme-light','theme-dark','mint','amber','rose','slate']);
-  assert.equal(D.TABLE_HIGHLIGHT_PRESETS_V2.length,10);
+  assert.equal(D.TABLE_HIGHLIGHT_PRESETS_V2.length,12);
   assert(D.TABLE_HIGHLIGHT_HUES.every(Object.isFrozen));assert(D.TABLE_HIGHLIGHT_PRESETS_V2.every(Object.isFrozen));
-  for(const p of D.TABLE_HIGHLIGHT_PRESETS_V2){assert.match(p.id,/^v2-(theme|blue|green|red|yellow)-(soft|deep)$/);assert(D.tableHighlightPreset(p.id));}
+  for(const p of D.TABLE_HIGHLIGHT_PRESETS_V2){assert.match(p.id,/^v2-(theme|blue|green|red|yellow|gray)-(soft|deep)$/);assert(D.tableHighlightPreset(p.id));}
   for(const id of ['v2-blue','v2-blue-darker','v2-slate-soft','v3-blue-soft','v2-red-soft\" onclick=\"bad'])assert.equal(D.tableHighlightPreset(id),null);
  });
  await check('fixed colors are exact and invariant across every theme; both fill tones meet 4.5:1',()=>{
@@ -87,7 +87,7 @@ async function assertSerializations(model, theme) {
    }
   }
  });
- await check('native editable PPTX, SVG and HTML match model paint for all 40 new palette/family combinations',async()=>{
+ await check('native editable PPTX, SVG and HTML match model paint for all 48 v2 palette/family combinations',async()=>{
   for(const preset of D.TABLE_HIGHLIGHT_PRESETS_V2)for(const family of families)await assertSerializations(modelFor(preset.id,family,D.PRESETS[0]),D.PRESETS[0]);
  });
  await check('all 24 legacy palette/family combinations retain native/SVG/HTML paint and saved IDs',async()=>{
