@@ -17,7 +17,9 @@
     "test:table-emphasis": "node tools/table_emphasis_tab_test.js && STUDIO_HTML=PPT-Style-Studio.html node tools/table_emphasis_tab_test.js",
     "test:table-appearance": "node tools/table_appearance_test.js && node tools/table_appearance_ui_test.js && STUDIO_HTML=PPT-Style-Studio.html node tools/table_appearance_ui_test.js",
     "test:table-palette": "node tools/table_highlight_palette_test.js && node tools/table_range_ui_test.js && STUDIO_HTML=PPT-Style-Studio.html node tools/table_range_ui_test.js",
-    "test:page-footer": "node tools/page_footer_test.js && STUDIO_HTML=PPT-Style-Studio.html node tools/page_footer_test.js"
+    "test:page-footer": "node tools/page_footer_test.js && STUDIO_HTML=PPT-Style-Studio.html node tools/page_footer_test.js",
+    "test:table-mobile-ui": "node tools/table_mobile_layout_test.js",
+    "preview:table-mobile": "node tools/table_mobile_layout_test.js --serve"
   },
   "keywords": [],
   "author": "",

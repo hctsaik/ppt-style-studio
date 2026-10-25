@@ -96,15 +96,33 @@ async function main(){
    assert.equal(state(),raw);assert.equal(w.__rangeTestEval('JSON.stringify(TM)'),model);assert.equal(w.__rangeTestEval('JSON.stringify(HIST.a)'),hist);
   }}finally{P.getBoundingClientRect=rect;for(const [k,q]of descriptors){if(q)Object.defineProperty(canvas,k,q);else delete canvas[k];}click('.tzoom [data-z="fit"]');}
  });
- await test('mobile fit uses bounded visible height, closes settings, and stays content-independent',async()=>{
+ await test('mobile preview keeps readable text and scrolls instead of shrinking into the sheet',async()=>{
   const media=w.matchMedia,canvas=$('#tCanvas'),ins=$('#tIns'),cr=canvas.getBoundingClientRect,ir=ins.getBoundingClientRect,descriptors=['clientWidth','clientHeight'].map(k=>[k,Object.getOwnPropertyDescriptor(canvas,k)]);
+  let width=375,height=768,header=100,panel=118;
   w.matchMedia=q=>({matches:q.includes('max-width:900px'),media:q,addListener(){},addEventListener(){}});
-  canvas.getBoundingClientRect=()=>({left:0,top:100,width:375,height:parseFloat(canvas.style.height)||0});ins.getBoundingClientRect=()=>({left:0,top:ins.classList.contains('open')?210:650,width:375,height:ins.classList.contains('open')?558:118});
-  Object.defineProperty(canvas,'clientWidth',{configurable:true,get:()=>375});Object.defineProperty(canvas,'clientHeight',{configurable:true,get:()=>parseFloat(canvas.style.height)||0});
-  try{ins.classList.add('open');click('.tzoom [data-z="fit"]');await sleep(60);assert(!ins.classList.contains('open'));assert.equal(canvas.style.height,'550px');const v=w.__studio.tableViewport;assert(v.height<=v.availableHeight&&v.width<=v.availableWidth);
-   w.__rangeTestEval(`T.rows.push(...Array.from({length:80},(_,i)=>['row '+i,'1','2','3','4']));saveT();renderTable(true);`);assert.equal(canvas.style.height,'550px');const tall=w.__studio.tableViewport;assert(tall.height<=tall.availableHeight+.001);assert.equal(w.__studio.table.pageCount,1);
+  canvas.getBoundingClientRect=()=>({left:0,top:header,width,height:parseFloat(canvas.style.height)||0});ins.getBoundingClientRect=()=>({left:0,top:height-panel,width,height:panel});
+  Object.defineProperty(canvas,'clientWidth',{configurable:true,get:()=>width});Object.defineProperty(canvas,'clientHeight',{configurable:true,get:()=>parseFloat(canvas.style.height)||0});
+  const floor=()=>{const min=w.__rangeTestEval("Math.min(...tableSlide().items.find(i=>i.t==='tbl').cells.flat().flatMap(c=>c.runs.filter(r=>r.t.trim()).map(r=>r.o.size)))");assert(min*w.__studio.tableViewport.pixelsPerInch/72>=12-.001);};
+  try{ins.classList.add('open');click('.tzoom [data-z="fit"]');await sleep(60);assert(!ins.classList.contains('open'));assert.equal(canvas.style.height,'550px');floor();
+   const source=state(),model=w.__rangeTestEval('JSON.stringify(TM)'),history=w.__rangeTestEval('JSON.stringify(HIST.a)');
+   for(const [vw,vh,head] of [[360,740,105],[390,844,105],[412,915,105],[740,360,53]]){
+    width=vw;height=vh;header=head;panel=Math.round(vh*.45);w.__rangeTestEval('fitPrev();applyView(tableMeta())');const open=w.__studio.tableViewport;floor();assert(open.width>=open.availableWidth-.001);
+    panel=110;w.__rangeTestEval('fitPrev();applyView(tableMeta())');assert.equal(w.__studio.tableViewport.pixelsPerInch,open.pixelsPerInch,'opening settings must not shrink the table');floor();
+   }
+   assert.equal(state(),source);assert.equal(w.__rangeTestEval('JSON.stringify(TM)'),model);assert.equal(w.__rangeTestEval('JSON.stringify(HIST.a)'),history);
+   w.__rangeTestEval(`T.rows.push(...Array.from({length:80},(_,i)=>['row '+i,'1','2','3','4']));saveT();renderTable(true);`);floor();const tall=w.__studio.tableViewport;assert(tall.height>tall.availableHeight);assert.equal(w.__studio.table.pageCount,1);
    click('.tzoom [data-z="100"]');assert.equal(w.__studio.tableViewport.pixelsPerInch,90);assert(w.__studio.tableViewport.height>w.__studio.tableViewport.availableHeight);
   }finally{w.matchMedia=media;canvas.getBoundingClientRect=cr;ins.getBoundingClientRect=ir;for(const [k,q]of descriptors){if(q)Object.defineProperty(canvas,k,q);else delete canvas[k];}click('.tzoom [data-z="fit"]');}
+ });
+ await test('responsive advanced disclosure preserves active focus and explicit mobile expansion',()=>{
+  const media=w.matchMedia,more=$('#tMoreOptions');let mobile=false;
+  w.matchMedia=q=>({matches:mobile&&q.includes('max-width:900px'),media:q,addListener(){},addEventListener(){}});
+  try{
+   w.__rangeTestEval('syncMobileTableUI()');assert(more.open);$('#tStyle').focus();mobile=true;w.__rangeTestEval('syncMobileTableUI()');assert(more.open,'cannot hide the focused control');assert($('#tIns').classList.contains('open'),'inspector must also expose the focused control');assert.strictEqual(d.activeElement,$('#tStyle'));
+   mobile=false;w.__rangeTestEval('syncMobileTableUI()');$('#tTabLook').focus();mobile=true;w.__rangeTestEval('syncMobileTableUI()');assert(!more.open);more.open=true;w.__rangeTestEval('syncMobileTableUI()');assert(more.open,'ordinary re-fit must not recollapse explicit choice');
+   w.__rangeTestEval("showSec('look')");assert.equal($('#tTabLook').getAttribute('aria-expanded'),'true');click('#tTabLook');assert.equal($('#tTabLook').getAttribute('aria-expanded'),'false');click('#tTabLook');assert.equal($('#tTabLook').getAttribute('aria-expanded'),'true');
+   mobile=false;w.__rangeTestEval('syncMobileTableUI()');assert(more.open);assert(!$('#tTabLook').hasAttribute('aria-expanded'));
+  }finally{w.matchMedia=media;w.__rangeTestEval('syncMobileTableUI()');}
  });
  await test('returning to Data hides every H/L control and cancels hover without changing the document',async()=>{cell(1,1).click();click('[data-range-action="palette"]');pointer($('[data-range-preset="v2-red-soft"]'),'pointerover',0,0);const raw=state();click('.tinsTabs [data-t="data"]');assert.equal(w.__rangeTestEval('RANGE_PREVIEW'),null);assert.equal(state(),raw);const look=$('.tsec[data-sec="emphasis"]');assert(look.contains($('#tHLLauncher'))&&look.contains($('#tSelection')));assert.equal(w.getComputedStyle(look).display,'none');assert($('#tPop').hidden);w.__rangeTestEval('renderTable(true)');assert($('.tsec[data-sec="data"]').classList.contains('on'));assert.equal(w.getComputedStyle(look).display,'none');});
  await test('Data paste area mirrors canonical raw strings, inline edits and undo/redo without a second draft',async()=>{
