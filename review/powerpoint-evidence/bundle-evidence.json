@@ -1,0 +1,9 @@
+{
+  "source": "repository browser bundles",
+  "pptxgenjs": "3.12.0",
+  "jszip": "3.10.2",
+  "sha256": {
+    "pptxgen.min.js": "36dda044a99c3c83059ba011a08c361b506aeed5cb30733a7252f6b8593246b4",
+    "jszip.min.js": "0d8c303d7ac0c36b9903431481aa85ad0d1234a81182f6e96b7b687f385dae1f"
+  }
+}

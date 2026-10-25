@@ -1,0 +1,6620 @@
+{
+  "summary": {
+    "engine": "Microsoft PowerPoint COM",
+    "executableVersion": "16.0.20527.20088",
+    "decks": 30,
+    "slides": 102,
+    "checks": 1252,
+    "passed": 1252,
+    "failures": [],
+    "notes": [
+      "Font.Name is the requested font, not proof of the effective fallback font. Installed font registry and visual CJK glyph checks supplement this observation.",
+      "Non-table decks use native inventory with three shape samples per slide; navy catalogue also has a separate complete deep inspection. PNGs were rendered by Microsoft PowerPoint, not an alternate renderer.",
+      "ReadOnly COM opening and expected filename are not a substitute for verifying every UI repair dialog; visible UI smoke is reported separately."
+    ],
+    "blockedFixtures": [
+      {
+        "fixture": "45-percent-long-unbreakable-number",
+        "reason": "45% 寬度無法容納目前的欄數或不可拆開的數字。預覽保留完整內容，尚未套用指定寬度；請改用 90% 或自動，或減少欄數。未縮字、未截斷，已停用 PPTX 匯出。"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "passed": true,
+      "label": "table-navy.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: PowerPoint retained test filename",
+      "detail": "table-navy.pptx"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: editable PowerPoint table exists"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: native table has 5 rows × 3 columns"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: native column widths match exported geometry",
+      "detail": [
+        196.63873291015625,
+        347.2965393066406,
+        320.0430603027344
+      ]
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: native row heights match exported geometry",
+      "detail": [
+        35.568031311035156,
+        31.824016571044922,
+        51.79999923706055,
+        51.79999923706055,
+        31.824016571044922
+      ]
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.624961853027344,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R1C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 53.625038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 172,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R2C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 54.375038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R3C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 296,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 242.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R4C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 24.5,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 225.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-navy.pptx: R5C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-navy.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-navy.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-navy.pptx: PowerPoint retained test filename",
+      "detail": "catalogue-navy.pptx"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-navy.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-navy.pptx/slide1: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-navy.pptx/slide1: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-navy.pptx/slide2: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-navy.pptx/slide2: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-navy.pptx/slide3: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-navy.pptx/slide3: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-navy.pptx/slide4: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-navy.pptx/slide4: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: PowerPoint retained test filename",
+      "detail": "table-wire.pptx"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: editable PowerPoint table exists"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: native table has 5 rows × 3 columns"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: native column widths match exported geometry",
+      "detail": [
+        196.63873291015625,
+        347.2965393066406,
+        320.0430603027344
+      ]
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: native row heights match exported geometry",
+      "detail": [
+        35.568031311035156,
+        31.824016571044922,
+        51.79999923706055,
+        51.79999923706055,
+        31.824016571044922
+      ]
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.624961853027344,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R1C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 53.625038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 172,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R2C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 54.375038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R3C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 296,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 242.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R4C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 24.5,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 225.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wire.pptx: R5C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wire.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wire.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wire.pptx: PowerPoint retained test filename",
+      "detail": "catalogue-wire.pptx"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wire.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wire.pptx/slide1: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wire.pptx/slide1: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wire.pptx/slide2: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wire.pptx/slide2: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wire.pptx/slide3: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wire.pptx/slide3: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wire.pptx/slide4: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wire.pptx/slide4: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: PowerPoint retained test filename",
+      "detail": "table-green.pptx"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: editable PowerPoint table exists"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: native table has 5 rows × 3 columns"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: native column widths match exported geometry",
+      "detail": [
+        196.63873291015625,
+        347.2965393066406,
+        320.0430603027344
+      ]
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: native row heights match exported geometry",
+      "detail": [
+        35.568031311035156,
+        31.824016571044922,
+        51.79999923706055,
+        51.79999923706055,
+        31.824016571044922
+      ]
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.624961853027344,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R1C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 53.625038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 172,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R2C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 54.375038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R3C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 296,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 242.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R4C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 24.5,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 225.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-green.pptx: R5C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-green.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-green.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-green.pptx: PowerPoint retained test filename",
+      "detail": "catalogue-green.pptx"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-green.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-green.pptx/slide1: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-green.pptx/slide1: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-green.pptx/slide2: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-green.pptx/slide2: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-green.pptx/slide3: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-green.pptx/slide3: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-green.pptx/slide4: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-green.pptx/slide4: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: PowerPoint retained test filename",
+      "detail": "table-wine.pptx"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: editable PowerPoint table exists"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: native table has 5 rows × 3 columns"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: native column widths match exported geometry",
+      "detail": [
+        196.63873291015625,
+        347.2965393066406,
+        320.0430603027344
+      ]
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: native row heights match exported geometry",
+      "detail": [
+        35.568031311035156,
+        31.824016571044922,
+        51.79999923706055,
+        51.79999923706055,
+        31.824016571044922
+      ]
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.624961853027344,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R1C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 53.625038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 172,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R2C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 54.375038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R3C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 296,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 242.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R4C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 24.5,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 225.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-wine.pptx: R5C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wine.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wine.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wine.pptx: PowerPoint retained test filename",
+      "detail": "catalogue-wine.pptx"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wine.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wine.pptx/slide1: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wine.pptx/slide1: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wine.pptx/slide2: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wine.pptx/slide2: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wine.pptx/slide3: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wine.pptx/slide3: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wine.pptx/slide4: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-wine.pptx/slide4: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: PowerPoint retained test filename",
+      "detail": "table-custom.pptx"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: editable PowerPoint table exists"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: native table has 5 rows × 3 columns"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: native column widths match exported geometry",
+      "detail": [
+        196.63873291015625,
+        347.2965393066406,
+        320.0430603027344
+      ]
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: native row heights match exported geometry",
+      "detail": [
+        35.568031311035156,
+        31.824016571044922,
+        51.79999923706055,
+        51.79999923706055,
+        31.824016571044922
+      ]
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.624961853027344,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R1C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 53.625038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 172,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R2C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 54.375038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R3C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 296,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 242.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R4C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 24.5,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 225.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-custom.pptx: R5C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-custom.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-custom.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-custom.pptx: PowerPoint retained test filename",
+      "detail": "catalogue-custom.pptx"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-custom.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-custom.pptx/slide1: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-custom.pptx/slide1: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-custom.pptx/slide2: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-custom.pptx/slide2: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-custom.pptx/slide3: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-custom.pptx/slide3: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "catalogue-custom.pptx/slide4: 28 native groups",
+      "detail": {
+        "1": 16,
+        "6": 28
+      }
+    },
+    {
+      "passed": true,
+      "label": "catalogue-custom.pptx/slide4: no top-level raster picture fallback"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: PowerPoint retained test filename",
+      "detail": "table-narrow-45.pptx"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: editable PowerPoint table exists"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: native table has 5 rows × 3 columns"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: native column widths match exported geometry",
+      "detail": [
+        157.43479919433594,
+        117.1196060180664,
+        157.43479919433594
+      ]
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: native row heights match exported geometry",
+      "detail": [
+        35.568031311035156,
+        51.79999923706055,
+        51.79999923706055,
+        150.39999389648438,
+        76.44999694824219
+      ]
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 134.03479957580566
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.624961853027344,
+        "available": 93.71960639953613
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 134.03479957580566
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R1C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 134.03479957580566
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 53.625038146972656,
+        "available": 93.71960639953613
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 99.75,
+        "available": 134.03479957580566
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R2C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 134.03479957580566
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 54.375038146972656,
+        "available": 93.71960639953613
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 134.03479957580566
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R3C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 134.03479957580566
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 148.39999389648438
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 84.12503814697266,
+        "available": 93.71960639953613
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 148.39999389648438
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 106.25,
+        "available": 134.03479957580566
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R4C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 122.4000015258789,
+        "available": 148.39999389648438
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 134.03479957580566
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 74.44999694824219
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 24.5,
+        "available": 93.71960639953613
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 74.44999694824219
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 106.25,
+        "available": 134.03479957580566
+      }
+    },
+    {
+      "passed": true,
+      "label": "table-narrow-45.pptx: R5C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 61.20000076293945,
+        "available": 74.44999694824219
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: PowerPoint retained test filename",
+      "detail": "outline-1.pptx"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: editable PowerPoint table exists"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: native table has 5 rows × 3 columns"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: native column widths match exported geometry",
+      "detail": [
+        196.63873291015625,
+        347.2965393066406,
+        320.0430603027344
+      ]
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: native row heights match exported geometry",
+      "detail": [
+        35.568031311035156,
+        31.824016571044922,
+        51.79999923706055,
+        51.79999923706055,
+        31.824016571044922
+      ]
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.624961853027344,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R1C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 53.625038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 172,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R2C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 54.375038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R3C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 296,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 242.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R4C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 24.5,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 225.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.pptx: R5C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: PowerPoint retained test filename",
+      "detail": "outline-1.5.pptx"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: editable PowerPoint table exists"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: native table has 5 rows × 3 columns"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: native column widths match exported geometry",
+      "detail": [
+        196.63873291015625,
+        347.2965393066406,
+        320.0430603027344
+      ]
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: native row heights match exported geometry",
+      "detail": [
+        35.568031311035156,
+        31.824016571044922,
+        51.79999923706055,
+        51.79999923706055,
+        31.824016571044922
+      ]
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.624961853027344,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R1C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 53.625038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 172,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R2C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 54.375038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R3C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 296,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 242.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R4C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 24.5,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 225.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-1.5.pptx: R5C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: PowerPoint retained test filename",
+      "detail": "outline-2.25.pptx"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: editable PowerPoint table exists"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: native table has 5 rows × 3 columns"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: native column widths match exported geometry",
+      "detail": [
+        196.63873291015625,
+        347.2965393066406,
+        320.0430603027344
+      ]
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: native row heights match exported geometry",
+      "detail": [
+        35.568031311035156,
+        31.824016571044922,
+        51.79999923706055,
+        51.79999923706055,
+        31.824016571044922
+      ]
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.624961853027344,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R1C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 53.625038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 172,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R2C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 54.375038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R3C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 296,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 242.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R4C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 24.5,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 225.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-2.25.pptx: R5C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: PowerPoint retained test filename",
+      "detail": "outline-3.pptx"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: editable PowerPoint table exists"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: native table has 5 rows × 3 columns"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: native column widths match exported geometry",
+      "detail": [
+        196.63873291015625,
+        347.2965393066406,
+        320.0430603027344
+      ]
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: native row heights match exported geometry",
+      "detail": [
+        35.568031311035156,
+        31.824016571044922,
+        51.79999923706055,
+        51.79999923706055,
+        31.824016571044922
+      ]
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.624961853027344,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 32.625038146972656,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R1C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 17.399999618530273,
+        "available": 33.568031311035156
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 53.625038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 172,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R2C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 54.375038146972656,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R3C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 55.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 296,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 242.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R4C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 40.79999923706055,
+        "available": 49.79999923706055
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C1: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C1: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C1: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C1: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C1: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C1: rendered text width fits cell",
+      "detail": {
+        "bounds": 72.25,
+        "available": 173.23873329162598
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C1: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C2: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C2: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C2: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C2: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C2: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C2: rendered text width fits cell",
+      "detail": {
+        "bounds": 24.5,
+        "available": 323.89653968811035
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C2: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C3: all source characters retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C3: independent bold contract"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C3: font size retained without shrink"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C3: requested font is Microsoft JhengHei",
+      "detail": "Microsoft JhengHei"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C3: text color retained"
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C3: rendered text width fits cell",
+      "detail": {
+        "bounds": 225.25,
+        "available": 296.6430606842041
+      }
+    },
+    {
+      "passed": true,
+      "label": "outline-3.pptx: R5C3: rendered text height fits cell",
+      "detail": {
+        "bounds": 20.399999618530273,
+        "available": 29.824016571044922
+      }
+    },
+    {
+      "passed": true,
+      "label": "recommended-navy.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "recommended-navy.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "recommended-navy.pptx: PowerPoint retained test filename",
+      "detail": "recommended-navy.pptx"
+    },
+    {
+      "passed": true,
+      "label": "recommended-navy.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "recommended-custom.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "recommended-custom.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "recommended-custom.pptx: PowerPoint retained test filename",
+      "detail": "recommended-custom.pptx"
+    },
+    {
+      "passed": true,
+      "label": "recommended-custom.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-navy.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-navy.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-navy.pptx: PowerPoint retained test filename",
+      "detail": "stylekit-navy.pptx"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-navy.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-green.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-green.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-green.pptx: PowerPoint retained test filename",
+      "detail": "stylekit-green.pptx"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-green.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-frame.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-frame.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-frame.pptx: PowerPoint retained test filename",
+      "detail": "stylekit-frame.pptx"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-frame.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-iceberg.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-iceberg.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-iceberg.pptx: PowerPoint retained test filename",
+      "detail": "stylekit-iceberg.pptx"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-iceberg.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-wire.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-wire.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-wire.pptx: PowerPoint retained test filename",
+      "detail": "stylekit-wire.pptx"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-wire.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-wine.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-wine.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-wine.pptx: PowerPoint retained test filename",
+      "detail": "stylekit-wine.pptx"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-wine.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-teal.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-teal.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-teal.pptx: PowerPoint retained test filename",
+      "detail": "stylekit-teal.pptx"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-teal.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-charcoal.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-charcoal.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-charcoal.pptx: PowerPoint retained test filename",
+      "detail": "stylekit-charcoal.pptx"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-charcoal.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-investor.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-investor.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-investor.pptx: PowerPoint retained test filename",
+      "detail": "stylekit-investor.pptx"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-investor.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-forest.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-forest.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-forest.pptx: PowerPoint retained test filename",
+      "detail": "stylekit-forest.pptx"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-forest.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-burgundy.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-burgundy.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-burgundy.pptx: PowerPoint retained test filename",
+      "detail": "stylekit-burgundy.pptx"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-burgundy.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-slate.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-slate.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-slate.pptx: PowerPoint retained test filename",
+      "detail": "stylekit-slate.pptx"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-slate.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-cobalt.pptx: PowerPoint open/render completed"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-cobalt.pptx: opened read-only"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-cobalt.pptx: PowerPoint retained test filename",
+      "detail": "stylekit-cobalt.pptx"
+    },
+    {
+      "passed": true,
+      "label": "stylekit-cobalt.pptx: slide count"
+    },
+    {
+      "passed": true,
+      "label": "All generated test decks inspected",
+      "detail": {
+        "actual": 30,
+        "expected": 30
+      }
+    },
+    {
+      "passed": true,
+      "label": "Existing presentation count preserved",
+      "detail": {
+        "before": 5,
+        "after": 5
+      }
+    }
+  ]
+}
