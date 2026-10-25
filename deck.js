@@ -39,7 +39,7 @@ const BASE={
  cnW:1.25,cnC:'7F7F7F',cnDash:'solid',cnHead:'triangle',cnTail:'none',cnHs:'med',
  tFont:'Microsoft JhengHei',bFont:'Microsoft JhengHei',nFont:'',tSize:36,tBold:true,lSize:16,lBold:true,nSize:10.5,
  icColor:'P',icVar:'line',icSW:0,
- tbDense:'auto',tbHiColor:'auto',tbHiMode:'auto',tbNeg:false,tbArrow:'mono',tbStatus:true,tbLook:'clean',tbCard:'white',tbMinus:'auto',tbThou:true,tbWidth:'auto',tbV:'center',tbH:'center',tbSugTitle:true,tbAuto:true,tbFont:'jh',tbPad:'m',tbTight:false,
+ tbDense:'auto',tbHiColor:'auto',tbHiMode:'auto',tbNeg:false,tbArrow:'mono',tbStatus:true,tbLook:'clean',tbCard:'white',tbCardOn:null,tbHeaderStyle:null,tbStripes:null,tbGrid:null,tbMinus:'auto',tbThou:true,tbWidth:'auto',tbV:'center',tbH:'center',tbSugTitle:true,tbAuto:true,tbFont:'jh',tbPad:'m',tbTight:false,
  /* v9：可調數量（04／05 頁）、語意色（與品牌色分開）、最小字級（單一元件／待選素材匯出時放大幾何） */
  nLin:4,nLane:3,nPcc:3,nWhy:5,nCause:4,nIcon:3,nList:4,semWarn:'',semGood:'',semBad:'',minFont:0,
  /* v10 標註顏色：alert＝警示色（預設）／P 主色／A 強調色／ink 深灰 */
@@ -1854,7 +1854,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   const AU=source.auto;
   // 列數少→字大一點、列數多→維持（S／M／L 仍是基準）；tbAuto=false 關閉
   if(st.tbAuto!==false){const nb=src.length-h0;k=Math.min(1.45,k*(nb<=5?1.3:nb<=9?1.15:1));}if(boost>1)k*=boost;   // 文件長度不會降低使用者選擇的尺寸
-  const lookId=tableLookOf(st);const grey=['card','bandcard'].includes(lookId)?false:st.tbLook==='panel'||st.tbCard==='grey'||(st.tbPanel&&!st.tbLook); // Table cards always use the white shadow backing, including legacy snapshots.
+  const lookId=tableLookOf(st),appearance=tableAppearanceOf(st);const grey=typeof st.tbCardOn==='boolean'||['card','bandcard'].includes(lookId)?false:st.tbLook==='panel'||st.tbCard==='grey'||(st.tbPanel&&!st.tbLook); // Table cards always use the white shadow backing, including legacy snapshots.
   const sz=v=>Math.round(v*k*2)/2;
   const TF=st.tbFont==='arial'?'Arial':(st.tbFont==='jh'||st.tbFont==='noto')?'Microsoft JhengHei':F;   // 表格文字字型（arial＝拉丁 Arial＋中文正黑：a:ea 會自動補成中文字型）
   const NF=st.tbFont==='arial'?'Arial':tableNumFont((st.tbFont==='jh'||st.tbFont==='noto')?'Microsoft JhengHei':nf);
@@ -1868,9 +1868,19 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    hair:{hdr:{color:G.ink,bB:{c:'D9D9D9',w:.4}},row:{c:'D9D9D9',w:.4},last:{c:'D9D9D9',w:.4},key:{c:'D9D9D9',w:.4},hi:'bold',padL0:1},
    zebra:{dense:1,hdr:{color:G.t2,bB:{c:G.line,w:1}},row:null,zebra:mix(G.fill,'000000',.035),last:{c:G.t2,w:1},key:{c:G.t2,w:.75},hi:'bold'}};
   // Compose the colored header with the existing card backing, without changing geometry.
-  const LK=lookId==='bandcard'?Object.assign({},looks.band,{card:1,row:looks.card.row,last:null}):looks[lookId];
+  const legacyLK=lookId==='bandcard'?Object.assign({},looks.band,{card:1,row:looks.card.row,last:null}):looks[lookId];
+  // Null means an untouched legacy dimension. Override one concern at a time:
+  // CARD must never change cells, spacing, header, stripes or semantic highlights.
+  const LK=Object.assign({},legacyLK,{hdr:Object.assign({},legacyLK.hdr)});
+  if(typeof st.tbCardOn==='boolean')LK.card=st.tbCardOn;
+  if(['normal','primary'].includes(st.tbHeaderStyle)){LK.hdr.fill=appearance.header==='primary'?P:null;LK.hdr.color=appearance.header==='primary'?'FFFFFF':G.ink;}
+  if(typeof st.tbStripes==='boolean')LK.zebra=st.tbStripes?mix(G.fill,'000000',.035):null;
+  const explicitGrid=['all','horizontal','none'].includes(st.tbGrid);
+  // Grid paint precedes semantic/manual highlights, which remain independent.
+  const baseGrid=(o,ri)=>{if(!explicitGrid)return o;for(const edge of ['bT','bB','bL','bR'])delete o[edge];
+   if(appearance.grid!=='none'){const b={c:'D9D9D9',w:Math.max(.5,Math.round(.5*k*4)/4)};o.bB=b;if(ri===0||appearance.grid==='all')o.bT=b;if(appearance.grid==='all')o.bL=o.bR=b;}return o;};
   let hiStyle=['fill','box','bold'].includes(T.hiStyle)?T.hiStyle:(st.tbHiMode==='fill'||st.tbHiMode==='box')?st.tbHiMode:LK.hi;
-  if(LK.hdr.fill&&hiStyle==='box')hiStyle='fill';   // 主色表頭：重點＝表頭填強調色＋內文 6% 淡底，不再疊外框（避免壓在表頭色帶與合計底色上）
+  if(legacyLK.hdr.fill&&hiStyle==='box')hiStyle='fill';   // 主色表頭：重點＝表頭填強調色＋內文 6% 淡底，不再疊外框（避免壓在表頭色帶與合計底色上）
   // 密度：舒適／標準／密集＝字級、列高、左右邊距各自調整（不是等比縮放）；斑馬外觀預設密集
   const DEN={comfy:{fs:14,hfs:12,rh:.48,hh:.48,pad:12},normal:{fs:13,hfs:11,rh:.34,hh:.38,pad:9},dense:{fs:11.5,hfs:10.5,rh:.28,hh:.32,pad:7}};
   const dn=DEN[st.tbDense==='compact'?'dense':st.tbDense]&&st.tbDense!=='normal'?DEN[st.tbDense==='compact'?'dense':st.tbDense]:DEN.normal;   /* 密度與外觀脫鉤：斑馬不再強制密集 */
@@ -2000,7 +2010,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   const firstKey=ri=>keySet.has(ri)&&!keySet.has(ri-1);
   const cells=rows.map((r,ri)=>r.map((t,c)=>{const align=colAl[c];const isN=isNumFont(ri,c);const font=isN?NF:TF;t=isN?t:tidy(t);const mL=c===0?padL0:padH;
    if(ri<h0){const o={t,bold:1,size:hfs,align,font:TF,color:LK.hdr.color,fill:LK.hdr.fill||null,bT:bw(LK.hdr.bT),bB:bw(LK.hdr.bB),mL,mR:padH};
-    const hc=hiCol(ri,c)||hiCell(ri,c);
+    baseGrid(o,ri);const hc=hiCol(ri,c)||hiCell(ri,c);
     if(hc){if(LK.hdr.fill){o.bB={c:contrastOf(hc.C,LK.hdr.fill)>=3?hc.C:ensureContrast(mix(hc.C,'FFFFFF',.85),LK.hdr.fill,3),w:3};/* 主色表頭：重點欄只加 3pt 強調色底線 */}else{if(hiStyle==='fill')o.fill=mix(hc.C,'FFFFFF',.9);o.color=ensureContrast(mix(hc.C,'000000',.18),o.fill||'FFFFFF',5);}}
     o.color=cc(o.color,o.fill);return rangePaint(o,ri,c);}
    const last=ri===rows.length-1,key=keySet.has(ri)||bold.has(ri),sec=AU.section[ri];
@@ -2009,6 +2019,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    if(key&&LK.keyFill)o.fill=LK.keyFill;
    if(firstKey(ri)&&LK.key&&ri>h0)o.bT=bw(LK.key);
    if(sec&&LK.row&&ri>h0)o.bT=bw(LK.row);
+   baseGrid(o,ri);
    const s=st.tbStatus===false||!AU.statC[c]?null:statusOf(t);
    if(s){o.color=ST[s];o.bold=true;if(/[A-Za-z\u4e00-\u9fff]/.test(t))o.dot=ST[s];}
    if(isN&&st.tbNeg&&tNumVal(src[ri][c])<0&&!/^[\s(（]*[▲△]/.test(src[ri][c]))o.color=BAD;
@@ -2032,7 +2043,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    const rowH=sourceRows.map(r=>rowHAll[r]),tH=rowH.reduce((a,b)=>a+b,0),bodySourceRows=sourceRows.slice(h0);
    const pageCells=sourceRows.map(raw=>cells[raw].map(c=>Object.assign({},c)));
    // A page closing border is visual punctuation, never a subtotal or lastTotal.
-   if(pageCells.length>h0&&LK.last)pageCells[pageCells.length-1].forEach((c,ci)=>{if(!rangeAt(sourceRows[sourceRows.length-1],ci))c.bB=bw(LK.last);});
+   if(!explicitGrid&&pageCells.length>h0&&LK.last)pageCells[pageCells.length-1].forEach((c,ci)=>{if(!rangeAt(sourceRows[sourceRows.length-1],ci))c.bB=bw(LK.last);});
    const slots={title:{x:X,y:Y0,w:titleWidth,h:titH,size:tfsT,font:(st.tbFont==='jh'||st.tbFont==='noto')?'Microsoft JhengHei':st.tFont,color:G.ink,bold:1},
     unit:{x:X,y:Y0+titH+.02,w:metaW,h:Math.max(unitH,.27*k),size:ufs,color:G.t2}};
    if(T.title)txt(X,Y0,titleWidth,titH,ttl,{size:tfsT,bold:1,color:st.tbTitleInk?G.ink:P,font:slots.title.font,name:'表格標題',valign:'bottom'});
@@ -2057,7 +2068,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    if(hiStyle==='box')localMarks.forEach(h=>{
     if(h.excludes&&h.excludes.length){tableMarkRegions(h,sourceRows.length,nC).forEach(q=>{const bx=cx0(q.c0),by=ry0(q.r0),bw0=colW.slice(q.c0,q.c1+1).reduce((a,b)=>a+b,0),bh=rowH.slice(q.r0,q.r1+1).reduce((a,b)=>a+b,0);
       const segIns=Math.max(blw/144,ins);box(bx+segIns,by+segIns,bw0-2*segIns,bh-2*segIns,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});boxes.push(Object.assign({type:'range',color:h.C,kind:h.kind},q));});return;}
-    if(h.type==='col'){const y0=LK.hdr.fill&&h0?ty+rowH[0]:ty;box(cx0(h.i)+ins,y0+ins,colW[h.i]-2*ins,ty+tH-y0-2*ins,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});}
+    if(h.type==='col'){const y0=legacyLK.hdr.fill&&h0?ty+rowH[0]:ty;box(cx0(h.i)+ins,y0+ins,colW[h.i]-2*ins,ty+tH-y0-2*ins,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});}
     else if(h.type==='row')box(tx+ins,ry0(h.i)+ins,tW-2*ins,rowH[h.i]-2*ins,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});
     else box(cx0(h.c)+ins,ry0(h.r)+ins,colW[h.c]-2*ins,rowH[h.r]-2*ins,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});
     boxes.push(Object.assign({color:h.C,kind:h.kind},h.type==='cell'?{type:'cell',r:h.r,c:h.c}:{type:h.type,i:h.i}));});
@@ -2065,7 +2076,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    const b0=boxes.find(b=>!b.rule&&b.type!=='cell'),orphans=[];
    sourceRows.forEach(ri=>rows[ri].forEach((t,c)=>{const str=String(t);if(!str.trim())return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri),av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0),ls=str.split('\n'),vis=x=>x.replace(/\s/g,'').length;
     if(ls.some(l=>mw(l,sz0,b)>av+.01))orphans.push({r:ri,c,t:str,why:'auto-wrap'});else if(ls.length>1&&vis(str)>4&&ls.some((l,i)=>vis(l)<=1||vis(l)<=2&&i>0&&!/[：:；;，,、)）\s]$/.test(ls[i-1])&&!/^[（(]/.test(l)))orphans.push({r:ri,c,t:str,why:'orphan'});}));
-   if(T.hcol){const tint=LK.hdr&&LK.hdr.fill?mix(P,'FFFFFF',.88):mix(G.fill||'F2F2F2','FFFFFF',.2);tb.cells.forEach((r,ri)=>{const raw=sourceRows[ri];if(raw<h0||AU.section[raw])return;const cl=r[0];if(!cl)return;cl.bold=true;(cl.runs||[]).forEach(x=>{x.o=Object.assign({},x.o,{bold:true});});if(!cl.fill&&!rangeAt(raw,0))cl.fill=tint;});}
+   if(T.hcol){const tint=legacyLK.hdr&&legacyLK.hdr.fill?mix(P,'FFFFFF',.88):mix(G.fill||'F2F2F2','FFFFFF',.2);tb.cells.forEach((r,ri)=>{const raw=sourceRows[ri];if(raw<h0||AU.section[raw])return;const cl=r[0];if(!cl)return;cl.bold=true;(cl.runs||[]).forEach(x=>{x.o=Object.assign({},x.o,{bold:true});});if(!cl.fill&&!rangeAt(raw,0))cl.fill=tint;});}
    // Apply line-only families after every semantic/header/first-column fill has
    // resolved. All render/export paths consume these same native cell borders.
    const edgeOffsets=[['bT',-1,0],['bR',0,1],['bB',1,0],['bL',0,-1]];
@@ -2080,7 +2091,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    const displayRows=tb.cells.map(row=>row.map(c=>c.runs.map(r=>r.t+(r.o&&r.o.br?'\n':'')).join('')));
    const integrity={documentId,pageIndex,pageCount,h0,nC,sourceValues:source.rows.map(row=>row.slice()),displayRows,bodyStart,bodyEnd,sourceRows:sourceRows.slice(),bodySourceRows:bodySourceRows.slice(),rawRowCount:source.nR,rawBodyRows:source.bodyRows,renderedRowCount:sourceRows.length,renderedBodyRows:bodySourceRows.length,exportComplete:complete,exportReason:reason,layoutOverflow,blockedRow,blockedReasonCode};
    tb.dataIntegrity=Object.assign({},integrity);
-   cur.table=Object.assign({},integrity,{rawRows:source.rows,previewBodyRows:bodySourceRows.length,types:Object.assign({},T.types),formats:Object.assign({},T.formats),hcol:!!T.hcol,pad:st.tbPad||'m',orphans,colMin:colMin.map(v=>+v.toFixed(3)),REC,k,colFit:colFit.map(v=>+v.toFixed(3)),tx,ty,tW,tH,colW:colW.slice(),rowH,h0,nC,nR:sourceRows.length,look:lookId,grey,hiMode:hiStyle,hiStyle,EC,colNum:AU.numC,colStat:AU.statC,key:[...keySet].sort((a,b)=>a-b),hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,
+   cur.table=Object.assign({},integrity,{rawRows:source.rows,previewBodyRows:bodySourceRows.length,types:Object.assign({},T.types),formats:Object.assign({},T.formats),hcol:!!T.hcol,pad:st.tbPad||'m',orphans,colMin:colMin.map(v=>+v.toFixed(3)),REC,k,colFit:colFit.map(v=>+v.toFixed(3)),tx,ty,tW,tH,colW:colW.slice(),rowH,h0,nC,nR:sourceRows.length,look:lookId,appearance,grey,hiMode:hiStyle,hiStyle,EC,colNum:AU.numC,colStat:AU.statC,key:[...keySet].sort((a,b)=>a-b),hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,
     ruleCols:[...new Set(MK.rules.map(r=>r.c))],unit:T.unit||'',note:T.note||'',title:T.title||'',font:TF,nf:NF,slots,fs,hfs,k});
   });cur=firstSlide;}
 
@@ -2146,6 +2157,15 @@ const TABLE_LOOKS=[['clean','細線'],['band','主色表頭'],['card','卡片'],
 function TBL_FIXED(s){return Object.assign({},s,{tbMinus:'auto',tbNeg:false,tbThou:true,tbStatus:true});}
 const TABLE_LOOK_ALIAS={minimal:'clean',panel:'card'};
 const tableLookOf=p=>{const v=TABLE_LOOK_ALIAS[p.tbLook]||p.tbLook;return TABLE_LOOKS.some(l=>l[0]===v)?v:(p.tbPanel?'card':'clean');};
+// Persist independent overrides, not an ever-growing list of combination looks.
+// Legacy names survive only as a compatibility profile for unset dimensions.
+const TABLE_APPEARANCE_KEYS=['tbCardOn','tbHeaderStyle','tbStripes','tbGrid'];
+function tableAppearanceOf(p){p=p||{};const look=tableLookOf(p);return {
+ card:typeof p.tbCardOn==='boolean'?p.tbCardOn:['card','bandcard'].includes(look),
+ header:['normal','primary'].includes(p.tbHeaderStyle)?p.tbHeaderStyle:['band','bandcard'].includes(look)?'primary':'normal',
+ stripes:typeof p.tbStripes==='boolean'?p.tbStripes:look==='zebra',
+ grid:['all','horizontal','none'].includes(p.tbGrid)?p.tbGrid:'horizontal'};}
+
 const tableNumFont=nf=>!nf||/Georgia|Times|Cambria|Garamond|Palatino|Book|serif|明體|Mincho|Song|宋/i.test(nf)?'Arial':nf;
 const T_NUM=/^[\s(（]*[-−+±▲▼△▽]?\s*(?:NT\$|US\$|\$|＄|€|¥)?\s*(?:\d{1,3}(?:,\d{3})+|\d+)?(?:\.\d+)?\s*(?:%|％|x|X|倍|ppts?|pts?|bps|[KkMmBb]|億|萬|元|天|週|日|h|hr|小時|件|台|片|顆)?\s*[)）]?\s*$/;
 const tIsNum=t=>/\d/.test(t)&&T_NUM.test(t),tBlank=t=>/^\s*(|-|—|–|n\/a|NA|N\/A)\s*$/.test(t);
@@ -2328,6 +2348,16 @@ const TABLE_HIGHLIGHT_PRESETS=Object.freeze([
  Object.freeze({id:'rose',label:'玫瑰紅',fill:'F6E0E2',color:'7A1F2B',border:'B07980',mode:'fill',bold:null}),
  Object.freeze({id:'slate',label:'中性灰',fill:'EDEDED',color:'3A3A3A',border:'999999',mode:'fill',bold:null})
 ]);
+// Versioned palette: new marks use these hues, while legacy IDs below keep their
+// original resolver and serialized appearance. Fixed hues never depend on a theme.
+const TABLE_HIGHLIGHT_HUES=Object.freeze([
+ Object.freeze({id:'theme',label:'主題色',dynamic:true}),
+ Object.freeze({id:'blue',label:'藍色',soft:'D7E5F5',dark:'285785'}),
+ Object.freeze({id:'green',label:'綠色',soft:'D8EACF',dark:'356343'}),
+ Object.freeze({id:'red',label:'紅色',soft:'F3D0D0',dark:'8B3535'}),
+ Object.freeze({id:'yellow',label:'黃色',soft:'F6E4AD',dark:'745313'})
+]);
+const TABLE_HIGHLIGHT_PRESETS_V2=Object.freeze(TABLE_HIGHLIGHT_HUES.flatMap(h=>['soft','deep'].map(tone=>Object.freeze({id:`v2-${h.id}-${tone}`,hue:h.id,tone,label:h.label+'・'+(tone==='soft'?'柔色':'深色白字'),mode:'fill',bold:null}))));
 const TABLE_HIGHLIGHT_FAMILIES=Object.freeze([
  Object.freeze({id:'fill',label:'底色',width:1.5}),Object.freeze({id:'outline',label:'外框',width:1.5}),
  Object.freeze({id:'underline',label:'底線',width:2}),Object.freeze({id:'side',label:'側線',width:3})
@@ -2351,7 +2381,16 @@ function tableHighlightStroke(stroke,backgrounds){const bgs=[...new Set(backgrou
  for(let i=1;i<=100;i++)for(const to of ['FFFFFF','000000']){const c=mix(stroke,to,i/100),v=score(c);if(v>=3)return c;if(v>bestScore){best=c;bestScore=v;}}return best;
 }
 const HI_COLORS=['auto','P','A','alert'],RULE_OPS=['<','<=','>','>=','='],RULE_TONES=['warn','good','accent'],RULE_STYLES=['fill','text','box'];
-function tableHighlightPreset(id,params,family='fill'){family=tableHighlightFamily(family);if(!family)return null;const preset=TABLE_HIGHLIGHT_PRESETS.find(p=>p.id===id);if(!preset)return null;
+function tableHighlightPreset(id,params,family='fill'){family=tableHighlightFamily(family);if(!family)return null;
+ const modern=TABLE_HIGHLIGHT_PRESETS_V2.find(p=>p.id===id);
+ if(modern){const hue=TABLE_HIGHLIGHT_HUES.find(h=>h.id===modern.hue),p=params&&/^[0-9A-F]{6}$/i.test(params.P||'')?params.P.toUpperCase():BASE.P;
+  const dark=hue.dynamic?ensureContrast(p,'FFFFFF',4.5):hue.dark,soft=hue.dynamic?mix(p,'FFFFFF',.86):hue.soft;
+  if(family!=='fill')return Object.assign({},modern,{label:hue.label,family,mode:family,fill:null,color:null,border:dark,stroke:dark,borderWidth:TABLE_HIGHLIGHT_FAMILIES.find(f=>f.id===family).width});
+  const fill=modern.tone==='deep'?dark:soft,color=modern.tone==='deep'?'FFFFFF':hue.dynamic?ensureContrast(p,soft,4.5):dark;
+  return Object.assign({},modern,{fill,color,border:dark});
+ }
+ // Legacy branch intentionally unchanged: do not migrate or recolor saved marks.
+ const preset=TABLE_HIGHLIGHT_PRESETS.find(p=>p.id===id);if(!preset)return null;
  if(family!=='fill')return Object.assign({},preset,{family,mode:family,fill:null,color:null,border:TABLE_HIGHLIGHT_STROKES[id],stroke:TABLE_HIGHLIGHT_STROKES[id],borderWidth:TABLE_HIGHLIGHT_FAMILIES.find(f=>f.id===family).width});
  const out=Object.assign({},preset),p=params&&/^[0-9A-F]{6}$/i.test(params.P||'')?params.P.toUpperCase():BASE.P;
  if(p!==BASE.P&&id==='theme-light'){out.fill=mix(p,'FFFFFF',.86);out.color=ensureContrast(p,out.fill,4.5);out.border=mix(p,'FFFFFF',.4);}
@@ -2401,12 +2440,14 @@ function tableRangeUsesPreset(his,range,presetId,nR,nC){let remaining=[range];
 }
 // Line no-op identity includes family AND actual perimeter, not filled-area coverage.
 function tableRangeUsesLine(his,range,presetId,family){const edges=[];
+ // V2 fill tones share exactly one line paint; preserve imported IDs on no-op.
+ const lineKey=id=>{const p=TABLE_HIGHLIGHT_PRESETS_V2.find(p=>p.id===id);return p?'v2-'+p.hue:id;},wanted=lineKey(presetId);
  if(family==='outline'){for(let c=range.c0;c<=range.c1;c++){edges.push([range.r0,c,'bT'],[range.r1,c,'bB']);}for(let r=range.r0;r<=range.r1;r++){edges.push([r,range.c0,'bL'],[r,range.c1,'bR']);}}
  else if(family==='underline')for(let c=range.c0;c<=range.c1;c++)edges.push([range.r1,c,'bB']);
  else for(let r=range.r0;r<=range.r1;r++)edges.push([r,range.c0,'bL']);
  return edges.every(([r,c,edge])=>{const [dr,dc,opposite]={bT:[-1,0,'bB'],bR:[0,1,'bL'],bB:[1,0,'bT'],bL:[0,-1,'bR']}[edge];
   for(let i=his.length-1;i>=0;i--){const h=his[i];if(h.type!=='range')continue;
-   if(tableRangeEdge(h,r,c,edge)||tableRangeEdge(h,r+dr,c+dc,opposite))return h.presetId===presetId&&tableHighlightFamily(h)===family;
+   if(tableRangeEdge(h,r,c,edge)||tableRangeEdge(h,r+dr,c+dc,opposite))return lineKey(h.presetId)===wanted&&tableHighlightFamily(h)===family;
   }return false;});
 }
 function tableApplyRange(T,range,presetId,family='fill'){T=T||{};const source=tableSource(T),his=tableMarks(T,source.nC,source.nR).his,q=tableNormalizeRange(range,source.nR,source.nC);family=tableHighlightFamily(family);
@@ -2962,6 +3003,9 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(k==='zh'){out.zh=stripCtl(v).replace(/[<>&"]/g,'').slice(0,40);return;}
   if(k==='tbLook'){const w=TABLE_LOOK_ALIAS[v]||v;if(TABLE_LOOKS.some(l=>l[0]===w)){out.tbLook=w;}return;}
   if(k==='tbCard'){out.tbCard='white';return;}
+  if(k==='tbCardOn'||k==='tbStripes'){out[k]=typeof v==='boolean'?v:null;return;}
+  if(k==='tbHeaderStyle'){out[k]=['normal','primary'].includes(v)?v:null;return;}
+  if(k==='tbGrid'){out[k]=['all','horizontal','none'].includes(v)?v:null;return;}
   if(k==='tbPanel'){out.tbPanel=!!v;return;}
   if(k==='tbArrow'){out.tbArrow=['mono','sem','ink'].includes(v)?v:'mono';return;}
   if(k==='semWarn'){const h=String(v||'').replace('#','');out.semWarn=/^[0-9A-F]{6}$/i.test(h)?h.toUpperCase():'';return;}
@@ -2973,6 +3017,6 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
  if(p.tbPanel&&!p.tbLook)out.tbLook='card';out.tbCard='white';
  return out;}
-const api={iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,TABLE_HIGHLIGHT_FAMILIES,tableHighlightFamily,tableHighlightStroke,tableResolvedBorders,tableRangeEdge,tableHighlightPreset,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
+const api={iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,TABLE_HIGHLIGHT_HUES,TABLE_HIGHLIGHT_PRESETS_V2,TABLE_HIGHLIGHT_FAMILIES,tableHighlightFamily,tableHighlightStroke,tableResolvedBorders,tableRangeEdge,tableHighlightPreset,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,TABLE_APPEARANCE_KEYS,tableAppearanceOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);

@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%226%22 fill=%22%231F4E79%22/%3E%3C/svg%3E">
-<!-- PPT Style Studio 單檔版（自動產生於 2026-10-25 07:47，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
+<!-- PPT Style Studio 單檔版（自動產生於 2026-10-25 08:23，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
 <title>PPT Style Studio · 圖解元件客製工作室｜新需求請寄信給 HCTSAIK，謝謝</title>
 <style>
 :root{--ink:#3A3A3A;--t2:#595959;--mu:#8C8C8C;--line:#E4E4E4;--fill:#F6F6F6;--p:#1F4E79}
@@ -202,7 +202,7 @@ body.tabT .wrap{grid-template-columns:1fr}body.tabT aside{display:none}body.tabT
 .tchip .sep{width:1px;align-self:stretch;background:#EAEAEA;margin:2px 2px}
 .tchip .star[aria-pressed="true"]{background:var(--p);color:#fff}
 .tins{min-height:0;display:flex;flex-direction:column;border-left:1px solid var(--line);background:#fff}
-.tinsTabs{display:flex;gap:4px;padding:10px 14px 6px;border-bottom:1px solid #EFEFEF}.tinsTabs button{flex:1;border:1px solid #DDD;background:#fff;border-radius:8px;padding:6px 4px;font-size:12.5px;cursor:pointer}.tinsTabs button[aria-pressed="true"]{border-color:var(--p);background:#EEF3F8;color:var(--p);font-weight:700}
+.tinsTabs{display:flex;gap:4px;padding:10px 14px 6px;border-bottom:1px solid #EFEFEF}.tinsTabs button{flex:1;border:1px solid #DDD;background:#fff;border-radius:8px;padding:6px 4px;font-size:12.5px;cursor:pointer}.tinsTabs button:focus-visible{outline:2px solid #2563EB;outline-offset:2px}.tinsTabs button[aria-pressed="true"]{border-color:var(--p);background:#EEF3F8;color:var(--p);font-weight:700}
 .tsecs{flex:1;min-height:0;overflow-y:auto;padding:4px 16px 12px}
 .tsec{border-bottom:1px solid #EFEFEF;padding:12px 0 14px}.tsec:last-child{border-bottom:0}
 .tsec h3{margin:0 0 8px;font-size:13.5px;display:flex;align-items:center;gap:8px}.tsec h3 i{font-style:normal;width:20px;height:20px;border-radius:50%;background:var(--p);color:#fff;font-size:11.5px;display:inline-flex;align-items:center;justify-content:center}
@@ -239,7 +239,7 @@ body.tabT .wrap{grid-template-columns:1fr}body.tabT aside{display:none}body.tabT
 @media(min-width:901px){.tmain{grid-template-columns:minmax(0,1fr) 320px}.tsecs{flex:1 1 auto}.tout{padding:8px 12px;gap:3px}}
 
 .tout .msg{font-size:12px;color:#777;min-height:16px}.tout .msg.w{color:#9A5B00}#tOut.blocked{max-height:55dvh;overflow-y:auto}#tOut .msg.w{display:block;white-space:normal;overflow-wrap:anywhere;line-height:1.5}
-.tins .tsec{display:none}.tins .tsec.on{display:block}
+.tins .tsec{display:none}.tins .tsec.on{display:block}.tins .tsec[hidden]{display:none!important}
 .tsteps .stp[aria-current="step"]{background:#EEF3F8;color:var(--p);font-weight:700}
 .tub{padding:5px 10px;font-size:13px}.tub:disabled{opacity:.4;cursor:default}.pri2{border-color:var(--p);color:var(--p);font-weight:700}
 .tedit{border:1px solid var(--line);border-radius:8px;padding:0 8px;margin:6px 0}.tedit summary{cursor:pointer;padding:9px 2px;font-weight:700;color:var(--p);font-size:12.5px}.tedit[open]{padding-bottom:8px}
@@ -324,9 +324,9 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  .tstagew{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;display:block}
  .tprev{max-width:none;width:100%}
  .tins{position:fixed;left:0;right:0;bottom:0;z-index:35;border:0;border-top:1px solid #D6D6D6;border-radius:14px 14px 0 0;box-shadow:0 -8px 30px #00000026;max-height:46dvh}
- .tinsTabs{display:flex;gap:4px;padding:8px 8px 4px}.tinsTabs button{flex:1;border:1px solid #DDD;background:#fff;border-radius:9px;padding:9px 4px;font-size:13.5px;min-height:44px}.tinsTabs button[aria-pressed="true"]{border-color:var(--p);background:#EEF3F8;color:var(--p);font-weight:700}
+ .tinsTabs{display:flex;gap:4px;padding:8px 8px 4px}.tinsTabs button{flex:1;border:1px solid #DDD;background:#fff;border-radius:9px;padding:9px 4px;font-size:13.5px;min-height:44px}.tinsTabs button:focus-visible{outline:2px solid #2563EB;outline-offset:2px}.tinsTabs button[aria-pressed="true"]{border-color:var(--p);background:#EEF3F8;color:var(--p);font-weight:700}
  .tsecs{display:none;max-height:calc(62dvh - 160px);padding:0 14px}.tins.open .tsecs{display:block;max-height:none}.tins.open{height:min(72dvh,calc(100dvh - 64px));max-height:calc(100dvh - 64px)}
- .tins .tsec{display:none}.tins .tsec.on{display:block}
+ .tins .tsec{display:none}.tins .tsec.on{display:block}.tins .tsec[hidden]{display:none!important}
  .tout{padding:8px 10px calc(8px + env(safe-area-inset-bottom))}.tout .btn.pri{min-height:44px}
  .tout .msg{display:none}
  .tdock .tchip{position:fixed!important;left:8px!important;right:8px;top:auto!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;max-width:none;justify-content:center;padding:8px;z-index:75;flex-wrap:wrap!important;box-shadow:0 -6px 24px #0003!important}
@@ -392,7 +392,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 @supports not (scrollbar-gutter:stable){.tcanvas{overflow-y:scroll}}
 @media(max-width:900px){.tmain{scrollbar-gutter:stable}}
 @supports not (scrollbar-gutter:stable){@media(max-width:900px){.tmain{overflow-y:scroll}}}.tstagew.close{position:relative;flex:none;margin:0 auto;max-width:none;background:transparent}.tstagew.close .tprev{left:0;top:0;border-radius:0;box-shadow:none;transition:none}
-.tins .tbar1{display:block}.tins .tlstrip{display:grid;grid-template-columns:1fr 1fr;gap:6px}.tins .tlstrip button{border-radius:7px;min-height:36px;padding:7px 6px;font-size:12px}.tins .tlstrip button[data-v="bandcard"]{font-size:11.5px}
+.tins .tbar1{display:block}.tins .tlstrip{display:grid;grid-template-columns:1fr 1fr;gap:6px}.tins .tlstrip button{border-radius:7px;min-height:36px;padding:7px 6px;font-size:12px}.tins .tlstrip.tappearance{display:flex;flex-direction:column;gap:10px;align-items:stretch}.tappearance-row{display:grid;grid-template-columns:52px minmax(0,1fr);gap:8px;align-items:center}.tappearance-label{font-size:12px;font-weight:700;color:#555}.tappearance-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.tappearance-options.grid-options{grid-template-columns:repeat(3,minmax(0,1fr))}.tins .tappearance-options button{min-width:0;padding:7px 3px}.tappearance-hint{font-size:11px;color:#666;line-height:1.6;margin:6px 0 0}
 .tpreview-controls{display:flex;flex-direction:column;align-items:flex-start;gap:10px}.tpreview-controls .tview{align-self:stretch}.tpreview-controls .tview button{flex:1;border-radius:7px;min-height:36px}.tpreview-controls .tarrow{display:flex!important;margin:0;flex-wrap:wrap}.tpreview-controls .tclean{margin:0}
 .tpreview-controls #tView[hidden]{display:none}.tins .tzoom{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}.tins .tzoom button[aria-pressed="true"]{border-color:var(--p);background:#EEF3F8;color:var(--p);font-weight:700}.tins .tzoom button{min-height:36px;border:1px solid #ddd;background:white;border-radius:7px;padding:5px 10px;font:inherit;font-size:12px}
 .tselection{border-bottom:1px solid #e5e7eb;padding:8px 0}.tselection[hidden]{display:none}.tmark-settings summary{font-size:12px;cursor:pointer;padding:7px 0}.tselection .tpanel{border:0;padding:0;margin:0 0 8px}.tins .tdock{display:none!important}.tins .tlegend{display:none}.tsteps2{display:none!important}.tsec .tlkh{display:none}.trow{margin:10px 0}
@@ -407,7 +407,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 #tPrev.range-preview .tc{background:transparent;box-shadow:none;outline:none}
 .trange-outline::after{content:"";position:absolute;width:5px;height:5px;right:-3px;bottom:-3px;background:#2563EB;border:1px solid white}
 .trange-label{font-size:12px;color:#526477;line-height:1.5}.trange-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:10px 0}.trange-actions button{min-height:36px}
-.trange-palette{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}.trange-card{border:1px solid #DDE3EB;border-radius:9px;background:white;padding:8px;text-align:left;cursor:pointer;min-width:0;color:#243750}
+.trange-palette{margin:10px 0}.trange-palette-group+.trange-palette-group{border-top:1px solid #DDE3EB;margin-top:12px;padding-top:10px}.trange-palette-title{font-size:11px;color:#526477;margin-bottom:6px}.trange-hues{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.trange-palette-group[data-range-group="theme"] .trange-hues{grid-template-columns:1fr}.trange-tones{display:flex;gap:6px;margin-top:10px}.trange-tones button{flex:1;min-height:36px}.trange-tones button[aria-pressed="true"]{background:#E9F0F8;border-color:#52779B;color:#1F4E79}.trange-tones[hidden]{display:none}.trange-card{border:1px solid #DDE3EB;border-radius:9px;background:white;padding:8px;text-align:left;cursor:pointer;min-width:0;color:#243750}
 .trange-card:hover,.trange-card:focus-visible{border-color:#2563EB;outline:2px solid #2563EB;outline-offset:1px}.trange-card[aria-pressed="true"]{border-color:#2563EB;box-shadow:inset 0 0 0 1px #2563EB}
 .trange-card b{display:block;font-size:12px;margin-top:6px}.trange-sample{box-sizing:border-box;height:32px;display:grid;grid-template-columns:1.2fr 1fr;align-items:center;border-radius:0;padding:0 5px;font-size:11px;font-variant-numeric:tabular-nums;overflow:hidden}.trange-sample span:last-child{text-align:right}
 .trange-status{font-size:12px;line-height:1.5;color:#526477}.trange-status:empty{display:none}.trange-touch{display:flex;gap:8px;margin-top:9px}.trange-touch[hidden],.trange-palette[hidden]{display:none}
@@ -426,6 +426,30 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 #tDrop{border:0;padding:0;text-align:left;background:transparent}#tRawPasteLabel{display:block;font-size:12px;color:#526477;margin-bottom:8px}#tRawPaste{display:block;box-sizing:border-box;width:100%;min-width:0;min-height:240px;height:45vh;max-height:520px;border:1px solid #CCD6E0;border-radius:8px;background:white;color:#243750;font-size:13px;line-height:1.55;overflow:auto;overscroll-behavior:contain;user-select:text;cursor:text}#tRawPaste:focus{outline:2px solid #2563EB;outline-offset:2px}#tRawPaste table{width:max-content;min-width:100%;border-spacing:0;border-collapse:separate;font:inherit}#tRawPaste td{box-sizing:border-box;min-width:132px;max-width:280px;padding:9px 12px;border-right:1px solid #DDE4EB;border-bottom:1px solid #DDE4EB;vertical-align:top;text-align:left;white-space:pre-wrap;overflow-wrap:anywhere}#tRawPaste td:last-child{border-right:0}#tRawPaste tr:last-child td{border-bottom:0}#tRawPaste tr:nth-child(odd){background:#F6F8FA}#tRawPaste .traw-empty{padding:24px 16px;color:#617387}#tRawPasteHelp{margin:9px 0 0;color:#617387;font-size:12px;line-height:1.6}#tRawPasteNotice{margin:6px 0 0;color:#9A5100;font-size:12px;line-height:1.6}#tRawPasteNotice:empty{display:none}@media(max-width:900px){#tRawPaste{font-size:14px;height:32dvh;min-height:150px}}
 
 #tIns .tsecs:has(.tsec[data-sec="data"].on) #tSelection{display:none!important}
+/* Page-level information belongs after the workspace, never inside the canvas/inspector. */
+.page-info{min-width:0;flex-wrap:wrap;gap:8px 16px;padding:8px 20px;border-top:1px solid var(--line);background:#fff}
+.page-info[hidden]{display:none}
+.page-info #sTitle{flex:1 1 360px;min-width:0}
+.page-info .gocards{flex-wrap:nowrap;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;padding:2px 2px 4px}
+.page-info .gocards a{flex:none;white-space:nowrap}
+.page-info .gocards a:focus-visible,.page-info .edb:focus-visible{outline:2px solid #2563EB;outline-offset:2px}
+.page-info .chips{flex:0 1 auto;max-width:44%;min-width:0;margin-left:0}
+.page-info .edb{flex:none;margin-left:0}
+.page-info .edpop{top:auto;bottom:calc(100% + 8px);max-width:calc(100vw - 40px);max-height:calc(100vh - 180px);max-height:calc(100dvh - 180px);overflow:auto;overscroll-behavior:contain}
+@media(max-width:900px){
+ .page-info{padding:6px 10px calc(6px + env(safe-area-inset-bottom));gap:4px 8px}
+ .page-info #sTitle{flex-basis:100%;font-size:12.5px}
+ .page-info #sTitle small{display:inline;margin-left:6px;font-size:10.5px}
+ .page-info .gocards{margin-top:2px;gap:5px}
+ .page-info .gocards a{padding:5px 10px}
+ .page-info .chips{display:flex;flex:1 1 0;max-width:none;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;overscroll-behavior-x:contain;padding:2px 0}
+ .page-info .chips span{flex:none;white-space:nowrap;font-size:10px;padding:2px 6px}
+ .page-info .edb{font-size:11px;padding:4px 8px}
+ .page-info .edb small{display:none}
+ .page-info .edpop{right:10px;max-width:calc(100vw - 20px)}
+ .page-info .zoomb{flex:none;padding:4px 8px;font-size:11px}
+ .ebar{bottom:calc(var(--page-info-height,130px) + 8px)}
+}
 </style></head><body><div class="tpop" id="tPop" role="dialog" aria-label="儲存格選單" hidden></div>
 
 <header>
@@ -456,7 +480,6 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
  </aside>
  <main>
   <section class="view" id="vSlides">
-  <div class="bar"><h2 id="sTitle"></h2><div class="chips" id="chips"></div><button class="edb" id="edBadge" aria-expanded="false" aria-controls="edPop" title="為什麼保證可編輯？">✓ 保證可編輯<small>Editable</small></button><div class="edpop" id="edPop" role="dialog" aria-label="保證可編輯說明" hidden><b>✓ 保證可編輯 Guaranteed editable</b><ul><li>每個元件都是 PowerPoint <b>原生圖形、文字框、表格與連接線</b>，不是截圖或圖片。</li><li>文字直接點兩下就能改；顏色、線條可用「圖案格式」調整；連接線黏在圖形上，拖動不會斷。</li><li>整個元件已群組，取消群組即可個別移動。</li><li>選取元件 →「⬇ 下載單頁 .pptx（可編輯）」：1 頁只含該元件，套用目前風格與項目數；開啟後 Ctrl+C → 貼到你的簡報，仍是可編輯圖形（含陰影、黏著連接線）。</li><li>例外（誠實標示）：照片框、地圖底圖是圖片佔位，可在 PowerPoint 右鍵「變更圖片」。</li></ul><small>對照：很多線上工具匯出 .pptx 時會把形狀轉成圖片，無法再改字。</small></div><button class="zoomb monly" id="bZoom" aria-pressed="false">🔍 放大</button></div>
   <div class="iconcomphelp" id="iconCompHelp" hidden><span>① 點一款底座　② 換圖示／改字　③ 下載組合 .pptx。取消群組後，圖示與底座都能分開編輯。</span><button class="btn" id="iconCompVariants">更多底座變體（24 款）</button><button class="btn" id="iconCompLibrary">只要圖示？開啟圖示庫</button></div>
   <div class="stage"><div class="slide" id="big"></div><aside class="fwp" id="fwPanel" aria-label="框架使用說明" hidden></aside></div>
   <div class="xinfo" id="xInfo"></div>
@@ -505,9 +528,9 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
      </div>
      <div class="tins" id="tIns" aria-label="表格設定">
       <div class="tsteps"><b>表格設定</b><span class="tauto" id="tAuto" hidden></span><button class="btn tub" id="tUndo" title="復原（Ctrl+Z）" aria-label="復原" disabled>↶</button><button class="btn tub" id="tRedo" title="重做（Ctrl+Shift+Z／Ctrl+Y）" aria-label="重做" disabled>↷</button></div>
-      <div class="tinsTabs" role="tablist"><button data-t="data" aria-pressed="true">資料</button><button data-t="look" aria-pressed="false">外觀與高亮</button></div>
+      <div class="tinsTabs" role="tablist" aria-label="表格設定"><button id="tTabData" role="tab" data-t="data" aria-controls="tSecData" aria-selected="true" aria-pressed="true" tabindex="0">資料</button><button id="tTabLook" role="tab" data-t="look" aria-controls="tSecLook" aria-selected="false" aria-pressed="false" tabindex="-1">外觀</button><button id="tTabEmphasis" role="tab" data-t="emphasis" aria-controls="tSecEmphasis" aria-selected="false" aria-pressed="false" tabindex="-1">強調</button></div>
       <div class="tsecs">
-       <section class="tsec on" data-sec="data"><button class="btn" id="tWorkbench">開啟資料工作台</button>
+       <section class="tsec on" data-sec="data" id="tSecData" role="tabpanel" aria-labelledby="tTabData"><button class="btn" id="tWorkbench">開啟資料工作台</button>
         <div class="tdrop" id="tDrop"><div id="tRawPasteLabel">目前資料</div><div id="tRawPaste" tabindex="0" role="region" aria-labelledby="tRawPasteLabel" aria-describedby="tRawPasteHelp tRawPasteNotice"></div><p id="tRawPasteHelp">原始資料唯讀。點此表格後按 Ctrl／⌘+V 貼上 Excel、TSV、CSV 或 Markdown 表格，取代全部資料；Ctrl／⌘+C 複製全部資料。</p><p id="tRawPasteNotice" role="status" aria-live="polite"></p></div>
         <div class="trow tdrow"><span class="hint tph"><b>Ctrl+V</b> 重新貼上（照原樣）</span><button class="btn" id="tUndoPaste" title="回到貼上之前的資料" hidden>↶ 還原上一份</button>
          <select id="tSample" aria-label="載入範例"><option value="">範例…</option><option value="yield">批次良率</option><option value="fin">損益表摘要</option><option value="status">專案進度</option><option value="cmp">方案比較</option><option value="kpi">月度 KPI</option><option value="risk">風險表</option><option value="issue">議題追蹤</option><option value="action">行動項目</option><option value="raci">RACI 分工</option></select>
@@ -529,17 +552,15 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
         <div class="trow" hidden><label>第一列</label><span class="tseg" id="tHead"><button data-v="auto">自動</button><button data-v="1">是表頭</button><button data-v="0">不是</button></span></div>
         <div class="trow"><label>最後一列</label><label class="ttg"><input type="checkbox" id="tLast"> 是合計（粗體＋上方線）</label></div>
        </section>
-       <section class="tsec" data-sec="look">
-       <div id="tHLLauncher" class="trange-entry"><button class="btn" data-range-action="palette" aria-expanded="false"><span aria-hidden="true">▰ ▯</span> 重點樣式 H/L</button><span class="trange-label" id="tHLHint">先框選儲存格再套用</span></div>
-       <section class="tselection" id="tSelection"><div class="tdock" id="tDock"><span class="tseltxt" id="tSelTxt" aria-live="polite"></span><div class="tchip" id="tChip" role="toolbar" aria-label="重點工具列" hidden></div></div>
-
-        <div class="tselp tpop tpanel" id="tSelPanel" hidden></div><p class="tsteps2" hidden></p>
-        <div id="tRangeStatus" class="trange-status" role="status" aria-live="polite"></div>
-        <div id="tRules" hidden></div>
-</section>
+       <section class="tsec" data-sec="look" id="tSecLook" role="tabpanel" aria-labelledby="tTabLook" hidden>
 <h3>外觀</h3>
       <div class="trow"><button class="btn" id="tFormatReset" title="保留資料，還原此表格格式">還原全部格式</button></div>
-      <div class="tbar1"><div class="tlstrip" id="tLStrip" role="group" aria-label="外觀（快速切換）"></div></div><div class="tlooks" id="tLooks" hidden></div>
+      <div class="tbar1"><div class="tlstrip tappearance" id="tLStrip" role="group" aria-label="可獨立組合的表格外觀">
+       <div class="tappearance-row"><span class="tappearance-label" id="tCardLabel">卡片</span><div class="tappearance-options" role="group" aria-labelledby="tCardLabel" data-appearance="tbCardOn"><button data-v="false">無</button><button data-v="true">白卡＋陰影</button></div></div>
+       <div class="tappearance-row"><span class="tappearance-label" id="tHeaderLabel">表頭</span><div class="tappearance-options" role="group" aria-labelledby="tHeaderLabel" data-appearance="tbHeaderStyle"><button data-v="normal">一般</button><button data-v="primary">主色</button></div></div>
+       <div class="tappearance-row"><span class="tappearance-label" id="tStripesLabel">隔列底色</span><div class="tappearance-options" role="group" aria-labelledby="tStripesLabel" data-appearance="tbStripes"><button data-v="false">無</button><button data-v="true">斑馬</button></div></div>
+       <div class="tappearance-row"><span class="tappearance-label" id="tGridLabel">格線</span><div class="tappearance-options grid-options" role="group" aria-labelledby="tGridLabel" data-appearance="tbGrid"><button data-v="all">細框線</button><button data-v="horizontal">橫線</button><button data-v="none">無</button></div></div>
+      </div><p class="tappearance-hint">四項可自由搭配；只改外觀，不改資料或已套用的強調。</p></div><div class="tlooks" id="tLooks" hidden></div>
         <div class="trow"><label>風格</label><select id="tStyle" aria-label="風格（顏色、字型）"></select></div>
         <div class="trow"><label>尺寸</label><span class="tseg" data-tp="size"><button data-v="S">S</button><button data-v="M">M</button><button data-v="L">L</button></span><label class="ttg"><input type="checkbox" data-tk="tbAuto"> 列少自動放大</label></div>
         <div class="trow"><label>密度</label><span class="tseg" data-tp="tbDense"><button data-v="comfy">舒適</button><button data-v="normal">標準</button><button data-v="dense">密集</button></span></div>
@@ -550,6 +571,16 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
         <div class="trow"><label>字型</label><span class="tseg" data-tp="tbFont"><button data-v="jh" title="表格用微軟正黑體（電腦沒裝時預覽改用相近字型）">微軟正黑體（預設）</button><button data-v="auto" title="沿用目前風格的內文字型">跟風格</button><button data-v="arial">Arial＋正黑</button></span></div>
         <div class="trow"><label>中英間距</label><label class="ttg"><input type="checkbox" data-tk="tbTight"> 移除中英文之間的空格</label></div>
 <h4>預覽</h4><div class="tpreview-controls"><div class="tview" id="tView" role="group" aria-label="預覽" hidden><button data-v="full" aria-pressed="false">完整投影片</button><button data-v="close" aria-pressed="true">表格近看</button></div><label class="tarrow" title="表格中 ▲▼ 升降符號的顏色；預設不用紅綠">▲▼ 符號色 <select id="tArrow"><option value="mono">主色＋灰（建議）</option><option value="ink">全黑</option><option value="sem">好壞色（主色／琥珀）</option></select></label><label class="tclean"><input type="checkbox" id="tCleanV"> 乾淨預覽</label></div>      <div class="tzoom" role="group" aria-label="預覽縮放"><button data-z="fit" aria-pressed="true" title="依可用寬度與高度顯示完整表格、標題及註腳">顯示整個表格</button><button data-z="100" aria-pressed="false" title="每英吋 90 CSS px；超出預覽區可捲動，不改變匯出尺寸">原始尺寸 100%</button></div>
+       </section>
+
+       <section class="tsec" data-sec="emphasis" id="tSecEmphasis" role="tabpanel" aria-labelledby="tTabEmphasis" hidden>
+       <div id="tHLLauncher" class="trange-entry"><button class="btn" data-range-action="palette" aria-expanded="false"><span aria-hidden="true">▰ ▯</span> 重點樣式 H/L</button><span class="trange-label" id="tHLHint">先框選儲存格再套用</span></div>
+       <section class="tselection" id="tSelection"><div class="tdock" id="tDock"><span class="tseltxt" id="tSelTxt" aria-live="polite"></span><div class="tchip" id="tChip" role="toolbar" aria-label="重點工具列" hidden></div></div>
+
+        <div class="tselp tpop tpanel" id="tSelPanel" hidden></div><p class="tsteps2" hidden></p>
+        <div id="tRangeStatus" class="trange-status" role="status" aria-live="polite"></div>
+        <div id="tRules" hidden></div>
+</section>
        </section>
 
       </div>
@@ -564,6 +595,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
   </section>
  </main>
 </div>
+<footer class="bar page-info" id="pageInfo" aria-label="投影片導覽與風格資訊"><h2 id="sTitle" tabindex="-1"></h2><div class="chips" id="chips"></div><button class="edb" id="edBadge" aria-expanded="false" aria-controls="edPop" title="為什麼保證可編輯？">✓ 保證可編輯<small>Editable</small></button><div class="edpop" id="edPop" role="dialog" aria-label="保證可編輯說明" hidden><b>✓ 保證可編輯 Guaranteed editable</b><ul><li>每個元件都是 PowerPoint <b>原生圖形、文字框、表格與連接線</b>，不是截圖或圖片。</li><li>文字直接點兩下就能改；顏色、線條可用「圖案格式」調整；連接線黏在圖形上，拖動不會斷。</li><li>整個元件已群組，取消群組即可個別移動。</li><li>選取元件 →「⬇ 下載單頁 .pptx（可編輯）」：1 頁只含該元件，套用目前風格與項目數；開啟後 Ctrl+C → 貼到你的簡報，仍是可編輯圖形（含陰影、黏著連接線）。</li><li>例外（誠實標示）：照片框、地圖底圖是圖片佔位，可在 PowerPoint 右鍵「變更圖片」。</li></ul><small>對照：很多線上工具匯出 .pptx 時會把形狀轉成圖片，無法再改字。</small></div><button class="zoomb monly" id="bZoom" aria-pressed="false">🔍 放大</button></footer>
 <div class="toast" id="toast"></div>
 <div class="lbed" id="lbEd" hidden role="dialog" aria-label="改字"><div class="lbh"><b id="lbName">改字</b><small id="lbHelp">只改文字、不重排版面：放不下時字級自動縮小（PowerPoint 裡再改也會自動縮小）。Enter＝換行；改過的會保留在本機，也會跟著「＋待選」。</small></div>
  <div id="lbList"></div><section id="lbIcPicker" hidden aria-label="搜尋替換圖示"><div class="lbpickhead"><b id="lbIcPickerTitle">替換圖示</b><button class="btn" id="lbIcClose" aria-label="關閉圖示搜尋">✕</button></div><input type="search" id="lbIcSearch" placeholder="搜尋圖示：團隊、時間、star…" aria-label="搜尋全部圖示"><div id="lbIcResults"></div><small id="lbIcStatus" role="status" aria-live="polite"></small></section><div class="lbf"><button class="btn" id="lbReset">還原此元件</button><button class="btn" id="lbCancel">取消</button><button class="btn pri" id="lbOk">套用</button></div></div>
@@ -3946,7 +3978,7 @@ const BASE={
  cnW:1.25,cnC:'7F7F7F',cnDash:'solid',cnHead:'triangle',cnTail:'none',cnHs:'med',
  tFont:'Microsoft JhengHei',bFont:'Microsoft JhengHei',nFont:'',tSize:36,tBold:true,lSize:16,lBold:true,nSize:10.5,
  icColor:'P',icVar:'line',icSW:0,
- tbDense:'auto',tbHiColor:'auto',tbHiMode:'auto',tbNeg:false,tbArrow:'mono',tbStatus:true,tbLook:'clean',tbCard:'white',tbMinus:'auto',tbThou:true,tbWidth:'auto',tbV:'center',tbH:'center',tbSugTitle:true,tbAuto:true,tbFont:'jh',tbPad:'m',tbTight:false,
+ tbDense:'auto',tbHiColor:'auto',tbHiMode:'auto',tbNeg:false,tbArrow:'mono',tbStatus:true,tbLook:'clean',tbCard:'white',tbCardOn:null,tbHeaderStyle:null,tbStripes:null,tbGrid:null,tbMinus:'auto',tbThou:true,tbWidth:'auto',tbV:'center',tbH:'center',tbSugTitle:true,tbAuto:true,tbFont:'jh',tbPad:'m',tbTight:false,
  /* v9：可調數量（04／05 頁）、語意色（與品牌色分開）、最小字級（單一元件／待選素材匯出時放大幾何） */
  nLin:4,nLane:3,nPcc:3,nWhy:5,nCause:4,nIcon:3,nList:4,semWarn:'',semGood:'',semBad:'',minFont:0,
  /* v10 標註顏色：alert＝警示色（預設）／P 主色／A 強調色／ink 深灰 */
@@ -5761,7 +5793,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   const AU=source.auto;
   // 列數少→字大一點、列數多→維持（S／M／L 仍是基準）；tbAuto=false 關閉
   if(st.tbAuto!==false){const nb=src.length-h0;k=Math.min(1.45,k*(nb<=5?1.3:nb<=9?1.15:1));}if(boost>1)k*=boost;   // 文件長度不會降低使用者選擇的尺寸
-  const lookId=tableLookOf(st);const grey=['card','bandcard'].includes(lookId)?false:st.tbLook==='panel'||st.tbCard==='grey'||(st.tbPanel&&!st.tbLook); // Table cards always use the white shadow backing, including legacy snapshots.
+  const lookId=tableLookOf(st),appearance=tableAppearanceOf(st);const grey=typeof st.tbCardOn==='boolean'||['card','bandcard'].includes(lookId)?false:st.tbLook==='panel'||st.tbCard==='grey'||(st.tbPanel&&!st.tbLook); // Table cards always use the white shadow backing, including legacy snapshots.
   const sz=v=>Math.round(v*k*2)/2;
   const TF=st.tbFont==='arial'?'Arial':(st.tbFont==='jh'||st.tbFont==='noto')?'Microsoft JhengHei':F;   // 表格文字字型（arial＝拉丁 Arial＋中文正黑：a:ea 會自動補成中文字型）
   const NF=st.tbFont==='arial'?'Arial':tableNumFont((st.tbFont==='jh'||st.tbFont==='noto')?'Microsoft JhengHei':nf);
@@ -5775,9 +5807,19 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    hair:{hdr:{color:G.ink,bB:{c:'D9D9D9',w:.4}},row:{c:'D9D9D9',w:.4},last:{c:'D9D9D9',w:.4},key:{c:'D9D9D9',w:.4},hi:'bold',padL0:1},
    zebra:{dense:1,hdr:{color:G.t2,bB:{c:G.line,w:1}},row:null,zebra:mix(G.fill,'000000',.035),last:{c:G.t2,w:1},key:{c:G.t2,w:.75},hi:'bold'}};
   // Compose the colored header with the existing card backing, without changing geometry.
-  const LK=lookId==='bandcard'?Object.assign({},looks.band,{card:1,row:looks.card.row,last:null}):looks[lookId];
+  const legacyLK=lookId==='bandcard'?Object.assign({},looks.band,{card:1,row:looks.card.row,last:null}):looks[lookId];
+  // Null means an untouched legacy dimension. Override one concern at a time:
+  // CARD must never change cells, spacing, header, stripes or semantic highlights.
+  const LK=Object.assign({},legacyLK,{hdr:Object.assign({},legacyLK.hdr)});
+  if(typeof st.tbCardOn==='boolean')LK.card=st.tbCardOn;
+  if(['normal','primary'].includes(st.tbHeaderStyle)){LK.hdr.fill=appearance.header==='primary'?P:null;LK.hdr.color=appearance.header==='primary'?'FFFFFF':G.ink;}
+  if(typeof st.tbStripes==='boolean')LK.zebra=st.tbStripes?mix(G.fill,'000000',.035):null;
+  const explicitGrid=['all','horizontal','none'].includes(st.tbGrid);
+  // Grid paint precedes semantic/manual highlights, which remain independent.
+  const baseGrid=(o,ri)=>{if(!explicitGrid)return o;for(const edge of ['bT','bB','bL','bR'])delete o[edge];
+   if(appearance.grid!=='none'){const b={c:'D9D9D9',w:Math.max(.5,Math.round(.5*k*4)/4)};o.bB=b;if(ri===0||appearance.grid==='all')o.bT=b;if(appearance.grid==='all')o.bL=o.bR=b;}return o;};
   let hiStyle=['fill','box','bold'].includes(T.hiStyle)?T.hiStyle:(st.tbHiMode==='fill'||st.tbHiMode==='box')?st.tbHiMode:LK.hi;
-  if(LK.hdr.fill&&hiStyle==='box')hiStyle='fill';   // 主色表頭：重點＝表頭填強調色＋內文 6% 淡底，不再疊外框（避免壓在表頭色帶與合計底色上）
+  if(legacyLK.hdr.fill&&hiStyle==='box')hiStyle='fill';   // 主色表頭：重點＝表頭填強調色＋內文 6% 淡底，不再疊外框（避免壓在表頭色帶與合計底色上）
   // 密度：舒適／標準／密集＝字級、列高、左右邊距各自調整（不是等比縮放）；斑馬外觀預設密集
   const DEN={comfy:{fs:14,hfs:12,rh:.48,hh:.48,pad:12},normal:{fs:13,hfs:11,rh:.34,hh:.38,pad:9},dense:{fs:11.5,hfs:10.5,rh:.28,hh:.32,pad:7}};
   const dn=DEN[st.tbDense==='compact'?'dense':st.tbDense]&&st.tbDense!=='normal'?DEN[st.tbDense==='compact'?'dense':st.tbDense]:DEN.normal;   /* 密度與外觀脫鉤：斑馬不再強制密集 */
@@ -5907,7 +5949,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
   const firstKey=ri=>keySet.has(ri)&&!keySet.has(ri-1);
   const cells=rows.map((r,ri)=>r.map((t,c)=>{const align=colAl[c];const isN=isNumFont(ri,c);const font=isN?NF:TF;t=isN?t:tidy(t);const mL=c===0?padL0:padH;
    if(ri<h0){const o={t,bold:1,size:hfs,align,font:TF,color:LK.hdr.color,fill:LK.hdr.fill||null,bT:bw(LK.hdr.bT),bB:bw(LK.hdr.bB),mL,mR:padH};
-    const hc=hiCol(ri,c)||hiCell(ri,c);
+    baseGrid(o,ri);const hc=hiCol(ri,c)||hiCell(ri,c);
     if(hc){if(LK.hdr.fill){o.bB={c:contrastOf(hc.C,LK.hdr.fill)>=3?hc.C:ensureContrast(mix(hc.C,'FFFFFF',.85),LK.hdr.fill,3),w:3};/* 主色表頭：重點欄只加 3pt 強調色底線 */}else{if(hiStyle==='fill')o.fill=mix(hc.C,'FFFFFF',.9);o.color=ensureContrast(mix(hc.C,'000000',.18),o.fill||'FFFFFF',5);}}
     o.color=cc(o.color,o.fill);return rangePaint(o,ri,c);}
    const last=ri===rows.length-1,key=keySet.has(ri)||bold.has(ri),sec=AU.section[ri];
@@ -5916,6 +5958,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    if(key&&LK.keyFill)o.fill=LK.keyFill;
    if(firstKey(ri)&&LK.key&&ri>h0)o.bT=bw(LK.key);
    if(sec&&LK.row&&ri>h0)o.bT=bw(LK.row);
+   baseGrid(o,ri);
    const s=st.tbStatus===false||!AU.statC[c]?null:statusOf(t);
    if(s){o.color=ST[s];o.bold=true;if(/[A-Za-z\u4e00-\u9fff]/.test(t))o.dot=ST[s];}
    if(isN&&st.tbNeg&&tNumVal(src[ri][c])<0&&!/^[\s(（]*[▲△]/.test(src[ri][c]))o.color=BAD;
@@ -5939,7 +5982,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    const rowH=sourceRows.map(r=>rowHAll[r]),tH=rowH.reduce((a,b)=>a+b,0),bodySourceRows=sourceRows.slice(h0);
    const pageCells=sourceRows.map(raw=>cells[raw].map(c=>Object.assign({},c)));
    // A page closing border is visual punctuation, never a subtotal or lastTotal.
-   if(pageCells.length>h0&&LK.last)pageCells[pageCells.length-1].forEach((c,ci)=>{if(!rangeAt(sourceRows[sourceRows.length-1],ci))c.bB=bw(LK.last);});
+   if(!explicitGrid&&pageCells.length>h0&&LK.last)pageCells[pageCells.length-1].forEach((c,ci)=>{if(!rangeAt(sourceRows[sourceRows.length-1],ci))c.bB=bw(LK.last);});
    const slots={title:{x:X,y:Y0,w:titleWidth,h:titH,size:tfsT,font:(st.tbFont==='jh'||st.tbFont==='noto')?'Microsoft JhengHei':st.tFont,color:G.ink,bold:1},
     unit:{x:X,y:Y0+titH+.02,w:metaW,h:Math.max(unitH,.27*k),size:ufs,color:G.t2}};
    if(T.title)txt(X,Y0,titleWidth,titH,ttl,{size:tfsT,bold:1,color:st.tbTitleInk?G.ink:P,font:slots.title.font,name:'表格標題',valign:'bottom'});
@@ -5964,7 +6007,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    if(hiStyle==='box')localMarks.forEach(h=>{
     if(h.excludes&&h.excludes.length){tableMarkRegions(h,sourceRows.length,nC).forEach(q=>{const bx=cx0(q.c0),by=ry0(q.r0),bw0=colW.slice(q.c0,q.c1+1).reduce((a,b)=>a+b,0),bh=rowH.slice(q.r0,q.r1+1).reduce((a,b)=>a+b,0);
       const segIns=Math.max(blw/144,ins);box(bx+segIns,by+segIns,bw0-2*segIns,bh-2*segIns,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});boxes.push(Object.assign({type:'range',color:h.C,kind:h.kind},q));});return;}
-    if(h.type==='col'){const y0=LK.hdr.fill&&h0?ty+rowH[0]:ty;box(cx0(h.i)+ins,y0+ins,colW[h.i]-2*ins,ty+tH-y0-2*ins,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});}
+    if(h.type==='col'){const y0=legacyLK.hdr.fill&&h0?ty+rowH[0]:ty;box(cx0(h.i)+ins,y0+ins,colW[h.i]-2*ins,ty+tH-y0-2*ins,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});}
     else if(h.type==='row')box(tx+ins,ry0(h.i)+ins,tW-2*ins,rowH[h.i]-2*ins,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});
     else box(cx0(h.c)+ins,ry0(h.r)+ins,colW[h.c]-2*ins,rowH[h.r]-2*ins,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});
     boxes.push(Object.assign({color:h.C,kind:h.kind},h.type==='cell'?{type:'cell',r:h.r,c:h.c}:{type:h.type,i:h.i}));});
@@ -5972,7 +6015,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    const b0=boxes.find(b=>!b.rule&&b.type!=='cell'),orphans=[];
    sourceRows.forEach(ri=>rows[ri].forEach((t,c)=>{const str=String(t);if(!str.trim())return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri),av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0),ls=str.split('\n'),vis=x=>x.replace(/\s/g,'').length;
     if(ls.some(l=>mw(l,sz0,b)>av+.01))orphans.push({r:ri,c,t:str,why:'auto-wrap'});else if(ls.length>1&&vis(str)>4&&ls.some((l,i)=>vis(l)<=1||vis(l)<=2&&i>0&&!/[：:；;，,、)）\s]$/.test(ls[i-1])&&!/^[（(]/.test(l)))orphans.push({r:ri,c,t:str,why:'orphan'});}));
-   if(T.hcol){const tint=LK.hdr&&LK.hdr.fill?mix(P,'FFFFFF',.88):mix(G.fill||'F2F2F2','FFFFFF',.2);tb.cells.forEach((r,ri)=>{const raw=sourceRows[ri];if(raw<h0||AU.section[raw])return;const cl=r[0];if(!cl)return;cl.bold=true;(cl.runs||[]).forEach(x=>{x.o=Object.assign({},x.o,{bold:true});});if(!cl.fill&&!rangeAt(raw,0))cl.fill=tint;});}
+   if(T.hcol){const tint=legacyLK.hdr&&legacyLK.hdr.fill?mix(P,'FFFFFF',.88):mix(G.fill||'F2F2F2','FFFFFF',.2);tb.cells.forEach((r,ri)=>{const raw=sourceRows[ri];if(raw<h0||AU.section[raw])return;const cl=r[0];if(!cl)return;cl.bold=true;(cl.runs||[]).forEach(x=>{x.o=Object.assign({},x.o,{bold:true});});if(!cl.fill&&!rangeAt(raw,0))cl.fill=tint;});}
    // Apply line-only families after every semantic/header/first-column fill has
    // resolved. All render/export paths consume these same native cell borders.
    const edgeOffsets=[['bT',-1,0],['bR',0,1],['bB',1,0],['bL',0,-1]];
@@ -5987,7 +6030,7 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    const displayRows=tb.cells.map(row=>row.map(c=>c.runs.map(r=>r.t+(r.o&&r.o.br?'\n':'')).join('')));
    const integrity={documentId,pageIndex,pageCount,h0,nC,sourceValues:source.rows.map(row=>row.slice()),displayRows,bodyStart,bodyEnd,sourceRows:sourceRows.slice(),bodySourceRows:bodySourceRows.slice(),rawRowCount:source.nR,rawBodyRows:source.bodyRows,renderedRowCount:sourceRows.length,renderedBodyRows:bodySourceRows.length,exportComplete:complete,exportReason:reason,layoutOverflow,blockedRow,blockedReasonCode};
    tb.dataIntegrity=Object.assign({},integrity);
-   cur.table=Object.assign({},integrity,{rawRows:source.rows,previewBodyRows:bodySourceRows.length,types:Object.assign({},T.types),formats:Object.assign({},T.formats),hcol:!!T.hcol,pad:st.tbPad||'m',orphans,colMin:colMin.map(v=>+v.toFixed(3)),REC,k,colFit:colFit.map(v=>+v.toFixed(3)),tx,ty,tW,tH,colW:colW.slice(),rowH,h0,nC,nR:sourceRows.length,look:lookId,grey,hiMode:hiStyle,hiStyle,EC,colNum:AU.numC,colStat:AU.statC,key:[...keySet].sort((a,b)=>a-b),hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,
+   cur.table=Object.assign({},integrity,{rawRows:source.rows,previewBodyRows:bodySourceRows.length,types:Object.assign({},T.types),formats:Object.assign({},T.formats),hcol:!!T.hcol,pad:st.tbPad||'m',orphans,colMin:colMin.map(v=>+v.toFixed(3)),REC,k,colFit:colFit.map(v=>+v.toFixed(3)),tx,ty,tW,tH,colW:colW.slice(),rowH,h0,nC,nR:sourceRows.length,look:lookId,appearance,grey,hiMode:hiStyle,hiStyle,EC,colNum:AU.numC,colStat:AU.statC,key:[...keySet].sort((a,b)=>a-b),hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,
     ruleCols:[...new Set(MK.rules.map(r=>r.c))],unit:T.unit||'',note:T.note||'',title:T.title||'',font:TF,nf:NF,slots,fs,hfs,k});
   });cur=firstSlide;}
 
@@ -6053,6 +6096,15 @@ const TABLE_LOOKS=[['clean','細線'],['band','主色表頭'],['card','卡片'],
 function TBL_FIXED(s){return Object.assign({},s,{tbMinus:'auto',tbNeg:false,tbThou:true,tbStatus:true});}
 const TABLE_LOOK_ALIAS={minimal:'clean',panel:'card'};
 const tableLookOf=p=>{const v=TABLE_LOOK_ALIAS[p.tbLook]||p.tbLook;return TABLE_LOOKS.some(l=>l[0]===v)?v:(p.tbPanel?'card':'clean');};
+// Persist independent overrides, not an ever-growing list of combination looks.
+// Legacy names survive only as a compatibility profile for unset dimensions.
+const TABLE_APPEARANCE_KEYS=['tbCardOn','tbHeaderStyle','tbStripes','tbGrid'];
+function tableAppearanceOf(p){p=p||{};const look=tableLookOf(p);return {
+ card:typeof p.tbCardOn==='boolean'?p.tbCardOn:['card','bandcard'].includes(look),
+ header:['normal','primary'].includes(p.tbHeaderStyle)?p.tbHeaderStyle:['band','bandcard'].includes(look)?'primary':'normal',
+ stripes:typeof p.tbStripes==='boolean'?p.tbStripes:look==='zebra',
+ grid:['all','horizontal','none'].includes(p.tbGrid)?p.tbGrid:'horizontal'};}
+
 const tableNumFont=nf=>!nf||/Georgia|Times|Cambria|Garamond|Palatino|Book|serif|明體|Mincho|Song|宋/i.test(nf)?'Arial':nf;
 const T_NUM=/^[\s(（]*[-−+±▲▼△▽]?\s*(?:NT\$|US\$|\$|＄|€|¥)?\s*(?:\d{1,3}(?:,\d{3})+|\d+)?(?:\.\d+)?\s*(?:%|％|x|X|倍|ppts?|pts?|bps|[KkMmBb]|億|萬|元|天|週|日|h|hr|小時|件|台|片|顆)?\s*[)）]?\s*$/;
 const tIsNum=t=>/\d/.test(t)&&T_NUM.test(t),tBlank=t=>/^\s*(|-|—|–|n\/a|NA|N\/A)\s*$/.test(t);
@@ -6235,6 +6287,16 @@ const TABLE_HIGHLIGHT_PRESETS=Object.freeze([
  Object.freeze({id:'rose',label:'玫瑰紅',fill:'F6E0E2',color:'7A1F2B',border:'B07980',mode:'fill',bold:null}),
  Object.freeze({id:'slate',label:'中性灰',fill:'EDEDED',color:'3A3A3A',border:'999999',mode:'fill',bold:null})
 ]);
+// Versioned palette: new marks use these hues, while legacy IDs below keep their
+// original resolver and serialized appearance. Fixed hues never depend on a theme.
+const TABLE_HIGHLIGHT_HUES=Object.freeze([
+ Object.freeze({id:'theme',label:'主題色',dynamic:true}),
+ Object.freeze({id:'blue',label:'藍色',soft:'D7E5F5',dark:'285785'}),
+ Object.freeze({id:'green',label:'綠色',soft:'D8EACF',dark:'356343'}),
+ Object.freeze({id:'red',label:'紅色',soft:'F3D0D0',dark:'8B3535'}),
+ Object.freeze({id:'yellow',label:'黃色',soft:'F6E4AD',dark:'745313'})
+]);
+const TABLE_HIGHLIGHT_PRESETS_V2=Object.freeze(TABLE_HIGHLIGHT_HUES.flatMap(h=>['soft','deep'].map(tone=>Object.freeze({id:`v2-${h.id}-${tone}`,hue:h.id,tone,label:h.label+'・'+(tone==='soft'?'柔色':'深色白字'),mode:'fill',bold:null}))));
 const TABLE_HIGHLIGHT_FAMILIES=Object.freeze([
  Object.freeze({id:'fill',label:'底色',width:1.5}),Object.freeze({id:'outline',label:'外框',width:1.5}),
  Object.freeze({id:'underline',label:'底線',width:2}),Object.freeze({id:'side',label:'側線',width:3})
@@ -6258,7 +6320,16 @@ function tableHighlightStroke(stroke,backgrounds){const bgs=[...new Set(backgrou
  for(let i=1;i<=100;i++)for(const to of ['FFFFFF','000000']){const c=mix(stroke,to,i/100),v=score(c);if(v>=3)return c;if(v>bestScore){best=c;bestScore=v;}}return best;
 }
 const HI_COLORS=['auto','P','A','alert'],RULE_OPS=['<','<=','>','>=','='],RULE_TONES=['warn','good','accent'],RULE_STYLES=['fill','text','box'];
-function tableHighlightPreset(id,params,family='fill'){family=tableHighlightFamily(family);if(!family)return null;const preset=TABLE_HIGHLIGHT_PRESETS.find(p=>p.id===id);if(!preset)return null;
+function tableHighlightPreset(id,params,family='fill'){family=tableHighlightFamily(family);if(!family)return null;
+ const modern=TABLE_HIGHLIGHT_PRESETS_V2.find(p=>p.id===id);
+ if(modern){const hue=TABLE_HIGHLIGHT_HUES.find(h=>h.id===modern.hue),p=params&&/^[0-9A-F]{6}$/i.test(params.P||'')?params.P.toUpperCase():BASE.P;
+  const dark=hue.dynamic?ensureContrast(p,'FFFFFF',4.5):hue.dark,soft=hue.dynamic?mix(p,'FFFFFF',.86):hue.soft;
+  if(family!=='fill')return Object.assign({},modern,{label:hue.label,family,mode:family,fill:null,color:null,border:dark,stroke:dark,borderWidth:TABLE_HIGHLIGHT_FAMILIES.find(f=>f.id===family).width});
+  const fill=modern.tone==='deep'?dark:soft,color=modern.tone==='deep'?'FFFFFF':hue.dynamic?ensureContrast(p,soft,4.5):dark;
+  return Object.assign({},modern,{fill,color,border:dark});
+ }
+ // Legacy branch intentionally unchanged: do not migrate or recolor saved marks.
+ const preset=TABLE_HIGHLIGHT_PRESETS.find(p=>p.id===id);if(!preset)return null;
  if(family!=='fill')return Object.assign({},preset,{family,mode:family,fill:null,color:null,border:TABLE_HIGHLIGHT_STROKES[id],stroke:TABLE_HIGHLIGHT_STROKES[id],borderWidth:TABLE_HIGHLIGHT_FAMILIES.find(f=>f.id===family).width});
  const out=Object.assign({},preset),p=params&&/^[0-9A-F]{6}$/i.test(params.P||'')?params.P.toUpperCase():BASE.P;
  if(p!==BASE.P&&id==='theme-light'){out.fill=mix(p,'FFFFFF',.86);out.color=ensureContrast(p,out.fill,4.5);out.border=mix(p,'FFFFFF',.4);}
@@ -6308,12 +6379,14 @@ function tableRangeUsesPreset(his,range,presetId,nR,nC){let remaining=[range];
 }
 // Line no-op identity includes family AND actual perimeter, not filled-area coverage.
 function tableRangeUsesLine(his,range,presetId,family){const edges=[];
+ // V2 fill tones share exactly one line paint; preserve imported IDs on no-op.
+ const lineKey=id=>{const p=TABLE_HIGHLIGHT_PRESETS_V2.find(p=>p.id===id);return p?'v2-'+p.hue:id;},wanted=lineKey(presetId);
  if(family==='outline'){for(let c=range.c0;c<=range.c1;c++){edges.push([range.r0,c,'bT'],[range.r1,c,'bB']);}for(let r=range.r0;r<=range.r1;r++){edges.push([r,range.c0,'bL'],[r,range.c1,'bR']);}}
  else if(family==='underline')for(let c=range.c0;c<=range.c1;c++)edges.push([range.r1,c,'bB']);
  else for(let r=range.r0;r<=range.r1;r++)edges.push([r,range.c0,'bL']);
  return edges.every(([r,c,edge])=>{const [dr,dc,opposite]={bT:[-1,0,'bB'],bR:[0,1,'bL'],bB:[1,0,'bT'],bL:[0,-1,'bR']}[edge];
   for(let i=his.length-1;i>=0;i--){const h=his[i];if(h.type!=='range')continue;
-   if(tableRangeEdge(h,r,c,edge)||tableRangeEdge(h,r+dr,c+dc,opposite))return h.presetId===presetId&&tableHighlightFamily(h)===family;
+   if(tableRangeEdge(h,r,c,edge)||tableRangeEdge(h,r+dr,c+dc,opposite))return lineKey(h.presetId)===wanted&&tableHighlightFamily(h)===family;
   }return false;});
 }
 function tableApplyRange(T,range,presetId,family='fill'){T=T||{};const source=tableSource(T),his=tableMarks(T,source.nC,source.nR).his,q=tableNormalizeRange(range,source.nR,source.nC);family=tableHighlightFamily(family);
@@ -6869,6 +6942,9 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(k==='zh'){out.zh=stripCtl(v).replace(/[<>&"]/g,'').slice(0,40);return;}
   if(k==='tbLook'){const w=TABLE_LOOK_ALIAS[v]||v;if(TABLE_LOOKS.some(l=>l[0]===w)){out.tbLook=w;}return;}
   if(k==='tbCard'){out.tbCard='white';return;}
+  if(k==='tbCardOn'||k==='tbStripes'){out[k]=typeof v==='boolean'?v:null;return;}
+  if(k==='tbHeaderStyle'){out[k]=['normal','primary'].includes(v)?v:null;return;}
+  if(k==='tbGrid'){out[k]=['all','horizontal','none'].includes(v)?v:null;return;}
   if(k==='tbPanel'){out.tbPanel=!!v;return;}
   if(k==='tbArrow'){out.tbArrow=['mono','sem','ink'].includes(v)?v:'mono';return;}
   if(k==='semWarn'){const h=String(v||'').replace('#','');out.semWarn=/^[0-9A-F]{6}$/i.test(h)?h.toUpperCase():'';return;}
@@ -6880,7 +6956,7 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
  if(p.tbPanel&&!p.tbLook)out.tbLook='card';out.tbCard='white';
  return out;}
-const api={iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,TABLE_HIGHLIGHT_FAMILIES,tableHighlightFamily,tableHighlightStroke,tableResolvedBorders,tableRangeEdge,tableHighlightPreset,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
+const api={iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,TABLE_HIGHLIGHT_HUES,TABLE_HIGHLIGHT_PRESETS_V2,TABLE_HIGHLIGHT_FAMILIES,tableHighlightFamily,tableHighlightStroke,tableResolvedBorders,tableRangeEdge,tableHighlightPreset,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,TABLE_APPEARANCE_KEYS,tableAppearanceOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);
 
@@ -7205,7 +7281,7 @@ function showSlide(){
  SEL=null;
  navSync(sl);
  const SE=D.SLIDES.find(x=>x[0]===sl.key)||[];$('#sTitle').innerHTML=`<b class="pcode">${SE[2]||''}</b> ${sl.title} · ${String(S.slide+1).padStart(2,'0')}/${model.slides.length}<small>${S.mine?'我的風格：'+escH(S.mine):presetOf(S.base).zh}${isModified()&&!S.mine?'（已微調）':''}</small>${sl.key==='catalog'?gocards():''}${(D.USED&&D.USED[sl.key])?usedLinks(D.USED[sl.key]):''}${sl.key==='annot'||sl.key==='chart'?'<a class="chartln" href="https://github.com/hctsaik/swiffchart-web-preview" target="_blank" rel="noopener" title="原生可編輯圖表（直條／折線／Pareto／瀑布）在另一個專案 SwiffChart">📊 圖表 → SwiffChart</a>':''}`;
- featShow(sl);
+ featShow(sl);syncPageInfoHeight();
 }
 /* ---------- 頁面導覽：分組側欄、搜尋（含同義詞）、hash 深連結 ---------- */
 const SYN=[['kpi','指標','數字','metric','達成','成果','數據'],['比較','對比','vs','compare','差異','優劣'],['時間軸','時程','timeline','里程碑','甘特','路線圖','roadmap','經歷','職涯'],['流程','process','步驟','steps','程序','sop'],['矩陣','2x2','象限','matrix','優先'],['原因','魚骨','rca','5why','why','根因','8d'],['履歷','求職','面試','自我介紹','profile','個人','about'],['作品集','portfolio','圖片','截圖','照片','screenshot'],['技能','skills','能力','skill'],['star','案例','case','專案'],['引言','故事','hook','開場','quote','story'],['結尾','cta','行動','closing','謝謝','聯絡','contact','qr'],['標籤','tag','膠囊','capsule'],['圖示','icon','底座','圖示元件','iconcomponents'],['表格','table','raci','風險'],['圖表','chart','swiffchart','長條','折線'],['決策','decide','建議','選項'],['前後','before','after','改善','asis','tobe'],['組織','人員','team','團隊','人'],['議程','agenda','目錄','章節','divider','分隔'],['評分','rating','星','進度','harvey']];
@@ -7228,9 +7304,10 @@ function buildNav(){const T=$('#pTree');if(!T)return;const open=JSON.parse(local
 function goKey(k){const i=model.slides.findIndex(x=>x.key===k);if(i<0)return false;if(S.tab!=='slides')setTab('slides');go(i);return true;}
 function navSync(sl){document.querySelectorAll('#pTree a').forEach(a=>a.classList.toggle('on',a.dataset.k===sl.key));const on=document.querySelector('#pTree a.on');if(on){const d=on.closest('details');if(d&&!d.open)d.open=true;}
  const h=pageHref(sl.key);if(S.tab==='slides'&&location.hash!==h)try{history.replaceState(null,'',h);}catch(e){}window.__studio.key=sl.key;}
-const gocards=()=>`<span class="gocards">${D.SECTIONS.filter(x=>x[0]!=='S').map(([g,zh])=>{const f=D.SLIDES.find(e=>e[4]===g);return f?`<a data-k="${f[0]}"><b>${g}</b>${zh}</a>`:'';}).join('')}</span>`;
-const usedLinks=cs=>`<span class="gocards"><small style="color:#8C8C8C">本頁使用元件：</small>${cs.map(c=>{const e=D.SLIDES.find(x=>x[2]===c)||D.SLIDES.find(x=>x[2]===c.replace(/·[A-Z]$/,''));return e?`<a data-k="${e[0]}"><b>${c}</b>${e[1]}</a>`:'';}).join('')}</span>`;
-document.addEventListener('click',e=>{const a=e.target.closest('.gocards a[data-k],.rcp a[data-k]');if(a){e.preventDefault();goKey(a.dataset.k);}});
+const gocards=()=>`<span class="gocards">${D.SECTIONS.filter(x=>x[0]!=='S').map(([g,zh])=>{const f=D.SLIDES.find(e=>e[4]===g);return f?`<a href="${pageHref(f[0])}" data-k="${f[0]}"><b>${g}</b>${zh}</a>`:'';}).join('')}</span>`;
+const usedLinks=cs=>`<span class="gocards"><small style="color:#8C8C8C">本頁使用元件：</small>${cs.map(c=>{const e=D.SLIDES.find(x=>x[2]===c)||D.SLIDES.find(x=>x[2]===c.replace(/·[A-Z]$/,''));return e?`<a href="${pageHref(e[0])}" data-k="${e[0]}"><b>${c}</b>${e[1]}</a>`:'';}).join('')}</span>`;
+document.addEventListener('click',e=>{const a=e.target.closest('.gocards a[data-k],.rcp a[data-k]');if(a){e.preventDefault();const restore=a.closest('#pageInfo')&&document.activeElement===a;goKey(a.dataset.k);if(restore)$('#sTitle').focus({preventScroll:true});}});
+$('#pageInfo').addEventListener('keydown',e=>{const a=e.target.closest('.gocards a[data-k]');if(!a||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;const links=[...a.closest('.gocards').querySelectorAll('a[data-k]')],i=links.indexOf(a),j=e.key==='Home'?0:e.key==='End'?links.length-1:(i+(e.key==='ArrowRight'?1:-1)+links.length)%links.length;e.preventDefault();e.stopPropagation();links[j].focus({preventScroll:true});links[j].scrollIntoView({block:'nearest',inline:'nearest'});});
 function hashKey(){const m=/^#\/(?:[^/]*\/)?([\w-]+)$/.exec(location.hash||'');return m?m[1]:null;}
 addEventListener('hashchange',()=>{const k=hashKey();if(k&&model&&model.slides[S.slide].key!==k&&!goKey(k))goKey('catalog');});
 {const hk=hashKey();if(hk)S.slideKey=hk;}
@@ -7373,8 +7450,9 @@ $('#mFile').onchange=async e=>{let n=0;for(const f of e.target.files){try{n+=imp
 window.__studio=window.__studio||{};
 const I=window.Icons;const ENV=()=>({PptxGenJS:window.PptxGenJS,JSZip:window.JSZip});
 const SK=()=>D.SIZE_K[S.p.size]||1;
+function syncPageInfoHeight(){const footer=$('#pageInfo');document.documentElement.style.setProperty('--page-info-height',footer.hidden?'0px':Math.ceil(footer.getBoundingClientRect().height)+'px');}
 function setTab(t){if(t!==S.tab)closeChip();if(t!==S.tab)closeLabelEditor(false);S.tab=t;document.body.classList.toggle('tabT',t==='table');if(t==='table'&&document.body.classList.contains('pan'))setPanel(false);document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
- $('#vSlides').hidden=t!=='slides';$('#vIcons').hidden=t!=='icons';$('#vTable').hidden=t!=='table';$('#vKit').hidden=t!=='kit';$('#vGuide').hidden=t!=='guide';$('#vStyle').hidden=t!=='style';document.body.classList.toggle('tabS',t==='style');if(t==='style')renderStylePrev();if(t==='guide')renderGuide();document.body.classList.toggle('tabK',t==='kit'||t==='guide');document.body.classList.toggle('tabK',t==='kit');if(t==='kit'&&window.StyleKit)StyleKit.render(StyleKit.current()||S.base);
+ $('#vSlides').hidden=t!=='slides';$('#pageInfo').hidden=t!=='slides';syncPageInfoHeight();if(t!=='slides'){$('#edPop').hidden=true;$('#edBadge').setAttribute('aria-expanded','false');}$('#vIcons').hidden=t!=='icons';$('#vTable').hidden=t!=='table';$('#vKit').hidden=t!=='kit';$('#vGuide').hidden=t!=='guide';$('#vStyle').hidden=t!=='style';document.body.classList.toggle('tabS',t==='style');if(t==='style')renderStylePrev();if(t==='guide')renderGuide();document.body.classList.toggle('tabK',t==='kit'||t==='guide');document.body.classList.toggle('tabK',t==='kit');if(t==='kit'&&window.StyleKit)StyleKit.render(StyleKit.current()||S.base);
  $('#bOne').style.display=$('#bAll').style.display=t==='slides'?'':'none';
  if(t==='icons')renderIcons();if(t==='table'){syncTableUI();renderTable();}persist();}
 $('#iconCompLibrary').onclick=()=>setTab('icons');
@@ -7644,12 +7722,13 @@ function changeGridStructure(action){pushHist(true);const nc=Math.max(1,nCols())
  shiftTableRefs(axis,index,remove);if(axis==='row'){T.rows.splice(index,remove?1:0,...(remove?[]:[Array(nc).fill('')]));GRIDSEL={r:Math.min(index,T.rows.length-1),c:sel.c};}else{T.rows.forEach(row=>row.splice(index,remove?1:0,...(remove?[]:[''])));GRIDSEL={r:sel.r,c:Math.min(index,nCols()-1)};}
  fixT();closeChip();saveT();renderGrid(true);renderAll();selectGrid(GRIDSEL.r,GRIDSEL.c,true);pushHist(true);
 }
-function renderLooks(){const key=JSON.stringify([T.rows.slice(0,7),T.his,T.rules,T.bold,T.header,T.hiStyle,T.fmt,S.p]);if(key===TLKEY)return;TLKEY=key;
- const cur=lookOf(S.p);const Tl=Object.assign({},T,{title:'',unit:'',note:'',cw:null,rows:T.rows.slice(0,5).map(r=>r.slice(0,4))});
- $('#tLooks').innerHTML=D.TABLE_LOOKS.map(([k,zh])=>{let s='';try{const m=D.buildModel(Object.assign({},S.p,{tbLook:k,size:'M'}),{table:Tl});s=cropSvg(m.slides[0],'lk'+k,.08);}catch(e){}
-  return `<button class="tlook" data-v="${k}" aria-pressed="${k===cur}" aria-label="外觀：${zh}"><span class="tlth">${s}</span><span class="nm">${zh}<small>${LOOK_DESC[k]}</small></span></button>`;}).join('');}
+function renderLooks(){/* Legacy gallery is intentionally not a second, exclusive style picker. */}
+function renderAppearanceOptions(){const a=D.tableAppearanceOf(S.p),values={tbCardOn:a.card,tbHeaderStyle:a.header,tbStripes:a.stripes,tbGrid:a.grid};
+ document.querySelectorAll('[data-appearance]').forEach(el=>el.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===String(values[el.dataset.appearance])))));}
+function tableAppearanceLabel(){const a=D.tableAppearanceOf(S.p);return [a.card?'白卡＋陰影':'無卡片',a.header==='primary'?'主色表頭':'一般表頭',a.stripes?'斑馬':'無隔列底色',{all:'細框線',horizontal:'橫線',none:'無格線'}[a.grid]].join('・');}
+
 function syncTableUI(){fixT();renderGrid();renderTableOpts();}
-function renderTableOpts(){const hv=T.header==null||T.header==='auto'?'auto':T.header?'1':'0';
+function renderTableOpts(){renderAppearanceOptions();const hv=T.header==null||T.header==='auto'?'auto':T.header?'1':'0';
  $('#tHead').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===hv)));{const AU=D.tableAuto(T.rows.map(r=>r.map(c=>String(c))),T);$('#tHRow').checked=T.header==null||T.header==='auto'?AU.head:!!T.header;$('#tLast').checked=T.lastTotal!=null?!!T.lastTotal:AU.key.includes(T.rows.length-1);$('#tHCol').checked=!!T.hcol;
   const sec=document.querySelector('.tsec[data-sec="data"]');if(sec)sec.classList.toggle('empty',!T.rows.length);$('#tUndoPaste').hidden=!PREV_T;}
  document.querySelectorAll('[data-tp]').forEach(el=>{const k=el.dataset.tp;const v=String((k==='tbFont'&&S.p[k]==='noto'?'jh':k==='tbDense'&&(S.p[k]==='auto'||S.p[k]==='compact')?(S.p[k]==='compact'?'dense':''):S.p[k])||({size:'M',tbMinus:'auto',tbWidth:'auto',tbV:'center',tbH:'center',tbFont:'jh',tbPad:'m',tbDense:'normal'})[k]);el.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));});
@@ -7685,10 +7764,10 @@ function renderTable0(light){renderTableOpts();const nR=T.rows.length,nC=nCols()
  if(!light)renderLooks();else{TLKEY='';clearTimeout(renderTable._t);renderTable._t=setTimeout(renderLooks,350);}
  const warn=TM.warns.map(w=>w.replace(/^\[[^\]]*\]\s*/,''));
  const issue=tableBlocked(),blocked=!!issue;const blockedRow=issue&&issue.table.blockedRow;$('#tBlockedRow').hidden=!Number.isInteger(blockedRow);$('#tBlockedRow').textContent=Number.isInteger(blockedRow)?`檢查原始第 ${blockedRow+1} 列`:'定位超高列';$('#tPptx').disabled=blocked;$('#tExportBlocked').hidden=!blocked;
- const fullWarning=blocked&&issue.table.exportReason?issue.table.exportReason:warn.join('；');$('#tOut').classList.toggle('blocked',blocked);$('#tMsg').className='msg'+(fullWarning?' w':'');$('#tMsg').tabIndex=fullWarning?0:-1;$('#tMsg').textContent=fullWarning?'⚠ '+fullWarning:`原生可編輯表格・${D.TABLE_LOOKS.find(l=>l[0]===lookOf(S.p))[1]}・尺寸 ${S.p.size||'M'}`;$('#tMsg').title=$('#tMsg').textContent;$('#tMsg').setAttribute('aria-label',$('#tMsg').textContent);
+ const fullWarning=blocked&&issue.table.exportReason?issue.table.exportReason:warn.join('；');$('#tOut').classList.toggle('blocked',blocked);$('#tMsg').className='msg'+(fullWarning?' w':'');$('#tMsg').tabIndex=fullWarning?0:-1;$('#tMsg').textContent=fullWarning?'⚠ '+fullWarning:`原生可編輯表格・${tableAppearanceLabel()}・尺寸 ${S.p.size||'M'}`;$('#tMsg').title=$('#tMsg').textContent;$('#tMsg').setAttribute('aria-label',$('#tMsg').textContent);
  renderHiPanel();if(TRANGE)drawRangeSelection();if(TRANGE||RANGE_OPEN)renderRangePanel();else if(SELC)placeChip();stepState();selText();
- {const L=$('#tLStrip');if(L.children.length!==D.TABLE_LOOKS.length)L.innerHTML=D.TABLE_LOOKS.map(([k,zh])=>`<button data-v="${k}">${zh}</button>`).join('');L.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===lookOf(S.p))));}
- window.__studio.table={pageIndex:TPAGE,pageCount:TM.slides.length,sourceRows:tb&&tb.sourceRows?tb.sourceRows.slice():[],blockedRow,blockedReasonCode:issue&&issue.table.blockedReasonCode,bodyStart:tb&&tb.bodyStart,bodyEnd:tb&&tb.bodyEnd,exportComplete:!blocked,previewRows:tb?tb.nR:0,rawRows:nR,colMinW:tb&&tb.colMin?tb.colMin.slice():null,cw:T.cw?T.cw.slice():null,colW:tb?tb.colW.map(v=>+v.toFixed(3)):null,rows:nR,cols:nC,warns:TM.warns.length,warnText:warn,look:lookOf(S.p),auto:{head:hd,num:nNum,status:nSt,section:A.section.filter(Boolean).length,key:tb?tb.key:[]},his:clone(T.his||[]),rules:clone(T.rules||[]),ruleHits:tb?tb.ruleHits:0,boxes:tb?tb.boxes.length:0,cells:tb?tb.colW.length*tb.rowH.length:0,
+ renderAppearanceOptions();
+ window.__studio.table={pageIndex:TPAGE,pageCount:TM.slides.length,sourceRows:tb&&tb.sourceRows?tb.sourceRows.slice():[],blockedRow,blockedReasonCode:issue&&issue.table.blockedReasonCode,bodyStart:tb&&tb.bodyStart,bodyEnd:tb&&tb.bodyEnd,exportComplete:!blocked,previewRows:tb?tb.nR:0,rawRows:nR,colMinW:tb&&tb.colMin?tb.colMin.slice():null,cw:T.cw?T.cw.slice():null,colW:tb?tb.colW.map(v=>+v.toFixed(3)):null,rows:nR,cols:nC,warns:TM.warns.length,warnText:warn,look:lookOf(S.p),appearance:D.tableAppearanceOf(S.p),auto:{head:hd,num:nNum,status:nSt,section:A.section.filter(Boolean).length,key:tb?tb.key:[]},his:clone(T.his||[]),rules:clone(T.rules||[]),ruleHits:tb?tb.ruleHits:0,boxes:tb?tb.boxes.length:0,cells:tb?tb.colW.length*tb.rowH.length:0,
   title:T.title||'',unit:T.unit||'',note:T.note||'',hiStyle:tb?tb.hiStyle:null,fs:tb?tb.fs:0,colW:tb?tb.colW.map(v=>+v.toFixed(3)):[],tW:tb?+tb.tW.toFixed(3):0};}
 function stepState(){const has=T.rows.length>0;const m={data:has,look:has&&!!S.p.tbLook,hi:(T.his||[]).length+(T.rules||[]).length>0,fmt:Object.keys(T.fmt||{}).length+Object.keys(T.align||{}).length>0};
  document.querySelectorAll('.tsteps .stp').forEach(b=>b.classList.toggle('done',!!m[b.dataset.go]));}
@@ -7702,7 +7781,7 @@ function fitPrev(){const c=$('#tCanvas'),P=$('#tPrev');if(!c||!P)return;P.style.
  const top=c.getBoundingClientRect().top,ins=$('#tIns').getBoundingClientRect(),vv=window.visualViewport;
  const bottom=Math.min(innerHeight,vv?vv.offsetTop+vv.height:innerHeight,ins.height>0?ins.top:innerHeight),height=Math.max(0,bottom-top);
  const px=height+'px';if(c.style.height!==px)c.style.height=px;}
-let fitRaf=0;function queueTableFit(){if(S.tab!=='table'||fitRaf)return;fitRaf=requestAnimationFrame(()=>{fitRaf=0;fitPrev();applyView(tableMeta());const host=matchMedia('(max-width:900px)').matches?$('#tPop'):$('#tSelPanel'),other=host.id==='tPop'?$('#tSelPanel'):$('#tPop');if((TRANGE||RANGE_OPEN)&&other.querySelector('.trange-panel')){cancelRangePreview();renderRangePanel();}});}
+let fitRaf=0;function queueTableFit(){if(S.tab!=='table'||fitRaf)return;fitRaf=requestAnimationFrame(()=>{fitRaf=0;fitPrev();applyView(tableMeta());});}
 addEventListener('resize',queueTableFit);if(window.visualViewport){visualViewport.addEventListener('resize',queueTableFit);visualViewport.addEventListener('scroll',queueTableFit);}
 // Coalesce width AND height changes (scrollbars, panel/footer changes, header wrap).
 // Refit only the preview transform: do not rebuild data, end an edit, or cancel a hover preview.
@@ -7733,7 +7812,7 @@ function renderSlots(tb){fitPrev();applyView(tb);SUG=D.tableTitleSuggest(T);cons
   return `<div class="tslot${v?'':' empty'}" contenteditable="plaintext-only" spellcheck="false" role="textbox" aria-label="${escH(ph)}" data-k="${k}" data-ph="${escH(ph2)}" style="left:${pc(s.x,W)};top:${pc(s.y,H)};width:${pc(!v&&k!=='title'?Math.min(s.w,tb.tW+(tb.tx-s.x>0?tb.tx-s.x:0)):s.w,W)};height:${pc(s.h,H)};font-size:${(s.size*pxPt).toFixed(1)}px;line-height:1.25;color:#${s.color||'3A3A3A'};font-family:${fontCss(s.font)};${k==='title'?'font-weight:700;display:flex;align-items:flex-end':''}">${escH(v)}</div>`;}).join('')
   ;}
 // All range interaction state stays outside T/S, persistence, history, and export.
-let TRANGE=null,RANGE_ANCHOR=null,RANGE_FOCUS=null,RANGE_OPEN=false,RANGE_EXTEND=false,RANGE_FAMILY='fill';
+let TRANGE=null,RANGE_ANCHOR=null,RANGE_FOCUS=null,RANGE_OPEN=false,RANGE_EXTEND=false,RANGE_FAMILY='fill',RANGE_TONE='soft';
 let RANGE_PREVIEW=null,RANGE_DRAG=null,RANGE_FRAME=0,RANGE_SUPPRESS_CLICK=false,RANGE_TOUCH=false,RANGE_SUPPRESS_FOCUS=false;
 const rangeKey=q=>q?`${q.r0}:${q.c0}:${q.r1}:${q.c1}`:'';
 function updateHLLauncher(){const b=$('#tHLLauncher button'),hint=$('#tHLHint');if(!b)return;b.disabled=false;b.setAttribute('aria-expanded',String(RANGE_OPEN));b.classList.toggle('pri',RANGE_OPEN);if(hint)hint.textContent=TRANGE?`已選 ${(TRANGE.r1-TRANGE.r0+1)*(TRANGE.c1-TRANGE.c0+1)} 格`:'先框選儲存格再套用';}
@@ -7742,7 +7821,7 @@ function cancelRangePreview(){const host=$('#tPrev');if(host)host.classList.remo
 function stopRangeDrag(){if(RANGE_FRAME)cancelAnimationFrame(RANGE_FRAME);RANGE_FRAME=0;const d=RANGE_DRAG;RANGE_DRAG=null;if(d)try{$('#tPrev').releasePointerCapture(d.id);}catch(_){}document.body.classList.remove('range-dragging');}
 function clearRangeSelection(){cancelRangePreview();stopRangeDrag();TRANGE=RANGE_ANCHOR=RANGE_FOCUS=null;window.__studio.rangeSelection=null;RANGE_OPEN=false;RANGE_EXTEND=false;const P=$('#tPrev');if(P){P.classList.remove('range-active');P.querySelectorAll('.trange-outline').forEach(e=>e.remove());P.querySelectorAll('[aria-selected="true"]').forEach(e=>e.setAttribute('aria-selected','false'));}rangeStatus('');updateHLLauncher();}
 function rangeFromPoints(a,b){return D.tableNormalizeRange({r0:a.r,c0:a.c,r1:b.r,c1:b.c},T.rows.length,nCols());}
-function setRange(a,b,show=true){cancelRangePreview();rangeStatus('');RANGE_ANCHOR={...a};RANGE_FOCUS={...b};TRANGE=rangeFromPoints(a,b);if(!TRANGE)return;SELC={r:b.r,c:b.c,kind:'cell'};selectGrid(b.r,b.c,false);drawRangeSelection();if(show){showSec('look');$('#tSelection').hidden=false;renderRangePanel();}}
+function setRange(a,b,show=true){cancelRangePreview();rangeStatus('');RANGE_ANCHOR={...a};RANGE_FOCUS={...b};TRANGE=rangeFromPoints(a,b);if(!TRANGE)return;SELC={r:b.r,c:b.c,kind:'cell'};selectGrid(b.r,b.c,false);drawRangeSelection();if(show)showSec('emphasis');}
 function drawRangeSelection(){const P=$('#tPrev'),tb=tableMeta(),sl=tableSlide();if(!TRANGE||!tb||!sl)return;P.classList.add('range-active');let box=P.querySelector('.trange-outline');const fresh=!box;if(!box){box=document.createElement('div');box.className='trange-outline';box.setAttribute('aria-hidden','true');P.querySelector('.tov').appendChild(box);}const a=tableLocalRow(tb,TRANGE.r0),b=tableLocalRow(tb,TRANGE.r1);if(a<0||b<0){box.hidden=true;return;}box.hidden=false;const sum=(v,a,b)=>v.slice(a,b).reduce((x,y)=>x+y,0),W=sl.w||D.W,H=sl.h||D.H;
  Object.assign(box.style,{left:pc(tb.tx+sum(tb.colW,0,TRANGE.c0),W),top:pc(tb.ty+sum(tb.rowH,0,a),H),width:pc(sum(tb.colW,TRANGE.c0,TRANGE.c1+1),W),height:pc(sum(tb.rowH,a,b+1),H)});
  const paintKey=rangeKey(TRANGE)+'|'+(RANGE_FOCUS?RANGE_FOCUS.r+':'+RANGE_FOCUS.c:'');if(fresh||P.dataset.rangeKey!==paintKey){P.dataset.rangeKey=paintKey;P.querySelectorAll('.tc').forEach(el=>{const r=+el.dataset.r,c=+el.dataset.c,on=r>=TRANGE.r0&&r<=TRANGE.r1&&c>=TRANGE.c0&&c<=TRANGE.c1;el.setAttribute('aria-selected',String(on));el.tabIndex=RANGE_FOCUS&&r===RANGE_FOCUS.r&&c===RANGE_FOCUS.c?0:-1;el.classList.remove('sel','gsel','scopeon');});}
@@ -7757,13 +7836,17 @@ function previewRangePreset(id){if(!TRANGE||!RANGE_OPEN||!rangePreset(id))return
 function commitRangePreset(id){if(!TRANGE){rangeStatus('先框選儲存格再套用。');return;}const target={...TRANGE},focusPreset=document.activeElement&&document.activeElement.dataset.rangePreset;cancelRangePreview();const next=id===null?D.tableClearRange(T,target):D.tableApplyRange(T,target,id,RANGE_FAMILY);if(next.error){rangeStatus(rangeError(next.error));return;}if(!next.changed){rangeStatus(id===null?'選取範圍沒有高亮配色。':'已經套用這個樣式。');return;}
  // Flush previous edits and commit immediately: one click is one history transaction.
  pushHist(true);T.his=next.his;saveT();pushHist(true);renderTable(true);if(focusPreset){const b=$(`[data-range-preset="${focusPreset}"]`);if(b){RANGE_SUPPRESS_FOCUS=true;b.focus({preventScroll:true});RANGE_SUPPRESS_FOCUS=false;}}rangeStatus(id===null?'已清除選取範圍的高亮配色。':'已套用，可按 Ctrl+Z 復原。');}
-function renderRangePanel(){updateHLLauncher();const host=matchMedia('(max-width:900px)').matches?$('#tPop'):$('#tSelPanel'),other=host.id==='tPop'?$('#tSelPanel'):$('#tPop');other.hidden=true;other.innerHTML='';
- if(!document.querySelector('.tsec[data-sec="look"]').classList.contains('on')||(!TRANGE&&!RANGE_OPEN)){host.hidden=true;host.innerHTML='';document.body.classList.remove('tpopon');return;}
- $('#tChip').hidden=true;$('#tSelTxt').hidden=true;$('#tSelection').hidden=false;if(host.id==='tPop'&&!RANGE_OPEN){host.hidden=true;host.innerHTML='';document.body.classList.remove('tpopon');return;}
- const q=TRANGE,label=q?`${colLetter(q.c0)}${q.r0+1}:${colLetter(q.c1)}${q.r1+1}`:'',count=q?(q.r1-q.r0+1)*(q.c1-q.c0+1):0,presets=(D.TABLE_HIGHLIGHT_PRESETS||[]).map(p=>rangePreset(p.id));
+// One range-control host lives inside Emphasis at every viewport width.
+function renderRangePanel(){updateHLLauncher();const host=$('#tSelPanel'),other=$('#tPop'),active=document.activeElement;
+ const focusAttr=host.contains(active)?['data-range-preset','data-range-family','data-range-tone','data-range-action'].find(k=>active.hasAttribute(k)):null,focusValue=focusAttr&&active.getAttribute(focusAttr);other.hidden=true;other.innerHTML='';
+ if(!document.querySelector('.tsec[data-sec="emphasis"]').classList.contains('on')||(!TRANGE&&!RANGE_OPEN)){host.hidden=true;host.innerHTML='';document.body.classList.remove('tpopon');return;}
+ $('#tChip').hidden=true;$('#tSelTxt').hidden=true;$('#tSelection').hidden=false;
+ const q=TRANGE,label=q?`${colLetter(q.c0)}${q.r0+1}:${colLetter(q.c1)}${q.r1+1}`:'',count=q?(q.r1-q.r0+1)*(q.c1-q.c0+1):0,presets=D.TABLE_HIGHLIGHT_HUES.map(h=>rangePreset(`v2-${h.id}-${RANGE_FAMILY==='fill'?RANGE_TONE:'soft'}`));
  const current=q?[...(T.his||[])].reverse().find(h=>h.type==='range'&&D.tableHighlightFamily(h)===RANGE_FAMILY&&rangeKey(h)===rangeKey(q)&&!(h.excludes||[]).length):null;
- host.innerHTML=`<div class="trange-panel"><div class="phd"><b data-range-count>${q?`已選 ${count} 格 · ${label}`:'重點樣式'}</b><button class="btn" data-range-action="close" aria-label="${q?'關閉選取':'關閉樣式'}">✕</button></div><div class="trange-actions" ${q?'':'hidden'}><button class="btn" data-range-action="clear">清除高亮</button>${RANGE_TOUCH?`<button class="btn" data-range-action="extend" aria-pressed="${RANGE_EXTEND}">${RANGE_EXTEND?'點選範圍終點':'延伸選取'}</button>`:''}</div><div class="trange-families" role="group" aria-label="重點樣式類型" ${RANGE_OPEN?'':'hidden'}>${D.TABLE_HIGHLIGHT_FAMILIES.map(f=>`<button class="btn" data-range-family="${f.id}" aria-pressed="${f.id===RANGE_FAMILY}">${f.label}</button>`).join('')}</div><div class="trange-palette" role="group" aria-label="${rangeFamilyLabel()}配色，移過預覽，點選套用" ${RANGE_OPEN?'':'hidden'}>${presets.map(p=>`<button class="trange-card" data-range-preset="${p.id}" aria-disabled="${!q}" aria-pressed="${!!current&&current.presetId===p.id}" aria-label="${rangeFamilyLabel()}・${escH(p.label||p.name||p.id)}，${q?'預覽後按 Enter 套用':'先框選儲存格再套用'}"><span class="trange-sample" style="${rangeSampleStyle(p)}"><span>項目</span><span>98.5%</span></span><b>${escH(p.label||p.name||p.id)}${current&&current.presetId===p.id?' ✓':''}</b></button>`).join('')}</div>${host.id==='tPop'?'<div class="trange-status" data-range-status role="status" aria-live="polite"></div>':''}<div class="trange-label">${!q?'先框選儲存格再套用。':RANGE_OPEN?(RANGE_TOUCH?'點選樣式預覽，再按套用。':'移過預覽，點選套用；Esc 取消預覽。'):'拖曳框選或 Shift＋方向鍵延伸選取。'}</div><div class="trange-touch" ${q&&RANGE_OPEN&&RANGE_TOUCH?'':'hidden'}><button class="btn pri" data-range-action="apply">套用</button><button class="btn" data-range-action="cancel">取消</button></div></div>`;
- host.hidden=false;if(host.id==='tPop'){document.body.classList.add('tpopon');placePop();}else document.body.classList.remove('tpopon');
+ const selected=p=>!!current&&(current.presetId===p.id||RANGE_FAMILY!=='fill'&&rangePreset(current.presetId)?.hue===p.hue);
+ host.innerHTML=`<div class="trange-panel"><div class="phd"><b data-range-count>${q?`已選 ${count} 格 · ${label}`:'重點樣式'}</b><button class="btn" data-range-action="close" aria-label="${q?'關閉選取':'關閉樣式'}">✕</button></div><div class="trange-actions" ${q?'':'hidden'}><button class="btn" data-range-action="clear">清除高亮</button>${RANGE_TOUCH?`<button class="btn" data-range-action="extend" aria-pressed="${RANGE_EXTEND}">${RANGE_EXTEND?'點選範圍終點':'延伸選取'}</button>`:''}</div><div class="trange-families" role="group" aria-label="重點樣式類型" ${RANGE_OPEN?'':'hidden'}>${D.TABLE_HIGHLIGHT_FAMILIES.map(f=>`<button class="btn" data-range-family="${f.id}" aria-pressed="${f.id===RANGE_FAMILY}">${f.label}</button>`).join('')}</div><div class="trange-tones" role="group" aria-label="底色明暗" ${RANGE_OPEN&&RANGE_FAMILY==='fill'?'':'hidden'}>${[['soft','柔色'],['deep','深色白字']].map(([id,label])=>`<button class="btn" data-range-tone="${id}" aria-pressed="${RANGE_TONE===id}">${label}</button>`).join('')}</div><div class="trange-palette" aria-label="${rangeFamilyLabel()}配色，移過預覽，點選套用" ${RANGE_OPEN?'':'hidden'}>${[['theme','主題色 · 隨風格變更'],['fixed','固定色 · 不隨風格變更']].map(([group,title])=>`<div class="trange-palette-group" role="group" aria-label="${title}" data-range-group="${group}"><div class="trange-palette-title">${title}</div><div class="trange-hues">${presets.filter(p=>(p.hue==='theme')===(group==='theme')).map(p=>`<button class="trange-card" data-range-preset="${p.id}" data-range-hue="${p.hue}" aria-disabled="${!q}" aria-pressed="${selected(p)}" aria-label="${rangeFamilyLabel()}・${escH(p.label)}，${q?'預覽後按 Enter 套用':'先框選儲存格再套用'}"><span class="trange-sample" style="${rangeSampleStyle(p)}"><span>項目</span><span>98.5%</span></span><b>${escH(D.TABLE_HIGHLIGHT_HUES.find(h=>h.id===p.hue).label)}${selected(p)?' ✓':''}</b></button>`).join('')}</div></div>`).join('')}</div><div class="trange-label">${!q?'先框選儲存格再套用。':RANGE_OPEN?(RANGE_TOUCH?'點選樣式預覽，再按套用。':'移過預覽，點選套用；Esc 取消預覽。'):'拖曳框選或 Shift＋方向鍵延伸選取。'}</div><div class="trange-touch" ${q&&RANGE_OPEN&&RANGE_TOUCH?'':'hidden'}><button class="btn pri" data-range-action="apply">套用</button><button class="btn" data-range-action="cancel">取消</button></div></div>`;
+ host.hidden=false;document.body.classList.remove('tpopon');
+ if(focusAttr){const next=host.querySelector(`[${focusAttr}="${focusValue}"]`);if(next&&!next.closest('[hidden]')){RANGE_SUPPRESS_FOCUS=true;next.focus({preventScroll:true});RANGE_SUPPRESS_FOCUS=false;}}
 }
 function rangeSampleStyle(p){if(RANGE_FAMILY==='fill')return `background:#${p.fill};color:#${p.color};border:1px solid #${p.border};`;
  const edge=RANGE_FAMILY==='underline'?'border-bottom':RANGE_FAMILY==='side'?'border-left':'border';return `background:#FFFFFF;color:#243750;border:0 solid transparent;${edge}:${p.borderWidth}pt solid #${p.stroke};`;
@@ -7782,15 +7865,15 @@ function bindRangeSelection(P){
  P.addEventListener('pointermove',e=>{const d=RANGE_DRAG;if(!d||e.pointerId!==d.id)return;d.x=e.clientX;d.y=e.clientY;if(!d.moved&&Math.hypot(d.x-d.startX,d.y-d.startY)<4)return;const started=!d.moved;if(started)try{P.setPointerCapture(e.pointerId);}catch(_){}d.moved=true;document.body.classList.add('range-dragging');RANGE_FOCUS=hit(d.x,d.y)||d.anchor;TRANGE=rangeFromPoints(d.anchor,RANGE_FOCUS);SELC={...RANGE_FOCUS,kind:'cell'};if(started)renderRangePanel();if(!RANGE_FRAME)RANGE_FRAME=requestAnimationFrame(dragFrame);});
  P.addEventListener('pointerup',e=>{const d=RANGE_DRAG;if(!d||e.pointerId!==d.id)return;const end=d.moved?hit(e.clientX,e.clientY)||d.anchor:d.start;stopRangeDrag();RANGE_SUPPRESS_CLICK=true;setRange(d.anchor,end);const c=P.querySelector(`.tc[data-r="${end.r}"][data-c="${end.c}"]`);if(c)c.focus({preventScroll:true});});
  P.addEventListener('pointercancel',()=>{stopRangeDrag();cancelRangePreview();drawRangeSelection();});P.addEventListener('lostpointercapture',()=>stopRangeDrag());
- P.addEventListener('click',e=>{if(RANGE_SUPPRESS_CLICK){RANGE_SUPPRESS_CLICK=false;return;}if(e.target.closest('.tslot,.tcw,.tsug,.tsapply,.trange-editor'))return;const c=e.target.closest('.tc');if(!c){closeChip();return;}const point=cellPoint(c);setRange((e.shiftKey||RANGE_EXTEND)&&RANGE_ANCHOR?RANGE_ANCHOR:point,point);RANGE_EXTEND=false;renderRangePanel();});
- P.addEventListener('keydown',e=>{const c=e.target.closest('.tc');if(!c||e.isComposing||e.keyCode===229)return;const mv={ArrowLeft:[0,-1],ArrowRight:[0,1],ArrowUp:[-1,0],ArrowDown:[1,0]}[e.key];const point=cellPoint(c);if(mv){e.preventDefault();const end={r:Math.max(0,Math.min(T.rows.length-1,point.r+mv[0])),c:Math.max(0,Math.min(nCols()-1,point.c+mv[1]))};setRange(e.shiftKey?(RANGE_ANCHOR||point):end,end);const next=P.querySelector(`.tc[data-r="${end.r}"][data-c="${end.c}"]`);if(next){next.focus({preventScroll:true});next.scrollIntoView({block:'nearest',inline:'nearest'});}return;}if(['h','H','l','L','Enter',' '].includes(e.key)){e.preventDefault();if(!TRANGE||!RANGE_FOCUS||RANGE_FOCUS.r!==point.r||RANGE_FOCUS.c!==point.c)setRange(point,point);RANGE_OPEN=true;renderRangePanel();const card=document.querySelector('.trange-panel [data-range-preset]');if(card)card.focus();}});
+ P.addEventListener('click',e=>{if(RANGE_SUPPRESS_CLICK){RANGE_SUPPRESS_CLICK=false;return;}if(e.target.closest('.tslot,.tcw,.tsug,.tsapply,.trange-editor'))return;const c=e.target.closest('.tc');if(!c){closeChip();return;}const point=cellPoint(c);setRange((e.shiftKey||RANGE_EXTEND)&&RANGE_ANCHOR?RANGE_ANCHOR:point,point);RANGE_EXTEND=false;renderRangePanel();c.focus({preventScroll:true});});
+ P.addEventListener('keydown',e=>{const c=e.target.closest('.tc');if(!c||e.isComposing||e.keyCode===229)return;const mv={ArrowLeft:[0,-1],ArrowRight:[0,1],ArrowUp:[-1,0],ArrowDown:[1,0]}[e.key];const point=cellPoint(c);if(mv){e.preventDefault();const end={r:Math.max(0,Math.min(T.rows.length-1,point.r+mv[0])),c:Math.max(0,Math.min(nCols()-1,point.c+mv[1]))};setRange(e.shiftKey?(RANGE_ANCHOR||point):end,end);const next=P.querySelector(`.tc[data-r="${end.r}"][data-c="${end.c}"]`);if(next){next.focus({preventScroll:true});next.scrollIntoView({block:'nearest',inline:'nearest'});}return;}if(['h','H','l','L','Enter',' '].includes(e.key)){e.preventDefault();if(!TRANGE||!RANGE_FOCUS||RANGE_FOCUS.r!==point.r||RANGE_FOCUS.c!==point.c)setRange(point,point);showSec('emphasis');RANGE_OPEN=true;renderRangePanel();const card=document.querySelector('.trange-panel [data-range-preset]');if(card)card.focus();}});
  for(const host of [$('#tSelPanel'),$('#tPop')]){
   host.addEventListener('pointerover',e=>{const card=e.target.closest('[data-range-preset]');if(card&&e.pointerType!=='touch'&&!RANGE_TOUCH)previewRangePreset(card.dataset.rangePreset);});
   host.addEventListener('pointerout',e=>{const card=e.target.closest('[data-range-preset]');if(card&&!card.contains(e.relatedTarget)&&!RANGE_TOUCH)cancelRangePreview();});
   host.addEventListener('focusin',e=>{const card=e.target.closest('[data-range-preset]');if(card&&!RANGE_TOUCH&&!RANGE_SUPPRESS_FOCUS)previewRangePreset(card.dataset.rangePreset);});
   host.addEventListener('focusout',e=>{if(e.target.closest('[data-range-preset]')&&!RANGE_TOUCH)cancelRangePreview();});
-  host.addEventListener('click',e=>{const family=e.target.closest('[data-range-family]');if(family){e.stopPropagation();cancelRangePreview();RANGE_FAMILY=family.dataset.rangeFamily;renderRangePanel();host.querySelector(`[data-range-family="${RANGE_FAMILY}"]`).focus({preventScroll:true});return;}const card=e.target.closest('[data-range-preset]'),button=e.target.closest('[data-range-action]');if(card){e.stopPropagation();if(!TRANGE){rangeStatus('先框選儲存格再套用。');return;}if(RANGE_TOUCH)previewRangePreset(card.dataset.rangePreset);else commitRangePreset(card.dataset.rangePreset);return;}if(!button)return;e.stopPropagation();const action=button.dataset.rangeAction;if(action==='palette'){cancelRangePreview();RANGE_OPEN=!RANGE_OPEN;renderRangePanel();}else if(action==='clear')commitRangePreset(null);else if(action==='close')closeChip();else if(action==='extend'){RANGE_EXTEND=!RANGE_EXTEND;renderRangePanel();}else if(action==='apply'){if(RANGE_PREVIEW)commitRangePreset(RANGE_PREVIEW.id);else rangeStatus('請先點選一個樣式。');}else if(action==='cancel')cancelRangePreview();});
-  host.addEventListener('keydown',e=>{const card=e.target.closest('[data-range-preset]');if(card&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();const list=[...host.querySelectorAll('[data-range-preset]')],i=list.indexOf(card),delta={ArrowLeft:-1,ArrowRight:1,ArrowUp:-2,ArrowDown:2}[e.key];list[Math.max(0,Math.min(list.length-1,i+delta))].focus();}if(card&&e.key==='Enter'){e.preventDefault();e.stopPropagation();commitRangePreset(card.dataset.rangePreset);}});
+  host.addEventListener('click',e=>{const tone=e.target.closest('[data-range-tone]');if(tone){e.stopPropagation();cancelRangePreview();RANGE_TONE=tone.dataset.rangeTone;renderRangePanel();host.querySelector(`[data-range-tone="${RANGE_TONE}"]`).focus({preventScroll:true});return;}const family=e.target.closest('[data-range-family]');if(family){e.stopPropagation();cancelRangePreview();RANGE_FAMILY=family.dataset.rangeFamily;renderRangePanel();host.querySelector(`[data-range-family="${RANGE_FAMILY}"]`).focus({preventScroll:true});return;}const card=e.target.closest('[data-range-preset]'),button=e.target.closest('[data-range-action]');if(card){e.stopPropagation();if(!TRANGE){rangeStatus('先框選儲存格再套用。');return;}if(RANGE_TOUCH)previewRangePreset(card.dataset.rangePreset);else commitRangePreset(card.dataset.rangePreset);return;}if(!button)return;e.stopPropagation();const action=button.dataset.rangeAction;if(action==='palette'){cancelRangePreview();RANGE_OPEN=!RANGE_OPEN;renderRangePanel();}else if(action==='clear')commitRangePreset(null);else if(action==='close')closeChip();else if(action==='extend'){RANGE_EXTEND=!RANGE_EXTEND;renderRangePanel();}else if(action==='apply'){if(RANGE_PREVIEW)commitRangePreset(RANGE_PREVIEW.id);else rangeStatus('請先點選一個樣式。');}else if(action==='cancel')cancelRangePreview();});
+  host.addEventListener('keydown',e=>{const card=e.target.closest('[data-range-preset]');if(card&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();const list=[...host.querySelectorAll('[data-range-preset]')],i=list.indexOf(card),next=e.key==='ArrowUp'?[0,0,0,1,2][i]:e.key==='ArrowDown'?[1,3,4,3,4][i]:i+(e.key==='ArrowLeft'?-1:1);list[Math.max(0,Math.min(list.length-1,next))].focus();}if(card&&e.key==='Enter'){e.preventDefault();e.stopPropagation();commitRangePreset(card.dataset.rangePreset);}});
  }
  P.addEventListener('dblclick',e=>{const cell=e.target.closest('.tc');if(!cell)return;e.preventDefault();startCellEdit(cell);});
  document.addEventListener('keydown',e=>{if(e.key!=='Escape'||S.tab!=='table'||e.isComposing)return;if(CELL_EDIT){if(CELL_EDIT.composing)return;e.preventDefault();e.stopImmediatePropagation();finishCellEdit(false);return;}if(RANGE_PREVIEW){e.preventDefault();e.stopImmediatePropagation();cancelRangePreview();}else if(TRANGE||RANGE_OPEN){e.preventDefault();e.stopImmediatePropagation();closeChip();}},true);
@@ -7798,7 +7881,7 @@ function bindRangeSelection(P){
 }
 
 // 重點工具列
-function closeChip(){clearRangeSelection();SELC=null;$('#tSelection').hidden=true;{const sp0=document.getElementById('tSelPanel');if(sp0){sp0.hidden=true;sp0.innerHTML='';}const st0=document.querySelector('#tIns .tsteps2');if(st0)st0.hidden=false;const pp=document.getElementById('tPop');if(pp)pp.hidden=true;document.body.classList.remove('tpopon');document.querySelectorAll('#tPrev .tc.scopehl,#tPrev .tc.scopeon').forEach(x=>x.classList.remove('scopehl','scopeon'));}{const t=document.getElementById('tSelTxt');if(t)t.hidden=false;const sp=document.getElementById('tSelPanel');if(sp)sp.innerHTML='';}setTimeout(selText,0);const c=$('#tChip');if(c)c.hidden=true;document.querySelectorAll('#tPrev .tc.sel').forEach(x=>x.classList.remove('sel'));}
+function closeChip(){const active=document.activeElement,restore=active&&active.closest('#tSelPanel,#tPop'),point=RANGE_FOCUS;clearRangeSelection();SELC=null;$('#tSelection').hidden=true;{const sp0=document.getElementById('tSelPanel');if(sp0){sp0.hidden=true;sp0.innerHTML='';}const st0=document.querySelector('#tIns .tsteps2');if(st0)st0.hidden=false;const pp=document.getElementById('tPop');if(pp)pp.hidden=true;document.body.classList.remove('tpopon');document.querySelectorAll('#tPrev .tc.scopehl,#tPrev .tc.scopeon').forEach(x=>x.classList.remove('scopehl','scopeon'));}{const t=document.getElementById('tSelTxt');if(t)t.hidden=false;const sp=document.getElementById('tSelPanel');if(sp)sp.innerHTML='';}setTimeout(selText,0);const c=$('#tChip');if(c)c.hidden=true;document.querySelectorAll('#tPrev .tc.sel').forEach(x=>x.classList.remove('sel'));if(restore){const next=point&&$(`#tPrev .tc[data-r="${point.r}"][data-c="${point.c}"]`);if(next){next.tabIndex=0;next.focus({preventScroll:true});}else if(!$('#tHLLauncher').hidden)$('#tHLLauncher button').focus({preventScroll:true});}}
 function selKind(r,c){const tb=tableMeta();return r<(tb?tb.h0:1)?'col':c===0?'row':'cell';}
 function selText(){const el=document.getElementById('tSelTxt');if(!el)return;if(!SELC){el.innerHTML='';return;}const {r,c,kind}=SELC;el.innerHTML='目前選取：<b>'+(kind==='col'?`第 ${c+1} 欄（${escH(colName(c))}）`:kind==='row'?`第 ${r+1} 列（${escH(rowName(r))}）`:`第 ${r+1} 列・第 ${c+1} 欄`)+'</b>';}
 function openChip(r,c,kind){selectGrid(r,c,false);SELC={r,c,kind:kind||selKind(r,c)};POPHI='';$('#tSelection').hidden=false;document.querySelector('#tIns .tsecs').scrollTop=0;if(matchMedia('(max-width:900px)').matches)$('#tIns').classList.add('open');document.querySelectorAll('#tPrev .tc').forEach(x=>{const on=+x.dataset.r===r&&+x.dataset.c===c;x.classList.toggle('sel',on);x.tabIndex=on?0:-1;});renderChip();placeChip();}
@@ -7862,16 +7945,24 @@ function chipAct(a,v){if(!SELC)return;const {r,c,kind}=SELC;
  if(a==='rule'){if((T.rules||[]).length>=3){toast('數字門檻最多 3 條：請先在右側「重點」移除一條。',3500);return;}T.rules.push(suggestRule(c));showSec('hi');toast(`已加門檻：${escH(colName(c))}（右側「重點」可改數值與效果）`,2800,true);}
  saveT();renderTable(true);renderChip();placeChip();}
 function curDec(c){let d=0;(TM?TM.slides:[]).forEach(sl=>{const tb=sl.table,cells=sl.items.find(i=>i.t==='tbl').cells;cells.forEach((row,ri)=>{if(ri<tb.h0)return;const t=row[c].runs.map(x=>x.t).join('');const m=t.match(/\d\.(\d+)/);if(m)d=Math.max(d,m[1].length);});});return d;}
-function showSec(k){if(k==='data'){cancelRangePreview();RANGE_OPEN=false;for(const host of [$('#tPop'),$('#tSelPanel')]){host.hidden=true;host.innerHTML='';}document.body.classList.remove('tpopon');updateHLLauncher();}if(['data','look'].includes(k)&&$('#tHLLauncher'))$('#tHLLauncher').hidden=k!=='look';if(k==='hi'){$('#tSelection').hidden=false;if(matchMedia('(max-width:900px)').matches)$('#tIns').classList.add('open');return;}if(k==='out'){$('#tPptx').focus();$('#tOut').animate([{boxShadow:'0 0 0 3px #1F4E7966'},{boxShadow:'0 0 0 0 transparent'}],{duration:900});return;}
- document.querySelectorAll('#tIns .tsec').forEach(s=>s.classList.toggle('on',s.dataset.sec===k));document.querySelectorAll('.tinsTabs button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.t===k)));
- if(k==='look'&&(TRANGE||RANGE_OPEN))renderRangePanel();
+function showSec(k){if(k==='hi')k='emphasis';if(k==='out'){$('#tPptx').focus();$('#tOut').animate([{boxShadow:'0 0 0 3px #1F4E7966'},{boxShadow:'0 0 0 0 transparent'}],{duration:900});return;}
+ if(!['data','look','emphasis'].includes(k))return;
+ const active=document.activeElement,old=document.querySelector('#tIns .tsec.on'),changed=!old||old.dataset.sec!==k;
+ const moveFocus=changed&&((old&&old.contains(active))||$('#tPop').contains(active));
+ if(changed)cancelRangePreview();
+ if(k!=='emphasis'){RANGE_OPEN=false;for(const host of [$('#tPop'),$('#tSelPanel')]){host.hidden=true;host.innerHTML='';}document.body.classList.remove('tpopon');updateHLLauncher();}
+ $('#tHLLauncher').hidden=k!=='emphasis';
+ document.querySelectorAll('#tIns .tsec').forEach(s=>{const on=s.dataset.sec===k;s.classList.toggle('on',on);s.hidden=!on;});
+ document.querySelectorAll('.tinsTabs button').forEach(b=>{const on=b.dataset.t===k;b.setAttribute('aria-pressed',String(on));b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;});
+ if(k==='emphasis')renderRangePanel();
  document.querySelectorAll('.tsteps .stp').forEach(b=>{if(b.dataset.go===k)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
- if(matchMedia('(max-width:900px)').matches)$('#tIns').classList.add('open');else{const sc=document.querySelector('#tIns .tsecs');if(sc)sc.scrollTop=0;}}
+ if(matchMedia('(max-width:900px)').matches)$('#tIns').classList.add('open');else if(changed){const sc=document.querySelector('#tIns .tsecs');if(sc)sc.scrollTop=0;}
+ if(moveFocus)document.querySelector(`.tinsTabs [data-t="${k}"]`).focus({preventScroll:true});}
 // Reset is a table-only formatting transaction, not a reimport or sample load.
 // Do not call fixT/renderAll here: normalization can alter legacy marks or raw rows.
 function resetTableFormat(){
  cancelRangePreview();
- if(GRID_COMPOSING||CELL_EDIT&&CELL_EDIT.composing){rangeStatus('請先完成中文輸入，再還原格式。');return false;}
+ if(GRID_COMPOSING||CELL_EDIT&&CELL_EDIT.composing){rangeStatus('請先完成中文輸入，再還原格式。');toast('請先完成中文輸入，再還原格式。',3000);return false;}
  const edited=finishCellEdit(true,false),base=templateParams(S.base),nextT=Object.assign({},T),nextP=Object.assign({},S.p);
  const defaults={his:[],rules:[],bold:[],align:{},fmt:{},types:{},formats:{},header:'auto',lastTotal:null,hcol:false,cw:null,hiStyle:null};
  // Absent overrides already mean defaults, so an untouched table stays a no-op.
@@ -7930,11 +8021,12 @@ function buildTableUI(){
  $('#tFormatReset').addEventListener('pointerdown',e=>{if(CELL_EDIT)e.preventDefault();});
  $('#tFormatReset').onclick=e=>{e.stopPropagation();resetTableFormat();};
  $('#tArrow').value=S.p.tbArrow||'mono';$('#tArrow').onchange=e=>{S.p.tbArrow=e.target.value;schedule();pushHist();};
- $('#tLStrip').onclick=e=>{const b=e.target.closest('button[data-v]');if(!b)return;S.p.tbLook=b.dataset.v;schedule();pushHist();};
- $('#tLooks').onclick=e=>{const b=e.target.closest('.tlook');if(!b)return;S.p.tbLook=b.dataset.v;schedule();pushHist();};
+ $('#tLStrip').onclick=e=>{const b=e.target.closest('button[data-v]'),group=b&&b.closest('[data-appearance]');if(!group)return;const key=group.dataset.appearance,value=['tbCardOn','tbStripes'].includes(key)?b.dataset.v==='true':b.dataset.v;
+  const field={tbCardOn:'card',tbHeaderStyle:'header',tbStripes:'stripes',tbGrid:'grid'}[key];if(D.tableAppearanceOf(S.p)[field]===value)return;pushHist(true);S.p[key]=value;renderAppearanceOptions();schedule();pushHist(true);};
+ // Historical looks remain readable in saved data, never exclusive UI choices.
  document.querySelectorAll('[data-tp]').forEach(el=>el.onclick=e=>{const b=e.target.closest('button');if(!b)return;S.p[el.dataset.tp]=b.dataset.v;schedule();pushHist();});
  document.querySelectorAll('[data-tk]').forEach(el=>el.onchange=()=>{S.p[el.dataset.tk]=el.checked;schedule();pushHist();});
- $('#tStyle').onchange=e=>{const keep={tbLook:S.p.tbLook,tbMinus:S.p.tbMinus,tbNeg:S.p.tbNeg,tbThou:S.p.tbThou,tbStatus:S.p.tbStatus,size:S.p.size};S.mine=null;S.base=e.target.value;S.p=Object.assign(templateParams(S.base),keep);syncPanel();schedule();toast('已套用風格：'+escH(presetOf(S.base).zh),2000,true);};
+ $('#tStyle').onchange=e=>{const keep={...Object.fromEntries(D.TABLE_APPEARANCE_KEYS.map(k=>[k,S.p[k]])),tbLook:S.p.tbLook,tbMinus:S.p.tbMinus,tbNeg:S.p.tbNeg,tbThou:S.p.tbThou,tbStatus:S.p.tbStatus,size:S.p.size};S.mine=null;S.base=e.target.value;S.p=Object.assign(templateParams(S.base),keep);syncPanel();schedule();toast('已套用風格：'+escH(presetOf(S.base).zh),2000,true);};
  $('#tCwReset').onclick=()=>{T.cw=null;saveT();renderTable();};
  // 重點
  $('#tRules').addEventListener('click',e=>{const b=e.target.closest('button[data-a]');if(!b)return;const a=b.dataset.a;
@@ -7948,7 +8040,8 @@ function buildTableUI(){
  let tv;$('#tRules').addEventListener('input',e=>{const t=e.target;if(t.dataset.k!=='v')return;const r=T.rules[+t.closest('[data-j]').dataset.j];clearTimeout(tv);tv=setTimeout(()=>{const n=parseFloat(String(t.value).replace(/[,%％\s]/g,''));r.v=Number.isFinite(n)?n:null;marksChanged();},220);});
  // 步驟／手機分頁
  document.querySelector('.tsteps').onclick=e=>{const b=e.target.closest('[data-go]');if(b)showSec(b.dataset.go);};
- $('#tIns').querySelector('.tinsTabs').onclick=e=>{const b=e.target.closest('button[data-t]');if(!b)return;const on=b.getAttribute('aria-pressed')==='true'&&$('#tIns').classList.contains('open');if(on){$('#tIns').classList.remove('open');return;}showSec(b.dataset.t);};
+ $('#tIns').querySelector('.tinsTabs').onclick=e=>{const b=e.target.closest('button[data-t]');if(!b)return;const on=b.getAttribute('aria-pressed')==='true'&&$('#tIns').classList.contains('open');if(on){cancelRangePreview();$('#tIns').classList.remove('open');b.focus({preventScroll:true});return;}showSec(b.dataset.t);};
+ $('#tIns').querySelector('.tinsTabs').addEventListener('keydown',e=>{const b=e.target.closest('button[data-t]');if(!b)return;const tabs=[...b.parentElement.querySelectorAll('button[data-t]')],i=tabs.indexOf(b),next=e.key==='Home'?0:e.key==='End'?tabs.length-1:e.key==='ArrowRight'?(i+1)%tabs.length:e.key==='ArrowLeft'?(i+tabs.length-1)%tabs.length:null;if(next==null)return;e.preventDefault();showSec(tabs[next].dataset.t);tabs[next].focus({preventScroll:true});});
 
  document.querySelector('.tzoom').onclick=e=>{const b=e.target.closest('button[data-z]');if(!b)return;TZ=b.dataset.z==='100'?'100':'fit';$('#tCanvas').classList.toggle('z100',TZ==='100');document.querySelectorAll('.tzoom button').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.z===TZ)));if(matchMedia('(max-width:900px)').matches){$('#tIns').classList.remove('open');closeChip();}fitPrev();applyView(tableMeta());if(TZ==='fit'){$('#tCanvas').scrollLeft=0;$('#tCanvas').scrollTop=0;}queueTableFit();};
  // 預覽格：滑鼠／鍵盤
@@ -7980,7 +8073,7 @@ function buildTableUI(){
  bindRangeSelection(P);
  ['#tChip','#tSelPanel'].forEach(q=>$(q).addEventListener('click',e=>{const b=e.target.closest('button[data-a]');if(!b)return;e.stopPropagation();chipAct(b.dataset.a,b.dataset.v);}));
  $('#tChip').addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();chipAct('x');}});
- document.addEventListener('click',e=>{if(S.tab!=='table')return;if(!e.target.closest('#tPrev')&&!e.target.closest('#tChip')&&!e.target.closest('#tPop')&&!e.target.closest('#tSelPanel')&&!e.target.closest('#tDock')&&!e.target.closest('#tHLLauncher'))closeChip();});
+ document.addEventListener('click',e=>{if(S.tab!=='table')return;if(!e.target.closest('#tIns')&&!e.target.closest('#tPrev')&&!e.target.closest('#tChip')&&!e.target.closest('#tPop')&&!e.target.closest('#tSelPanel')&&!e.target.closest('#tDock')&&!e.target.closest('#tHLLauncher'))closeChip();});
  document.addEventListener('keydown',e=>{if(!e.defaultPrevented&&e.key==='Escape'&&SELC&&S.tab==='table')chipAct('x');});
  // 畫布上的標題／單位／註腳
  P.addEventListener('input',e=>{const s=e.target.closest('.tslot');if(!s)return;const k=s.dataset.k;T[k]=s.innerText.replace(/\n+$/,'');if(k!=='note')T[k]=T[k].replace(/\n/g,' ');s.classList.toggle('empty',!T[k]);saveT();clearTimeout(P._t);P._t=setTimeout(()=>renderTable(true),120);});
@@ -8128,6 +8221,9 @@ function featSel(sl,g){const h=D.fwHelp(g.name);if(h){FWSEL=h.name;fwRender(sl);
 $('#xInfo').addEventListener('click',e=>{const a=e.target.closest('a[data-rk]');if(a){goKey(a.dataset.rk);return;}
  const r=e.target.closest('a[data-ri]');if(r){setTab('guide');setTimeout(()=>{const c=document.querySelectorAll('.rcp')[+r.dataset.ri];if(c){c.scrollIntoView({block:'center'});c.classList.add('hitflash');setTimeout(()=>c.classList.remove('hitflash'),1800);}},60);return;}
  if(e.target.closest('#fwBtn')){FWOPEN=!FWOPEN;localStorage.setItem('pss-fw-open',FWOPEN?'1':'0');featShow(model.slides[S.slide]);}});
+if(typeof ResizeObserver!=='undefined')new ResizeObserver(syncPageInfoHeight).observe($('#pageInfo'));
+addEventListener('resize',syncPageInfoHeight);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#edPop').hidden){$('#edPop').hidden=true;$('#edBadge').setAttribute('aria-expanded','false');$('#edBadge').focus({preventScroll:true});}});
 $('#edBadge').onclick=e=>{e.stopPropagation();const p=$('#edPop');p.hidden=!p.hidden;$('#edBadge').setAttribute('aria-expanded',String(!p.hidden));};
 document.addEventListener('click',e=>{if(!e.target.closest('#edPop,#edBadge')){$('#edPop').hidden=true;$('#edBadge').setAttribute('aria-expanded','false');}});
 fReadUrl();setTimeout(fRender,0);

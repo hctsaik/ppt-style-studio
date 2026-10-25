@@ -135,7 +135,7 @@ async function browserSuite(options = {}) {
     assert([...document.querySelectorAll('.tzoom button')].map(e => e.textContent).join('|') === '顯示整個表格|原始尺寸 100%', 'Preview does not expose the requested two choices');
     assert(el('.tzoom [data-z="fit"]').getAttribute('aria-pressed') === 'true', 'Fit-all is not default');
     assert(!el('#tCanvas').querySelector('button,select,input'), 'Canvas contains settings or pagination');
-    assert(!document.querySelector('.tinsTabs [data-t="hi"]'), 'Emphasis still requires a tab');
+    assert(!document.querySelector('.tinsTabs [data-t="hi"]'), 'Removed legacy hi tab remains');
   });
   await run('Table crop retains complete content bounds and clearing restores the empty viewport', async () => {
     await reset(); await paste('Key\tValue\nfirst\t00123\nlast\t9007199254740993');
@@ -201,19 +201,20 @@ async function browserSuite(options = {}) {
     } finally { for (const [k, original] of originals) { if (original) Object.defineProperty(canvas, k, original); else delete canvas[k]; } }
     await reset();
   });
-  await run('Combined header-card look switches, preserves data, and supports undo / redo', async () => {
+  await run('Independent header and card controls preserve data and support undo / redo', async () => {
     await reset();
-    await click('#tLStrip button[data-v="card"]'); await sleep(400);
+    await click('#tLStrip [data-appearance="tbCardOn"] button[data-v="true"]'); await sleep(400);
     const before = JSON.stringify(state());
-    await click('#tLStrip button[data-v="bandcard"]'); await sleep(400);
-    assert(window.__studio.table.look === 'bandcard', 'Combined look was not selected');
-    assert(!document.querySelector('#tCardRow,[data-tp="tbCard"]'), 'Removed card backing settings remain');
+    await click('#tLStrip [data-appearance="tbHeaderStyle"] button[data-v="primary"]'); await sleep(400);
+    assert(window.__studio.table.appearance.card && window.__studio.table.appearance.header === 'primary', 'Header and card did not coexist');
+    assert(!document.querySelector('#tLStrip button[data-v="bandcard"],#tCardRow,[data-tp="tbCard"]'), 'Exclusive/grey card settings remain');
     assert(JSON.stringify(state()) === before, 'Appearance changed source data or metadata');
     await click('#tUndo'); await sleep(400);
-    assert(window.__studio.table.look === 'card', 'Undo did not restore the previous look');
+    assert(window.__studio.table.appearance.card && window.__studio.table.appearance.header === 'normal', 'Undo changed card or lost prior header');
     await click('#tRedo'); await sleep(400);
-    assert(window.__studio.table.look === 'bandcard', 'Redo lost the combined look');
-    await click('#tLStrip button[data-v="clean"]'); await sleep(400);
+    assert(window.__studio.table.appearance.card && window.__studio.table.appearance.header === 'primary', 'Redo lost combined appearance');
+    await click('#tLStrip [data-appearance="tbCardOn"] button[data-v="false"]');
+    await click('#tLStrip [data-appearance="tbHeaderStyle"] button[data-v="normal"]'); await sleep(400);
   });
   await run('Expanded A1 paste immediately renders all 6 × 8 cells', async () => {
     await reset(); await click(document.querySelector('#tWorkbench') ? '#tWorkbench' : '#tWide');
@@ -388,8 +389,8 @@ async function browserSuite(options = {}) {
     assert(!document.querySelector('.tinsTabs [data-t="hi"]'), 'Removed emphasis tab remains');
     assert(visible(el('#tSelPanel')), 'Selected-cell controls are not directly available in the inspector');
     assert(el('#tSelPanel').contains(document.activeElement), 'Keyboard focus was sent to hidden controls');
-    await click('#tSelPanel [data-range-preset="amber"]');
-    assert(state().his.some(h => h.type === 'range' && h.r0 === 26 && h.c0 === 1 && h.presetId === 'amber'), 'Mark targeted the wrong raw row');
+    await click('#tSelPanel [data-range-preset="v2-yellow-soft"]');
+    assert(state().his.some(h => h.type === 'range' && h.r0 === 26 && h.c0 === 1 && h.presetId === 'v2-yellow-soft'), 'Mark targeted the wrong raw row');
     await click('#tWorkbench'); let td=focus(25,1); key(td,'Enter'); await sleep(100);
     assert(+document.activeElement.dataset.r === 26, 'Enter crossed an artificial table boundary');
     key(document.activeElement,'Enter',{shiftKey:true}); await sleep(100);
