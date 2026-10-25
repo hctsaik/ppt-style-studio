@@ -402,7 +402,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 @media(max-width:900px){.tmain{overflow:hidden;padding-bottom:0;scrollbar-gutter:auto}.tcanvas{padding:14px;min-height:0;max-height:100%;overflow:auto}.tins .tlstrip button,.tins .tpreview-controls button,.tins .tzoom button{min-height:44px}.tins .tsteps{display:none}.tstagew.close{margin:0 auto}.tinsTabs button{min-height:44px}}
 
 /* Range selection is UI-only: a single unfilled outline, separate from cell styling. */
-#tPrev .tov{user-select:none}#tPrev .tc{touch-action:pan-x pan-y}
+#tPrev .tov{user-select:none}#tPrev .tc{touch-action:pan-x pan-y pinch-zoom}
 #tPrev.range-active .tc.sel,#tPrev.range-active .tc.gsel,#tPrev.range-active .tc:hover{background:transparent;box-shadow:none;outline:none}
 .trange-outline{position:absolute;pointer-events:none;z-index:5;border:2px solid #2563EB;box-shadow:0 0 0 1px #FFFFFF;box-sizing:border-box;background:transparent}
 #tPrev.range-preview .trange-outline,#tPrev.range-preview .tcw{visibility:hidden}
@@ -413,7 +413,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 .trange-card:hover,.trange-card:focus-visible{border-color:#2563EB;outline:2px solid #2563EB;outline-offset:1px}.trange-card[aria-pressed="true"]{border-color:#2563EB;box-shadow:inset 0 0 0 1px #2563EB}
 .trange-card b{display:block;font-size:12px;margin-top:6px}.trange-sample{box-sizing:border-box;height:32px;display:grid;grid-template-columns:1.2fr 1fr;align-items:center;border-radius:0;padding:0 5px;font-size:11px;font-variant-numeric:tabular-nums;overflow:hidden}.trange-sample span:last-child{text-align:right}
 .trange-status{font-size:12px;line-height:1.5;color:#526477}.trange-status:empty{display:none}.trange-touch{display:flex;gap:8px;margin-top:9px}.trange-touch[hidden],.trange-palette[hidden]{display:none}
-#tSelection:has(.trange-panel) #tDock{display:none}.trange-panel{padding:0}.trange-panel .phd{display:flex;align-items:center;justify-content:space-between;gap:10px}.trange-panel .phd button{min-width:32px;min-height:32px}
+#tSelection:has(.trange-panel) #tDock{display:none}.trange-panel{padding:0}.trange-panel .phd[hidden]{display:none}.trange-panel .phd{display:flex;align-items:center;justify-content:space-between;gap:10px}.trange-panel .phd button{min-width:32px;min-height:32px}
 @media(pointer:coarse){.trange-card{min-height:72px}.trange-actions button,.trange-touch button{min-height:44px}}
 
 
@@ -453,18 +453,26 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
  .ebar{bottom:calc(var(--page-info-height,130px) + 8px)}
 }
 /* Mobile workspace: compact chrome, content-sized sheet, readable scrolling preview. */
-.tmore-options{display:contents}.tmore-options>summary{display:none}
+.tmore-options{display:contents}.tmore-options>summary{display:none}.mobile-data-help{display:none}
 @media(max-width:900px){
  .tins{overflow:hidden}.tins .tsteps{display:flex;position:absolute;right:8px;top:4px;padding:0;gap:2px}
  .tins .tsteps>b,.tins .tsteps .tauto{display:none}.tins .tsteps .tub{padding:4px;min-width:44px;min-height:44px}
  .tinsTabs{padding:4px 102px 4px 8px;gap:3px}.tinsTabs button{min-width:44px;padding:4px;font-size:13px}
+ .tinsTabs button[aria-selected="true"]::after{content:"";display:inline-block;width:6px;height:6px;margin-left:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-135deg);vertical-align:1px}
+ .tinsTabs button[aria-expanded="true"]::after{transform:rotate(45deg);vertical-align:3px}
+ #tIns .tsec[data-sec="data"] > #tWorkbench{display:block!important;min-height:44px;width:100%;margin-bottom:8px}
+ #tIns .tsec[data-sec="data"] > #tEdit.wide{display:block!important;overflow-y:auto}
+ .tedit.wide .twork-layout,.tedit.wide .twork-data{display:block}.tedit.wide .tgrid{max-height:none;flex:none}
+ .tedit.wide .tw-head{position:sticky;top:-12px;z-index:4;background:#fff;flex-wrap:wrap;padding-bottom:6px}
+ .tedit.wide .tw-head small{display:none}.tedit.wide .tw-head b{font-size:16px}.tedit.wide .tw-head .trow{margin:0}
+ #tRawPasteHelp{display:none}.mobile-data-help{display:block;font-size:12px;color:#526477;line-height:1.6;margin:8px 0}
  .tins .tsec{padding:8px 0}.tins .trow{margin:6px 0}.tins .tsec select{min-height:44px}
  .tins .tappearance-options button{padding:4px}.tins .tlstrip.tappearance{gap:6px}
  .tins .tmore-options{display:block;border-bottom:1px solid var(--line);margin-top:8px}
  .tins .tmore-options>summary{display:flex;min-height:44px;padding:4px 0}
  .tins .tseg{max-width:100%;flex-wrap:wrap}.tins .tseg button{min-width:44px}
  .tins .tpreview-controls{gap:4px}.tins .tpreview-controls .tclean,.tins .tpreview-controls .tarrow{min-height:44px}
- .tins .trange-entry{gap:6px;margin:0}.tins .trange-actions{margin:6px 0}
+ .tins .trange-entry{gap:6px;margin:0;padding:4px 0}.tins .trange-actions{margin:6px 0}
  .tins .tselection{padding:4px 0}.tins .trange-panel .phd{min-height:44px}
  .tins .trange-panel .phd button{min-width:44px;min-height:44px}
  .tins .tout{padding:6px 10px calc(6px + env(safe-area-inset-bottom));gap:0}.tins .tout-summary{display:none}
@@ -477,6 +485,13 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 @media(max-width:900px) and (max-height:500px){
  body.tabT header{flex-wrap:nowrap}body.tabT header h1,body.tabT header .sp{display:none}
  body.tabT header .tabs{order:0;flex:1 1 0;width:0}body.tabT header .tplm{flex:none}
+}
+/* Short landscape uses stable columns: selecting a cell never changes canvas width. */
+@media(min-width:600px) and (max-width:900px) and (max-height:500px){
+ .tmain{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,42%)}
+ .tins,.tins.open{position:relative;inset:auto;height:100%;max-height:100%;border-radius:0;border-top:0;border-left:1px solid var(--line);box-shadow:none}
+ .tins .tsecs{display:block;flex:1 1 auto}.tinsTabs button[aria-selected="true"]::after{display:none}
+ .tins #tOut.blocked{max-height:calc(100% - 53px)}
 }
 @media(min-width:901px){.tpreview-scroll-hint{display:none}}
 </style></head><body><div class="tpop" id="tPop" role="dialog" aria-label="儲存格選單" hidden></div>
@@ -562,7 +577,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
       <div class="tinsTabs" role="tablist" aria-label="表格設定"><button id="tTabData" role="tab" data-t="data" aria-controls="tSecData" aria-selected="true" aria-pressed="true" tabindex="0">資料</button><button id="tTabLook" role="tab" data-t="look" aria-controls="tSecLook" aria-selected="false" aria-pressed="false" tabindex="-1">外觀</button><button id="tTabEmphasis" role="tab" data-t="emphasis" aria-controls="tSecEmphasis" aria-selected="false" aria-pressed="false" tabindex="-1">強調</button></div>
       <div class="tsecs">
        <section class="tsec on" data-sec="data" id="tSecData" role="tabpanel" aria-labelledby="tTabData"><button class="btn" id="tWorkbench">開啟資料工作台</button>
-        <div class="tdrop" id="tDrop"><div id="tRawPasteLabel">目前資料</div><div id="tRawPaste" tabindex="0" role="region" aria-labelledby="tRawPasteLabel" aria-describedby="tRawPasteHelp tRawPasteNotice"></div><p id="tRawPasteHelp">原始資料唯讀。點此表格後按 Ctrl／⌘+V 貼上 Excel、TSV、CSV 或 Markdown 表格，取代全部資料；Ctrl／⌘+C 複製全部資料。</p><p id="tRawPasteNotice" role="status" aria-live="polite"></p></div>
+        <div class="tdrop" id="tDrop"><div id="tRawPasteLabel">目前資料</div><div id="tRawPaste" tabindex="0" role="region" aria-labelledby="tRawPasteLabel" aria-describedby="tRawPasteHelp tRawPasteNotice"></div><p id="tRawPasteHelp">原始資料唯讀。點此表格後按 Ctrl／⌘+V 貼上 Excel、TSV、CSV 或 Markdown 表格，取代全部資料；Ctrl／⌘+C 複製全部資料。</p><p class="mobile-data-help" id="tRawPasteTouchHelp">手機可開啟資料工作台，直接編輯或匯入 CSV／TSV；貼上依瀏覽器支援。</p><p id="tRawPasteNotice" role="status" aria-live="polite"></p></div>
         <div class="trow tdrow"><span class="hint tph"><b>Ctrl+V</b> 重新貼上（照原樣）</span><button class="btn" id="tUndoPaste" title="回到貼上之前的資料" hidden>↶ 還原上一份</button>
          <select id="tSample" aria-label="載入範例"><option value="">範例…</option><option value="yield">批次良率</option><option value="fin">損益表摘要</option><option value="status">專案進度</option><option value="cmp">方案比較</option><option value="kpi">月度 KPI</option><option value="risk">風險表</option><option value="issue">議題追蹤</option><option value="action">行動項目</option><option value="raci">RACI 分工</option></select>
 </div>
@@ -607,7 +622,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
        </section>
 
        <section class="tsec" data-sec="emphasis" id="tSecEmphasis" role="tabpanel" aria-labelledby="tTabEmphasis" hidden>
-       <div id="tHLLauncher" class="trange-entry"><button class="btn" data-range-action="palette" aria-expanded="false"><span aria-hidden="true">▰ ▯</span> 重點樣式 H/L</button><span class="trange-label" id="tHLHint">先框選儲存格再套用</span></div>
+       <div id="tHLLauncher" class="trange-entry"><strong><span aria-hidden="true">▰ ▯</span> 重點樣式 H/L</strong><span class="trange-label" id="tHLHint">先框選儲存格再套用</span></div>
        <section class="tselection" id="tSelection"><div class="tdock" id="tDock"><span class="tseltxt" id="tSelTxt" aria-live="polite"></span><div class="tchip" id="tChip" role="toolbar" aria-label="重點工具列" hidden></div></div>
 
         <div class="tselp tpop tpanel" id="tSelPanel" hidden></div><p class="tsteps2" hidden></p>
@@ -635,7 +650,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <script src="jszip.min.js?v=978d62b5"></script>
 <script src="pptxgen.min.js?v=24808c08"></script>
 <script src="icons.js?v=65c03732"></script>
-<script src="deck.js?v=5f70c75b"></script>
+<script src="deck.js?v=319ba05e"></script>
 <script src="stylekit-data.js?v=47e8edb0"></script>
 <script src="stylekit.js?v=2a276743"></script>
 <script>
@@ -1365,15 +1380,18 @@ let SUG='';
 function fitPrev(){const c=$('#tCanvas'),P=$('#tPrev');if(!c||!P)return;P.style.maxWidth='none';
  syncMobileTableUI();
  if(!matchMedia('(max-width:900px)').matches){if(c.style.height)c.style.height='';return;}
- const top=c.getBoundingClientRect().top,ins=$('#tIns').getBoundingClientRect(),vv=window.visualViewport;
- const bottom=Math.min(innerHeight,vv?vv.offsetTop+vv.height:innerHeight,ins.height>0?ins.top:innerHeight),height=Math.max(0,bottom-top);
+ const cr=c.getBoundingClientRect(),top=cr.top,ins=$('#tIns').getBoundingClientRect(),vv=window.visualViewport;
+ // A side inspector must not be mistaken for an overlaid bottom sheet.
+ const overlaps=ins.left<cr.left+cr.width-1&&ins.left+ins.width>cr.left+1;
+ const bottom=Math.min(innerHeight,vv?vv.offsetTop+vv.height:innerHeight,ins.height>0&&overlaps?ins.top:innerHeight),height=Math.max(0,bottom-top);
  const px=height+'px';if(c.style.height!==px)c.style.height=px;}
+function tableSideInspector(){return matchMedia('(max-width:900px)').matches&&matchMedia('(min-width:600px) and (max-height:500px)').matches;}
 let tableMobileMode=null;
-function syncMobileTableUI(){const mobile=matchMedia('(max-width:900px)').matches,ins=$('#tIns');
- if(tableMobileMode!==mobile){tableMobileMode=mobile;if(mobile&&ins.querySelector('.tsecs').contains(document.activeElement))ins.classList.add('open');const more=$('#tMoreOptions');more.open=!mobile||more.contains(document.activeElement);const fit=document.querySelector('.tzoom [data-z="fit"]');fit.textContent=mobile?'清楚預覽（可滑動）':'顯示整個表格';fit.title=mobile?'優先適合寬度，保留可讀字級；超出範圍可滑動，不改變匯出尺寸':'依可用寬度與高度顯示完整表格、標題及註腳';}
- document.querySelectorAll('.tinsTabs button').forEach(b=>{if(mobile){b.setAttribute('aria-expanded',String(ins.classList.contains('open')&&b.getAttribute('aria-selected')==='true'));b.title='點選開啟，再點一次收合';}else{b.removeAttribute('aria-expanded');b.removeAttribute('title');}});
+function syncMobileTableUI(){const mobile=matchMedia('(max-width:900px)').matches,side=mobile&&tableSideInspector(),ins=$('#tIns');if(side)ins.classList.add('open');
+ if(tableMobileMode!==mobile){tableMobileMode=mobile;$('#tRawPaste').setAttribute('aria-describedby',(mobile?'tRawPasteTouchHelp':'tRawPasteHelp')+' tRawPasteNotice');if(mobile&&ins.querySelector('.tsecs').contains(document.activeElement))ins.classList.add('open');const more=$('#tMoreOptions');more.open=!mobile||more.contains(document.activeElement);const fit=document.querySelector('.tzoom [data-z="fit"]');fit.textContent=mobile?'清楚預覽（可滑動）':'顯示整個表格';fit.title=mobile?'優先適合寬度，保留可讀字級；超出範圍可滑動，不改變匯出尺寸':'依可用寬度與高度顯示完整表格、標題及註腳';}
+ document.querySelectorAll('.tinsTabs button').forEach(b=>{if(mobile&&!side){b.setAttribute('aria-expanded',String(ins.classList.contains('open')&&b.getAttribute('aria-selected')==='true'));b.title='點選開啟，再點一次收合';}else{b.removeAttribute('aria-expanded');if(side)b.title='切換設定';else b.removeAttribute('title');}});
 }
-function setTableInspectorOpen(open){$('#tIns').classList.toggle('open',open);syncMobileTableUI();queueTableFit();}
+function setTableInspectorOpen(open){const ins=$('#tIns');open=open||tableSideInspector();if(!open&&ins.querySelector('.tsecs').contains(document.activeElement)){const tab=ins.querySelector('.tinsTabs [aria-selected="true"]');if(tab)tab.focus({preventScroll:true});}ins.classList.toggle('open',open);syncMobileTableUI();queueTableFit();}
 let fitRaf=0;function queueTableFit(){if(S.tab!=='table'||fitRaf)return;fitRaf=requestAnimationFrame(()=>{fitRaf=0;fitPrev();applyView(tableMeta());});}
 addEventListener('resize',queueTableFit);if(window.visualViewport){visualViewport.addEventListener('resize',queueTableFit);visualViewport.addEventListener('scroll',queueTableFit);}
 // Coalesce width AND height changes (scrollbars, panel/footer changes, header wrap).
@@ -1394,12 +1412,26 @@ function applyView(tb){const P_=$('#tPrev'),sw=document.querySelector('.tstagew'
  // remaining height, with a 12 CSS px text floor; overflow stays inside the canvas.
  // The native table model (including every export dimension) is never changed.
  const mobile=matchMedia('(max-width:900px)').matches;let readablePx=0;
- if(mobile&&TZ!=='100'){const table=sl.items.find(i=>i.t==='tbl');let minFont=Infinity;for(const row of table&&table.cells||[])for(const cell of row)for(const run of cell.runs||[]){const size=Number(run.o&&run.o.size);if(String(run.t||'').trim()&&size>0)minFont=Math.min(minFont,size);}readablePx=12*72/(Number.isFinite(minFont)?minFont:12);}
+ if(mobile&&TZ!=='100')readablePx=12*72/tablePreviewMinFont(sl,tb);
  const px=TZ==='100'?basePx:mobile?Math.max(aw/cropW,readablePx):Math.min(aw/cropW,ah/cropH),sc=Math.max(0,px/basePx);
  $('#tPreviewHint').hidden=!(mobile&&(cropW*px>aw+1||cropH*px>ah+1));
  sw.style.width=(cropW*px)+'px';sw.style.height=(cropH*px)+'px';
  P_.style.width=(W*basePx)+'px';P_.style.position='absolute';P_.style.transform=`translate(${-x0*px}px,${-y0*px}px) scale(${sc})`;
- window.__studio.closeScale=sc;window.__studio.tableViewport={mode:TV,zoom:TZ,x0,y0,x1,y1,width:cropW*px,height:cropH*px,availableWidth:aw,availableHeight:ah,pixelsPerInch:px};}
+ window.__studio.closeScale=sc;window.__studio.tableViewport={mode:TV,zoom:TZ,x0,y0,x1,y1,width:cropW*px,height:cropH*px,availableWidth:aw,availableHeight:ah,pixelsPerInch:px};sizeTableCellEditor();}
+// Readable semantic text, not a smaller decorative status dot, determines scale.
+function tablePreviewMinFont(sl,tb){let min=Infinity;const dot=s=>/^[●○•·]+$/u.test(String(s||'').trim()),add=n=>{n=Number(n);if(n>0)min=Math.min(min,n);};
+ for(const row of (sl.items.find(i=>i.t==='tbl')||{}).cells||[])for(const cell of row){const runs=(cell.runs||[]).filter(r=>String(r.t||'').trim()),label=runs.some(r=>!dot(r.t));for(const run of runs){if(label&&dot(run.t))continue;add(run.o&&run.o.size);}}
+ for(const k of ['title','unit','note'])if(String(T[k]||'').trim()&&tb.slots[k])add(tb.slots[k].size);
+ return Number.isFinite(min)?min:12;}
+function sizeTableCellEditor(){const editor=$('#tPrev .trange-editor');if(!editor)return;const mobile=matchMedia('(max-width:900px)').matches,sc=window.__studio.closeScale||1,font=Math.max(16,16/sc),minH=Math.max(44/sc,font*1.3+10),minW=44/sc;
+ editor.style.fontSize=mobile?font+'px':'';editor.style.minHeight=mobile?minH+'px':'';editor.style.minWidth=mobile?minW+'px':'';
+ // The editor may be taller than a dense last row: extend only its UI crop,
+ // never the slide/table model. Restore the normal crop when editing ends.
+ const v=window.__studio.tableViewport,sl=tableSlide(),stage=document.querySelector('.tstagew');if(!mobile||!v||!sl)return;
+ const x=parseFloat(editor.style.left)/100*sl.w*90,y=parseFloat(editor.style.top)/100*sl.h*90,ew=Math.max(minW,parseFloat(editor.style.width)/100*sl.w*90),eh=Math.max(minH,parseFloat(editor.style.height)/100*sl.h*90);
+ const width=Math.max(v.width,(x+ew)*sc-v.x0*v.pixelsPerInch+2),height=Math.max(v.height,(y+eh)*sc-v.y0*v.pixelsPerInch+2);
+ if(Number.isFinite(width)&&Number.isFinite(height)){stage.style.width=width+'px';stage.style.height=height+'px';if(width>v.availableWidth+1||height>v.availableHeight+1)$('#tPreviewHint').hidden=false;}}
+
 function renderSlots(tb){fitPrev();applyView(tb);SUG=D.tableTitleSuggest(T);const box=$('#tPrev .tslots');if(!tb){box.innerHTML='';return;}const sl=tableSlide(),W=sl&&sl.w||D.W,H=sl&&sl.h||D.H;const ae=document.activeElement;const focusK=ae&&box.contains(ae)&&ae.dataset.k;
  const defs=[['title','點這裡輸入標題（重點句）'],['unit','單位／副標（例：單位：新台幣十億元）'],['note','註腳／資料來源']];
  const pv=$('#tPrev').clientWidth||1000;const pxPt=pv/(W*72);
@@ -1412,7 +1444,7 @@ function renderSlots(tb){fitPrev();applyView(tb);SUG=D.tableTitleSuggest(T);cons
 let TRANGE=null,RANGE_ANCHOR=null,RANGE_FOCUS=null,RANGE_OPEN=false,RANGE_EXTEND=false,RANGE_FAMILY='fill',RANGE_TONE='soft';
 let RANGE_PREVIEW=null,RANGE_DRAG=null,RANGE_FRAME=0,RANGE_SUPPRESS_CLICK=false,RANGE_TOUCH=false,RANGE_SUPPRESS_FOCUS=false;
 const rangeKey=q=>q?`${q.r0}:${q.c0}:${q.r1}:${q.c1}`:'';
-function updateHLLauncher(){const b=$('#tHLLauncher button'),hint=$('#tHLHint');if(!b)return;b.disabled=false;b.setAttribute('aria-expanded',String(RANGE_OPEN));b.classList.toggle('pri',RANGE_OPEN);if(hint)hint.textContent=TRANGE?`已選 ${(TRANGE.r1-TRANGE.r0+1)*(TRANGE.c1-TRANGE.c0+1)} 格`:'先框選儲存格再套用';}
+function updateHLLauncher(){const hint=$('#tHLHint');if(hint)hint.textContent=TRANGE?`已選 ${(TRANGE.r1-TRANGE.r0+1)*(TRANGE.c1-TRANGE.c0+1)} 格`:'先框選儲存格再套用';}
 function rangeStatus(text){document.querySelectorAll('#tRangeStatus,#tPop [data-range-status]').forEach(e=>e.textContent=text||'');}
 function cancelRangePreview(){const host=$('#tPrev');if(host)host.classList.remove('range-preview');if(!RANGE_PREVIEW)return;const p=RANGE_PREVIEW;RANGE_PREVIEW=null;const box=$('#tPrev .tsvg');if(box&&p.original!=null)box.innerHTML=p.original;rangeStatus('');document.querySelectorAll('.trange-card').forEach(b=>b.removeAttribute('data-preview'));}
 function stopRangeDrag(){if(RANGE_FRAME)cancelAnimationFrame(RANGE_FRAME);RANGE_FRAME=0;const d=RANGE_DRAG;RANGE_DRAG=null;if(d)try{$('#tPrev').releasePointerCapture(d.id);}catch(_){}document.body.classList.remove('range-dragging');}
@@ -1434,27 +1466,26 @@ function commitRangePreset(id){if(!TRANGE){rangeStatus('先框選儲存格再套
  // Flush previous edits and commit immediately: one click is one history transaction.
  pushHist(true);T.his=next.his;saveT();pushHist(true);renderTable(true);if(focusPreset){const b=$(`[data-range-preset="${focusPreset}"]`);if(b){RANGE_SUPPRESS_FOCUS=true;b.focus({preventScroll:true});RANGE_SUPPRESS_FOCUS=false;}}rangeStatus(id===null?'已清除選取範圍的高亮配色。':'已套用，可按 Ctrl+Z 復原。');}
 // One range-control host lives inside Emphasis at every viewport width.
-function renderRangePanel(){updateHLLauncher();const host=$('#tSelPanel'),other=$('#tPop'),active=document.activeElement;
+function renderRangePanel(){RANGE_OPEN=document.querySelector('.tsec[data-sec="emphasis"]').classList.contains('on');updateHLLauncher();const host=$('#tSelPanel'),other=$('#tPop'),active=document.activeElement;
  const focusAttr=host.contains(active)?['data-range-preset','data-range-family','data-range-tone','data-range-action'].find(k=>active.hasAttribute(k)):null,focusValue=focusAttr&&active.getAttribute(focusAttr);other.hidden=true;other.innerHTML='';
- if(!document.querySelector('.tsec[data-sec="emphasis"]').classList.contains('on')||(!TRANGE&&!RANGE_OPEN)){host.hidden=true;host.innerHTML='';document.body.classList.remove('tpopon');return;}
+ if(!RANGE_OPEN){host.hidden=true;host.innerHTML='';document.body.classList.remove('tpopon');return;}
  $('#tChip').hidden=true;$('#tSelTxt').hidden=true;$('#tSelection').hidden=false;
- const q=TRANGE,label=q?`${colLetter(q.c0)}${q.r0+1}:${colLetter(q.c1)}${q.r1+1}`:'',count=q?(q.r1-q.r0+1)*(q.c1-q.c0+1):0,presets=D.TABLE_HIGHLIGHT_HUES.map(h=>rangePreset(`v2-${h.id}-${RANGE_FAMILY==='fill'?RANGE_TONE:'soft'}`));
+ const q=TRANGE,label=q?`${colLetter(q.c0)}${q.r0+1}:${colLetter(q.c1)}${q.r1+1}`:'',count=q?(q.r1-q.r0+1)*(q.c1-q.c0+1):0,presets=D.TABLE_HIGHLIGHT_HUES.map(h=>rangePreset(D.tableHighlightPresetId(h.id,RANGE_TONE,RANGE_FAMILY)));
  const current=q?[...(T.his||[])].reverse().find(h=>h.type==='range'&&D.tableHighlightFamily(h)===RANGE_FAMILY&&rangeKey(h)===rangeKey(q)&&!(h.excludes||[]).length):null;
  const selected=p=>!!current&&(current.presetId===p.id||RANGE_FAMILY!=='fill'&&rangePreset(current.presetId)?.hue===p.hue);
- host.innerHTML=`<div class="trange-panel"><div class="phd"><b data-range-count>${q?`已選 ${count} 格 · ${label}`:'重點樣式'}</b><button class="btn" data-range-action="close" aria-label="${q?'關閉選取':'關閉樣式'}">✕</button></div><div class="trange-actions" ${q?'':'hidden'}><button class="btn" data-range-action="clear">清除高亮</button>${RANGE_TOUCH?`<button class="btn" data-range-action="extend" aria-pressed="${RANGE_EXTEND}">${RANGE_EXTEND?'點選範圍終點':'延伸選取'}</button>`:''}</div><div class="trange-families" role="group" aria-label="重點樣式類型" ${RANGE_OPEN?'':'hidden'}>${D.TABLE_HIGHLIGHT_FAMILIES.map(f=>`<button class="btn" data-range-family="${f.id}" aria-pressed="${f.id===RANGE_FAMILY}">${f.label}</button>`).join('')}</div><div class="trange-tones" role="group" aria-label="底色明暗" ${RANGE_OPEN&&RANGE_FAMILY==='fill'?'':'hidden'}>${[['soft','柔色'],['deep','深色白字']].map(([id,label])=>`<button class="btn" data-range-tone="${id}" aria-pressed="${RANGE_TONE===id}">${label}</button>`).join('')}</div><div class="trange-palette" aria-label="${rangeFamilyLabel()}配色，移過預覽，點選套用" ${RANGE_OPEN?'':'hidden'}>${[['theme','主題色 · 隨風格變更'],['fixed','固定色 · 不隨風格變更']].map(([group,title])=>`<div class="trange-palette-group" role="group" aria-label="${title}" data-range-group="${group}"><div class="trange-palette-title">${title}</div><div class="trange-hues">${presets.filter(p=>(p.hue==='theme')===(group==='theme')).map(p=>`<button class="trange-card" data-range-preset="${p.id}" data-range-hue="${p.hue}" aria-disabled="${!q}" aria-pressed="${selected(p)}" aria-label="${rangeFamilyLabel()}・${escH(p.label)}，${q?'預覽後按 Enter 套用':'先框選儲存格再套用'}"><span class="trange-sample" style="${rangeSampleStyle(p)}"><span>項目</span><span>98.5%</span></span><b>${escH(D.TABLE_HIGHLIGHT_HUES.find(h=>h.id===p.hue).label)}${selected(p)?' ✓':''}</b></button>`).join('')}</div></div>`).join('')}</div><div class="trange-label">${!q?'先框選儲存格再套用。':RANGE_OPEN?(RANGE_TOUCH?'點選樣式預覽，再按套用。':'移過預覽，點選套用；Esc 取消預覽。'):'拖曳框選或 Shift＋方向鍵延伸選取。'}</div><div class="trange-touch" ${q&&RANGE_OPEN&&RANGE_TOUCH?'':'hidden'}><button class="btn pri" data-range-action="apply">套用</button><button class="btn" data-range-action="cancel">取消</button></div></div>`;
+ host.innerHTML=`<div class="trange-panel"><div class="phd" ${q?'':'hidden'}><b data-range-count>${q?`已選 ${count} 格 · ${label}`:'重點樣式'}</b><button class="btn" data-range-action="close" aria-label="清除選取">✕</button></div><div class="trange-actions" ${q?'':'hidden'}><button class="btn" data-range-action="clear">清除高亮</button>${RANGE_TOUCH?`<button class="btn" data-range-action="extend" aria-pressed="${RANGE_EXTEND}">${RANGE_EXTEND?'點選範圍終點':'延伸選取'}</button>`:''}</div><div class="trange-families" role="group" aria-label="重點樣式類型" ${RANGE_OPEN?'':'hidden'}>${D.TABLE_HIGHLIGHT_FAMILIES.map(f=>`<button class="btn" data-range-family="${f.id}" aria-pressed="${f.id===RANGE_FAMILY}">${f.label}</button>`).join('')}</div><div class="trange-tones" role="group" aria-label="底色明暗" ${RANGE_OPEN&&RANGE_FAMILY==='fill'?'':'hidden'}>${[['soft','柔色'],['deep','深色白字']].map(([id,label])=>`<button class="btn" data-range-tone="${id}" aria-pressed="${RANGE_TONE===id}">${label}</button>`).join('')}</div><div class="trange-palette" aria-label="${rangeFamilyLabel()}配色，移過預覽，點選套用" ${RANGE_OPEN?'':'hidden'}>${[['theme','主題色 · 隨風格變更'],['fixed','固定色 · 不隨風格變更']].map(([group,title])=>`<div class="trange-palette-group" role="group" aria-label="${title}" data-range-group="${group}"><div class="trange-palette-title">${title}</div><div class="trange-hues">${presets.filter(p=>(p.hue==='theme')===(group==='theme')).map(p=>`<button class="trange-card" data-range-preset="${p.id}" data-range-hue="${p.hue}" aria-disabled="${!q}" aria-pressed="${selected(p)}" aria-label="${rangeFamilyLabel()}・${escH(p.label)}，${q?'預覽後按 Enter 套用':'先框選儲存格再套用'}"><span class="trange-sample" style="${rangeSampleStyle(p)}"><span>項目</span><span>98.5%</span></span><b>${escH(D.TABLE_HIGHLIGHT_HUES.find(h=>h.id===p.hue).label)}${selected(p)?' ✓':''}</b></button>`).join('')}</div></div>`).join('')}</div><div class="trange-label">${!q?'先框選儲存格再套用。':RANGE_OPEN?(RANGE_TOUCH?'點選樣式預覽，再按套用。':'移過預覽，點選套用；Esc 取消預覽。'):'拖曳框選或 Shift＋方向鍵延伸選取。'}</div><div class="trange-touch" ${q&&RANGE_OPEN&&RANGE_TOUCH?'':'hidden'}><button class="btn pri" data-range-action="apply">套用</button><button class="btn" data-range-action="cancel">取消</button></div></div>`;
  host.hidden=false;document.body.classList.remove('tpopon');
  if(focusAttr){const next=host.querySelector(`[${focusAttr}="${focusValue}"]`);if(next&&!next.closest('[hidden]')){RANGE_SUPPRESS_FOCUS=true;next.focus({preventScroll:true});RANGE_SUPPRESS_FOCUS=false;}}
 }
-function rangeSampleStyle(p){if(RANGE_FAMILY==='fill')return `background:#${p.fill};color:#${p.color};border:1px solid #${p.border};`;
+function rangeSampleStyle(p){if(RANGE_FAMILY==='fill')return `background:#${p.fill};color:#${p.color};border:1px solid #${p.border};${p.accent?`border-top:${p.accentWidth}pt solid #${p.accent};`:''}`;
  const edge=RANGE_FAMILY==='underline'?'border-bottom':RANGE_FAMILY==='side'?'border-left':'border';return `background:#FFFFFF;color:#243750;border:0 solid transparent;${edge}:${p.borderWidth}pt solid #${p.stroke};`;
 }
 let CELL_EDIT=null,GRID_COMPOSING=false;
-function finishCellEdit(commit,redraw=true){const ed=CELL_EDIT;if(!ed)return false;if(ed.composing&&commit)return false;CELL_EDIT=null;const value=D.stripCtl(ed.el.value);ed.el.remove();if(commit&&T.rows[ed.r]&&T.rows[ed.r][ed.c]!==value){pushHist(true);T.rows[ed.r][ed.c]=value;saveT();pushHist(true);if(redraw)renderTable(true);}const cell=$(`#tPrev .tc[data-r="${ed.r}"][data-c="${ed.c}"]`);if(cell)cell.focus({preventScroll:true});return true;}
+function finishCellEdit(commit,redraw=true){const ed=CELL_EDIT;if(!ed)return false;if(ed.composing&&commit)return false;CELL_EDIT=null;const value=D.stripCtl(ed.el.value);ed.el.remove();queueTableFit();if(commit&&T.rows[ed.r]&&T.rows[ed.r][ed.c]!==value){pushHist(true);T.rows[ed.r][ed.c]=value;saveT();pushHist(true);if(redraw)renderTable(true);}const cell=$(`#tPrev .tc[data-r="${ed.r}"][data-c="${ed.c}"]`);if(cell)cell.focus({preventScroll:true});return true;}
 function startCellEdit(cell){if(!cell)return;cancelRangePreview();finishCellEdit(true);const r=+cell.dataset.r,c=+cell.dataset.c;setRange({r,c},{r,c});const el=document.createElement('textarea');el.className='trange-editor';el.setAttribute('aria-label',`編輯 ${colLetter(c)}${r+1}，Enter 儲存，Esc 取消，Alt Enter 換行`);el.spellcheck=false;el.value=String(T.rows[r][c]??'');Object.assign(el.style,{left:cell.style.left,top:cell.style.top,width:cell.style.width,height:cell.style.height});const P=$('#tPrev');
- P.querySelector('.tov').appendChild(el);CELL_EDIT={r,c,el,composing:false};el.addEventListener('compositionstart',()=>{if(CELL_EDIT)CELL_EDIT.composing=true;});el.addEventListener('compositionend',()=>{if(CELL_EDIT)CELL_EDIT.composing=false;});el.addEventListener('keydown',e=>{e.stopPropagation();if(e.isComposing||e.keyCode===229||CELL_EDIT&&CELL_EDIT.composing)return;if(e.key==='Escape'){e.preventDefault();finishCellEdit(false);}else if(e.key==='Enter'&&!e.altKey&&!e.shiftKey){e.preventDefault();finishCellEdit(true);}else if(e.key==='Tab'){e.preventDefault();finishCellEdit(true);const nc=Math.max(0,Math.min(nCols()-1,c+(e.shiftKey?-1:1)));setRange({r,c:nc},{r,c:nc});const next=$(`#tPrev .tc[data-r="${r}"][data-c="${nc}"]`);if(next)next.focus();}});el.addEventListener('blur',()=>{if(CELL_EDIT&&CELL_EDIT.el===el)finishCellEdit(true);});el.focus();el.select();rangeStatus('編輯文字：Enter 儲存，Esc 取消；Alt＋Enter 換行。');}
+ P.querySelector('.tov').appendChild(el);sizeTableCellEditor();CELL_EDIT={r,c,el,composing:false};el.addEventListener('compositionstart',()=>{if(CELL_EDIT)CELL_EDIT.composing=true;});el.addEventListener('compositionend',()=>{if(CELL_EDIT)CELL_EDIT.composing=false;});el.addEventListener('keydown',e=>{e.stopPropagation();if(e.isComposing||e.keyCode===229||CELL_EDIT&&CELL_EDIT.composing)return;if(e.key==='Escape'){e.preventDefault();finishCellEdit(false);}else if(e.key==='Enter'&&!e.altKey&&!e.shiftKey){e.preventDefault();finishCellEdit(true);}else if(e.key==='Tab'){e.preventDefault();finishCellEdit(true);const nc=Math.max(0,Math.min(nCols()-1,c+(e.shiftKey?-1:1)));setRange({r,c:nc},{r,c:nc});const next=$(`#tPrev .tc[data-r="${r}"][data-c="${nc}"]`);if(next)next.focus();}});el.addEventListener('blur',()=>{if(CELL_EDIT&&CELL_EDIT.el===el)finishCellEdit(true);});el.focus();el.select();rangeStatus('編輯文字：Enter 儲存，Esc 取消；Alt＋Enter 換行。');}
 
 function bindRangeSelection(P){
- $('#tHLLauncher').addEventListener('click',e=>{if(!e.target.closest('[data-range-action="palette"]'))return;e.stopPropagation();cancelRangePreview();RANGE_OPEN=!RANGE_OPEN;renderRangePanel();});
  const cellPoint=el=>({r:+el.dataset.r,c:+el.dataset.c});
  const hit=(x,y)=>{const tb=tableMeta(),sl=tableSlide(),b=P.getBoundingClientRect();if(!tb||!sl||!b.width||!b.height)return null;const px=(x-b.left)/b.width*(sl.w||D.W),py=(y-b.top)/b.height*(sl.h||D.H);let xx=tb.tx,yy=tb.ty,c=0,r=0;while(c<tb.nC-1&&px>xx+tb.colW[c])xx+=tb.colW[c++];while(r<tb.nR-1&&py>yy+tb.rowH[r])yy+=tb.rowH[r++];return{r:tableRawRow(tb,r),c};};
  function dragFrame(){RANGE_FRAME=0;const d=RANGE_DRAG;if(!d||!d.moved)return;const ancestors=[];for(let e=P.parentElement;e&&e!==document.body;e=e.parentElement)if(e.scrollHeight>e.clientHeight+2||e.scrollWidth>e.clientWidth+2)ancestors.push(e);let moved=false;for(const e of ancestors){const b=e.getBoundingClientRect(),margin=28;const dx=d.x<b.left+margin?-12:d.x>b.right-margin?12:0,dy=d.y<b.top+margin?-12:d.y>b.bottom-margin?12:0;if(dx&&e.scrollWidth>e.clientWidth){const before=e.scrollLeft;e.scrollLeft+=dx;moved=moved||before!==e.scrollLeft;}if(dy&&e.scrollHeight>e.clientHeight){const before=e.scrollTop;e.scrollTop+=dy;moved=moved||before!==e.scrollTop;}}const end=hit(d.x,d.y);if(end&&rangeKey(rangeFromPoints(d.anchor,end))!==rangeKey(TRANGE)){RANGE_FOCUS=end;TRANGE=rangeFromPoints(d.anchor,end);}drawRangeSelection();if(moved||RANGE_DRAG)RANGE_FRAME=requestAnimationFrame(dragFrame);}
@@ -1469,16 +1500,16 @@ function bindRangeSelection(P){
   host.addEventListener('pointerout',e=>{const card=e.target.closest('[data-range-preset]');if(card&&!card.contains(e.relatedTarget)&&!RANGE_TOUCH)cancelRangePreview();});
   host.addEventListener('focusin',e=>{const card=e.target.closest('[data-range-preset]');if(card&&!RANGE_TOUCH&&!RANGE_SUPPRESS_FOCUS)previewRangePreset(card.dataset.rangePreset);});
   host.addEventListener('focusout',e=>{if(e.target.closest('[data-range-preset]')&&!RANGE_TOUCH)cancelRangePreview();});
-  host.addEventListener('click',e=>{const tone=e.target.closest('[data-range-tone]');if(tone){e.stopPropagation();cancelRangePreview();RANGE_TONE=tone.dataset.rangeTone;renderRangePanel();host.querySelector(`[data-range-tone="${RANGE_TONE}"]`).focus({preventScroll:true});return;}const family=e.target.closest('[data-range-family]');if(family){e.stopPropagation();cancelRangePreview();RANGE_FAMILY=family.dataset.rangeFamily;renderRangePanel();host.querySelector(`[data-range-family="${RANGE_FAMILY}"]`).focus({preventScroll:true});return;}const card=e.target.closest('[data-range-preset]'),button=e.target.closest('[data-range-action]');if(card){e.stopPropagation();if(!TRANGE){rangeStatus('先框選儲存格再套用。');return;}if(RANGE_TOUCH)previewRangePreset(card.dataset.rangePreset);else commitRangePreset(card.dataset.rangePreset);return;}if(!button)return;e.stopPropagation();const action=button.dataset.rangeAction;if(action==='palette'){cancelRangePreview();RANGE_OPEN=!RANGE_OPEN;renderRangePanel();}else if(action==='clear')commitRangePreset(null);else if(action==='close')closeChip();else if(action==='extend'){RANGE_EXTEND=!RANGE_EXTEND;renderRangePanel();}else if(action==='apply'){if(RANGE_PREVIEW)commitRangePreset(RANGE_PREVIEW.id);else rangeStatus('請先點選一個樣式。');}else if(action==='cancel')cancelRangePreview();});
-  host.addEventListener('keydown',e=>{const card=e.target.closest('[data-range-preset]');if(card&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();const list=[...host.querySelectorAll('[data-range-preset]')],i=list.indexOf(card),next=e.key==='ArrowUp'?[0,0,0,1,2][i]:e.key==='ArrowDown'?[1,3,4,3,4][i]:i+(e.key==='ArrowLeft'?-1:1);list[Math.max(0,Math.min(list.length-1,next))].focus();}if(card&&e.key==='Enter'){e.preventDefault();e.stopPropagation();commitRangePreset(card.dataset.rangePreset);}});
+  host.addEventListener('click',e=>{const tone=e.target.closest('[data-range-tone]');if(tone){e.stopPropagation();cancelRangePreview();RANGE_TONE=tone.dataset.rangeTone;renderRangePanel();host.querySelector(`[data-range-tone="${RANGE_TONE}"]`).focus({preventScroll:true});return;}const family=e.target.closest('[data-range-family]');if(family){e.stopPropagation();cancelRangePreview();RANGE_FAMILY=family.dataset.rangeFamily;renderRangePanel();host.querySelector(`[data-range-family="${RANGE_FAMILY}"]`).focus({preventScroll:true});return;}const card=e.target.closest('[data-range-preset]'),button=e.target.closest('[data-range-action]');if(card){e.stopPropagation();if(!TRANGE){rangeStatus('先框選儲存格再套用。');return;}if(RANGE_TOUCH)previewRangePreset(card.dataset.rangePreset);else commitRangePreset(card.dataset.rangePreset);return;}if(!button)return;e.stopPropagation();const action=button.dataset.rangeAction;if(action==='clear')commitRangePreset(null);else if(action==='close')closeChip();else if(action==='extend'){RANGE_EXTEND=!RANGE_EXTEND;renderRangePanel();}else if(action==='apply'){if(RANGE_PREVIEW)commitRangePreset(RANGE_PREVIEW.id);else rangeStatus('請先點選一個樣式。');}else if(action==='cancel')cancelRangePreview();});
+  host.addEventListener('keydown',e=>{const card=e.target.closest('[data-range-preset]');if(card&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();const list=[...host.querySelectorAll('[data-range-preset]')],i=list.indexOf(card),next=e.key==='ArrowUp'?(i<3?0:i-2):e.key==='ArrowDown'?(i===0?1:i+2<list.length?i+2:i):i+(e.key==='ArrowLeft'?-1:1);list[Math.max(0,Math.min(list.length-1,next))].focus();}if(card&&e.key==='Enter'){e.preventDefault();e.stopPropagation();commitRangePreset(card.dataset.rangePreset);}});
  }
  P.addEventListener('dblclick',e=>{const cell=e.target.closest('.tc');if(!cell)return;e.preventDefault();startCellEdit(cell);});
- document.addEventListener('keydown',e=>{if(e.key!=='Escape'||S.tab!=='table'||e.isComposing)return;if(CELL_EDIT){if(CELL_EDIT.composing)return;e.preventDefault();e.stopImmediatePropagation();finishCellEdit(false);return;}if(RANGE_PREVIEW){e.preventDefault();e.stopImmediatePropagation();cancelRangePreview();}else if(TRANGE||RANGE_OPEN){e.preventDefault();e.stopImmediatePropagation();closeChip();}},true);
+ document.addEventListener('keydown',e=>{if(e.key!=='Escape'||S.tab!=='table'||e.isComposing)return;if(CELL_EDIT){if(CELL_EDIT.composing)return;e.preventDefault();e.stopImmediatePropagation();finishCellEdit(false);return;}if(RANGE_PREVIEW){e.preventDefault();e.stopImmediatePropagation();cancelRangePreview();}else if(TRANGE){e.preventDefault();e.stopImmediatePropagation();closeChip();}},true);
  addEventListener('blur',()=>{cancelRangePreview();stopRangeDrag();});document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelRangePreview();stopRangeDrag();}});
 }
 
 // 重點工具列
-function closeChip(){const active=document.activeElement,restore=active&&active.closest('#tSelPanel,#tPop'),point=RANGE_FOCUS;clearRangeSelection();SELC=null;$('#tSelection').hidden=true;{const sp0=document.getElementById('tSelPanel');if(sp0){sp0.hidden=true;sp0.innerHTML='';}const st0=document.querySelector('#tIns .tsteps2');if(st0)st0.hidden=false;const pp=document.getElementById('tPop');if(pp)pp.hidden=true;document.body.classList.remove('tpopon');document.querySelectorAll('#tPrev .tc.scopehl,#tPrev .tc.scopeon').forEach(x=>x.classList.remove('scopehl','scopeon'));}{const t=document.getElementById('tSelTxt');if(t)t.hidden=false;const sp=document.getElementById('tSelPanel');if(sp)sp.innerHTML='';}setTimeout(selText,0);const c=$('#tChip');if(c)c.hidden=true;document.querySelectorAll('#tPrev .tc.sel').forEach(x=>x.classList.remove('sel'));if(restore){const next=point&&$(`#tPrev .tc[data-r="${point.r}"][data-c="${point.c}"]`);if(next){next.tabIndex=0;next.focus({preventScroll:true});}else if(!$('#tHLLauncher').hidden)$('#tHLLauncher button').focus({preventScroll:true});}}
+function closeChip(){const active=document.activeElement,restore=active&&active.closest('#tSelPanel,#tPop'),point=RANGE_FOCUS;clearRangeSelection();SELC=null;$('#tSelection').hidden=true;{const sp0=document.getElementById('tSelPanel');if(sp0){sp0.hidden=true;sp0.innerHTML='';}const st0=document.querySelector('#tIns .tsteps2');if(st0)st0.hidden=false;const pp=document.getElementById('tPop');if(pp)pp.hidden=true;document.body.classList.remove('tpopon');document.querySelectorAll('#tPrev .tc.scopehl,#tPrev .tc.scopeon').forEach(x=>x.classList.remove('scopehl','scopeon'));}{const t=document.getElementById('tSelTxt');if(t)t.hidden=false;const sp=document.getElementById('tSelPanel');if(sp)sp.innerHTML='';}setTimeout(selText,0);const c=$('#tChip');if(c)c.hidden=true;document.querySelectorAll('#tPrev .tc.sel').forEach(x=>x.classList.remove('sel'));renderRangePanel();if(restore){const next=point&&$(`#tPrev .tc[data-r="${point.r}"][data-c="${point.c}"]`);if(next){next.tabIndex=0;next.focus({preventScroll:true});}else if(!$('#tHLLauncher').hidden)$('#tTabEmphasis').focus({preventScroll:true});}}
 function selKind(r,c){const tb=tableMeta();return r<(tb?tb.h0:1)?'col':c===0?'row':'cell';}
 function selText(){const el=document.getElementById('tSelTxt');if(!el)return;if(!SELC){el.innerHTML='';return;}const {r,c,kind}=SELC;el.innerHTML='目前選取：<b>'+(kind==='col'?`第 ${c+1} 欄（${escH(colName(c))}）`:kind==='row'?`第 ${r+1} 列（${escH(rowName(r))}）`:`第 ${r+1} 列・第 ${c+1} 欄`)+'</b>';}
 function openChip(r,c,kind){selectGrid(r,c,false);SELC={r,c,kind:kind||selKind(r,c)};POPHI='';$('#tSelection').hidden=false;document.querySelector('#tIns .tsecs').scrollTop=0;if(matchMedia('(max-width:900px)').matches)setTableInspectorOpen(true);document.querySelectorAll('#tPrev .tc').forEach(x=>{const on=+x.dataset.r===r&&+x.dataset.c===c;x.classList.toggle('sel',on);x.tabIndex=on?0:-1;});renderChip();placeChip();}
@@ -1638,7 +1669,7 @@ function buildTableUI(){
  $('#tMoreOptions').addEventListener('toggle',queueTableFit);
  // 步驟／手機分頁
  document.querySelector('.tsteps').onclick=e=>{const b=e.target.closest('[data-go]');if(b)showSec(b.dataset.go);};
- $('#tIns').querySelector('.tinsTabs').onclick=e=>{const b=e.target.closest('button[data-t]');if(!b)return;const on=b.getAttribute('aria-pressed')==='true'&&$('#tIns').classList.contains('open');if(on){cancelRangePreview();setTableInspectorOpen(false);b.focus({preventScroll:true});return;}showSec(b.dataset.t);};
+ $('#tIns').querySelector('.tinsTabs').onclick=e=>{const b=e.target.closest('button[data-t]');if(!b)return;const on=!tableSideInspector()&&b.getAttribute('aria-pressed')==='true'&&$('#tIns').classList.contains('open');if(on){cancelRangePreview();setTableInspectorOpen(false);b.focus({preventScroll:true});return;}showSec(b.dataset.t);};
  $('#tIns').querySelector('.tinsTabs').addEventListener('keydown',e=>{const b=e.target.closest('button[data-t]');if(!b)return;const tabs=[...b.parentElement.querySelectorAll('button[data-t]')],i=tabs.indexOf(b),next=e.key==='Home'?0:e.key==='End'?tabs.length-1:e.key==='ArrowRight'?(i+1)%tabs.length:e.key==='ArrowLeft'?(i+tabs.length-1)%tabs.length:null;if(next==null)return;e.preventDefault();showSec(tabs[next].dataset.t);tabs[next].focus({preventScroll:true});});
 
  document.querySelector('.tzoom').onclick=e=>{const b=e.target.closest('button[data-z]');if(!b)return;TZ=b.dataset.z==='100'?'100':'fit';$('#tCanvas').classList.toggle('z100',TZ==='100');document.querySelectorAll('.tzoom button').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.z===TZ)));if(matchMedia('(max-width:900px)').matches){setTableInspectorOpen(false);closeChip();}fitPrev();applyView(tableMeta());if(TZ==='fit'){$('#tCanvas').scrollLeft=0;$('#tCanvas').scrollTop=0;}queueTableFit();};

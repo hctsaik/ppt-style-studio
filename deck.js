@@ -2077,6 +2077,14 @@ function userTable0(T,k,boost){const st=TBL_FIXED(stO_());const source=tableSour
    sourceRows.forEach(ri=>rows[ri].forEach((t,c)=>{const str=String(t);if(!str.trim())return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri),av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0),ls=str.split('\n'),vis=x=>x.replace(/\s/g,'').length;
     if(ls.some(l=>mw(l,sz0,b)>av+.01))orphans.push({r:ri,c,t:str,why:'auto-wrap'});else if(ls.length>1&&vis(str)>4&&ls.some((l,i)=>vis(l)<=1||vis(l)<=2&&i>0&&!/[：:；;，,、)）\s]$/.test(ls[i-1])&&!/^[（(]/.test(l)))orphans.push({r:ri,c,t:str,why:'orphan'});}));
    if(T.hcol){const tint=legacyLK.hdr&&legacyLK.hdr.fill?mix(P,'FFFFFF',.88):mix(G.fill||'F2F2F2','FFFFFF',.2);tb.cells.forEach((r,ri)=>{const raw=sourceRows[ri];if(raw<h0||AU.section[raw])return;const cl=r[0];if(!cl)return;cl.bold=true;(cl.runs||[]).forEach(x=>{x.o=Object.assign({},x.o,{bold:true});});if(!cl.fill&&!rangeAt(raw,0))cl.fill=tint;});}
+   // The new deep theme fill has a light top rule on each visible region/page.
+   // Keep it in native cell borders, below explicit line-family overrides; old
+   // preset IDs never acquire this decoration or any new fill resolution.
+   tb.cells.forEach((row,ri)=>row.forEach((cell,c)=>{const r=sourceRows[ri],mark=rangeAt(r,c);if(!mark)return;
+    const preset=tableHighlightPreset(mark.presetId,st);if(!preset.accent)return;
+    const above=ri?sourceRows[ri-1]:null;if(above===r-1&&rangeAt(above,c)===mark)return;
+    cell.bT={c:preset.accent,w:preset.accentWidth};cell.highlightEdges=['bT'];cell.highlightOrder={bT:-.5};
+   }));
    // Apply line-only families after every semantic/header/first-column fill has
    // resolved. All render/export paths consume these same native cell borders.
    const edgeOffsets=[['bT',-1,0],['bR',0,1],['bB',1,0],['bL',0,-1]];
@@ -2355,9 +2363,16 @@ const TABLE_HIGHLIGHT_HUES=Object.freeze([
  Object.freeze({id:'blue',label:'藍色',soft:'D7E5F5',dark:'285785'}),
  Object.freeze({id:'green',label:'綠色',soft:'D8EACF',dark:'356343'}),
  Object.freeze({id:'red',label:'紅色',soft:'F3D0D0',dark:'8B3535'}),
- Object.freeze({id:'yellow',label:'黃色',soft:'F6E4AD',dark:'745313'})
+ Object.freeze({id:'yellow',label:'黃色',soft:'F6E4AD',dark:'745313'}),
+ Object.freeze({id:'gray',label:'灰色',soft:'E6E6E6',dark:'595959'})
 ]);
 const TABLE_HIGHLIGHT_PRESETS_V2=Object.freeze(TABLE_HIGHLIGHT_HUES.flatMap(h=>['soft','deep'].map(tone=>Object.freeze({id:`v2-${h.id}-${tone}`,hue:h.id,tone,label:h.label+'・'+(tone==='soft'?'柔色':'深色白字'),mode:'fill',bold:null}))));
+// New clicks opt in to the distinct theme fill. Saved v2 IDs are not aliases and
+// retain their original appearance, even after loading, reapplying or exporting.
+const TABLE_HIGHLIGHT_PRESETS_V3=Object.freeze([
+ Object.freeze({id:'v3-theme-soft',hue:'theme',tone:'soft',label:'主題色・柔色',mode:'fill',bold:null}),
+ Object.freeze({id:'v3-theme-deep',hue:'theme',tone:'deep',label:'主題色・深色白字＋淺色細線',mode:'fill',bold:null})
+]);
 const TABLE_HIGHLIGHT_FAMILIES=Object.freeze([
  Object.freeze({id:'fill',label:'底色',width:1.5}),Object.freeze({id:'outline',label:'外框',width:1.5}),
  Object.freeze({id:'underline',label:'底線',width:2}),Object.freeze({id:'side',label:'側線',width:3})
@@ -2365,6 +2380,23 @@ const TABLE_HIGHLIGHT_FAMILIES=Object.freeze([
 const TABLE_HIGHLIGHT_STROKES=Object.freeze({'theme-light':'52779B','theme-dark':'1F4E79',mint:'267A76',amber:'9B6B12',rose:'A14553',slate:'666666'});
 // Missing styleId is the legacy fill schema. Reject unknown values, never hydrate CSS.
 function tableHighlightFamily(value){const id=typeof value==='object'&&value?value.styleId??value.family??'fill':value??'fill';return TABLE_HIGHLIGHT_FAMILIES.some(f=>f.id===id)?id:null;}
+function tableHighlightPresetId(hue,tone='soft',family='fill'){
+ if(!TABLE_HIGHLIGHT_HUES.some(h=>h.id===hue)||!['soft','deep'].includes(tone)||!tableHighlightFamily(family))return null;
+ return hue==='theme'&&family==='fill'?`v3-theme-${tone}`:`v2-${hue}-${family==='fill'?tone:'soft'}`;
+}
+// Reference roles: navy header / medium-blue emphasis / pale-blue soft fill.
+// Other themes retain P's hue and saturation, solving lightness for readable
+// white text. Some custom/theme headers can equal that medium tone; the light
+// top rule then supplies a role cue without changing any header or saved IDs.
+function tableThemePaint(p,tone){
+ const rgb=[0,2,4].map(i=>parseInt(p.substr(i,2),16)/255),max=Math.max(...rgb),min=Math.min(...rgb),d=max-min,l=(max+min)/2;
+ const sat=d?d/(1-Math.abs(2*l-1)):0,hue=!d?0:max===rgb[0]?60*(((rgb[1]-rgb[2])/d+6)%6):max===rgb[1]?60*((rgb[2]-rgb[0])/d+2):60*((rgb[0]-rgb[1])/d+4);
+ const at=L=>[0,8,4].map(n=>{const k=(n+hue/30)%12,a=sat*Math.min(L,1-L);return Math.round(255*(L-a*Math.max(-1,Math.min(k-3,9-k,1)))).toString(16).padStart(2,'0');}).join('').toUpperCase();
+ let lo=0,hi=1;for(let i=0;i<24;i++){const mid=(lo+hi)/2;if(contrastOf(at(mid),'FFFFFF')>=4.8)lo=mid;else hi=mid;}
+ const medium=p===BASE.P?'2E75B6':at(lo),soft=p===BASE.P?'DEE7F1':mix(p,'FFFFFF',.86);
+ if(tone==='soft')return{fill:soft,color:p===BASE.P?'1F3864':ensureContrast(p,soft,4.5),border:medium};
+ return{fill:medium,color:'FFFFFF',border:medium,accent:ensureContrast(soft,medium,3),accentWidth:1.25};
+}
 function tableRangeEdge(mark,r,c,edge){if(!tableMarkContains(mark,r,c))return false;const family=tableHighlightFamily(mark);
  return family==='outline'?(edge==='bT'?r===mark.r0:edge==='bB'?r===mark.r1:edge==='bL'?c===mark.c0:edge==='bR'?c===mark.c1:false):family==='underline'?edge==='bB'&&r===mark.r1:family==='side'?edge==='bL'&&c===mark.c0:false;
 }
@@ -2382,8 +2414,9 @@ function tableHighlightStroke(stroke,backgrounds){const bgs=[...new Set(backgrou
 }
 const HI_COLORS=['auto','P','A','alert'],RULE_OPS=['<','<=','>','>=','='],RULE_TONES=['warn','good','accent'],RULE_STYLES=['fill','text','box'];
 function tableHighlightPreset(id,params,family='fill'){family=tableHighlightFamily(family);if(!family)return null;
- const modern=TABLE_HIGHLIGHT_PRESETS_V2.find(p=>p.id===id);
+ const modern=TABLE_HIGHLIGHT_PRESETS_V2.find(p=>p.id===id)||TABLE_HIGHLIGHT_PRESETS_V3.find(p=>p.id===id);
  if(modern){const hue=TABLE_HIGHLIGHT_HUES.find(h=>h.id===modern.hue),p=params&&/^[0-9A-F]{6}$/i.test(params.P||'')?params.P.toUpperCase():BASE.P;
+  if(id.startsWith('v3-')&&family==='fill')return Object.assign({},modern,tableThemePaint(p,modern.tone));
   const dark=hue.dynamic?ensureContrast(p,'FFFFFF',4.5):hue.dark,soft=hue.dynamic?mix(p,'FFFFFF',.86):hue.soft;
   if(family!=='fill')return Object.assign({},modern,{label:hue.label,family,mode:family,fill:null,color:null,border:dark,stroke:dark,borderWidth:TABLE_HIGHLIGHT_FAMILIES.find(f=>f.id===family).width});
   const fill=modern.tone==='deep'?dark:soft,color=modern.tone==='deep'?'FFFFFF':hue.dynamic?ensureContrast(p,soft,4.5):dark;
@@ -2441,7 +2474,7 @@ function tableRangeUsesPreset(his,range,presetId,nR,nC){let remaining=[range];
 // Line no-op identity includes family AND actual perimeter, not filled-area coverage.
 function tableRangeUsesLine(his,range,presetId,family){const edges=[];
  // V2 fill tones share exactly one line paint; preserve imported IDs on no-op.
- const lineKey=id=>{const p=TABLE_HIGHLIGHT_PRESETS_V2.find(p=>p.id===id);return p?'v2-'+p.hue:id;},wanted=lineKey(presetId);
+ const lineKey=id=>{const p=TABLE_HIGHLIGHT_PRESETS_V2.find(p=>p.id===id)||TABLE_HIGHLIGHT_PRESETS_V3.find(p=>p.id===id);return p?'v2-'+p.hue:id;},wanted=lineKey(presetId);
  if(family==='outline'){for(let c=range.c0;c<=range.c1;c++){edges.push([range.r0,c,'bT'],[range.r1,c,'bB']);}for(let r=range.r0;r<=range.r1;r++){edges.push([r,range.c0,'bL'],[r,range.c1,'bR']);}}
  else if(family==='underline')for(let c=range.c0;c<=range.c1;c++)edges.push([range.r1,c,'bB']);
  else for(let r=range.r0;r<=range.r1;r++)edges.push([r,range.c0,'bL']);
@@ -3017,6 +3050,6 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
  if(p.tbPanel&&!p.tbLook)out.tbLook='card';out.tbCard='white';
  return out;}
-const api={iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,TABLE_HIGHLIGHT_HUES,TABLE_HIGHLIGHT_PRESETS_V2,TABLE_HIGHLIGHT_FAMILIES,tableHighlightFamily,tableHighlightStroke,tableResolvedBorders,tableRangeEdge,tableHighlightPreset,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,TABLE_APPEARANCE_KEYS,tableAppearanceOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
+const api={iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,TABLE_HIGHLIGHT_HUES,TABLE_HIGHLIGHT_PRESETS_V2,TABLE_HIGHLIGHT_PRESETS_V3,TABLE_HIGHLIGHT_FAMILIES,tableHighlightFamily,tableHighlightStroke,tableResolvedBorders,tableRangeEdge,tableHighlightPreset,tableHighlightPresetId,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,TABLE_APPEARANCE_KEYS,tableAppearanceOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);
