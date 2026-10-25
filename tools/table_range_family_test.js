@@ -11,7 +11,7 @@ const params = { ...D.PRESETS[0], tbAuto: false };
 const families = ['fill', 'outline', 'underline', 'side'];
 const lines = families.slice(1);
 const palettes = ['theme-light', 'theme-dark', 'mint', 'amber', 'rose', 'slate'];
-const widths = { fill: 1.5, outline: 1.5, underline: 2, side: 3 };
+const widths = { fill: 1.5, outline: 2.25, underline: 2, side: 3 };
 const edges = ['bT', 'bR', 'bB', 'bL'];
 const sideNames = { bT: 'top', bR: 'right', bB: 'bottom', bL: 'left' };
 const rect = (r0, c0, r1, c1) => ({ r0, c0, r1, c1 });
@@ -358,7 +358,7 @@ async function check(name, run) { await run(); checks++; console.log('  ✓ ' + 
   await check('line projections override thicker semantic shared borders without changing source cells', async () => {
     const T={...fixture(),his:[{type:'col',i:1,kind:'rec'}]},q=rect(1,1,2,2),baseline=model(T,{tbLook:'band'}),m=model(apply(T,q,'mint','outline'),{tbLook:'band'}),tb=native(m),before=clone(tb);
     assert.equal(native(baseline).cells[0][1].bB.w,3);assert.equal(tb.cells[0][1].bB.w,3,'unselected logical header unchanged');
-    const resolved=D.tableResolvedBorders(tb);assert.deepEqual(resolved[0][1].bB,resolved[1][1].bT);assert.equal(resolved[0][1].bB.w,1.5);
+    const resolved=D.tableResolvedBorders(tb);assert.deepEqual(resolved[0][1].bB,resolved[1][1].bT);assert.equal(resolved[0][1].bB.w,2.25);
     assert.deepEqual(tb,before);assertSvg(m);assertHtml(m);await nativeXml(m);
   });
   await check('neighbor fill changes retint only the same shared boundary for contrast', async () => {

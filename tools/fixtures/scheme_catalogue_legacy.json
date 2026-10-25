@@ -1,0 +1,647 @@
+{
+ "baseCommit": "002e3545e061fc40f741b4d5efd212c8ecafe880",
+ "description": "Immutable pre-catalogue registry and JSON SHA256 model snapshots; generated once from base deck.js with its identical icons.js. Tests do not need Git or repository history.",
+ "registry": [
+  [
+   "catalog",
+   "總覽",
+   "00",
+   "Overview",
+   "S"
+  ],
+  [
+   "frame",
+   "頁面骨架",
+   "A0",
+   "Page Skeleton",
+   "A"
+  ],
+  [
+   "frame2",
+   "頁面骨架（二）",
+   "A1",
+   "Page Skeleton II",
+   "A"
+  ],
+  [
+   "cards",
+   "卡片與面板",
+   "A2",
+   "Cards & Panels",
+   "A"
+  ],
+  [
+   "tags",
+   "標籤與編號",
+   "A3",
+   "Labels & Numbers",
+   "A"
+  ],
+  [
+   "tags2",
+   "標籤與編號（二）",
+   "A4",
+   "Labels & Numbers II",
+   "A"
+  ],
+  [
+   "labels",
+   "標籤元件",
+   "A5",
+   "Label Components",
+   "A"
+  ],
+  [
+   "labels2",
+   "標籤元件（二）",
+   "A6",
+   "Label Components II",
+   "A"
+  ],
+  [
+   "lists",
+   "清單與勾選",
+   "A7",
+   "Lists & Checklists",
+   "A"
+  ],
+  [
+   "circles",
+   "圓形與流程鏈",
+   "A8",
+   "Circles & Chains",
+   "A"
+  ],
+  [
+   "circles2",
+   "圓形與流程鏈（二）",
+   "A9",
+   "Circles & Chains II",
+   "A"
+  ],
+  [
+   "conn",
+   "連接線與箭頭",
+   "A10",
+   "Connectors & Arrows",
+   "A"
+  ],
+  [
+   "conn2",
+   "連接線與箭頭（二）",
+   "A11",
+   "Connectors & Arrows II",
+   "A"
+  ],
+  [
+   "icons",
+   "圖示精選",
+   "A12",
+   "Icons",
+   "A"
+  ],
+  [
+   "iconcomponents",
+   "Icon 元件",
+   "A13",
+   "Icon Components",
+   "A"
+  ],
+  [
+   "iconvariants",
+   "Icon 底座變體",
+   "A14",
+   "Icon Base Variants",
+   "A"
+  ],
+  [
+   "flow",
+   "流程圖符號",
+   "B1",
+   "Flowchart Symbols",
+   "B"
+  ],
+  [
+   "flow2",
+   "流程圖範例",
+   "B2",
+   "Flowchart Examples",
+   "B"
+  ],
+  [
+   "patterns",
+   "常用流程組合",
+   "B3",
+   "Flow Patterns",
+   "B"
+  ],
+  [
+   "patterns2",
+   "常用流程組合（二）",
+   "B4",
+   "Flow Patterns II",
+   "B"
+  ],
+  [
+   "flex",
+   "可調數量流程",
+   "B5",
+   "Scalable Flows",
+   "B"
+  ],
+  [
+   "steps",
+   "編號步驟",
+   "B6",
+   "Numbered Steps",
+   "B"
+  ],
+  [
+   "struct",
+   "結構元件",
+   "B7",
+   "Structure",
+   "B"
+  ],
+  [
+   "agenda",
+   "議程與章節",
+   "B8",
+   "Agenda & Sections",
+   "B"
+  ],
+  [
+   "people",
+   "人員與組織",
+   "B9",
+   "People & Team",
+   "B"
+  ],
+  [
+   "kpi",
+   "KPI 卡",
+   "C1",
+   "KPI Cards",
+   "C"
+  ],
+  [
+   "rating",
+   "評比指標",
+   "C2",
+   "Ratings & Status",
+   "C"
+  ],
+  [
+   "tline",
+   "時間軸與甘特",
+   "C3",
+   "Timeline & Gantt",
+   "C"
+  ],
+  [
+   "chart",
+   "圖表頁零件",
+   "C4",
+   "Chart Kit",
+   "C"
+  ],
+  [
+   "cmp",
+   "前後對比 · 數字",
+   "D1",
+   "Before & After",
+   "D"
+  ],
+  [
+   "asis",
+   "前後對比 · 版型零件",
+   "D2",
+   "Before & After Kit",
+   "D"
+  ],
+  [
+   "cmp2",
+   "步驟與欄位對比",
+   "D3",
+   "Side-by-side",
+   "D"
+  ],
+  [
+   "cmp3",
+   "表格與方案比較",
+   "D4",
+   "Tables & Options",
+   "D"
+  ],
+  [
+   "mtx",
+   "矩陣與風險",
+   "D5",
+   "Matrix & Risk",
+   "D"
+  ],
+  [
+   "rca",
+   "原因分析",
+   "D6",
+   "Root Cause",
+   "D"
+  ],
+  [
+   "rca2",
+   "管理框架",
+   "D7",
+   "Fishbone, 8D & RACI",
+   "D"
+  ],
+  [
+   "decide",
+   "決策與下一步",
+   "D8",
+   "Decision & Next Steps",
+   "D"
+  ],
+  [
+   "biz",
+   "商業框架",
+   "D9",
+   "Business Frameworks",
+   "D"
+  ],
+  [
+   "biz2",
+   "組織、時程與畫布",
+   "D10",
+   "Org, Gantt & Canvas",
+   "D"
+  ],
+  [
+   "pitch",
+   "提案與募資",
+   "D11",
+   "Pitch Kit",
+   "D"
+  ],
+  [
+   "annot",
+   "標註",
+   "E1",
+   "Callouts",
+   "E"
+  ],
+  [
+   "emph",
+   "強調與註腳",
+   "E2",
+   "Emphasis & Footnotes",
+   "E"
+  ],
+  [
+   "emph2",
+   "強調與註腳（二）",
+   "E3",
+   "Emphasis & Footnotes II",
+   "E"
+  ],
+  [
+   "shots",
+   "截圖與裝置框",
+   "E4",
+   "Screenshots & Frames",
+   "E"
+  ],
+  [
+   "story",
+   "引言與故事",
+   "E5",
+   "Quotes & Storytelling",
+   "E"
+  ],
+  [
+   "quote",
+   "整頁引言",
+   "E6",
+   "Full-page Quote",
+   "E"
+  ],
+  [
+   "quote2",
+   "整頁引言・主色卡",
+   "E7",
+   "Full-page Quote · Card",
+   "E"
+  ],
+  [
+   "story2",
+   "引言與故事（二）",
+   "E8",
+   "Quotes & Storytelling II",
+   "E"
+  ],
+  [
+   "map",
+   "地圖與據點",
+   "E9",
+   "Maps & Locations",
+   "E"
+  ],
+  [
+   "map2",
+   "亞洲與世界地圖",
+   "E10",
+   "Asia & World Maps",
+   "E"
+  ],
+  [
+   "cover",
+   "封面頁",
+   "F1",
+   "Cover",
+   "F"
+  ],
+  [
+   "cover2",
+   "封面・左圖右文",
+   "F2",
+   "Cover · Split",
+   "F"
+  ],
+  [
+   "cover3",
+   "封面・大數字",
+   "F3",
+   "Cover · Big number",
+   "F"
+  ],
+  [
+   "section",
+   "章節分隔頁",
+   "F4",
+   "Section Divider",
+   "F"
+  ],
+  [
+   "section2",
+   "章節・大編號＋目錄",
+   "F5",
+   "Section · Index",
+   "F"
+  ],
+  [
+   "section3",
+   "章節・置中大標",
+   "F6",
+   "Section · Centered",
+   "F"
+  ],
+  [
+   "closing",
+   "結尾 Q&A 頁",
+   "F7",
+   "Closing & Q&A",
+   "F"
+  ],
+  [
+   "closing2",
+   "結尾・Q&A 大字",
+   "F8",
+   "Closing · Q&A",
+   "F"
+  ],
+  [
+   "closing3",
+   "結尾・純感謝＋聯絡",
+   "F9",
+   "Closing · Thanks",
+   "F"
+  ],
+  [
+   "ex1",
+   "範例：三圓架構",
+   "F10",
+   "Example: 3 circles",
+   "F"
+  ],
+  [
+   "ex2",
+   "範例：框架流程",
+   "F11",
+   "Example: framework",
+   "F"
+  ],
+  [
+   "ex3",
+   "範例：分支樹狀",
+   "F12",
+   "Example: tree",
+   "F"
+  ],
+  [
+   "sum",
+   "頁型：結論＋3 支撐",
+   "F13",
+   "Page: Key takeaway",
+   "F"
+  ],
+  [
+   "pcn",
+   "頁型：問題→對策→下一步",
+   "F14",
+   "Page: Problem to action",
+   "F"
+  ],
+  [
+   "weekly",
+   "頁型：週報一頁",
+   "F15",
+   "Page: Weekly one-pager",
+   "F"
+  ],
+  [
+   "profile",
+   "自我介紹",
+   "G1",
+   "Profile & Intro",
+   "G"
+  ],
+  [
+   "skills",
+   "技能與成就",
+   "G2",
+   "Skills & Achievements",
+   "G"
+  ],
+  [
+   "skills2",
+   "技能與成就（二）",
+   "G3",
+   "Skills & Achievements II",
+   "G"
+  ],
+  [
+   "star",
+   "專案案例 STAR",
+   "G4",
+   "STAR Case Study",
+   "G"
+  ],
+  [
+   "folio",
+   "作品集版面",
+   "G5",
+   "Portfolio Layouts",
+   "G"
+  ],
+  [
+   "plan",
+   "30-60-90 與自我推薦",
+   "G6",
+   "30-60-90 & Why Me",
+   "G"
+  ],
+  [
+   "guide",
+   "風格規範",
+   "X1",
+   "Style Guide",
+   "X"
+  ]
+ ],
+ "scenarios": {
+  "navy/S": {
+   "groups": 458,
+   "slidesSha256": "ed0a121fd20361eeaad358e9e4e4aba8da9af5decd2f8a976a04e61a618fdcfd",
+   "contractSha256": "634cf91a48553a12a3042f94f5ccd51380253e443ff319b48f1d3d8f96a8fe48"
+  },
+  "navy/M": {
+   "groups": 458,
+   "slidesSha256": "cc98a8f6270d49d81e41b66963489b1081eaa4c4180c4cabcc7208dfd0ee0b0d",
+   "contractSha256": "b6bbb666ba91892d11e8fb1dfe96355c46186e75bbc7c7c13002ba9bb872d3d8"
+  },
+  "navy/L": {
+   "groups": 458,
+   "slidesSha256": "2a05e6e0a0077ba2a033751c8c6a381d86656f59f9e01fc32ffe3fdb0b1b35c9",
+   "contractSha256": "ae2849a8a8ff5cea6e7dae6ccc870065c8b4659d394117150f4b4dbb3ec78637"
+  },
+  "green/S": {
+   "groups": 458,
+   "slidesSha256": "07bd00f6f01c525f6cfbb7e59af9401b024ec98f205e08210bdc5dbfd83429f8",
+   "contractSha256": "3a21935b42e8e3cdb537d30456b9d3f7b4590a006d3d0ad66394856081d8a45a"
+  },
+  "green/M": {
+   "groups": 458,
+   "slidesSha256": "24778b0975f3d171ce7ecdeac46a706c760253ee4edddc085e8c8a7f11e9d15c",
+   "contractSha256": "fd29671f67d1a774cd4e740ff2ae59ce4f263c2925affcf642f9de6d3f005af6"
+  },
+  "green/L": {
+   "groups": 458,
+   "slidesSha256": "e28070bc1822f908caca9002983531088452d4bc68a2b0aea72776220076b0ee",
+   "contractSha256": "da9336108c99cdfa70869cf7ac7ddbdda99d1a72a35becf464720a4a9e562650"
+  },
+  "frame/S": {
+   "groups": 457,
+   "slidesSha256": "c85df1392e39826464c982daa15388a3b49a421c219e4552040bc20d44c492d7",
+   "contractSha256": "26cd956a982dfe41d063ce4d828f0dedd99ce272005046892ae88ff3d240b9b5"
+  },
+  "frame/M": {
+   "groups": 457,
+   "slidesSha256": "b7c8a701717dc1823c6a72a834a7325b30577e3f1e7be6427d0addca132978b9",
+   "contractSha256": "95b06648be434b8b7b86ef81a032f254ffb992b9397d83661bddf3723f4f8b97"
+  },
+  "frame/L": {
+   "groups": 457,
+   "slidesSha256": "e9e46e98250394723efc834e3a6a99339dbf62293def5680a8d3f376a21af83e",
+   "contractSha256": "49eeca3ae2786261e5b8d0bdda796312a3e13e745c1fc2f3a08ece9453970009"
+  },
+  "iceberg/S": {
+   "groups": 458,
+   "slidesSha256": "d14a77796a3cdbcab40a94702347d6a5c238bf84bb19d5670ba6c9188cd44d70",
+   "contractSha256": "b64e4ca810bb41425a7d534f4a672a0fac193af52d9de06add31b434ef7a3ac4"
+  },
+  "iceberg/M": {
+   "groups": 458,
+   "slidesSha256": "31a6551ec346b8edf37fd27dfd560d8854901b3bc464a47d09c9b1ab874df2f3",
+   "contractSha256": "55a47bb95ea97d16ddb3c9a50680cb5aeca8722417e068597caf017be5cdc5c6"
+  },
+  "iceberg/L": {
+   "groups": 458,
+   "slidesSha256": "f4fb18df26a5c9bab3ed2e9c0649e73636d26ebfed6b2c14df50ba93087ff45d",
+   "contractSha256": "4cd37d50be661e51a129c4fb06e23b86ad447dabf8097767d12590ca04896838"
+  },
+  "wire/S": {
+   "groups": 457,
+   "slidesSha256": "65fbab1762c650a124a5af6e579eff7c4b62d041a3846a934d77d26006e6131e",
+   "contractSha256": "a22ce2e3dd377a1c51e6b3c40b4e249b538f3e40ea63ff8e6f0e60ee9c696aba"
+  },
+  "wire/M": {
+   "groups": 457,
+   "slidesSha256": "3f7a1d48056fa024c1773621faa1ab6f09b4b2fd935063f6b7abbf6ec525226b",
+   "contractSha256": "33d04991cec6ac9c3917c9fad78d8f4d8bf005370bc984ffa1839f71addae4fc"
+  },
+  "wire/L": {
+   "groups": 457,
+   "slidesSha256": "24a7f9c9931abab71266408e090fdbfbbee2d265b41a7028e9ef90f5e8df2a2b",
+   "contractSha256": "c38fafbe115dc57634a36d14343df48588aec407e6f6dd9f070c1e45a692c5cb"
+  },
+  "wine/S": {
+   "groups": 458,
+   "slidesSha256": "b542ed914e8a029a79a831017de221d06092cee305c49bfefa1e6e57c01313b8",
+   "contractSha256": "4b21d6c5d86d54dc30f1e43784b00c74621b801c2dd715b8f1f19e562efa9d88"
+  },
+  "wine/M": {
+   "groups": 458,
+   "slidesSha256": "26f67daac65fa95004a0e29f0719c015a9888eb25b5ba9f2845f688574c6f800",
+   "contractSha256": "f8056a19e2adb7511dd5b85474b6eb08e4b68459068d1355c11d424bd1b7cc66"
+  },
+  "wine/L": {
+   "groups": 458,
+   "slidesSha256": "e7c5ed3cb51e77ee2c7becf697f58933afe5e6bf66ba71245de17055476255ae",
+   "contractSha256": "a614facade3e5c3787bb36bee1cbd6410de1b0e5b758fa1b5a5fad3025e23772"
+  },
+  "teal/S": {
+   "groups": 458,
+   "slidesSha256": "2e690083c114bfb4172108e7454b4697f2808fac80639c3aa97b87810ab76fa7",
+   "contractSha256": "e01f7de1699b6cb2861144a137b0f050e58edd16a2d7be9559ec36851ea76f90"
+  },
+  "teal/M": {
+   "groups": 458,
+   "slidesSha256": "30d5a0bfce08b2cdf463ef80b10b5d07fc7d62ce25780ba85ca253638a9a0cea",
+   "contractSha256": "71d3a4ec42f03d7d12e9f43b98fd4953c82469d5dda4d753ffed52fbd0a2322f"
+  },
+  "teal/L": {
+   "groups": 458,
+   "slidesSha256": "3aa36fb7ba6ba4923ccba5cb76fde81b62233718cb01c64c0235db076b7ee140",
+   "contractSha256": "95c87a7c4b19f5fe773043d4fd27b3be70eb9035abba0f451fe7206dc67c6bb4"
+  },
+  "charcoal/S": {
+   "groups": 458,
+   "slidesSha256": "c04a34e29d06bab5aa59e8893701498fc2b768ec383eb2f1243fcdcf4e5d60ba",
+   "contractSha256": "60a4da1bee4950f3cfc42626373a5d921c55cebc16aa246643eaaf3dc72dae5f"
+  },
+  "charcoal/M": {
+   "groups": 458,
+   "slidesSha256": "7ccc42cc614774e962f12dff3d0bf6ca2e9fcaa14b1f0da190d9905ddb8ca913",
+   "contractSha256": "82bef529e216e8d5e784b5b63af3eee3b795f63e14f5911dcdd9d1ad152c326e"
+  },
+  "charcoal/L": {
+   "groups": 458,
+   "slidesSha256": "6d18560ed97756c43020c6c1ac2317b61da546c5041fe647b9248b4a5a51b698",
+   "contractSha256": "aec66befe72c7d233e5c9f74bc734769a9c51d847e7a3db86e91d1f64d4f1fa2"
+  },
+  "investor/S": {
+   "groups": 458,
+   "slidesSha256": "f7971ed09b2ae1b1441c14b34dbdbd4c1deb2a0afb7b4ead2c709dc7b2cd7cf9",
+   "contractSha256": "db13ec60b60e133c0b36ae636b9904d943cbc8bcc47045f8878a26c2edb4e672"
+  },
+  "investor/M": {
+   "groups": 458,
+   "slidesSha256": "a0f896e291dd9ceef8252670ccd482dd86b990033647c754d1f289e249335659",
+   "contractSha256": "204d118e2c2c00b979d61a67aaf8c841844726d0e60459318705c16a9a6c2ddf"
+  },
+  "investor/L": {
+   "groups": 458,
+   "slidesSha256": "822b8f4335e961f85cdeb8ca34e33e5059b218d01c3c38f2fbfdb906042aa791",
+   "contractSha256": "59f376141834ef046232b2b36a546f47d391f3891633cc4aa32bb48654f26702"
+  }
+ }
+}

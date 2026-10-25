@@ -41,10 +41,34 @@ function loadLegacy() {
   mod.filename = filename; mod.paths = Module._nodeModulePaths(ROOT); mod._compile(source, filename);
   return { D: mod.exports, sourceHash: hash(source) };
 }
-function legacyHashes(D) {
+function legacyHashes(D, restoreOldFirstColumnInset = false) {
   const out = {};
   for (const preset of D.PRESETS) for (const look of looks) for (const [name, table] of Object.entries(fixtures)) {
-    const m = D.buildModel({ ...preset, tbAuto: false, tbLook: look }, { table: clone(table) });
+    const m = D.buildModel({ ...preset, ...Object.fromEntries(fields.map(f => [f, null])), tbAuto: false, tbLook: look }, { table: clone(table) });
+    // Preserve the immutable baseline; approved rendering corrections are
+    // the restored first-column cell inset. Undo only that known delta before
+    // comparing model/SVG/HTML hashes, while asserting the corrected inset first.
+    // New defaults must not turn these explicitly legacy fixtures into new looks.
+    if (restoreOldFirstColumnInset && ['clean', 'card', 'hair'].includes(D.tableLookOf({ tbLook: look }))) {
+      for (const sl of m.slides) for (const row of sl.items.find(it => it.t === 'tbl').cells) {
+        assert.equal(row[0].mL, row[0].mR, 'first-column inset follows the spacing control');
+        assert(row[0].mL > 0, 'legacy medium padding is restored, not silently erased');
+        row[0].mL = 0;
+      }
+    }
+    // Outline strength was explicitly increased 1.5→2.25pt. Assert the new
+    // native edge width, then project only those known outline-owned edges back
+    // for the immutable legacy comparison. No golden data is rewritten.
+    if (restoreOldFirstColumnInset) {
+      let outlineEdges = 0;
+      for (const sl of m.slides) for (const row of sl.items.find(it => it.t === 'tbl').cells) for (const cell of row) {
+        for (const edge of cell.highlightEdges || []) {
+          const mark = (table.his || [])[cell.highlightOrder && cell.highlightOrder[edge]];
+          if (mark && mark.styleId === 'outline') { assert.equal(cell[edge].w, 2.25); cell[edge].w = 1.5; outlineEdges++; }
+        }
+      }
+      if (name === 'annotated') assert(outlineEdges > 0, 'annotated fixture exercises stronger outlines');
+    }
     out[[preset.id, look, name].join('/')] = {
       items: hash(m.slides.map(sl => ({ w: sl.w, h: sl.h, items: sl.items, groups: sl.groups }))),
       svg: hash(m.slides.map(sl => D.toSvg(sl)).join('\n')),
@@ -138,6 +162,8 @@ async function assertPptx(m) {
     const cells = [...row.getElementsByTagName('a:tc')]; assert.equal(cells.length, resolved[r].length);
     return cells.map((tc, c) => {
       const cell = resolved[r][c], props = tc.getElementsByTagName('a:tcPr')[0];
+      assert.equal(+props.getAttribute('marL'), Math.round(cell.mL * 12700), 'native left cell inset');
+      assert.equal(+props.getAttribute('marR'), Math.round(cell.mR * 12700), 'native right cell inset');
       for (const e of edges) { const line = props.getElementsByTagName('a:ln' + e.slice(1))[0]; assert(line, 'editable native cell border');
         if (cell[e]) { assert.equal(+line.getAttribute('w'), Math.round(cell[e].w * 12700)); assert.equal(line.getElementsByTagName('a:srgbClr')[0].getAttribute('val'), cell[e].c); }
         else assert.equal(line.getElementsByTagName('a:noFill').length, 1);
@@ -153,11 +179,49 @@ async function assertPptx(m) {
 let checks = 0;
 async function check(name, fn) { await fn(); checks++; console.log('  ✓ ' + name); }
 (async () => {
-  await check('216 immutable legacy golden cases: model, SVG and HTML', () => {
+  await check('216 immutable legacy golden cases: only approved first-column inset changes', () => {
     const golden = JSON.parse(fs.readFileSync(GOLDEN, 'utf8'));
     assert.equal(golden.revision, REV); assert.deepEqual(golden.fixtures, fixtures);
-    const actual = legacyHashes(D);
+    const actual = legacyHashes(D, true);
     for (const [id, expected] of Object.entries(golden.records)) assert.deepEqual(actual[id], expected, 'legacy rendering changed: ' + id);
+  });
+  await check('new editor defaults and legacy imports stay separate', () => {
+    assert.deepEqual(D.tableAppearanceOf(D.TABLE_APPEARANCE_DEFAULTS), {card:true,header:'primary',stripes:false,grid:'horizontal'});
+    const fallback={...D.BASE,...D.TABLE_APPEARANCE_DEFAULTS};
+    assert.deepEqual(D.tableAppearanceOf(D.sanitizeParams({tbLook:'zebra',tbCardOn:false,tbGrid:'none'},fallback)), {card:false,header:'normal',stripes:true,grid:'none'});
+    assert.deepEqual(D.tableAppearanceOf(D.sanitizeParams({},fallback)), {card:false,header:'normal',stripes:false,grid:'horizontal'});
+  });
+  await check('all looks, densities and sizes honor none/small/medium/large padding in every cell', () => {
+    const t = plain(), original = clone(t);
+    for (const look of looks) for (const [tbDense, points] of Object.entries({ comfy: 12, normal: 9, dense: 7 })) {
+      for (const [size, scale] of Object.entries({ S: .8, M: 1, L: 1.25 })) for (const [tbPad, multiplier] of Object.entries({ none: 0, s: .5, m: 1, l: 1.7 })) {
+        const m = build({ tbLook: look, tbDense, size, tbPad, tbCardOn: true, tbHeaderStyle: 'primary', tbStripes: false, tbGrid: 'horizontal' }, t);
+        const expected = points * scale * multiplier;
+        for (const row of native(m).cells) for (const cell of row) {
+          assert.equal(cell.mL, expected, `${look}/${tbDense}/${size}/${tbPad}: left inset`);
+          assert.equal(cell.mR, expected, `${look}/${tbDense}/${size}/${tbPad}: right inset`);
+        }
+        assertSource(m, t); assert.deepEqual(t, original);
+      }
+    }
+  });
+  await check('first-column header/body padding agrees in SVG, HTML and native editable PPTX', async () => {
+    const t = { header: true, rows: [['項目', '方案'], ['月費', '原始值 00123'], ['雲端空間', '9007199254740993']] };
+    for (const tbLook of ['clean', 'bandcard', 'hair']) for (const tbPad of ['none', 's', 'm', 'l']) for (const header of [false, true]) {
+      const source = { ...t, header }, original = clone(source);
+      const m = build({ tbLook, tbPad, P: '0F7C80', tbCardOn: true, tbHeaderStyle: 'primary', tbStripes: false, tbGrid: 'horizontal' }, source), tb = native(m);
+      const svg = new JSDOM(D.toSvg(m.slides[0]), { contentType: 'image/svg+xml' }).window;
+      const html = new JSDOM(D.tableHtml(m)).window, rows = [...html.document.querySelectorAll('tr')];
+      tb.cells.forEach((row, r) => {
+        const cell = row[0], label = cell.runs.map(run => run.t).join('');
+        const text = [...svg.document.getElementsByTagName('text')].find(el => el.textContent === label);
+        assert(text, 'first-column text exists in SVG: ' + label);
+        assert(Math.abs(+text.getAttribute('x') - (tb.x * 72 + cell.mL)) < .011, 'SVG uses real internal cell inset');
+        assert.equal(rows[r].children[0].style.paddingLeft, cell.mL + 'pt', 'HTML uses the same first-column inset');
+      });
+      svg.close(); html.close();
+      assertSource(m, source); assert.deepEqual(source, original); await assertPptx(m);
+    }
   });
   await check('resolver maps old looks/aliases and independent null/unset fields', () => {
     assert.equal(typeof D.tableAppearanceOf, 'function');

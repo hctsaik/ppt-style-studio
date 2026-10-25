@@ -16,12 +16,12 @@ async function main(){
  const hasFocus=()=>{assert(d.activeElement!==d.body);assert(!d.activeElement.closest('[hidden]'));};
  let passed=0;const test=async(n,f)=>{await f();passed++;console.log('PASS '+n);};
  try{await new Promise(r=>w.addEventListener('load',r));await wait(80);click('#tabs [data-tab="table"]');await wait(80);run('saveT();pushHist(true)');
- await test('Exactly three named accessible tabs separate all H/L controls from whole-table appearance',()=>{
-  const tabs=[...d.querySelectorAll('.tinsTabs button')];assert.deepEqual(tabs.map(x=>x.textContent),['資料','外觀','強調']);
+ await test('Exactly four named accessible tabs separate all H/L controls from whole-table appearance',()=>{
+  const tabs=[...d.querySelectorAll('.tinsTabs button')];assert.deepEqual(tabs.map(x=>x.textContent),['資料','外觀','強調','輸出']);
   for(const b of tabs){assert.equal(b.getAttribute('role'),'tab');const panel=d.getElementById(b.getAttribute('aria-controls'));assert(panel);assert.equal(panel.getAttribute('role'),'tabpanel');assert.equal(panel.getAttribute('aria-labelledby'),b.id);}
   for(const id of ['tHLLauncher','tHLHint','tSelection','tRangeStatus','tSelPanel'])assert.equal($('#'+id).closest('.tsec').dataset.sec,'emphasis');
-  for(const id of ['tFormatReset','tLStrip','tStyle','tCwReset','tCleanV'])assert.equal($('#'+id).closest('.tsec').dataset.sec,'look');
-  assert.equal($('#tRawPaste').closest('.tsec').dataset.sec,'data');assert.equal(d.querySelectorAll('[data-range-action="palette"]').length,0);assert($('#tHLLauncher strong'));
+  for(const id of ['tFormatReset','tLStrip','tStyle'])assert.equal($('#'+id).closest('.tsec').dataset.sec,'look');
+  assert.equal($('#tCwReset').closest('.tsec').dataset.sec,'out');assert($('#tPreviewWorkspace').contains($('#tCleanV')));assert.equal($('#tRawPaste').closest('.tsec').dataset.sec,'data');assert.equal(d.querySelectorAll('[data-range-action="palette"]').length,0);assert($('#tHLLauncher strong'));
  });
  await test('New rectangle switches only after pointerup; one-cell and keyboard selections agree',()=>{
   tab('data');const raw=state(),P=$('#tPrev');P.getBoundingClientRect=()=>({left:0,top:0,width:1000,height:1000,right:1000,bottom:1000});
@@ -32,24 +32,24 @@ async function main(){
  });
  await test('Manual Data or Appearance survives redraw, fit, resize, and retains selection/history',async()=>{
   run('setRange({r:1,c:1},{r:2,c:2})');const before=selection(),raw=state();
-  for(const k of ['data','look']){tab(k);run('renderTable(true);schedule()');w.dispatchEvent(new w.Event('resize'));await wait(80);assert.equal(active(),k);assert.deepEqual(selection(),before);assert.equal(state(),raw);assert($('#tHLLauncher').hidden);assert($('#tSelPanel').hidden);assert($('#tPop').hidden);assert.equal($('#tSelPanel').innerHTML,'');}
+  for(const k of ['data','look','out']){tab(k);run('renderTable(true);schedule()');w.dispatchEvent(new w.Event('resize'));await wait(80);assert.equal(active(),k);assert.deepEqual(selection(),before);assert.equal(state(),raw);assert($('#tHLLauncher').hidden);assert($('#tSelPanel').hidden);assert($('#tPop').hidden);assert.equal($('#tSelPanel').innerHTML,'');}
   cell(3,2).click();assert.equal(active(),'emphasis');assert.equal(state(),raw);
  });
  await test('Tab changes discard preview, not committed model, source, selection or undo history',()=>{
-  for(const k of ['look','data']){run('setRange({r:1,c:1},{r:2,c:2});RANGE_OPEN=true;renderRangePanel()');const before=selection(),raw=state(),model=run('JSON.stringify(TM)'),committed=svg();$('[data-range-preset="v2-red-soft"]').focus();assert(run('RANGE_PREVIEW'));assert.notEqual(svg(),committed);tab(k);assert.equal(run('RANGE_PREVIEW'),null);assert.equal(svg(),committed);assert.deepEqual(selection(),before);assert.equal(state(),raw);assert.equal(run('JSON.stringify(TM)'),model);assert.strictEqual(d.activeElement,$(`.tinsTabs [data-t="${k}"]`));hasFocus();}
+  for(const k of ['look','data','out']){run('setRange({r:1,c:1},{r:2,c:2});RANGE_OPEN=true;renderRangePanel()');const before=selection(),raw=state(),model=run('JSON.stringify(TM)'),committed=svg();$('[data-range-preset="v2-red-soft"]').focus();assert(run('RANGE_PREVIEW'));assert.notEqual(svg(),committed);tab(k);assert.equal(run('RANGE_PREVIEW'),null);assert.equal(svg(),committed);assert.deepEqual(selection(),before);assert.equal(state(),raw);assert.equal(run('JSON.stringify(TM)'),model);assert.strictEqual(d.activeElement,$(`.tinsTabs [data-t="${k}"]`));hasFocus();}
  });
  await test('Arrow/Home/End tab navigation provides one roving stop and visible focus',()=>{
   tab('data');$('#tTabData').focus();const raw=state();
-  for(const[k,want]of [['ArrowRight','look'],['ArrowRight','emphasis'],['ArrowRight','data'],['ArrowLeft','emphasis'],['Home','data'],['End','emphasis']]){key(d.activeElement,k);assert.equal(active(),want);assert.equal(d.activeElement.dataset.t,want);assert.equal(d.querySelectorAll('.tinsTabs button[tabindex="0"]').length,1);assert.equal(d.querySelectorAll('#tIns .tsec:not([hidden])').length,1);hasFocus();}
+  for(const[k,want]of [['ArrowRight','look'],['ArrowRight','emphasis'],['ArrowRight','out'],['ArrowRight','data'],['ArrowLeft','out'],['Home','data'],['End','out']]){key(d.activeElement,k);assert.equal(active(),want);assert.equal(d.activeElement.dataset.t,want);assert.equal(d.querySelectorAll('.tinsTabs button[tabindex="0"]').length,1);assert.equal(d.querySelectorAll('#tIns .tsec:not([hidden])').length,1);hasFocus();}
   assert.equal(state(),raw);
  });
  await test('Explicit H/L from an existing selection reopens Emphasis and dismissal restores focus',()=>{
-  cell().click();tab('look');const before=selection(),raw=state();cell().focus();key(cell(),'h');assert.equal(active(),'emphasis');assert.equal(d.activeElement.dataset.rangePreset,'v3-theme-soft');assert.deepEqual(selection(),before);key(d.activeElement,'Escape');assert.equal(run('RANGE_PREVIEW'),null);key(d.activeElement,'Escape');assert.equal(run('TRANGE'),null);assert.strictEqual(d.activeElement,cell());hasFocus();assert.equal(state(),raw);
+  cell().click();tab('look');const before=selection(),raw=state();cell().focus();key(cell(),'h');assert.equal(active(),'emphasis');assert.equal(d.activeElement.dataset.rangePreset,'v4-role-accent');assert.deepEqual(selection(),before);key(d.activeElement,'Escape');assert.equal(run('RANGE_PREVIEW'),null);key(d.activeElement,'Escape');assert.equal(run('TRANGE'),null);assert.strictEqual(d.activeElement,cell());hasFocus();assert.equal(state(),raw);
  });
  await test('All widths use one Emphasis host, preserve focused control and never leak into other tabs',async()=>{
   const media=w.matchMedia;let mobile=false;w.matchMedia=q=>({matches:mobile&&q.includes('max-width:900px'),media:q,addListener(){},addEventListener(){}});
-  try{cell().click();key(cell(),'h');const raw=state(),focused=d.activeElement,preview=run('RANGE_PREVIEW'),previewSvg=svg();for(const width of [true,false,true,false]){mobile=width;const preset=d.activeElement.dataset.rangePreset;w.dispatchEvent(new w.Event('resize'));await wait(60);assert.equal(d.querySelectorAll('.trange-panel').length,1);assert.equal(d.querySelectorAll('[data-range-family]').length,4);assert.equal(d.querySelectorAll('[data-range-preset]').length,6);assert($('#tSecEmphasis').contains($('.trange-panel')));assert.equal($('#tPop').innerHTML,'');assert($('#tPop').hidden);assert.equal(d.activeElement.dataset.rangePreset,preset);assert.strictEqual(d.activeElement,focused);assert.strictEqual(run('RANGE_PREVIEW'),preview);assert.equal(svg(),previewSvg);hasFocus();}
-   for(const k of ['data','look']){tab(k);w.dispatchEvent(new w.Event('resize'));await wait(40);assert.equal(active(),k);assert.equal(d.querySelectorAll('.trange-panel').length,0);assert($('#tPop').hidden);assert.equal(state(),raw);}
+  try{cell().click();key(cell(),'h');const raw=state(),focused=d.activeElement,preview=run('RANGE_PREVIEW'),previewSvg=svg();for(const width of [true,false,true,false]){mobile=width;const preset=d.activeElement.dataset.rangePreset;w.dispatchEvent(new w.Event('resize'));await wait(60);assert.equal(d.querySelectorAll('.trange-panel').length,1);assert.equal(d.querySelectorAll('[data-range-family]').length,4);assert.equal(d.querySelectorAll('[data-range-preset]').length,9);assert($('#tSecEmphasis').contains($('.trange-panel')));assert.equal($('#tPop').innerHTML,'');assert($('#tPop').hidden);assert.equal(d.activeElement.dataset.rangePreset,preset);assert.strictEqual(d.activeElement,focused);assert.strictEqual(run('RANGE_PREVIEW'),preview);assert.equal(svg(),previewSvg);hasFocus();}
+   for(const k of ['data','look','out']){tab(k);w.dispatchEvent(new w.Event('resize'));await wait(40);assert.equal(active(),k);assert.equal(d.querySelectorAll('.trange-panel').length,0);assert($('#tPop').hidden);assert.equal(state(),raw);}
   }finally{w.matchMedia=media;}
  });
  await test('Touch preview/apply/cancel/clear stay within Emphasis; committed styles survive manual tabs and undo',async()=>{
