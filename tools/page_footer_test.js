@@ -40,7 +40,7 @@ async function main(){
   click('#edBadge');$('.stage').click();assert($('#edPop').hidden);click('#bZoom');assert($('.stage').classList.contains('zoom'));assert.equal($('#bZoom').getAttribute('aria-pressed'),'true');click('#bZoom');assert(!$('.stage').classList.contains('zoom'));assert.equal(state(),before);
  });
  await test('Sidebar, search, hash, recipes, and used-component links reach the relocated title',async()=>{
-  assert.equal(d.querySelectorAll('#pTree details').length,9);click('#pTree a[data-k="kpi"]');assert($('#sTitle').textContent.startsWith('C1'));assert.equal(w.location.hash,'#/C1/kpi');
+  assert.equal(d.querySelectorAll('#pTree details:not([data-collection])').length,9);assert.equal(d.querySelectorAll('#pTree details[data-collection="recommended"]').length,1);click('#pTree a[data-k="kpi"]');assert($('#sTitle').textContent.startsWith('C1'));assert.equal(w.location.hash,'#/C1/kpi');
   const search=q=>{const el=$('#pSearch');el.value=q;el.dispatchEvent(new w.Event('input',{bubbles:true}));return [...d.querySelectorAll('#pRes a[data-i]')];};
   assert(search('VS').some(a=>a.textContent.includes('對比')));assert(search('指標').some(a=>a.textContent.includes('KPI')));const result=search('STAR').find(a=>+a.dataset.gi>=0&&a.textContent.startsWith('G4'));assert(result);result.click();assert.equal(w.__studio.key,'star');assert($('#eName').textContent);
   w.history.replaceState(null,'','#/G5/folio');w.dispatchEvent(new w.HashChangeEvent('hashchange'));await wait(40);assert.equal(w.__studio.key,'folio');assert($('#sTitle').textContent.startsWith('G5'));w.history.replaceState(null,'','#/Z9/nope');w.dispatchEvent(new w.HashChangeEvent('hashchange'));await wait(40);assert.equal(w.__studio.key,'catalog');

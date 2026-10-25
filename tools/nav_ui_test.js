@@ -6,7 +6,7 @@ const URL=process.argv[2]||'http://localhost:8765/studio.html';let fail=0;const 
  const errs=[];pg.on('pageerror',e=>errs.push(e.message));
  await pg.setViewport({width:1440,height:900});await pg.goto(URL,{waitUntil:'networkidle0'});await pg.evaluate(()=>localStorage.clear());await pg.goto(URL,{waitUntil:'networkidle0'});
  const st=()=>pg.evaluate(()=>({t:document.querySelector('#sTitle').innerText,h:location.hash,k:window.__studio.key}));
- const g=await pg.evaluate(()=>({d:document.querySelectorAll('#pTree details').length,a:document.querySelectorAll('#pTree a').length}));ck(`側欄 ${g.d} 組、${g.a} 頁`,g.d===9&&g.a>=40);
+ const g=await pg.evaluate(()=>({d:document.querySelectorAll('#pTree details:not([data-collection])').length,a:document.querySelectorAll('#pTree details:not([data-collection]) a').length,r:document.querySelectorAll('#pTree details[data-collection="recommended"] a').length}));ck(`側欄 ${g.d} 組、${g.a} 頁`,g.d===9&&g.a>=40&&g.r===12);
  let s=await st();ck('預設開在 00 總覽：'+s.t.split('\n')[0],s.k==='catalog'&&/^00/.test(s.t));
  ck('總覽頁有 A–G 入口',await pg.evaluate(()=>document.querySelectorAll('#sTitle .gocards a').length>=7));
  await pg.evaluate(()=>document.querySelector('#pTree a[data-k="kpi"]').click());await sl(400);s=await st();ck('點側欄 C1 → 標題「C1 … · NN/43」、hash '+s.h,/^C1 .*· \d\d\/\d+/.test(s.t)&&s.h==='#/C1/kpi');

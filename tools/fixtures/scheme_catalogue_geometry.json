@@ -1,0 +1,9 @@
+{
+  "baseCommit": "2e5c2696fa673663c44b1e690b3f9d4ca94b4ae1",
+  "description": "Original native catalogue geometry, item order, typography, corners, shadows and grouping; excludes paint/display text only.",
+  "scenarios": {
+    "S": "3d94ad967a95ec5570cd8b171f2393401af833292d6751f4460fcef6b36725e3",
+    "M": "931d4d9c1e1f2abe1635a450b6f03e4f378489537b047200e99c783466e3710c",
+    "L": "9517fcc256ac8c0b5a42749a401a2d7c912d955213005659b25fc231c35c1cb0"
+  }
+}
