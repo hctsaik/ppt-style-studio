@@ -9,7 +9,7 @@ const ROOT=path.resolve(__dirname,'..');let passed=0;
 function check(name,fn){fn();passed++;console.log('PASS '+name);}
 async function modelSuite(){
  const PptxGenJS=require('pptxgenjs'),JSZip=require('jszip');
- check('Stable A13 and A14 pages; all 70 existing catalog pages remain',()=>{assert.equal(D.SLIDES.length,72);assert.deepEqual(D.SLIDES.find(s=>s[0]==='iconcomponents'),['iconcomponents','Icon 元件','A13','Icon Components','A']);assert.equal(new Set(D.SLIDES.map(s=>s[0])).size,72);});
+ check('Stable A13 and A14 pages; all 72 prior catalog identities remain beside four scheme catalogs',()=>{assert.equal(D.SLIDES.length,76);assert.equal(D.SLIDES.filter(s=>!D.SCHEME_CATALOGUE_KEYS.includes(s[0])).length,72);assert.deepEqual(D.SLIDES.find(s=>s[0]==='iconcomponents'),['iconcomponents','Icon 元件','A13','Icon Components','A']);assert.equal(new Set(D.SLIDES.map(s=>s[0])).size,76);});
  for(const p of D.PRESETS){const m=D.buildModel(p,{only:['iconcomponents']}),s=m.slides[0];
   check(p.id+': 9 groups, no overlap, no warnings, native shapes only',()=>{assert.equal(m.slides.length,1);assert.equal(s.groups.length,9);assert.deepEqual(m.warns,[]);assert.deepEqual(O.overlaps(s),[]);assert.deepEqual(R.readOrder(s),[]);assert(s.items.every(i=>i.t!=='pic'));assert(s.items.filter(i=>i.ic).every(i=>i.kind==='custGeom'));assert(s.items.filter(i=>i.cx).every(i=>i.cx.a&&i.cx.b));});
   for(let gi=0;gi<s.groups.length;gi++){const g=s.groups[gi],items=s.items.slice(g.from,g.to+1),ix=items.findIndex(i=>i.ic),original=items[ix];assert(ix>=0);const labels={['iconcomponents:'+gi]:{[ix]:{from:original.ic.id,icon:'star'}}};
@@ -48,4 +48,4 @@ async function domSuite(){
   check('DOM harness has no uncaught page errors',()=>assert.deepEqual(errors,[]));
  }finally{dom.window.close();}
 }
-(async()=>{if(!process.argv.includes('--dom-only'))await modelSuite();await domSuite();console.log(`${passed} Icon Components checks passed (DOM logic, not browser visual certification).`);})().catch(e=>{console.error(e);process.exitCode=1;});
+(async()=>{if(!process.argv.includes('--dom-only'))await modelSuite();if(!process.argv.includes('--model-only'))await domSuite();console.log(`${passed} Icon Components checks passed (model/export and optional DOM logic, not browser visual certification).`);})().catch(e=>{console.error(e);process.exitCode=1;});

@@ -33,7 +33,8 @@ function assertPack(model,id,{geometry=true}={}){
   const w=s.W||model.W||D.W,h=s.H||model.H||D.H;
   assert(s.title.includes(D.ICONS.BY[id].zh));
   assert(s.items.some(i=>D.textOf(i)===`${String(si+1).padStart(2,'0')} / 02`),'Page footer is relative to the two-page pack');
-  assert(!s.items.some(i=>/\d+ \/ 72/.test(D.textOf(i))),'No catalog page count leaks into the pack');
+  const standardCount=D.SLIDES.filter(s=>!D.SCHEME_CATALOGUE_KEYS.includes(s[0])).length;
+  assert(!s.items.some(i=>new RegExp('[0-9]+ / ('+standardCount+'|'+D.SLIDES.length+')$').test(D.textOf(i))),'No standard or extended catalog page count leaks into the pack');
   assert.deepEqual(O.overlaps(s),[]);assert.deepEqual(R.readOrder(s),[]);
   assert(s.items.every(i=>i.t!=='pic'));
   s.items.forEach(i=>{if(i.t==='ln')return;assert(i.x>=-.01&&i.y>=-.01&&i.x+i.w<=w+.01&&i.y+i.h<=h+.01,`In bounds: ${s.key}/${i.name}`);});
@@ -90,7 +91,7 @@ async function modelSuite(){
   }
   check(`${p.id}: five selected icons × S/M/L preserve 40 real glyphs, 33 groups, paint and order`,()=>{});
  }
- check('135 icon/theme/size combinations leave presets and 72 catalog identities unchanged',()=>{assert.equal(matrix,135);assert.equal(JSON.stringify(D.PRESETS),presetsBefore);assert.equal(JSON.stringify(D.SLIDES),catalogBefore);assert.equal(D.SLIDES.length,72);});
+ check('135 icon/theme/size combinations leave presets and 76 catalog identities unchanged',()=>{assert.equal(matrix,135);assert.equal(JSON.stringify(D.PRESETS),presetsBefore);assert.equal(JSON.stringify(D.SLIDES),catalogBefore);assert.equal(D.SLIDES.length,76);});
  check('Every one of 521 library icons produces correct native geometry in all 40 pack slots',()=>{
   for(const ic of D.ICONS.LIST){const m=D.iconPackModel(D.PRESETS[0],ic.id);assert.equal(glyphs(m).length,40);glyphs(m).forEach(it=>assertGeometry(it,ic.id));const filename=D.iconPackFilename(ic.id);assert(filename.endsWith('.pptx'));assert(!/[\\/:*?"<>|\u0000-\u001f]/.test(filename));}
  });

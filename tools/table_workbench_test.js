@@ -130,9 +130,9 @@ async function browserSuite(options = {}) {
   await sleep(300);
   await run('Table-first workspace exposes exactly two preview-only zoom choices', async () => {
     await reset();
-    for (const id of ['tLStrip','tView','tArrow','tCleanV']) assert(el('#tIns').contains(el('#'+id)), id+' still occupies canvas space');
+    for (const id of ['tLStrip','tArrow']) assert(el('#tIns').contains(el('#'+id))); for (const id of ['tView','tCleanV']) assert(el('#tPreviewWorkspace').contains(el('#'+id)));
     assert(!visible(el('#tView')), 'Redundant full-slide/closeup controls remain visible');
-    assert([...document.querySelectorAll('.tzoom button')].map(e => e.textContent).join('|') === '顯示整個表格|原始尺寸 100%', 'Preview does not expose the requested two choices');
+    assert([...document.querySelectorAll('.tzoom button')].map(e => e.textContent).join('|') === '顯示整個表格|預覽 100%', 'Preview does not expose the requested two choices');
     assert(el('.tzoom [data-z="fit"]').getAttribute('aria-pressed') === 'true', 'Fit-all is not default');
     assert(!el('#tCanvas').querySelector('button,select,input'), 'Canvas contains settings or pagination');
     assert(!document.querySelector('.tinsTabs [data-t="hi"]'), 'Removed legacy hi tab remains');
@@ -203,6 +203,7 @@ async function browserSuite(options = {}) {
   });
   await run('Independent header and card controls preserve data and support undo / redo', async () => {
     await reset();
+    await click('#tLStrip [data-appearance="tbHeaderStyle"] button[data-v="normal"]'); await sleep(400);
     await click('#tLStrip [data-appearance="tbCardOn"] button[data-v="true"]'); await sleep(400);
     const before = JSON.stringify(state());
     await click('#tLStrip [data-appearance="tbHeaderStyle"] button[data-v="primary"]'); await sleep(400);
