@@ -1,4 +1,5 @@
-// Table sizing v2: physical PPT geometry, immutable typography and lossless data.
+// Table sizing v2: physical PPT geometry, stable requested typography and lossless data.
+// 45% may derive bounded effective typography; height choices never shrink text.
 // Model/OOXML verification only; not PowerPoint visual certification.
 const assert = require('node:assert/strict');
 const D = require('../deck.js');
@@ -160,7 +161,7 @@ function sourcePreserved(m, t) {
       sourcePreserved(m, t);
     }
     const t = { sizingFont: { ...font }, header: true, cw: [1, 1, 1, 1, 1, .6], rows: [['A', 'B', 'C', 'D', 'E', '狀態'], ['a', 'b', 'c', 'd', 'e', '進行中']] }, m = build(t, p2('45'));
-    assert(info(m).displayRows[1][5].includes('\n')); assert(native(m).cells[1][5].runs[0].t.includes('●')); assert(native(m).cells[1][5].bold); D.assertTableExportComplete(m);
+    assert.equal(info(m).displayRows[1][5].replace(/^●\s*/,'').replace(/\n/g,''),'進行中'); assert(native(m).cells[1][5].runs[0].t.includes('●')); assert(native(m).cells[1][5].bold); D.assertTableExportComplete(m);
   });
   await check('offline grapheme fallback does not require Intl.Segmenter or Array.at', () => {
     const fs = require('node:fs'), vm = require('node:vm'), sandbox = { module: { exports: {} }, require };

@@ -5,8 +5,8 @@
   "files": [
     {
       "path": "native-stylekit/theme/navy.pptx",
-      "bytes": 28887,
-      "sha256": "7da78d45f2a68f021d0b4bc86cc17617a2bda4e924f75cfcefa6195a542c181f",
+      "bytes": 31639,
+      "sha256": "338d6916b62e5ead45a89d4ef8933d847c2abadf09765ec5aa8f161ed935de85",
       "seedSha256": "bf43a3222d968cffc205c229f53a8c7786eacf2425b3f4d7d5c3658b93305180",
       "accents": [
         "1F4E79",
@@ -17,19 +17,20 @@
         "77A5D0"
       ],
       "highlights": [
-        "C9D5DF",
-        "CDDEED",
-        "D7D7D7",
-        "DFE6EC",
-        "C9CFDA",
-        "DEE9F4",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/navy.potx",
-      "bytes": 28896,
-      "sha256": "bf8130a7c28e6e6507dd337d4062a2def9cb52fd16047d409bb1b033c79f0cfb",
+      "bytes": 31648,
+      "sha256": "5d6dd6232e864f6a7027ba0a6ab5ba14713a5ef689aa0fa5cda21d8209ee4b99",
       "seedSha256": "bf43a3222d968cffc205c229f53a8c7786eacf2425b3f4d7d5c3658b93305180",
       "accents": [
         "1F4E79",
@@ -40,13 +41,14 @@
         "77A5D0"
       ],
       "highlights": [
-        "C9D5DF",
-        "CDDEED",
-        "D7D7D7",
-        "DFE6EC",
-        "C9CFDA",
-        "DEE9F4",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -63,19 +65,20 @@
         "77A5D0"
       ],
       "highlights": [
-        "C9D5DF",
-        "CDDEED",
-        "D7D7D7",
-        "DFE6EC",
-        "C9CFDA",
-        "DEE9F4",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/green.pptx",
-      "bytes": 28890,
-      "sha256": "bd194bc11873e8e63046bd21435855043fb9d21c5b1b226d4aa55a9df864b808",
+      "bytes": 31624,
+      "sha256": "2e8ea61294e021f7434c7bbb123c2784225aad0045e4b973ab631aadcfcf2260",
       "seedSha256": "e7a58ee6f03207a71b220a4270245112cce93a885d10f83d2dc24c96264b9ba0",
       "accents": [
         "2F5D50",
@@ -86,19 +89,20 @@
         "DCC373"
       ],
       "highlights": [
-        "CDD8D5",
-        "F2E9CB",
-        "D7D7D7",
-        "E1E8E6",
-        "CAD3D1",
-        "F7F1DD",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/green.potx",
-      "bytes": 28899,
-      "sha256": "4ced0d50043e7011e2ddfb68b14352959e29fa23c793926f135e77bb61ccbae8",
+      "bytes": 31633,
+      "sha256": "a56e3359c0c8ff0f4d9b7c45453ea2347a792e8130b0b3fb0ac6d44028961025",
       "seedSha256": "e7a58ee6f03207a71b220a4270245112cce93a885d10f83d2dc24c96264b9ba0",
       "accents": [
         "2F5D50",
@@ -109,13 +113,14 @@
         "DCC373"
       ],
       "highlights": [
-        "CDD8D5",
-        "F2E9CB",
-        "D7D7D7",
-        "E1E8E6",
-        "CAD3D1",
-        "F7F1DD",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -132,19 +137,20 @@
         "DCC373"
       ],
       "highlights": [
-        "CDD8D5",
-        "F2E9CB",
-        "D7D7D7",
-        "E1E8E6",
-        "CAD3D1",
-        "F7F1DD",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/frame.pptx",
-      "bytes": 28889,
-      "sha256": "a934b6b539e4bee88c3227aa44ab9deeddf016115c3d1ab39df150f4a2573fd3",
+      "bytes": 31623,
+      "sha256": "b79c852c9a7a4f8e5d5a8e78db858cc31652791c6908abf8c9a594ef945710ff",
       "seedSha256": "2f4de70956ffed03e9c9e87447c0124dc59cae41253510624eb059efc4bd12a9",
       "accents": [
         "2F4B6E",
@@ -155,19 +161,20 @@
         "9FB4CF"
       ],
       "highlights": [
-        "CDD4DC",
-        "DBE3ED",
-        "D7D7D7",
-        "E1E5EA",
-        "CAD0D6",
-        "E8EDF3",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/frame.potx",
-      "bytes": 28898,
-      "sha256": "37afea8de05abe6621e44b22533e1b6860be4ffaadda56618fcc6d5af3c53935",
+      "bytes": 31632,
+      "sha256": "ec3545fdc2d098f6dcd5214e6c78c4eec2f8760a5c809f697b543c936a949fae",
       "seedSha256": "2f4de70956ffed03e9c9e87447c0124dc59cae41253510624eb059efc4bd12a9",
       "accents": [
         "2F4B6E",
@@ -178,13 +185,14 @@
         "9FB4CF"
       ],
       "highlights": [
-        "CDD4DC",
-        "DBE3ED",
-        "D7D7D7",
-        "E1E5EA",
-        "CAD0D6",
-        "E8EDF3",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -201,19 +209,20 @@
         "9FB4CF"
       ],
       "highlights": [
-        "CDD4DC",
-        "DBE3ED",
-        "D7D7D7",
-        "E1E5EA",
-        "CAD0D6",
-        "E8EDF3",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/iceberg.pptx",
-      "bytes": 28861,
-      "sha256": "4dbe8ceaa61715b1b22f6848f4d174a128b99a8b8223f1ea5a63460133b409a4",
+      "bytes": 31611,
+      "sha256": "889d5dca73c8afd93435387c4f547fdf3aa577b8f36c2e53ba19834d98affb2f",
       "seedSha256": "776169c5d854ff15a90cf8e229898fc96d41eeab5cd1f54004be71be0fcd8df8",
       "accents": [
         "404040",
@@ -224,19 +233,20 @@
         "94BEE4"
       ],
       "highlights": [
-        "D1D1D1",
-        "D8E7F5",
-        "D7D7D7",
-        "E3E3E3",
-        "CBCBCB",
-        "E5EFF9",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/iceberg.potx",
-      "bytes": 28870,
-      "sha256": "215d674d921226383570abdb7ffbb15604494db9c65ac23e2ae63faeda12296a",
+      "bytes": 31620,
+      "sha256": "2801311ba558253e4bbbea52e912412d5bdc45b465a2ef9559aafa9f861a26a1",
       "seedSha256": "776169c5d854ff15a90cf8e229898fc96d41eeab5cd1f54004be71be0fcd8df8",
       "accents": [
         "404040",
@@ -247,13 +257,14 @@
         "94BEE4"
       ],
       "highlights": [
-        "D1D1D1",
-        "D8E7F5",
-        "D7D7D7",
-        "E3E3E3",
-        "CBCBCB",
-        "E5EFF9",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -270,19 +281,20 @@
         "94BEE4"
       ],
       "highlights": [
-        "D1D1D1",
-        "D8E7F5",
-        "D7D7D7",
-        "E3E3E3",
-        "CBCBCB",
-        "E5EFF9",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/wire.pptx",
-      "bytes": 28871,
-      "sha256": "b00d8a9ca649d8e8b9a787dcb4619a4118512a1499bec0d0d83f5c99af5cc5f4",
+      "bytes": 31614,
+      "sha256": "9140f52cc9fb1d73bd9e46b2973708db2ea6fe199c2f0b1210f56f56edbf91f5",
       "seedSha256": "a9478edcc9ebaf6fbb738674d982633c3feef3b6f8a2f29d1ead8b389a8ab80d",
       "accents": [
         "4F5BD5",
@@ -293,19 +305,20 @@
         "EB8F81"
       ],
       "highlights": [
-        "D5D8F5",
-        "F8D6D0",
-        "D7D7D7",
-        "E6E7F9",
-        "CCCCCC",
-        "FAE4E1",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/wire.potx",
-      "bytes": 28880,
-      "sha256": "edfb29f1f3094a524a282922e2b1366aac1d9854d85e63775e57fab39efa736f",
+      "bytes": 31623,
+      "sha256": "90f92cf442d10287de89f4e1a47c81e6b142012aaa95ff7c36109794e44db118",
       "seedSha256": "a9478edcc9ebaf6fbb738674d982633c3feef3b6f8a2f29d1ead8b389a8ab80d",
       "accents": [
         "4F5BD5",
@@ -316,13 +329,14 @@
         "EB8F81"
       ],
       "highlights": [
-        "D5D8F5",
-        "F8D6D0",
-        "D7D7D7",
-        "E6E7F9",
-        "CCCCCC",
-        "FAE4E1",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -339,19 +353,20 @@
         "EB8F81"
       ],
       "highlights": [
-        "D5D8F5",
-        "F8D6D0",
-        "D7D7D7",
-        "E6E7F9",
-        "CCCCCC",
-        "FAE4E1",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/wine.pptx",
-      "bytes": 28888,
-      "sha256": "2415d8a69e4788111f5dd83e884c3e75b3eb4085edfb356aa7c2721e544c9d22",
+      "bytes": 31630,
+      "sha256": "e47952efbeff13a9ac1e999da0eb4b744cbdbe9f7852b10c5d7a0fbf837b5f73",
       "seedSha256": "d1de5bad0fb5b7e0f3d715df0fd8057ee77809348ee70d7bc9c26c474455d55d",
       "accents": [
         "7A1F2B",
@@ -362,19 +377,20 @@
         "CCB592"
       ],
       "highlights": [
-        "DFC9CC",
-        "ECE4D7",
-        "D7D7D7",
-        "ECDFE1",
-        "D8C7C9",
-        "F3EDE5",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/wine.potx",
-      "bytes": 28897,
-      "sha256": "b27fcee280d0e83ae81ce74c16e7e35fcf80d6ed45f7b21b8a210976ee72e7a2",
+      "bytes": 31639,
+      "sha256": "d5ba383f67df8b11c80dffd0a6d80d94913e7c9e2c35b6f0e412aa91c14d8510",
       "seedSha256": "d1de5bad0fb5b7e0f3d715df0fd8057ee77809348ee70d7bc9c26c474455d55d",
       "accents": [
         "7A1F2B",
@@ -385,13 +401,14 @@
         "CCB592"
       ],
       "highlights": [
-        "DFC9CC",
-        "ECE4D7",
-        "D7D7D7",
-        "ECDFE1",
-        "D8C7C9",
-        "F3EDE5",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -408,19 +425,20 @@
         "CCB592"
       ],
       "highlights": [
-        "DFC9CC",
-        "ECE4D7",
-        "D7D7D7",
-        "ECDFE1",
-        "D8C7C9",
-        "F3EDE5",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/teal.pptx",
-      "bytes": 28878,
-      "sha256": "4335c9e52dabbbbeab0d5848038c988409cfb0825d5be0ba48ac1701b5aceff8",
+      "bytes": 31625,
+      "sha256": "533de42e1c2b451009fc8ee4d2d7bcb9f6f68eca06b145464e66d77abd94fd8f",
       "seedSha256": "ba769139abd8acc194eceeab4a85d8b926eae14c6139d9988a35ce0e7fababff",
       "accents": [
         "0F7C80",
@@ -431,19 +449,20 @@
         "F7C484"
       ],
       "highlights": [
-        "C5E0E1",
-        "FCE9D1",
-        "D7D7D7",
-        "DCECED",
-        "C4D8D9",
-        "FDF1E1",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/teal.potx",
-      "bytes": 28887,
-      "sha256": "dbb191262e35d9c0e564ff602e9b29fa21815f19db06fadab68f5910b77801f8",
+      "bytes": 31634,
+      "sha256": "08be9e2bf5bf467540c2b93b954f9b5612278ebf34c8ca61a1db1bcea8eb0286",
       "seedSha256": "ba769139abd8acc194eceeab4a85d8b926eae14c6139d9988a35ce0e7fababff",
       "accents": [
         "0F7C80",
@@ -454,13 +473,14 @@
         "F7C484"
       ],
       "highlights": [
-        "C5E0E1",
-        "FCE9D1",
-        "D7D7D7",
-        "DCECED",
-        "C4D8D9",
-        "FDF1E1",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -477,19 +497,20 @@
         "F7C484"
       ],
       "highlights": [
-        "C5E0E1",
-        "FCE9D1",
-        "D7D7D7",
-        "DCECED",
-        "C4D8D9",
-        "FDF1E1",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/charcoal.pptx",
-      "bytes": 28854,
-      "sha256": "0feedf065472e091d1af12d620bdb224a91d81a13abaf82b6ea52842f3ee125e",
+      "bytes": 31611,
+      "sha256": "954b00a35d0efdae9cd377b5d4a388cd51c374e480515771a17fb571784ea207",
       "seedSha256": "d1746ff0b11ac8e4b7e4d855edea37fbd89a2d4cb19d3fd329c48b4e55efda19",
       "accents": [
         "3A3A3A",
@@ -500,19 +521,20 @@
         "F5AC76"
       ],
       "highlights": [
-        "D0D0D0",
-        "FBE0CD",
-        "D7D7D7",
-        "E3E3E3",
-        "CCCCCC",
-        "FDEBDE",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/charcoal.potx",
-      "bytes": 28863,
-      "sha256": "ffa26251ce83ae933252126ae12252a96a81c140ce19e42cda02ba3c4a8e1adc",
+      "bytes": 31620,
+      "sha256": "df882fe55c05bd2c47655eb84d01c0a46799fb4e8bd404e6fc4e491429bf17c9",
       "seedSha256": "d1746ff0b11ac8e4b7e4d855edea37fbd89a2d4cb19d3fd329c48b4e55efda19",
       "accents": [
         "3A3A3A",
@@ -523,13 +545,14 @@
         "F5AC76"
       ],
       "highlights": [
-        "D0D0D0",
-        "FBE0CD",
-        "D7D7D7",
-        "E3E3E3",
-        "CCCCCC",
-        "FDEBDE",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -546,19 +569,20 @@
         "F5AC76"
       ],
       "highlights": [
-        "D0D0D0",
-        "FBE0CD",
-        "D7D7D7",
-        "E3E3E3",
-        "CCCCCC",
-        "FDEBDE",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/investor.pptx",
-      "bytes": 28866,
-      "sha256": "51e3c1a00a9a3b279aef32f189200c8eaf29b13bcffeef6407e1f068a33161db",
+      "bytes": 31623,
+      "sha256": "29c2b2b8e36df5ec784f96d49123a32fec0b3dc286f66c3910f828f09ebcf0de",
       "seedSha256": "d1c9621886cc544b22d6aeacbaf3897d64713b378b1b5cd52cecb262f2797338",
       "accents": [
         "E60012",
@@ -569,19 +593,20 @@
         "6D82D5"
       ],
       "highlights": [
-        "F9C2C6",
-        "C9D1F0",
-        "D7D7D7",
-        "FBDADD",
-        "EDC2C5",
-        "DCE1F5",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/investor.potx",
-      "bytes": 28875,
-      "sha256": "6d86dd84f10e82f45de923eb624852028c8722b6c96aa9000bdfdb1158523fbf",
+      "bytes": 31632,
+      "sha256": "d4f5582a0ef22b8390d2083dbae7f8ff190f823576c69e7e78c8c1a61e24c1e0",
       "seedSha256": "d1c9621886cc544b22d6aeacbaf3897d64713b378b1b5cd52cecb262f2797338",
       "accents": [
         "E60012",
@@ -592,13 +617,14 @@
         "6D82D5"
       ],
       "highlights": [
-        "F9C2C6",
-        "C9D1F0",
-        "D7D7D7",
-        "FBDADD",
-        "EDC2C5",
-        "DCE1F5",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -615,19 +641,20 @@
         "6D82D5"
       ],
       "highlights": [
-        "F9C2C6",
-        "C9D1F0",
-        "D7D7D7",
-        "FBDADD",
-        "EDC2C5",
-        "DCE1F5",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/forest.pptx",
-      "bytes": 28880,
-      "sha256": "9e69c005962d09844e6307c72e276d882c68c00d4bc57b13bfde0b50ab338a56",
+      "bytes": 31619,
+      "sha256": "5e00422248a24aad394ff86b883993074b634a595499426b553afc25de901fee",
       "seedSha256": "d7d747576da204d64d7663f9bf6e8f5687e20882f95acdc820db1cb27994ab41",
       "accents": [
         "1E4D45",
@@ -638,19 +665,20 @@
         "CCB592"
       ],
       "highlights": [
-        "C9D4D2",
-        "ECE4D7",
-        "D7D7D7",
-        "DFE5E4",
-        "C7D0CF",
-        "F3EDE5",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/forest.potx",
-      "bytes": 28889,
-      "sha256": "d19122b15b45599e69d0c87388b361da97496719f526c6e1c17899986c866c59",
+      "bytes": 31628,
+      "sha256": "981b4716c2d8f833b932bf817927b075e054146196b88f1325c53d701d879e31",
       "seedSha256": "d7d747576da204d64d7663f9bf6e8f5687e20882f95acdc820db1cb27994ab41",
       "accents": [
         "1E4D45",
@@ -661,13 +689,14 @@
         "CCB592"
       ],
       "highlights": [
-        "C9D4D2",
-        "ECE4D7",
-        "D7D7D7",
-        "DFE5E4",
-        "C7D0CF",
-        "F3EDE5",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -684,19 +713,20 @@
         "CCB592"
       ],
       "highlights": [
-        "C9D4D2",
-        "ECE4D7",
-        "D7D7D7",
-        "DFE5E4",
-        "C7D0CF",
-        "F3EDE5",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/burgundy.pptx",
-      "bytes": 28891,
-      "sha256": "f9a3529cb3ee548eb8e65079bd41841632f008252f3bd41205592bfe2d34e0f0",
+      "bytes": 31636,
+      "sha256": "515ae0b4387e4b6b452af25dabc76dd15be8c9c9442aa5d09823789557308580",
       "seedSha256": "40cb80163da501d7f206785a7b0fd14fb41f3e35d23d5088e7632ec17467d792",
       "accents": [
         "6B1E2E",
@@ -707,19 +737,20 @@
         "CFB289"
       ],
       "highlights": [
-        "DBC9CD",
-        "EDE3D4",
-        "D7D7D7",
-        "EADFE1",
-        "D6C7CA",
-        "F3EDE3",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/burgundy.potx",
-      "bytes": 28900,
-      "sha256": "7769beb691c34582c7ba1f21ec23409c3e72371f9967ae5bdfe87c65049c3acc",
+      "bytes": 31645,
+      "sha256": "85ab112539870d48d77d198c23a1c5612dd09574dc0879f5df751a41811c4577",
       "seedSha256": "40cb80163da501d7f206785a7b0fd14fb41f3e35d23d5088e7632ec17467d792",
       "accents": [
         "6B1E2E",
@@ -730,13 +761,14 @@
         "CFB289"
       ],
       "highlights": [
-        "DBC9CD",
-        "EDE3D4",
-        "D7D7D7",
-        "EADFE1",
-        "D6C7CA",
-        "F3EDE3",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -753,19 +785,20 @@
         "CFB289"
       ],
       "highlights": [
-        "DBC9CD",
-        "EDE3D4",
-        "D7D7D7",
-        "EADFE1",
-        "D6C7CA",
-        "F3EDE3",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/slate.pptx",
-      "bytes": 28869,
-      "sha256": "025365185cc37ca332d90eb49cad0380b34e8da3c9628b1fd2498849a0e7590a",
+      "bytes": 31607,
+      "sha256": "f753d80187d0806e8639ae0102cee992c2f159e0c64738097e6a5adf19b1243f",
       "seedSha256": "4e8446f19f806d01fa1ee9672e22d8a4233f1d489dbc5dfbcc02af758ac54ff5",
       "accents": [
         "333F48",
@@ -776,19 +809,20 @@
         "8DB3D1"
       ],
       "highlights": [
-        "CED1D3",
-        "D5E3EE",
-        "D7D7D7",
-        "E2E3E5",
-        "CBCECF",
-        "E4EDF4",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/slate.potx",
-      "bytes": 28878,
-      "sha256": "a401e0c0c674a2e3a4da696abc029e25af9d6a46ac54053596c115c9a4ba4f77",
+      "bytes": 31616,
+      "sha256": "b8f9f18965b66e5c1c362b51d9ce39e79098f7706331cc62d333ff2748004704",
       "seedSha256": "4e8446f19f806d01fa1ee9672e22d8a4233f1d489dbc5dfbcc02af758ac54ff5",
       "accents": [
         "333F48",
@@ -799,13 +833,14 @@
         "8DB3D1"
       ],
       "highlights": [
-        "CED1D3",
-        "D5E3EE",
-        "D7D7D7",
-        "E2E3E5",
-        "CBCECF",
-        "E4EDF4",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -822,19 +857,20 @@
         "8DB3D1"
       ],
       "highlights": [
-        "CED1D3",
-        "D5E3EE",
-        "D7D7D7",
-        "E2E3E5",
-        "CBCECF",
-        "E4EDF4",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/cobalt.pptx",
-      "bytes": 28863,
-      "sha256": "027ebb4ada4ef626f707d0dbd9b19510411180f0e7ee23054c7cf8e8a06599d7",
+      "bytes": 31604,
+      "sha256": "5d540f1b9e89a649aaa6aaf00a312f5b9a3413bee47c50d19abaffa5f19d389c",
       "seedSha256": "bdf7fc72070ee7cb47e6a23525928b00e9a203aac41b1d948dc12293998cbf17",
       "accents": [
         "0B5CAD",
@@ -845,19 +881,20 @@
         "E6AE75"
       ],
       "highlights": [
-        "C4D8EB",
-        "F6E1CC",
-        "D7D7D7",
-        "DCE7F3",
-        "C4D3E2",
-        "F9ECDE",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/theme/cobalt.potx",
-      "bytes": 28872,
-      "sha256": "32829d9cf512ac98c1dec4cf668aeef87b4bf69a56976a1ba388b01dd27f9a6f",
+      "bytes": 31613,
+      "sha256": "5e6ea3b5f58b4fb96a84b3053b3a0f93d996e318c5a2769c1083e788be7df51f",
       "seedSha256": "bdf7fc72070ee7cb47e6a23525928b00e9a203aac41b1d948dc12293998cbf17",
       "accents": [
         "0B5CAD",
@@ -868,13 +905,14 @@
         "E6AE75"
       ],
       "highlights": [
-        "C4D8EB",
-        "F6E1CC",
-        "D7D7D7",
-        "DCE7F3",
-        "C4D3E2",
-        "F9ECDE",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -891,19 +929,20 @@
         "E6AE75"
       ],
       "highlights": [
-        "C4D8EB",
-        "F6E1CC",
-        "D7D7D7",
-        "DCE7F3",
-        "C4D3E2",
-        "F9ECDE",
-        "FFFFFF"
+        "F6D8DB",
+        "F9F0D4",
+        "7C9CC3",
+        "D4E6DF",
+        "E0E2E6",
+        "E5DDF1",
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/navy.pptx",
-      "bytes": 28955,
-      "sha256": "1c7d3dbb82cb7d9735d050dd200f2893e25db043b1ba9a4724edcf4214cf06d2",
+      "bytes": 31687,
+      "sha256": "ce31f43220e60ea1ea41f88badc94c7d918cb3898ec3b676752a89163dc83256",
       "seedSha256": "bf43a3222d968cffc205c229f53a8c7786eacf2425b3f4d7d5c3658b93305180",
       "accents": [
         "D95D68",
@@ -916,17 +955,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/navy.potx",
-      "bytes": 28964,
-      "sha256": "64cc4a41104824d8cd43036865842278bb22a790b14c4ab9ab86271db2a19898",
+      "bytes": 31696,
+      "sha256": "8366f31dc79d41f325860a07ab87e583e95ead6a21879b7d8d8e114895c5b87e",
       "seedSha256": "bf43a3222d968cffc205c229f53a8c7786eacf2425b3f4d7d5c3658b93305180",
       "accents": [
         "D95D68",
@@ -939,11 +979,12 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -962,17 +1003,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/green.pptx",
-      "bytes": 28943,
-      "sha256": "a87d82fa7064bbfed3f2ab06e4ba70178cf94263310a0ddeddbdabf617352a95",
+      "bytes": 31675,
+      "sha256": "b102fe97d0e66072a56c6f0ef0b72ee917f02bad85728b8872ce8fee7aabd48b",
       "seedSha256": "e7a58ee6f03207a71b220a4270245112cce93a885d10f83d2dc24c96264b9ba0",
       "accents": [
         "D95D68",
@@ -985,17 +1027,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/green.potx",
-      "bytes": 28952,
-      "sha256": "e5561637b12ec0b2b0fd15933ea5bace2ed8766965a36ceb72da552af31337dd",
+      "bytes": 31684,
+      "sha256": "722567e88759177950e15787a2f341beb84deae56ede089ff619f305140ed746",
       "seedSha256": "e7a58ee6f03207a71b220a4270245112cce93a885d10f83d2dc24c96264b9ba0",
       "accents": [
         "D95D68",
@@ -1008,11 +1051,12 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -1031,17 +1075,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/frame.pptx",
-      "bytes": 28932,
-      "sha256": "82cefd05d0b3b51b439a32d542f11f1e6338f5da6c3d7e9848216f7fd8dbf556",
+      "bytes": 31666,
+      "sha256": "0f4a18f49351da6ee8756bf66b7f12a09c2546d79becd875bed8d98855f3e3b1",
       "seedSha256": "2f4de70956ffed03e9c9e87447c0124dc59cae41253510624eb059efc4bd12a9",
       "accents": [
         "D95D68",
@@ -1054,17 +1099,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/frame.potx",
-      "bytes": 28941,
-      "sha256": "2286400ca136760b65bc2ec30a48abbb86ece39e6cf3b59f72f25b80488054b7",
+      "bytes": 31675,
+      "sha256": "91f8787d5fca4a7303d77b150dbd68b1a4eb1c7c973831e2eeaa6c100a8e30a2",
       "seedSha256": "2f4de70956ffed03e9c9e87447c0124dc59cae41253510624eb059efc4bd12a9",
       "accents": [
         "D95D68",
@@ -1077,11 +1123,12 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -1100,17 +1147,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/iceberg.pptx",
-      "bytes": 28943,
-      "sha256": "9e1eb0db4d61aa0a67d15ebfa68c96cede02188ee2999f7f9caa75b4fa14ca3e",
+      "bytes": 31676,
+      "sha256": "8342b16d178de4d75ff6c264569d8de22f9d9174f43237d92ff4cf00c5f7268c",
       "seedSha256": "776169c5d854ff15a90cf8e229898fc96d41eeab5cd1f54004be71be0fcd8df8",
       "accents": [
         "D95D68",
@@ -1123,17 +1171,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/iceberg.potx",
-      "bytes": 28952,
-      "sha256": "4936876c983233928bd9fdf192eb4cf0ea876b1ac349738ad490171371960ee4",
+      "bytes": 31685,
+      "sha256": "5a18866f031b75dcd390eef44a16b309aebda472df2758d3ddca20f3ba290b9b",
       "seedSha256": "776169c5d854ff15a90cf8e229898fc96d41eeab5cd1f54004be71be0fcd8df8",
       "accents": [
         "D95D68",
@@ -1146,11 +1195,12 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -1169,17 +1219,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/wire.pptx",
-      "bytes": 28934,
-      "sha256": "dd07667448cd0dae5960a56c914047ca1be4169b9c5444a5f41e5e5086f3290b",
+      "bytes": 31667,
+      "sha256": "76e26b739ebf5e56693520bb213411fcd88194b0654f6f13248b50846a34d1d2",
       "seedSha256": "a9478edcc9ebaf6fbb738674d982633c3feef3b6f8a2f29d1ead8b389a8ab80d",
       "accents": [
         "D95D68",
@@ -1192,17 +1243,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/wire.potx",
-      "bytes": 28943,
-      "sha256": "46dce20096b5b86f939a74ee8b50e18e79ccaa827fdc5246c5f699521f88ae51",
+      "bytes": 31676,
+      "sha256": "30a471a6431a65f15f09554e95472019bbbcedb2bb402e583bac1f043aeed9aa",
       "seedSha256": "a9478edcc9ebaf6fbb738674d982633c3feef3b6f8a2f29d1ead8b389a8ab80d",
       "accents": [
         "D95D68",
@@ -1215,11 +1267,12 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -1238,17 +1291,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/wine.pptx",
-      "bytes": 28940,
-      "sha256": "c86c54c06f1bb814df4ed13309dbfe24f95442ba4dd2a32309619780b432d3f3",
+      "bytes": 31671,
+      "sha256": "5adfd05f3490f5e196cee17f64ed0aafe6aa2c5a8e067010811b8f8510900cfe",
       "seedSha256": "d1de5bad0fb5b7e0f3d715df0fd8057ee77809348ee70d7bc9c26c474455d55d",
       "accents": [
         "D95D68",
@@ -1261,17 +1315,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/wine.potx",
-      "bytes": 28949,
-      "sha256": "98e4bf15ee59df363f4b1f69429ed809f129c89b5865ded6df12748024435a77",
+      "bytes": 31680,
+      "sha256": "3a6b3197a9c9d463dcfe70c34fb390ab13810e2cf5594854f1b448aef9390d5a",
       "seedSha256": "d1de5bad0fb5b7e0f3d715df0fd8057ee77809348ee70d7bc9c26c474455d55d",
       "accents": [
         "D95D68",
@@ -1284,11 +1339,12 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -1307,17 +1363,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/teal.pptx",
-      "bytes": 28934,
-      "sha256": "99fb8e57fb0cda86b5f94db701299b179638b875132c0afc4e4c496e98dc65b3",
+      "bytes": 31667,
+      "sha256": "90ff6d2096178defaa0e30737be723392f1cbb57de91504e379d4c3a285d7a5d",
       "seedSha256": "ba769139abd8acc194eceeab4a85d8b926eae14c6139d9988a35ce0e7fababff",
       "accents": [
         "D95D68",
@@ -1330,17 +1387,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/teal.potx",
-      "bytes": 28943,
-      "sha256": "0aedb40a94aaeac6ac4f0d881f5a71691182d4083c1615286096c291507f5dcd",
+      "bytes": 31676,
+      "sha256": "c7e64ad45346265146fc705e51c590edc3ee450946b79e863f9f90c8c8eb7981",
       "seedSha256": "ba769139abd8acc194eceeab4a85d8b926eae14c6139d9988a35ce0e7fababff",
       "accents": [
         "D95D68",
@@ -1353,11 +1411,12 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -1376,17 +1435,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/charcoal.pptx",
-      "bytes": 28936,
-      "sha256": "f53c28871d3ac52cdf1707e2825b7b6644b37b0abcabb9dae42df7968cb335d9",
+      "bytes": 31670,
+      "sha256": "869ad28b4de8302ce7aa384455b06cad89183f976597ffa76424f7f3cf2ca275",
       "seedSha256": "d1746ff0b11ac8e4b7e4d855edea37fbd89a2d4cb19d3fd329c48b4e55efda19",
       "accents": [
         "D95D68",
@@ -1399,17 +1459,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/charcoal.potx",
-      "bytes": 28945,
-      "sha256": "4d61be86d008670aec19baf2b3de3975776323065b4491c5e1e71f49c60a5df2",
+      "bytes": 31679,
+      "sha256": "3435a6bbf078260e7821b02a7b9c68f400b1be6d80f21615bcf2e203c93c062a",
       "seedSha256": "d1746ff0b11ac8e4b7e4d855edea37fbd89a2d4cb19d3fd329c48b4e55efda19",
       "accents": [
         "D95D68",
@@ -1422,11 +1483,12 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -1445,17 +1507,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/investor.pptx",
-      "bytes": 28936,
-      "sha256": "259f7d66e88ed8b4502b29eff5c74249d0b4b11f64e7d81e9e5e54317a40ecb3",
+      "bytes": 31673,
+      "sha256": "f641e9806a8a3babdeae8d55d74d013c87508593457d743bee46b296225bc243",
       "seedSha256": "d1c9621886cc544b22d6aeacbaf3897d64713b378b1b5cd52cecb262f2797338",
       "accents": [
         "D95D68",
@@ -1468,17 +1531,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/investor.potx",
-      "bytes": 28945,
-      "sha256": "9f9026e9c5deb943f70c3135c770b2416c3a656c2f693abe4fbe691e6e04d87d",
+      "bytes": 31682,
+      "sha256": "7bf8e619fd0482bab132ab37a28988f49935407492ba094439ff2e1ffc52fb7b",
       "seedSha256": "d1c9621886cc544b22d6aeacbaf3897d64713b378b1b5cd52cecb262f2797338",
       "accents": [
         "D95D68",
@@ -1491,11 +1555,12 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -1514,17 +1579,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/forest.pptx",
-      "bytes": 28939,
-      "sha256": "4002b60aa763fd93e6aa5b743712540f0d68f95ee167032055fcc876dd704c88",
+      "bytes": 31671,
+      "sha256": "160fc4457613057996a4aa732342375006f092fdd56bcf115c14893b592653ef",
       "seedSha256": "d7d747576da204d64d7663f9bf6e8f5687e20882f95acdc820db1cb27994ab41",
       "accents": [
         "D95D68",
@@ -1537,17 +1603,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/forest.potx",
-      "bytes": 28948,
-      "sha256": "25bbb70a69c1b8a9bbf4bd7222fdbb2acc0885f21931d4fe6fc018b596580eb6",
+      "bytes": 31680,
+      "sha256": "10a7a8fa36cbc84ca14230a7c8a0b200e88a5b70ca68d6ea9ee5f15d63874b4c",
       "seedSha256": "d7d747576da204d64d7663f9bf6e8f5687e20882f95acdc820db1cb27994ab41",
       "accents": [
         "D95D68",
@@ -1560,11 +1627,12 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -1583,17 +1651,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/burgundy.pptx",
-      "bytes": 28942,
-      "sha256": "825e46dff862c2f17dccc3fd5ca7f234f6b9aaef53f10ba4cf8138bae96dc64c",
+      "bytes": 31675,
+      "sha256": "8187e065f17d54eea72e12447a23f7d772ef2712ba2a64b34571f15ff6fb585c",
       "seedSha256": "40cb80163da501d7f206785a7b0fd14fb41f3e35d23d5088e7632ec17467d792",
       "accents": [
         "D95D68",
@@ -1606,17 +1675,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/burgundy.potx",
-      "bytes": 28951,
-      "sha256": "835594e56221fff1c23d7d0132337c63ab2c95431a86618a5ecd64a4c49d5252",
+      "bytes": 31684,
+      "sha256": "2d21b05c2698b3bbc021556d705509dc70743ff60e76d6a7805c0fcbff14a70d",
       "seedSha256": "40cb80163da501d7f206785a7b0fd14fb41f3e35d23d5088e7632ec17467d792",
       "accents": [
         "D95D68",
@@ -1629,11 +1699,12 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -1652,17 +1723,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/slate.pptx",
-      "bytes": 28925,
-      "sha256": "e9ad4b7a77c47bd00a97a91dddf2cbf190f08b6db1894c323e3a2035aeefae11",
+      "bytes": 31659,
+      "sha256": "c24e38f4159673a4884256b93dd09e06bfbbe1a4a3c42332050764ed322ba6ba",
       "seedSha256": "4e8446f19f806d01fa1ee9672e22d8a4233f1d489dbc5dfbcc02af758ac54ff5",
       "accents": [
         "D95D68",
@@ -1675,17 +1747,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/slate.potx",
-      "bytes": 28934,
-      "sha256": "6f530c356fb6a935008604eb26be3604e2edfa7b6c4c6871bff14098822cca90",
+      "bytes": 31668,
+      "sha256": "5920560160a29986b3daf0cc9dafddd95261a57c0cbd23de8a7a6c5f3b207793",
       "seedSha256": "4e8446f19f806d01fa1ee9672e22d8a4233f1d489dbc5dfbcc02af758ac54ff5",
       "accents": [
         "D95D68",
@@ -1698,11 +1771,12 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -1721,17 +1795,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/cobalt.pptx",
-      "bytes": 28925,
-      "sha256": "1a272bfdeb32029375ec705ac60376a482ee1972d29d79614264667e1fbb8bc8",
+      "bytes": 31657,
+      "sha256": "6f40ae8e55fdab0b5401c97d0debd25572ff326e03f9b7b39b11bc827bae1cfe",
       "seedSha256": "bdf7fc72070ee7cb47e6a23525928b00e9a203aac41b1d948dc12293998cbf17",
       "accents": [
         "D95D68",
@@ -1744,17 +1819,18 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
       "path": "native-stylekit/common/cobalt.potx",
-      "bytes": 28934,
-      "sha256": "7d2a30030706b0dc7d6321cc9e1c15864ec301e8d709b21ac12ce9f3cce0a5de",
+      "bytes": 31666,
+      "sha256": "13b568bbc03bb134f785ff988413918adfe2b88ee641630fccc30f5a90a370e1",
       "seedSha256": "bdf7fc72070ee7cb47e6a23525928b00e9a203aac41b1d948dc12293998cbf17",
       "accents": [
         "D95D68",
@@ -1767,11 +1843,12 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     },
     {
@@ -1790,11 +1867,12 @@
       "highlights": [
         "F6D8DB",
         "F9F0D4",
-        "D5E1F3",
+        "7C9CC3",
         "D4E6DF",
         "E0E2E6",
         "E5DDF1",
-        "FFFFFF"
+        "595959",
+        "1F3864"
       ]
     }
   ]

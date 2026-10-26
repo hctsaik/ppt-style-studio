@@ -1921,8 +1921,8 @@ function userTable(T,k){if(tableSizingOf(st).version===2)return userTableSized(T
    reset();userTable0(T,k,b);const t=first.table;
    if(!t||t.pageCount>1||!t.exportComplete||t.tW>CW+.01||first.h>H+.01||t.fs>FCAP+.01||t.orphans.length>prev.orphans.length){reset();userTable0(T,k,best);break;}best=b;}
   first.table.boost=best;cur=first;}
-// Resolve readable typography from the unchanged default auto/optimal layout first.
-// Width/height choices then reflow that typography; reducing height cannot shrink type.
+// Resolve requested typography from the unchanged default auto/optimal layout.
+// 45% may derive bounded effective type; reducing height cannot shrink type.
 function userTableSized(T){const first=cur,slideStart=slides.indexOf(first),n0=first.items.length,w0=warns.length;
  const reset=()=>{slides.splice(slideStart+1);cur=first;cur.items.length=n0;warns.length=w0;delete cur.table;};
  const savedFont=tableSizingFontOf(T.sizingFont);if(savedFont){userTable0(T,savedFont.scale/savedFont.autoBoost,savedFont.autoBoost,false,savedFont);if(first.table)first.table.boost=savedFont.autoBoost;return;}
@@ -1978,7 +1978,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
   // Cell padding belongs to the spacing control, not to a legacy look. Apply
   // the same real inset to the first column, including its header. Explicit
   // "none" remains zero; card/header/grid paint must never override spacing.
-  const PADM={none:0,s:.5,m:1,l:1.7}[st.tbPad]??1;const padH=dn.pad*k*PADM;
+  const PADM={none:0,s:.5,m:1,l:1.7}[st.tbPad]??1;let padH=dn.pad*k*PADM;
   const ST={good:GOOD,prog:G.t2,risk:BAD,mark:P,weak:G.mute};
   const bold=new Set((Array.isArray(T.bold)?T.bold:AU.key).map(Number));
   const keySet=new Set(AU.key);if(Array.isArray(T.bold))T.bold.forEach(r=>keySet.add(+r));
@@ -2005,7 +2005,8 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
   const measureW=(t,size,b)=>Math.max(...String(t).split('\n').map(l=>tw(l,size)*(b?1.08:1)));
   const padOf=c=>padH+padH;   /* 欄寬與每欄實際內距一致，且不隨外觀改變 */
   // 中英混排寬度（含 PowerPoint／LibreOffice 的中英自動間距）
-  const mw=(l,size,b)=>{l=String(l);const tr=st.tbTight?0:(l.match(/[\u3400-\u9fff][A-Za-z0-9]|[A-Za-z0-9][\u3400-\u9fff]/g)||[]).length;const mx=/[\u3400-\u9fff]/.test(l)&&/[A-Za-z0-9]/.test(l)?1.15:1.06;return tw(l,size)*(b?1.08:1)*mx+tr*size*.25/72;};
+  const widthMemo=new Map();
+  const mw=(l,size,b)=>{l=String(l);const key=size+':'+!!b+':'+l;if(widthMemo.has(key))return widthMemo.get(key);const tr=st.tbTight?0:(l.match(/[\u3400-\u9fff][A-Za-z0-9]|[A-Za-z0-9][\u3400-\u9fff]/g)||[]).length;const mx=/[\u3400-\u9fff]/.test(l)&&/[A-Za-z0-9]/.test(l)?1.15:1.06;const value=tw(l,size)*(b?1.08:1)*mx+tr*size*.25/72;if(l.length<=2048&&widthMemo.size<50000)widthMemo.set(key,value);return value;};
   // 語意斷行：優先在 ：/:/空白/（ 前/中英交界 斷；每行都放得下、不留 1–2 字孤行
   const semBreak=(t,size,b,av,dp=0)=>{t=String(t);if(/\n/.test(t)||mw(t,size,b)<=av||dp>8||t.length>160)return t;const L=fixedWidth?tableGraphemes(t):[...t];const vis=s=>s.replace(/\s/g,'').length;
    const cands=[];for(let i=1;i<L.length;i++){const a=L[i-1],z=L[i];let sc=0;if(/[：:；;，,、]/.test(a))sc=3;else if(/\s/.test(a)||/\s/.test(z))sc=2.5;else if(/[（(]/.test(z))sc=2.8;else if(/[)）]/.test(a))sc=2.2;else if(/[\u3400-\u9fff]/.test(a)!==/[\u3400-\u9fff]/.test(z)&&!/[\-./%]/.test(a+z))sc=1.6;else if(/[\u3400-\u9fff]/.test(a)&&/[\u3400-\u9fff]/.test(z))sc=.5;if(sc)cands.push({i,sc});}
@@ -2017,6 +2018,51 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
    for(let i=1;i<L.length;i++){const a=L[i-1],z=L[i];let sc=0;if(/[：:；;，,、]/.test(a))sc=3;else if(/[（(]/.test(z))sc=2.8;else if(/\s/.test(a)||/\s/.test(z))sc=2.5;else if(/[)）]/.test(a))sc=2.2;else if(/[\u3400-\u9fff]/.test(a)!==/[\u3400-\u9fff]/.test(z)&&!/[\-./%]/.test(a+z))sc=1.6;else if(/[\u3400-\u9fff]/.test(a)&&/[\u3400-\u9fff]/.test(z))sc=.5;if(!sc)continue;
     const p1=L.slice(0,i).join('').replace(/\s+$/,''),p2=L.slice(i).join('').replace(/^\s+/,'');if(vis(p1)<2||vis(p2)<(sc>=2.2?2:3)&&vis(t)>4)continue;const w=Math.max(mw(p1,size,b),mw(p2,size,b));if(w>full*.85)continue;const s=-sc+w/full*1.2;if(!best||s<best.s)best={s,w};}
    return best?best.w+.005:full;};
+  // Only the explicit half-width layout adapts typography. Its source snapshot
+  // stays unchanged, so returning to 90%/auto restores the requested settings.
+  const narrowFit=fixedWidth&&sizing.widthMode==='45';
+  const requestedFit={bodyPt:fs,headerPt:hfs,paddingPt:padH};
+  let widthFit=null,readableMin=null,narrowColumns=null;
+  const tokenMemo=new Map();
+  const wordTokens=text=>{text=String(text);if(tokenMemo.has(text))return tokenMemo.get(text);const tokens=[];let word='';for(const glyph of tableGraphemes(text)){if(/^[A-Za-z0-9$@._:%,+]$/.test(glyph))word+=glyph;else{if(word){tokens.push(word);word='';}if(/^[、，。；：）)\]！？\-]$/.test(glyph)&&tokens.length)tokens[tokens.length-1]+=glyph;else tokens.push(glyph);}}if(word)tokens.push(word);tokenMemo.set(text,tokens);return tokens;};
+  const readableWidth=(text,size,b,stub)=>{let width=0;const count=stub?4:3;
+   for(const line of String(text).split('\n')){
+    const chunks=[];let cjk='';const flush=()=>{if(cjk){chunks.push(cjk);cjk='';}};for(const token of wordTokens(line)){if(/^[\u3400-\u9fff\uff00-\uffef]$/.test(token)){cjk+=token;if(tableGraphemes(cjk).length===count)flush();}else{flush();chunks.push(token);}}flush();
+    for(const chunk of chunks){const glyphs=tableGraphemes(chunk),part=glyphs.length>12?glyphs.slice(0,8).join(''):chunk;width=Math.max(width,mw(part,size,b));}}
+   return width;};
+  const narrowMinimum=()=>Array.from({length:nC},(_,c)=>{let width=0;rows.forEach((row,r)=>{const text=String(row[c]||''),size=r<h0?hfs:fs,b=layoutBold(r,c,text);
+    const value=r>=h0&&AU.numC[c]||tParts(text)?text.split('\n').reduce((w,line)=>Math.max(w,mw(line,size,b)),0):readableWidth(text,size,b,c===0||r<h0);
+    const dot=AU.statC[c]&&r>=h0&&statusOf(src[r][c])?.14*k:0;width=Math.max(width,value+dot);});return Math.max(.45,width+padOf(c)/72+.05);});
+  const narrowLayout=minimum=>{const preferred=Array.from({length:nC},(_,c)=>Math.max(...rows.map((row,r)=>measureW(row[c],r<h0?hfs:fs,layoutBold(r,c,row[c]))))+padOf(c)/72+.05);
+   const manual=Array.isArray(T.cw)&&T.cw.length===nC&&T.cw.every(v=>Number.isFinite(+v)&&+v>0&&+v<=224)?T.cw.map(v=>+v*k):null;
+   const hasStub=nC>1&&!AU.numC[0]&&rows.slice(h0).some(row=>/[A-Za-z\u3400-\u9fff]/.test(row[0]));
+   const cache=new Map(),grade=widths=>{let total=0,max=0,stubLines=0;rows.forEach((row,r)=>{let height=0;row.forEach((text,c)=>{const key=c+':'+r+':'+widths[c].toFixed(7);let lines=cache.get(key);if(lines==null){const size=r<h0?hfs:fs,b=layoutBold(r,c,text),av=Math.max(.01,widths[c]-padOf(c)/72-.03-(AU.statC[c]&&r>=h0&&statusOf(src[r][c])?.14*k:0));lines=(r>=h0&&AU.numC[c]||tParts(text)?String(text):readableLines(text,size,b,av)).split('\n').length;cache.set(key,lines);}height=Math.max(height,lines*(r<h0?hfs:fs));if(hasStub&&c===0&&r>=h0&&String(text).length<=80)stubLines=Math.max(stubLines,lines);});total+=height;max=Math.max(max,height);});return{score:total+max*2,stubLines};};
+   let widths=tableFitColumns(manual||preferred,minimum,fixedTarget),rating=grade(widths);
+   // Keep manual feasible proportions. For automatic widths, a bounded exchange
+   // reduces complete row heights instead of rewarding every long cell equally.
+   if(!manual&&nC<=12&&rows.length<=40&&rows.reduce((n,row)=>n+row.join('').length,0)<=20000){
+    for(const weights of [Array(nC).fill(1),preferred.map(Math.sqrt)]){const trial=tableFitColumns(weights,minimum,fixedTarget),q=grade(trial);if(q.score<rating.score-.01){widths=trial;rating=q;}}
+    const step=2/72;for(let pass=0;pass<24;pass++){let best=null;for(let from=0;from<nC;from++){if(widths[from]-minimum[from]<step-1e-7)continue;for(let to=0;to<nC;to++){if(to===from)continue;const trial=widths.slice();trial[from]-=step;trial[to]+=step;const q=grade(trial);if(q.score<rating.score-.01&&(!best||q.score<best.rating.score-.01))best={widths:trial,rating:q};}}if(!best)break;({widths,rating}=best);}}
+   return{widths,rating};};
+  if(narrowFit){
+   // Padding is the first concession. Preserve at least 4pt where the original
+   // padding permits it, and keep native top/bottom margins at their safe 1pt.
+   const rowLower=rows.map((row,r)=>Math.max(...row.map(text=>String(text).split('\n').length))*(r<h0?hfs:fs)),lowerScore=rowLower.reduce((a,b)=>a+b,0)+2*Math.max(...rowLower);
+   const pads=[padH,...[7,5,4].filter(v=>v<padH-1e-7)];let chosen=null,settled=false;
+   const candidate=()=>{const minimum=narrowMinimum();if(minimum.reduce((a,b)=>a+b,0)>fixedTarget+1e-7)return false;const layout=narrowLayout(minimum),trial={fs,hfs,padH,minimum,...layout},readable=trial.rating.stubLines<=6;
+    if(!chosen||(readable&&chosen.rating.stubLines>6)||(readable===(chosen.rating.stubLines<=6)&&trial.rating.score<chosen.rating.score-.01))chosen=trial;
+    return readable;};
+   // A short stub alone is not enough: compare complete-row wrapping at every
+   // padding. Strict score improvements keep the larger padding on ties. Stop
+   // early only at the raw explicit-line lower bound, which cannot improve.
+   for(const pad of pads){padH=pad;if(candidate())settled=true;if(settled&&chosen.rating.score<=lowerScore+.01)break;}
+   if(!settled){const minimumBody=Math.min(requestedFit.bodyPt,Math.max(12,requestedFit.bodyPt*.8)),sizes=[];
+    for(let pt=requestedFit.bodyPt-.5;pt>minimumBody+1e-7;pt-=.5)sizes.push(pt);if(minimumBody<requestedFit.bodyPt)sizes.push(minimumBody);
+    for(const pt of sizes){fs=pt;hfs=Math.max(Math.min(10,requestedFit.headerPt),requestedFit.headerPt*pt/requestedFit.bodyPt);if(candidate())break;}}
+   if(chosen){({fs,hfs,padH}=chosen);readableMin=chosen.minimum;narrowColumns=chosen.widths;}
+   else{fs=requestedFit.bodyPt;hfs=requestedFit.headerPt;padH=requestedFit.paddingPt;readableMin=narrowMinimum();}
+   widthFit={mode:'content-aware',applied:!!chosen,adjusted:Math.abs(fs-requestedFit.bodyPt)>1e-7||Math.abs(padH-requestedFit.paddingPt)>1e-7,requested:{...requestedFit},effective:{bodyPt:fs,headerPt:hfs,paddingPt:padH},fontFloorPt:Math.min(requestedFit.bodyPt,Math.max(12,requestedFit.bodyPt*.8)),...(chosen?{stubLines:chosen.rating.stubLines}:{})};
+  }
   let colW=Array.from({length:nC},(_,c)=>{const body=Math.max(0,...rows.map((r,ri)=>ri<h0||AU.section[ri]&&c===0?0:Math.max(...String(r[c]).split('\n').map(l=>mw(l,fs,bold.has(ri)||keySet.has(ri)||rangeBoldAt(ri,c))))+(AU.statC[c]&&ri>=h0&&statusOf(r[c])?.14*k:0)));
    // 表頭可以換行（最多約 3 行）：長中文表頭不把數字欄撐寬
    const hw=h0?measureW(rows[0][c],hfs,1):0;const m=Math.max(body,/[\u3400-\u9fff]/.test(rows[0][c]||'')?Math.min(hw,Math.max(body,hw/3,.7*k)):hw);
@@ -2033,7 +2079,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
   const cap=(wMode==='fill'?.45:.36)*target;
   const uw=Array.isArray(T.cw)&&T.cw.length===nC&&T.cw.every(v=>Number.isFinite(+v)&&(sizing.version===2?+v>0&&+v<=224:+v>.2&&+v<12))?T.cw.map(v=>+v*k):null;
   // 最小欄寬＝欄內最長「不可斷」字串（英數連續字；中文可逐字斷）＋邊距
-  const colMin=Array.from({length:nC},(_,c)=>{let m=!fixedWidth&&h0&&rows[0][c]?sem2(rows[0][c],hfs,1):0;rows.forEach((r,ri)=>{const b=layoutBold(ri,c,r[c]),text=String(r[c]||'');
+  const colMin=readableMin||Array.from({length:nC},(_,c)=>{let m=!fixedWidth&&h0&&rows[0][c]?sem2(rows[0][c],hfs,1):0;rows.forEach((r,ri)=>{const b=layoutBold(ri,c,r[c]),text=String(r[c]||'');
    if(fixedWidth){const atoms=ri>=h0&&AU.numC[c]||tParts(text)?text.split('\n'):tableGraphemes(text).filter(ch=>ch!=='\n');atoms.forEach(tok=>m=Math.max(m,mw(tok,ri<h0?hfs:fs,b)));}
    else text.split(/[\s\n]+|(?=[\u3400-\u9fff\uff00-\uffef])|(?<=[\u3400-\u9fff\uff00-\uffef])/).forEach(tok=>{if(tok)m=Math.max(m,tw(tok,ri<h0?hfs:fs)*(b?1.08:1));});});const marker=fixedWidth&&AU.statC[c]&&src.some((r,ri)=>ri>=h0&&statusOf(r[c]))?.14*k:0;return Math.max(fixedWidth?.45*k:0,m+marker+padOf(c)/72+.06*k);});
   if(uw){colW=uw.map((v,c)=>Math.max(v,colMin[c]));target=Math.min(maxW,colW.reduce((a,b)=>a+b,0));}
@@ -2067,16 +2113,19 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
   let fixedWidthOverflow=false;
   if(fixedWidth){const minSum=colMin.reduce((a,b)=>a+b,0);fixedWidthOverflow=minSum>fixedTarget+1e-7;
    if(fixedWidthOverflow)colW=colMin.slice();
-   else colW=tableFitColumns(uw||colW,colMin,fixedTarget);}
+   else colW=narrowColumns||tableFitColumns(uw||colW,colMin,fixedTarget);}
   // Guarantee every explicit line fits the measured width, even when the semantic
   // splitter reaches its recursion guard. Keep the final fragment readable.
   const fitLines=(text,size,b,av)=>String(text).split('\n').flatMap(line=>{const out=[];let part='';for(const ch of (fixedWidth?tableGraphemes(line):[...line])){if(part&&mw(part+ch,size,b)>av){out.push(part);part='';}part+=ch;}out.push(part);
    if(out.length>1&&out[out.length-1].replace(/\s/g,'').length<3){const last=out.pop(),prev=out.pop(),chars=fixedWidth?tableGraphemes(prev):[...prev];let cut=chars.length;while(cut>1&&[...chars.slice(cut).join('')+last].filter(c=>!/\s/.test(c)).length<3)cut--;const rest=chars.slice(cut).join('')+last;if(mw(rest,size,b)<=av)out.push(chars.slice(0,cut).join(''),rest);else out.push(prev,last);}return out;}).join('\n');
+  function readableLines(text,size,b,av){return String(text).split('\n').flatMap(line=>{const out=[];let part='';
+   for(const token of wordTokens(line)){const atoms=mw(token,size,b)>av?tableGraphemes(token):[token];for(const atom of atoms){if(part&&mw(part+atom,size,b)>av){out.push(part);part='';}part+=atom;}}out.push(part);
+   if(out.length>1&&/^[\u3400-\u9fff\uff00-\uffef]{1,2}$/.test(out[out.length-1])){let last=out.pop(),prev=out.pop();while(tableGraphemes(last).length<3&&tableGraphemes(prev).length>2){const chars=tableGraphemes(prev),ch=chars.pop();if(!/^[\u3400-\u9fff\uff00-\uffef]$/.test(ch)||mw(ch+last,size,b)>av)break;prev=chars.join('');last=ch+last;}out.push(prev,last);}return out;}).join('\n');}
   const rowsO=rows.map(r=>r.slice());
-  const brk=()=>rows.forEach((r,ri)=>r.forEach((_,c)=>{const t=rowsO[ri][c];if(AU.numC[c]&&ri>=h0)return;const sz0=ri<h0?hfs:fs,b=layoutBold(ri,c,t);const av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0);let safeAv=ri>=h0&&mw(t,sz0,b)>av*.92&&String(t).length>10?av*.92:av;if(fixedWidth)for(const ch of tableGraphemes(t))if(ch!=='\n')safeAv=Math.max(safeAv,mw(ch,sz0,b));r[c]=tParts(t)||!fixedWidth&&/^[A-Za-z0-9_.-]+$/.test(String(t))?String(t):fitLines(semBreak(t,sz0,b,safeAv),sz0,b,safeAv);}));   // 長字串接近欄寬時預留 8%（PowerPoint／LibreOffice 實際字寬較寬）
+  const brk=()=>rows.forEach((r,ri)=>r.forEach((_,c)=>{const t=rowsO[ri][c];if(AU.numC[c]&&ri>=h0)return;const sz0=ri<h0?hfs:fs,b=layoutBold(ri,c,t);const av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0);let safeAv=!narrowFit&&ri>=h0&&mw(t,sz0,b)>av*.92&&String(t).length>10?av*.92:av;if(fixedWidth)for(const ch of tableGraphemes(t))if(ch!=='\n')safeAv=Math.max(safeAv,mw(ch,sz0,b));r[c]=tParts(t)||!fixedWidth&&/^[A-Za-z0-9_.-]+$/.test(String(t))?String(t):narrowFit?readableLines(t,sz0,b,safeAv):fitLines(semBreak(t,sz0,b,safeAv),sz0,b,safeAv);}));   // 長字串接近欄寬時預留 8%（PowerPoint／LibreOffice 實際字寬較寬）
   const calcH=(g=1)=>{brk();return rows.map((r,ri)=>{const base=(ri<h0?hh:AU.section[ri]?rh*.95:rh)*g;return Math.max(base,minH(cellN(r,ri),ri<h0?hfs:fs));});};
-  // Freeze full-source widths, wrapped display strings and typography before sizing the canvas.
-  // Never shrink type or row padding merely because the document has many rows.
+  // Freeze width-fitting results before choosing height or sizing the canvas.
+  // More rows or a smaller height choice never shrink typography or padding.
   const optimalH=calcH(),minimumH=rows.map((r,ri)=>minH(cellN(r,ri),ri<h0?hfs:fs));
   const rowHAll=sizing.version!==2||sizing.heightMode==='optimal'?optimalH:optimalH.map((h,r)=>sizing.heightMode==='larger'?h*1.25:sizing.heightMode==='smaller'?Math.max(minimumH[r],h*.85):minimumH[r]),tW=colW.reduce((a,b)=>a+b,0),frame=GC?.18*k:0;
   const wrapMeta=(value,size,b,width)=>String(value||'').split('\n').map(line=>{let out='',part='';for(const ch of (fixedWidth?tableGraphemes(line):[...line])){if(part&&mw(part+ch,size,b)>width){out+=part+'\n';part='';}part+=ch;}return out+part;}).join('\n');
@@ -2099,7 +2148,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
   const canvasW=fixedWidth&&!fixedWidthOverflow?W:Math.max(W,tW+2*(.6+frame),titleWidth+1.2);
   const canvasH=Math.max(H,ty0+totalH+frame+noteGap+afterH+bottom);
   if(canvasW>56||canvasH>56){blockedReasonCode='slide-size';exportReason=`完整表格需要 ${canvasW.toFixed(2)} × ${canvasH.toFixed(2)} 吋，超過 PowerPoint 單張投影片最大 56 × 56 吋。網頁仍完整呈現原始表格；不分頁、不刪列、不縮小文字，已停用 PPTX 匯出。`;}
-  else if(fixedWidthOverflow){blockedReasonCode='table-width';exportReason=`${sizing.widthMode}% 寬度無法容納目前的欄數或不可拆開的數字。預覽保留完整內容，尚未套用指定寬度；請改用 ${sizing.widthMode==='45'?'90% 或自動':'自動'}，或減少欄數。未縮字、未截斷，已停用 PPTX 匯出。`;}
+  else if(fixedWidthOverflow){blockedReasonCode='table-width';exportReason=`${sizing.widthMode}% 寬度無法同時保留可讀字級與足夠欄寬。預覽保留完整內容與可讀欄寬，尚未套用指定寬度；請改用 ${sizing.widthMode==='45'?'90% 或自動':'自動'}，或減少欄數。未截斷資料，已停用 PPTX 匯出。`;}
   const planned={pages:[source.sourceRows.slice()],capacity:canvasH-bottom-ty0-frame-noteGap-afterH};
   const pageCount=1,hasFooter=false;
   const off=st.tbV==='top'?0:Math.max(0,(planned.capacity-totalH)*.38);
@@ -2202,7 +2251,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
    if(layoutOverflow)warn('表格無法完整匯出',reason);
    const displayRows=tb.cells.map(row=>row.map(c=>c.runs.map(r=>r.t+(r.o&&r.o.br?'\n':'')).join('')));
    const integrity={documentId,pageIndex,pageCount,h0,nC,sourceValues:source.rows.map(row=>row.slice()),displayRows,bodyStart,bodyEnd,sourceRows:sourceRows.slice(),bodySourceRows:bodySourceRows.slice(),rawRowCount:source.nR,rawBodyRows:source.bodyRows,renderedRowCount:sourceRows.length,renderedBodyRows:bodySourceRows.length,exportComplete:complete,exportReason:reason,layoutOverflow,blockedRow,blockedReasonCode};
-   if(sizing.version===2)integrity.sizing={version:2,widthMode:sizing.widthMode,heightMode:sizing.heightMode,referenceWidth:fixedWidth?W:canvasW,targetWidth:fixedTarget,actualWidth:tW,widthApplied:!fixedWidthOverflow,font:{bodyPt:fs,headerPt:hfs,scale:k,autoBoost:boost},minimumRowH:minimumH.slice(),optimalRowH:optimalH.slice(),atMinimum:rowHAll.every((h,r)=>Math.abs(h-minimumH[r])<1e-7)};
+   if(sizing.version===2)integrity.sizing={version:2,widthMode:sizing.widthMode,heightMode:sizing.heightMode,referenceWidth:fixedWidth?W:canvasW,targetWidth:fixedTarget,actualWidth:tW,widthApplied:!fixedWidthOverflow,font:{bodyPt:fs,headerPt:hfs,scale:k,autoBoost:boost},minimumRowH:minimumH.slice(),optimalRowH:optimalH.slice(),atMinimum:rowHAll.every((h,r)=>Math.abs(h-minimumH[r])<1e-7),...(widthFit?{fit:widthFit}:{})};
    tb.dataIntegrity=Object.assign({},integrity);
    cur.table=Object.assign({},integrity,{rawRows:source.rows,previewBodyRows:bodySourceRows.length,types:Object.assign({},T.types),formats:Object.assign({},T.formats),hcol:!!T.hcol,pad:st.tbPad||'m',orphans,colMin:colMin.map(v=>+v.toFixed(3)),REC,k,colFit:colFit.map(v=>+v.toFixed(3)),tx,ty,tW,tH,colW:colW.slice(),rowH,h0,nC,nR:sourceRows.length,look:lookId,appearance,grey,hiMode:hiStyle,hiStyle,EC,colNum:AU.numC,colStat:AU.statC,key:[...keySet].sort((a,b)=>a-b),hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,
     ruleCols:[...new Set(MK.rules.map(r=>r.c))],unit:T.unit||'',note:T.note||'',title:T.title||'',font:TF,nf:NF,slots,fs,hfs,k});
@@ -2304,10 +2353,14 @@ function adoptTableSizing(params,table,choices){params=params||BASE;table=table|
   tbWidthMode:['auto','90','45'].includes(choices.widthMode)?choices.widthMode:previous.widthMode,
   tbHeightMode:['optimal','larger','smaller','minimum'].includes(choices.heightMode)?choices.heightMode:previous.heightMode});
  const nextTable=clone(table);let font=!choices.fresh&&previous.version===2?tableSizingFontOf(table.sizingFont):null;
- if(!font){const probe=choices.fresh?Object.assign({},params,{size:'M',tbDense:'normal',tbPad:'m',tbAuto:true,tbWidth:'auto',tbSizingVersion:1}):params;
+ if(!font){const recoverV2=!choices.fresh&&previous.version===2;
+  // A malformed/imported v2 snapshot must recover requested typography, not
+  // the temporary effective size derived by 45% reflow. Legacy adoption still
+  // freezes its current layout; valid v2 snapshots never reach this fallback.
+  const probe=choices.fresh?Object.assign({},params,{size:'M',tbDense:'normal',tbPad:'m',tbAuto:true,tbWidth:'auto',tbSizingVersion:1}):recoverV2?Object.assign({},params,{tbWidthMode:'auto',tbHeightMode:'optimal'}):params;
   const m=buildModel(probe,{table}),info=m.slides[0]&&m.slides[0].table;
   font=info?{bodyPt:info.fs,headerPt:info.hfs,scale:info.k,autoBoost:info.boost||1}:{bodyPt:13,headerPt:11,scale:1,autoBoost:1};
-  if(info&&Array.isArray(table.cw)&&table.cw.length===info.nC)nextTable.cw=info.colW.map(w=>w/info.k);}
+  if(!recoverV2&&info&&Array.isArray(table.cw)&&table.cw.length===info.nC)nextTable.cw=info.colW.map(w=>w/info.k);}
  if(Object.prototype.hasOwnProperty.call(choices,'bodyPt')||Object.prototype.hasOwnProperty.call(choices,'headerPt')){const nextFont=Object.assign({},font);
   for(const key of ['bodyPt','headerPt'])if(Object.prototype.hasOwnProperty.call(choices,key))nextFont[key]=choices[key];
   font=tableSizingFontOf(nextFont);if(!font){const error=new Error('表格內文字級需為 10–72 pt，表頭需為 9.5–72 pt。');error.code='TABLE_FONT_INVALID';throw error;}}

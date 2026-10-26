@@ -8,8 +8,8 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const {JSDOM,VirtualConsole,ResourceLoader}=require('jsdom');
 const ROOT=path.resolve(__dirname,'..'),D=require('../deck');
 const file=process.env.STUDIO_HTML||'studio.html',source=fs.readFileSync(path.resolve(ROOT,file),'utf8');
-const codes=['A2','A5','A12','A13','A14','C1','D3','D4','D8','E2','A16','A18'];
-const keys=['cards','labels','icons','iconcomponents','iconvariants','kpi','cmp2','cmp3','decide','emph','schemebody','schemeiconbody'];
+const codes=['00','A2','A5','A12','A13','A14','C1','D3','D4','D8','E2','A16','A18'];
+const keys=['catalog','cards','labels','icons','iconcomponents','iconvariants','kpi','cmp2','cmp3','decide','emph','schemebody','schemeiconbody'];
 let passed=0,mobile=false;
 const check=async(name,fn)=>{await fn();passed++;console.log('PASS '+name);},wait=ms=>new Promise(r=>setTimeout(r,ms));
 class LocalResources extends ResourceLoader{fetch(url){const f=path.join(ROOT,path.basename(new URL(url).pathname));return fs.existsSync(f)?Promise.resolve(fs.readFileSync(f)):null;}}
@@ -27,10 +27,10 @@ async function openStudio(saved={}){
  return{dom,w:dom.window,d:dom.window.document,errors};
 }
 async function main(){
- await check('All twelve requested codes resolve to unique, frozen stable page keys in exact order',()=>{
+ await check('Overview precedes the original twelve codes with unique frozen keys in unchanged order',()=>{
   assert.deepEqual(codes.map(c=>{const e=D.SLIDES.filter(e=>e[2]===c);assert.equal(e.length,1);return e[0][0];}),keys);
   const declaration=source.match(/const RECOMMENDED_PAGE_KEYS=Object\.freeze\((\[[^\n]+\])\);/);assert(declaration);
-  assert.deepEqual(vm.runInNewContext(declaration[0]+'JSON.stringify(RECOMMENDED_PAGE_KEYS)'),JSON.stringify(keys));assert.equal(new Set(keys).size,12);
+  assert.deepEqual(vm.runInNewContext(declaration[0]+'JSON.stringify(RECOMMENDED_PAGE_KEYS)'),JSON.stringify(keys));assert.equal(new Set(keys).size,13);
  });
  const iconPage=D.buildModel(D.PRESETS[0],{only:['iconcomponents']}).slides[0],group=iconPage.groups[0];
  const iconIndex=iconPage.items.slice(group.from,group.to+1).findIndex(i=>i.ic);
@@ -50,10 +50,10 @@ async function main(){
   await check('Recommended is first; all nine original categories and all 76 original page entries remain',()=>{
    const T=$('#pTree'),r=T.firstElementChild;assert.equal(T.getAttribute('role'),'navigation');assert.equal(r.dataset.collection,'recommended');assert(r.open);
    assert.deepEqual([...r.querySelectorAll('a b')].map(e=>e.textContent),codes);assert.deepEqual([...r.querySelectorAll('a')].map(a=>a.dataset.k),keys);
-   assert.equal(r.querySelector('i').textContent,'★');assert.equal(r.querySelector('i').getAttribute('aria-hidden'),'true');assert(r.querySelector('summary').textContent.includes('推薦精選'));assert.equal(r.querySelector('small').textContent,'12 頁');
+   assert.equal(r.querySelector('i').textContent,'★');assert.equal(r.querySelector('i').getAttribute('aria-hidden'),'true');assert(r.querySelector('summary').textContent.includes('推薦精選'));assert.equal(r.querySelector('small').textContent,'13 頁');
    assert.deepEqual([...T.querySelectorAll('details:not([data-collection])')].map(e=>e.dataset.g),D.SECTIONS.map(e=>e[0]));
    assert.equal(T.querySelectorAll('details:not([data-collection]) a').length,D.SLIDES.length);assert.equal(D.SLIDES.length,76);
-   assert.equal(T.querySelectorAll('[id]').length,0);assert.equal(T.querySelectorAll('a').length,D.SLIDES.length+12);
+   assert.equal(T.querySelectorAll('[id]').length,0);assert.equal(T.querySelectorAll('a').length,D.SLIDES.length+13);
   });
   await check('Each duplicate entry uses the identical canonical URL, page index, title and active aria state',()=>{
    const historyLength=w.history.length;
@@ -78,7 +78,7 @@ async function main(){
   });
   await check('Native links and summaries keep Tab/Enter semantics; sidebar arrows never change the slide',()=>{
    const r=$('#pTree [data-collection]');r.open=true;const keyBefore=w.__studio.key;
-   for(const el of [r.querySelector('summary'),recommended('cards'),canonical('cards')]){
+   for(const el of [r.querySelector('summary'),recommended('catalog'),canonical('catalog'),recommended('cards'),canonical('cards')]){
     el.focus();for(const key of ['ArrowDown','ArrowUp','ArrowRight','ArrowLeft']){assert(sendKey(el,key));assert.equal(w.__studio.key,keyBefore);assert.strictEqual(d.activeElement,el);}
     for(const key of ['Tab','Enter',' '])assert(sendKey(el,key));
    }
@@ -110,6 +110,21 @@ async function main(){
    const reopened=await openStudio(saved);try{assert.equal(reopened.w.__studio.key,'schemeiconbody');assert.equal(reopened.w.location.hash,'#/A18/schemeiconbody');assert.equal(reopened.d.querySelector('[data-collection]').open,false);
     assert.equal(reopened.d.querySelectorAll('#pTree a[aria-current="page"]').length,2);assert.equal(JSON.stringify(reopened.w.__studioApi.S.labels),JSON.stringify(seededLabels));
     const ids=[...reopened.d.querySelectorAll('[id]')].map(e=>e.id);assert.equal(new Set(ids).size,ids.length);assert.deepEqual(reopened.errors,[]);
+   }finally{reopened.dom.window.close();}
+  });
+  await check('Overview entry saves and reloads the canonical 00 route with both active entries',async()=>{
+   mobile=false;const overview=recommended('catalog');overview.focus();assert.strictEqual(d.activeElement,overview);
+   assert.equal(overview.getAttribute('href'),'#/00/catalog');assert(sendKey(overview,'Tab'));assert(sendKey(overview,'Enter'));
+   overview.click();assert.equal(w.__studio.key,'catalog');assert.equal(w.location.hash,'#/00/catalog');active('catalog');
+   assert.equal($('#sTitle .pcode').textContent,'00');assert.strictEqual(d.activeElement,overview);
+   const overviewSaved=Object.fromEntries(Array.from({length:w.localStorage.length},(_,i)=>w.localStorage.key(i)).map(k=>[k,w.localStorage.getItem(k)]));
+   assert.equal(JSON.parse(overviewSaved['ppt-studio-v4']).key,'catalog');
+   const reopened=await openStudio(overviewSaved);try{
+    assert.equal(reopened.w.__studio.key,'catalog');assert.equal(reopened.w.location.hash,'#/00/catalog');
+    assert.equal(reopened.d.querySelector('#sTitle .pcode').textContent,'00');
+    const current=[...reopened.d.querySelectorAll('#pTree a[aria-current="page"]')];assert.equal(current.length,2);assert(current.every(a=>a.dataset.k==='catalog'));
+    assert.equal(reopened.d.querySelector('#pTree [data-collection] a').dataset.k,'catalog');
+    assert.equal(JSON.stringify(reopened.w.__studioApi.S.labels),JSON.stringify(seededLabels));assert.deepEqual(reopened.errors,[]);
    }finally{reopened.dom.window.close();}
   });
   await check('No uncaught DOM errors and no changes to page registry, model order, count or labels',()=>{

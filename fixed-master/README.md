@@ -1,69 +1,59 @@
-# 投影片母片：指定三頁與不變來源
+# 投影片母片：雙三頁出口與不變來源
 
 ## 不變安全基準
 
-- `TSMC_Template.pptx` 仍是附件 `TSMC_Template (5).pptx` 的完整原 bytes；不覆寫、不永久刪除來源頁。
+- `Fixed_Red_Template.pptx` 是原始四頁附件的完整原 bytes；來源不覆寫、不永久刪頁。
 - Library：`libfile_91da4dec0718819188da04d164eaf803`，version 0。
 - SHA-256：`1d42e27915855f57c1bee5ad185526ee62c51818223e9cfde20609dcf47c1fae`。
-- `source-manifest.json` 記錄原封裝 45 個 parts 的 SHA-256。來源為 4 頁、1 master、7 layouts、16:9／1280 × 720；字型未內嵌。
+- `source-manifest.json` 記錄原封裝 45 parts；4 頁、1 master、7 layouts、16:9／1280×720，字型未內嵌。
 
-## 目前產品範本：恰好三頁
+## 目前兩個獨立下載
 
-使用者新圖要求只留三頁，覆蓋先前「原四頁皆保留於下載」的產品契約：
+1. **`固定紅色_三頁母片.pptx`**：原 layout1 的 native 封面「專案重點與下一步」，接來源 slide1 單欄及 slide2 雙欄。封面摘要「聚焦主要判斷，保留執行依據」、短句「優先確認關鍵事項」，無下緣底帶。這不是來源附件前三頁；原比較／報表不在活動範本。
+2. **`固定紅色_卡片與文字素材.pptx`**：兩頁共 70 個原生矩形卡片，另加一頁八色 `a:highlight` 文字，恰三頁。採固定母片的字型、配色、主題 profile 與 layout6，不使用舊 13 款 Kit seed。
 
-1. **封面「專案重點與下一步」**：原 layout1 的 native placeholders，摘要「聚焦主要判斷，保留執行依據」、強調短句「優先確認關鍵事項」，沿用已提供的輕量下緣標記。
-2. **單欄內容**：來源 `slide1.xml`。
-3. **雙欄內容**：來源 `slide2.xml`。
+兩出口使用同一份 common／theme 快照及下載鎖。沒有 3＋1、逐款下載或效果開關，素材不會自動加入主檔。舊 Kit／quick 導覽一律到母片，保留舊 storage／模組但不把其全站跟隨偏好移到母片。
 
-這不是「來源附件前三頁」：原 slide3 是左右比較、原 slide4 是報表，兩者不在目前範本。封面沿用原 master 的 logo、裝飾、紅底線與黑頁尾，不重繪成全頁圖片。
+## 固定外觀與增強主題的邊界
 
-主下載檔名 `TSMC_三頁母片.pptx`，不包含自動追加的示範。另展開「另做一頁組合示範（非三頁範本）」並按下載，才會得到 `TSMC_組合示範_3加1頁.pptx`。主範本不受示範輸入或樣式選擇影響；即使示範文字無效仍可下載固定三頁。下載配色選擇會決定 theme Accent 與最近色記錄，並不替換三頁內容：主三頁沒有自動加入 `a:highlight`，封面仍保留原下緣 shape。真正文字高亮由獨立 Style Kit 或明選原生文字醒目提示的第 4 示範頁提供。
+`fixed-master.js` 不接受 Deck 全站配色／字型。三頁紅標題、微軟正黑體、bullet、行距、原標誌與黑頁尾保留。固定標題 `C00000` 不由 Accent1 定義；common 的紅 `D95D68` 是另一個裝飾色。
 
-## 獨立邊界與活動選擇
+衍生檔會增強主題的填色／線條／效果清單，不能再宣稱所有 theme bytes 不變。`native-styles.js` 沿 presentation 與有效 master relationships 找到實際 theme；原件對應 `ppt/theme/theme1.xml` 與 `ppt/slideMasters/theme/theme2.xml`。保留 fontScheme、文字／背景色槽、超連結、背景樣式與矩陣名稱。common 僅另外替換 Accent1–6；theme 保留原 Accent。
 
-`fixed-master.js` 不引用 Deck 或 QuickStyles，也不接受全站配色／字型參數。母片 title／body／bullet／footer／logo 保留原規格。新內容層紅色 `D95D68` 不是母片標題的 `C00000`；原 theme accent1 `4472C4` 不用於定義固定紅色。獨立的 `native-styles.js` 只處理下載 Accent／MRU，沒有引入全站 Deck／QuickStyles 配色。
+notes 的 theme（原件 `ppt/notesMasters/theme/theme3.xml`）及 notes parts 不受主題增強影響。若與主檔共用 theme、關係缺失或無法安全解析，會在寫入前停止；不靜默跳過。兩模式都更新 `ppt/presProps.xml` 的八色 `p:clrMru`。
 
-活動版面限 layout1 封面、layout2 單欄、layout4 雙欄；其他 layouts 留在 package 供 PowerPoint 使用，不從原 master 移除。舊保存的比較／報表等選擇回到單欄，保留文字、顏色、marker 與有效快速樣式。
+原生樣式共享填色槽，因此部分線框樣式實際呈灰底。精確白底外卡由可編輯素材提供；十款素材不是十個新 Ribbon 按鈕，也不控制任意圖形幾何。素材的局部填色、框線、柔影保留，字型／色槽及共同 profile 與主母片一致。
 
-- 封面：1 個無卡片樣式 × 4 markers × 7 色 = 28。
-- 單欄／雙欄：2 × 4 卡片外觀 × 4 markers × 7 色 = 224。
-- 合計 **252** 種內容層搭配（下載配色另選）；3 個輕量推薦選項僅切換示範選擇，不增加下載頁數。
-- 四種快速樣式仍為柔底、細框、實心、側邊條，沒有在這次改成另一套樣式；marker 為無、原生文字醒目提示、24% 全字柔帶、35% 下緣半筆。原生醒目提示使用 `a:highlight` 的柔色實色混白，後兩者仍為獨立可編輯 shape，不是半高文字高亮。
-- 選擇使用獨立 `ppt-studio-fixed-master` key。本模組不改原有 QuickStyles、表格及全站 preflight／export 語義；Style Kit 的獨立「主題色／常用色」選擇另見 `docs/native-style-palette.md`。
+八色高亮為 `F6D8DB F9F0D4 7C9CC3 D4E6DF E0E2E6 E5DDF1 595959 1F3864`，沒有白色高亮或獨立底帶。深灰／深藍的素材範例使用白字，這不代表套用高亮會自動改使用者字色。MRU 不保證在各版本選單顯示、排序或永久保留，也不替換內建 15 色。
 
-## 精確原生封裝合約
+## 原生封裝保護
 
-以 JSZip 讀取不變來源，產生衍生 package；不 import/re-export 或近似重建 master。
+以 JSZip 讀不變來源產生衍生檔，不 import/re-export 或近似重建 master。
 
-- 移除 6 個來源 parts：`ppt/slides/slide3.xml`、`ppt/slides/_rels/slide3.xml.rels`、`ppt/slides/slide4.xml`、`ppt/slides/_rels/slide4.xml.rels`、`ppt/notesSlides/notesSlide3.xml`、`ppt/notesSlides/_rels/notesSlide3.xml.rels`。
-- 新增 `ppt/slides/slideCover.xml` 與其 layout1 relationship，排在第一頁。
-- 保留來源 slide1／slide2；只改各自 `a:fld type="slidenum"` 的快取文字為 2／3，所有其他 XML bytes 不變。原 notes1／notes2 無文字或頁碼欄位，保留 bytes。
-- 更新 4 個 metadata/index parts：`[Content_Types].xml`、`ppt/presentation.xml`、`ppt/_rels/presentation.xml.rels`、`docProps/app.xml`；sldIdList 與 slide relationships 恰為 3 筆。
-- 1 master、7 layouts、media 與其他未列出的原 parts 逐 entry SHA256 不變。下載「主題色」時，所有 theme bytes 也不變；預設「常用色」時，`ppt/theme/theme1.xml`、`ppt/slideMasters/theme/theme2.xml`、`ppt/notesMasters/theme/theme3.xml` 各自只替換 Accent 1–6 為紅／黃／藍／綠／灰／紫，保留其他六個色槽、fontScheme 及 fmtScheme。兩種模式均在 `ppt/presProps.xml` 寫入七色 `p:clrMru`，必要時補 DrawingML namespace；MRU 不保證在各版 Office 高亮下拉顯示或永久保留，也不替換內建 15 色選單。
-- 可選示範才另新增 `slide4.xml` 與其 relationship；這是新內容，不是被移除的原報表。完整 count 恰為 4，沒有原比較／報表內容。
-- ZIP 的新增／修改項目沿用固定來源時間；不建立帶目前時間的 folder entries。相同輸入產生穩定 bytes，正常／離線內容一致。三頁衍生檔 hash **不等於**原四頁來源 hash。
+- 主下載移除原 slide3／slide4 及其兩個 relationships、notesSlide3 及 relationship；新增 layout1 封面及 relationship。
+- 來源 slide1／slide2 僅改 `a:fld type="slidenum"` 快取為 2／3，其餘 XML bytes 不變。保留 notes1／notes2。
+- 更新 `[Content_Types].xml`、`ppt/presentation.xml`、其 relationships、`docProps/app.xml`；sldIdList 恰三筆。
+- 保留 1 master、7 layouts、media 原 bytes；只有上述 metadata、頁碼、兩個 reachable themes 與 MRU 是明確例外。
+- 素材以相同衍生 package 替換三個可見 slide XML 與 layout6 links；仍恰三頁，無隱藏範例或 raster 卡片。原來源檔不變。
+- 新增／修改 ZIP entries 沿用固定時間。相同輸入產生穩定 bytes，source／offline 一致；下載檔 hash 不等於原來源 hash。
 
-新頁 title／bullet geometry、bodyPr／lstStyle 與 placeholder type／idx 沿用原 layout。雙欄結論 placeholder 是 idx11；所有頁碼維持原生 `a:fld type="slidenum"`。示範卡片／柔帶為 native shape/text groups，原生醒目提示是文字 run 的 `a:highlight`；真白色示意深底只在 HTML，不進 PPTX。
-
-## 建置與驗證
+## 建置與檢查
 
 ```sh
 python3 tools/build_fixed_master_assets.py
-python3 tools/stamp_version.py
 python3 tools/build_single.py
+npm run build:master-samples
 npm run test:fixed-master
-npm run test:native-styles
+npm run test:master-integration
 npm test
-python3 tools/check_pptx.py out/fixed-master/template-3pages.pptx out/fixed-master/example-4pages.pptx
 ```
 
-來源生成器 hash guard 仍檢查不變四頁附件。測試涵蓋 252 組 native XML、18 個衍生封裝、原件 hash、3／4 頁精確順序、sldIdList、relationships／ContentTypes、刪除 parts、保留頁僅頁碼差異、7 layouts／master bytes、全站主題隔離、動態頁碼、防截斷，以及正常／離線 UI 狀態與實際 Blob 內容。原生配色專項另外檢查 common／theme 主三頁、七色 `a:highlight`、shape 與文字高亮的區別、MRU 精確例外、匯出快照及取消／錯誤恢復。
+`native_master_profile_test.js` 驗關係解析、notes 共享阻擋、protected parts 與原子失敗；`fixed_master_materials_test.js` 驗兩出口、70 卡片、八色高亮及同 profile。UI／navigation／export-entrypoint tests 驗正常／單檔狀態、舊入口遷移、焦點、快照鎖、重試及錯誤恢復。JSDOM 捕捉真 Blob bytes，不代表瀏覽器已落盤。
 
-JSDOM 以同一 repository JSZip bundle 的 Node 排程產生真實 bytes；saveBlob 僅捕捉 Blob，**不代表檔案已落盤**。
+## 視覺證據與限制
 
-## 明確限制
+主三頁預覽是 Microsoft PowerPoint `Slide.Export` 的 960×540 PNG 原 bytes，含來源／圖片 SHA，見 `fixed-master-previews.js`；common／theme 三頁轉圖與增強前基準相同。素材網頁預覽仍是 HTML 示意。
 
-- HTML/SVG 明標示意，非 PowerPoint 忠實縮圖；不採用會錯畫 bullet 的雲端 render PNG。
-- 微軟正黑體未內嵌；未完成 PowerPoint 實視、重排頁碼及逐物件編輯驗收，也未跑完整 Open XML XSD。
-- DOM/CSS 合約不等同真實手機觸控／捲動／視覺驗收；本次不啟動本地瀏覽器／HTTP／CDP。
-- 使用既有標準 Blob 出口。受管瀏覽器可能封鎖 blob；沒有其他 scheme／host／下載橋梁繞過政策。
+本輪 PowerPoint COM 84 次真正 `Shape.ShapeStyle` 套用、代表素材複製／改字／保存重開與主頁轉圖已有驗證；沒有以直接覆寫效果假裝樣式繼承。一般新增文字框測得微軟正黑體。字型未內嵌，其他裝置仍可能不同。
+
+Ribbon 點擊、MRU 下拉、POTX 新建與真 Android 未驗。DOM／CSS 不等同瀏覽器視覺認證；不使用本地 browser／HTTP／CDP 繞限制。標準 Blob 出口可能受受管瀏覽器政策阻擋，產生成功不保證落盤，未設其他 scheme／host／下載橋梁。

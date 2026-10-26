@@ -6,13 +6,13 @@
   "scripts": {
     "gen": "node gen.js",
     "review": "bash review.sh",
-    "test": "python3 tools/stylekit_assets_test.py && npm run test:page-footer && npm run test:recommended-components && npm run test:table && npm run test:icons && npm run test:scheme-catalogue && node tools/test.js && npm run test:preflight && npm run test:stylekit-state && npm run test:quickstyles && npm run test:fixed-master && npm run test:stylekit-mobile && npm run test:navigation && npm run test:native-styles",
-    "test:table": "node tools/table_sizing_test.js && npm run test:table-output && node tools/table_model_integrity_test.js && node tools/table_range_model_test.js && node tools/table_range_family_test.js && npm run test:table-palette && npm run test:table-emphasis && node tools/table_data_grid_test.js && npm run test:table-reset && node tools/table_workbench_test.js --model-only && node tools/table_workbench_test.js --dom-only && npm run test:table-appearance && npm run test:table-mobile",
+    "test": "python3 tools/stylekit_assets_test.py && npm run test:page-footer && npm run test:recommended-components && npm run test:table && npm run test:icons && npm run test:scheme-catalogue && node tools/test.js && npm run test:preflight && npm run test:stylekit-state && npm run test:quickstyles && npm run test:fixed-master && npm run test:stylekit-mobile && npm run test:navigation && npm run test:native-styles && npm run test:brand-boundary && node tools/native_master_profile_test.js && node tools/fixed_master_materials_test.js",
+    "test:table": "node tools/table_sizing_test.js && node tools/table_width_fit_test.js && npm run test:table-output && node tools/table_model_integrity_test.js && node tools/table_range_model_test.js && node tools/table_range_family_test.js && npm run test:table-palette && npm run test:table-emphasis && node tools/table_data_grid_test.js && npm run test:table-reset && node tools/table_workbench_test.js --model-only && node tools/table_workbench_test.js --dom-only && npm run test:table-appearance && npm run test:table-mobile",
     "test:table-ui": "node tools/table_workbench_test.js --browser-only",
     "test:table-dom": "node tools/table_workbench_test.js --dom-only",
     "test:icons": "node tools/icon_components_test.js && node tools/icon_variants_test.js && node tools/icon_pack_test.js && node tools/hexagon_export_test.js",
     "test:range": "node tools/table_range_model_test.js && node tools/table_range_family_test.js && npm run test:table-palette",
-    "test:table-reset": "node tools/table_format_reset_test.js && STUDIO_HTML=PPT-Style-Studio.html node tools/table_format_reset_test.js",
+    "test:table-reset": "node tools/table_format_reset_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/table_format_reset_test.js && node tools/table_settings_reset_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/table_settings_reset_test.js",
     "test:table-data": "node tools/table_data_grid_test.js",
     "test:table-emphasis": "node tools/table_emphasis_tab_test.js && STUDIO_HTML=PPT-Style-Studio.html node tools/table_emphasis_tab_test.js",
     "test:table-appearance": "node tools/table_appearance_test.js && node tools/table_appearance_ui_test.js && STUDIO_HTML=PPT-Style-Studio.html node tools/table_appearance_ui_test.js",
@@ -35,7 +35,10 @@
     "test:stylekit-mobile": "node tools/stylekit_mobile_contract_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/stylekit_mobile_contract_test.js",
     "test:navigation": "node tools/navigation_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/navigation_test.js",
     "build:native-styles": "node tools/build_native_stylekit.js",
-    "test:native-styles": "node tools/build_native_stylekit.js --check && node tools/native_styles_test.js && node tools/native_effects_test.js && node tools/fixed_master_native_test.js && node tools/stylekit_native_ui_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/stylekit_native_ui_test.js"
+    "test:native-styles": "node tools/build_native_stylekit.js --check && node tools/native_styles_test.js && node tools/native_effects_test.js && node tools/fixed_master_native_test.js && node tools/stylekit_native_ui_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/stylekit_native_ui_test.js",
+    "test:brand-boundary": "node tools/brand_boundary_test.js",
+    "build:master-samples": "node tools/build_fixed_master_samples.js",
+    "test:master-integration": "node tools/native_master_profile_test.js && node tools/fixed_master_materials_test.js && node tools/fixed_master_native_test.js && node tools/fixed_master_ui_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/fixed_master_ui_test.js && node tools/navigation_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/navigation_test.js && node tools/export_entrypoints_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/export_entrypoints_test.js"
   },
   "keywords": [],
   "author": "",

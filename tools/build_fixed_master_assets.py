@@ -3,13 +3,13 @@
 import base64, hashlib, json, pathlib, zipfile
 from lxml import etree as E
 ROOT=pathlib.Path(__file__).resolve().parents[1]
-SOURCE=ROOT/'fixed-master/TSMC_Template.pptx'
+SOURCE=ROOT/'fixed-master/Fixed_Red_Template.pptx'
 SHA='1d42e27915855f57c1bee5ad185526ee62c51818223e9cfde20609dcf47c1fae'
 raw=SOURCE.read_bytes()
 assert hashlib.sha256(raw).hexdigest()==SHA, 'Unexpected source: review a new input before changing this contract'
 N={'p':'http://schemas.openxmlformats.org/presentationml/2006/main','a':'http://schemas.openxmlformats.org/drawingml/2006/main','r':'http://schemas.openxmlformats.org/officeDocument/2006/relationships'}
 with zipfile.ZipFile(SOURCE) as z:
- data={'version':1,'sourceName':'TSMC_Template (5).pptx','sha256':SHA,'libraryFileId':'libfile_91da4dec0718819188da04d164eaf803','libraryVersion':0,'originalBase64':base64.b64encode(raw).decode(),'parts':{n:hashlib.sha256(z.read(n)).hexdigest() for n in z.namelist() if not n.endswith('/')},'layouts':[]}
+ data={'version':1,'sourceName':'Fixed_Red_Template.pptx','sha256':SHA,'libraryFileId':'libfile_91da4dec0718819188da04d164eaf803','libraryVersion':0,'originalBase64':base64.b64encode(raw).decode(),'parts':{n:hashlib.sha256(z.read(n)).hexdigest() for n in z.namelist() if not n.endswith('/')},'layouts':[]}
  for i in range(1,8):
   root=E.fromstring(z.read(f'ppt/slideLayouts/slideLayout{i}.xml'))
   layout={'number':i,'name':root.find('p:cSld',N).get('name'),'placeholders':{}}

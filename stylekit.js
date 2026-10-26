@@ -1,4 +1,4 @@
-/* Style Kit: independent theme/palette choices, approximate 7x6 preview,
+/* Style Kit: independent theme/palette choices, editable rectangle preview,
    and native-stylekit/{theme,common}/<id>.* static downloads.
    native-styles.js defines common accents/highlights. Single-file assets use
    the same full paths as STYLEKIT_B64 keys. */
@@ -15,18 +15,15 @@ function lum(c,mod,off){let[r,g,b]=hx(c).map(v=>v/255);const mx=Math.max(r,g,b),
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 // Same effect description as the native formatting matrix; geometry is not a Ribbon style.
 const ROWS=N.KIT_EFFECTS.map(e=>[e.label,e.en]);
-function cell(c,i,t){const sc=t?t.sc:{dk1:'000000',lt1:'FFFFFF'},e=N.kitEffect(c,i,sc.dk1,sc.lt1),bg=e.backgrounds.length===1?'#'+e.backgrounds[0]:'linear-gradient(#'+e.backgrounds.join(',#')+')',sh=e.shadow;return{bg,bd:e.line?((i===2?1:.75)*4/3)+'px solid #'+e.lineColor:'0',fg:'#'+e.foreground,sh:sh?'0 '+(sh.offset*4/3)+'px '+(sh.blur*4/3)+'px rgba(0,0,0,'+sh.alpha+')':null};}
+function cell(c,i,t){const sc=t?t.sc:{dk1:'000000',lt1:'FFFFFF'},e=N.kitEffect(c,i,sc.dk1,sc.lt1,sc.dk2||sc.dk1),sh=e.shadow;return{bg:'#'+e.backgrounds[0],bd:e.line?(e.lineWidth*4/3)+'px solid #'+e.lineColor:'0',fg:'#'+e.foreground,sh:sh?'0 '+(sh.offset*4/3)+'px '+(sh.blur*4/3)+'px rgba(0,0,0,'+sh.alpha+')':null,radius:e.radius*4/3,bold:e.bold,text:e.text};}
 function gallery(t){const cols=[t.sc.dk1].concat(t.sc.acc),names=['Text1 / 深色1'].concat(t.sc.acc.map((_,i)=>'Accent '+(i+1)+(choice.paletteSource==='common'?' / '+N.COMMON[i].label:'')));
  let h='<div class="skG" id="skGal" role="region" aria-label="快速樣式七欄目錄，可左右捲動" tabindex="0"><div></div>'+cols.map((c,j)=>`<div class="skCh">${names[j]}<br><code>#${c}</code></div>`).join('');
- ROWS.forEach((r,i)=>{h+=`<div class="skRh">${r[0]}<small>${r[1]}</small></div>`+cols.map((c,j)=>{const s=cell(c,i,t);return `<div class="skQ" data-r="${i}" data-c="${j}" style="background:${s.bg};border:${s.bd};color:${s.fg};${s.sh?'box-shadow:'+s.sh:''}">Abc</div>`;}).join('');});
+ ROWS.forEach((r,i)=>{h+=`<div class="skRh">${r[0]}<small>${r[1]}</small></div>`+cols.map((c,j)=>{const s=cell(c,i,t);return `<div class="skQ" data-r="${i}" data-c="${j}" style="background:${s.bg};border:${s.bd};color:${s.fg};border-radius:${s.radius}px;font-weight:${s.bold?700:400};${s.sh?'box-shadow:'+s.sh:''}">${s.text}</div>`;}).join('');});
  return h+'</div><p class="skHelp" id="skWhiteNote"><span class="skSample skWhite"><span style="display:inline-block;background:#FFFFFF;color:#333333;padding:3px 12px">白色</span></span> #FFFFFF 另附可編輯白色形狀，見下載檔的螢光筆範例頁；不是第七個 Accent，也不取代 Text1。</p>';}
 function kit(t){const sc=t.sc;
- const label=i=>i===6?'白':choice.paletteSource==='common'?N.COMMON[i].label:'A'+(i+1);
- const hl=sc.hl.map((v,i)=>`<div class="skHl" data-color="${v}"><span class="n">${label(i)}</span><span class="skSample${i===6?' skWhite':''}"><span class="t" style="background:#${v};color:#${sc.dk1}">Yield improved 良率提升</span></span><code>#${v}</code></div>`).join('');
- const half=sc.acc.concat(W).map((v,i)=>`<div class="skHl" data-color="${v}"><span class="n">${label(i)}</span><span class="skSample${i===6?' skWhite':''}"><span class="hb"><i style="background:#${v}"></i><b style="color:#${i===6?'FFFFFF':sc.dk1}">▶ 雙管齊下 Dual track</b></span></span></div>`).join('');
- return `<div class="skCard"><h4>① 柔和文字螢光筆 <small>七色原生文字醒目提示（a:highlight）</small></h4><div id="skHls">${hl}</div><p class="skHelp">下載檔已套用真正文字高亮；可編輯文字、複製範例。這不會取代 PowerPoint 內建 15 色選單。</p></div>
- <div class="skCard"><h4>② 半高螢光條 <small>七色可編輯底帶＋文字</small></h4><div id="skHalfMarkers">${half}</div><p class="skHelp">底帶是獨立形狀，並非文字高亮選單功能。改字、換行或調整字級後，請一併調整底帶大小。</p></div>
- <div class="skCard"><h4>③ 佈景主題色彩 <small>Theme colors（設計 › 變化 › 色彩）</small></h4><div class="skSw">${[['深色1',sc.dk1],['淺色1',sc.lt1],['深色2',sc.dk2],['淺色2',sc.lt2]].concat(sc.acc.map((c,i)=>['輔色'+(i+1),c])).concat([['超連結',sc.hlink],['已瀏覽',sc.fol]]).map(([n,c])=>`<span><i style="background:#${c}"></i>${n}<code>#${c}</code></span>`).join('')}</div></div>`;}
+ const hl=N.HIGHLIGHTS.map(({label,color})=>`<div class="skHl" data-color="${color}"><span class="n">${label}</span><span class="skSample"><span class="t" style="background:#${color};color:#333333">Yield improved 良率提升</span></span><code>#${color}</code></div>`).join('');
+ return `<div class="skCard"><h4>① 八色文字螢光筆 <small>原生文字醒目提示（a:highlight）</small></h4><div id="skHls">${hl}</div><p class="skHelp">下載檔已套用真正文字高亮，改字會隨文字延伸；沒有獨立底帶。參考藍固定 #7C9CC3；深灰與深藍可自行搭配白字，套用色彩不會自動修改文字顏色。這八色不隨主題切換，也不取代 PowerPoint 內建 15 色選單。</p></div>
+ <div class="skCard"><h4>② 佈景主題色彩 <small>Theme colors（設計 › 變化 › 色彩）</small></h4><div class="skSw">${[['深色1',sc.dk1],['淺色1',sc.lt1],['深色2',sc.dk2],['淺色2',sc.lt2]].concat(sc.acc.map((c,i)=>['輔色'+(i+1),c])).concat([['超連結',sc.hlink],['已瀏覽',sc.fol]]).map(([n,c])=>`<span><i style="background:#${c}"></i>${n}<code>#${c}</code></span>`).join('')}</div></div>`;}
 const B64=()=>window.STYLEKIT_B64||null;const urls={};
 function href(f){const b=B64();if(!b||!b[f])return f;if(urls[f])return urls[f];
  const bin=atob(b[f]),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
@@ -43,10 +40,10 @@ const CSS=`#vKit .skCr{display:block;font-size:10px;color:#595959;font-weight:40
 .skG{display:grid;min-width:0;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;grid-template-columns:150px repeat(7,minmax(56px,1fr));gap:8px 10px;align-items:center}.skCh{font-size:10.5px;color:#8C8C8C;text-align:center;line-height:1.3}.skCh code{font-size:10px}
 .skRh{font-size:12px;font-weight:700;color:#595959;line-height:1.25}.skRh small{display:block;font-weight:400;color:#8C8C8C;font-size:10.5px}
 .skQ{height:40px;border-radius:0;display:flex;align-items:center;justify-content:center;font:600 13px Arial,'Microsoft JhengHei',sans-serif;box-sizing:border-box}
-.skK{display:grid;min-width:0;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.skCard{min-width:0;border:1px solid #E5E5E5;border-radius:6px;padding:12px 14px}.skCard h4{margin:0 0 8px;font-size:13.5px;color:var(--skP)}.skCard h4 small{display:block;color:#8C8C8C;font-weight:400;font-size:11px;margin-top:2px}
-.skHl{display:flex;flex-wrap:wrap;min-width:0;align-items:center;gap:8px;margin:5px 0;font-size:13.5px}.skHl .n{color:#8C8C8C;font-size:11px;width:20px}.skHl .t{min-width:0;overflow-wrap:anywhere;font-weight:700;padding:1px 3px}.skHl code,.skSw code{color:#8C8C8C;font-size:10.5px}
+.skK{display:grid;min-width:0;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.skCard{min-width:0;border:1px solid #E5E5E5;border-radius:6px;padding:12px 14px}.skCard h4{margin:0 0 8px;font-size:13.5px;color:var(--skP)}.skCard h4 small{display:block;color:#8C8C8C;font-weight:400;font-size:11px;margin-top:2px}
+.skHl{display:flex;flex-wrap:wrap;min-width:0;align-items:center;gap:8px;margin:5px 0;font-size:13.5px}.skHl .n{color:#8C8C8C;font-size:11px;width:38px}.skHl .t{min-width:0;overflow-wrap:anywhere;font-weight:700;padding:1px 3px}.skHl code,.skSw code{color:#8C8C8C;font-size:10.5px}
 .skE{margin:8px 0;font-size:14px}.skE small{display:block;color:#8C8C8C;font-size:10.5px;margin-top:1px}.skFt{font-size:11px;color:#8C8C8C;border-top:1px solid #BFBFBF;padding-top:6px}
-.hb{position:relative;display:inline-block;padding:0 2px}.hb i{position:absolute;left:0;right:0;bottom:1px;height:35%;opacity:.35}.hb b{position:relative}.skSample{padding:2px 3px;display:inline-block}.skWhite{background:#303640;border-radius:3px}.skHelp{font-size:11.5px;color:#595959;line-height:1.6}.skApply:disabled{opacity:.5;cursor:not-allowed}
+.skSample{padding:2px 3px;display:inline-block}.skWhite{background:#303640;border-radius:3px}.skHelp{font-size:11.5px;color:#595959;line-height:1.6}.skApply:disabled{opacity:.5;cursor:not-allowed}
 .skSw{display:grid;min-width:0;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 10px;font-size:12px}.skSw span{display:flex;min-width:0;flex-wrap:wrap;align-items:center;gap:6px}.skSw i{width:16px;height:16px;border-radius:3px;border:1px solid #0001;flex:none}
 .skNote{font-size:11.5px;color:#8C8C8C;line-height:1.7;margin-top:16px}
 #vKit .skW h2,#vKit .skLead,#vKit .skNote,#vKit .skDl small,#vKit .skSource span{min-width:0;overflow-wrap:anywhere}#vKit .skDl a,#vKit .skDl .skApply{max-width:100%;white-space:normal;overflow-wrap:anywhere}.skG:focus-visible{outline:2px solid var(--skP);outline-offset:2px}
@@ -67,7 +64,7 @@ function matchGlobal(p){
  return known?T.find(t=>hex(t.sc.acc[0])===hex(p.P)&&hex(t.sc.dk2)===hex(p.PD)&&hex(t.sc.acc[4])===hex(p.PD)&&hex(t.sc.acc[1])===hex(p.A))||null:null;
 }
 function selectedTheme(){if(choice.source==='independent')return T.find(t=>t.id===choice.id)||T[0];const matched=matchGlobal(globalPalette&&globalPalette.params);return matched||(choice.paletteSource==='common'?(T.find(t=>t.id===(globalPalette&&globalPalette.base))||T[0]):null);}
-function exportTheme(t){if(!t)return null;const acc=choice.paletteSource==='common'?N.COMMON.slice(0,6).map(c=>c.color):t.sc.acc.slice();return Object.assign({},t,{sc:Object.assign({},t.sc,{acc,hl:acc.map(N.softColor).concat(W)})});}
+function exportTheme(t){if(!t)return null;const acc=choice.paletteSource==='common'?N.COMMON.slice(0,6).map(c=>c.color):t.sc.acc.slice();return Object.assign({},t,{sc:Object.assign({},t.sc,{acc,hl:N.HIGHLIGHTS.map(c=>c.color)})});}
 function state(){const t=selectedTheme();return{source:choice.source,paletteSource:choice.paletteSource,id:t?t.id:null,downloadable:!!t,base:globalPalette&&globalPalette.base||null};}
 function sync(params,base,root){globalPalette={params:Object.assign({},params),base:base||null};return paint(root);}
 function selectSource(source,root){if(!['follow','independent'].includes(source))return state();if(source==='follow')choice.source='follow';else{choice=Object.assign({},choice,{source:'independent',id:(selectedTheme()||T.find(t=>t.id===choice.id)||T[0]).id});}storeChoice();return paint(root);}
@@ -86,13 +83,13 @@ function paint(root){root=root||document.getElementById('vKit');if(!root||!T.len
  if(!document.getElementById('skSourceCss')){const s=document.createElement('style');s.id='skSourceCss';s.textContent='.skSource{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0;font-size:12px}.skSource button{border:1px solid #D9D9D9;border-radius:6px;background:#fff;color:#3A3A3A;padding:6px 10px;cursor:pointer}.skSource button[aria-pressed="true"]{border-color:var(--skP);color:var(--skP);font-weight:700}.skSource span{flex-basis:100%;color:#595959}.skDl a[aria-disabled="true"]{opacity:.5;cursor:not-allowed}.skCustom{padding:14px;border:1px solid #D9D9D9;border-radius:6px;font-size:13px;line-height:1.6}.skCustom p{margin:6px 0 12px}';document.head.appendChild(s);}
  root.style.setProperty('--skP','#'+(t?t.sc.acc[0]:'595959'));
  root.innerHTML=`<div class="skW"><h2>PPT 範本 Style Kit<small>Template Style Kit · 快速樣式＋螢光筆，下載即用</small></h2>
- <p class="skLead">選擇「主題色」或「常用色」，下載檔會使用這一套 Accent 配色與既有六種效果。下方是 7×6 快速樣式的網頁示意；檔案內含可編輯樣式範例、真正文字高亮及獨立半高筆帶。PowerPoint 原生快速樣式選單會依檔案主題產生，外觀依版本而異。</p>
+ <p class="skLead">十款矩形樣式對齊元件總覽，前三款優先提供外層白卡：深灰框柔影、細灰框柔影、主色框柔影；其餘為線框、淺底及實心強調。選擇「主題色」或「常用色」決定下載配色。灰框、灰底及中性深字保留各自角色；螢光筆使用獨立固定八色。</p>
  ${sourceControls(t)}<div class="skTh" id="skThemes" role="tablist" aria-label="選擇獨立範本">${T.map(x=>`<button data-sk="${x.id}" class="${t&&x.id===t.id?'on':''}" role="tab" aria-selected="${!!t&&x.id===t.id}"><i>${x.sc.acc.slice(0,3).map(c=>`<b style="background:#${c}"></b>`).join('')}</i>${esc(x.zh)}<small class="skCr">${skCR(x.sc.acc[0])}:1</small></button>`).join('')}</div>
  ${t?'<div class="skSec">對比值 Contrast<small>與白底比（WCAG）；文字需 ≥ 4.5:1</small></div>'+skCT(t):customNotice()}
  <div class="skDl" id="skDl">${downloadLink(t,'pptx','⬇ 下載 .pptx'+(t?'（'+esc(t.zh)+'）':''),true)}${downloadLink(t,'potx','⬇ 範本 .potx',true)}<button type="button" class="skApply" id="skApply"${t&&choice.paletteSource==='theme'?'':' disabled'}>套用主題色到元件庫</button>${downloadLink(t,'xml','色彩 .xml')}
- <small>.pptx／.potx 為獨立 4 頁 Style Kit：封面、內容、七色螢光筆與白色範例、42 格快速樣式。不會增加「投影片母片」主下載的頁數。常用色模式不改元件庫配色。</small><small>.xml 只提供色彩集；手動套用會改變使用主題色的內容，效果仍依原檔 fmtScheme。請先在副本確認。</small></div>
- ${t?'<div class="skSec">快速樣式 Quick Styles<small>Text1 ＋ Accent 1–6 · 7 欄 × 6 列；白色另見下方</small></div>'+gallery(t)+'<div class="skSec">螢光筆與白色範例<small>包含於上述獨立 Style Kit 下載</small></div><div class="skK">'+kit(t)+'</div>':''}
- <p class="skNote">限制：網頁以 HTML 示意色彩與六種效果；細框、填色與柔影已寫入 Style Kit 主題矩陣。42 格範例字色已作對比調整；Ribbon 的固定組合與字色不保證逐格相同。這不會新增任意 Ribbon 選項，也不會改變所選圖形的幾何。下載檔的文字高亮使用 a:highlight；柔色也寫入近期色，但無法保證各版 PowerPoint 的螢光筆選單會顯示或永久保留，不會替換內建 15 色。可複製已套色文字再改字；格式刷操作尚未驗證，且可能連帶套用字型、字級。白色保留 #FFFFFF；深色底僅用於展示白色的範例。</p></div>`;
+ <small>.pptx／.potx 為獨立 5 頁 Style Kit：封面、內容、八色原生螢光筆與白色形狀、兩頁共 70 格矩形樣式。不會增加「投影片母片」主下載的頁數。常用色模式不改元件庫配色。</small><small>.xml 只提供色彩集；手動套用會改變使用主題色的內容，效果仍依原檔 fmtScheme。請先在副本確認。</small></div>
+ ${t?'<div class="skSec">快速樣式 · 可編輯矩形<small>Text1 ＋ Accent 1–6 · 7 欄 × 10 款矩形；前三款是外層卡片，不是 Ribbon 的十個固定按鈕</small></div>'+gallery(t)+'<div class="skSec">螢光筆與白色範例<small>包含於上述獨立 Style Kit 下載</small></div><div class="skK">'+kit(t)+'</div>':''}
+ <p class="skNote">限制：網頁以 HTML 示意十款矩形；細框、填色與柔影使用 Style Kit 主題矩陣與個別形狀設定。70 格範例字色已作對比調整；Ribbon 的固定組合與字色不保證逐格相同。這不會新增任意 Ribbon 選項，也不會改變所選圖形的幾何。下載檔的文字高亮使用 a:highlight；柔色也寫入近期色，但無法保證各版 PowerPoint 的螢光筆選單會顯示或永久保留，不會替換內建 15 色。可複製已套色文字再改字；格式刷操作尚未驗證，且可能連帶套用字型、字級。白色形狀保留 #FFFFFF，不列入螢光筆近期色。</p></div>`;
  root.querySelector('#skApply').onclick=()=>{if(t&&choice.paletteSource==='theme')document.dispatchEvent(new CustomEvent('stylekit-apply',{detail:{id:t.id,acc:t.sc.acc.slice()}}));};
  root.querySelector('#skFollow').onclick=()=>selectSource('follow',root);
  root.querySelector('#skIndependent').onclick=()=>selectSource('independent',root);
