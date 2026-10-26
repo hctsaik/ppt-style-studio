@@ -2167,9 +2167,11 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
     if(hc){if(LK.hdr.fill){o.bB={c:contrastOf(hc.C,LK.hdr.fill)>=3?hc.C:ensureContrast(mix(hc.C,'FFFFFF',.85),LK.hdr.fill,3),w:3};/* 主色表頭：重點欄只加 3pt 強調色底線 */}else{if(hiStyle==='fill')o.fill=mix(hc.C,'FFFFFF',.9);o.color=ensureContrast(mix(hc.C,'000000',.18),o.fill||'FFFFFF',5);}}
     o.color=cc(o.color,o.fill);return rangePaint(o,ri,c);}
    const last=ri===rows.length-1,key=keySet.has(ri)||bold.has(ri),sec=AU.section[ri];
-   const o={t,size:fs,align,font,bold:key||sec,color:sec?PD:G.ink,fill:null,bB:bw(last?(LK.last||LK.row):LK.row),mL,mR:padH};
-   if(LK.zebra&&(ri-h0)%2===1)o.fill=LK.zebra;
-   if(key&&LK.keyFill)o.fill=LK.keyFill;
+   const headerCol=!!T.hcol&&c===0;
+   const o={t,size:fs,align,font,bold:headerCol||key||sec,color:headerCol?LK.hdr.color:sec?PD:G.ink,fill:headerCol?(LK.hdr.fill||null):null,bB:bw(last?(LK.last||LK.row):LK.row),mL,mR:padH};
+   // Share the selected header paint on both axes; explicit emphasis below wins.
+   if(!headerCol&&LK.zebra&&(ri-h0)%2===1)o.fill=LK.zebra;
+   if(!headerCol&&key&&LK.keyFill)o.fill=LK.keyFill;
    if(firstKey(ri)&&LK.key&&ri>h0)o.bT=bw(LK.key);
    if(sec&&LK.row&&ri>h0)o.bT=bw(LK.row);
    baseGrid(o,ri);
@@ -2229,7 +2231,6 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
    const b0=boxes.find(b=>!b.rule&&b.type!=='cell'),orphans=[];
    sourceRows.forEach(ri=>rows[ri].forEach((t,c)=>{const str=String(t);if(!str.trim())return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri)||rangeBoldAt(ri,c),av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0),ls=str.split('\n'),vis=x=>x.replace(/\s/g,'').length;
     if(ls.some(l=>mw(l,sz0,b)>av+.01))orphans.push({r:ri,c,t:str,why:'auto-wrap'});else if(ls.length>1&&vis(str)>4&&ls.some((l,i)=>vis(l)<=1||vis(l)<=2&&i>0&&!/[：:；;，,、)）\s]$/.test(ls[i-1])&&!/^[（(]/.test(l)))orphans.push({r:ri,c,t:str,why:'orphan'});}));
-   if(T.hcol){const tint=legacyLK.hdr&&legacyLK.hdr.fill?mix(P,'FFFFFF',.88):mix(G.fill||'F2F2F2','FFFFFF',.2);tb.cells.forEach((r,ri)=>{const raw=sourceRows[ri];if(raw<h0||AU.section[raw])return;const cl=r[0];if(!cl)return;cl.bold=true;(cl.runs||[]).forEach(x=>{x.o=Object.assign({},x.o,{bold:true});});if(!cl.fill&&!rangeAt(raw,0))cl.fill=tint;});}
    // The new deep theme fill has a light top rule on each visible region/page.
    // Keep it in native cell borders, below explicit line-family overrides; old
    // preset IDs never acquire this decoration or any new fill resolution.

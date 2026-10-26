@@ -45,9 +45,9 @@ async function main(){
    assert.equal(w.localStorage.getItem('ppt-studio-quick-styles'),oldQuick);assert.equal(w.localStorage.getItem('ppt-studio-stylekit-v1'),oldKit);
   });
   await test('Master fixed schemes remain independent while global presets and custom colors change',async()=>{
-   assert.equal(d.querySelectorAll('[data-fm-field]').length,0);assert.deepEqual([...d.querySelectorAll('[data-fm-scheme]')].map(e=>e.dataset.fmScheme),['07','06','03','10','04']);const before=JSON.stringify(w.FixedMaster.getState($('#vMaster'))),gallery=$('.fmGallery').innerHTML;
-   click('#tpls .tpl[data-id="wine"]');await delay(100);tab('master');assert.equal(JSON.stringify(w.FixedMaster.getState($('#vMaster'))),before);assert.equal($('.fmGallery').innerHTML,gallery);
-   run("setColor('PD','123A56');syncPanel();schedule()");await delay(100);assert.equal(JSON.stringify(w.FixedMaster.getState($('#vMaster'))),before);assert.equal($('.fmGallery').innerHTML,gallery);assert.equal(w.localStorage.getItem('ppt-studio-stylekit-v1'),oldKit);
+   assert.equal(d.querySelectorAll('[data-fm-field]').length,0);assert.equal(d.querySelectorAll('#vMaster figure').length,26);assert.deepEqual([...d.querySelectorAll('#vMaster [data-fm-download]')].map(b=>b.dataset.fmDownload),['template']);const before=JSON.stringify(w.FixedMaster.getState($('#vMaster'))),origins=$('.fmOrigins').innerHTML;
+   click('#tpls .tpl[data-id="wine"]');await delay(100);tab('master');assert.equal(JSON.stringify(w.FixedMaster.getState($('#vMaster'))),before);assert.equal($('.fmOrigins').innerHTML,origins);
+   run("setColor('PD','123A56');syncPanel();schedule()");await delay(100);assert.equal(JSON.stringify(w.FixedMaster.getState($('#vMaster'))),before);assert.equal($('.fmOrigins').innerHTML,origins);assert.equal(w.localStorage.getItem('ppt-studio-stylekit-v1'),oldKit);
   });
   await test('Same-tick global palette change exports latest page params and model before RAF redraw',async()=>{
    click('#tpls .tpl[data-id="navy"]');await delay(100);tab('slides');run("goKey('cards')");app.setMode('ready');const before=app.exported.length;click('#tpls .tpl[data-id="wine"]');click('#bOne');await app.settled();assert.equal(app.exported.length,before+1);const out=app.exported.at(-1);assert.equal(out.params.P,'7A1F2B');assert.equal(out.settings.model.params.P,'7A1F2B');assert.equal(out.settings.model.slides[0].key,'cards');await delay(100);
