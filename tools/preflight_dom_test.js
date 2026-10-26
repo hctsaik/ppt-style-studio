@@ -58,7 +58,7 @@ async function main(){
    click('#skThemes [data-sk="wine"]');assert.equal(w.StyleKit.state().source,'independent');tab('slides');click('#tpls .tpl[data-id="navy"]');await delay(100);tab('kit');assert.equal(w.StyleKit.state().id,'wine');assert.equal($('#skPptx').dataset.stylekitTheme,'wine');
   });
   await test('Kit follow mode explicitly disables custom assets instead of serving old colors',async()=>{
-   click('#skFollow');const stale=$('#skPptx');let requests=0;const observe=()=>requests++;d.addEventListener('stylekit-download',observe);run("setColor('P','AB12CD');syncPanel();schedule()");await delay(100);
+   click('#skPaletteTheme');click('#skFollow');const stale=$('#skPptx');let requests=0;const observe=()=>requests++;d.addEventListener('stylekit-download',observe);run("setColor('P','AB12CD');syncPanel();schedule()");await delay(100);
    assert.equal(w.StyleKit.state().downloadable,false);assert($('#skCustomNotice'));for(const id of ['skPptx','skPotx','skXml']){assert.equal($('#'+id).getAttribute('aria-disabled'),'true');assert.equal($('#'+id).hasAttribute('href'),false);click('#'+id);}
    const staleClick=new w.MouseEvent('click',{bubbles:true,cancelable:true});stale.dispatchEvent(staleClick);assert(staleClick.defaultPrevented);assert.equal(requests,0);
    click('#skIndependent');assert.equal(w.StyleKit.state().downloadable,true);assert($('#skPptx').hasAttribute('href'));
@@ -84,8 +84,8 @@ async function main(){
    tab('kit');click('#skThemes [data-sk="wire"]');assert.equal(w.StyleKit.state().source,'independent');assert.equal(w.StyleKit.state().id,'wire');await delay(700);const independent=$('#skPptx');
    // A separate Kit choice is intentional; refreshing globals must preserve it.
    click('#tpls .tpl[data-id="green"]');const event=new w.MouseEvent('click',{bubbles:true,cancelable:true});independent.dispatchEvent(event);
-   assert.equal(event.defaultPrevented,false);assert.equal(independent.dataset.stylekitFile,'wire.pptx');assert.equal(w.StyleKit.state().source,'independent');assert.equal(w.StyleKit.state().id,'wire');await delay(100);assert.equal($('#skPptx').dataset.stylekitTheme,'wire');
-   assert.deepEqual(JSON.parse(w.localStorage.getItem('ppt-studio-stylekit-v1')),{source:'independent',id:'wire'});
+   assert.equal(event.defaultPrevented,false);assert.equal(independent.dataset.stylekitFile,'native-stylekit/theme/wire.pptx');assert.equal(w.StyleKit.state().source,'independent');assert.equal(w.StyleKit.state().id,'wire');await delay(100);assert.equal($('#skPptx').dataset.stylekitTheme,'wire');
+   assert.deepEqual(JSON.parse(w.localStorage.getItem('ppt-studio-stylekit-v1')),{source:'independent',id:'wire',paletteSource:'theme'});
   });
   await test('ready and advisory quick exports proceed without confirmation and blockers show reasons',async()=>{
    tab('quick');click('[data-qs-source="theme"]');click('[data-qs-color="main"]');click('[data-qs-style="soft"]');$('[data-qs-text]').value='正常內容';$('[data-qs-text]').dispatchEvent(new w.Event('input',{bubbles:true}));
@@ -128,7 +128,7 @@ async function main(){
  try{
   await test('quick localStorage restores source, separate color selection, style and exact text',()=>{
    restored.tab('quick');const value=restored.state();assert.equal(value.source,'common');assert.equal(value.commonKey,'purple');assert.equal(value.style,'underline');assert.equal(value.text,'保存恢復\n9007199254740993');assert.equal(restored.$('[data-qs-text]').value,value.text);assert.equal(restored.$('[data-qs-source="common"]').getAttribute('aria-pressed'),'true');assert.equal(restored.$('[data-qs-color="purple"]').getAttribute('aria-pressed'),'true');
-   restored.tab('kit');assert.equal(restored.w.StyleKit.state().source,'independent');assert.equal(restored.w.StyleKit.state().id,'wire');assert.equal(restored.$('#skPptx').dataset.stylekitFile,'wire.pptx');
+   restored.tab('kit');assert.equal(restored.w.StyleKit.state().source,'independent');assert.equal(restored.w.StyleKit.state().id,'wire');assert.equal(restored.w.StyleKit.state().paletteSource,'theme');assert.equal(restored.$('#skPptx').dataset.stylekitFile,'native-stylekit/theme/wire.pptx');
   });assert.deepEqual(restored.errors,[]);assert.equal(restored.w.__confirms.length,0);
  }finally{restored.dom.window.close();}
  console.log(`${count} preflight DOM checks passed (${FILE}; JSDOM events only, native bytes stubbed).`);

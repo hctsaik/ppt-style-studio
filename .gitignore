@@ -94,3 +94,5 @@ tools/oxv/obj/
 
 # Fixed-master test exports / read-only inspection evidence
 out/fixed-master/
+out/fixed-master-native/
+out/native-isolate/

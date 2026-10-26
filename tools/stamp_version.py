@@ -11,4 +11,4 @@ def rep(m):
 t = re.sub(r'<script src="([^"?]+\.js)(?:\?v=\w+)?"></script>', rep, s)
 if '--check' in sys.argv:
     sys.exit(0 if t == s else '版本戳記過期：請執行 python3 tools/stamp_version.py')
-open(p, 'w', encoding='utf-8').write(t); print('ok', re.findall(r'src="([^"]+)"', t))
+open(p, 'w', encoding='utf-8', newline='\n').write(t); print('ok', re.findall(r'src="([^"]+)"', t))

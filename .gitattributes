@@ -1,0 +1,5 @@
+# Version stamps and embedded assets use the same bytes on Windows and Linux.
+*.js text eol=lf
+*.html text eol=lf
+native-stylekit/**/*.xml text eol=lf
+native-stylekit/manifest.json text eol=lf

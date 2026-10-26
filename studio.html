@@ -702,12 +702,13 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <script src="icons.js?v=65c03732"></script>
 <script src="deck.js?v=be4c954a"></script>
 <script src="stylekit-data.js?v=47e8edb0"></script>
-<script src="stylekit.js?v=fb67f65f"></script>
+<script src="native-styles.js?v=50ce016d"></script>
+<script src="stylekit.js?v=25848ed8"></script>
 <script src="preflight.js?v=fb03c6cb"></script>
 <script src="export-flow.js?v=c9d4f55c"></script>
 <script src="quickstyles.js?v=b4777192"></script>
 <script src="fixed-master-data.js?v=c3dbdd42"></script>
-<script src="fixed-master.js?v=1076a285"></script>
+<script src="fixed-master.js?v=71ea5827"></script>
 <script>
 (function(){
  'use strict';
@@ -720,6 +721,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
  if(typeof window.ExportFlow==='undefined')miss.push('export-flow.js');
  if(typeof window.QuickStyles==='undefined')miss.push('quickstyles.js');
  if(typeof window.FixedMaster==='undefined')miss.push('fixed-master.js');
+ if(typeof window.NativeStyles==='undefined')miss.push('native-styles.js');
  if(!miss.length)return;
  window.__studioFatal=miss;
  var box=document.createElement('div');box.className='fatal';box.setAttribute('role','alert');
@@ -1089,7 +1091,7 @@ $('#exportIssues').onclick=e=>{const b=e.target.closest('[data-issue]');if(!b||!
  else{const ix=model.slides.findIndex(x=>x.key===sl.key);if(ix<0){toast('此項目在下載組合中：'+it.location);return;}setTab('slides');go(ix);const gi=(model.slides[ix].groups||[]).findIndex(g=>it.itemIndex>=g.from&&it.itemIndex<=g.to);if(gi>=0)selectEl(gi);}
 };
 let lastKitDownload=0;
-document.addEventListener('stylekit-download',e=>{const now=Date.now();if(exportFlow.busy()||now-lastKitDownload<650){e.preventDefault();toast('下載正在處理，請稍候。');return;}StyleKit.sync(S.p,S.base);const state=StyleKit.state();if(!state.downloadable){e.preventDefault();reportExport({status:'blocked',label:'必須修正',issues:[{location:'Style Kit',reason:'目前配色沒有對應的靜態範本。',fix:'請選擇獨立範本主題，或使用元件匯出目前自訂配色。'}]},'checked');return;}if(state.id!==e.detail.theme||state.source!==e.detail.source){e.preventDefault();toast('配色已更新，請重新下載目前範本。');return;}lastKitDownload=now;
+document.addEventListener('stylekit-download',e=>{const now=Date.now();if(exportFlow.busy()||now-lastKitDownload<650){e.preventDefault();toast('下載正在處理，請稍候。');return;}StyleKit.sync(S.p,S.base);const state=StyleKit.state();if(!state.downloadable){e.preventDefault();reportExport({status:'blocked',label:'必須修正',issues:[{location:'Style Kit',reason:'目前配色沒有對應的靜態範本。',fix:'請選擇獨立範本主題，或使用元件匯出目前自訂配色。'}]},'checked');return;}if(state.id!==e.detail.theme||state.source!==e.detail.source||state.paletteSource!==e.detail.paletteSource){e.preventDefault();toast('配色已更新，請重新下載目前範本。');return;}lastKitDownload=now;
  reportExport({status:'ready',label:'可以匯出',issues:[]},'complete');$('#exportCheckNote').textContent='內建範本：封裝與配色在建置時驗證；實際字型與換行請在 PowerPoint 查看。檔案下載由瀏覽器接手。';
 });
 
@@ -1188,7 +1190,7 @@ document.addEventListener('keydown',e=>{const p=e.target.closest&&e.target.close
 let quickSaved;try{quickSaved=JSON.parse(localStorage.getItem('ppt-studio-quick-styles')||'null');}catch(_){}
 function renderQuick(){if(!window.QuickStyles)return;QuickStyles.render($('#vQuick'),S.p,{state:quickSaved,onChange:state=>{quickSaved=state;invalidateExport();try{localStorage.setItem('ppt-studio-quick-styles',JSON.stringify(state));}catch(_){toast('本機儲存不可用；本次設定仍保留，可繼續下載。');}},onDownload:async snapshot=>{try{snapshot=QuickStyles.snapshot(S.p,snapshot.selection);const r=await checkedExport(ENV(),snapshot.params,{model:snapshot.model});saveBlob(r.data,snapshot.filename);toast('已下載快速樣式：底帶與文字皆可編輯。');return true;}catch(e){toast(e.message);return false;}}});}
 let masterSaved;try{masterSaved=JSON.parse(localStorage.getItem('ppt-studio-fixed-master')||'null');}catch(_){}
-function renderMaster(){if(!window.FixedMaster)return;FixedMaster.render($('#vMaster'),{state:masterSaved,onChange:state=>{masterSaved=state;try{localStorage.setItem('ppt-studio-fixed-master',JSON.stringify(state));}catch(_){toast('本機儲存不可用；本次母片設定仍保留。');}},onDownload:async snapshot=>{const template=snapshot.mode==='template';const bytes=await FixedMaster.exportPptx(window.JSZip,template?[]:[snapshot.selection]);saveBlob(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'}),template?'TSMC_三頁母片.pptx':'TSMC_組合示範_3加1頁.pptx');return true;}});}
+function renderMaster(){if(!window.FixedMaster)return;FixedMaster.render($('#vMaster'),{state:masterSaved,onChange:state=>{masterSaved=state;try{localStorage.setItem('ppt-studio-fixed-master',JSON.stringify(state));}catch(_){toast('本機儲存不可用；本次母片設定仍保留。');}},onDownload:async snapshot=>{const template=snapshot.mode==='template';const bytes=await FixedMaster.exportPptx(window.JSZip,template?[]:[snapshot.selection],{source:snapshot.selection.paletteSource});saveBlob(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'}),template?'TSMC_三頁母片.pptx':'TSMC_組合示範_3加1頁.pptx');return true;}});}
 function renderExtra(){if(S.tab==='style')renderStylePrev();else if(S.tab==='icons')renderIcons();else if(S.tab==='table')renderTable();else if(S.tab==='kit'&&window.StyleKit)StyleKit.sync(S.p,S.base);else if(S.tab==='master')renderMaster();}
 
 /* ---------- 圖示庫 ---------- */
