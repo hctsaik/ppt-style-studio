@@ -634,7 +634,8 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
         <p id="tImportNotice" class="hint" aria-live="polite"></p>
         </details>
         <details id="tDataSemantics" class="tdata-semantics"><summary>資料結構</summary>        <label class="ttg tkeep" title="只沿用欄樣式、對齊與顯示格式；新表格不沿用舊標題、單位與來源"><input type="checkbox" id="tKeep"> 沿用欄樣式（不含標題／來源）</label>
-        <h4 class="tgh">表頭</h4><div class="trow thdr"><label class="ttg" title="第一列當作欄名：粗體、表頭底色"><input type="checkbox" id="tHRow"> 第一列為表頭</label><label class="ttg" title="第一欄當作列名：粗體＋淡底"><input type="checkbox" id="tHCol"> 第一欄為表頭</label></div>
+        <h4 class="tgh">標題位置</h4><div class="trow thdr"><label for="tHeaderMode">表格標題</label><select id="tHeaderMode" aria-describedby="tHeaderModeHelp"><option value="none">無標題</option><option value="row">首列</option><option value="col">首欄</option><option value="both">首列＋首欄</option></select></div><p id="tHeaderModeHelp" class="tappearance-hint">更新這張表會保留選擇；兩者都有時，左上角沿用首列樣式。還原設定不更動標題位置。</p>
+        <div hidden><label><input type="checkbox" id="tHRow"> 第一列為表頭</label><label><input type="checkbox" id="tHCol"> 第一欄為表頭</label></div>
         <div class="trow" hidden><label>第一列</label><span class="tseg" id="tHead"><button data-v="auto">自動</button><button data-v="1">是表頭</button><button data-v="0">不是</button></span></div>
         <div class="trow"><label>最後一列</label><label class="ttg"><input type="checkbox" id="tLast"> 是合計（粗體＋上方線）</label></div></details>
        </section>
@@ -650,8 +651,6 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
         <details class="tmore-options" id="tMoreOptions" open><summary>風格與文字</summary>
         <div class="trow"><label>風格</label><select id="tStyle" aria-label="風格（顏色、字型）"></select></div>
         <div class="trow"><label>字型</label><span class="tseg" data-tp="tbFont"><button data-v="jh" title="表格用微軟正黑體（電腦沒裝時預覽改用相近字型）">微軟正黑體（預設）</button><button data-v="auto" title="沿用目前風格的內文字型">跟風格</button><button data-v="arial">Arial＋正黑</button></span></div>
-        <div class="trow"><label>中英間距</label><label class="ttg"><input type="checkbox" data-tk="tbTight"> 移除中英文之間的空格</label></div>
-<div class="trow"><label class="tarrow" title="表格中 ▲▼ 升降符號的顏色；預設不用紅綠">▲▼ 符號色 <select id="tArrow"><option value="mono">主色＋灰（建議）</option><option value="ink">全黑</option><option value="sem">好壞色（主色／琥珀）</option></select></label></div>
 </details>
  <details class="treset-options"><summary>進階：清除格式與強調</summary><div class="trow"><button class="btn" id="tFormatReset" title="保留資料，還原此表格格式">還原此表格格式</button></div><p class="hint">清除強調標記、欄格式與資料結構設定；保留資料與目前主題，可以復原。</p></details>
 
@@ -700,16 +699,16 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <script src="jszip.min.js?v=978d62b5"></script>
 <script src="pptxgen.min.js?v=24808c08"></script>
 <script src="icons.js?v=65c03732"></script>
-<script src="deck.js?v=3af38907"></script>
+<script src="deck.js?v=00de47ff"></script>
 <script src="stylekit-data.js?v=47e8edb0"></script>
-<script src="native-styles.js?v=0b71b55a"></script>
+<script src="native-styles.js?v=75619d92"></script>
 <script src="stylekit.js?v=2be1fe46"></script>
 <script src="preflight.js?v=fb03c6cb"></script>
 <script src="export-flow.js?v=c9d4f55c"></script>
 <script src="quickstyles.js?v=b4777192"></script>
 <script src="fixed-master-data.js?v=bcbcf725"></script>
-<script src="fixed-master-previews.js?v=9619f54a"></script>
-<script src="fixed-master.js?v=c0334755"></script>
+<script src="fixed-master-previews.js?v=ce432e16"></script>
+<script src="fixed-master.js?v=dbb41fe6"></script>
 <script>
 (function(){
  'use strict';
@@ -859,7 +858,8 @@ function cleanLabels(o){const out={};if(!o||typeof o!=='object')return out;Objec
  if(/^iconvariants:\d+$/.test(k)&&o[k]._iconStyle&&typeof o[k]._iconStyle==='object')L._iconStyle=D.cleanIconStyle(o[k]._iconStyle);
  if(Object.keys(L).length)out[k]=L;});return out;}
 try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=presetOf(s.base).id;S.p=cleanP(s.p,S.base);S.slideKey=typeof s.key==='string'?s.key:null;/* 位置記憶：以頁面 ID（非索引）記憶，找不到回到 00 總覽 */S.mine=s.mine?D.stripCtl(s.mine).slice(0,40):null;S.autoTone=s.autoTone!==false;S.tab=normalizeTab(s.tab);S.examples=true;S.labels=cleanLabels(s.labels);}}catch(e){}
-const persist=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify({base:S.base,p:S.p,slide:S.slide,key:model&&model.slides[S.slide]?model.slides[S.slide].key:S.slideKey,autoTone:S.autoTone,mine:S.mine||null,tab:S.tab||'slides',examples:!!S.examples,labels:S.labels||{}}));}catch(e){}};
+function normalizeRetiredTableControls(){S.p.tbTight=false;S.p.tbArrow='mono';}
+const persist=()=>{normalizeRetiredTableControls();try{localStorage.setItem(LS_KEY,JSON.stringify({base:S.base,p:S.p,slide:S.slide,key:model&&model.slides[S.slide]?model.slides[S.slide].key:S.slideKey,autoTone:S.autoTone,mine:S.mine||null,tab:S.tab||'slides',examples:!!S.examples,labels:S.labels||{}}));}catch(e){}};
 const hex=v=>String(v||'').replace('#','').toUpperCase();
 const toast=(t,ms,html)=>{const e=$('#toast');
  {const ti=document.querySelector('.tins');if(document.body.classList.contains('tabT')&&matchMedia('(max-width:820px)').matches&&ti){const tt=ti.querySelector('.tinsTabs');const tr=(tt||ti).getBoundingClientRect();e.style.bottom=Math.round(innerHeight-tr.bottom+4)+'px';e.style.top='auto';}else{e.style.bottom='';e.style.top='';}}if(html)e.innerHTML=t;else e.textContent=t;e.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>e.classList.remove('on'),ms||2200);window.__lastToast=e.textContent;};
@@ -1191,7 +1191,7 @@ document.addEventListener('keydown',e=>{const p=e.target.closest&&e.target.close
 let quickSaved;try{quickSaved=JSON.parse(localStorage.getItem('ppt-studio-quick-styles')||'null');}catch(_){}
 function renderQuick(){setTab('master');}
 let masterSaved;try{masterSaved=JSON.parse(localStorage.getItem('ppt-studio-fixed-master')||'null');}catch(_){}
-function renderMaster(){if(!window.FixedMaster)return;FixedMaster.render($('#vMaster'),{state:masterSaved,onChange:state=>{masterSaved=state;try{localStorage.setItem('ppt-studio-fixed-master',JSON.stringify(state));}catch(_){toast('本機儲存不可用；本次母片設定仍保留。');}},onDownload:async snapshot=>{const template=snapshot.mode==='template';const bytes=template?await FixedMaster.exportPptx(window.JSZip,[],{source:snapshot.selection.paletteSource}):await FixedMaster.exportMaterials(window.JSZip,snapshot.selection);saveBlob(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'}),template?'固定紅色_三頁母片.pptx':'固定紅色_卡片與文字素材.pptx');return true;}});}
+function renderMaster(){if(!window.FixedMaster)return;FixedMaster.render($('#vMaster'),{state:masterSaved,onChange:state=>{masterSaved=state;try{localStorage.setItem('ppt-studio-fixed-master',JSON.stringify(state));}catch(_){toast('本機儲存不可用；本次母片設定仍保留。');}},onDownload:async snapshot=>{const template=snapshot.mode==='template';const bytes=template?await FixedMaster.exportPptx(window.JSZip,[],{source:snapshot.selection.paletteSource}):await FixedMaster.exportMaterials(window.JSZip,snapshot.selection);saveBlob(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'}),template?'固定紅色_十三頁母片.pptx':'固定紅色_卡片與文字素材.pptx');return true;}});}
 function renderExtra(){if(S.tab==='style')renderStylePrev();else if(S.tab==='icons')renderIcons();else if(S.tab==='table')renderTable();else if(S.tab==='master')renderMaster();}
 
 /* ---------- 圖示庫 ---------- */
@@ -1324,7 +1324,7 @@ const saveT=()=>{invalidateExport();try{localStorage.setItem(TKEY,JSON.stringify
 const TABLE_FORMAT_KEYS=[...Object.keys(D.BASE).filter(k=>k.startsWith('tb')),'tbPanel','tbTitleInk'];
 const HKEYS=[...TABLE_FORMAT_KEYS,'size'];
 const HIST={a:[],i:-1,t:0,lock:false};
-const snapT=()=>JSON.stringify({T,p:Object.fromEntries(HKEYS.map(k=>[k,S.p[k]]))});
+const snapT=()=>{normalizeRetiredTableControls();return JSON.stringify({T,p:Object.fromEntries(HKEYS.map(k=>[k,S.p[k]]))});};
 function pushHist(now){if(HIST.lock)return;clearTimeout(HIST.t);const go=()=>{const v=snapT();if(HIST.a[HIST.i]===v)return;HIST.a=HIST.a.slice(0,HIST.i+1);HIST.a.push(v);if(HIST.a.length>80)HIST.a.shift();HIST.i=HIST.a.length-1;histBtns();};if(now)go();else HIST.t=setTimeout(go,350);}
 function histBtns(){['tUndo','tWorkUndo'].forEach(id=>{const el=$('#'+id);if(el)el.disabled=HIST.i<=0;});['tRedo','tWorkRedo'].forEach(id=>{const el=$('#'+id);if(el)el.disabled=HIST.i>=HIST.a.length-1;});}
 function histGo(d){cancelRangePreview();clearTimeout(HIST.t);const v=snapT();if(HIST.a[HIST.i]!==v){HIST.a=HIST.a.slice(0,HIST.i+1);HIST.a.push(v);HIST.i=HIST.a.length-1;}
@@ -1478,11 +1478,10 @@ function tableAppearanceLabel(){const a=D.tableAppearanceOf(S.p);return [a.card?
 
 function syncTableUI(){fixT();renderGrid();renderTableOpts();}
 function renderTableOpts(){renderAppearanceOptions();renderOutputOptions(tableMeta());const hv=T.header==null||T.header==='auto'?'auto':T.header?'1':'0';
- $('#tHead').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===hv)));{const AU=D.tableAuto(T.rows.map(r=>r.map(c=>String(c))),T);$('#tHRow').checked=T.header==null||T.header==='auto'?AU.head:!!T.header;$('#tLast').checked=T.lastTotal!=null?!!T.lastTotal:AU.key.includes(T.rows.length-1);$('#tHCol').checked=!!T.hcol;
+ $('#tHead').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===hv)));$('#tHeaderMode').value=D.tableHeaderMode(T);{const AU=D.tableAuto(T.rows.map(r=>r.map(c=>String(c))),T);$('#tHRow').checked=T.header==null||T.header==='auto'?AU.head:!!T.header;$('#tLast').checked=T.lastTotal!=null?!!T.lastTotal:AU.key.includes(T.rows.length-1);$('#tHCol').checked=!!T.hcol;
   const sec=document.querySelector('.tsec[data-sec="data"]');if(sec)sec.classList.toggle('empty',!T.rows.length);$('#tUndoPaste').hidden=!PREV_T;}
  document.querySelectorAll('[data-tp]').forEach(el=>{const k=el.dataset.tp;const v=String((k==='tbFont'&&S.p[k]==='noto'?'jh':k==='tbDense'&&(S.p[k]==='auto'||S.p[k]==='compact')?(S.p[k]==='compact'?'dense':''):S.p[k])||({size:'M',tbMinus:'auto',tbWidth:'auto',tbV:'center',tbH:'center',tbFont:'jh',tbPad:'m',tbDense:'normal'})[k]);el.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));});
- document.querySelectorAll('[data-tk]').forEach(el=>{const k=el.dataset.tk;el.checked=k==='tbNeg'||k==='tbTight'?!!S.p[k]:S.p[k]!==false;});
- $('#tArrow').value=S.p.tbArrow||'mono';
+ document.querySelectorAll('[data-tk]').forEach(el=>{const k=el.dataset.tk;el.checked=k==='tbNeg'?!!S.p[k]:S.p[k]!==false;});
  const ss=$('#tStyle');if(!ss.options.length)ss.innerHTML=D.PRESETS.map(p=>`<option value="${p.id}">${escH(p.zh)}</option>`).join('');ss.value=S.base;}
 function renderAll(){syncTableUI();renderTable();}
 const pc=(v,t)=>(v/t*100).toFixed(3)+'%';
@@ -1509,7 +1508,7 @@ function renderTable0(light){renderTableOpts();const nR=T.rows.length,nC=nCols()
  renderSlots(tb);
  const A=D.tableAuto(T.rows.map(r=>r.map(c=>String(c))),T);const nNum=A.numC.filter(Boolean).length,nSt=A.statC.filter(Boolean).length;
  const hd=T.header==null||T.header==='auto'?A.head:!!T.header;
- $('#tAuto').innerHTML=`<b>${tableBlocked()?'PPTX 尺寸超限':'完整原表'}</b>原始 ${nR} 列（資料 ${nR-(hd?1:0)} 列）× ${nC} 欄・${hd?'第 1 列＝表頭':'無表頭'}${nNum?`・${nNum} 個數字欄靠右`:''}${nSt?'・狀態上色':''}${tb&&tb.key.length?`・${tb.key.length} 列合計`:''}`;
+ $('#tAuto').innerHTML=`<b>${tableBlocked()?'PPTX 尺寸超限':'完整原表'}</b>原始 ${nR} 列（資料 ${nR-(hd?1:0)} 列）× ${nC} 欄・${D.TABLE_HEADER_MODES.find(x=>x.key===D.tableHeaderMode(T)).label}${nNum?`・${nNum} 個數字欄靠右`:''}${nSt?'・狀態上色':''}${tb&&tb.key.length?`・${tb.key.length} 列合計`:''}`;
  if(!light)renderLooks();else{TLKEY='';clearTimeout(renderTable._t);renderTable._t=setTimeout(renderLooks,350);}
  const warn=TM.warns.map(w=>w.replace(/^\[[^\]]*\]\s*/,'')),tableCheck=window.Preflight.check(TM,{deck:D});
  const issue=tableBlocked(),blocked=!!issue||tableCheck.status==='blocked';const blockedRow=issue&&issue.table.blockedRow;$('#tBlockedRow').hidden=!Number.isInteger(blockedRow);$('#tBlockedRow').textContent=Number.isInteger(blockedRow)?`檢查原始第 ${blockedRow+1} 列`:'定位超高列';$('#tPptx').disabled=blocked;$('#tExportBlocked').hidden=!blocked;
@@ -1859,7 +1858,6 @@ function buildTableUI(){
   $('#tSettingsReset').onclick=e=>{e.stopPropagation();resetTableSettings();};
  $('#tFormatReset').addEventListener('pointerdown',e=>{if(CELL_EDIT)e.preventDefault();});
  $('#tFormatReset').onclick=e=>{e.stopPropagation();resetTableFormat();};
- $('#tArrow').value=S.p.tbArrow||'mono';$('#tArrow').onchange=e=>setTableOption('tbArrow',e.target.value);
  $('#tLStrip').onclick=e=>{const b=e.target.closest('button[data-v]'),group=b&&b.closest('[data-appearance]');if(!group)return;const key=group.dataset.appearance,value=['tbCardOn','tbStripes'].includes(key)?b.dataset.v==='true':b.dataset.v;
   const field={tbCardOn:'card',tbHeaderStyle:'header',tbStripes:'stripes',tbGrid:'grid'}[key];if(D.tableAppearanceOf(S.p)[field]===value)return;pushHist(true);S.p[key]=value;renderAppearanceOptions();schedule();pushHist(true);};
  // Historical looks remain readable in saved data, never exclusive UI choices.
@@ -1892,7 +1890,8 @@ function buildTableUI(){
   if(e.target.closest('.tsug')){e.stopPropagation();T.title=SUG;saveT();renderTable(true);toast('已套用建議標題：可直接在畫布上修改',2400);return;}},true);
  $('#tPrev').addEventListener('keydown',e=>{const el=e.target.closest&&e.target.closest('.tslot[data-k="title"]');if(el&&e.key==='Tab'&&!el.textContent.trim()&&SUG){e.preventDefault();T.title=SUG;saveT();renderTable(true);pushHist();}});
 
-  $('#tHRow').onchange=e=>{T.header=e.target.checked;saveT();renderTable();};
+ $('#tHeaderMode').onchange=e=>{pushHist(true);T=D.tableSetHeaderMode(T,e.target.value);saveT();pushHist(true);renderTable();};
+ $('#tHRow').onchange=e=>{T.header=e.target.checked;saveT();renderTable();};
  $('#tHCol').onchange=e=>{T.hcol=e.target.checked;saveT();renderTable();};
  $('#tPop').addEventListener('click',e=>{const b=e.target.closest('button[data-a]');if(!b)return;e.stopPropagation();chipAct(b.dataset.a,b.dataset.v);});
  $('#tPop').addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();chipAct('x');}});

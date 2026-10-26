@@ -1,26 +1,30 @@
 # 母片與原生樣式
 
-母片頁提供兩個獨立下載，使用相同的配色快照、固定母片字型與主題效果。
+母片頁提供兩個獨立下載，固定母片字型、原紅色內容與 R2 balanced-v2 主題效果，不跟隨網站風格。
 
-- **下載三頁母片**：封面、單欄內容、雙欄內容，維持既有三頁內容與紅色外觀。
-- **下載卡片與文字素材**：兩頁共 70 個原生可編輯矩形，以及一頁八色文字醒目提示。素材不放進主三頁。
+- **下載十三頁母片**：封面；單欄 07／06／03／10／04；雙欄；矩形樣式 1/2、2/2；八色文字螢光筆；Cards & Panels；A16 內文＋強調；A18 Icon＋內文＋強調。
+- **下載卡片與文字素材**：兩頁共 70 個原生可編輯矩形，以及一頁八色文字醒目提示。這三頁對應主檔第 8–10 頁，副下載仍恰好三頁。
 
-原「範本 Style Kit」與「快速樣式」入口均導向母片頁。舊模組、靜態資產與偏好保留相容性，但不把舊 13 主題偏好移到固定母片。原生配色只有「常用色」與「原母片主題色」兩種選擇，不跟隨網站風格。
+原「範本 Style Kit」與「快速樣式」入口均導向母片頁。舊模組、靜態資產與偏好保留相容性；舊 common／theme 或 Kit 跟隨設定不能覆寫五個選定主題。五個單欄各有獨立具名 layout／master／theme；07 為首選，封面、雙欄與素材也用 07。具體六色值見 `fixed-master/download-manifest.json`。
 
 ## 原生主題與素材的差異
 
-配色選項決定下載檔的一組 Accent 1–6，不新增第二組 Ribbon。白色仍可另選，Text1 維持深色。兩個下載沿 relationships 找到 presentation 與所有有效 master 的 theme，更新指定填色、線條、效果清單及 Accent，保留字型、文字色槽、背景樣式與 notes 主題。若主題與 notes 共用，會在寫入前停止並說明，不把未修改當成成功。
+先在來源共同主題鏈套用 07 的 R2 profile，再逐一建立五個單欄的獨立主題鏈；不以單一 profile 廣播洗掉各母片配色。不同有效 master 色盤的封裝會被通用單 profile API 在寫入前拒絕。Text1 保留深色，白色另選。保留字型、文字／背景色槽、背景樣式與 notes 主題；若 notes 共用待改主題，寫入前停止。
 
-Office 內建樣式共享填色槽，無法讓同一槽只加深彩色白字而維持純白線框底。因此原生填色採安全深階，部分線框樣式呈灰底；需要精確白底外卡時，使用可編輯矩形素材。素材保有十款外觀，前三款是深灰框、細灰框與主色框的外層白卡。它們不是十個新 Ribbon 按鈕，也不會改變任意形狀的幾何。
+R2 保留指定試色檔的 tint／shade 順序、線條與陰影。Office 內建樣式共享填色槽，部分線框樣式呈灰底；精確白底外卡請用素材。素材保有十款外觀，前三款是深灰框、細灰框與主色框的外層白卡。它們不是十個新 Ribbon 按鈕，也不改變任意形狀的幾何。
 
-原生螢光筆八色為 F6D8DB、F9F0D4、7C9CC3、D4E6DF、E0E2E6、E5DDF1、595959、1F3864，使用 a:highlight，沒有獨立底帶。深灰與深藍的素材文字以白字展示。這只是範例文字的字色，不會在套用醒目提示時自動改動使用者字色。近期色記錄不保證各版本選單顯示、排序或永久保留，也不替換內建 15 色。
+原生高亮八色為 F6D8DB、F9F0D4、7C9CC3、D4E6DF、E0E2E6、E5DDF1、595959、1F3864，使用 a:highlight，沒有獨立底帶。五個單欄與素材共用一組近期色記錄。深灰／深藍的素材文字以白字展示，套用高亮不會自動改使用者字色。近期色顯示、順序與保留時間由 Office 決定，不替換內建 15 色。
 
-原始四頁來源檔的 bytes 保持不變。三頁母片為衍生檔，不能宣稱全部 theme bytes 不變。原標誌、公司資訊與頁尾依已確認範圍保留，網站按鈕和下載檔名採中性名稱。
+原始四頁來源 bytes 不變；衍生主檔保留原 master、7 layouts、media、notes，另建五個單欄 master／layout／theme，不能宣稱全部 theme bytes 不變。原單欄內容複製五次，新增各頁高亮示例與頁碼；原雙欄頁碼更新為 7。原標誌、公司資訊與頁尾依確認保留，按鈕和下載檔名採中性名稱。
+
+## 元件素材契約
+
+第 11–13 頁只取既有 Deck renderer 的原生物件，使用原母片 layout6，不引入 Deck master、theme、notes 或整頁圖片。Cards 保留 9 個群組；A16／A18 各保留全部 14 款 A/B（28 群組），等比 50% 重排成 7 列，內文 9 pt、A16 小字母標籤 8.5 pt。這是可複製後放大的密集素材，不是投影正文可讀性承諾。元件的 resolved RGB 來自 07 匯出配色，不保證日後 PowerPoint 換主題會自動變色。
 
 ## 建置與檢查
 
-以 tools/build_single.py 同步單檔版。tools/build_master_previews.js 將最終三頁母片的 Microsoft PowerPoint 960×540 PNG 轉圖原 bytes 內嵌，附來源與圖片 SHA-256，沒有重新繪製縮圖。
+先執行 `tools/stamp_version.py`，再以 `tools/build_single.py` 同步單檔。`tools/build_master_previews.js` 內嵌最終十三頁的 PowerPoint 960×540 PNG 原 bytes，記錄來源與圖片 SHA-256，沒有近似重畫。
 
-針對主題關係、保護清單與失敗原子性執行 tools/native_master_profile_test.js；兩個出口與素材封裝執行 tools/fixed_master_materials_test.js；介面、導覽和匯出快照執行 fixed_master_ui_test.js、navigation_test.js 與 export_entrypoints_test.js，來源版與單檔版皆測。
+`test:master-thirteen` 檢查頁序、五組關係、保護零件、R2 與原生結構；`native_master_profile_test.js` 驗 notes 共享阻擋與失敗原子性；素材、UI、navigation、export-entrypoint tests 驗正常／單檔的兩出口、焦點與快照鎖。主檔十三頁、副檔三頁的 manifest 與頁碼一致。
 
-Microsoft PowerPoint 的 Shape.ShapeStyle API 與 Ribbon 點擊是不同驗證層級。API、開檔、轉圖、儲存重開成功不等於 Ribbon 選單操作或近期色選單已驗。真正 Android 與 POTX 新建也需獨立驗證。
+PowerPoint ShapeStyle API、轉圖與保存重開不等於 Ribbon 點擊或 MRU 選單驗收。字型未內嵌，其他裝置可能不同；Android、POTX 新建與本輪表格 PowerPoint 實視未驗。標準 Blob 產生成功也不等於瀏覽器落盤。

@@ -13,12 +13,12 @@ await pg.evaluate(()=>document.querySelectorAll('.rdl')[2].click());await new Pr
 
 // Legacy Kit one-click apply retired. Fixed-master palette must remain independent.
 const paletteBefore=await pg.evaluate(()=>getComputedStyle(document.querySelector('#dot')).backgroundColor);
-await pg.click('#tabs [data-tab="master"]');await new Promise(r=>setTimeout(r,500));await pg.select('[data-fm-field="paletteSource"]','theme');
-ck('母片配色獨立於元件',await pg.evaluate(before=>document.querySelector('[data-fm-field="paletteSource"]').value==='theme'&&getComputedStyle(document.querySelector('#dot')).backgroundColor===before,paletteBefore));
+await pg.click('#tabs [data-tab="master"]');await new Promise(r=>setTimeout(r,500));
+ck('母片配色獨立於元件',await pg.evaluate(before=>!document.querySelector('[data-fm-field="paletteSource"]')&&[...document.querySelectorAll('[data-fm-scheme]')].map(e=>e.dataset.fmScheme).join(',')==='07,06,03,10,04'&&getComputedStyle(document.querySelector('#dot')).backgroundColor===before,paletteBefore));
 ck('兩個母片出口均直接可用',await pg.evaluate(()=>[...document.querySelectorAll('[data-fm-download]')].map(x=>x.dataset.fmDownload).join(',')==='template,materials'&&[...document.querySelectorAll('[data-fm-download]')].every(x=>!x.closest('details'))));
 await pg.evaluate(()=>document.querySelector('[data-tab="icons"]').click());await new Promise(r=>setTimeout(r,800));
 ck('圖示庫無多選／＋待選',!(await pg.$('#iMulti'))&&!(await pg.$('#iGrid .iadd')));
 await pg.type('#iSearch','錢');await new Promise(r=>setTimeout(r,500));ck('圖示搜尋同義詞：錢 → budget 類圖示',await pg.evaluate(()=>!!document.querySelector('#iGrid .ic[data-id="request_quote"]')));
 ck('圖示外框選項 6 種',(await pg.$$eval('#iVar button',b=>b.length))===6);
-await pg.evaluate(()=>document.querySelector('[data-tab="table"]').click());await new Promise(r=>setTimeout(r,800));ck('表格 ▲▼ 符號色選單',await pg.evaluate(()=>!!document.querySelector('#tArrow')&&document.querySelector('#tArrow').value==='mono'));
+await pg.evaluate(()=>document.querySelector('[data-tab="table"]').click());await new Promise(r=>setTimeout(r,800));ck('表格退休控制已移除',await pg.evaluate(()=>!document.querySelector('#tArrow')&&!document.querySelector('[data-tk="tbTight"]')));
 ck('無 JS 錯誤',!errs.length);console.log(F?'FAILS '+F:'ALL OK');await b.close();})();

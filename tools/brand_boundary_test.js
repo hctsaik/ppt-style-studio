@@ -16,13 +16,19 @@ const files=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirecto
   assert.equal(digest(Buffer.from(w.FixedMasterData.originalBase64,'base64')),SHA);
   assert(!PAT.test(w.FixedMasterData.sourceName),'Public source name is neutral');
   const root=w.document.getElementById('test');w.FixedMaster.render(root,{});
-  const previews=[...root.querySelectorAll('.fmOriginal img')];assert.equal(previews.length,3,'Three actual previews preserved');for(let i=0;i<3;i++){const png=Buffer.from(previews[i].src.split(',')[1],'base64');assert.equal(digest(png),w.FixedMasterPreviews.imageSha256[i]);assert.equal(png.subarray(0,8).toString('hex'),'89504e470d0a1a0a');}assert.equal(w.FixedMasterPreviews.renderer,'Microsoft PowerPoint 16.0.20527.20088');
+  const originalPreviewHashes=['f8600efdfe563e3316ea9b07db2dd4d424911d90893b2fe078f49c49b71df43e','e9ee6f6288ec890c21cbb016e32e142c1f56ac9cba7e82656d951b265f16c5d8','c6af2d47f15fcc55751a31d789355b2b4920295578a5a48527f29a2e8abca8b6'];
+  assert.equal(w.FixedMasterPreviews.renderer,'Microsoft PowerPoint 16.0.20527.20088');
+  for(const source of ['common','theme']){
+   w.FixedMaster.render(root,{state:{paletteSource:source}});const profile=w.FixedMasterPreviews;assert.equal(profile.pages,13);assert.equal(profile.images.length,13);assert.equal(profile.imageSha256.length,13);
+   const originalPreviews=[...root.querySelectorAll('.fmOriginal img')],added=[...root.querySelectorAll('.fmAdded img')];assert.equal(originalPreviews.length,7,'Cover, five independent singles and double preview');assert.equal(added.length,6,'Six selected material pages');
+   for(const [i,image]of [...originalPreviews,...added].entries()){const png=Buffer.from(image.src.split(',')[1],'base64');assert.equal(digest(png),profile.imageSha256[i]);assert.equal(png.subarray(0,8).toString('hex'),'89504e470d0a1a0a');if(i===0)assert.equal(digest(png),originalPreviewHashes[0],'Cover preview retains its independent approved SHA');}
+  }
   const legacyPreview=w.FixedMaster.preview(w.FixedMaster.build({}));assert(PAT.test(legacyPreview),'Original preview renderer/footer retained');
   const clone=root.cloneNode(true);clone.querySelectorAll('svg').forEach(e=>e.remove());
   assert(!PAT.test(clone.textContent),'Explanations, controls and labels must be neutral');
   assert(!PAT.test(htmlFile==='studio.html'?html:html.replace(/<script\b[\s\S]*?<\/script>/g,'')),'Static UI text is neutral');
   const host=htmlFile==='studio.html'?html:html.slice(html.lastIndexOf('<script>'));
-  assert(host.includes('固定紅色_三頁母片.pptx'));assert(host.includes('固定紅色_卡片與文字素材.pptx'));
+  assert(host.includes('固定紅色_十三頁母片.pptx'));assert(host.includes('固定紅色_卡片與文字素材.pptx'));
   dom.window.close();uiRuns++;
  }
  let packages=0,preservedHits=0;

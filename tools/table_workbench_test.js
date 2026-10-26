@@ -130,7 +130,7 @@ async function browserSuite(options = {}) {
   await sleep(300);
   await run('Table-first workspace exposes exactly two preview-only zoom choices', async () => {
     await reset();
-    for (const id of ['tLStrip','tArrow']) assert(el('#tIns').contains(el('#'+id))); for (const id of ['tView','tCleanV']) assert(el('#tPreviewWorkspace').contains(el('#'+id)));
+    assert(el('#tIns').contains(el('#tLStrip')));assert(!document.querySelector('#tArrow'));assert(!document.querySelector('[data-tk="tbTight"]')); for (const id of ['tView','tCleanV']) assert(el('#tPreviewWorkspace').contains(el('#'+id)));
     assert(!visible(el('#tView')), 'Redundant full-slide/closeup controls remain visible');
     assert([...document.querySelectorAll('.tzoom button')].map(e => e.textContent).join('|') === '顯示整個表格|預覽 100%', 'Preview does not expose the requested two choices');
     assert(el('.tzoom [data-z="fit"]').getAttribute('aria-pressed') === 'true', 'Fit-all is not default');

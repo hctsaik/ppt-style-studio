@@ -1,0 +1,112 @@
+{
+  "version": 2,
+  "filename": "固定紅色_十三頁母片.pptx",
+  "sourceFilename": "Fixed_Red_Template.pptx",
+  "sourceSha256": "1d42e27915855f57c1bee5ad185526ee62c51818223e9cfde20609dcf47c1fae",
+  "slideCount": 13,
+  "sizeEmu": [
+    12192000,
+    6858000
+  ],
+  "pages": [
+    {
+      "number": 1,
+      "key": "cover",
+      "layout": 1
+    },
+    {
+      "number": 2,
+      "key": "single-column",
+      "layout": 2,
+      "schemeId": "07"
+    },
+    {
+      "number": 3,
+      "key": "single-column",
+      "layout": 2,
+      "schemeId": "06"
+    },
+    {
+      "number": 4,
+      "key": "single-column",
+      "layout": 2,
+      "schemeId": "03"
+    },
+    {
+      "number": 5,
+      "key": "single-column",
+      "layout": 2,
+      "schemeId": "10"
+    },
+    {
+      "number": 6,
+      "key": "single-column",
+      "layout": 2,
+      "schemeId": "04"
+    },
+    {
+      "number": 7,
+      "key": "double-column",
+      "layout": 4
+    },
+    {
+      "number": 8,
+      "key": "rectangles-1",
+      "layout": 6,
+      "cards": 35
+    },
+    {
+      "number": 9,
+      "key": "rectangles-2",
+      "layout": 6,
+      "cards": 35
+    },
+    {
+      "number": 10,
+      "key": "native-highlight",
+      "layout": 6,
+      "highlights": 8
+    },
+    {
+      "number": 11,
+      "key": "cards",
+      "catalogueId": "A2",
+      "layout": 6,
+      "groups": 9
+    },
+    {
+      "number": 12,
+      "key": "schemebody",
+      "catalogueId": "A16",
+      "layout": 6,
+      "groups": 28,
+      "bodyPt": 9,
+      "smallLetterPt": 8.5
+    },
+    {
+      "number": 13,
+      "key": "schemeiconbody",
+      "catalogueId": "A18",
+      "layout": 6,
+      "groups": 28,
+      "bodyPt": 9
+    }
+  ],
+  "secondary": {
+    "filename": "固定紅色_卡片與文字素材.pptx",
+    "slideCount": 3,
+    "mainPageNumbers": [
+      8,
+      9,
+      10
+    ]
+  },
+  "defaultScheme": "07",
+  "singleSchemes": [
+    "07",
+    "06",
+    "03",
+    "10",
+    "04"
+  ]
+}

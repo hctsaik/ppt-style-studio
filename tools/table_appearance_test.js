@@ -72,7 +72,8 @@ function legacyHashes(D, restoreOldFirstColumnInset = false) {
     out[[preset.id, look, name].join('/')] = {
       items: hash(m.slides.map(sl => ({ w: sl.w, h: sl.h, items: sl.items, groups: sl.groups }))),
       svg: hash(m.slides.map(sl => D.toSvg(sl)).join('\n')),
-      html: hash(D.tableHtml(m))
+      // Ignore only the approved semantic th/scope tags for this immutable visual baseline.
+      html: hash(D.tableHtml(m).replace(/<th scope="(?:row|col)"/g,'<td').replace(/<\/th>/g,'</td>'))
     };
   }
   return out;

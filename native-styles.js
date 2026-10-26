@@ -114,23 +114,36 @@
   return{presentationPart,presentationRels:relPath(presentationPart),masterParts,masterThemes,themeParts,notesThemeParts,notesParts,sourceThemePart:masterThemes[masterParts[0]],presPropsPart:props[0]?props[0].target:null};
  }
  async function nativeStyleProfile(zip,options={}){
-  const source=options.source||options.paletteSource||'common';if(!['common','theme'].includes(source))throw Error('Unknown native palette source');const graph=await resolveThemeGraph(zip),scheme=readScheme(await xmlPart(zip,graph.sourceThemePart)),accents=(source==='common'?ACCENTS:Array.from({length:6},(_,i)=>scheme['accent'+(i+1)])).slice();
+  const source=options.source||options.paletteSource||'common',format=options.format||'master-enhanced-v1';if(!['common','theme','custom'].includes(source))throw Error('Unknown native palette source');if(!['master-enhanced-v1','balanced-v2'].includes(format))throw Error('Unknown native format profile');
+  if(source==='custom'&&(!Array.isArray(options.accents)||options.accents.length!==6||options.accents.some(c=>!valid(c))))throw Error('Six valid custom accent colors are required');
+  const graph=await resolveThemeGraph(zip),scheme=readScheme(await xmlPart(zip,graph.sourceThemePart)),accents=(source==='custom'?options.accents:source==='common'?ACCENTS:Array.from({length:6},(_,i)=>scheme['accent'+(i+1)])).map(c=>c.toUpperCase());
   const slots={...scheme};accents.forEach((v,i)=>slots['accent'+(i+1)]=v);
-  return{version:1,palette:{source,accents,slots,sourceThemePart:graph.sourceThemePart},fmt:{id:'master-enhanced-v1',lightFill:'soft-gray',note:'原生線框列共用淺灰底，白底外卡由獨立可編輯素材提供。'},preset:{effects:KIT_EFFECTS.map(e=>({...e})),radiusPt:KIT_RADIUS_PT},graph};
+  return{version:1,palette:{source,accents,slots,sourceThemePart:graph.sourceThemePart},fmt:{id:format,lightFill:'soft-gray',note:'原生線框列共用淺灰底，白底外卡由獨立可編輯素材提供。'},preset:{effects:KIT_EFFECTS.map(e=>({...e})),radiusPt:KIT_RADIUS_PT},graph};
  }
  // Keep the Office matrix's solid / subtle / intense slot meanings. Unlike
  // the specimen-only Kit matrix, no slot is a fixed pale-gray background.
- function masterThemeXml(xml){
+ function masterThemeXml(xml,format='master-enhanced-v1'){
+  if(!['master-enhanced-v1','balanced-v2'].includes(format))throw Error('Unknown native format profile');
   const old=(xml.match(/<a:fmtScheme\b[^>]*>[\s\S]*?<\/a:fmtScheme>/)||[])[0];if(!old)throw Error('Missing formatting matrix');const bg=(old.match(/<a:bgFillStyleLst>[\s\S]*?<\/a:bgFillStyleLst>/)||[])[0];if(!bg)throw Error('Missing background styles');
   const solid=mods=>'<a:solidFill>'+colorXml('phClr',mods)+'</a:solidFill>',gradient=(a,b)=>'<a:gradFill rotWithShape="1"><a:gsLst><a:gs pos="0">'+colorXml('phClr',a)+'</a:gs><a:gs pos="100000">'+colorXml('phClr',b)+'</a:gs></a:gsLst><a:lin ang="5400000" scaled="0"/></a:gradFill>';
   // Office shares fill slot 1 between lt1/black-text and Accent/white-text.
   // A bounded linear shade keeps both readable; outline tiles consequently
   // use soft gray. Exact white-card appearances live in editable specimens.
-  const fills='<a:fillStyleLst>'+solid([['shade',30000]])+gradient([['tint',20000]],[['tint',12000]])+gradient([['shade',30000]],[['shade',25000]])+'</a:fillStyleLst>';
+  // balanced-v2 is the approved R2 matrix, not a palette approximation. The
+  // tint-before-shade order matters; preserve every transform and endpoint.
+  const balanced=format==='balanced-v2';
+  const fills='<a:fillStyleLst>'+(balanced?solid([['tint',90000],['shade',27500]]):solid([['shade',30000]]))+gradient([['tint',20000]],[['tint',12000]])+(balanced?gradient([['tint',85000],['shade',26000]],[['tint',90000],['shade',27500]]):gradient([['shade',30000]],[['shade',25000]]))+'</a:fillStyleLst>';
   const lines='<a:lnStyleLst>'+[.75,1,1.75].map(w=>'<a:ln w="'+Math.round(w*12700)+'" cap="flat" cmpd="sng" algn="ctr">'+solid([])+'<a:prstDash val="solid"/><a:round/></a:ln>').join('')+'</a:lnStyleLst>';
-  const effects='<a:effectStyleLst>'+[null,{blur:4.2,offset:1.5,alpha:.20},{blur:7,offset:2,alpha:.24}].map(s=>'<a:effectStyle><a:effectLst>'+(s?'<a:outerShdw blurRad="'+Math.round(s.blur*12700)+'" dist="'+Math.round(s.offset*12700)+'" dir="5400000" algn="ctr" rotWithShape="0"><a:srgbClr val="000000"><a:alpha val="'+Math.round(s.alpha*100000)+'"/></a:srgbClr></a:outerShdw>':'')+'</a:effectLst></a:effectStyle>').join('')+'</a:effectStyleLst>';
+  const shadows=balanced?[null,{blur:3,offset:1.25,alpha:.14},{blur:4.5,offset:1.5,alpha:.19}]:[null,{blur:4.2,offset:1.5,alpha:.20},{blur:7,offset:2,alpha:.24}];
+  const effects='<a:effectStyleLst>'+shadows.map(s=>'<a:effectStyle><a:effectLst>'+(s?'<a:outerShdw blurRad="'+Math.round(s.blur*12700)+'" dist="'+Math.round(s.offset*12700)+'" dir="5400000" algn="ctr" rotWithShape="0"><a:srgbClr val="000000"><a:alpha val="'+Math.round(s.alpha*100000)+'"/></a:srgbClr></a:outerShdw>':'')+'</a:effectLst></a:effectStyle>').join('')+'</a:effectStyleLst>';
   let next=old;for(const [tag,content]of [['fillStyleLst',fills],['lnStyleLst',lines],['effectStyleLst',effects]]){const re=new RegExp('<a:'+tag+'\\b[^>]*>[\\s\\S]*?</a:'+tag+'>');if(!re.test(next))throw Error('Missing formatting list '+tag);next=next.replace(re,()=>content);}return xml.replace(old,()=>next);
  }
+ function validateProfile(profile){
+  if(!profile||profile.version!==1||!profile.fmt||!['master-enhanced-v1','balanced-v2'].includes(profile.fmt.id)||!profile.palette||!['common','theme','custom'].includes(profile.palette.source)||!Array.isArray(profile.palette.accents)||profile.palette.accents.length!==6||profile.palette.accents.some(c=>!valid(c)))throw Error('Invalid native style profile');
+ }
+ // Pure transformation for explicitly selected cloned themes. The caller owns
+ // each clone's relationships; this function does not broadcast across a deck.
+ function profileThemeXml(xml,profile){validateProfile(profile);return masterThemeXml(replaceAccents(xml,profile.palette.accents),profile.fmt.id);}
  function appendElement(xml,local,child){const close=new RegExp('</((?:[\\w.-]+:)?'+local+')>\\s*$'),m=xml.match(close);if(!m)throw Error('Unsupported '+local+' XML');const prefix=m[1].includes(':')?m[1].split(':')[0]+':':'';return xml.replace(close,()=>child(prefix)+m[0]);}
  function recentColorsXml(props){
   props=props.replace(/<p:presentationPr\b[^>]*>/,tag=>/\bxmlns:a=/.test(tag)?tag:tag.replace(/\s*\/?>$/,end=>' xmlns:a="'+A+'"'+end));
@@ -140,9 +153,14 @@
  }
  async function applyProfileToZip(zip,input={}){
   const requested=input.palette?input:null,profile=requested||await nativeStyleProfile(zip,input),graph=await resolveThemeGraph(zip),palette=profile.palette;
-  if(profile.version!==1||profile.fmt.id!=='master-enhanced-v1'||!['common','theme'].includes(palette.source)||palette.accents.length!==6||palette.accents.some(c=>!valid(c)))throw Error('Invalid native style profile');
+  validateProfile(profile);
+  // A single profile may cover one shared palette, but must never erase the
+  // independent schemes of a multi-master deck. Build clones individually
+  // with profileThemeXml instead of broadcasting this API over those themes.
+  const masterSchemes=await Promise.all([...new Set(Object.values(graph.masterThemes))].map(async part=>JSON.stringify(readScheme(await xmlPart(zip,part)))));
+  if(new Set(masterSchemes).size>1)throw Error('Multiple active master color schemes require per-theme profiles; a single profile cannot overwrite independent palettes');
   const pending=new Map(),put=(part,xml)=>pending.set(part,xml);
-  for(const part of graph.themeParts){const old=await xmlPart(zip,part),updated=masterThemeXml(replaceAccents(old,palette.accents));if(updated!==old)put(part,updated);}
+  for(const part of graph.themeParts){const old=await xmlPart(zip,part),updated=profileThemeXml(old,profile);if(updated!==old)put(part,updated);}
   const pp=graph.presPropsPart||graph.presentationPart.slice(0,graph.presentationPart.lastIndexOf('/')+1)+'presProps.xml';
   if(!graph.presPropsPart&&zip.file(pp))throw Error('Unreferenced presentation properties part would be overwritten');
   put(pp,recentColorsXml(graph.presPropsPart?await xmlPart(zip,pp):'<?xml version="1.0" encoding="UTF-8"?><p:presentationPr xmlns:p="'+P+'" xmlns:a="'+A+'"/>'));
@@ -151,5 +169,5 @@
   for(const [part,xml]of pending){const entry=zip.file(part);zip.file(part,xml,{date:entry?entry.date:new Date(Date.UTC(2026,0,1)),createFolders:false});}
   return{profile,palette,source:palette.source,accents:palette.accents.slice(),scheme:{...palette.slots},highlights:HIGHLIGHTS.map(h=>h.color),themeParts:graph.themeParts,changedParts:[...pending.keys()]};
  }
- return{COMMON,ACCENTS,HIGHLIGHTS,softColor,readScheme,replaceAccents,applyToZip,KIT_EFFECTS,KIT_SHADOWS,KIT_RADIUS_PT,kitEffect,kitThemeXml,colorXml,transform,contrast,resolveThemeGraph,nativeStyleProfile,applyProfileToZip,masterThemeXml};
+ return{COMMON,ACCENTS,HIGHLIGHTS,softColor,readScheme,replaceAccents,applyToZip,KIT_EFFECTS,KIT_SHADOWS,KIT_RADIUS_PT,kitEffect,kitThemeXml,colorXml,transform,contrast,resolveThemeGraph,nativeStyleProfile,applyProfileToZip,masterThemeXml,profileThemeXml};
 });
