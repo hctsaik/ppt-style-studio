@@ -39,6 +39,23 @@ async function boot(storage={}){const errors=[],vc=new VirtualConsole();vc.on('j
    assert.equal(d.querySelectorAll('.fmControls select,.fmControls input').length,6);
    assert(!rules.some(r=>r.style&&r.style['overflow-x']==='hidden'),'Do not hide page overflow instead of fixing sizing');
   });
+  await test('Eight-tab header reserves desktop actions and preserves the existing phone row',()=>{
+   const rules=Array.from($('style').sheet.cssRules);
+   const rule=(selector,list=rules)=>{const r=list.find(r=>r.selectorText===selector);assert(r,'Missing CSS '+selector);return r.style;};
+   const media=q=>{const r=rules.find(r=>r.conditionText===q);assert(r,'Missing media '+q);return Array.from(r.cssRules);};
+   const nav=rule('header .tabs');assert.equal(nav.flex,'0 1 auto');assert.equal(nav['min-width'],'0');assert.equal(nav['overflow-x'],'auto');
+   assert.equal(rule('.tabs button').flex,'0 0 auto');
+   const desktop=media('(min-width:901px) and (max-width:1440px)');
+   assert.equal(rule('header',desktop)['flex-wrap'],'wrap');const second=rule('header .tabs',desktop);
+   assert.equal(second.order,'9');assert.equal(second.flex,'1 1 100%');assert.equal(second['max-width'],'100%');assert.equal(second.margin,'0');
+   // Multiple 900px blocks exist; keep checking the original full mobile header block.
+   const phone=rules.find(r=>r.conditionText==='(max-width:900px)'&&Array.from(r.cssRules).some(c=>c.selectorText==='header .tabs'));
+   assert(phone);assert.equal(rule('header .tabs',Array.from(phone.cssRules)).flex,'1 1 100%');
+   assert.equal(d.querySelectorAll('#tabs button').length,8);
+   tab('slides');assert.notEqual(w.getComputedStyle($('#bOne')).display,'none');assert.notEqual(w.getComputedStyle($('#bAll')).display,'none');
+   assert.equal($('#bTpl').getAttribute('aria-controls'),'mTpl');assert.equal($('#bMore').getAttribute('aria-controls'),'mMore');
+   tab('master');assert.equal($('#bOne').style.display,'none');assert.equal($('#bAll').style.display,'none');
+  });
   await test('Layout / quick style / marker / color / text events persist and preserve keyboard focus',()=>{
    const set=(key,value)=>{const el=$('[data-fm-field="'+key+'"]');el.focus();el.value=value;el.dispatchEvent(new w.Event(el.tagName==='SELECT'?'change':'input',{bubbles:true}));assert.equal(d.activeElement.dataset.fmField,key);};
    set('layout','5');set('style','outline');set('marker','underline');const white=$('[data-fm-color="white"]');white.focus();white.click();assert.equal(d.activeElement.dataset.fmColor,'white');set('title','A<&B');set('focus','保留原文字');assert.equal(state().layout,'5');assert.equal(state().style,'outline');assert.equal(state().color,'white');assert.equal(state().focus,'保留原文字');assert(!d.querySelector('[data-fm-preview] B'));assert(!$('.fmWhite').hidden);assert.equal(JSON.parse(w.localStorage.getItem('ppt-studio-fixed-master')).focus,'保留原文字');});

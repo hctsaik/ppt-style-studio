@@ -605,7 +605,7 @@ PptxGenJS 無法寫出 algn／sx／sy，因此匯出後會用 JSZip 解開 pptx�
 
 組合包保留原 4 頁、1 master、7 layouts 的原生封裝，只新增可編輯 shapes／text groups／tables，下載為 5 或 11 頁。HTML 預覽明標示意，未宣稱 PowerPoint 忠實縮圖；字型未內嵌，PowerPoint 實視及瀏覽器下載落盤仍未驗。詳見 [`fixed-master/README.md`](fixed-master/README.md) 的原件 SHA、精確 4-part 變更合約、462 組推導與驗證範圍。`npm run test:fixed-master` 同時驗正常／離線版；全站 `npm test` 包含此組回歸。
 
-母片編輯區在窄版使用可縮小的 grid tracks／children，表單欄位限制於容器內；七色可換行，540px 示意僅在預覽框內橫捲，不撐開整頁。`test:fixed-master` 包含正常／離線版 CSS／DOM 契約；真實 360 CSS px 排版須於正式 HTTPS 頁另行驗收。
+母片編輯區在窄版使用可縮小的 grid tracks／children，表單欄位限制於容器內；七色可換行，540px 示意僅在預覽框內橫捲，不撐開整頁。`test:fixed-master` 包含正常／離線版 CSS／DOM 契約；真實 360 CSS px 排版須於正式 HTTPS 頁另行驗收。 八個主導覽頁籤在 901–1440px 獨立第二列，避免擠出右側下載／選單；更寬桌面允許頁籤局部橫捲，900px 以下仍沿用原手機配置。
 
 ### Style Kit 窄版容器修正
 
