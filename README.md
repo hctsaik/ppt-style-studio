@@ -604,3 +604,7 @@ PptxGenJS 無法寫出 algn／sx／sy，因此匯出後會用 JSZip 解開 pptx�
 新增「投影片母片」分頁，原附件的紅色標題、微軟正黑體、bullet、間距、標誌與頁尾不跟隨全站風格。原 4 頁以原 bytes 下載；另可選版面、四種快速樣式、兩款柔和螢光筆（或不加）與七種固定色，組成 462 種受版面約束的搭配。一次只呈現一組，提供 7 個精簡推薦組合。
 
 組合包保留原 4 頁、1 master、7 layouts 的原生封裝，只新增可編輯 shapes／text groups／tables，下載為 5 或 11 頁。HTML 預覽明標示意，未宣稱 PowerPoint 忠實縮圖；字型未內嵌，PowerPoint 實視及瀏覽器下載落盤仍未驗。詳見 [`fixed-master/README.md`](fixed-master/README.md) 的原件 SHA、精確 4-part 變更合約、462 組推導與驗證範圍。`npm run test:fixed-master` 同時驗正常／離線版；全站 `npm test` 包含此組回歸。
+
+### Style Kit 窄版容器修正
+
+約 360 CSS px 時，Style Kit 的 column-flex 子層曾因 auto margin 與七欄 grid 的 intrinsic minimum 導致整份內容橫向溢出。容器現在明確 `width:100%; min-width:0`；七欄目錄保留可讀的最小欄寬，只在目錄內橫捲並可鍵盤聚焦。卡片高亮列、色票格與長路徑可局部換行，不改配色／下載／主題跟隨語義。`npm run test:stylekit-mobile` 驗正常與離線版 CSS／DOM 合約；真實 360px 視覺需在正式 HTTPS 頁另行驗收，未以 DOM 測試冒充瀏覽器排版測試。

@@ -22,7 +22,7 @@ function cell(c,i){const dk=lum(c,.5,0);
   case 4:return{bg:`linear-gradient(#${lum(c,.6,.4)},#${c})`,bd:'0',fg:'#FFF'};
   default:return{bg:'#'+c,bd:'0',fg:'#FFF',sh:'0 1.5px 4px rgba(0,0,0,.28)'};}}
 function gallery(t){const cols=[t.sc.dk1].concat(t.sc.acc),names=['Text1 / 深色1','Accent 1','Accent 2','Accent 3','Accent 4','Accent 5','Accent 6'];
- let h='<div class="skG" id="skGal"><div></div>'+cols.map((c,j)=>`<div class="skCh">${names[j]}<br><code>#${c}</code></div>`).join('');
+ let h='<div class="skG" id="skGal" role="region" aria-label="快速樣式七欄目錄，可左右捲動" tabindex="0"><div></div>'+cols.map((c,j)=>`<div class="skCh">${names[j]}<br><code>#${c}</code></div>`).join('');
  ROWS.forEach((r,i)=>{h+=`<div class="skRh">${r[0]}<small>${r[1]}</small></div>`+cols.map((c,j)=>{const s=cell(c,i);return `<div class="skQ" data-r="${i}" data-c="${j}" style="background:${s.bg};border:${s.bd};color:${s.fg};${s.sh?'box-shadow:'+s.sh:''}">Abc</div>`;}).join('');});
  return h+'</div>';}
 function kit(t){const sc=t.sc,P=sc.acc[0],A=sc.acc[1],PD=sc.dk2;
@@ -40,7 +40,7 @@ function href(f){const b=B64();if(!b||!b[f])return 'stylekit/'+f;if(urls[f])retu
  const bin=atob(b[f]),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
  const mime=/\.xml$/.test(f)?'application/xml':/\.potx$/.test(f)?'application/vnd.openxmlformats-officedocument.presentationml.template':'application/vnd.openxmlformats-officedocument.presentationml.presentation';
  return urls[f]=URL.createObjectURL(new Blob([u],{type:mime}));}
-const CSS=`#vKit .skCr{display:block;font-size:10px;color:#595959;font-weight:400}#vKit .skCt{display:flex;flex-wrap:wrap;gap:6px 18px;margin:4px 0 10px;font-size:12px;color:#333}#vKit .skCt b{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px;border:1px solid #ddd}#vKit .skCt em{font-style:normal;font-weight:600}#vKit .skCt .ok{color:#2E7D4F}#vKit .skCt .mid{color:#7A5A00}#vKit .skCt .no{color:#9A3A3A}#vKit{background:#fff;overflow:auto;padding:18px 22px 40px}#vKit .skW{max-width:1180px;margin:0 auto;color:#3A3A3A}
+const CSS=`#vKit .skCr{display:block;font-size:10px;color:#595959;font-weight:400}#vKit .skCt{display:flex;flex-wrap:wrap;gap:6px 18px;margin:4px 0 10px;font-size:12px;color:#333}#vKit .skCt b{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px;border:1px solid #ddd}#vKit .skCt em{font-style:normal;font-weight:600}#vKit .skCt .ok{color:#2E7D4F}#vKit .skCt .mid{color:#7A5A00}#vKit .skCt .no{color:#9A3A3A}#vKit{background:#fff;overflow:auto;padding:18px 22px 40px}#vKit .skW{width:100%;min-width:0;max-width:1180px;margin:0 auto;color:#3A3A3A}
 #vKit h2{font-size:20px;margin:0 0 2px;color:#222}#vKit h2 small{font-size:12px;color:#8C8C8C;font-weight:400;margin-left:8px}
 #vKit .skLead{font-size:12.5px;color:#595959;margin:4px 0 14px;line-height:1.6}
 .skTh{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}.skTh button{border:1px solid #D9D9D9;background:#fff;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12.5px;display:flex;align-items:center;gap:6px;color:#3A3A3A}
@@ -48,16 +48,17 @@ const CSS=`#vKit .skCr{display:block;font-size:10px;color:#595959;font-weight:40
 .skDl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 16px;padding:12px 14px;border:1px solid #E5E5E5;border-left:4px solid var(--skP);border-radius:6px}
 .skDl a{text-decoration:none;font-size:13px;border:1px solid #D9D9D9;border-radius:7px;padding:7px 12px;color:#3A3A3A}.skDl a.pri{background:var(--skP);border-color:var(--skP);color:#fff;font-weight:700}.skDl .skApply{font-size:13px;border:1px solid var(--skP);background:#fff;color:var(--skP);border-radius:7px;padding:7px 12px;font-weight:700;cursor:pointer}.skDl .skApply:hover{background:#EEF3FA}.skDl small{color:#8C8C8C;font-size:11.5px;flex-basis:100%}
 .skSec{font-size:14px;font-weight:700;color:var(--skP);border-bottom:1.5px solid var(--skP);padding-bottom:4px;margin:18px 0 10px}.skSec small{color:#8C8C8C;font-weight:400;margin-left:6px;font-size:11.5px}
-.skG{display:grid;grid-template-columns:150px repeat(7,1fr);gap:8px 10px;align-items:center}.skCh{font-size:10.5px;color:#8C8C8C;text-align:center;line-height:1.3}.skCh code{font-size:10px}
+.skG{display:grid;min-width:0;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;grid-template-columns:150px repeat(7,minmax(56px,1fr));gap:8px 10px;align-items:center}.skCh{font-size:10.5px;color:#8C8C8C;text-align:center;line-height:1.3}.skCh code{font-size:10px}
 .skRh{font-size:12px;font-weight:700;color:#595959;line-height:1.25}.skRh small{display:block;font-weight:400;color:#8C8C8C;font-size:10.5px}
 .skQ{height:40px;border-radius:5px;display:flex;align-items:center;justify-content:center;font:600 13px Arial,'Microsoft JhengHei',sans-serif;box-sizing:border-box}
-.skK{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}.skCard{border:1px solid #E5E5E5;border-radius:6px;padding:12px 14px}.skCard h4{margin:0 0 8px;font-size:13.5px;color:var(--skP)}.skCard h4 small{display:block;color:#8C8C8C;font-weight:400;font-size:11px;margin-top:2px}
-.skHl{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:13.5px}.skHl .n{color:#8C8C8C;font-size:11px;width:20px}.skHl .t{font-weight:700;padding:1px 3px}.skHl code,.skSw code{color:#8C8C8C;font-size:10.5px}
+.skK{display:grid;min-width:0;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.skCard{min-width:0;border:1px solid #E5E5E5;border-radius:6px;padding:12px 14px}.skCard h4{margin:0 0 8px;font-size:13.5px;color:var(--skP)}.skCard h4 small{display:block;color:#8C8C8C;font-weight:400;font-size:11px;margin-top:2px}
+.skHl{display:flex;flex-wrap:wrap;min-width:0;align-items:center;gap:8px;margin:5px 0;font-size:13.5px}.skHl .n{color:#8C8C8C;font-size:11px;width:20px}.skHl .t{min-width:0;overflow-wrap:anywhere;font-weight:700;padding:1px 3px}.skHl code,.skSw code{color:#8C8C8C;font-size:10.5px}
 .skE{margin:8px 0;font-size:14px}.skE small{display:block;color:#8C8C8C;font-size:10.5px;margin-top:1px}.skFt{font-size:11px;color:#8C8C8C;border-top:1px solid #BFBFBF;padding-top:6px}
 .hb{position:relative;display:inline-block;padding:0 2px}.hb i{position:absolute;left:14px;right:-2px;bottom:1px;height:45%;opacity:.65;border-radius:2px}.hb b{position:relative}
-.skSw{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;font-size:12px}.skSw span{display:flex;align-items:center;gap:6px}.skSw i{width:16px;height:16px;border-radius:3px;border:1px solid #0001;flex:none}
+.skSw{display:grid;min-width:0;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 10px;font-size:12px}.skSw span{display:flex;min-width:0;flex-wrap:wrap;align-items:center;gap:6px}.skSw i{width:16px;height:16px;border-radius:3px;border:1px solid #0001;flex:none}
 .skNote{font-size:11.5px;color:#8C8C8C;line-height:1.7;margin-top:16px}
-@media(max-width:820px){.skK{grid-template-columns:1fr}.skG{grid-template-columns:70px repeat(7,1fr);gap:5px}.skQ{height:30px;font-size:10px}.skCh{font-size:8.5px}.skRh small{display:none}.skRh{font-size:10px}}`;
+#vKit .skW h2,#vKit .skLead,#vKit .skNote,#vKit .skDl small,#vKit .skSource span{min-width:0;overflow-wrap:anywhere}#vKit .skDl a,#vKit .skDl .skApply{max-width:100%;white-space:normal;overflow-wrap:anywhere}.skG:focus-visible{outline:2px solid var(--skP);outline-offset:2px}
+@media(max-width:820px){.skK{grid-template-columns:1fr}.skG{grid-template-columns:70px repeat(7,minmax(56px,1fr));gap:5px}.skQ{height:30px;font-size:10px}.skCh{font-size:8.5px}.skRh small{display:none}.skRh{font-size:10px}}`;
 // A Kit choice has a source. An explicit template selection must survive a
 // visit to another tab, while the default follows the current Studio palette.
 const STORE='ppt-studio-stylekit-v1',PALETTE_KEYS=['P','PD','PT','A','ink','t2','mute','line','l2','fill'];
