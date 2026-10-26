@@ -16,7 +16,29 @@ async function boot(storage={}){const errors=[],vc=new VirtualConsole();vc.on('j
 }
 (async()=>{let checks=0;const test=async(n,fn)=>{await fn();checks++;console.log('PASS '+n);};const app=await boot();const {w,d,$,run,tab,state}=app;let storage;
  try{
-  await test('Independent master nav, original-four labels, presets and seven colors',()=>{tab('master');assert(!$('#vMaster').hidden);assert($('#vQuick').hidden);assert($('#pageInfo').hidden);assert(d.body.classList.contains('tabM'));assert.equal(d.querySelectorAll('.fmOriginal').length,4);assert.equal(d.querySelectorAll('[data-fm-preset]').length,7);assert.equal(d.querySelectorAll('[data-fm-color]').length,7);assert($('.fm').textContent.includes('非 PowerPoint 忠實縮圖'));const css=$('#fixedMasterCss').textContent;assert(css.includes('.fm{width:100%;min-width:0;max-width:1260px;'));assert(css.includes('@media(max-width:850px)'));assert(css.includes('@media(max-width:480px)'));assert(css.includes('min-height:44px'));assert(css.includes('.fmCanvas{border:1px solid #D4D6D9;background:#fff;overflow:auto}'));});
+  await test('Independent master nav, original-four labels, presets and seven colors',()=>{tab('master');assert(!$('#vMaster').hidden);assert($('#vQuick').hidden);assert($('#pageInfo').hidden);assert(d.body.classList.contains('tabM'));assert.equal(d.querySelectorAll('.fmOriginal').length,4);assert.equal(d.querySelectorAll('[data-fm-preset]').length,7);assert.equal(d.querySelectorAll('[data-fm-color]').length,7);assert($('.fm').textContent.includes('非 PowerPoint 忠實縮圖'));const css=$('#fixedMasterCss').textContent;assert(css.includes('.fm{width:100%;min-width:0;max-width:1260px;'));assert(css.includes('@media(max-width:850px)'));assert(css.includes('@media(max-width:480px)'));assert(css.includes('min-height:44px'));assert(css.includes('.fmCanvas{min-width:0;max-width:100%;border:1px solid #D4D6D9;background:#fff;overflow:auto}'));});
+  await test('Mobile editor grid can shrink while only the 540px schematic scrolls locally',()=>{
+   // CSS/DOM contract, not a JSDOM geometry claim. Real 360px rendering needs HTTPS QA.
+   const rules=Array.from($('#fixedMasterCss').sheet.cssRules);
+   const rule=(selector,list=rules)=>{const r=list.find(r=>r.selectorText===selector);assert(r,'Missing CSS '+selector);return r.style;};
+   const media=q=>{const r=rules.find(r=>r.conditionText===q);assert(r,'Missing media '+q);return Array.from(r.cssRules);};
+   assert.equal(rule('.fmLayout')['grid-template-columns'],'300px minmax(0,1fr)','Desktop columns stay unchanged');
+   assert.equal(rule('.fmLayout>*,.fmControls,.fmControls>*')['min-width'],'0');
+   const fields=rule('.fmControls select,.fmControls input');
+   assert.equal(fields.width,'100%');assert.equal(fields['min-width'],'0');assert.equal(fields['max-width'],'100%');
+   const tablet=media('(max-width:850px)'),phone=media('(max-width:480px)');
+   assert.equal(rule('.fmLayout',tablet)['grid-template-columns'],'minmax(0,1fr)');
+   assert.equal(rule('.fmControls',tablet)['grid-template-columns'],'repeat(2,minmax(0,1fr))');
+   assert.equal(rule('.fmControls',phone)['grid-template-columns'],'minmax(0,1fr)');
+   assert.equal(rule('.fmColors')['flex-wrap'],'wrap');
+   assert.equal(rule('.fmCanvas')['min-width'],'0');assert.equal(rule('.fmCanvas')['max-width'],'100%');
+   assert.equal(rule('.fmCanvas').overflow,'auto');assert.equal(rule('.fmCanvas svg')['min-width'],'540px');
+   assert.equal($('.fmCanvas').parentElement.parentElement,$('.fmLayout'),'Preview is in a shrinkable grid child');
+   assert.equal($('.fmControls').parentElement,$('.fmLayout'));
+   assert.equal(d.querySelectorAll('.fmControls [data-fm-color]').length,7);
+   assert.equal(d.querySelectorAll('.fmControls select,.fmControls input').length,6);
+   assert(!rules.some(r=>r.style&&r.style['overflow-x']==='hidden'),'Do not hide page overflow instead of fixing sizing');
+  });
   await test('Layout / quick style / marker / color / text events persist and preserve keyboard focus',()=>{
    const set=(key,value)=>{const el=$('[data-fm-field="'+key+'"]');el.focus();el.value=value;el.dispatchEvent(new w.Event(el.tagName==='SELECT'?'change':'input',{bubbles:true}));assert.equal(d.activeElement.dataset.fmField,key);};
    set('layout','5');set('style','outline');set('marker','underline');const white=$('[data-fm-color="white"]');white.focus();white.click();assert.equal(d.activeElement.dataset.fmColor,'white');set('title','A<&B');set('focus','保留原文字');assert.equal(state().layout,'5');assert.equal(state().style,'outline');assert.equal(state().color,'white');assert.equal(state().focus,'保留原文字');assert(!d.querySelector('[data-fm-preview] B'));assert(!$('.fmWhite').hidden);assert.equal(JSON.parse(w.localStorage.getItem('ppt-studio-fixed-master')).focus,'保留原文字');});
