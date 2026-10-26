@@ -51,11 +51,10 @@ async function check(label,fn){await fn();checks++;console.log('PASS '+label);}
    assert.equal(els(xml(await text(z,master)),P,'cSld')[0].getAttribute('name'),'單欄'+id);
    assert.equal(theme.documentElement.getAttribute('name'),'單欄'+id);
    for(let k=0;k<6;k++)assert.equal(els(els(theme,A,'accent'+(k+1))[0],A,'srgbClr')[0].getAttribute('val'),accents[k]);
-   const added=[...s.matchAll(/<p:sp\b[^>]*>[\s\S]*?<\/p:sp>/g)].filter(m=>/\bid="9001"/.test(m[0]));assert.equal(added.length,1);
-   assert.equal(joined(xml('<wrap xmlns:p="'+P+'" xmlns:a="'+A+'">'+added[0][0]+'</wrap>')),'重點文字');
-   assert.equal(els(d,A,'highlight').length,1);assert.equal(els(els(d,A,'highlight')[0],A,'srgbClr')[0].getAttribute('val'),highlight);
+   const added=[...s.matchAll(/<p:sp\b[^>]*>[\s\S]*?<\/p:sp>/g)].filter(m=>/\bid="9001"/.test(m[0]));assert.equal(added.length,0);
+   assert.equal(els(d,A,'highlight').length,0);
    const expected=sourceSingle.replace(/(<a:fld\b[^>]*\btype="slidenum"[^>]*>[\s\S]*?<a:t>)\d+(<\/a:t>[\s\S]*?<\/a:fld>)/g,(_,a,b)=>a+(i+2)+b).replace('<a:t>單欄內容</a:t>','<a:t>單欄'+id+'</a:t>');
-   assert.equal(s.replace(added[0][0],''),expected,'Only approved title/number/native highlight changes');
+   assert.equal(s,expected,'Only approved title/number changes; no added bottom sample');
   }
   assert.equal(els(pres,P,'sldMasterId').length,6);
  });
@@ -89,7 +88,7 @@ async function check(label,fn){await fn();checks++;console.log('PASS '+label);}
   const previous=await JSZip.loadAsync(fs.readFileSync(process.env.MASTER_PREVIOUS_FIXTURE));
   for(let i=0;i<10;i++){
    const current=await text(z,ordered[i]);let before=await text(previous,ordered[i]);
-   if(i>=1&&i<=5){const id=SCHEMES[i-1][0];before=before.replace('<a:t>單欄內容</a:t>','<a:t>單欄'+id+'</a:t>').replace(/(<p:sp\b[^>]*>[\s\S]*?\bid="9001"[\s\S]*?<a:t>)[^<]*(<\/a:t>)/,(_,a,b)=>a+'重點文字'+b);}
+   if(i>=1&&i<=5){const id=SCHEMES[i-1][0];before=before.replace('<a:t>單欄內容</a:t>','<a:t>單欄'+id+'</a:t>').replace(/<p:sp\b[^>]*>[\s\S]*?<\/p:sp>/g,shape=>/\bid="9001"/.test(shape)?'':shape);}
    if(i===7||i===8)before=before.replace('首選 07 · E01 v5','首選 07');
    assert.equal(current,before,'Prior page '+(i+1));
   }

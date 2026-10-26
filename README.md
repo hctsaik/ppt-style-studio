@@ -605,7 +605,7 @@ PptxGenJS 無法寫出 algn／sx／sy，因此匯出後會用 JSZip 解開 pptx�
 
 ### 投影片母片（固定外觀與增強主題）
 
-主範本共 26 頁，前十頁為「專案重點與下一步」封面、五個單欄 07／06／03／10／04、雙欄、矩形樣式 1/2、2/2、八色文字螢光筆；再接深藍、青綠、墨綠、框架四風格各四頁（00 總覽、Cards & Panels、A16、A18）。封面沿用原 layout1 的 native placeholder；五單欄保留原內容、改為簡短頁名、各附一段「重點文字」原生高亮與頁碼；雙欄頁碼為 7。原四頁附件及 SHA 不變；保留原 1 master／7 layouts／media，另建五組單欄 master／layout／theme，主檔共 6 個有效 master、12 layouts。原紅標題、微軟正黑體、bullet、logo 與頁尾保留。R2 效果及 Accent 為明確變更，不能宣稱全部 theme bytes 不變。notes 不修改；`ppt/presProps.xml` 共用八色 MRU。
+主範本共 26 頁，前十頁為「專案重點與下一步」封面、五個單欄 07／06／03／10／04、雙欄、矩形樣式 1/2、2/2、八色文字螢光筆；再接深藍、青綠、墨綠、框架四風格各四頁（00 總覽、Cards & Panels、A16、A18）。封面沿用原 layout1 的 native placeholder；五單欄保留原內容、改為簡短頁名、不加底部示例框，僅更新頁碼；雙欄頁碼為 7。原四頁附件及 SHA 不變；保留原 1 master／7 layouts／media，另建五組單欄 master／layout／theme，主檔共 6 個有效 master、12 layouts。原紅標題、微軟正黑體、bullet、logo 與頁尾保留。R2 效果及 Accent 為明確變更，不能宣稱全部 theme bytes 不變。notes 不修改；`ppt/presProps.xml` 共用八色 MRU。
 
 主下載 `固定紅色_26頁母片.pptx` 位於預覽前，保留實際 26 頁縮圖。已移除副素材按鈕、折疊說明、編號目錄與技術配色名列表；內部三頁 materials helper 保留相容性。第 8–10 頁提供 70 個可編輯矩形及八色原生文字高亮。五個單欄以 R2 balanced-v2 原生主題效果建立，不從舊 Kit 種子生成。
 

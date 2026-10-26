@@ -283,11 +283,7 @@
  function relationshipPart(part){const at=part.lastIndexOf('/');return part.slice(0,at+1)+'_rels/'+part.slice(at+1)+'.rels';}
  function relEntries(xml){return Array.from(xml.matchAll(/<(?:\w+:)?Relationship\b[^>]*\/>/g),m=>({xml:m[0],attrs:Object.fromEntries(Array.from(m[0].matchAll(/([\w:.-]+)="([^"]*)"/g),a=>[a[1],a[2]]))}));}
  function numbered(xml,number){let count=0;const out=xml.replace(/(<a:fld\b[^>]*\btype="slidenum"[^>]*>[\s\S]*?<a:t>)\d+(<\/a:t>[\s\S]*?<\/a:fld>)/g,(_,a,b)=>{count++;return a+number+b;});if(count!==1)throw Error('Single-column page number field changed');return out;}
- function singleHighlight(scheme){
-  // One additive text box, not a separate shape band. The existing source
-  // paragraphs, bullet runs and title stay exactly as supplied.
-  return '<p:sp xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><p:nvSpPr><p:cNvPr id="9001" name="Native highlight '+scheme.id+'"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr><a:xfrm><a:off x="'+emu(84)+'" y="'+emu(621)+'"/><a:ext cx="'+emu(1050)+'" cy="'+emu(42)+'"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/><a:ln><a:noFill/></a:ln></p:spPr>'+textBody('重點文字',16,'333333',false,scheme.highlight)+'</p:sp>';
- }
+
  async function installSingleSchemes({zip,profile,stamp}){
   const graph=await NativeStyles.resolveThemeGraph(zip);
   if(graph.masterParts.length!==1)throw Error('五款單欄需從原單一母片建立；已停止以免覆寫既有設計。');
@@ -326,8 +322,7 @@
    pres=pres.replace('</p:sldMasterIdLst>','<p:sldMasterId xmlns:r="'+R+'" id="'+(2147483700+i)+'" r:id="'+rid+'"/></p:sldMasterIdLst>');
    presRels=presRels.replace('</Relationships>','<Relationship Id="'+rid+'" Type="'+R+'/slideMaster" Target="/'+masterPart+'"/></Relationships>');
    const slidePart=i===0?sourceSlide:'ppt/slides/slideScheme'+scheme.id+'.xml';
-   let sx=numbered(slideXml0,i+2).replace('<a:t>單欄內容</a:t>','<a:t>'+esc(scheme.label)+'</a:t>');if(/\bid="9001"/.test(sx))throw Error('Single-column example shape ID collision');
-   sx=sx.replace('</p:spTree>',singleHighlight(scheme)+'</p:spTree>');
+   let sx=numbered(slideXml0,i+2).replace('<a:t>單欄內容</a:t>','<a:t>'+esc(scheme.label)+'</a:t>');
    sx=sx.replace(/(<p:cSld\b[^>]*\bname=")[^"]*(")/,(_,a,b)=>a+esc(scheme.label)+b);
    let sr=slideRels0.replace(layoutRel[0].xml,layoutRel[0].xml.replace(/Target="[^"]*"/,'Target="/'+layoutPart+'"'));
    if(i===0){pending.set(slidePart,sx);pending.set(sourceSlideRels,sr);}
