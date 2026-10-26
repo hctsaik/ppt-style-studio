@@ -5,8 +5,8 @@
   "files": [
     {
       "path": "native-stylekit/theme/navy.pptx",
-      "bytes": 28763,
-      "sha256": "fbf164ff593a4792a5dd61f3d7e170b18824508ed652595ae08cd8fa0ee0018e",
+      "bytes": 28887,
+      "sha256": "7da78d45f2a68f021d0b4bc86cc17617a2bda4e924f75cfcefa6195a542c181f",
       "seedSha256": "bf43a3222d968cffc205c229f53a8c7786eacf2425b3f4d7d5c3658b93305180",
       "accents": [
         "1F4E79",
@@ -28,8 +28,8 @@
     },
     {
       "path": "native-stylekit/theme/navy.potx",
-      "bytes": 28772,
-      "sha256": "dae98b296e31668be0e2f223b37889b9886c0a0599a7cabef29539ba63ecf9da",
+      "bytes": 28896,
+      "sha256": "bf8130a7c28e6e6507dd337d4062a2def9cb52fd16047d409bb1b033c79f0cfb",
       "seedSha256": "bf43a3222d968cffc205c229f53a8c7786eacf2425b3f4d7d5c3658b93305180",
       "accents": [
         "1F4E79",
@@ -74,8 +74,8 @@
     },
     {
       "path": "native-stylekit/theme/green.pptx",
-      "bytes": 28756,
-      "sha256": "d8c2393019d3da3263d49f4d8afd1188ee8347e7907f681b14a99f615a8cc870",
+      "bytes": 28890,
+      "sha256": "bd194bc11873e8e63046bd21435855043fb9d21c5b1b226d4aa55a9df864b808",
       "seedSha256": "e7a58ee6f03207a71b220a4270245112cce93a885d10f83d2dc24c96264b9ba0",
       "accents": [
         "2F5D50",
@@ -97,8 +97,8 @@
     },
     {
       "path": "native-stylekit/theme/green.potx",
-      "bytes": 28765,
-      "sha256": "b531748626d957067ddffde5ab4790e01d36c9839cb33993426cfcdabe28e8c9",
+      "bytes": 28899,
+      "sha256": "4ced0d50043e7011e2ddfb68b14352959e29fa23c793926f135e77bb61ccbae8",
       "seedSha256": "e7a58ee6f03207a71b220a4270245112cce93a885d10f83d2dc24c96264b9ba0",
       "accents": [
         "2F5D50",
@@ -143,8 +143,8 @@
     },
     {
       "path": "native-stylekit/theme/frame.pptx",
-      "bytes": 28742,
-      "sha256": "2c9e63d3a5a4b17002b0a4425d47b2aae5b904dc10550b6941bf8de83f6b8928",
+      "bytes": 28889,
+      "sha256": "a934b6b539e4bee88c3227aa44ab9deeddf016115c3d1ab39df150f4a2573fd3",
       "seedSha256": "2f4de70956ffed03e9c9e87447c0124dc59cae41253510624eb059efc4bd12a9",
       "accents": [
         "2F4B6E",
@@ -166,8 +166,8 @@
     },
     {
       "path": "native-stylekit/theme/frame.potx",
-      "bytes": 28751,
-      "sha256": "99b7b8ec61a1f4229a22781ea462289aea9ed4d0af86bce1257742c85d8f8dea",
+      "bytes": 28898,
+      "sha256": "37afea8de05abe6621e44b22533e1b6860be4ffaadda56618fcc6d5af3c53935",
       "seedSha256": "2f4de70956ffed03e9c9e87447c0124dc59cae41253510624eb059efc4bd12a9",
       "accents": [
         "2F4B6E",
@@ -212,8 +212,8 @@
     },
     {
       "path": "native-stylekit/theme/iceberg.pptx",
-      "bytes": 28723,
-      "sha256": "5ed3ae497abcc1a10bc9794a1db9c02ed52455cf014f988f42407f068e0265e3",
+      "bytes": 28861,
+      "sha256": "4dbe8ceaa61715b1b22f6848f4d174a128b99a8b8223f1ea5a63460133b409a4",
       "seedSha256": "776169c5d854ff15a90cf8e229898fc96d41eeab5cd1f54004be71be0fcd8df8",
       "accents": [
         "404040",
@@ -235,8 +235,8 @@
     },
     {
       "path": "native-stylekit/theme/iceberg.potx",
-      "bytes": 28732,
-      "sha256": "bcb2e32c99eda94bea316c74113b2ef426a4cf3ef41c742556a3e44ca34990c1",
+      "bytes": 28870,
+      "sha256": "215d674d921226383570abdb7ffbb15604494db9c65ac23e2ae63faeda12296a",
       "seedSha256": "776169c5d854ff15a90cf8e229898fc96d41eeab5cd1f54004be71be0fcd8df8",
       "accents": [
         "404040",
@@ -281,8 +281,8 @@
     },
     {
       "path": "native-stylekit/theme/wire.pptx",
-      "bytes": 28730,
-      "sha256": "4faaa2f735952b21700fdf27c9806bd56c9b6e3839c2f2edb590e6fd67fee28b",
+      "bytes": 28871,
+      "sha256": "b00d8a9ca649d8e8b9a787dcb4619a4118512a1499bec0d0d83f5c99af5cc5f4",
       "seedSha256": "a9478edcc9ebaf6fbb738674d982633c3feef3b6f8a2f29d1ead8b389a8ab80d",
       "accents": [
         "4F5BD5",
@@ -304,8 +304,8 @@
     },
     {
       "path": "native-stylekit/theme/wire.potx",
-      "bytes": 28739,
-      "sha256": "30c03d9bd9ae7f5e501e00369c7654e5b9e92a30aa5051b8a0a2da1854c49666",
+      "bytes": 28880,
+      "sha256": "edfb29f1f3094a524a282922e2b1366aac1d9854d85e63775e57fab39efa736f",
       "seedSha256": "a9478edcc9ebaf6fbb738674d982633c3feef3b6f8a2f29d1ead8b389a8ab80d",
       "accents": [
         "4F5BD5",
@@ -350,8 +350,8 @@
     },
     {
       "path": "native-stylekit/theme/wine.pptx",
-      "bytes": 28748,
-      "sha256": "005db4579ca28cc09c46c9dfd7960e84fcaf8757d235ea2f171e39042663ea7c",
+      "bytes": 28888,
+      "sha256": "2415d8a69e4788111f5dd83e884c3e75b3eb4085edfb356aa7c2721e544c9d22",
       "seedSha256": "d1de5bad0fb5b7e0f3d715df0fd8057ee77809348ee70d7bc9c26c474455d55d",
       "accents": [
         "7A1F2B",
@@ -373,8 +373,8 @@
     },
     {
       "path": "native-stylekit/theme/wine.potx",
-      "bytes": 28757,
-      "sha256": "51784bf268cb9f8935c869896610351d1885c840bd9de38732942ca0f0bccb28",
+      "bytes": 28897,
+      "sha256": "b27fcee280d0e83ae81ce74c16e7e35fcf80d6ed45f7b21b8a210976ee72e7a2",
       "seedSha256": "d1de5bad0fb5b7e0f3d715df0fd8057ee77809348ee70d7bc9c26c474455d55d",
       "accents": [
         "7A1F2B",
@@ -419,8 +419,8 @@
     },
     {
       "path": "native-stylekit/theme/teal.pptx",
-      "bytes": 28740,
-      "sha256": "f9303b6eeb4469565f43ab8bab090497863cf12eb5a2acae66b0043e6ebb0a9f",
+      "bytes": 28878,
+      "sha256": "4335c9e52dabbbbeab0d5848038c988409cfb0825d5be0ba48ac1701b5aceff8",
       "seedSha256": "ba769139abd8acc194eceeab4a85d8b926eae14c6139d9988a35ce0e7fababff",
       "accents": [
         "0F7C80",
@@ -442,8 +442,8 @@
     },
     {
       "path": "native-stylekit/theme/teal.potx",
-      "bytes": 28749,
-      "sha256": "e4cd7a24a57bb889477ae9ee259fd3df88fe90c22f444a9202d98969b2cd091f",
+      "bytes": 28887,
+      "sha256": "dbb191262e35d9c0e564ff602e9b29fa21815f19db06fadab68f5910b77801f8",
       "seedSha256": "ba769139abd8acc194eceeab4a85d8b926eae14c6139d9988a35ce0e7fababff",
       "accents": [
         "0F7C80",
@@ -488,8 +488,8 @@
     },
     {
       "path": "native-stylekit/theme/charcoal.pptx",
-      "bytes": 28713,
-      "sha256": "80bc15c8655ed0cf7b46a32a6729418e7c7d996882e6a275d43eaaf55b22f57f",
+      "bytes": 28854,
+      "sha256": "0feedf065472e091d1af12d620bdb224a91d81a13abaf82b6ea52842f3ee125e",
       "seedSha256": "d1746ff0b11ac8e4b7e4d855edea37fbd89a2d4cb19d3fd329c48b4e55efda19",
       "accents": [
         "3A3A3A",
@@ -511,8 +511,8 @@
     },
     {
       "path": "native-stylekit/theme/charcoal.potx",
-      "bytes": 28722,
-      "sha256": "22ef8f8037caf47a44d0b914149c727e1a53a58f85c1ab51bd33bc1743c8c33d",
+      "bytes": 28863,
+      "sha256": "ffa26251ce83ae933252126ae12252a96a81c140ce19e42cda02ba3c4a8e1adc",
       "seedSha256": "d1746ff0b11ac8e4b7e4d855edea37fbd89a2d4cb19d3fd329c48b4e55efda19",
       "accents": [
         "3A3A3A",
@@ -557,8 +557,8 @@
     },
     {
       "path": "native-stylekit/theme/investor.pptx",
-      "bytes": 28740,
-      "sha256": "2539cbe3c103fde2f24f16446ecf095f6aa10517890351b579e227c7ae60e361",
+      "bytes": 28866,
+      "sha256": "51e3c1a00a9a3b279aef32f189200c8eaf29b13bcffeef6407e1f068a33161db",
       "seedSha256": "d1c9621886cc544b22d6aeacbaf3897d64713b378b1b5cd52cecb262f2797338",
       "accents": [
         "E60012",
@@ -580,8 +580,8 @@
     },
     {
       "path": "native-stylekit/theme/investor.potx",
-      "bytes": 28749,
-      "sha256": "c8ebcab4866f285b7f03bd0f867c984a47ac98e7ea35ecc69081bd14a44681ec",
+      "bytes": 28875,
+      "sha256": "6d86dd84f10e82f45de923eb624852028c8722b6c96aa9000bdfdb1158523fbf",
       "seedSha256": "d1c9621886cc544b22d6aeacbaf3897d64713b378b1b5cd52cecb262f2797338",
       "accents": [
         "E60012",
@@ -626,8 +626,8 @@
     },
     {
       "path": "native-stylekit/theme/forest.pptx",
-      "bytes": 28745,
-      "sha256": "7c2b672bc332d4b6b7631cc1ade7a2ea8be0c1cb595c9a5ff77ce96f1bf987d1",
+      "bytes": 28880,
+      "sha256": "9e69c005962d09844e6307c72e276d882c68c00d4bc57b13bfde0b50ab338a56",
       "seedSha256": "d7d747576da204d64d7663f9bf6e8f5687e20882f95acdc820db1cb27994ab41",
       "accents": [
         "1E4D45",
@@ -649,8 +649,8 @@
     },
     {
       "path": "native-stylekit/theme/forest.potx",
-      "bytes": 28754,
-      "sha256": "b2a7bd37c2f79d5f1ff6612624697cb3977693879472e304511561d80d72b8f9",
+      "bytes": 28889,
+      "sha256": "d19122b15b45599e69d0c87388b361da97496719f526c6e1c17899986c866c59",
       "seedSha256": "d7d747576da204d64d7663f9bf6e8f5687e20882f95acdc820db1cb27994ab41",
       "accents": [
         "1E4D45",
@@ -695,8 +695,8 @@
     },
     {
       "path": "native-stylekit/theme/burgundy.pptx",
-      "bytes": 28751,
-      "sha256": "6c4b0f0492e7993f6533667e85aa41c8058f30cb09406eee1411a346f5adb7dc",
+      "bytes": 28891,
+      "sha256": "f9a3529cb3ee548eb8e65079bd41841632f008252f3bd41205592bfe2d34e0f0",
       "seedSha256": "40cb80163da501d7f206785a7b0fd14fb41f3e35d23d5088e7632ec17467d792",
       "accents": [
         "6B1E2E",
@@ -718,8 +718,8 @@
     },
     {
       "path": "native-stylekit/theme/burgundy.potx",
-      "bytes": 28760,
-      "sha256": "97299a5e55d4237ab4a1e78e2f225830d999cc816b2d662b173e069b2f0e8536",
+      "bytes": 28900,
+      "sha256": "7769beb691c34582c7ba1f21ec23409c3e72371f9967ae5bdfe87c65049c3acc",
       "seedSha256": "40cb80163da501d7f206785a7b0fd14fb41f3e35d23d5088e7632ec17467d792",
       "accents": [
         "6B1E2E",
@@ -764,8 +764,8 @@
     },
     {
       "path": "native-stylekit/theme/slate.pptx",
-      "bytes": 28718,
-      "sha256": "1c1f539b5496c7f38cf8e77346fb7841eecd748e446248dd0c9daa3f8ea6dd9b",
+      "bytes": 28869,
+      "sha256": "025365185cc37ca332d90eb49cad0380b34e8da3c9628b1fd2498849a0e7590a",
       "seedSha256": "4e8446f19f806d01fa1ee9672e22d8a4233f1d489dbc5dfbcc02af758ac54ff5",
       "accents": [
         "333F48",
@@ -787,8 +787,8 @@
     },
     {
       "path": "native-stylekit/theme/slate.potx",
-      "bytes": 28727,
-      "sha256": "53611d9558f899d84afb9706c7c5cea6fa8327764ace9e219a03193fa5d26b2a",
+      "bytes": 28878,
+      "sha256": "a401e0c0c674a2e3a4da696abc029e25af9d6a46ac54053596c115c9a4ba4f77",
       "seedSha256": "4e8446f19f806d01fa1ee9672e22d8a4233f1d489dbc5dfbcc02af758ac54ff5",
       "accents": [
         "333F48",
@@ -833,8 +833,8 @@
     },
     {
       "path": "native-stylekit/theme/cobalt.pptx",
-      "bytes": 28738,
-      "sha256": "37855aa53791c1f4159583665cb7f27a7f3afe70a0a3203253c3f3ef97d6561a",
+      "bytes": 28863,
+      "sha256": "027ebb4ada4ef626f707d0dbd9b19510411180f0e7ee23054c7cf8e8a06599d7",
       "seedSha256": "bdf7fc72070ee7cb47e6a23525928b00e9a203aac41b1d948dc12293998cbf17",
       "accents": [
         "0B5CAD",
@@ -856,8 +856,8 @@
     },
     {
       "path": "native-stylekit/theme/cobalt.potx",
-      "bytes": 28747,
-      "sha256": "302031adc39e75fedb5fa8bc91ae5f35e4a1fce5478ad9b344d0f9b18d9c08a9",
+      "bytes": 28872,
+      "sha256": "32829d9cf512ac98c1dec4cf668aeef87b4bf69a56976a1ba388b01dd27f9a6f",
       "seedSha256": "bdf7fc72070ee7cb47e6a23525928b00e9a203aac41b1d948dc12293998cbf17",
       "accents": [
         "0B5CAD",
@@ -902,8 +902,8 @@
     },
     {
       "path": "native-stylekit/common/navy.pptx",
-      "bytes": 28787,
-      "sha256": "70dd77f686eee8e89b1c2ff61c4ecc5648b6c06bbfc7a0240578d97c639c58d8",
+      "bytes": 28955,
+      "sha256": "1c7d3dbb82cb7d9735d050dd200f2893e25db043b1ba9a4724edcf4214cf06d2",
       "seedSha256": "bf43a3222d968cffc205c229f53a8c7786eacf2425b3f4d7d5c3658b93305180",
       "accents": [
         "D95D68",
@@ -925,8 +925,8 @@
     },
     {
       "path": "native-stylekit/common/navy.potx",
-      "bytes": 28796,
-      "sha256": "9c6b08c145c31e66cd61901035da9ccdea5ed5355c62145a7e5f47c36da28792",
+      "bytes": 28964,
+      "sha256": "64cc4a41104824d8cd43036865842278bb22a790b14c4ab9ab86271db2a19898",
       "seedSha256": "bf43a3222d968cffc205c229f53a8c7786eacf2425b3f4d7d5c3658b93305180",
       "accents": [
         "D95D68",
@@ -971,8 +971,8 @@
     },
     {
       "path": "native-stylekit/common/green.pptx",
-      "bytes": 28770,
-      "sha256": "2607fa3be8b5519378fdf6d695c1d1d076077ff0c1c84986f7a792446cdc91d0",
+      "bytes": 28943,
+      "sha256": "a87d82fa7064bbfed3f2ab06e4ba70178cf94263310a0ddeddbdabf617352a95",
       "seedSha256": "e7a58ee6f03207a71b220a4270245112cce93a885d10f83d2dc24c96264b9ba0",
       "accents": [
         "D95D68",
@@ -994,8 +994,8 @@
     },
     {
       "path": "native-stylekit/common/green.potx",
-      "bytes": 28779,
-      "sha256": "4d88d270d6bdbd8de5e158c7e336c3b03aa44f06409278075067b43b3672aeac",
+      "bytes": 28952,
+      "sha256": "e5561637b12ec0b2b0fd15933ea5bace2ed8766965a36ceb72da552af31337dd",
       "seedSha256": "e7a58ee6f03207a71b220a4270245112cce93a885d10f83d2dc24c96264b9ba0",
       "accents": [
         "D95D68",
@@ -1040,8 +1040,8 @@
     },
     {
       "path": "native-stylekit/common/frame.pptx",
-      "bytes": 28761,
-      "sha256": "d51db53e2e5c96b316603b71084b042d5c7ae912c3751ce8c3e5c5b3d14c69d6",
+      "bytes": 28932,
+      "sha256": "82cefd05d0b3b51b439a32d542f11f1e6338f5da6c3d7e9848216f7fd8dbf556",
       "seedSha256": "2f4de70956ffed03e9c9e87447c0124dc59cae41253510624eb059efc4bd12a9",
       "accents": [
         "D95D68",
@@ -1063,8 +1063,8 @@
     },
     {
       "path": "native-stylekit/common/frame.potx",
-      "bytes": 28770,
-      "sha256": "6144341d7292564a4fa4dd35179431523c12348675fb570eeeb8b725c6bf535a",
+      "bytes": 28941,
+      "sha256": "2286400ca136760b65bc2ec30a48abbb86ece39e6cf3b59f72f25b80488054b7",
       "seedSha256": "2f4de70956ffed03e9c9e87447c0124dc59cae41253510624eb059efc4bd12a9",
       "accents": [
         "D95D68",
@@ -1109,8 +1109,8 @@
     },
     {
       "path": "native-stylekit/common/iceberg.pptx",
-      "bytes": 28772,
-      "sha256": "f71415d7cf55231e9c058917e2d8c82ca7949c1bcf83a689ca10529bf8774fd2",
+      "bytes": 28943,
+      "sha256": "9e1eb0db4d61aa0a67d15ebfa68c96cede02188ee2999f7f9caa75b4fa14ca3e",
       "seedSha256": "776169c5d854ff15a90cf8e229898fc96d41eeab5cd1f54004be71be0fcd8df8",
       "accents": [
         "D95D68",
@@ -1132,8 +1132,8 @@
     },
     {
       "path": "native-stylekit/common/iceberg.potx",
-      "bytes": 28781,
-      "sha256": "5f64e33ecaefca1cb4fe7f218774acf4577375ad80998dc32e0b65bf57a7c9d2",
+      "bytes": 28952,
+      "sha256": "4936876c983233928bd9fdf192eb4cf0ea876b1ac349738ad490171371960ee4",
       "seedSha256": "776169c5d854ff15a90cf8e229898fc96d41eeab5cd1f54004be71be0fcd8df8",
       "accents": [
         "D95D68",
@@ -1178,8 +1178,8 @@
     },
     {
       "path": "native-stylekit/common/wire.pptx",
-      "bytes": 28762,
-      "sha256": "3da9ffcded269ff72bbdc282197ea5d0d8cd73b33de12d3f2e490260ca99bb2b",
+      "bytes": 28934,
+      "sha256": "dd07667448cd0dae5960a56c914047ca1be4169b9c5444a5f41e5e5086f3290b",
       "seedSha256": "a9478edcc9ebaf6fbb738674d982633c3feef3b6f8a2f29d1ead8b389a8ab80d",
       "accents": [
         "D95D68",
@@ -1201,8 +1201,8 @@
     },
     {
       "path": "native-stylekit/common/wire.potx",
-      "bytes": 28771,
-      "sha256": "2423fe1887fd681b07ea40e43e580c939abcddc283b2ce9e196374c6e95f8280",
+      "bytes": 28943,
+      "sha256": "46dce20096b5b86f939a74ee8b50e18e79ccaa827fdc5246c5f699521f88ae51",
       "seedSha256": "a9478edcc9ebaf6fbb738674d982633c3feef3b6f8a2f29d1ead8b389a8ab80d",
       "accents": [
         "D95D68",
@@ -1247,8 +1247,8 @@
     },
     {
       "path": "native-stylekit/common/wine.pptx",
-      "bytes": 28768,
-      "sha256": "2bcbdcbb3082a6a1542937ed5cff9a19c414f975953883eca0aeabfbf382e172",
+      "bytes": 28940,
+      "sha256": "c86c54c06f1bb814df4ed13309dbfe24f95442ba4dd2a32309619780b432d3f3",
       "seedSha256": "d1de5bad0fb5b7e0f3d715df0fd8057ee77809348ee70d7bc9c26c474455d55d",
       "accents": [
         "D95D68",
@@ -1270,8 +1270,8 @@
     },
     {
       "path": "native-stylekit/common/wine.potx",
-      "bytes": 28777,
-      "sha256": "214e7720069f012736a84edb01d0b7d6acc021700a637eb21594dd09d9675e22",
+      "bytes": 28949,
+      "sha256": "98e4bf15ee59df363f4b1f69429ed809f129c89b5865ded6df12748024435a77",
       "seedSha256": "d1de5bad0fb5b7e0f3d715df0fd8057ee77809348ee70d7bc9c26c474455d55d",
       "accents": [
         "D95D68",
@@ -1316,8 +1316,8 @@
     },
     {
       "path": "native-stylekit/common/teal.pptx",
-      "bytes": 28764,
-      "sha256": "27cd9372537ee7a5fd91b2e4e07d77b3773de08369e4f2ae921ef88412d76a56",
+      "bytes": 28934,
+      "sha256": "99fb8e57fb0cda86b5f94db701299b179638b875132c0afc4e4c496e98dc65b3",
       "seedSha256": "ba769139abd8acc194eceeab4a85d8b926eae14c6139d9988a35ce0e7fababff",
       "accents": [
         "D95D68",
@@ -1339,8 +1339,8 @@
     },
     {
       "path": "native-stylekit/common/teal.potx",
-      "bytes": 28773,
-      "sha256": "a0fbbcb11727741c0c6661a30d4a7aff38f662700466f56f60467ec3c4452d6d",
+      "bytes": 28943,
+      "sha256": "0aedb40a94aaeac6ac4f0d881f5a71691182d4083c1615286096c291507f5dcd",
       "seedSha256": "ba769139abd8acc194eceeab4a85d8b926eae14c6139d9988a35ce0e7fababff",
       "accents": [
         "D95D68",
@@ -1385,8 +1385,8 @@
     },
     {
       "path": "native-stylekit/common/charcoal.pptx",
-      "bytes": 28765,
-      "sha256": "facd9d2557d021e5248819443a1e77464df27dca9e4204659f6d002b5e165e93",
+      "bytes": 28936,
+      "sha256": "f53c28871d3ac52cdf1707e2825b7b6644b37b0abcabb9dae42df7968cb335d9",
       "seedSha256": "d1746ff0b11ac8e4b7e4d855edea37fbd89a2d4cb19d3fd329c48b4e55efda19",
       "accents": [
         "D95D68",
@@ -1408,8 +1408,8 @@
     },
     {
       "path": "native-stylekit/common/charcoal.potx",
-      "bytes": 28774,
-      "sha256": "928cd82a2bd9f9fe07f9bc28f1178a7a76d692d7f511db2247799a7917e5b1ef",
+      "bytes": 28945,
+      "sha256": "4d61be86d008670aec19baf2b3de3975776323065b4491c5e1e71f49c60a5df2",
       "seedSha256": "d1746ff0b11ac8e4b7e4d855edea37fbd89a2d4cb19d3fd329c48b4e55efda19",
       "accents": [
         "D95D68",
@@ -1454,8 +1454,8 @@
     },
     {
       "path": "native-stylekit/common/investor.pptx",
-      "bytes": 28765,
-      "sha256": "8bcda41274ee0ce94bf48d3a3e5aa962ec23f66a71de2b5497ec2bb92764e478",
+      "bytes": 28936,
+      "sha256": "259f7d66e88ed8b4502b29eff5c74249d0b4b11f64e7d81e9e5e54317a40ecb3",
       "seedSha256": "d1c9621886cc544b22d6aeacbaf3897d64713b378b1b5cd52cecb262f2797338",
       "accents": [
         "D95D68",
@@ -1477,8 +1477,8 @@
     },
     {
       "path": "native-stylekit/common/investor.potx",
-      "bytes": 28774,
-      "sha256": "9f315210fbb3d799871631abf7365fbe31b681f865ec5ecb484a5c874651021c",
+      "bytes": 28945,
+      "sha256": "9f9026e9c5deb943f70c3135c770b2416c3a656c2f693abe4fbe691e6e04d87d",
       "seedSha256": "d1c9621886cc544b22d6aeacbaf3897d64713b378b1b5cd52cecb262f2797338",
       "accents": [
         "D95D68",
@@ -1523,8 +1523,8 @@
     },
     {
       "path": "native-stylekit/common/forest.pptx",
-      "bytes": 28768,
-      "sha256": "802b48436f6ff0c0a4deccf783ec7bd429acd42e4d6a491aa8ff88c5c6eb6d2e",
+      "bytes": 28939,
+      "sha256": "4002b60aa763fd93e6aa5b743712540f0d68f95ee167032055fcc876dd704c88",
       "seedSha256": "d7d747576da204d64d7663f9bf6e8f5687e20882f95acdc820db1cb27994ab41",
       "accents": [
         "D95D68",
@@ -1546,8 +1546,8 @@
     },
     {
       "path": "native-stylekit/common/forest.potx",
-      "bytes": 28777,
-      "sha256": "16962e1cc9df5b74084e2500c7def3f0ae0dca9879cddb4be994517b84f8f1b5",
+      "bytes": 28948,
+      "sha256": "25bbb70a69c1b8a9bbf4bd7222fdbb2acc0885f21931d4fe6fc018b596580eb6",
       "seedSha256": "d7d747576da204d64d7663f9bf6e8f5687e20882f95acdc820db1cb27994ab41",
       "accents": [
         "D95D68",
@@ -1592,8 +1592,8 @@
     },
     {
       "path": "native-stylekit/common/burgundy.pptx",
-      "bytes": 28770,
-      "sha256": "56f734c17e3d295da7f88fcd9f7c17cc7deee986f62340f620421eed545c16c8",
+      "bytes": 28942,
+      "sha256": "825e46dff862c2f17dccc3fd5ca7f234f6b9aaef53f10ba4cf8138bae96dc64c",
       "seedSha256": "40cb80163da501d7f206785a7b0fd14fb41f3e35d23d5088e7632ec17467d792",
       "accents": [
         "D95D68",
@@ -1615,8 +1615,8 @@
     },
     {
       "path": "native-stylekit/common/burgundy.potx",
-      "bytes": 28779,
-      "sha256": "302dd7e584a6f8aacbc4b8dafe0509a48fc9a8c4f018977c4c7c23316107b21d",
+      "bytes": 28951,
+      "sha256": "835594e56221fff1c23d7d0132337c63ab2c95431a86618a5ecd64a4c49d5252",
       "seedSha256": "40cb80163da501d7f206785a7b0fd14fb41f3e35d23d5088e7632ec17467d792",
       "accents": [
         "D95D68",
@@ -1661,8 +1661,8 @@
     },
     {
       "path": "native-stylekit/common/slate.pptx",
-      "bytes": 28756,
-      "sha256": "6ee785a4b37b64c7a4f69660d238b6ee7724b4cccb0883dd292a87ee69e2cdd4",
+      "bytes": 28925,
+      "sha256": "e9ad4b7a77c47bd00a97a91dddf2cbf190f08b6db1894c323e3a2035aeefae11",
       "seedSha256": "4e8446f19f806d01fa1ee9672e22d8a4233f1d489dbc5dfbcc02af758ac54ff5",
       "accents": [
         "D95D68",
@@ -1684,8 +1684,8 @@
     },
     {
       "path": "native-stylekit/common/slate.potx",
-      "bytes": 28765,
-      "sha256": "f6ad1368309231dbc3c978866f1357b1a16ce403b1176eb945ba0ae3c317d909",
+      "bytes": 28934,
+      "sha256": "6f530c356fb6a935008604eb26be3604e2edfa7b6c4c6871bff14098822cca90",
       "seedSha256": "4e8446f19f806d01fa1ee9672e22d8a4233f1d489dbc5dfbcc02af758ac54ff5",
       "accents": [
         "D95D68",
@@ -1730,8 +1730,8 @@
     },
     {
       "path": "native-stylekit/common/cobalt.pptx",
-      "bytes": 28754,
-      "sha256": "149496a5a5efff73af3b9cb25412260ac9833e6cd3a3826d9eaa4db8669e6586",
+      "bytes": 28925,
+      "sha256": "1a272bfdeb32029375ec705ac60376a482ee1972d29d79614264667e1fbb8bc8",
       "seedSha256": "bdf7fc72070ee7cb47e6a23525928b00e9a203aac41b1d948dc12293998cbf17",
       "accents": [
         "D95D68",
@@ -1753,8 +1753,8 @@
     },
     {
       "path": "native-stylekit/common/cobalt.potx",
-      "bytes": 28763,
-      "sha256": "fc67cf99be49d0adcd8ece783347c6af8ee0e02dc99bf873f52729d62d54674e",
+      "bytes": 28934,
+      "sha256": "7d2a30030706b0dc7d6321cc9e1c15864ec301e8d709b21ac12ce9f3cce0a5de",
       "seedSha256": "bdf7fc72070ee7cb47e6a23525928b00e9a203aac41b1d948dc12293998cbf17",
       "accents": [
         "D95D68",
