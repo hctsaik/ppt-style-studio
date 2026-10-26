@@ -13,19 +13,12 @@ function lum(c,mod,off){let[r,g,b]=hx(c).map(v=>v/255);const mx=Math.max(r,g,b),
  l=Math.min(1,l*mod+off);const f=(p,q,t)=>{t=(t+1)%1;return t<1/6?p+(q-p)*6*t:t<.5?q:t<2/3?p+(q-p)*(2/3-t)*6:p;};
  if(!s)return toHex([l,l,l].map(v=>v*255));const q=l<.5?l*(1+s):l+s-l*s,p=2*l-q;return toHex([f(p,q,h+1/3),f(p,q,h),f(p,q,h-1/3)].map(v=>v*255));}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-// PowerPoint 快速樣式 6 列（Office 2013+ 主題樣式）× 7 欄（Text1/dk1＋Accent1–6），依本主題 fmtScheme：
-// fill1=實色、fill2=漸層(lumMod60/lumOff40→原色)、fill3=淺漸層(20/80→40/60)；線 0.75/1/1.5pt；效果 3＝柔和陰影
-const ROWS=[['色彩外框','Colored Outline'],['色彩填滿','Colored Fill'],['淺色外框＋色彩填滿','Light 1 Outline, Colored Fill'],['輕微效果','Subtle Effect'],['中度效果','Moderate Effect'],['強烈效果','Intense Effect']];
-function cell(c,i){const dk=lum(c,.5,0),fg=skL(c)>.28?'#000000':'#FFFFFF';
- switch(i){case 0:return{bg:'#FFF',bd:'1px solid #'+c,fg:'#'+c};
-  case 1:return{bg:'#'+c,bd:'1px solid #'+dk,fg};
-  case 2:return{bg:'#'+c,bd:'1px solid #FFF;box-shadow:0 0 0 1px #'+c,fg};
-  case 3:return{bg:`linear-gradient(#${lum(c,.2,.8)},#${lum(c,.4,.6)})`,bd:'1px solid #'+c,fg:'#'+c==='#000000'?'#000':'#'+lum(c,.75,0)};
-  case 4:return{bg:`linear-gradient(#${lum(c,.6,.4)},#${c})`,bd:'0',fg};
-  default:return{bg:'#'+c,bd:'0',fg,sh:'0 1.5px 4px rgba(0,0,0,.28)'};}}
+// Same effect description as the native formatting matrix; geometry is not a Ribbon style.
+const ROWS=N.KIT_EFFECTS.map(e=>[e.label,e.en]);
+function cell(c,i,t){const sc=t?t.sc:{dk1:'000000',lt1:'FFFFFF'},e=N.kitEffect(c,i,sc.dk1,sc.lt1),bg=e.backgrounds.length===1?'#'+e.backgrounds[0]:'linear-gradient(#'+e.backgrounds.join(',#')+')',sh=e.shadow;return{bg,bd:e.line?((i===2?1:.75)*4/3)+'px solid #'+e.lineColor:'0',fg:'#'+e.foreground,sh:sh?'0 '+(sh.offset*4/3)+'px '+(sh.blur*4/3)+'px rgba(0,0,0,'+sh.alpha+')':null};}
 function gallery(t){const cols=[t.sc.dk1].concat(t.sc.acc),names=['Text1 / 深色1'].concat(t.sc.acc.map((_,i)=>'Accent '+(i+1)+(choice.paletteSource==='common'?' / '+N.COMMON[i].label:'')));
  let h='<div class="skG" id="skGal" role="region" aria-label="快速樣式七欄目錄，可左右捲動" tabindex="0"><div></div>'+cols.map((c,j)=>`<div class="skCh">${names[j]}<br><code>#${c}</code></div>`).join('');
- ROWS.forEach((r,i)=>{h+=`<div class="skRh">${r[0]}<small>${r[1]}</small></div>`+cols.map((c,j)=>{const s=cell(c,i);return `<div class="skQ" data-r="${i}" data-c="${j}" style="background:${s.bg};border:${s.bd};color:${s.fg};${s.sh?'box-shadow:'+s.sh:''}">Abc</div>`;}).join('');});
+ ROWS.forEach((r,i)=>{h+=`<div class="skRh">${r[0]}<small>${r[1]}</small></div>`+cols.map((c,j)=>{const s=cell(c,i,t);return `<div class="skQ" data-r="${i}" data-c="${j}" style="background:${s.bg};border:${s.bd};color:${s.fg};${s.sh?'box-shadow:'+s.sh:''}">Abc</div>`;}).join('');});
  return h+'</div><p class="skHelp" id="skWhiteNote"><span class="skSample skWhite"><span style="display:inline-block;background:#FFFFFF;color:#333333;padding:3px 12px">白色</span></span> #FFFFFF 另附可編輯白色形狀，見下載檔的螢光筆範例頁；不是第七個 Accent，也不取代 Text1。</p>';}
 function kit(t){const sc=t.sc;
  const label=i=>i===6?'白':choice.paletteSource==='common'?N.COMMON[i].label:'A'+(i+1);
@@ -49,7 +42,7 @@ const CSS=`#vKit .skCr{display:block;font-size:10px;color:#595959;font-weight:40
 .skSec{font-size:14px;font-weight:700;color:var(--skP);border-bottom:1.5px solid var(--skP);padding-bottom:4px;margin:18px 0 10px}.skSec small{color:#8C8C8C;font-weight:400;margin-left:6px;font-size:11.5px}
 .skG{display:grid;min-width:0;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;grid-template-columns:150px repeat(7,minmax(56px,1fr));gap:8px 10px;align-items:center}.skCh{font-size:10.5px;color:#8C8C8C;text-align:center;line-height:1.3}.skCh code{font-size:10px}
 .skRh{font-size:12px;font-weight:700;color:#595959;line-height:1.25}.skRh small{display:block;font-weight:400;color:#8C8C8C;font-size:10.5px}
-.skQ{height:40px;border-radius:5px;display:flex;align-items:center;justify-content:center;font:600 13px Arial,'Microsoft JhengHei',sans-serif;box-sizing:border-box}
+.skQ{height:40px;border-radius:0;display:flex;align-items:center;justify-content:center;font:600 13px Arial,'Microsoft JhengHei',sans-serif;box-sizing:border-box}
 .skK{display:grid;min-width:0;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.skCard{min-width:0;border:1px solid #E5E5E5;border-radius:6px;padding:12px 14px}.skCard h4{margin:0 0 8px;font-size:13.5px;color:var(--skP)}.skCard h4 small{display:block;color:#8C8C8C;font-weight:400;font-size:11px;margin-top:2px}
 .skHl{display:flex;flex-wrap:wrap;min-width:0;align-items:center;gap:8px;margin:5px 0;font-size:13.5px}.skHl .n{color:#8C8C8C;font-size:11px;width:20px}.skHl .t{min-width:0;overflow-wrap:anywhere;font-weight:700;padding:1px 3px}.skHl code,.skSw code{color:#8C8C8C;font-size:10.5px}
 .skE{margin:8px 0;font-size:14px}.skE small{display:block;color:#8C8C8C;font-size:10.5px;margin-top:1px}.skFt{font-size:11px;color:#8C8C8C;border-top:1px solid #BFBFBF;padding-top:6px}
@@ -99,7 +92,7 @@ function paint(root){root=root||document.getElementById('vKit');if(!root||!T.len
  <div class="skDl" id="skDl">${downloadLink(t,'pptx','⬇ 下載 .pptx'+(t?'（'+esc(t.zh)+'）':''),true)}${downloadLink(t,'potx','⬇ 範本 .potx',true)}<button type="button" class="skApply" id="skApply"${t&&choice.paletteSource==='theme'?'':' disabled'}>套用主題色到元件庫</button>${downloadLink(t,'xml','色彩 .xml')}
  <small>.pptx／.potx 為獨立 4 頁 Style Kit：封面、內容、七色螢光筆與白色範例、42 格快速樣式。不會增加「投影片母片」主下載的頁數。常用色模式不改元件庫配色。</small><small>.xml 只提供色彩集；手動套用會改變使用主題色的內容，效果仍依原檔 fmtScheme。請先在副本確認。</small></div>
  ${t?'<div class="skSec">快速樣式 Quick Styles<small>Text1 ＋ Accent 1–6 · 7 欄 × 6 列；白色另見下方</small></div>'+gallery(t)+'<div class="skSec">螢光筆與白色範例<small>包含於上述獨立 Style Kit 下載</small></div><div class="skK">'+kit(t)+'</div>':''}
- <p class="skNote">限制：網頁以 HTML 示意色彩與六種效果，不是 PowerPoint 選單截圖。下載檔的文字高亮使用 a:highlight；柔色也寫入近期色，但無法保證各版 PowerPoint 的螢光筆選單會顯示或永久保留，不會替換內建 15 色。可複製已套色文字再改字；格式刷操作尚未驗證，且可能連帶套用字型、字級。白色保留 #FFFFFF；深色底僅用於展示白色的範例。</p></div>`;
+ <p class="skNote">限制：網頁以 HTML 示意色彩與六種效果；細框、填色與柔影已寫入 Style Kit 主題矩陣。42 格範例字色已作對比調整；Ribbon 的固定組合與字色不保證逐格相同。這不會新增任意 Ribbon 選項，也不會改變所選圖形的幾何。下載檔的文字高亮使用 a:highlight；柔色也寫入近期色，但無法保證各版 PowerPoint 的螢光筆選單會顯示或永久保留，不會替換內建 15 色。可複製已套色文字再改字；格式刷操作尚未驗證，且可能連帶套用字型、字級。白色保留 #FFFFFF；深色底僅用於展示白色的範例。</p></div>`;
  root.querySelector('#skApply').onclick=()=>{if(t&&choice.paletteSource==='theme')document.dispatchEvent(new CustomEvent('stylekit-apply',{detail:{id:t.id,acc:t.sc.acc.slice()}}));};
  root.querySelector('#skFollow').onclick=()=>selectSource('follow',root);
  root.querySelector('#skIndependent').onclick=()=>selectSource('independent',root);

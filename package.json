@@ -35,7 +35,7 @@
     "test:stylekit-mobile": "node tools/stylekit_mobile_contract_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/stylekit_mobile_contract_test.js",
     "test:navigation": "node tools/navigation_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/navigation_test.js",
     "build:native-styles": "node tools/build_native_stylekit.js",
-    "test:native-styles": "node tools/build_native_stylekit.js --check && node tools/native_styles_test.js && node tools/fixed_master_native_test.js && node tools/stylekit_native_ui_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/stylekit_native_ui_test.js"
+    "test:native-styles": "node tools/build_native_stylekit.js --check && node tools/native_styles_test.js && node tools/native_effects_test.js && node tools/fixed_master_native_test.js && node tools/stylekit_native_ui_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/stylekit_native_ui_test.js"
   },
   "keywords": [],
   "author": "",
