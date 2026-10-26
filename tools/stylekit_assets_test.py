@@ -117,8 +117,14 @@ check(len(THEMES) == 13 and len({t['id'] for t in THEMES}) == 13, 'thirteen uniq
 with open(os.path.join(ROOT, 'PPT-Style-Studio.html'), encoding='utf-8') as single_source:
     embedded_match = re.search(r'window\.STYLEKIT_B64=(\{[^\n]*\});', single_source.read())
 embedded = json.loads(embedded_match.group(1)) if embedded_match else {}
-check(set(embedded) == {t['id'] + ext for t in THEMES for ext in ('.pptx', '.potx', '_colors.xml')},
-      'single file embeds all 39 named Style Kit assets')
+legacy_names = {t['id'] + ext for t in THEMES for ext in ('.pptx', '.potx', '_colors.xml')}
+native_names = {'native-stylekit/' + source + '/' + name for source in ('theme', 'common') for name in legacy_names}
+check(set(embedded) == legacy_names | native_names,
+      'single file embeds exactly 39 legacy and 78 native Style Kit assets')
+for name in native_names:
+    with open(os.path.join(ROOT, name), 'rb') as disk_source:
+        check(base64.b64decode(embedded.get(name, ''), validate=True) == disk_source.read(),
+              name + ': native standalone asset matches disk bytes')
 for theme in THEMES:
     for ext in ('.pptx', '.potx', '_colors.xml'):
         name = theme['id'] + ext
