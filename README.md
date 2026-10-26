@@ -601,11 +601,13 @@ PptxGenJS 無法寫出 algn／sx／sy，因此匯出後會用 JSZip 解開 pptx�
 
 ### 投影片母片（獨立固定風格）
 
-新增「投影片母片」分頁，原附件的紅色標題、微軟正黑體、bullet、間距、標誌與頁尾不跟隨全站風格。原 4 頁以原 bytes 下載；另可選版面、四種快速樣式、兩款柔和螢光筆（或不加）與七種固定色，組成 462 種受版面約束的搭配。一次只呈現一組，提供 7 個精簡推薦組合。
+主範本只含使用者指定的三頁，依序為「專案重點與下一步」封面、單欄內容、雙欄內容。封面沿用原 layout1 的原生 placeholder；內容頁來自來源 slide1／slide2，僅更新頁碼快取為 2／3。這不是來源附件前三頁；比較／報表頁已移出目前範本。原四頁附件及其 SHA 仍作不變安全基準，底層 1 master／7 layouts／theme／media bytes 全部保留。
 
-組合包保留原 4 頁、1 master、7 layouts 的原生封裝，只新增可編輯 shapes／text groups／tables，下載為 5 或 11 頁。HTML 預覽明標示意，未宣稱 PowerPoint 忠實縮圖；字型未內嵌，PowerPoint 實視及瀏覽器下載落盤仍未驗。詳見 [`fixed-master/README.md`](fixed-master/README.md) 的原件 SHA、精確 4-part 變更合約、462 組推導與驗證範圍。`npm run test:fixed-master` 同時驗正常／離線版；全站 `npm test` 包含此組回歸。
+主下載為「三頁母片」，不附加示範。另行展開「非三頁範本」區並按下載，才會得到三頁母片＋一頁自選原生示範。活動版面限封面、單欄、雙欄；既有四種快速樣式、marker 與七色未改，共 `(1 + 2×4) × 3 × 7 = 189` 種搭配。沒有七頁推薦包，也不將 3＋1 頁稱為三頁範本。
 
-母片編輯區在窄版使用可縮小的 grid tracks／children，表單欄位限制於容器內；七色可換行，540px 示意僅在預覽框內橫捲，不撐開整頁。`test:fixed-master` 包含正常／離線版 CSS／DOM 契約；真實 360 CSS px 排版須於正式 HTTPS 頁另行驗收。 八個主導覽頁籤在 901–1440px 獨立第二列，避免擠出右側下載／選單；更寬桌面允許頁籤局部橫捲，900px 以下仍沿用原手機配置。
+紅色標題、微軟正黑體、bullet、間距、標誌與頁尾不跟隨全站風格。HTML 預覽明標示意，非 PowerPoint 忠實縮圖；字型未內嵌，PowerPoint 實視及瀏覽器下載落盤仍未驗。詳見 [`fixed-master/README.md`](fixed-master/README.md) 的來源與衍生封裝合約。`npm run test:fixed-master` 同時驗正常／離線版與精確三頁順序；全站 `npm test` 包含此組回歸。
+
+母片編輯區以可縮小的 grid tracks／children 限制欄寬，七色可換行，540px 示意僅在預覽框內橫捲。八個主導覽頁籤在 901–1440px 獨立第二列；更寬桌面允許頁籤局部橫捲，900px 以下沿用原手機配置。DOM／CSS 契約不等同真實瀏覽器視覺驗收。
 
 ### Style Kit 窄版容器修正
 

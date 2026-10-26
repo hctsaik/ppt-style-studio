@@ -706,7 +706,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <script src="export-flow.js?v=c9d4f55c"></script>
 <script src="quickstyles.js?v=b4777192"></script>
 <script src="fixed-master-data.js?v=c3dbdd42"></script>
-<script src="fixed-master.js?v=16522a9f"></script>
+<script src="fixed-master.js?v=1076a285"></script>
 <script>
 (function(){
  'use strict';
@@ -1180,7 +1180,7 @@ document.addEventListener('keydown',e=>{const p=e.target.closest&&e.target.close
 let quickSaved;try{quickSaved=JSON.parse(localStorage.getItem('ppt-studio-quick-styles')||'null');}catch(_){}
 function renderQuick(){if(!window.QuickStyles)return;QuickStyles.render($('#vQuick'),S.p,{state:quickSaved,onChange:state=>{quickSaved=state;invalidateExport();try{localStorage.setItem('ppt-studio-quick-styles',JSON.stringify(state));}catch(_){toast('本機儲存不可用；本次設定仍保留，可繼續下載。');}},onDownload:async snapshot=>{try{snapshot=QuickStyles.snapshot(S.p,snapshot.selection);const r=await checkedExport(ENV(),snapshot.params,{model:snapshot.model});saveBlob(r.data,snapshot.filename);toast('已下載快速樣式：底帶與文字皆可編輯。');return true;}catch(e){toast(e.message);return false;}}});}
 let masterSaved;try{masterSaved=JSON.parse(localStorage.getItem('ppt-studio-fixed-master')||'null');}catch(_){}
-function renderMaster(){if(!window.FixedMaster)return;FixedMaster.render($('#vMaster'),{state:masterSaved,onChange:state=>{masterSaved=state;try{localStorage.setItem('ppt-studio-fixed-master',JSON.stringify(state));}catch(_){toast('本機儲存不可用；本次母片設定仍保留。');}},onDownload:async snapshot=>{const original=snapshot.mode==='original';const bytes=original?FixedMaster.originalBytes():await FixedMaster.exportPptx(window.JSZip,snapshot.mode==='presets'?snapshot.presets:[snapshot.selection]);saveBlob(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'}),original?'TSMC_Template (5).pptx':snapshot.mode==='presets'?'TSMC_母片推薦組合_11頁.pptx':'TSMC_母片自選組合_5頁.pptx');return true;}});}
+function renderMaster(){if(!window.FixedMaster)return;FixedMaster.render($('#vMaster'),{state:masterSaved,onChange:state=>{masterSaved=state;try{localStorage.setItem('ppt-studio-fixed-master',JSON.stringify(state));}catch(_){toast('本機儲存不可用；本次母片設定仍保留。');}},onDownload:async snapshot=>{const template=snapshot.mode==='template';const bytes=await FixedMaster.exportPptx(window.JSZip,template?[]:[snapshot.selection]);saveBlob(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'}),template?'TSMC_三頁母片.pptx':'TSMC_組合示範_3加1頁.pptx');return true;}});}
 function renderExtra(){if(S.tab==='style')renderStylePrev();else if(S.tab==='icons')renderIcons();else if(S.tab==='table')renderTable();else if(S.tab==='kit'&&window.StyleKit)StyleKit.sync(S.p,S.base);else if(S.tab==='quick')renderQuick();else if(S.tab==='master')renderMaster();}
 
 /* ---------- 圖示庫 ---------- */

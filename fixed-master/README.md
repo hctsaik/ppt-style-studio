@@ -1,34 +1,49 @@
-# 投影片母片：固定原件與內容組合
+# 投影片母片：指定三頁與不變來源
 
-## 來源
+## 不變安全基準
 
-- `TSMC_Template.pptx` 是附件 `TSMC_Template (5).pptx` 的原 bytes，不是重建／另存新檔。
+- `TSMC_Template.pptx` 仍是附件 `TSMC_Template (5).pptx` 的完整原 bytes；不覆寫、不永久刪除來源頁。
 - Library：`libfile_91da4dec0718819188da04d164eaf803`，version 0。
 - SHA-256：`1d42e27915855f57c1bee5ad185526ee62c51818223e9cfde20609dcf47c1fae`。
-- `source-manifest.json` 記錄原封裝 45 個 parts 的 SHA-256。原件為 4 頁、1 個 slide master、7 個 layouts、16:9／1280 × 720；字型未內嵌。品牌標記公開展示及下載已獲使用者同意。
+- `source-manifest.json` 記錄原封裝 45 個 parts 的 SHA-256。來源為 4 頁、1 master、7 layouts、16:9／1280 × 720；字型未內嵌。
 
-## 獨立邊界
+## 目前產品範本：恰好三頁
 
-`fixed-master.js` 不引用 Deck 或 QuickStyles，也不接受全站配色／字型參數。母片自身 title／body／bullet／footer／logo 完全從原 package 保留。新內容層固定七色對齊既有 common quick styles，但不可把其紅色 `D95D68` 誤當母片標題的 `C00000`。原 theme accent1 是 `4472C4`，不作為定義紅色的來源。
+使用者新圖要求只留三頁，覆蓋先前「原四頁皆保留於下載」的產品契約：
 
-選擇儲存在獨立 `ppt-studio-fixed-master` key。原有 QuickStyles、Style Kit、表格、全站 preflight／export 邏輯未改。母片有自己的短句長度檢查，不會默默截斷或縮字。
+1. **封面「專案重點與下一步」**：原 layout1 的 native placeholders，摘要「聚焦主要判斷，保留執行依據」、強調短句「優先確認關鍵事項」，沿用已提供的輕量下緣標記。
+2. **單欄內容**：來源 `slide1.xml`。
+3. **雙欄內容**：來源 `slide2.xml`。
 
-### 462 種搭配
+這不是「來源附件前三頁」：原 slide3 是左右比較、原 slide4 是報表，兩者不在目前範本。封面沿用原 master 的 logo、裝飾、紅底線與黑頁尾，不重繪成全頁圖片。
 
-- 封面／章節 2 種版面：只用輕量標記，不加大卡片；`2 × 1 × 3 × 7 = 42`。
-- 單欄／雙欄／左右比較／只有標題／雙欄報表 5 種：四種快速樣式；`5 × 4 × 3 × 7 = 420`。
-- 三種 marker 選擇：無、全字柔帶 24%、下緣半筆 35%。
-- 七色：紅、黃、藍、綠、灰、紫、白。合計 462 種，並非 462 頁大目錄。
-- 每次選一組預覽；下載為「原 4＋自選 1 頁」或「原 4＋推薦 7 頁」。新頁只放一組有用途的內容。報表保留原 layout 的藍紫雙欄標題，再加入可編輯表格；原第 4 頁的兩張表格 bytes 完整保留。
+主下載檔名 `TSMC_三頁母片.pptx`，不包含自動追加的示範。另展開「另做一頁組合示範（非三頁範本）」並按下載，才會得到 `TSMC_組合示範_3加1頁.pptx`。主範本不受示範輸入或樣式選擇影響；即使示範文字無效仍可下載固定三頁。
 
-## 原生匯出合約
+## 獨立邊界與活動選擇
 
-- 原件下載：直接使用 embedded 原 bytes；正常版與離線版相同，不經 import/export。
-- 組合包：以 JSZip 載入原 bytes，新增 slide XML 與其 layout relationship。
-- 只有以下 4 個既有 parts 可改：`[Content_Types].xml`、`ppt/presentation.xml`、`ppt/_rels/presentation.xml.rels`、`docProps/app.xml`。
-- 原 4 頁、所有 master／layout／theme／media／notes parts 保持逐 entry bytes 不變。ZIP 容器會重新壓縮，因此組合包整檔 hash 不等於原件；不宣稱壓縮位元組完全相同。
-- 新頁 title／bullet 的幾何與 `bodyPr`／`lstStyle` 複製對應原 layout，使用原 placeholder type／idx：結論 layout4/5 idx11、layout7 idx1。新頁碼保留 `a:fld type="slidenum"`。報表 native `graphicFrame` 引用 idx3/5。
-- 卡片／marker 為 native shape／text groups，group bounds 為實際內容大小；表格為 native `a:tbl`，不是圖片。白色是真白，深色示意底板只存在 HTML，不進 PPTX。
+`fixed-master.js` 不引用 Deck 或 QuickStyles，也不接受全站配色／字型參數。母片 title／body／bullet／footer／logo 保留原規格。新內容層紅色 `D95D68` 不是母片標題的 `C00000`；theme accent1 `4472C4` 不用於定義固定紅色。
+
+活動版面限 layout1 封面、layout2 單欄、layout4 雙欄；其他 layouts 留在 package 供 PowerPoint 使用，不從原 master 移除。舊保存的比較／報表等選擇回到單欄，保留文字、顏色、marker 與有效快速樣式。
+
+- 封面：1 個無卡片樣式 × 3 markers × 7 色 = 21。
+- 單欄／雙欄：2 × 4 快速樣式 × 3 markers × 7 色 = 168。
+- 合計 **189** 種搭配；3 個輕量推薦選項僅切換示範選擇，不增加下載頁數。
+- 四種快速樣式仍為柔底、細框、實心、側邊條，沒有在這次改成另一套樣式；marker 仍為無、24% 全字柔帶、35% 下緣半筆。
+- 選擇使用獨立 `ppt-studio-fixed-master` key。原有 QuickStyles、Style Kit、表格及全站 preflight／export 語義未改。
+
+## 精確原生封裝合約
+
+以 JSZip 讀取不變來源，產生衍生 package；不 import/re-export 或近似重建 master。
+
+- 移除 6 個來源 parts：`ppt/slides/slide3.xml`、`ppt/slides/_rels/slide3.xml.rels`、`ppt/slides/slide4.xml`、`ppt/slides/_rels/slide4.xml.rels`、`ppt/notesSlides/notesSlide3.xml`、`ppt/notesSlides/_rels/notesSlide3.xml.rels`。
+- 新增 `ppt/slides/slideCover.xml` 與其 layout1 relationship，排在第一頁。
+- 保留來源 slide1／slide2；只改各自 `a:fld type="slidenum"` 的快取文字為 2／3，所有其他 XML bytes 不變。原 notes1／notes2 無文字或頁碼欄位，保留 bytes。
+- 更新 4 個 metadata/index parts：`[Content_Types].xml`、`ppt/presentation.xml`、`ppt/_rels/presentation.xml.rels`、`docProps/app.xml`；sldIdList 與 slide relationships 恰為 3 筆。
+- 所有其他原 parts（含 1 master、7 layouts、theme、media）逐 entry SHA256 不變。
+- 可選示範才另新增 `slide4.xml` 與其 relationship；這是新內容，不是被移除的原報表。完整 count 恰為 4，沒有原比較／報表內容。
+- ZIP 的新增／修改項目沿用固定來源時間；不建立帶目前時間的 folder entries。相同輸入產生穩定 bytes，正常／離線內容一致。三頁衍生檔 hash **不等於**原四頁來源 hash。
+
+新頁 title／bullet geometry、bodyPr／lstStyle 與 placeholder type／idx 沿用原 layout。雙欄結論 placeholder 是 idx11；所有頁碼維持原生 `a:fld type="slidenum"`。示範卡片／marker 為 native shape/text groups；真白色示意深底只在 HTML，不進 PPTX。
 
 ## 建置與驗證
 
@@ -38,18 +53,16 @@ python3 tools/stamp_version.py
 python3 tools/build_single.py
 npm run test:fixed-master
 npm test
-python3 tools/check_pptx.py fixed-master/TSMC_Template.pptx out/fixed-master/recommended.pptx
+python3 tools/check_pptx.py out/fixed-master/template-3pages.pptx out/fixed-master/example-4pages.pptx
 ```
 
-來源素材生成器只讀 ZIP/XML，不 import/re-export，來源 hash 不符會中止。`fixed-master-data.js` 同時攜帶原 bytes、精確 placeholder styles 與原 logo，離線版內嵌同一資料。
+來源生成器 hash guard 仍檢查不變四頁附件。測試涵蓋 189 組 native XML、14 個衍生封裝、原件 hash、3／4 頁精確順序、sldIdList、relationships／ContentTypes、刪除 parts、保留頁僅頁碼差異、7 layouts／master bytes、全站主題隔離、動態頁碼、防截斷，以及正常／離線 UI 狀態與實際 Blob 內容。
 
-`fixed_master_test.js`：462 組 XML、13 份 native 封裝、逐 part hash、4 原頁、7 layouts／1 master、rels target、shape ID／placeholder mapping、native tables、字級／顏色、marker alpha、group bounds、白色示意底不匯出、動態頁碼與防截斷。
-
-`fixed_master_ui_test.js`：正常／離線頁實際 JSDOM 事件、全站各主題與字型變更隔離、保存／重新載入、選擇與鍵盤焦點、double click／pending／failure／retry、原件 bytes、5/11 頁 ZIP。JSDOM 的 postMessage 排程與瀏覽器不同；測試使用同一 repository JSZip bundle 的 Node 排程以檢查真實封裝，saveBlob 只捕捉 Blob，**不代表瀏覽器已落盤**。
+JSDOM 以同一 repository JSZip bundle 的 Node 排程產生真實 bytes；saveBlob 僅捕捉 Blob，**不代表檔案已落盤**。
 
 ## 明確限制
 
-- HTML/SVG 是有標籤的示意，非 PowerPoint 忠實縮圖；不使用會錯畫 bullet 的雲端 render PNG。原 master 淡色裝飾保留在 PPTX，未在示意重畫。
-- 微軟正黑體未內嵌，顯示取決於使用者安裝字型。未完成 PowerPoint 開啟、換字型、重排頁後動態頁碼或逐項編輯的實機驗收，也未跑完整 Open XML XSD。
-- CSS 有 850／480px 響應式斷點與至少 44px 控制；DOM/CSS 合約不等同真實手機觸控／捲動／視覺驗收。本次未啟動瀏覽器／本地 HTTP／CDP。
-- 使用既有標準 Blob 下載出口，並明示產生成功不代表已存檔。受管瀏覽器可能封鎖 blob 或下載；實際檔案落地未驗證，沒有透過其他 scheme／host／下載橋梁繞過政策。
+- HTML/SVG 明標示意，非 PowerPoint 忠實縮圖；不採用會錯畫 bullet 的雲端 render PNG。
+- 微軟正黑體未內嵌；未完成 PowerPoint 實視、重排頁碼及逐物件編輯驗收，也未跑完整 Open XML XSD。
+- DOM/CSS 合約不等同真實手機觸控／捲動／視覺驗收；本次不啟動本地瀏覽器／HTTP／CDP。
+- 使用既有標準 Blob 出口。受管瀏覽器可能封鎖 blob；沒有其他 scheme／host／下載橋梁繞過政策。
