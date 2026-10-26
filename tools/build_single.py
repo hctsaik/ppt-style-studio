@@ -20,8 +20,8 @@ def inline(m):
     name = m.group(1)
     return f'<script data-inlined="{name}">\n/* ==== 內嵌：{name} ==== */\n{js(name)}\n</script>'
 html = re.sub(r'<script src="([^"?]+\.js)(?:\?v=[\w]+)?"></script>', inline, html)
-if found != 9:
-    sys.exit(f'預期內嵌 9 個 script，實際 {found} 個')
+if found != 11:
+    sys.exit(f'預期內嵌 11 個 script，實際 {found} 個')
 if re.search(r'<(script|link|img)[^>]+(src|href)="(?!data:|https?:|#)[^"]+"', html):
     sys.exit('仍有外部相依檔，請檢查 studio.html')
 # Style Kit 分頁的下載檔（stylekit/*.pptx|potx|xml）在單檔版以 base64 內嵌，點下載時轉成 Blob

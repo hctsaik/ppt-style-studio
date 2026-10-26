@@ -91,3 +91,6 @@ tools/oxv/bin/
 tools/oxv/obj/
 !render/restructure-overview.png
 !render/restructure-sidebar.png
+
+# Fixed-master test exports / read-only inspection evidence
+out/fixed-master/
