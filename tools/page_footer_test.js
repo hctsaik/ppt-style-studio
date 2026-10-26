@@ -32,7 +32,7 @@ async function main(){
  });
  await test('Footer follows the existing slides-only scope through every tab and repeated changes',()=>{
   const footer=$('#pageInfo'),before=state();
-  for(let i=0;i<2;i++)for(const t of ['style','icons','table','kit','guide']){click('#edBadge');assert(!$('#edPop').hidden);click(`#tabs [data-tab="${t}"]`);assert(footer.hidden);assert.equal(w.getComputedStyle(footer).display,'none');assert($('#edPop').hidden);assert.equal($('#edBadge').getAttribute('aria-expanded'),'false');click('#tabs [data-tab="slides"]');assert(!footer.hidden);assert.strictEqual($('#pageInfo'),footer);}
+  for(let i=0;i<2;i++)for(const t of ['style','icons','table','master','guide']){click('#edBadge');assert(!$('#edPop').hidden);click(`#tabs [data-tab="${t}"]`);assert(footer.hidden);assert.equal(w.getComputedStyle(footer).display,'none');assert($('#edPop').hidden);assert.equal($('#edBadge').getAttribute('aria-expanded'),'false');click('#tabs [data-tab="slides"]');assert(!footer.hidden);assert.strictEqual($('#pageInfo'),footer);}
   assert.equal(state(),before);
  });
  await test('Editable popover and mobile zoom remain live, without altering table/style state',()=>{

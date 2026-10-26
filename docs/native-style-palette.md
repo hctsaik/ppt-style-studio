@@ -1,54 +1,68 @@
-# 原生樣式配色與文字醒目提示
+# 舊 Kit 原生配色與文字醒目提示（相容性契約）
 
-Style Kit 的「主題色／常用色」決定下載檔案的一組 theme，不會在 PowerPoint 裡增加第二套 Quick Styles 選單。13 組範本、兩種配色都使用新的元件風格矩陣；7 欄 × 6 列是可編輯示範形狀。Ribbon 固定的組合、字色及排列由 Office 決定，不保證和範例逐格相同，不能把範例頁視作 Ribbon 操作已驗收。
+獨立 Kit 頁籤已撤除，舊模組及靜態資產保留相容性；本文件描述其封裝，不是目前母片頁的產品出口。現行雙三頁下載及實際母片主題 profile 見 [母片整合契約](master-style-integration.md)。
 
-| 色名 | Accent | 常用 RGB | 柔和文字醒目提示 |
-|---|---|---|---|
-| 紅 | 1 | D95D68 | F6D8DB |
-| 黃 | 2 | E7BF4A | F9F0D4 |
-| 藍 | 3 | 4E83CE | D5E1F3 |
-| 綠 | 4 | 4B9679 | D4E6DF |
-| 灰 | 5 | 7D8795 | E0E2E6 |
-| 紫 | 6 | 9371C6 | E5DDF1 |
-| 白 | 另選，非第七 Accent | FFFFFF | FFFFFF |
+Style Kit 的「主題色／常用色」決定下載檔案的一組 theme，不會增加第二套 PowerPoint Quick Styles 選單。13 組範本、兩種配色皆提供十款可編輯矩形，分為兩頁、每頁 5 列 × 7 欄，前三款是外層白卡。Ribbon 固定組合、字色及排列不保證與示範逐格相同。
 
-Text1、其他文字背景色槽、超連結色與字型不變。這組裝飾色不代表警告或成功語義。只有 Style Kit 透過明確的 Kit API 更新效果矩陣；一般 applyToZip 與固定母片的效果矩陣保持原樣。
+## 常用形狀色與十款矩形
 
-## 六款元件風格
+Accent 1–6 依序為紅 D95D68、黃 E7BF4A、藍 4E83CE、綠 4B9679、灰 7D8795、紫 9371C6。白色另提供 FFFFFF，不取代 Text1。這是裝飾色，不代表成功／警告語義。
 
-| 示範列 | 填色與框線 | 陰影（blur／offset／不透明度） | 文字 |
-|---|---|---|---|
-| 清爽線框 | 無填色、0.75 pt 同色框 | 無 | 同色深階 |
-| 主色實心 | 主色、0.75 pt 深階細框 | 無 | 依對比選深／白 |
-| 白框浮起 | 主色、1 pt 白框 | 4.2 pt／1.5 pt／20% | 依對比選深／白 |
-| 柔底微浮 | 混白 88%→80%、0.75 pt 淺框 | 4.2 pt／1.5 pt／20% | 同色深階 |
-| 主色微立體 | 5% 混白→5% 混黑微漸層、無框 | 7 pt／2 pt／18% | 檢查兩端對比 |
-| 深色浮起 | 同色深階、無框 | 7 pt／2 pt／24% | 白字 |
+| 順序 | 矩形外觀 |
+|---|---|
+| 1 | 白底、明確深灰框、柔影 |
+| 2 | 白底、淡灰細框、柔影 |
+| 3 | 白底、主題框、深字、柔影 |
+| 4 | 白底、細灰框、無影 |
+| 5 | 淺主色底、無框、無影 |
+| 6 | 淺灰底、無框、無影 |
+| 7 | 白底、主色粗框、無影 |
+| 8 | 深底白字、柔影 |
+| 9 | 深底白字、粗白框、柔影 |
+| 10 | 主色白字、無影 |
 
-native-styles.js 提供 HTML 與生成器共用的描述。kitThemeXml 寫入三種原生 fill、三種 line、三種 effect；沒有 bevel、glow 或 3D 材質，背景填色列表及字型方案保持原樣。42 個範例用 fillRef／lnRef／effectRef 組合，fontRef 與文字 run 的字色一致。自適應深階及字色屬於範例引用；不宣稱 fmtScheme 可以控制 Ribbon 每個選項的文字顏色或任意增加六種矩陣槽位。矩形是範例自身幾何，不是樣式可強制修改的幾何。
+每格是一個原生 roundRect，小圓角 7.2pt，無點陣圖或額外文字框。灰框、灰底與中性字色有固定角色，不是未跟隨主題；不包含來源參考中的膠囊、圓形、標題、箭頭或分隔線。
 
-對比以 WCAG sRGB 相對亮度計算，範例至少 4.5:1，生成時留 4.6 的取整餘裕。DrawingML tint／shade 在**線性 RGB** 上運算，不能直接混合 sRGB 通道；以 PowerPoint 16.0.20527.20088 的實際解析色值核對，例如 E7BF4A 的 45% shade 得到 A28531，不是 685621。深底白字只暗化形狀引用，不改 Accent 色槽。[Tint 定義](https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.drawing.tint?view=openxml-3.0.1)、[Shade 定義](https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.drawing.shade?view=openxml-3.0.1)。
+native-styles.js 是網頁與產生器共用描述。Kit 專用 API 寫入三個 fill、三個 line、兩個柔影及空 effect；無法在矩陣槽表達的外框由形狀直接設定。這不會註冊十個 Ribbon 按鈕，也不控制任意新形狀幾何。一般 applyToZip 與固定母片 fmtScheme 不變。
 
-## 螢光筆
+白字矩形必要時暗化填色引用，以維持至少 4.5:1 對比，Accent 色槽不變。DrawingML tint／shade 使用線性 RGB；此調整只適用矩形，不修改指定螢光筆 RGB，也不自動改使用者文字色。
 
-- 真正文字醒目提示是文字 run 的 a:highlight。柔色為 24% 基色混白的 RGB，隨文字編輯；不是透明矩形。
-- 半高螢光筆是獨立可編輯 shape。改變文字長度或換行後需調整底帶；文字 highlight 不支援半高。
-- 七個柔色寫入 p:clrMru。不保證各版本的醒目提示選單會載入或永久保留，也不宣稱 PPTX/POTX 能替換內建 15 色。
-- 白色保留 FFFFFF，深底只是 Kit 的白色示範區。格式刷傳遞尚未經 Ribbon 操作驗證，且可能連帶字型與字級。
+## 八色原生螢光筆
+
+| 色名 | RGB |
+|---|---|
+| 淡紅 | F6D8DB |
+| 淡黃 | F9F0D4 |
+| 參考藍 | 7C9CC3 |
+| 淡綠 | D4E6DF |
+| 淺灰 | E0E2E6 |
+| 淡紫 | E5DDF1 |
+| 深灰 | 595959 |
+| 深藍 | 1F3864 |
+
+參考藍取代原淡藍，移除白色高亮，保留淺灰並新增深灰與深藍，合計八色。形狀白框、白底、白字不受影響。深灰／深藍可搭配白字，但高亮只改 a:highlight，文字顏色由使用者設定。
+
+八色獨立於 theme/common Accent，隨文字編輯延伸。沒有全字或半高 shape 底帶。舊母片 marker／underline 遷移成原生高亮；舊白色標記移轉為無高亮，卡片與文字保留。
+
+八色也寫入 p:clrMru，但不保證各版高亮選單顯示、排序或永久保留，不能替換內建 15 色。可複製已套色文字再編輯。格式刷尚未經 Ribbon 操作驗證，且可能連帶字型與字級。
 
 ## 固定母片與保存
 
-三頁主下載仍是封面、單欄、雙欄。原檔下載 bytes、master、七個 layouts、media、字型、固定紅色及原 fmtScheme 保持不變。一般 applyToZip 沒有呼叫 Kit 效果 API；固定母片的常用配色只修改六個 Accent，主題配色保留原 theme。兩種下載都包含柔色最近色記錄。新增組合頁需要明確選擇「母片 3＋示範 1 頁」。
+主下載仍是封面、單欄、雙欄三頁，封面不加獨立筆帶。原來源 bytes、master、七個 layouts、media、字型、固定紅色與原 fmtScheme 保留。網站說明／按鈕／下載名稱中性化；原母片與預覽公司標誌、頁尾依使用者最新確認保留。來源只改名為 Fixed_Red_Template.pptx，不改 bytes 或 Git 歷史。
 
-Style Kit 配色來源與跟隨／獨立範本分開保存。舊 v1 設定沒有配色欄位時保留主題色意圖；新狀態預設常用色。沒有對應靜態資產的自訂主題停用主題版下載。設定改變後舊下載連結失效，匯出使用點擊當時的快照。
+常用配色只改六個 Accent，主題配色保留原 theme，兩種都含八色 MRU。示範另選「母片 3＋示範 1 頁」下載，不塞進主三頁。卡片 color 與文字 highlightColor 分開保存。
 
-## 重建與測試
+Style Kit 配色來源與跟隨／獨立範本分開保存；既有 theme 意圖保留。自訂主題無對應資產時停用主題版下載。設定改變後舊連結失效，匯出使用點擊時快照。
+
+## 重建與驗證
 
 1. npm run build:native-styles
-2. python3 tools/stamp_version.py
-3. python3 tools/build_single.py
-4. npm run test:native-styles
+2. python3 tools/build_fixed_master_assets.py
+3. python3 tools/stamp_version.py
+4. python3 tools/build_single.py
+5. npm run test:native-styles
+6. node tools/brand_boundary_test.js
 
-生成器以 stylekit/ 為唯讀種子，固定 ZIP 時間與排序；--check 檢查逐 byte 一致性。單檔保留 39 份舊資產並內嵌 78 份新資產，新資產以完整相對路徑為 key。色盤 XML 只包含色彩集，不包含效果矩陣。
+產生器以 stylekit/ 為唯讀種子，固定 ZIP 時間與排序；--check 驗逐 byte 一致。離線版保留 39 份舊資產、內嵌 78 份新資產。XML 只含色彩集。
 
-測試覆蓋 13×2 配色的 PPTX／POTX／XML、十二色槽、矩陣參數、關聯及 content types、原母片保護、highlight 與半高 shape、獨立對比計算、故意錯誤角色／字色／陰影 mutation、來源和單檔 UI、保存與失效連結。PowerPoint 開檔、轉圖、編輯另存重開另行記錄；XML／DOM／COM 通過都不能取代 Ribbon 新形狀套用或原生高亮選單操作。
+測試分開檢查角色／對比、封裝、正常／離線 UI 狀態。PowerPoint 開檔轉圖與編輯保存重開另行記錄；XML／DOM／COM 成功不能冒稱 Ribbon、新形狀套用或 MRU 選色操作已通過。實際瀏覽器與 Android 版面仍需裝置驗收。

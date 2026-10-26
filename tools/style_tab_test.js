@@ -1,5 +1,5 @@
 // 用法：timeout 180 node tools/style_tab_test.js [URL] [截圖.png]
-// 風格設定獨立分頁：改範本 → 預覽、投影片、表格、圖示庫、Style Kit 一起換，且重新整理後記住
+// 風格設定獨立分頁：改範本 → 預覽、投影片、表格、圖示庫一起換；固定母片保持獨立，且重新整理後記住
 const puppeteer=require('puppeteer-core');const sl=ms=>new Promise(r=>setTimeout(r,ms));
 const URL=process.argv[2]||'http://localhost:8765/studio.html',SHOT=process.argv[3]||'render/style-tab.png';let fail=0;const ck=(n,c)=>{console.log((c?'OK   ':'FAIL ')+n);if(!c)fail++;};
 (async()=>{const b=await puppeteer.launch({executablePath:process.env.CHROME||'/usr/bin/google-chrome',args:['--no-sandbox']});const pg=await b.newPage();
@@ -32,8 +32,11 @@ const URL=process.argv[2]||'http://localhost:8765/studio.html',SHOT=process.argv
  ck('表格分頁跟著換色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#vTable').innerHTML),P));
  await pg.click('#tabs button[data-tab="icons"]');await sl(800);
  ck('圖示庫跟著換色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#vIcons').innerHTML),P));
- await pg.click('#tabs button[data-tab="kit"]');await sl(1200);
- ck('Style Kit 跟著換色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#vKit').innerHTML),P));
+ await pg.click('#tabs button[data-tab="master"]');await sl(500);
+ const fixed=await pg.evaluate(()=>({state:JSON.stringify(FixedMaster.getState(document.querySelector('#vMaster'))),preview:document.querySelector('.fmOrigins').innerHTML,gallery:document.querySelector('.fmGallery').innerHTML}));
+ await pg.click('#tabs button[data-tab="style"]');await pg.evaluate(()=>{const e=document.querySelector('#tpls .tpl[data-id="green"]');if(e)e.click();});await sl(500);await pg.click('#tabs button[data-tab="master"]');
+ ck('全站配色不修改固定母片或素材',await pg.evaluate(fixed=>fixed.state===JSON.stringify(FixedMaster.getState(document.querySelector('#vMaster')))&&fixed.preview===document.querySelector('.fmOrigins').innerHTML&&fixed.gallery===document.querySelector('.fmGallery').innerHTML,fixed));
+ await pg.click('#tabs button[data-tab="style"]');await pg.evaluate(id=>document.querySelector('#tpls .tpl[data-id="'+id+'"]').click(),tgt);await sl(500);
  await pg.click('#tabs button[data-tab="style"]');await sl(300);
  await pg.reload({waitUntil:'networkidle0'});await sl(500);
  const r=await pg.evaluate(()=>({tab:!document.querySelector('#vStyle').hidden,c:getComputedStyle(document.querySelector('#dot')).backgroundColor}));
