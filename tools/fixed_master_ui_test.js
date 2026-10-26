@@ -39,19 +39,19 @@ async function boot(storage={}){const errors=[],vc=new VirtualConsole();vc.on('j
    assert.equal(d.querySelectorAll('.fmControls select,.fmControls input').length,6);
    assert(!rules.some(r=>r.style&&r.style['overflow-x']==='hidden'),'Do not hide page overflow instead of fixing sizing');
   });
-  await test('Eight-tab header reserves desktop actions and preserves the existing phone row',()=>{
+  await test('Seven-tab header keeps one desktop row, reserved actions and the existing phone row',()=>{
    const rules=Array.from($('style').sheet.cssRules);
    const rule=(selector,list=rules)=>{const r=list.find(r=>r.selectorText===selector);assert(r,'Missing CSS '+selector);return r.style;};
    const media=q=>{const r=rules.find(r=>r.conditionText===q);assert(r,'Missing media '+q);return Array.from(r.cssRules);};
    const nav=rule('header .tabs');assert.equal(nav.flex,'0 1 auto');assert.equal(nav['min-width'],'0');assert.equal(nav['overflow-x'],'auto');
    assert.equal(rule('.tabs button').flex,'0 0 auto');
-   const desktop=media('(min-width:901px) and (max-width:1440px)');
-   assert.equal(rule('header',desktop)['flex-wrap'],'wrap');const second=rule('header .tabs',desktop);
-   assert.equal(second.order,'9');assert.equal(second.flex,'1 1 100%');assert.equal(second['max-width'],'100%');assert.equal(second.margin,'0');
+   assert.equal(rule('header')['flex-wrap'],'nowrap');
+   assert(!rules.some(r=>r.conditionText==='(min-width:901px) and (max-width:1440px)'),'No forced compact-desktop second row');
+   const compact=media('(max-width:1440px)');assert.equal(rule('header h1 small,header .reqnote',compact).display,'none');assert.equal(rule('header .mobile-reqnote',compact).display,'block');
    // Multiple 900px blocks exist; keep checking the original full mobile header block.
    const phone=rules.find(r=>r.conditionText==='(max-width:900px)'&&Array.from(r.cssRules).some(c=>c.selectorText==='header .tabs'));
    assert(phone);assert.equal(rule('header .tabs',Array.from(phone.cssRules)).flex,'1 1 100%');
-   assert.equal(d.querySelectorAll('#tabs button').length,8);
+   assert.equal(d.querySelectorAll('#tabs button').length,7);assert(!d.querySelector('#tabs [data-tab="quick"]'));
    tab('slides');assert.notEqual(w.getComputedStyle($('#bOne')).display,'none');assert.notEqual(w.getComputedStyle($('#bAll')).display,'none');
    assert.equal($('#bTpl').getAttribute('aria-controls'),'mTpl');assert.equal($('#bMore').getAttribute('aria-controls'),'mMore');
    tab('master');assert.equal($('#bOne').style.display,'none');assert.equal($('#bAll').style.display,'none');
@@ -71,7 +71,7 @@ async function boot(storage={}){const errors=[],vc=new VirtualConsole();vc.on('j
   await test('Invalid optional text does not block or modify the three-page template download',async()=>{const e=$('[data-fm-field="title"]');e.value='長'.repeat(25);e.dispatchEvent(new w.Event('input',{bubbles:true}));$('[data-fm-download="current"]').click();await until(()=>!$('[data-fm-download="current"]').disabled,'validation failure');assert($('.fmStatus').textContent.includes('不會自動縮字'));assert.equal(state().title.length,25);assert.equal(w.__fixedDownloads.length,2);$('[data-fm-download="template"]').click();await until(()=>!$('[data-fm-download="template"]').disabled,'template after failure');assert.equal(w.__fixedDownloads.length,3);assert($('.fmStatus').textContent.includes('三頁母片（不含示範）'));$('[data-fm-field="title"]').value='重新測試';$('[data-fm-field="title"]').dispatchEvent(new w.Event('input',{bubbles:true}));});
   await test('Native download pending / failure / retry retains selection across rerender and navigation',async()=>{const host=d.createElement('div');d.body.appendChild(host);let calls=0,resolve;const download=()=>{calls++;return new Promise(r=>resolve=r);};w.FixedMaster.render(host,{state:{layout:'2',color:'purple'},onDownload:download});host.querySelector('[data-fm-download="current"]').click();host.querySelector('[data-fm-download="current"]').click();assert.equal(calls,1);w.FixedMaster.render(host,{onDownload:download});resolve(false);await until(()=>!host.querySelector('[data-fm-download="current"]').disabled,'cancel');assert(host.textContent.includes('已取消'));assert.equal(w.FixedMaster.getState(host).color,'purple');w.FixedMaster.render(host,{onDownload:async()=>{throw Error('test failure');}});host.querySelector('[data-fm-download="current"]').click();await until(()=>!host.querySelector('[data-fm-download="current"]').disabled,'failed');assert(host.textContent.includes('test failure'));w.FixedMaster.render(host,{onDownload:async()=>true});host.querySelector('[data-fm-download="current"]').click();await until(()=>!host.querySelector('[data-fm-download="current"]').disabled,'retry');assert(host.textContent.includes('已產生'));host.remove();});
   storage=Object.fromEntries(Array.from({length:w.localStorage.length},(_,i)=>{const k=w.localStorage.key(i);return[k,w.localStorage.getItem(k)];}));
-  await test('Other tab semantics and original quick-style palette remain unchanged',()=>{const master=JSON.stringify(state());tab('quick');assert(!$('#vQuick').hidden);assert($('#vMaster').hidden);assert(!d.body.classList.contains('tabM'));assert.equal(d.querySelectorAll('[data-qs-style]').length,6);tab('slides');assert(!$('#vSlides').hidden);assert(!$('#pageInfo').hidden);tab('master');assert.equal(JSON.stringify(state()),master);});
+  await test('Retired quick entry redirects to Kit without changing the fixed master',()=>{const master=JSON.stringify(state());run("setTab('quick')");assert.equal(run('S.tab'),'kit');assert($('#vQuick').hidden);assert(!$('#vKit').hidden);assert($('#vMaster').hidden);assert(!d.body.classList.contains('tabM'));assert.equal(d.querySelectorAll('#skGal .skQ').length,42);tab('slides');assert(!$('#vSlides').hidden);assert(!$('#pageInfo').hidden);tab('master');assert.equal(JSON.stringify(state()),master);});
   assert.deepEqual(app.errors,[]);
  }finally{app.dom.window.close();}
  const restored=await boot(storage);try{await test('Reload restores master tab and its independent selection',()=>{assert(!restored.$('#vMaster').hidden);assert.equal(restored.state().layout,'4');assert.equal(restored.state().focus,'保留原文字');assert.equal(restored.state().title,'重新測試');assert.deepEqual(restored.errors,[]);});}finally{restored.dom.window.close();}
