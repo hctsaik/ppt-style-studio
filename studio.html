@@ -529,7 +529,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 
 <header>
  <h1><i id="dot"></i>PPT <span class="hs">Style </span>Studio <small>精緻圖解元件・客製工作室（背景永遠白色）</small></h1>
- <nav class="tabs" id="tabs"><button data-tab="style" title="全站共用：投影片、表格、圖示庫、Style Kit 一起換">風格設定</button><button data-tab="slides" class="on">投影片元件</button><button data-tab="icons">圖示庫</button><button data-tab="table">表格</button><button data-tab="quick" title="主題色或固定七色，產生可編輯方塊與柔和螢光筆">快速樣式</button><button data-tab="kit" title="PPT 範本 Style Kit：快速樣式＋螢光筆預覽，下載內嵌主題的 .pptx／.potx">範本 Style Kit</button><button data-tab="guide" title="依情境挑元件：週報、8D、提案、面試、作品集、競賽簡報">簡報食譜</button></nav>
+ <nav class="tabs" id="tabs"><button data-tab="style" title="全站共用：投影片、表格、圖示庫、Style Kit 一起換">風格設定</button><button data-tab="slides" class="on">投影片元件</button><button data-tab="icons">圖示庫</button><button data-tab="table">表格</button><button data-tab="quick" title="主題色或固定七色，產生可編輯方塊與柔和螢光筆">快速樣式</button><button data-tab="master" title="原件母片固定紅色與字型；獨立搭配快速樣式與螢光筆">投影片母片</button><button data-tab="kit" title="PPT 範本 Style Kit：快速樣式＋螢光筆預覽，下載內嵌主題的 .pptx／.potx">範本 Style Kit</button><button data-tab="guide" title="依情境挑元件：週報、8D、提案、面試、作品集、競賽簡報">簡報食譜</button></nav>
  <div class="more tools tplm"><button class="btn" id="bTpl" aria-controls="mTpl" aria-haspopup="true" aria-expanded="false" title="切換範本：全站套用，與「風格設定」同步">範本 ▾</button><div class="menu" id="mTpl" role="menu" hidden></div></div>
  <span class="sp"></span>
  <span class="reqnote">新需求請寄信給 HCTSAIK，謝謝</span>
@@ -561,7 +561,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
   <div class="stage"><div class="slide" id="big"></div><aside class="fwp" id="fwPanel" aria-label="框架使用說明" hidden></aside></div>
   <div class="xinfo" id="xInfo"></div>
   </section>
-  <section class="view" id="vStyle" hidden><div class="stv"><div class="sthost" id="stHost"><h2 style="margin:0 0 4px">風格設定</h2><p class="hint" style="margin:0 0 8px">在這裡改的範本、顏色、字型會套用到全站：投影片、表格、圖示庫、Style Kit，並自動記住。</p>
+  <section class="view" id="vStyle" hidden><div class="stv"><div class="sthost" id="stHost"><h2 style="margin:0 0 4px">風格設定</h2><p class="hint" style="margin:0 0 8px">在這裡改的範本、顏色、字型會套用到全站：投影片、表格、圖示庫、Style Kit，並自動記住。獨立的「投影片母片」不受影響。</p>
   <details id="stDet" open><summary>風格設定</summary>
   <div class="cap">範本</div>
   <div class="tpls" id="tpls"></div>
@@ -596,6 +596,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
   </section>
   <section class="view" id="vKit" hidden></section>
   <section class="view" id="vQuick" hidden style="overflow:auto;padding:18px 22px"></section>
+  <section class="view" id="vMaster" hidden style="overflow:auto;padding:18px 22px"></section>
   <section class="view" id="vTable" hidden>
    <div class="tv">
     <div class="tmain">
@@ -692,15 +693,17 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <details id="exportCheck" class="export-check" hidden><summary><span id="exportCheckTitle" role="status" aria-live="polite">可以匯出</span> <button type="button" id="exportCancel" hidden>取消本次匯出</button></summary><p id="exportCheckNote"></p><ol id="exportIssues"></ol><button type="button" id="exportCheckClose">收起檢查</button></details>
 <div class="lbed" id="lbEd" hidden role="dialog" aria-label="改字"><div class="lbh"><b id="lbName">改字</b><small id="lbHelp">只改文字、不重排版面：放不下時字級自動縮小（PowerPoint 裡再改也會自動縮小）。Enter＝換行；改過的會保留在本機，也會跟著「＋待選」。</small></div>
  <div id="lbList"></div><section id="lbIcPicker" hidden aria-label="搜尋替換圖示"><div class="lbpickhead"><b id="lbIcPickerTitle">替換圖示</b><button class="btn" id="lbIcClose" aria-label="關閉圖示搜尋">✕</button></div><input type="search" id="lbIcSearch" placeholder="搜尋圖示：團隊、時間、star…" aria-label="搜尋全部圖示"><div id="lbIcResults"></div><small id="lbIcStatus" role="status" aria-live="polite"></small></section><div class="lbf"><button class="btn" id="lbReset">還原此元件</button><button class="btn" id="lbCancel">取消</button><button class="btn pri" id="lbOk">套用</button></div></div>
-<script src="jszip.min.js?v=3753fa5d"></script>
-<script src="pptxgen.min.js?v=c0a8c54c"></script>
-<script src="icons.js?v=9c7b6dc9"></script>
-<script src="deck.js?v=c892e858"></script>
-<script src="stylekit-data.js?v=a7cecd68"></script>
-<script src="stylekit.js?v=e960cb3f"></script>
+<script src="jszip.min.js?v=978d62b5"></script>
+<script src="pptxgen.min.js?v=24808c08"></script>
+<script src="icons.js?v=65c03732"></script>
+<script src="deck.js?v=be4c954a"></script>
+<script src="stylekit-data.js?v=47e8edb0"></script>
+<script src="stylekit.js?v=0df95900"></script>
 <script src="preflight.js?v=fb03c6cb"></script>
 <script src="export-flow.js?v=c9d4f55c"></script>
 <script src="quickstyles.js?v=b4777192"></script>
+<script src="fixed-master-data.js?v=c3dbdd42"></script>
+<script src="fixed-master.js?v=ad09e252"></script>
 <script>
 (function(){
  'use strict';
@@ -712,6 +715,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
  if(typeof window.Preflight==='undefined')miss.push('preflight.js');
  if(typeof window.ExportFlow==='undefined')miss.push('export-flow.js');
  if(typeof window.QuickStyles==='undefined')miss.push('quickstyles.js');
+ if(typeof window.FixedMaster==='undefined')miss.push('fixed-master.js');
  if(!miss.length)return;
  window.__studioFatal=miss;
  var box=document.createElement('div');box.className='fatal';box.setAttribute('role','alert');
@@ -846,7 +850,7 @@ function cleanLabels(o){const out={};if(!o||typeof o!=='object')return out;Objec
  Object.keys(o[k]).slice(0,60).forEach(i=>{const v=o[k][i];if(/^\d+$/.test(i)&&v&&typeof v==='object'&&typeof v.icon==='string'&&window.Icons&&Object.prototype.hasOwnProperty.call(window.Icons.BY,v.icon))L[i]={from:typeof v.from==='string'?v.from.slice(0,60):null,icon:v.icon};else if(/^\d+$/.test(i)&&v&&typeof v==='object'&&typeof v.to==='string')L[i]={from:typeof v.from==='string'?D.stripCtl(v.from).slice(0,400):null,to:D.stripCtl(v.to).slice(0,400)};});
  if(/^iconvariants:\d+$/.test(k)&&o[k]._iconStyle&&typeof o[k]._iconStyle==='object')L._iconStyle=D.cleanIconStyle(o[k]._iconStyle);
  if(Object.keys(L).length)out[k]=L;});return out;}
-try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=presetOf(s.base).id;S.p=cleanP(s.p,S.base);S.slideKey=typeof s.key==='string'?s.key:null;/* 位置記憶：以頁面 ID（非索引）記憶，找不到回到 00 總覽 */S.mine=s.mine?D.stripCtl(s.mine).slice(0,40):null;S.autoTone=s.autoTone!==false;S.tab=['slides','style','icons','table','kit','quick','guide'].includes(s.tab)?s.tab:'slides';S.examples=true;S.labels=cleanLabels(s.labels);}}catch(e){}
+try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=presetOf(s.base).id;S.p=cleanP(s.p,S.base);S.slideKey=typeof s.key==='string'?s.key:null;/* 位置記憶：以頁面 ID（非索引）記憶，找不到回到 00 總覽 */S.mine=s.mine?D.stripCtl(s.mine).slice(0,40):null;S.autoTone=s.autoTone!==false;S.tab=['slides','style','icons','table','kit','quick','master','guide'].includes(s.tab)?s.tab:'slides';S.examples=true;S.labels=cleanLabels(s.labels);}}catch(e){}
 const persist=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify({base:S.base,p:S.p,slide:S.slide,key:model&&model.slides[S.slide]?model.slides[S.slide].key:S.slideKey,autoTone:S.autoTone,mine:S.mine||null,tab:S.tab||'slides',examples:!!S.examples,labels:S.labels||{}}));}catch(e){}};
 const hex=v=>String(v||'').replace('#','').toUpperCase();
 const toast=(t,ms,html)=>{const e=$('#toast');
@@ -1161,7 +1165,7 @@ const I=window.Icons;const ENV=()=>({PptxGenJS:window.PptxGenJS,JSZip:window.JSZ
 const SK=()=>D.SIZE_K[S.p.size]||1;
 function syncPageInfoHeight(){const footer=$('#pageInfo');document.documentElement.style.setProperty('--page-info-height',footer.hidden?'0px':Math.ceil(footer.getBoundingClientRect().height)+'px');}
 function setTab(t){if(t!==S.tab)closeChip();if(t!==S.tab)closeLabelEditor(false);S.tab=t;document.body.classList.toggle('tabT',t==='table');if(t==='table'&&document.body.classList.contains('pan'))setPanel(false);document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
- $('#vSlides').hidden=t!=='slides';$('#pageInfo').hidden=t!=='slides';syncPageInfoHeight();if(t!=='slides'){$('#edPop').hidden=true;$('#edBadge').setAttribute('aria-expanded','false');}$('#vIcons').hidden=t!=='icons';$('#vTable').hidden=t!=='table';$('#vKit').hidden=t!=='kit';$('#vQuick').hidden=t!=='quick';if(t==='quick')renderQuick();$('#vGuide').hidden=t!=='guide';$('#vStyle').hidden=t!=='style';document.body.classList.toggle('tabS',t==='style');if(t==='style')renderStylePrev();if(t==='guide')renderGuide();document.body.classList.toggle('tabK',t==='kit'||t==='guide');document.body.classList.toggle('tabK',t==='kit');if(t==='kit'&&window.StyleKit)StyleKit.sync(S.p,S.base);
+ $('#vSlides').hidden=t!=='slides';$('#pageInfo').hidden=t!=='slides';syncPageInfoHeight();if(t!=='slides'){$('#edPop').hidden=true;$('#edBadge').setAttribute('aria-expanded','false');}$('#vIcons').hidden=t!=='icons';$('#vTable').hidden=t!=='table';$('#vKit').hidden=t!=='kit';$('#vMaster').hidden=t!=='master';document.body.classList.toggle('tabM',t==='master');if(t==='master')renderMaster();$('#vQuick').hidden=t!=='quick';if(t==='quick')renderQuick();$('#vGuide').hidden=t!=='guide';$('#vStyle').hidden=t!=='style';document.body.classList.toggle('tabS',t==='style');if(t==='style')renderStylePrev();if(t==='guide')renderGuide();document.body.classList.toggle('tabK',t==='kit'||t==='guide');document.body.classList.toggle('tabK',t==='kit');if(t==='kit'&&window.StyleKit)StyleKit.sync(S.p,S.base);
  $('#bOne').style.display=$('#bAll').style.display=t==='slides'?'':'none';
  if(t==='icons')renderIcons();if(t==='table'){syncTableUI();renderTable();}persist();}
 $('#iconCompLibrary').onclick=()=>setTab('icons');
@@ -1172,7 +1176,9 @@ $('#stReset').onclick=()=>$('#bReset').click();
 document.addEventListener('keydown',e=>{const p=e.target.closest&&e.target.closest('.pal');if(p&&(e.key==='Enter'||e.key===' ')){e.preventDefault();p.click();}});
 let quickSaved;try{quickSaved=JSON.parse(localStorage.getItem('ppt-studio-quick-styles')||'null');}catch(_){}
 function renderQuick(){if(!window.QuickStyles)return;QuickStyles.render($('#vQuick'),S.p,{state:quickSaved,onChange:state=>{quickSaved=state;invalidateExport();try{localStorage.setItem('ppt-studio-quick-styles',JSON.stringify(state));}catch(_){toast('本機儲存不可用；本次設定仍保留，可繼續下載。');}},onDownload:async snapshot=>{try{snapshot=QuickStyles.snapshot(S.p,snapshot.selection);const r=await checkedExport(ENV(),snapshot.params,{model:snapshot.model});saveBlob(r.data,snapshot.filename);toast('已下載快速樣式：底帶與文字皆可編輯。');return true;}catch(e){toast(e.message);return false;}}});}
-function renderExtra(){if(S.tab==='style')renderStylePrev();else if(S.tab==='icons')renderIcons();else if(S.tab==='table')renderTable();else if(S.tab==='kit'&&window.StyleKit)StyleKit.sync(S.p,S.base);else if(S.tab==='quick')renderQuick();}
+let masterSaved;try{masterSaved=JSON.parse(localStorage.getItem('ppt-studio-fixed-master')||'null');}catch(_){}
+function renderMaster(){if(!window.FixedMaster)return;FixedMaster.render($('#vMaster'),{state:masterSaved,onChange:state=>{masterSaved=state;try{localStorage.setItem('ppt-studio-fixed-master',JSON.stringify(state));}catch(_){toast('本機儲存不可用；本次母片設定仍保留。');}},onDownload:async snapshot=>{const original=snapshot.mode==='original';const bytes=original?FixedMaster.originalBytes():await FixedMaster.exportPptx(window.JSZip,snapshot.mode==='presets'?snapshot.presets:[snapshot.selection]);saveBlob(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'}),original?'TSMC_Template (5).pptx':snapshot.mode==='presets'?'TSMC_母片推薦組合_11頁.pptx':'TSMC_母片自選組合_5頁.pptx');return true;}});}
+function renderExtra(){if(S.tab==='style')renderStylePrev();else if(S.tab==='icons')renderIcons();else if(S.tab==='table')renderTable();else if(S.tab==='kit'&&window.StyleKit)StyleKit.sync(S.p,S.base);else if(S.tab==='quick')renderQuick();else if(S.tab==='master')renderMaster();}
 
 /* ---------- 圖示庫 ---------- */
 const IC_COLORS=[['P','主色'],['PD','深主色'],['A','強調色'],['g','灰'],['w','白（深底用）']];
