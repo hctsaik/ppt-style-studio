@@ -26,7 +26,7 @@
 
 ## 原生能力與保護
 
-先在來源單一鏈套用既有 R2 balanced-v2，再建立五個獨立 theme；沿 relationships 解析，不猜檔名。保留 fontScheme、文字／背景色槽、bgFillStyleLst、原 master／layout／media 及保留 notes bytes。單欄只改顯示標題、頁碼並加「重點文字」原生 highlight；雙欄只改頁碼。來源母片加五個 clone，共 6 個有效 master。通用單 profile API 仍在寫入前拒絕覆寫不同母片色盤。
+先在來源單一鏈套用既有 R2 balanced-v2，再建立五個獨立 theme；沿 relationships 解析，不猜檔名。保留 fontScheme、文字／背景色槽、bgFillStyleLst、原 master／layout／media 及保留 notes bytes。單欄只改顯示標題與頁碼，不新增底部示例文字框；雙欄只改頁碼。來源母片加五個 clone，共 6 個有效 master。通用單 profile API 仍在寫入前拒絕覆寫不同母片色盤。
 
 70 個矩形並非新增 70 個 Ribbon 按鈕。A16／A18 各保留 28 組，密集素材內文 9 pt、A16 A/B 小字標 8.5 pt，可複製放大，不承諾投影正文可讀性。原生槽位共享，部分線框呈灰底；精確白底外卡可複製素材。
 
