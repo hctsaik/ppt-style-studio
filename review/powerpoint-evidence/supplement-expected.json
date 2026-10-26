@@ -1,0 +1,5494 @@
+{
+  "generatedUtc": "2026-10-25T19:17:52.362Z",
+  "exporter": "Repository browser bundle loaded in VM (not NODE_PATH dependencies)",
+  "sourceHashes": {
+    "deck.js": "8136705f24ab4e85e6df8474762a9d83a27a50d80961cfc3f22a363b06071295",
+    "quickstyles.js": "4fbfb63b4f63e6841206c1b8dfb6600d1a9fbec3317a12173cd7faebf69df5e0",
+    "pptxgen.min.js": "36dda044a99c3c83059ba011a08c361b506aeed5cb30733a7252f6b8593246b4",
+    "jszip.min.js": "0d8c303d7ac0c36b9903431481aa85ad0d1234a81182f6e96b7b687f385dae1f"
+  },
+  "JSZipVersion": "3.10.2",
+  "params": {
+    "P": "6B2288",
+    "PD": "330D4A",
+    "PT": "F3DCF9",
+    "A": "2E75B6",
+    "useA": true,
+    "ink": "3A3A3A",
+    "t2": "595959",
+    "mute": "6E6E6E",
+    "line": "BFBFBF",
+    "l2": "D9D9D9",
+    "fill": "F2F2F2",
+    "canvas": false,
+    "canvasColor": "F5F5F5",
+    "r": 0.1,
+    "colR": "full",
+    "colStyle": "fill",
+    "size": "M",
+    "sh": true,
+    "shFit": true,
+    "shMode": "drop",
+    "shB": 7,
+    "shO": 2,
+    "shA": 0.24,
+    "shDir": 90,
+    "haloB": 16,
+    "haloA": 0.32,
+    "ring": true,
+    "card": "outline",
+    "cardLW": 1.25,
+    "cardLine": "D9D9D9",
+    "headColor": "P",
+    "bandStyle": "fill",
+    "cornerTag": true,
+    "ribbonTone": "p",
+    "tag": "pill",
+    "badge": "ring",
+    "sep": "tri",
+    "chain": "chev",
+    "circle": "ring3",
+    "circleLW": 3,
+    "sym": "outlineP",
+    "mark": "bar",
+    "bar": "under",
+    "bracket": false,
+    "titleColor": "P",
+    "footRule": false,
+    "cnW": 1.25,
+    "cnC": "7F7F7F",
+    "cnDash": "solid",
+    "cnHead": "triangle",
+    "cnTail": "none",
+    "cnHs": "med",
+    "tFont": "Microsoft JhengHei",
+    "bFont": "Microsoft JhengHei",
+    "nFont": "",
+    "tSize": 36,
+    "tBold": true,
+    "lSize": 16,
+    "lBold": true,
+    "nSize": 10.5,
+    "icColor": "P",
+    "icVar": "line",
+    "icSW": 0,
+    "tbDense": "auto",
+    "tbHiColor": "auto",
+    "tbHiMode": "auto",
+    "tbNeg": false,
+    "tbArrow": "mono",
+    "tbStatus": true,
+    "tbLook": "clean",
+    "tbCard": "white",
+    "tbCardOn": null,
+    "tbHeaderStyle": null,
+    "tbStripes": null,
+    "tbGrid": null,
+    "tbMinus": "auto",
+    "tbThou": true,
+    "tbWidth": "auto",
+    "tbV": "center",
+    "tbH": "center",
+    "tbSugTitle": true,
+    "tbAuto": true,
+    "tbFont": "jh",
+    "tbPad": "m",
+    "tbTight": false,
+    "tbSizingVersion": 1,
+    "tbWidthMode": "auto",
+    "tbHeightMode": "optimal",
+    "nLin": 4,
+    "nLane": 3,
+    "nPcc": 3,
+    "nWhy": 5,
+    "nCause": 4,
+    "nIcon": 3,
+    "nList": 4,
+    "semWarn": "D26900",
+    "semGood": "",
+    "semBad": "",
+    "minFont": 0,
+    "anC": "alert",
+    "id": "navy",
+    "zh": "商務深藍卡片",
+    "en": "Navy Card",
+    "ref": "參考圖 2",
+    "desc": "白底＋白色大外框圓與柔和光暈，深藍膠囊白字，▶ 小三角分隔"
+  },
+  "quickStyles": [
+    {
+      "version": 1,
+      "selection": {
+        "version": 1,
+        "source": "theme",
+        "themeKey": "main",
+        "commonKey": "red",
+        "style": "soft",
+        "text": "中文 Native 20 pt",
+        "width": 3.4,
+        "height": 1
+      },
+      "baseColor": "6B2288",
+      "source": "theme",
+      "backgroundIntent": "any",
+      "previewOnlyBackground": null,
+      "nativeColorMode": "rgb",
+      "editable": "shape-text-group"
+    },
+    {
+      "version": 1,
+      "selection": {
+        "version": 1,
+        "source": "theme",
+        "themeKey": "main",
+        "commonKey": "red",
+        "style": "outline",
+        "text": "中文 Native 20 pt",
+        "width": 3.4,
+        "height": 1
+      },
+      "baseColor": "6B2288",
+      "source": "theme",
+      "backgroundIntent": "any",
+      "previewOnlyBackground": null,
+      "nativeColorMode": "rgb",
+      "editable": "shape-text-group"
+    },
+    {
+      "version": 1,
+      "selection": {
+        "version": 1,
+        "source": "theme",
+        "themeKey": "main",
+        "commonKey": "red",
+        "style": "solid",
+        "text": "中文 Native 20 pt",
+        "width": 3.4,
+        "height": 1
+      },
+      "baseColor": "6B2288",
+      "source": "theme",
+      "backgroundIntent": "any",
+      "previewOnlyBackground": null,
+      "nativeColorMode": "rgb",
+      "editable": "shape-text-group"
+    },
+    {
+      "version": 1,
+      "selection": {
+        "version": 1,
+        "source": "theme",
+        "themeKey": "main",
+        "commonKey": "red",
+        "style": "side",
+        "text": "中文 Native 20 pt",
+        "width": 3.4,
+        "height": 1
+      },
+      "baseColor": "6B2288",
+      "source": "theme",
+      "backgroundIntent": "any",
+      "previewOnlyBackground": null,
+      "nativeColorMode": "rgb",
+      "editable": "shape-text-group"
+    },
+    {
+      "version": 1,
+      "selection": {
+        "version": 1,
+        "source": "theme",
+        "themeKey": "main",
+        "commonKey": "red",
+        "style": "marker",
+        "text": "中文 Native 20 pt",
+        "width": 3.4,
+        "height": 1
+      },
+      "baseColor": "6B2288",
+      "source": "theme",
+      "backgroundIntent": "any",
+      "previewOnlyBackground": null,
+      "nativeColorMode": "rgb",
+      "editable": "shape-text-group"
+    },
+    {
+      "version": 1,
+      "selection": {
+        "version": 1,
+        "source": "theme",
+        "themeKey": "main",
+        "commonKey": "red",
+        "style": "underline",
+        "text": "中文 Native 20 pt",
+        "width": 3.4,
+        "height": 1
+      },
+      "baseColor": "6B2288",
+      "source": "theme",
+      "backgroundIntent": "any",
+      "previewOnlyBackground": null,
+      "nativeColorMode": "rgb",
+      "editable": "shape-text-group"
+    },
+    {
+      "version": 1,
+      "selection": {
+        "version": 1,
+        "source": "common",
+        "themeKey": "main",
+        "commonKey": "white",
+        "style": "outline",
+        "text": "白色 Native",
+        "width": 3.4,
+        "height": 1
+      },
+      "baseColor": "FFFFFF",
+      "source": "common",
+      "backgroundIntent": "dark",
+      "previewOnlyBackground": "252A34",
+      "nativeColorMode": "rgb",
+      "editable": "shape-text-group"
+    },
+    {
+      "version": 1,
+      "selection": {
+        "version": 1,
+        "source": "common",
+        "themeKey": "main",
+        "commonKey": "white",
+        "style": "marker",
+        "text": "白色 Native",
+        "width": 3.4,
+        "height": 1
+      },
+      "baseColor": "FFFFFF",
+      "source": "common",
+      "backgroundIntent": "dark",
+      "previewOnlyBackground": "252A34",
+      "nativeColorMode": "rgb",
+      "editable": "shape-text-group"
+    },
+    {
+      "version": 1,
+      "selection": {
+        "version": 1,
+        "source": "common",
+        "themeKey": "main",
+        "commonKey": "white",
+        "style": "underline",
+        "text": "白色 Native",
+        "width": 3.4,
+        "height": 1
+      },
+      "baseColor": "FFFFFF",
+      "source": "common",
+      "backgroundIntent": "dark",
+      "previewOnlyBackground": "252A34",
+      "nativeColorMode": "rgb",
+      "editable": "shape-text-group"
+    }
+  ],
+  "models": [
+    {
+      "key": "quickstyle-soft",
+      "title": "柔底・主色",
+      "no": 1,
+      "items": [
+        {
+          "t": "sp",
+          "kind": "roundRect",
+          "name": "柔底底座",
+          "x": 4.9665,
+          "y": 3.25,
+          "w": 3.4,
+          "h": 1,
+          "fill": "F0E9F3",
+          "line": null,
+          "lw": 0,
+          "ft": 0,
+          "dash": "solid",
+          "adj": 0.09722222222222222
+        },
+        {
+          "t": "sp",
+          "kind": null,
+          "name": "快速樣式文字",
+          "x": 5.160944444444445,
+          "y": 3.388888888888889,
+          "w": 3.011111111111111,
+          "h": 0.7222222222222222,
+          "noAutoShrink": true,
+          "runs": [
+            {
+              "t": "中文 Native 20 pt",
+              "o": {
+                "size": 20,
+                "font": "Microsoft JhengHei",
+                "bold": false,
+                "color": "303640"
+              }
+            }
+          ],
+          "tx": {
+            "align": "left",
+            "valign": "middle",
+            "margin": 0,
+            "lsp": 1,
+            "font": "Microsoft JhengHei",
+            "size": 20,
+            "color": "303640",
+            "bold": false,
+            "wrap": 1
+          }
+        }
+      ],
+      "groups": [
+        {
+          "name": "柔底・主色",
+          "from": 0,
+          "to": 1,
+          "x": 4.9665,
+          "y": 3.25,
+          "w": 3.4,
+          "h": 1,
+          "quickStyle": "soft",
+          "backgroundIntent": "any",
+          "previewOnlyBackground": null
+        }
+      ],
+      "backgroundIntent": "any"
+    },
+    {
+      "key": "quickstyle-outline",
+      "title": "細框・主色",
+      "no": 1,
+      "items": [
+        {
+          "t": "sp",
+          "kind": "roundRect",
+          "name": "細框底座",
+          "x": 4.9665,
+          "y": 3.25,
+          "w": 3.4,
+          "h": 1,
+          "fill": null,
+          "line": "6B2288",
+          "lw": 1.25,
+          "ft": 0,
+          "dash": "solid",
+          "adj": 0.09722222222222222
+        },
+        {
+          "t": "sp",
+          "kind": null,
+          "name": "快速樣式文字",
+          "x": 5.160944444444445,
+          "y": 3.388888888888889,
+          "w": 3.011111111111111,
+          "h": 0.7222222222222222,
+          "noAutoShrink": true,
+          "runs": [
+            {
+              "t": "中文 Native 20 pt",
+              "o": {
+                "size": 20,
+                "font": "Microsoft JhengHei",
+                "bold": false,
+                "color": "303640"
+              }
+            }
+          ],
+          "tx": {
+            "align": "left",
+            "valign": "middle",
+            "margin": 0,
+            "lsp": 1,
+            "font": "Microsoft JhengHei",
+            "size": 20,
+            "color": "303640",
+            "bold": false,
+            "wrap": 1
+          }
+        }
+      ],
+      "groups": [
+        {
+          "name": "細框・主色",
+          "from": 0,
+          "to": 1,
+          "x": 4.9665,
+          "y": 3.25,
+          "w": 3.4,
+          "h": 1,
+          "quickStyle": "outline",
+          "backgroundIntent": "any",
+          "previewOnlyBackground": null
+        }
+      ],
+      "backgroundIntent": "any"
+    },
+    {
+      "key": "quickstyle-solid",
+      "title": "實心・主色",
+      "no": 1,
+      "items": [
+        {
+          "t": "sp",
+          "kind": "roundRect",
+          "name": "實心底座",
+          "x": 4.9665,
+          "y": 3.25,
+          "w": 3.4,
+          "h": 1,
+          "fill": "6B2288",
+          "line": null,
+          "lw": 0,
+          "ft": 0,
+          "dash": "solid",
+          "adj": 0.09722222222222222
+        },
+        {
+          "t": "sp",
+          "kind": null,
+          "name": "快速樣式文字",
+          "x": 5.160944444444445,
+          "y": 3.388888888888889,
+          "w": 3.011111111111111,
+          "h": 0.7222222222222222,
+          "noAutoShrink": true,
+          "runs": [
+            {
+              "t": "中文 Native 20 pt",
+              "o": {
+                "size": 20,
+                "font": "Microsoft JhengHei",
+                "bold": false,
+                "color": "FFFFFF"
+              }
+            }
+          ],
+          "tx": {
+            "align": "left",
+            "valign": "middle",
+            "margin": 0,
+            "lsp": 1,
+            "font": "Microsoft JhengHei",
+            "size": 20,
+            "color": "FFFFFF",
+            "bold": false,
+            "wrap": 1
+          }
+        }
+      ],
+      "groups": [
+        {
+          "name": "實心・主色",
+          "from": 0,
+          "to": 1,
+          "x": 4.9665,
+          "y": 3.25,
+          "w": 3.4,
+          "h": 1,
+          "quickStyle": "solid",
+          "backgroundIntent": "any",
+          "previewOnlyBackground": null
+        }
+      ],
+      "backgroundIntent": "any"
+    },
+    {
+      "key": "quickstyle-side",
+      "title": "側邊條・主色",
+      "no": 1,
+      "items": [
+        {
+          "t": "sp",
+          "kind": "roundRect",
+          "name": "側邊條底座",
+          "x": 4.9665,
+          "y": 3.25,
+          "w": 3.4,
+          "h": 1,
+          "fill": "F0E9F3",
+          "line": null,
+          "lw": 0,
+          "ft": 0,
+          "dash": "solid",
+          "adj": 0.09722222222222222
+        },
+        {
+          "t": "sp",
+          "kind": "rect",
+          "name": "3 pt 側邊條",
+          "x": 4.9665,
+          "y": 3.3472222222222223,
+          "w": 0.041666666666666664,
+          "h": 0.8055555555555556,
+          "fill": "6B2288",
+          "line": null,
+          "lw": 0,
+          "ft": 0,
+          "dash": "solid",
+          "adj": 0
+        },
+        {
+          "t": "sp",
+          "kind": null,
+          "name": "快速樣式文字",
+          "x": 5.160944444444445,
+          "y": 3.388888888888889,
+          "w": 3.011111111111111,
+          "h": 0.7222222222222222,
+          "noAutoShrink": true,
+          "runs": [
+            {
+              "t": "中文 Native 20 pt",
+              "o": {
+                "size": 20,
+                "font": "Microsoft JhengHei",
+                "bold": false,
+                "color": "303640"
+              }
+            }
+          ],
+          "tx": {
+            "align": "left",
+            "valign": "middle",
+            "margin": 0,
+            "lsp": 1,
+            "font": "Microsoft JhengHei",
+            "size": 20,
+            "color": "303640",
+            "bold": false,
+            "wrap": 1
+          }
+        }
+      ],
+      "groups": [
+        {
+          "name": "側邊條・主色",
+          "from": 0,
+          "to": 2,
+          "x": 4.9665,
+          "y": 3.25,
+          "w": 3.4,
+          "h": 1,
+          "quickStyle": "side",
+          "backgroundIntent": "any",
+          "previewOnlyBackground": null
+        }
+      ],
+      "backgroundIntent": "any"
+    },
+    {
+      "key": "quickstyle-marker",
+      "title": "全字柔帶・主色",
+      "no": 1,
+      "items": [
+        {
+          "t": "sp",
+          "kind": "roundRect",
+          "name": "全字柔帶第 1 行底帶",
+          "x": 5.135944444444444,
+          "y": 3.5972222222222223,
+          "w": 2.266666666666666,
+          "h": 0.3055555555555556,
+          "fill": "6B2288",
+          "line": null,
+          "lw": 0,
+          "ft": 76,
+          "dash": "solid",
+          "adj": 0.027777777777777776
+        },
+        {
+          "t": "sp",
+          "kind": null,
+          "name": "螢光筆文字第 1 行",
+          "x": 5.160944444444445,
+          "y": 3.5833333333333335,
+          "w": 3.011111111111111,
+          "h": 0.3333333333333333,
+          "noAutoShrink": true,
+          "runs": [
+            {
+              "t": "中文 Native 20 pt",
+              "o": {
+                "size": 20,
+                "font": "Microsoft JhengHei",
+                "bold": false,
+                "color": "303640"
+              }
+            }
+          ],
+          "tx": {
+            "align": "left",
+            "valign": "middle",
+            "margin": 0,
+            "lsp": 1,
+            "font": "Microsoft JhengHei",
+            "size": 20,
+            "color": "303640",
+            "bold": false,
+            "wrap": 0
+          },
+          "quickStyleLine": true
+        }
+      ],
+      "groups": [
+        {
+          "name": "全字柔帶・主色",
+          "from": 0,
+          "to": 1,
+          "x": 4.9665,
+          "y": 3.25,
+          "w": 3.4,
+          "h": 1,
+          "quickStyle": "marker",
+          "backgroundIntent": "any",
+          "previewOnlyBackground": null
+        }
+      ],
+      "backgroundIntent": "any"
+    },
+    {
+      "key": "quickstyle-underline",
+      "title": "下緣半筆・主色",
+      "no": 1,
+      "items": [
+        {
+          "t": "sp",
+          "kind": "roundRect",
+          "name": "下緣半筆第 1 行底帶",
+          "x": 5.135944444444444,
+          "y": 3.763888888888889,
+          "w": 2.266666666666666,
+          "h": 0.1527777777777778,
+          "fill": "6B2288",
+          "line": null,
+          "lw": 0,
+          "ft": 65,
+          "dash": "solid",
+          "adj": 0.027777777777777776
+        },
+        {
+          "t": "sp",
+          "kind": null,
+          "name": "螢光筆文字第 1 行",
+          "x": 5.160944444444445,
+          "y": 3.5833333333333335,
+          "w": 3.011111111111111,
+          "h": 0.3333333333333333,
+          "noAutoShrink": true,
+          "runs": [
+            {
+              "t": "中文 Native 20 pt",
+              "o": {
+                "size": 20,
+                "font": "Microsoft JhengHei",
+                "bold": false,
+                "color": "303640"
+              }
+            }
+          ],
+          "tx": {
+            "align": "left",
+            "valign": "middle",
+            "margin": 0,
+            "lsp": 1,
+            "font": "Microsoft JhengHei",
+            "size": 20,
+            "color": "303640",
+            "bold": false,
+            "wrap": 0
+          },
+          "quickStyleLine": true
+        }
+      ],
+      "groups": [
+        {
+          "name": "下緣半筆・主色",
+          "from": 0,
+          "to": 1,
+          "x": 4.9665,
+          "y": 3.25,
+          "w": 3.4,
+          "h": 1,
+          "quickStyle": "underline",
+          "backgroundIntent": "any",
+          "previewOnlyBackground": null
+        }
+      ],
+      "backgroundIntent": "any"
+    },
+    {
+      "key": "quickstyle-outline",
+      "title": "細框・白",
+      "no": 1,
+      "items": [
+        {
+          "t": "sp",
+          "kind": "roundRect",
+          "name": "細框底座",
+          "x": 4.9665,
+          "y": 3.25,
+          "w": 3.4,
+          "h": 1,
+          "fill": null,
+          "line": "FFFFFF",
+          "lw": 1.25,
+          "ft": 0,
+          "dash": "solid",
+          "adj": 0.09722222222222222
+        },
+        {
+          "t": "sp",
+          "kind": null,
+          "name": "快速樣式文字",
+          "x": 5.160944444444445,
+          "y": 3.388888888888889,
+          "w": 3.011111111111111,
+          "h": 0.7222222222222222,
+          "noAutoShrink": true,
+          "runs": [
+            {
+              "t": "白色 Native",
+              "o": {
+                "size": 20,
+                "font": "Microsoft JhengHei",
+                "bold": false,
+                "color": "FFFFFF"
+              }
+            }
+          ],
+          "tx": {
+            "align": "left",
+            "valign": "middle",
+            "margin": 0,
+            "lsp": 1,
+            "font": "Microsoft JhengHei",
+            "size": 20,
+            "color": "FFFFFF",
+            "bold": false,
+            "wrap": 1
+          }
+        }
+      ],
+      "groups": [
+        {
+          "name": "細框・白",
+          "from": 0,
+          "to": 1,
+          "x": 4.9665,
+          "y": 3.25,
+          "w": 3.4,
+          "h": 1,
+          "quickStyle": "outline",
+          "backgroundIntent": "dark",
+          "previewOnlyBackground": "252A34"
+        }
+      ],
+      "backgroundIntent": "dark"
+    },
+    {
+      "key": "quickstyle-marker",
+      "title": "全字柔帶・白",
+      "no": 1,
+      "items": [
+        {
+          "t": "sp",
+          "kind": "roundRect",
+          "name": "全字柔帶第 1 行底帶",
+          "x": 5.135944444444444,
+          "y": 3.5972222222222223,
+          "w": 1.547222222222222,
+          "h": 0.3055555555555556,
+          "fill": "FFFFFF",
+          "line": null,
+          "lw": 0,
+          "ft": 76,
+          "dash": "solid",
+          "adj": 0.027777777777777776
+        },
+        {
+          "t": "sp",
+          "kind": null,
+          "name": "螢光筆文字第 1 行",
+          "x": 5.160944444444445,
+          "y": 3.5833333333333335,
+          "w": 3.011111111111111,
+          "h": 0.3333333333333333,
+          "noAutoShrink": true,
+          "runs": [
+            {
+              "t": "白色 Native",
+              "o": {
+                "size": 20,
+                "font": "Microsoft JhengHei",
+                "bold": false,
+                "color": "FFFFFF"
+              }
+            }
+          ],
+          "tx": {
+            "align": "left",
+            "valign": "middle",
+            "margin": 0,
+            "lsp": 1,
+            "font": "Microsoft JhengHei",
+            "size": 20,
+            "color": "FFFFFF",
+            "bold": false,
+            "wrap": 0
+          },
+          "quickStyleLine": true
+        }
+      ],
+      "groups": [
+        {
+          "name": "全字柔帶・白",
+          "from": 0,
+          "to": 1,
+          "x": 4.9665,
+          "y": 3.25,
+          "w": 3.4,
+          "h": 1,
+          "quickStyle": "marker",
+          "backgroundIntent": "dark",
+          "previewOnlyBackground": "252A34"
+        }
+      ],
+      "backgroundIntent": "dark"
+    },
+    {
+      "key": "quickstyle-underline",
+      "title": "下緣半筆・白",
+      "no": 1,
+      "items": [
+        {
+          "t": "sp",
+          "kind": "roundRect",
+          "name": "下緣半筆第 1 行底帶",
+          "x": 5.135944444444444,
+          "y": 3.763888888888889,
+          "w": 1.547222222222222,
+          "h": 0.1527777777777778,
+          "fill": "FFFFFF",
+          "line": null,
+          "lw": 0,
+          "ft": 65,
+          "dash": "solid",
+          "adj": 0.027777777777777776
+        },
+        {
+          "t": "sp",
+          "kind": null,
+          "name": "螢光筆文字第 1 行",
+          "x": 5.160944444444445,
+          "y": 3.5833333333333335,
+          "w": 3.011111111111111,
+          "h": 0.3333333333333333,
+          "noAutoShrink": true,
+          "runs": [
+            {
+              "t": "白色 Native",
+              "o": {
+                "size": 20,
+                "font": "Microsoft JhengHei",
+                "bold": false,
+                "color": "FFFFFF"
+              }
+            }
+          ],
+          "tx": {
+            "align": "left",
+            "valign": "middle",
+            "margin": 0,
+            "lsp": 1,
+            "font": "Microsoft JhengHei",
+            "size": 20,
+            "color": "FFFFFF",
+            "bold": false,
+            "wrap": 0
+          },
+          "quickStyleLine": true
+        }
+      ],
+      "groups": [
+        {
+          "name": "下緣半筆・白",
+          "from": 0,
+          "to": 1,
+          "x": 4.9665,
+          "y": 3.25,
+          "w": 3.4,
+          "h": 1,
+          "quickStyle": "underline",
+          "backgroundIntent": "dark",
+          "previewOnlyBackground": "252A34"
+        }
+      ],
+      "backgroundIntent": "dark"
+    }
+  ],
+  "quotes": [
+    {
+      "file": "quote2-sentinel.pptx",
+      "params": {
+        "P": "6B2288",
+        "PD": "330D4A",
+        "PT": "F3DCF9",
+        "A": "2E75B6",
+        "useA": true,
+        "ink": "3A3A3A",
+        "t2": "595959",
+        "mute": "6E6E6E",
+        "line": "BFBFBF",
+        "l2": "D9D9D9",
+        "fill": "F2F2F2",
+        "canvas": false,
+        "canvasColor": "F5F5F5",
+        "r": 0.1,
+        "colR": "full",
+        "colStyle": "fill",
+        "size": "M",
+        "sh": true,
+        "shFit": true,
+        "shMode": "drop",
+        "shB": 7,
+        "shO": 2,
+        "shA": 0.24,
+        "shDir": 90,
+        "haloB": 16,
+        "haloA": 0.32,
+        "ring": true,
+        "card": "outline",
+        "cardLW": 1.25,
+        "cardLine": "D9D9D9",
+        "headColor": "P",
+        "bandStyle": "fill",
+        "cornerTag": true,
+        "ribbonTone": "p",
+        "tag": "pill",
+        "badge": "ring",
+        "sep": "tri",
+        "chain": "chev",
+        "circle": "ring3",
+        "circleLW": 3,
+        "sym": "outlineP",
+        "mark": "bar",
+        "bar": "under",
+        "bracket": false,
+        "titleColor": "P",
+        "footRule": false,
+        "cnW": 1.25,
+        "cnC": "7F7F7F",
+        "cnDash": "solid",
+        "cnHead": "triangle",
+        "cnTail": "none",
+        "cnHs": "med",
+        "tFont": "Microsoft JhengHei",
+        "bFont": "Microsoft JhengHei",
+        "nFont": "",
+        "tSize": 36,
+        "tBold": true,
+        "lSize": 16,
+        "lBold": true,
+        "nSize": 10.5,
+        "icColor": "P",
+        "icVar": "line",
+        "icSW": 0,
+        "tbDense": "auto",
+        "tbHiColor": "auto",
+        "tbHiMode": "auto",
+        "tbNeg": false,
+        "tbArrow": "mono",
+        "tbStatus": true,
+        "tbLook": "clean",
+        "tbCard": "white",
+        "tbCardOn": null,
+        "tbHeaderStyle": null,
+        "tbStripes": null,
+        "tbGrid": null,
+        "tbMinus": "auto",
+        "tbThou": true,
+        "tbWidth": "auto",
+        "tbV": "center",
+        "tbH": "center",
+        "tbSugTitle": true,
+        "tbAuto": true,
+        "tbFont": "jh",
+        "tbPad": "m",
+        "tbTight": false,
+        "tbSizingVersion": 1,
+        "tbWidthMode": "auto",
+        "tbHeightMode": "optimal",
+        "nLin": 4,
+        "nLane": 3,
+        "nPcc": 3,
+        "nWhy": 5,
+        "nCause": 4,
+        "nIcon": 3,
+        "nList": 4,
+        "semWarn": "D26900",
+        "semGood": "",
+        "semBad": "",
+        "minFont": 0,
+        "anC": "alert",
+        "id": "navy",
+        "zh": "商務深藍卡片",
+        "en": "Navy Card",
+        "ref": "參考圖 2",
+        "desc": "白底＋白色大外框圓與柔和光暈，深藍膠囊白字，▶ 小三角分隔"
+      },
+      "slide": {
+        "key": "quote2",
+        "title": "整頁引言・主色卡",
+        "no": 47,
+        "items": [
+          {
+            "t": "sp",
+            "kind": "rect",
+            "x": 0.8999999999999999,
+            "y": 2,
+            "w": 0.12,
+            "h": 2.4,
+            "name": "主色直條",
+            "fill": "6B2288",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 1.35,
+            "y": 1,
+            "w": 1.6,
+            "h": 2,
+            "name": "大引號",
+            "runs": [
+              {
+                "t": "“",
+                "o": {
+                  "size": 96,
+                  "font": "Georgia",
+                  "bold": true,
+                  "color": "E1D3E7"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "top",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Georgia",
+              "size": 96,
+              "color": "E1D3E7",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 2.2,
+            "w": 5.4,
+            "h": 1.6,
+            "name": "金句",
+            "runs": [
+              {
+                "t": "先把問題說清楚，",
+                "o": {
+                  "size": 28,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "330D4A",
+                  "br": true
+                }
+              },
+              {
+                "t": "答案就會自己出現。",
+                "o": {
+                  "size": 28,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "330D4A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "top",
+              "margin": 0,
+              "lsp": 1.2,
+              "font": "Microsoft JhengHei",
+              "size": 28,
+              "color": "330D4A",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "rect",
+            "x": 2.6,
+            "y": 4,
+            "w": 0.9,
+            "h": 0.05,
+            "name": "分隔線",
+            "fill": "6B2288",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 4.2,
+            "w": 5.4,
+            "h": 0.4,
+            "name": "出處",
+            "runs": [
+              {
+                "t": "姓名 Name｜職稱 Title",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "5B6474"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "5B6474",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 4.7,
+            "w": 5.4,
+            "h": 0.4,
+            "name": "使用說明",
+            "runs": [
+              {
+                "t": "章節轉場或結尾金句用；一頁只放一句",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "5B6474"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "5B6474",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 8.486450000000001,
+            "y": 1,
+            "w": 4.24655,
+            "h": 5.15,
+            "name": "淺色塊",
+            "fill": "F6F2F8",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.1
+          },
+          {
+            "t": "pic",
+            "x": 10.009725000000001,
+            "y": 1.38,
+            "w": 1.2,
+            "h": 1.2,
+            "png": "data:image/png;base64,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",
+            "round": 1,
+            "name": "人像（右鍵→變更圖片）"
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 10.009725000000001,
+            "y": 1.38,
+            "w": 1.2,
+            "h": 1.2,
+            "name": "照片白邊",
+            "fill": null,
+            "ft": 0,
+            "line": "FFFFFF",
+            "lw": 3,
+            "dash": "solid",
+            "head": null,
+            "tail": null,
+            "hs": "med"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 8.786450000000002,
+            "y": 2.8,
+            "w": 3.64655,
+            "h": 0.36,
+            "name": "姓名",
+            "runs": [
+              {
+                "t": "姓名 Name",
+                "o": {
+                  "size": 16,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "330D4A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 16,
+              "color": "330D4A",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 8.786450000000002,
+            "y": 3.16,
+            "w": 3.64655,
+            "h": 0.3,
+            "name": "頭銜",
+            "runs": [
+              {
+                "t": "職稱｜單位 Title | Org",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "5B6474"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "5B6474",
+              "bold": false
+            }
+          },
+          {
+            "t": "ln",
+            "x1": 8.886450000000002,
+            "y1": 3.62,
+            "x2": 12.333,
+            "y2": 3.62,
+            "color": "DAC8E1",
+            "w": 0.75,
+            "dash": "solid",
+            "head": null,
+            "tail": null,
+            "hs": "med"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 8.886450000000002,
+            "y": 3.74,
+            "w": 3.4465500000000002,
+            "h": 0.3,
+            "name": "重點標題",
+            "runs": [
+              {
+                "t": "本章重點",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "6B2288"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "6B2288",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 8.886450000000002,
+            "y": 4.119999999999999,
+            "w": 0.3,
+            "h": 0.3,
+            "name": "編號徽章",
+            "fill": "6B2288",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "runs": [
+              {
+                "t": "1",
+                "o": {
+                  "size": 10,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "FFFFFF"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10,
+              "color": "FFFFFF",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 9.306450000000002,
+            "y": 4.12,
+            "w": 3.14655,
+            "h": 0.3,
+            "name": "重點",
+            "runs": [
+              {
+                "t": "先寫結論，再補依據",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "3A3A3A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 8.886450000000002,
+            "y": 4.619999999999999,
+            "w": 0.3,
+            "h": 0.3,
+            "name": "編號徽章",
+            "fill": "6B2288",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "runs": [
+              {
+                "t": "2",
+                "o": {
+                  "size": 10,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "FFFFFF"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10,
+              "color": "FFFFFF",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 9.306450000000002,
+            "y": 4.62,
+            "w": 3.14655,
+            "h": 0.3,
+            "name": "重點",
+            "runs": [
+              {
+                "t": "一頁只回答一個問題",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "3A3A3A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 8.886450000000002,
+            "y": 5.119999999999999,
+            "w": 0.3,
+            "h": 0.3,
+            "name": "編號徽章",
+            "fill": "6B2288",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "runs": [
+              {
+                "t": "3",
+                "o": {
+                  "size": 10,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "FFFFFF"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10,
+              "color": "FFFFFF",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 9.306450000000002,
+            "y": 5.12,
+            "w": 3.14655,
+            "h": 0.3,
+            "name": "重點",
+            "runs": [
+              {
+                "t": "用數字取代形容詞",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "3A3A3A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 5.3,
+            "w": 1,
+            "h": 0.3,
+            "name": "情境標題",
+            "runs": [
+              {
+                "t": "適用情境",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "6B2288"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "6B2288",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 3.65,
+            "y": 5.3,
+            "w": 1.12,
+            "h": 0.3,
+            "name": "情境膠囊",
+            "fill": "F0E9F3",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.15,
+            "runs": [
+              {
+                "t": "章節轉場",
+                "o": {
+                  "size": 10.5,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "330D4A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10.5,
+              "color": "330D4A",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 4.9,
+            "y": 5.3,
+            "w": 1.12,
+            "h": 0.3,
+            "name": "情境膠囊",
+            "fill": "F0E9F3",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.15,
+            "runs": [
+              {
+                "t": "結尾金句",
+                "o": {
+                  "size": 10.5,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "330D4A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10.5,
+              "color": "330D4A",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 6.15,
+            "y": 5.3,
+            "w": 1.12,
+            "h": 0.3,
+            "name": "情境膠囊",
+            "fill": "F0E9F3",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.15,
+            "runs": [
+              {
+                "t": "開場定調",
+                "o": {
+                  "size": 10.5,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "330D4A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10.5,
+              "color": "330D4A",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 0.6,
+            "y": 6.38,
+            "w": 12.133000000000001,
+            "h": 0.3,
+            "name": "下一章",
+            "runs": [
+              {
+                "t": "下一章  ",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "595959"
+                }
+              },
+              {
+                "t": "問題定義 →",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "6B2288"
+                }
+              }
+            ],
+            "tx": {
+              "align": "right",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "595959",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 0.6,
+            "y": 7,
+            "w": 6,
+            "h": 0.24,
+            "runs": [
+              {
+                "t": "商務深藍卡片",
+                "o": {
+                  "size": 9,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "595959"
+                }
+              },
+              {
+                "t": "｜精緻圖解元件庫",
+                "o": {
+                  "size": 9,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "6E6E6E"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 9,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 11.233,
+            "y": 7,
+            "w": 1.5,
+            "h": 0.24,
+            "runs": [
+              {
+                "t": "47 / 72",
+                "o": {
+                  "size": 9,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "6E6E6E"
+                }
+              }
+            ],
+            "tx": {
+              "align": "right",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 9,
+              "color": "6E6E6E",
+              "bold": false
+            }
+          }
+        ],
+        "groups": [
+          {
+            "name": "主色直條引言（白底）",
+            "from": 0,
+            "to": 5,
+            "x": 0.8999999999999999,
+            "y": 1,
+            "w": 7.1,
+            "h": 4.1000000000000005
+          },
+          {
+            "name": "右側淺色塊（人像＋重點）",
+            "from": 6,
+            "to": 18,
+            "x": 8.486450000000001,
+            "y": 1,
+            "w": 4.246549999999999,
+            "h": 5.15
+          },
+          {
+            "name": "適用情境膠囊",
+            "from": 19,
+            "to": 22,
+            "x": 2.6,
+            "y": 5.3,
+            "w": 4.67,
+            "h": 0.2999999999999998
+          },
+          {
+            "name": "下一章提示",
+            "from": 23,
+            "to": 23,
+            "x": 0.6,
+            "y": 6.38,
+            "w": 12.133000000000001,
+            "h": 0.2999999999999998
+          }
+        ],
+        "mkC": "B0CBE3"
+      }
+    },
+    {
+      "file": "quote2-navy.pptx",
+      "params": {
+        "P": "1F4E79",
+        "PD": "1F3864",
+        "PT": "DEE7F1",
+        "A": "2E75B6",
+        "useA": true,
+        "ink": "3A3A3A",
+        "t2": "595959",
+        "mute": "6E6E6E",
+        "line": "BFBFBF",
+        "l2": "D9D9D9",
+        "fill": "F2F2F2",
+        "canvas": false,
+        "canvasColor": "F5F5F5",
+        "r": 0.1,
+        "colR": "full",
+        "colStyle": "fill",
+        "size": "M",
+        "sh": true,
+        "shFit": true,
+        "shMode": "drop",
+        "shB": 7,
+        "shO": 2,
+        "shA": 0.24,
+        "shDir": 90,
+        "haloB": 16,
+        "haloA": 0.32,
+        "ring": true,
+        "card": "outline",
+        "cardLW": 1.25,
+        "cardLine": "D9D9D9",
+        "headColor": "P",
+        "bandStyle": "fill",
+        "cornerTag": true,
+        "ribbonTone": "p",
+        "tag": "pill",
+        "badge": "ring",
+        "sep": "tri",
+        "chain": "chev",
+        "circle": "ring3",
+        "circleLW": 3,
+        "sym": "outlineP",
+        "mark": "bar",
+        "bar": "under",
+        "bracket": false,
+        "titleColor": "P",
+        "footRule": false,
+        "cnW": 1.25,
+        "cnC": "7F7F7F",
+        "cnDash": "solid",
+        "cnHead": "triangle",
+        "cnTail": "none",
+        "cnHs": "med",
+        "tFont": "Microsoft JhengHei",
+        "bFont": "Microsoft JhengHei",
+        "nFont": "",
+        "tSize": 36,
+        "tBold": true,
+        "lSize": 16,
+        "lBold": true,
+        "nSize": 10.5,
+        "icColor": "P",
+        "icVar": "line",
+        "icSW": 0,
+        "tbDense": "auto",
+        "tbHiColor": "auto",
+        "tbHiMode": "auto",
+        "tbNeg": false,
+        "tbArrow": "mono",
+        "tbStatus": true,
+        "tbLook": "clean",
+        "tbCard": "white",
+        "tbCardOn": null,
+        "tbHeaderStyle": null,
+        "tbStripes": null,
+        "tbGrid": null,
+        "tbMinus": "auto",
+        "tbThou": true,
+        "tbWidth": "auto",
+        "tbV": "center",
+        "tbH": "center",
+        "tbSugTitle": true,
+        "tbAuto": true,
+        "tbFont": "jh",
+        "tbPad": "m",
+        "tbTight": false,
+        "tbSizingVersion": 1,
+        "tbWidthMode": "auto",
+        "tbHeightMode": "optimal",
+        "nLin": 4,
+        "nLane": 3,
+        "nPcc": 3,
+        "nWhy": 5,
+        "nCause": 4,
+        "nIcon": 3,
+        "nList": 4,
+        "semWarn": "",
+        "semGood": "",
+        "semBad": "",
+        "minFont": 0,
+        "anC": "alert",
+        "id": "navy",
+        "zh": "商務深藍卡片",
+        "en": "Navy Card",
+        "ref": "參考圖 2",
+        "desc": "白底＋白色大外框圓與柔和光暈，深藍膠囊白字，▶ 小三角分隔"
+      },
+      "slide": {
+        "key": "quote2",
+        "title": "整頁引言・主色卡",
+        "no": 47,
+        "items": [
+          {
+            "t": "sp",
+            "kind": "rect",
+            "x": 0.8999999999999999,
+            "y": 2,
+            "w": 0.12,
+            "h": 2.4,
+            "name": "主色直條",
+            "fill": "1F4E79",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 1.35,
+            "y": 1,
+            "w": 1.6,
+            "h": 2,
+            "name": "大引號",
+            "runs": [
+              {
+                "t": "“",
+                "o": {
+                  "size": 96,
+                  "font": "Georgia",
+                  "bold": true,
+                  "color": "D2DCE4"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "top",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Georgia",
+              "size": 96,
+              "color": "D2DCE4",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 2.2,
+            "w": 5.4,
+            "h": 1.6,
+            "name": "金句",
+            "runs": [
+              {
+                "t": "先把問題說清楚，",
+                "o": {
+                  "size": 28,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "1F3864",
+                  "br": true
+                }
+              },
+              {
+                "t": "答案就會自己出現。",
+                "o": {
+                  "size": 28,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "1F3864"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "top",
+              "margin": 0,
+              "lsp": 1.2,
+              "font": "Microsoft JhengHei",
+              "size": 28,
+              "color": "1F3864",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "rect",
+            "x": 2.6,
+            "y": 4,
+            "w": 0.9,
+            "h": 0.05,
+            "name": "分隔線",
+            "fill": "1F4E79",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 4.2,
+            "w": 5.4,
+            "h": 0.4,
+            "name": "出處",
+            "runs": [
+              {
+                "t": "姓名 Name｜職稱 Title",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "5B6474"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "5B6474",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 4.7,
+            "w": 5.4,
+            "h": 0.4,
+            "name": "使用說明",
+            "runs": [
+              {
+                "t": "章節轉場或結尾金句用；一頁只放一句",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "5B6474"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "5B6474",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 8.486450000000001,
+            "y": 1,
+            "w": 4.24655,
+            "h": 5.15,
+            "name": "淺色塊",
+            "fill": "F2F4F7",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.1
+          },
+          {
+            "t": "pic",
+            "x": 10.009725000000001,
+            "y": 1.38,
+            "w": 1.2,
+            "h": 1.2,
+            "png": "data:image/png;base64,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",
+            "round": 1,
+            "name": "人像（右鍵→變更圖片）"
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 10.009725000000001,
+            "y": 1.38,
+            "w": 1.2,
+            "h": 1.2,
+            "name": "照片白邊",
+            "fill": null,
+            "ft": 0,
+            "line": "FFFFFF",
+            "lw": 3,
+            "dash": "solid",
+            "head": null,
+            "tail": null,
+            "hs": "med"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 8.786450000000002,
+            "y": 2.8,
+            "w": 3.64655,
+            "h": 0.36,
+            "name": "姓名",
+            "runs": [
+              {
+                "t": "姓名 Name",
+                "o": {
+                  "size": 16,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "1F3864"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 16,
+              "color": "1F3864",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 8.786450000000002,
+            "y": 3.16,
+            "w": 3.64655,
+            "h": 0.3,
+            "name": "頭銜",
+            "runs": [
+              {
+                "t": "職稱｜單位 Title | Org",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "5B6474"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "5B6474",
+              "bold": false
+            }
+          },
+          {
+            "t": "ln",
+            "x1": 8.886450000000002,
+            "y1": 3.62,
+            "x2": 12.333,
+            "y2": 3.62,
+            "color": "C7D3DE",
+            "w": 0.75,
+            "dash": "solid",
+            "head": null,
+            "tail": null,
+            "hs": "med"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 8.886450000000002,
+            "y": 3.74,
+            "w": 3.4465500000000002,
+            "h": 0.3,
+            "name": "重點標題",
+            "runs": [
+              {
+                "t": "本章重點",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "1F4E79"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "1F4E79",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 8.886450000000002,
+            "y": 4.119999999999999,
+            "w": 0.3,
+            "h": 0.3,
+            "name": "編號徽章",
+            "fill": "1F4E79",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "runs": [
+              {
+                "t": "1",
+                "o": {
+                  "size": 10,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "FFFFFF"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10,
+              "color": "FFFFFF",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 9.306450000000002,
+            "y": 4.12,
+            "w": 3.14655,
+            "h": 0.3,
+            "name": "重點",
+            "runs": [
+              {
+                "t": "先寫結論，再補依據",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "3A3A3A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 8.886450000000002,
+            "y": 4.619999999999999,
+            "w": 0.3,
+            "h": 0.3,
+            "name": "編號徽章",
+            "fill": "1F4E79",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "runs": [
+              {
+                "t": "2",
+                "o": {
+                  "size": 10,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "FFFFFF"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10,
+              "color": "FFFFFF",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 9.306450000000002,
+            "y": 4.62,
+            "w": 3.14655,
+            "h": 0.3,
+            "name": "重點",
+            "runs": [
+              {
+                "t": "一頁只回答一個問題",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "3A3A3A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 8.886450000000002,
+            "y": 5.119999999999999,
+            "w": 0.3,
+            "h": 0.3,
+            "name": "編號徽章",
+            "fill": "1F4E79",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "runs": [
+              {
+                "t": "3",
+                "o": {
+                  "size": 10,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "FFFFFF"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10,
+              "color": "FFFFFF",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 9.306450000000002,
+            "y": 5.12,
+            "w": 3.14655,
+            "h": 0.3,
+            "name": "重點",
+            "runs": [
+              {
+                "t": "用數字取代形容詞",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "3A3A3A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 5.3,
+            "w": 1,
+            "h": 0.3,
+            "name": "情境標題",
+            "runs": [
+              {
+                "t": "適用情境",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "1F4E79"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "1F4E79",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 3.65,
+            "y": 5.3,
+            "w": 1.12,
+            "h": 0.3,
+            "name": "情境膠囊",
+            "fill": "E9EDF2",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.15,
+            "runs": [
+              {
+                "t": "章節轉場",
+                "o": {
+                  "size": 10.5,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "1F3864"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10.5,
+              "color": "1F3864",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 4.9,
+            "y": 5.3,
+            "w": 1.12,
+            "h": 0.3,
+            "name": "情境膠囊",
+            "fill": "E9EDF2",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.15,
+            "runs": [
+              {
+                "t": "結尾金句",
+                "o": {
+                  "size": 10.5,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "1F3864"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10.5,
+              "color": "1F3864",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 6.15,
+            "y": 5.3,
+            "w": 1.12,
+            "h": 0.3,
+            "name": "情境膠囊",
+            "fill": "E9EDF2",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.15,
+            "runs": [
+              {
+                "t": "開場定調",
+                "o": {
+                  "size": 10.5,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "1F3864"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10.5,
+              "color": "1F3864",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 0.6,
+            "y": 6.38,
+            "w": 12.133000000000001,
+            "h": 0.3,
+            "name": "下一章",
+            "runs": [
+              {
+                "t": "下一章  ",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "595959"
+                }
+              },
+              {
+                "t": "問題定義 →",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "1F4E79"
+                }
+              }
+            ],
+            "tx": {
+              "align": "right",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "595959",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 0.6,
+            "y": 7,
+            "w": 6,
+            "h": 0.24,
+            "runs": [
+              {
+                "t": "商務深藍卡片",
+                "o": {
+                  "size": 9,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "595959"
+                }
+              },
+              {
+                "t": "｜精緻圖解元件庫",
+                "o": {
+                  "size": 9,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "6E6E6E"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 9,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 11.233,
+            "y": 7,
+            "w": 1.5,
+            "h": 0.24,
+            "runs": [
+              {
+                "t": "47 / 72",
+                "o": {
+                  "size": 9,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "6E6E6E"
+                }
+              }
+            ],
+            "tx": {
+              "align": "right",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 9,
+              "color": "6E6E6E",
+              "bold": false
+            }
+          }
+        ],
+        "groups": [
+          {
+            "name": "主色直條引言（白底）",
+            "from": 0,
+            "to": 5,
+            "x": 0.8999999999999999,
+            "y": 1,
+            "w": 7.1,
+            "h": 4.1000000000000005
+          },
+          {
+            "name": "右側淺色塊（人像＋重點）",
+            "from": 6,
+            "to": 18,
+            "x": 8.486450000000001,
+            "y": 1,
+            "w": 4.246549999999999,
+            "h": 5.15
+          },
+          {
+            "name": "適用情境膠囊",
+            "from": 19,
+            "to": 22,
+            "x": 2.6,
+            "y": 5.3,
+            "w": 4.67,
+            "h": 0.2999999999999998
+          },
+          {
+            "name": "下一章提示",
+            "from": 23,
+            "to": 23,
+            "x": 0.6,
+            "y": 6.38,
+            "w": 12.133000000000001,
+            "h": 0.2999999999999998
+          }
+        ],
+        "mkC": "B0CBE3"
+      }
+    },
+    {
+      "file": "quote2-wire.pptx",
+      "params": {
+        "P": "4F5BD5",
+        "PD": "2B2B2B",
+        "PT": "EEF0FB",
+        "A": "E0533D",
+        "useA": false,
+        "ink": "3A3A3A",
+        "t2": "595959",
+        "mute": "6E6E6E",
+        "line": "BFBFBF",
+        "l2": "D9D9D9",
+        "fill": "F2F2F2",
+        "canvas": false,
+        "canvasColor": "F5F5F5",
+        "r": 0,
+        "colR": "square",
+        "colStyle": "dash",
+        "size": "M",
+        "sh": false,
+        "shFit": true,
+        "shMode": "drop",
+        "shB": 7,
+        "shO": 2,
+        "shA": 0.25,
+        "shDir": 90,
+        "haloB": 16,
+        "haloA": 0.32,
+        "ring": false,
+        "card": "outline",
+        "cardLW": 0.75,
+        "cardLine": "A6A6A6",
+        "headColor": "ink",
+        "bandStyle": "line",
+        "cornerTag": true,
+        "ribbonTone": "p",
+        "tag": "outline",
+        "badge": "oring",
+        "sep": "harrow",
+        "chain": "hairchev",
+        "circle": "hair",
+        "circleLW": 0.75,
+        "sym": "hair",
+        "mark": "none",
+        "bar": "over",
+        "bracket": false,
+        "titleColor": "PD",
+        "footRule": false,
+        "cnW": 0.75,
+        "cnC": "7F7F7F",
+        "cnDash": "solid",
+        "cnHead": "arrow",
+        "cnTail": "none",
+        "cnHs": "med",
+        "tFont": "Microsoft JhengHei Light",
+        "bFont": "Microsoft JhengHei",
+        "nFont": "",
+        "tSize": 40,
+        "tBold": false,
+        "lSize": 16,
+        "lBold": true,
+        "nSize": 10.5,
+        "icColor": "P",
+        "icVar": "line",
+        "icSW": 0,
+        "tbDense": "auto",
+        "tbHiColor": "auto",
+        "tbHiMode": "auto",
+        "tbNeg": false,
+        "tbArrow": "mono",
+        "tbStatus": true,
+        "tbLook": "clean",
+        "tbCard": "white",
+        "tbCardOn": null,
+        "tbHeaderStyle": null,
+        "tbStripes": null,
+        "tbGrid": null,
+        "tbMinus": "auto",
+        "tbThou": true,
+        "tbWidth": "auto",
+        "tbV": "center",
+        "tbH": "center",
+        "tbSugTitle": true,
+        "tbAuto": true,
+        "tbFont": "jh",
+        "tbPad": "m",
+        "tbTight": false,
+        "tbSizingVersion": 1,
+        "tbWidthMode": "auto",
+        "tbHeightMode": "optimal",
+        "nLin": 4,
+        "nLane": 3,
+        "nPcc": 3,
+        "nWhy": 5,
+        "nCause": 4,
+        "nIcon": 3,
+        "nList": 4,
+        "semWarn": "",
+        "semGood": "",
+        "semBad": "",
+        "minFont": 0,
+        "anC": "alert",
+        "id": "wire",
+        "zh": "極簡線框",
+        "en": "Hairline",
+        "ref": "延伸",
+        "desc": "全部 0.75pt 髮絲線、無填色無陰影，細字標題，單一靛藍強調色，空心編號"
+      },
+      "slide": {
+        "key": "quote2",
+        "title": "整頁引言・主色卡",
+        "no": 47,
+        "items": [
+          {
+            "t": "sp",
+            "kind": "rect",
+            "x": 0.8999999999999999,
+            "y": 2,
+            "w": 0.12,
+            "h": 2.4,
+            "name": "主色直條",
+            "fill": "4F5BD5",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 1.35,
+            "y": 1,
+            "w": 1.6,
+            "h": 2,
+            "name": "大引號",
+            "runs": [
+              {
+                "t": "“",
+                "o": {
+                  "size": 96,
+                  "font": "Georgia",
+                  "bold": true,
+                  "color": "DCDEF7"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "top",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Georgia",
+              "size": 96,
+              "color": "DCDEF7",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 2.2,
+            "w": 5.4,
+            "h": 1.6,
+            "name": "金句",
+            "runs": [
+              {
+                "t": "先把問題說清楚，",
+                "o": {
+                  "size": 28,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "2B2B2B",
+                  "br": true
+                }
+              },
+              {
+                "t": "答案就會自己出現。",
+                "o": {
+                  "size": 28,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "2B2B2B"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "top",
+              "margin": 0,
+              "lsp": 1.2,
+              "font": "Microsoft JhengHei",
+              "size": 28,
+              "color": "2B2B2B",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "rect",
+            "x": 2.6,
+            "y": 4,
+            "w": 0.9,
+            "h": 0.05,
+            "name": "分隔線",
+            "fill": "4F5BD5",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 4.2,
+            "w": 5.4,
+            "h": 0.4,
+            "name": "出處",
+            "runs": [
+              {
+                "t": "姓名 Name｜職稱 Title",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "5B6474"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "5B6474",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 4.7,
+            "w": 5.4,
+            "h": 0.4,
+            "name": "使用說明",
+            "runs": [
+              {
+                "t": "章節轉場或結尾金句用；一頁只放一句",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "5B6474"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "5B6474",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 8.486450000000001,
+            "y": 1,
+            "w": 4.24655,
+            "h": 5.15,
+            "name": "淺色塊",
+            "fill": "F4F5FC",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.1
+          },
+          {
+            "t": "pic",
+            "x": 10.009725000000001,
+            "y": 1.38,
+            "w": 1.2,
+            "h": 1.2,
+            "png": "data:image/png;base64,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",
+            "round": 1,
+            "name": "人像（右鍵→變更圖片）"
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 10.009725000000001,
+            "y": 1.38,
+            "w": 1.2,
+            "h": 1.2,
+            "name": "照片白邊",
+            "fill": null,
+            "ft": 0,
+            "line": "FFFFFF",
+            "lw": 3,
+            "dash": "solid",
+            "head": null,
+            "tail": null,
+            "hs": "med"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 8.786450000000002,
+            "y": 2.8,
+            "w": 3.64655,
+            "h": 0.36,
+            "name": "姓名",
+            "runs": [
+              {
+                "t": "姓名 Name",
+                "o": {
+                  "size": 16,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "2B2B2B"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 16,
+              "color": "2B2B2B",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 8.786450000000002,
+            "y": 3.16,
+            "w": 3.64655,
+            "h": 0.3,
+            "name": "頭銜",
+            "runs": [
+              {
+                "t": "職稱｜單位 Title | Org",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "5B6474"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "5B6474",
+              "bold": false
+            }
+          },
+          {
+            "t": "ln",
+            "x1": 8.886450000000002,
+            "y1": 3.62,
+            "x2": 12.333,
+            "y2": 3.62,
+            "color": "D3D6F5",
+            "w": 0.75,
+            "dash": "solid",
+            "head": null,
+            "tail": null,
+            "hs": "med"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 8.886450000000002,
+            "y": 3.74,
+            "w": 3.4465500000000002,
+            "h": 0.3,
+            "name": "重點標題",
+            "runs": [
+              {
+                "t": "本章重點",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "4F5BD5"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "4F5BD5",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 8.886450000000002,
+            "y": 4.119999999999999,
+            "w": 0.3,
+            "h": 0.3,
+            "name": "編號徽章",
+            "fill": "4F5BD5",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "runs": [
+              {
+                "t": "1",
+                "o": {
+                  "size": 10,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "FFFFFF"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10,
+              "color": "FFFFFF",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 9.306450000000002,
+            "y": 4.12,
+            "w": 3.14655,
+            "h": 0.3,
+            "name": "重點",
+            "runs": [
+              {
+                "t": "先寫結論，再補依據",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "3A3A3A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 8.886450000000002,
+            "y": 4.619999999999999,
+            "w": 0.3,
+            "h": 0.3,
+            "name": "編號徽章",
+            "fill": "4F5BD5",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "runs": [
+              {
+                "t": "2",
+                "o": {
+                  "size": 10,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "FFFFFF"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10,
+              "color": "FFFFFF",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 9.306450000000002,
+            "y": 4.62,
+            "w": 3.14655,
+            "h": 0.3,
+            "name": "重點",
+            "runs": [
+              {
+                "t": "一頁只回答一個問題",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "3A3A3A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 8.886450000000002,
+            "y": 5.119999999999999,
+            "w": 0.3,
+            "h": 0.3,
+            "name": "編號徽章",
+            "fill": "4F5BD5",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "runs": [
+              {
+                "t": "3",
+                "o": {
+                  "size": 10,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "FFFFFF"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10,
+              "color": "FFFFFF",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 9.306450000000002,
+            "y": 5.12,
+            "w": 3.14655,
+            "h": 0.3,
+            "name": "重點",
+            "runs": [
+              {
+                "t": "用數字取代形容詞",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "3A3A3A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 5.3,
+            "w": 1,
+            "h": 0.3,
+            "name": "情境標題",
+            "runs": [
+              {
+                "t": "適用情境",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "4F5BD5"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "4F5BD5",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 3.65,
+            "y": 5.3,
+            "w": 1.12,
+            "h": 0.3,
+            "name": "情境膠囊",
+            "fill": "EDEFFB",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.15,
+            "runs": [
+              {
+                "t": "章節轉場",
+                "o": {
+                  "size": 10.5,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "2B2B2B"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10.5,
+              "color": "2B2B2B",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 4.9,
+            "y": 5.3,
+            "w": 1.12,
+            "h": 0.3,
+            "name": "情境膠囊",
+            "fill": "EDEFFB",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.15,
+            "runs": [
+              {
+                "t": "結尾金句",
+                "o": {
+                  "size": 10.5,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "2B2B2B"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10.5,
+              "color": "2B2B2B",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 6.15,
+            "y": 5.3,
+            "w": 1.12,
+            "h": 0.3,
+            "name": "情境膠囊",
+            "fill": "EDEFFB",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.15,
+            "runs": [
+              {
+                "t": "開場定調",
+                "o": {
+                  "size": 10.5,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "2B2B2B"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10.5,
+              "color": "2B2B2B",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 0.6,
+            "y": 6.38,
+            "w": 12.133000000000001,
+            "h": 0.3,
+            "name": "下一章",
+            "runs": [
+              {
+                "t": "下一章  ",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "595959"
+                }
+              },
+              {
+                "t": "問題定義 →",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "4F5BD5"
+                }
+              }
+            ],
+            "tx": {
+              "align": "right",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "595959",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 0.6,
+            "y": 7,
+            "w": 6,
+            "h": 0.24,
+            "runs": [
+              {
+                "t": "極簡線框",
+                "o": {
+                  "size": 9,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "595959"
+                }
+              },
+              {
+                "t": "｜精緻圖解元件庫",
+                "o": {
+                  "size": 9,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "6E6E6E"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 9,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 11.233,
+            "y": 7,
+            "w": 1.5,
+            "h": 0.24,
+            "runs": [
+              {
+                "t": "47 / 72",
+                "o": {
+                  "size": 9,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "6E6E6E"
+                }
+              }
+            ],
+            "tx": {
+              "align": "right",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 9,
+              "color": "6E6E6E",
+              "bold": false
+            }
+          }
+        ],
+        "groups": [
+          {
+            "name": "主色直條引言（白底）",
+            "from": 0,
+            "to": 5,
+            "x": 0.8999999999999999,
+            "y": 1,
+            "w": 7.1,
+            "h": 4.1000000000000005
+          },
+          {
+            "name": "右側淺色塊（人像＋重點）",
+            "from": 6,
+            "to": 18,
+            "x": 8.486450000000001,
+            "y": 1,
+            "w": 4.246549999999999,
+            "h": 5.15
+          },
+          {
+            "name": "適用情境膠囊",
+            "from": 19,
+            "to": 22,
+            "x": 2.6,
+            "y": 5.3,
+            "w": 4.67,
+            "h": 0.2999999999999998
+          },
+          {
+            "name": "下一章提示",
+            "from": 23,
+            "to": 23,
+            "x": 0.6,
+            "y": 6.38,
+            "w": 12.133000000000001,
+            "h": 0.2999999999999998
+          }
+        ],
+        "mkC": "BCC1EF"
+      }
+    },
+    {
+      "file": "quote2-green.pptx",
+      "params": {
+        "P": "2F5D50",
+        "PD": "24483E",
+        "PT": "E2EBE7",
+        "A": "C9A227",
+        "useA": true,
+        "ink": "3A3A3A",
+        "t2": "595959",
+        "mute": "6E6E6E",
+        "line": "BFBFBF",
+        "l2": "D9D9D9",
+        "fill": "F2F2F2",
+        "canvas": false,
+        "canvasColor": "F4F4F1",
+        "r": 0.12,
+        "colR": "small",
+        "colStyle": "fill",
+        "size": "M",
+        "sh": false,
+        "shFit": true,
+        "shMode": "drop",
+        "shB": 7,
+        "shO": 2,
+        "shA": 0.25,
+        "shDir": 90,
+        "haloB": 16,
+        "haloA": 0.32,
+        "ring": false,
+        "card": "outline",
+        "cardLW": 2.25,
+        "cardLine": "BFBFBF",
+        "headColor": "P",
+        "bandStyle": "fill",
+        "cornerTag": true,
+        "ribbonTone": "p",
+        "tag": "round",
+        "badge": "rsq",
+        "sep": "dots",
+        "chain": "hex",
+        "circle": "thick",
+        "circleLW": 2.25,
+        "sym": "thick",
+        "mark": "sq",
+        "bar": "banner",
+        "bracket": false,
+        "titleColor": "P",
+        "footRule": false,
+        "cnW": 1.5,
+        "cnC": "8C8C8C",
+        "cnDash": "solid",
+        "cnHead": "triangle",
+        "cnTail": "none",
+        "cnHs": "med",
+        "tFont": "Microsoft JhengHei",
+        "bFont": "Microsoft JhengHei",
+        "nFont": "",
+        "tSize": 40,
+        "tBold": true,
+        "lSize": 16,
+        "lBold": true,
+        "nSize": 10.5,
+        "icColor": "P",
+        "icVar": "line",
+        "icSW": 0,
+        "tbDense": "auto",
+        "tbHiColor": "auto",
+        "tbHiMode": "auto",
+        "tbNeg": false,
+        "tbArrow": "mono",
+        "tbStatus": true,
+        "tbLook": "clean",
+        "tbCard": "white",
+        "tbCardOn": null,
+        "tbHeaderStyle": null,
+        "tbStripes": null,
+        "tbGrid": null,
+        "tbMinus": "auto",
+        "tbThou": true,
+        "tbWidth": "auto",
+        "tbV": "center",
+        "tbH": "center",
+        "tbSugTitle": true,
+        "tbAuto": true,
+        "tbFont": "jh",
+        "tbPad": "m",
+        "tbTight": false,
+        "tbSizingVersion": 1,
+        "tbWidthMode": "auto",
+        "tbHeightMode": "optimal",
+        "nLin": 4,
+        "nLane": 3,
+        "nPcc": 3,
+        "nWhy": 5,
+        "nCause": 4,
+        "nIcon": 3,
+        "nList": 4,
+        "semWarn": "",
+        "semGood": "",
+        "semBad": "",
+        "minFont": 0,
+        "anC": "alert",
+        "id": "green",
+        "zh": "墨綠筆記",
+        "en": "Green Notes",
+        "ref": "參考圖 1",
+        "desc": "白底、粗灰外框扁平卡片，墨綠小圓角標籤＋芥末黃點綴，六角鏈與 ▶▶▶ 點狀箭號"
+      },
+      "slide": {
+        "key": "quote2",
+        "title": "整頁引言・主色卡",
+        "no": 47,
+        "items": [
+          {
+            "t": "sp",
+            "kind": "rect",
+            "x": 0.8999999999999999,
+            "y": 2,
+            "w": 0.12,
+            "h": 2.4,
+            "name": "主色直條",
+            "fill": "2F5D50",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 1.35,
+            "y": 1,
+            "w": 1.6,
+            "h": 2,
+            "name": "大引號",
+            "runs": [
+              {
+                "t": "“",
+                "o": {
+                  "size": 96,
+                  "font": "Georgia",
+                  "bold": true,
+                  "color": "D5DFDC"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "top",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Georgia",
+              "size": 96,
+              "color": "D5DFDC",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 2.2,
+            "w": 5.4,
+            "h": 1.6,
+            "name": "金句",
+            "runs": [
+              {
+                "t": "先把問題說清楚，",
+                "o": {
+                  "size": 28,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "24483E",
+                  "br": true
+                }
+              },
+              {
+                "t": "答案就會自己出現。",
+                "o": {
+                  "size": 28,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "24483E"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "top",
+              "margin": 0,
+              "lsp": 1.2,
+              "font": "Microsoft JhengHei",
+              "size": 28,
+              "color": "24483E",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "rect",
+            "x": 2.6,
+            "y": 4,
+            "w": 0.9,
+            "h": 0.05,
+            "name": "分隔線",
+            "fill": "2F5D50",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 4.2,
+            "w": 5.4,
+            "h": 0.4,
+            "name": "出處",
+            "runs": [
+              {
+                "t": "姓名 Name｜職稱 Title",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "5B6474"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "5B6474",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 4.7,
+            "w": 5.4,
+            "h": 0.4,
+            "name": "使用說明",
+            "runs": [
+              {
+                "t": "章節轉場或結尾金句用；一頁只放一句",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "5B6474"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "5B6474",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 8.486450000000001,
+            "y": 1,
+            "w": 4.24655,
+            "h": 5.15,
+            "name": "淺色塊",
+            "fill": "F3F5F5",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.1
+          },
+          {
+            "t": "pic",
+            "x": 10.009725000000001,
+            "y": 1.38,
+            "w": 1.2,
+            "h": 1.2,
+            "png": "data:image/png;base64,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",
+            "round": 1,
+            "name": "人像（右鍵→變更圖片）"
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 10.009725000000001,
+            "y": 1.38,
+            "w": 1.2,
+            "h": 1.2,
+            "name": "照片白邊",
+            "fill": null,
+            "ft": 0,
+            "line": "FFFFFF",
+            "lw": 3,
+            "dash": "solid",
+            "head": null,
+            "tail": null,
+            "hs": "med"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 8.786450000000002,
+            "y": 2.8,
+            "w": 3.64655,
+            "h": 0.36,
+            "name": "姓名",
+            "runs": [
+              {
+                "t": "姓名 Name",
+                "o": {
+                  "size": 16,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "24483E"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 16,
+              "color": "24483E",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 8.786450000000002,
+            "y": 3.16,
+            "w": 3.64655,
+            "h": 0.3,
+            "name": "頭銜",
+            "runs": [
+              {
+                "t": "職稱｜單位 Title | Org",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "5B6474"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "5B6474",
+              "bold": false
+            }
+          },
+          {
+            "t": "ln",
+            "x1": 8.886450000000002,
+            "y1": 3.62,
+            "x2": 12.333,
+            "y2": 3.62,
+            "color": "CBD7D3",
+            "w": 0.75,
+            "dash": "solid",
+            "head": null,
+            "tail": null,
+            "hs": "med"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 8.886450000000002,
+            "y": 3.74,
+            "w": 3.4465500000000002,
+            "h": 0.3,
+            "name": "重點標題",
+            "runs": [
+              {
+                "t": "本章重點",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "2F5D50"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "2F5D50",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 8.886450000000002,
+            "y": 4.119999999999999,
+            "w": 0.3,
+            "h": 0.3,
+            "name": "編號徽章",
+            "fill": "2F5D50",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "runs": [
+              {
+                "t": "1",
+                "o": {
+                  "size": 10,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "FFFFFF"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10,
+              "color": "FFFFFF",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 9.306450000000002,
+            "y": 4.12,
+            "w": 3.14655,
+            "h": 0.3,
+            "name": "重點",
+            "runs": [
+              {
+                "t": "先寫結論，再補依據",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "3A3A3A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 8.886450000000002,
+            "y": 4.619999999999999,
+            "w": 0.3,
+            "h": 0.3,
+            "name": "編號徽章",
+            "fill": "2F5D50",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "runs": [
+              {
+                "t": "2",
+                "o": {
+                  "size": 10,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "FFFFFF"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10,
+              "color": "FFFFFF",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 9.306450000000002,
+            "y": 4.62,
+            "w": 3.14655,
+            "h": 0.3,
+            "name": "重點",
+            "runs": [
+              {
+                "t": "一頁只回答一個問題",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "3A3A3A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 8.886450000000002,
+            "y": 5.119999999999999,
+            "w": 0.3,
+            "h": 0.3,
+            "name": "編號徽章",
+            "fill": "2F5D50",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "runs": [
+              {
+                "t": "3",
+                "o": {
+                  "size": 10,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "FFFFFF"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10,
+              "color": "FFFFFF",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 9.306450000000002,
+            "y": 5.12,
+            "w": 3.14655,
+            "h": 0.3,
+            "name": "重點",
+            "runs": [
+              {
+                "t": "用數字取代形容詞",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "3A3A3A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 5.3,
+            "w": 1,
+            "h": 0.3,
+            "name": "情境標題",
+            "runs": [
+              {
+                "t": "適用情境",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "2F5D50"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "2F5D50",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 3.65,
+            "y": 5.3,
+            "w": 1.12,
+            "h": 0.3,
+            "name": "情境膠囊",
+            "fill": "EAEFEE",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.15,
+            "runs": [
+              {
+                "t": "章節轉場",
+                "o": {
+                  "size": 10.5,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "24483E"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10.5,
+              "color": "24483E",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 4.9,
+            "y": 5.3,
+            "w": 1.12,
+            "h": 0.3,
+            "name": "情境膠囊",
+            "fill": "EAEFEE",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.15,
+            "runs": [
+              {
+                "t": "結尾金句",
+                "o": {
+                  "size": 10.5,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "24483E"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10.5,
+              "color": "24483E",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 6.15,
+            "y": 5.3,
+            "w": 1.12,
+            "h": 0.3,
+            "name": "情境膠囊",
+            "fill": "EAEFEE",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.15,
+            "runs": [
+              {
+                "t": "開場定調",
+                "o": {
+                  "size": 10.5,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "24483E"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10.5,
+              "color": "24483E",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 0.6,
+            "y": 6.38,
+            "w": 12.133000000000001,
+            "h": 0.3,
+            "name": "下一章",
+            "runs": [
+              {
+                "t": "下一章  ",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "595959"
+                }
+              },
+              {
+                "t": "問題定義 →",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "2F5D50"
+                }
+              }
+            ],
+            "tx": {
+              "align": "right",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "595959",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 0.6,
+            "y": 7,
+            "w": 6,
+            "h": 0.24,
+            "runs": [
+              {
+                "t": "墨綠筆記",
+                "o": {
+                  "size": 9,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "595959"
+                }
+              },
+              {
+                "t": "｜精緻圖解元件庫",
+                "o": {
+                  "size": 9,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "6E6E6E"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 9,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 11.233,
+            "y": 7,
+            "w": 1.5,
+            "h": 0.24,
+            "runs": [
+              {
+                "t": "47 / 72",
+                "o": {
+                  "size": 9,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "6E6E6E"
+                }
+              }
+            ],
+            "tx": {
+              "align": "right",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 9,
+              "color": "6E6E6E",
+              "bold": false
+            }
+          }
+        ],
+        "groups": [
+          {
+            "name": "主色直條引言（白底）",
+            "from": 0,
+            "to": 5,
+            "x": 0.8999999999999999,
+            "y": 1,
+            "w": 7.1,
+            "h": 4.1000000000000005
+          },
+          {
+            "name": "右側淺色塊（人像＋重點）",
+            "from": 6,
+            "to": 18,
+            "x": 8.486450000000001,
+            "y": 1,
+            "w": 4.246549999999999,
+            "h": 5.15
+          },
+          {
+            "name": "適用情境膠囊",
+            "from": 19,
+            "to": 22,
+            "x": 2.6,
+            "y": 5.3,
+            "w": 4.67,
+            "h": 0.2999999999999998
+          },
+          {
+            "name": "下一章提示",
+            "from": 23,
+            "to": 23,
+            "x": 0.6,
+            "y": 6.38,
+            "w": 12.133000000000001,
+            "h": 0.2999999999999998
+          }
+        ],
+        "mkC": "EADCAD"
+      }
+    },
+    {
+      "file": "quote2-wine.pptx",
+      "params": {
+        "P": "7A1F2B",
+        "PD": "5E1620",
+        "PT": "F3E6E8",
+        "A": "B08D57",
+        "useA": true,
+        "ink": "3A3A3A",
+        "t2": "595959",
+        "mute": "6E6E6E",
+        "line": "BFBFBF",
+        "l2": "D9D9D9",
+        "fill": "F2F2F2",
+        "canvas": false,
+        "canvasColor": "F5F5F5",
+        "r": 0,
+        "colR": "square",
+        "colStyle": "fill",
+        "size": "M",
+        "sh": false,
+        "shFit": true,
+        "shMode": "drop",
+        "shB": 7,
+        "shO": 2,
+        "shA": 0.25,
+        "shDir": 90,
+        "haloB": 16,
+        "haloA": 0.32,
+        "ring": false,
+        "card": "top",
+        "cardLW": 0.75,
+        "cardLine": "D9D9D9",
+        "headColor": "P",
+        "bandStyle": "fill",
+        "cornerTag": true,
+        "ribbonTone": "p",
+        "tag": "square",
+        "badge": "square",
+        "sep": "stealth",
+        "chain": "home",
+        "circle": "double",
+        "circleLW": 0.75,
+        "sym": "square",
+        "mark": "sq",
+        "bar": "gold",
+        "bracket": false,
+        "titleColor": "P",
+        "footRule": false,
+        "cnW": 1,
+        "cnC": "7F7F7F",
+        "cnDash": "solid",
+        "cnHead": "stealth",
+        "cnTail": "none",
+        "cnHs": "med",
+        "tFont": "PMingLiU",
+        "bFont": "Microsoft JhengHei",
+        "nFont": "Georgia",
+        "tSize": 38,
+        "tBold": false,
+        "lSize": 16,
+        "lBold": true,
+        "nSize": 10.5,
+        "icColor": "P",
+        "icVar": "line",
+        "icSW": 0,
+        "tbDense": "auto",
+        "tbHiColor": "auto",
+        "tbHiMode": "auto",
+        "tbNeg": false,
+        "tbArrow": "mono",
+        "tbStatus": true,
+        "tbLook": "clean",
+        "tbCard": "white",
+        "tbCardOn": null,
+        "tbHeaderStyle": null,
+        "tbStripes": null,
+        "tbGrid": null,
+        "tbMinus": "auto",
+        "tbThou": true,
+        "tbWidth": "auto",
+        "tbV": "center",
+        "tbH": "center",
+        "tbSugTitle": true,
+        "tbAuto": true,
+        "tbFont": "jh",
+        "tbPad": "m",
+        "tbTight": false,
+        "tbSizingVersion": 1,
+        "tbWidthMode": "auto",
+        "tbHeightMode": "optimal",
+        "nLin": 4,
+        "nLane": 3,
+        "nPcc": 3,
+        "nWhy": 5,
+        "nCause": 4,
+        "nIcon": 3,
+        "nList": 4,
+        "semWarn": "",
+        "semGood": "",
+        "semBad": "",
+        "minFont": 0,
+        "anC": "alert",
+        "id": "wine",
+        "zh": "酒紅精品",
+        "en": "Burgundy Atelier",
+        "ref": "延伸",
+        "desc": "直角、頂邊色條卡片，明體細標題＋金色細線，方形襯線數字，燕尾箭頭"
+      },
+      "slide": {
+        "key": "quote2",
+        "title": "整頁引言・主色卡",
+        "no": 47,
+        "items": [
+          {
+            "t": "sp",
+            "kind": "rect",
+            "x": 0.8999999999999999,
+            "y": 2,
+            "w": 0.12,
+            "h": 2.4,
+            "name": "主色直條",
+            "fill": "7A1F2B",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 1.35,
+            "y": 1,
+            "w": 1.6,
+            "h": 2,
+            "name": "大引號",
+            "runs": [
+              {
+                "t": "“",
+                "o": {
+                  "size": 96,
+                  "font": "Georgia",
+                  "bold": true,
+                  "color": "E4D2D5"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "top",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Georgia",
+              "size": 96,
+              "color": "E4D2D5",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 2.2,
+            "w": 5.4,
+            "h": 1.6,
+            "name": "金句",
+            "runs": [
+              {
+                "t": "先把問題說清楚，",
+                "o": {
+                  "size": 28,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "5E1620",
+                  "br": true
+                }
+              },
+              {
+                "t": "答案就會自己出現。",
+                "o": {
+                  "size": 28,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "5E1620"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "top",
+              "margin": 0,
+              "lsp": 1.2,
+              "font": "Microsoft JhengHei",
+              "size": 28,
+              "color": "5E1620",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "rect",
+            "x": 2.6,
+            "y": 4,
+            "w": 0.9,
+            "h": 0.05,
+            "name": "分隔線",
+            "fill": "7A1F2B",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 4.2,
+            "w": 5.4,
+            "h": 0.4,
+            "name": "出處",
+            "runs": [
+              {
+                "t": "姓名 Name｜職稱 Title",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "5B6474"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "5B6474",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 4.7,
+            "w": 5.4,
+            "h": 0.4,
+            "name": "使用說明",
+            "runs": [
+              {
+                "t": "章節轉場或結尾金句用；一頁只放一句",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "5B6474"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "5B6474",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 8.486450000000001,
+            "y": 1,
+            "w": 4.24655,
+            "h": 5.15,
+            "name": "淺色塊",
+            "fill": "F7F2F2",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.1
+          },
+          {
+            "t": "pic",
+            "x": 10.009725000000001,
+            "y": 1.38,
+            "w": 1.2,
+            "h": 1.2,
+            "png": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAIAAABEtEjdAAAI5klEQVR42u3csW3DSBRFUXOgilSCClCxKkAlqBQGDBg7cyTDtkiZM++fky8W4AzvPtPGTvOyfgCQpXkEAOIOgLgDIO4AiDsA4g4g7gCIOwDiDoC4AyDuAOIOgLgDIO4AiDsA4g6AuAOIOwDiDoC4AyDuAIg7gLgDIO4AiDsA4g6AuAMg7gDiDoC4AyDuAIg7AOIOIO4AiDsA4g6AuAMg7gCIO4C4AyDuAIg7AOIOgLgDiDsA4g6AuAMg7gCIOwDiDiDuAIg7AOIOgLgDIO4A4g6AuAMg7gCIOwDiDoC4A4g7AOIOgLgDIO4AiDuAuAMg7gCIOwDiDoC4AyDuAOIOgLgDIO4AiDsA4g4g7gCIOwDiDoC4AyDuAIg7gLgDIO4AiDsA4g6AuAOIOwDiDoC4AyDuAIg7AOIOIO4AiDsA4g6AuAMg7gDiDoC4AyDuAIg7AOIOgLgDiDsA4g6AuAMg7gD8xskjIMzt/njtH7xezp4eMaZ5WT0FSkVc9BF3qFhzrUfcoUTQhR5xh/ymqzziDslNV3nEHZKbrvKIO4RnXeIRdzS9CpVH3JF1iQdxR9YlHsQdWZd4xB1kXeIRd5B1iacP/pe/KLsnhuUOImXCI+7IOhLPIXyWQdk9T8QdlMhTZQQ+yyBAXfOJBssdZfecQdxRHE+bXD7LIDTD8IkGyx1l9/wRd1AWp4C4oyk4C8QdNcGJIO7oCM4FcUdBnA6IO9rhjBB3VAMnhbijFzgvxB2lwKkh7mgEzg5xRx2cIOIOuuAcEXcUAaeJuKMFOFPEHQBxx8TDySLueP+dL+KONx+njLgDIO4YdDhrxB1vO04cccd7jnMXdwDEHfMNp4+4AyDuGG64A4g73mrcBMQdQNwx1nAfEHcAxB0zDbcCcQdA3DHQcDfEHQBxxzTDDUHcARB3jDLcE8QdAHEHEHf8rI3bgrgDIO4YYrgziDsA4g4g7vj5GjcHcQdA3AEQd/xkjfuDuAMg7gDijp+pcYsQdwDEHQBxB0DcK/GpFHcJcQcQdwDEHQBxB0DcecZvwHCjEHcAcQdA3AEQdwDEHQBxBxB3AMSdbviTZNwrxB1A3AEQdwDEHQBxB0DcAcQdAHEHQNwBEHcAxB0AcQcQdwDEHQBxB0DcARB3AHEHQNzpyPVy9hBwrxB3AHEHQNwBEHcAxB0AcQcQdwDEnZ74k2TcKMQdQNwBEHcAxB0Aced7fgOGu4S4A4g7AOIOgLizG59KcYsQdwBxB0Dc8TM17g/iDoC4AyDufrIGN0fcARB3AMQdP1/jziDuAIg7hhhuC+IOIO4AiDt+1sY9QdwBEHeMMtwQxB1A3DHNcDcQdwDEHQMNtwJxB0DcMdNwHxB3AHHHWMNNQNzxVuMOIO4AiDuGG04fcQcQd8w3nDvijvccJ464423HWSPuAIg7Bh1OGXHHm+98EXe8/zhZxB0AccfEw5ki7mgBThNxRxGcI+KOLuAEEXfUAWeHuKMRODXEHaXAeSHu6IWTAnFHNZwR4o524HQQdxQE54K4oyM4EcQdNXEWIO5oilNA3EFZPH9GN83L6inwV7f7w0OQdSx3tAZPG3FHcfCc2cZnGbbyiUbWsdzRIDxVxB0l8jzhJT7LsCefaGQdcUfikXXexWcZdMoTw3IHE17WEXeQeFlH3JF4WQdxR+JlHcQdiZd1xB1UXtMRd5B4WUfcIbXymo64Q07lNR1xh5zKazriDiGhF3TEHRJar+aIOwwcfRFH3AHomv/lL4C4AyDuAIg7AOIOgLgDiDsA4g6AuAMg7gCIO4C4ewQA4g6AuAMg7gCIOwDiDiDuAIg7AOIOgLgDIO4A4g5AnJNHwKBu98f//Iuul7OnzXCmeVk9BcqG238AEHeoXnDdR9yhYscVH3FHypF7xB0113oQd9Rc6xF3cUfQhR5xR9AResQdQUfoEXcEHaFH3NF0VB5xR9CFHnFH01F5xB1NR+URdzQdlUfc0XRUHnGXdZB4cfcUNB1UXtzRdFQecUfWkXjEHU1H5RF3WQeJR9xlHSRe3JF1kHhxR9NB5cUdWUfiEXdZB4lH3GUdJF7ckXWQeHFH1kHiO9c8AmUHb4HljgsNJry4y7qsg8SLu6yDxCPusg4Sz3N+oars4N2x3HE1wYQXd1kHJP4QPssoO3izLHdcPjDhLXdlB7xrlrurBpjwlruyg7cPy93FAhPeckfZwftoubtGgAlvuSs74A213F0awIS33JUdvLPi7hG4JeDNzeOzjMsBUXyisdyVHbzL4u42AN5ocXcPAO/1gUp/c3f8EK/sJ/i6y13ZwZsu7s4b8L6Lu5MGvPXi7owB7764O11AAX5Q5a9lZB34UuFPaEosd2UHqjWhOUVA38Xd+QH6IO5ODlAJcXdmgFaIu7IDilEm7soO6EZzQgB59WjOBiCvIc2pAOSVpDkPgLyeNCcBkFeV5gwA8trSPH2AvMI0zx0grzPNEwfIq03zrAHymtMcG0Ce8eJutgPKkxZ3ZQf0Jy3uyg6oUFrclR3QorS4KzugSJnLHYCouJvtgC6lxV3ZAXVKi7uyAxqVudwBiIq72Q4Y72lxV3ZA39PiruyAvmcudwCi4m62A8Z7WtyVHdD3zOUOQFTczXbAeE+Lu7ID+p653AGIirvZDhjvaXFXdkDfM5c7AFFxN9sB491yB6D7uJvtgPGeFndlB/Q9c7kDEBV3sx0w3i13ALqPu9kOGO+WOwDdx91sB4x3yx2A7uNutgPGu+UOQPdxN9sB/q2EljuA5W62A4zQQ8sdwHI32wFGqKLlDmC5m+0AI7TRcgew3M12gBEKabkDWO4AFI+7bzIAR3XScgew3M12gBFqabkDWO4AlI27bzIAxzbTcgew3AGoGXffZAAOL6flDmC5A1Aw7r7JAPTQT8sdwHIHoFrcfZMB6KSiljuA5Q6AuAMwdtx9cAfop6WWO4DlDoC4AzBw3H1wB9jLLkW13AEsdwDEHQBxB6CbuPttKsC+tnfVcgew3AEQdwDEHQBxB+BNcfenMgDvsLGuljuA5Q6AuAMg7gDs4xN7hRoVHn66RAAAAABJRU5ErkJggg==",
+            "round": 1,
+            "name": "人像（右鍵→變更圖片）"
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 10.009725000000001,
+            "y": 1.38,
+            "w": 1.2,
+            "h": 1.2,
+            "name": "照片白邊",
+            "fill": null,
+            "ft": 0,
+            "line": "FFFFFF",
+            "lw": 3,
+            "dash": "solid",
+            "head": null,
+            "tail": null,
+            "hs": "med"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 8.786450000000002,
+            "y": 2.8,
+            "w": 3.64655,
+            "h": 0.36,
+            "name": "姓名",
+            "runs": [
+              {
+                "t": "姓名 Name",
+                "o": {
+                  "size": 16,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "5E1620"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 16,
+              "color": "5E1620",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 8.786450000000002,
+            "y": 3.16,
+            "w": 3.64655,
+            "h": 0.3,
+            "name": "頭銜",
+            "runs": [
+              {
+                "t": "職稱｜單位 Title | Org",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "5B6474"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "5B6474",
+              "bold": false
+            }
+          },
+          {
+            "t": "ln",
+            "x1": 8.886450000000002,
+            "y1": 3.62,
+            "x2": 12.333,
+            "y2": 3.62,
+            "color": "DEC7CA",
+            "w": 0.75,
+            "dash": "solid",
+            "head": null,
+            "tail": null,
+            "hs": "med"
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 8.886450000000002,
+            "y": 3.74,
+            "w": 3.4465500000000002,
+            "h": 0.3,
+            "name": "重點標題",
+            "runs": [
+              {
+                "t": "本章重點",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "7A1F2B"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "7A1F2B",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 8.886450000000002,
+            "y": 4.119999999999999,
+            "w": 0.3,
+            "h": 0.3,
+            "name": "編號徽章",
+            "fill": "7A1F2B",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "runs": [
+              {
+                "t": "1",
+                "o": {
+                  "size": 10,
+                  "font": "Georgia",
+                  "bold": true,
+                  "color": "FFFFFF"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Georgia",
+              "size": 10,
+              "color": "FFFFFF",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 9.306450000000002,
+            "y": 4.12,
+            "w": 3.14655,
+            "h": 0.3,
+            "name": "重點",
+            "runs": [
+              {
+                "t": "先寫結論，再補依據",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "3A3A3A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 8.886450000000002,
+            "y": 4.619999999999999,
+            "w": 0.3,
+            "h": 0.3,
+            "name": "編號徽章",
+            "fill": "7A1F2B",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "runs": [
+              {
+                "t": "2",
+                "o": {
+                  "size": 10,
+                  "font": "Georgia",
+                  "bold": true,
+                  "color": "FFFFFF"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Georgia",
+              "size": 10,
+              "color": "FFFFFF",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 9.306450000000002,
+            "y": 4.62,
+            "w": 3.14655,
+            "h": 0.3,
+            "name": "重點",
+            "runs": [
+              {
+                "t": "一頁只回答一個問題",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "3A3A3A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "ellipse",
+            "x": 8.886450000000002,
+            "y": 5.119999999999999,
+            "w": 0.3,
+            "h": 0.3,
+            "name": "編號徽章",
+            "fill": "7A1F2B",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "runs": [
+              {
+                "t": "3",
+                "o": {
+                  "size": 10,
+                  "font": "Georgia",
+                  "bold": true,
+                  "color": "FFFFFF"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Georgia",
+              "size": 10,
+              "color": "FFFFFF",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 9.306450000000002,
+            "y": 5.12,
+            "w": 3.14655,
+            "h": 0.3,
+            "name": "重點",
+            "runs": [
+              {
+                "t": "用數字取代形容詞",
+                "o": {
+                  "size": 12,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "3A3A3A"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 12,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 2.6,
+            "y": 5.3,
+            "w": 1,
+            "h": 0.3,
+            "name": "情境標題",
+            "runs": [
+              {
+                "t": "適用情境",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "7A1F2B"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "7A1F2B",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 3.65,
+            "y": 5.3,
+            "w": 1.12,
+            "h": 0.3,
+            "name": "情境膠囊",
+            "fill": "F2E9EA",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.15,
+            "runs": [
+              {
+                "t": "章節轉場",
+                "o": {
+                  "size": 10.5,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "5E1620"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10.5,
+              "color": "5E1620",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 4.9,
+            "y": 5.3,
+            "w": 1.12,
+            "h": 0.3,
+            "name": "情境膠囊",
+            "fill": "F2E9EA",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.15,
+            "runs": [
+              {
+                "t": "結尾金句",
+                "o": {
+                  "size": 10.5,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "5E1620"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10.5,
+              "color": "5E1620",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": "roundRect",
+            "x": 6.15,
+            "y": 5.3,
+            "w": 1.12,
+            "h": 0.3,
+            "name": "情境膠囊",
+            "fill": "F2E9EA",
+            "ft": 0,
+            "line": null,
+            "lw": 1,
+            "dash": "solid",
+            "adj": 0.15,
+            "runs": [
+              {
+                "t": "開場定調",
+                "o": {
+                  "size": 10.5,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "5E1620"
+                }
+              }
+            ],
+            "tx": {
+              "align": "center",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 10.5,
+              "color": "5E1620",
+              "bold": true
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 0.6,
+            "y": 6.38,
+            "w": 12.133000000000001,
+            "h": 0.3,
+            "name": "下一章",
+            "runs": [
+              {
+                "t": "下一章  ",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "595959"
+                }
+              },
+              {
+                "t": "問題定義 →",
+                "o": {
+                  "size": 11,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "7A1F2B"
+                }
+              }
+            ],
+            "tx": {
+              "align": "right",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 11,
+              "color": "595959",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 0.6,
+            "y": 7,
+            "w": 6,
+            "h": 0.24,
+            "runs": [
+              {
+                "t": "酒紅精品",
+                "o": {
+                  "size": 9,
+                  "font": "Microsoft JhengHei",
+                  "bold": true,
+                  "color": "595959"
+                }
+              },
+              {
+                "t": "｜精緻圖解元件庫",
+                "o": {
+                  "size": 9,
+                  "font": "Microsoft JhengHei",
+                  "bold": false,
+                  "color": "6E6E6E"
+                }
+              }
+            ],
+            "tx": {
+              "align": "left",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Microsoft JhengHei",
+              "size": 9,
+              "color": "3A3A3A",
+              "bold": false
+            }
+          },
+          {
+            "t": "sp",
+            "kind": null,
+            "x": 11.233,
+            "y": 7,
+            "w": 1.5,
+            "h": 0.24,
+            "runs": [
+              {
+                "t": "47 / 72",
+                "o": {
+                  "size": 9,
+                  "font": "Georgia",
+                  "bold": false,
+                  "color": "6E6E6E"
+                }
+              }
+            ],
+            "tx": {
+              "align": "right",
+              "valign": "middle",
+              "margin": 0,
+              "lsp": 1,
+              "font": "Georgia",
+              "size": 9,
+              "color": "6E6E6E",
+              "bold": false
+            }
+          }
+        ],
+        "groups": [
+          {
+            "name": "主色直條引言（白底）",
+            "from": 0,
+            "to": 5,
+            "x": 0.8999999999999999,
+            "y": 1,
+            "w": 7.1,
+            "h": 4.1000000000000005
+          },
+          {
+            "name": "右側淺色塊（人像＋重點）",
+            "from": 6,
+            "to": 18,
+            "x": 8.486450000000001,
+            "y": 1,
+            "w": 4.246549999999999,
+            "h": 5.15
+          },
+          {
+            "name": "適用情境膠囊",
+            "from": 19,
+            "to": 22,
+            "x": 2.6,
+            "y": 5.3,
+            "w": 4.67,
+            "h": 0.2999999999999998
+          },
+          {
+            "name": "下一章提示",
+            "from": 23,
+            "to": 23,
+            "x": 0.6,
+            "y": 6.38,
+            "w": 12.133000000000001,
+            "h": 0.2999999999999998
+          }
+        ],
+        "mkC": "E1D4BF"
+      }
+    }
+  ],
+  "yellow": {
+    "key": "quickstyle-solid",
+    "title": "實心・黃",
+    "no": 1,
+    "items": [
+      {
+        "t": "sp",
+        "kind": "roundRect",
+        "name": "實心底座",
+        "x": 4.9665,
+        "y": 3.25,
+        "w": 3.4,
+        "h": 1,
+        "fill": "E7BF4A",
+        "line": null,
+        "lw": 0,
+        "ft": 0,
+        "dash": "solid",
+        "adj": 0.09722222222222222
+      },
+      {
+        "t": "sp",
+        "kind": null,
+        "name": "快速樣式文字",
+        "x": 5.160944444444445,
+        "y": 3.388888888888889,
+        "w": 3.011111111111111,
+        "h": 0.7222222222222222,
+        "noAutoShrink": true,
+        "runs": [
+          {
+            "t": "黃色實心 Native",
+            "o": {
+              "size": 20,
+              "font": "Microsoft JhengHei",
+              "bold": false,
+              "color": "303640"
+            }
+          }
+        ],
+        "tx": {
+          "align": "left",
+          "valign": "middle",
+          "margin": 0,
+          "lsp": 1,
+          "font": "Microsoft JhengHei",
+          "size": 20,
+          "color": "303640",
+          "bold": false,
+          "wrap": 1
+        }
+      }
+    ],
+    "groups": [
+      {
+        "name": "實心・黃",
+        "from": 0,
+        "to": 1,
+        "x": 4.9665,
+        "y": 3.25,
+        "w": 3.4,
+        "h": 1,
+        "quickStyle": "solid",
+        "backgroundIntent": "any",
+        "previewOnlyBackground": null
+      }
+    ],
+    "backgroundIntent": "any"
+  }
+}

@@ -1,0 +1,410 @@
+{
+  "base": "bc7aa828cc084b07084f6da8afd43fa847f7c9b7",
+  "environment": {
+    "node": "24.13.0",
+    "jsdom": "26.1.0 (existing local install)",
+    "pptxgenjs": "3.12.0 (repository bundle)",
+    "jszip": "3.10.2 (repository bundle)",
+    "python": "3.12",
+    "runner": "package.json test recursively expanded, with Windows env-assignment and python3 executable adapters; no validator replaced"
+  },
+  "summary": {
+    "commands": 49,
+    "passed": 48,
+    "blockedCommands": 1,
+    "missingOfficeValidations": 118,
+    "productFailures": 0
+  },
+  "results": [
+    {
+      "command": "python3 tools/stylekit_assets_test.py",
+      "status": 0,
+      "elapsedMs": 1618,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/logs/01.log"
+    },
+    {
+      "command": "node tools/page_footer_test.js",
+      "status": 0,
+      "elapsedMs": 102801,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/01.log"
+    },
+    {
+      "command": "STUDIO_HTML=PPT-Style-Studio.html node tools/page_footer_test.js",
+      "status": 0,
+      "elapsedMs": 22993,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/02.log"
+    },
+    {
+      "command": "node tools/recommended_components_test.js",
+      "status": 0,
+      "elapsedMs": 13371,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/03.log"
+    },
+    {
+      "command": "STUDIO_HTML=PPT-Style-Studio.html node tools/recommended_components_test.js",
+      "status": 0,
+      "elapsedMs": 15956,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/04.log"
+    },
+    {
+      "command": "node tools/table_sizing_test.js",
+      "status": 0,
+      "elapsedMs": 3628,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/05.log"
+    },
+    {
+      "command": "node tools/table_output_ui_test.js",
+      "status": 0,
+      "elapsedMs": 30976,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/06.log"
+    },
+    {
+      "command": "STUDIO_HTML=PPT-Style-Studio.html node tools/table_output_ui_test.js",
+      "status": 0,
+      "elapsedMs": 41772,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/07.log"
+    },
+    {
+      "command": "node tools/table_model_integrity_test.js",
+      "status": 0,
+      "elapsedMs": 21961,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/08.log"
+    },
+    {
+      "command": "node tools/table_range_model_test.js",
+      "status": 0,
+      "elapsedMs": 3307,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/09.log"
+    },
+    {
+      "command": "node tools/table_range_family_test.js",
+      "status": 0,
+      "elapsedMs": 13483,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/10.log"
+    },
+    {
+      "command": "node tools/table_highlight_palette_test.js",
+      "status": 0,
+      "elapsedMs": 6775,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/11.log"
+    },
+    {
+      "command": "node tools/table_theme_roles_test.js",
+      "status": 0,
+      "elapsedMs": 3736,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/12.log"
+    },
+    {
+      "command": "node tools/table_theme_role_reuse_test.js",
+      "status": 0,
+      "elapsedMs": 11879,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/13.log"
+    },
+    {
+      "command": "node tools/table_range_ui_test.js",
+      "status": 0,
+      "elapsedMs": 73081,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/14.log"
+    },
+    {
+      "command": "STUDIO_HTML=PPT-Style-Studio.html node tools/table_range_ui_test.js",
+      "status": 0,
+      "elapsedMs": 82887,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/15.log"
+    },
+    {
+      "command": "node tools/table_highlight_text_test.js",
+      "status": 0,
+      "elapsedMs": 3620,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/16.log"
+    },
+    {
+      "command": "node tools/table_highlight_options_ui_test.js",
+      "status": 0,
+      "elapsedMs": 32527,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/17.log"
+    },
+    {
+      "command": "STUDIO_HTML=PPT-Style-Studio.html node tools/table_highlight_options_ui_test.js",
+      "status": 0,
+      "elapsedMs": 32797,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/18.log"
+    },
+    {
+      "command": "node tools/table_emphasis_tab_test.js",
+      "status": 0,
+      "elapsedMs": 13539,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/19.log"
+    },
+    {
+      "command": "STUDIO_HTML=PPT-Style-Studio.html node tools/table_emphasis_tab_test.js",
+      "status": 0,
+      "elapsedMs": 13434,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/20.log"
+    },
+    {
+      "command": "node tools/table_data_grid_test.js",
+      "status": 0,
+      "elapsedMs": 23515,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/21.log"
+    },
+    {
+      "command": "node tools/table_format_reset_test.js",
+      "status": 0,
+      "elapsedMs": 23638,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/22.log"
+    },
+    {
+      "command": "STUDIO_HTML=PPT-Style-Studio.html node tools/table_format_reset_test.js",
+      "status": 0,
+      "elapsedMs": 24325,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/23.log"
+    },
+    {
+      "command": "node tools/table_workbench_test.js --model-only",
+      "status": 0,
+      "elapsedMs": 3721,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/logs/25.log"
+    },
+    {
+      "command": "node tools/table_workbench_test.js --dom-only",
+      "status": 0,
+      "elapsedMs": 181669,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/24.log"
+    },
+    {
+      "command": "node tools/table_appearance_test.js",
+      "status": 0,
+      "elapsedMs": 13815,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/25.log"
+    },
+    {
+      "command": "node tools/table_appearance_ui_test.js",
+      "status": 0,
+      "elapsedMs": 128892,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/26.log"
+    },
+    {
+      "command": "STUDIO_HTML=PPT-Style-Studio.html node tools/table_appearance_ui_test.js",
+      "status": 0,
+      "elapsedMs": 95763,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/27.log"
+    },
+    {
+      "command": "node tools/table_mobile_state_test.js",
+      "status": 0,
+      "elapsedMs": 9020,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/28.log"
+    },
+    {
+      "command": "STUDIO_HTML=PPT-Style-Studio.html node tools/table_mobile_state_test.js",
+      "status": 0,
+      "elapsedMs": 9033,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/29.log"
+    },
+    {
+      "command": "node tools/template_menu_test.js",
+      "status": 0,
+      "elapsedMs": 8737,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/30.log"
+    },
+    {
+      "command": "STUDIO_HTML=PPT-Style-Studio.html node tools/template_menu_test.js",
+      "status": 0,
+      "elapsedMs": 29669,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/31.log"
+    },
+    {
+      "command": "node tools/icon_components_test.js",
+      "status": 0,
+      "elapsedMs": 38881,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/retry-logs/32.log"
+    },
+    {
+      "command": "node tools/icon_variants_test.js",
+      "status": 0,
+      "classification": "passed",
+      "evidence": "verification/icon-variants-final.log",
+      "note": "Updated obsolete test harness/expectation only; original native and naming assertions retained."
+    },
+    {
+      "command": "node tools/icon_pack_test.js",
+      "status": 0,
+      "classification": "passed",
+      "evidence": "verification/icon-pack-final.log",
+      "note": "Updated obsolete test harness/expectation only; original native and naming assertions retained."
+    },
+    {
+      "command": "node tools/hexagon_export_test.js",
+      "status": 0,
+      "elapsedMs": 93175,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/logs/37.log"
+    },
+    {
+      "command": "node tools/scheme_catalogue_test.js",
+      "status": 0,
+      "classification": "passed",
+      "evidence": "verification/scheme-final.log",
+      "note": "Updated obsolete test harness/expectation only; original native and naming assertions retained."
+    },
+    {
+      "command": "node tools/scheme_catalogue_ui_test.js",
+      "status": 0,
+      "classification": "passed",
+      "evidence": "verification/scheme-ui-final.log",
+      "note": "Updated obsolete test harness/expectation only; original native and naming assertions retained."
+    },
+    {
+      "command": "node tools/test.js",
+      "status": 1,
+      "classification": "blocked: Office CLI unavailable",
+      "officeFailures": 118,
+      "otherFailures": 0,
+      "evidence": "verification/office-run-utf8.log",
+      "zipFilesPassed": 118,
+      "checkPptx": "all clean",
+      "openXmlSdk": "skipped: not built",
+      "note": "Windows Python console encoding corrected; initial 119th encoding failure resolved by UTF-8 invocation."
+    },
+    {
+      "command": "node tools/preflight_model_test.js",
+      "status": 0,
+      "elapsedMs": 3529,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/logs/41.log"
+    },
+    {
+      "command": "node tools/export_flow_test.js",
+      "status": 0,
+      "elapsedMs": 434,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/logs/42.log"
+    },
+    {
+      "command": "node tools/export_entrypoints_test.js",
+      "status": 0,
+      "elapsedMs": 503,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/logs/43.log"
+    },
+    {
+      "command": "node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/export_entrypoints_test.js",
+      "status": 0,
+      "elapsedMs": 2392,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/logs/44.log"
+    },
+    {
+      "command": "node tools/stylekit_state_test.js",
+      "status": 0,
+      "elapsedMs": 607,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/logs/45.log"
+    },
+    {
+      "command": "node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/stylekit_state_test.js",
+      "status": 0,
+      "elapsedMs": 926,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/logs/46.log"
+    },
+    {
+      "command": "node tools/quickstyles_test.js",
+      "status": 0,
+      "elapsedMs": 1215,
+      "classification": "passed",
+      "officeFailures": 0,
+      "log": "verification/logs/47.log"
+    },
+    {
+      "command": "node tools/preflight_dom_test.js",
+      "status": 0,
+      "classification": "passed",
+      "checks": 17,
+      "evidence": "Final preflight_engine tool execution; actual JSDOM events, native bytes stubbed."
+    },
+    {
+      "command": "node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/preflight_dom_test.js",
+      "status": 0,
+      "classification": "passed",
+      "checks": 17,
+      "evidence": "Final preflight_engine tool execution; actual JSDOM events, native bytes stubbed."
+    }
+  ]
+}

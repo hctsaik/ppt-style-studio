@@ -1,0 +1,423 @@
+{
+  "summary": {
+    "engine": "Microsoft PowerPoint COM",
+    "version": "16.0.20527.20088",
+    "decks": 7,
+    "slides": 15,
+    "checks": 100,
+    "passed": 100,
+    "failures": []
+  },
+  "checks": [
+    {
+      "passed": true,
+      "label": "Seven final supplement decks opened"
+    },
+    {
+      "passed": true,
+      "label": "quickstyles-nine.pptx: Microsoft PowerPoint rendered every slide"
+    },
+    {
+      "passed": true,
+      "label": "quote2-sentinel.pptx: Microsoft PowerPoint rendered every slide"
+    },
+    {
+      "passed": true,
+      "label": "quote2-navy.pptx: Microsoft PowerPoint rendered every slide"
+    },
+    {
+      "passed": true,
+      "label": "quote2-wire.pptx: Microsoft PowerPoint rendered every slide"
+    },
+    {
+      "passed": true,
+      "label": "quote2-green.pptx: Microsoft PowerPoint rendered every slide"
+    },
+    {
+      "passed": true,
+      "label": "quote2-wine.pptx: Microsoft PowerPoint rendered every slide"
+    },
+    {
+      "passed": true,
+      "label": "quickstyles-solid-yellow.pptx: Microsoft PowerPoint rendered every slide"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 1: one native group"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 1: shape/text children retained without raster fallback"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 1: no picture children"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 1: native text remains 20 pt"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 1: complete mixed Chinese/English text"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 1: actual text bounds fit native text box"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 1: soft fill is independently calculated 90% white tint"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 2: one native group"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 2: shape/text children retained without raster fallback"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 2: no picture children"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 2: native text remains 20 pt"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 2: complete mixed Chinese/English text"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 2: actual text bounds fit native text box"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 2: transparent native outline"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 3: one native group"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 3: shape/text children retained without raster fallback"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 3: no picture children"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 3: native text remains 20 pt"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 3: complete mixed Chinese/English text"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 3: actual text bounds fit native text box"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 3: purple solid and white text"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 4: one native group"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 4: shape/text children retained without raster fallback"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 4: no picture children"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 4: native text remains 20 pt"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 4: complete mixed Chinese/English text"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 4: actual text bounds fit native text box"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 4: soft fill is independently calculated 90% white tint"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 4: 3 pt colored side bar"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 5: one native group"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 5: shape/text children retained without raster fallback"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 5: no picture children"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 5: native text remains 20 pt"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 5: complete mixed Chinese/English text"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 5: actual text bounds fit native text box"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 5: native 24%/35% opacity"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 6: one native group"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 6: shape/text children retained without raster fallback"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 6: no picture children"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 6: native text remains 20 pt"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 6: complete mixed Chinese/English text"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 6: actual text bounds fit native text box"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 6: native 24%/35% opacity"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 7: one native group"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 7: shape/text children retained without raster fallback"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 7: no picture children"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 7: native text remains 20 pt"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 7: complete mixed Chinese/English text"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 7: actual text bounds fit native text box"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 7: transparent native outline"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 7: literal white text retained for dark destination"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 8: one native group"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 8: shape/text children retained without raster fallback"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 8: no picture children"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 8: native text remains 20 pt"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 8: complete mixed Chinese/English text"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 8: actual text bounds fit native text box"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 8: native 24%/35% opacity"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 8: literal white text retained for dark destination"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 9: one native group"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 9: shape/text children retained without raster fallback"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 9: no picture children"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 9: native text remains 20 pt"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 9: complete mixed Chinese/English text"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 9: actual text bounds fit native text box"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 9: native 24%/35% opacity"
+    },
+    {
+      "passed": true,
+      "label": "Quick style slide 9: literal white text retained for dark destination"
+    },
+    {
+      "passed": true,
+      "label": "Common yellow solid remains fixed #E7BF4A"
+    },
+    {
+      "passed": true,
+      "label": "Yellow solid uses readable dark text"
+    },
+    {
+      "passed": true,
+      "label": "quote2-sentinel.pptx: name uses selected PD",
+      "detail": 4853043
+    },
+    {
+      "passed": true,
+      "label": "quote2-sentinel.pptx: quotation uses selected PD",
+      "detail": 4853043
+    },
+    {
+      "passed": true,
+      "label": "quote2-sentinel.pptx: theme accent uses selected P"
+    },
+    {
+      "passed": true,
+      "label": "quote2-sentinel.pptx: intentional avatar image remains one picture"
+    },
+    {
+      "passed": true,
+      "label": "quote2-navy.pptx: name uses selected PD",
+      "detail": 6567967
+    },
+    {
+      "passed": true,
+      "label": "quote2-navy.pptx: quotation uses selected PD",
+      "detail": 6567967
+    },
+    {
+      "passed": true,
+      "label": "quote2-navy.pptx: theme accent uses selected P"
+    },
+    {
+      "passed": true,
+      "label": "quote2-navy.pptx: intentional avatar image remains one picture"
+    },
+    {
+      "passed": true,
+      "label": "quote2-wire.pptx: name uses selected PD",
+      "detail": 2829099
+    },
+    {
+      "passed": true,
+      "label": "quote2-wire.pptx: quotation uses selected PD",
+      "detail": 2829099
+    },
+    {
+      "passed": true,
+      "label": "quote2-wire.pptx: theme accent uses selected P"
+    },
+    {
+      "passed": true,
+      "label": "quote2-wire.pptx: intentional avatar image remains one picture"
+    },
+    {
+      "passed": true,
+      "label": "quote2-green.pptx: name uses selected PD",
+      "detail": 4081700
+    },
+    {
+      "passed": true,
+      "label": "quote2-green.pptx: quotation uses selected PD",
+      "detail": 4081700
+    },
+    {
+      "passed": true,
+      "label": "quote2-green.pptx: theme accent uses selected P"
+    },
+    {
+      "passed": true,
+      "label": "quote2-green.pptx: intentional avatar image remains one picture"
+    },
+    {
+      "passed": true,
+      "label": "quote2-wine.pptx: name uses selected PD",
+      "detail": 2102878
+    },
+    {
+      "passed": true,
+      "label": "quote2-wine.pptx: quotation uses selected PD",
+      "detail": 2102878
+    },
+    {
+      "passed": true,
+      "label": "quote2-wine.pptx: theme accent uses selected P"
+    },
+    {
+      "passed": true,
+      "label": "quote2-wine.pptx: intentional avatar image remains one picture"
+    },
+    {
+      "passed": true,
+      "label": "User presentation count remains 5"
+    },
+    {
+      "passed": true,
+      "label": "Native quick-style group text survives save/reopen at 20pt"
+    },
+    {
+      "passed": true,
+      "label": "Original quick-style export hash unchanged"
+    }
+  ]
+}

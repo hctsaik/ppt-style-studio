@@ -58,23 +58,56 @@ const CSS=`#vKit .skCr{display:block;font-size:10px;color:#595959;font-weight:40
 .skSw{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;font-size:12px}.skSw span{display:flex;align-items:center;gap:6px}.skSw i{width:16px;height:16px;border-radius:3px;border:1px solid #0001;flex:none}
 .skNote{font-size:11.5px;color:#8C8C8C;line-height:1.7;margin-top:16px}
 @media(max-width:820px){.skK{grid-template-columns:1fr}.skG{grid-template-columns:70px repeat(7,1fr);gap:5px}.skQ{height:30px;font-size:10px}.skCh{font-size:8.5px}.skRh small{display:none}.skRh{font-size:10px}}`;
-let cur=null;
+// A Kit choice has a source. An explicit template selection must survive a
+// visit to another tab, while the default follows the current Studio palette.
+const STORE='ppt-studio-stylekit-v1',PALETTE_KEYS=['P','PD','PT','A','ink','t2','mute','line','l2','fill'];
+let choice={source:'follow',id:null},globalPalette=null,cur=null;
+try{const saved=JSON.parse(localStorage.getItem(STORE)||'null');if(saved&&saved.source==='independent'&&T.some(t=>t.id===saved.id))choice={source:'independent',id:saved.id};}catch(_){}
+const hex=c=>typeof c==='string'?c.replace(/^#/,'').toUpperCase():c;
+function storeChoice(){try{localStorage.setItem(STORE,JSON.stringify(choice));}catch(_){}}
+function matchGlobal(p){
+ if(!p)return null;
+ const D=window.Deck,known=D&&(D.PRESETS||[]).find(x=>{const full=Object.assign({},D.BASE,x);return PALETTE_KEYS.every(k=>hex(p[k])===hex(full[k]));});
+ // Validate actual asset slots as well as the palette; matching a preset id
+ // alone would silently serve an old/static file after a custom color edit.
+ return known?T.find(t=>hex(t.sc.acc[0])===hex(p.P)&&hex(t.sc.dk2)===hex(p.PD)&&hex(t.sc.acc[4])===hex(p.PD)&&hex(t.sc.acc[1])===hex(p.A))||null:null;
+}
+function selectedTheme(){return choice.source==='independent'?T.find(t=>t.id===choice.id)||T[0]:matchGlobal(globalPalette&&globalPalette.params);}
+function state(){const t=selectedTheme();return{source:choice.source,id:t?t.id:null,downloadable:!!t,base:globalPalette&&globalPalette.base||null};}
+function sync(params,base,root){globalPalette={params:Object.assign({},params),base:base||null};return paint(root);}
+function selectSource(source,root){if(source==='follow')choice.source='follow';else{choice={source:'independent',id:(selectedTheme()||T.find(t=>t.id===choice.id)||T[0]).id};}storeChoice();return paint(root);}
+function selectTheme(id,root){if(!T.some(t=>t.id===id))return;choice={source:'independent',id};storeChoice();return paint(root);}
+function sourceControls(t){return `<div class="skSource" role="group" aria-label="Style Kit 配色來源"><button type="button" id="skFollow" aria-pressed="${choice.source==='follow'}">跟隨全站配色</button><button type="button" id="skIndependent" aria-pressed="${choice.source==='independent'}">獨立範本</button><span id="skSourceStatus" role="status">${choice.source==='independent'?'目前使用獨立範本：'+esc(t.zh)+'；全站改色不會覆蓋這項選擇。':t?'已跟隨全站內建配色：'+esc(t.zh)+'。':'目前是自訂配色，尚無對應的靜態 Style Kit 範本。'}</span></div>`;}
+function downloadLink(t,kind,label,primary){const ext=kind==='xml'?'_colors.xml':'.'+kind,fn='PPT Template Style Kit - '+(t?t.zh:'自訂配色');return `<a${primary?' class="pri"':''} id="sk${kind==='pptx'?'Pptx':kind==='potx'?'Potx':'Xml'}" ${t?`href="${href(t.id+ext)}" download="${esc(fn)}.${kind}" data-stylekit-file="${t.id+ext}" data-stylekit-theme="${t.id}" data-stylekit-source="${choice.source}"`:'aria-disabled="true" tabindex="-1"'}>${label}</a>`;}
+function customNotice(){const p=globalPalette&&globalPalette.params||{};return `<div class="skCustom" id="skCustomNotice"><strong>自訂色尚未提供 Style Kit 範本下載</strong><p>這裡不會用舊範本代替目前配色。請選下方獨立範本，或切回全站內建配色。元件庫的預覽與匯出仍可使用自訂色。</p><div class="skSw">${[['主色 P',p.P],['深色 PD',p.PD],['淺色 PT',p.PT],['強調色 A',p.A]].filter(([,c])=>/^[0-9A-F]{6}$/.test(hex(c)||'')).map(([n,c])=>`<span><i style="background:#${hex(c)}"></i>${n}<code>#${hex(c)}</code></span>`).join('')}</div></div>`;}
 function skL(h){const c=[0,2,4].map(k=>parseInt(h.slice(k,k+2),16)/255).map(v=>v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4));return .2126*c[0]+.7152*c[1]+.0722*c[2];}
 function skCR(a,b){const x=skL(a),y=skL(b||'FFFFFF');return ((Math.max(x,y)+.05)/(Math.min(x,y)+.05)).toFixed(1);}
 function skCT(t){const R=[['主色 輔色1',t.sc.acc[0]],['強調 輔色2',t.sc.acc[1]],['深色 輔色5',t.sc.acc[4]],['說明 #595959','595959'],['淺色 H1',t.sc.hl[0]]];return '<div class="skCt" id="skCt">'+R.map(([n,c])=>{const r=+skCR(c);const ok=r>=4.5,mid=r>=3;return `<span><b style="background:#${c}"></b>${n} #${c}　<em class="${ok?'ok':mid?'mid':'no'}">${r}:1 ${ok?'✓ 可當字色':mid?'◐ 只用大字／圖形':'✕ 只當底色'}</em></span>`;}).join('')+'</div>';}
-function render(id,root){root=root||document.getElementById('vKit');if(!root||!T.length)return;const t=T.find(x=>x.id===id)||T.find(x=>x.id===cur)||T[0];cur=t.id;
+// Retain the public render(id) API for explicit standalone Kit consumers.
+function render(id,root){if(id)return selectTheme(id,root);return paint(root);}
+function paint(root){root=root||document.getElementById('vKit');if(!root||!T.length)return;const t=selectedTheme();cur=t?t.id:null;
  if(!document.getElementById('skCss')){const s=document.createElement('style');s.id='skCss';s.textContent=CSS;document.head.appendChild(s);}
- root.style.setProperty('--skP','#'+t.sc.acc[0]);const fn='PPT Template Style Kit - '+t.zh;
+ if(!document.getElementById('skSourceCss')){const s=document.createElement('style');s.id='skSourceCss';s.textContent='.skSource{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0;font-size:12px}.skSource button{border:1px solid #D9D9D9;border-radius:6px;background:#fff;color:#3A3A3A;padding:6px 10px;cursor:pointer}.skSource button[aria-pressed="true"]{border-color:var(--skP);color:var(--skP);font-weight:700}.skSource span{flex-basis:100%;color:#595959}.skDl a[aria-disabled="true"]{opacity:.5;cursor:not-allowed}.skCustom{padding:14px;border:1px solid #D9D9D9;border-radius:6px;font-size:13px;line-height:1.6}.skCustom p{margin:6px 0 12px}';document.head.appendChild(s);}
+ root.style.setProperty('--skP','#'+(t?t.sc.acc[0]:'595959'));
  root.innerHTML=`<div class="skW"><h2>PPT 範本 Style Kit<small>Template Style Kit · 快速樣式＋螢光筆，下載即用</small></h2>
  <p class="skLead">選一個主題 → 下面預覽就是 PowerPoint〔常用 › 繪圖 › 快速樣式〕會出現的 7×6 樣式與柔和螢光筆。確認後下載 .pptx：佈景主題色彩與 fmtScheme 已內嵌，每一頁的快速樣式都是這組顏色；內含 Style Kit 範例頁，可直接用格式刷取用。<br>Pick a theme → preview the real Quick Styles gallery &amp; soft highlighters → download a .pptx with the theme embedded.</p>
- <div class="skTh" id="skThemes" role="tablist">${T.map(x=>`<button data-sk="${x.id}" class="${x.id===t.id?'on':''}" role="tab" aria-selected="${x.id===t.id}"><i>${x.sc.acc.slice(0,3).map(c=>`<b style="background:#${c}"></b>`).join('')}</i>${esc(x.zh)}<small class="skCr">${skCR(x.sc.acc[0])}:1</small></button>`).join('')}</div>
- <div class="skSec">對比值 Contrast<small>與白底比（WCAG）；文字需 ≥ 4.5:1</small></div>${skCT(t)}
- <div class="skDl" id="skDl"><a class="pri" id="skPptx" href="${href(t.id+'.pptx')}" download="${esc(fn)}.pptx">⬇ 下載 .pptx（${esc(t.zh)}）</a><a class="pri" id="skPotx" href="${href(t.id+'.potx')}" download="${esc(fn)}.potx">⬇ 範本 .potx（另存成我的範本）</a><button type="button" class="skApply" id="skApply">🎨 一鍵套用到元件庫（全部元件改成這組色）</button><a id="skXml" href="${href(t.id+'_colors.xml')}" download="${esc(fn)}.xml">色彩 .xml</a>
+ ${sourceControls(t)}<div class="skTh" id="skThemes" role="tablist" aria-label="選擇獨立範本">${T.map(x=>`<button data-sk="${x.id}" class="${t&&x.id===t.id?'on':''}" role="tab" aria-selected="${!!t&&x.id===t.id}"><i>${x.sc.acc.slice(0,3).map(c=>`<b style="background:#${c}"></b>`).join('')}</i>${esc(x.zh)}<small class="skCr">${skCR(x.sc.acc[0])}:1</small></button>`).join('')}</div>
+ ${t?'<div class="skSec">對比值 Contrast<small>與白底比（WCAG）；文字需 ≥ 4.5:1</small></div>'+skCT(t):customNotice()}
+ <div class="skDl" id="skDl">${downloadLink(t,'pptx','⬇ 下載 .pptx'+(t?'（'+esc(t.zh)+'）':''),true)}${downloadLink(t,'potx','⬇ 範本 .potx（另存成我的範本）',true)}<button type="button" class="skApply" id="skApply"${t?'':' disabled'}>🎨 一鍵套用到元件庫（全部元件改成這組色）</button>${downloadLink(t,'xml','色彩 .xml')}
  <small>.pptx：直接開啟使用（4 頁：封面、內容、Style Kit 頁、快速樣式預覽頁）｜.potx：存成個人範本（%APPDATA%\\Microsoft\\Templates）｜.xml：只換色彩，放到 …\\Document Themes\\Theme Colors，套在公司範本上不動母片／Logo</small></div>
- <div class="skSec">快速樣式 Quick Styles<small>常用 › 繪圖 › 快速樣式（Home › Drawing › Quick Styles）· 7 欄 × 6 列</small></div>${gallery(t)}
- <div class="skSec">Style Kit 頁<small>Style Kit sample slide · 格式刷取用（雙擊格式刷可連續刷）</small></div><div class="skK">${kit(t)}</div>
+ ${t?'<div class="skSec">快速樣式 Quick Styles<small>常用 › 繪圖 › 快速樣式（Home › Drawing › Quick Styles）· 7 欄 × 6 列</small></div>'+gallery(t)+'<div class="skSec">Style Kit 頁<small>Style Kit sample slide · 格式刷取用（雙擊格式刷可連續刷）</small></div><div class="skK">'+kit(t)+'</div>':''}
  <p class="skNote">限制：網頁預覽依主題色＋fmtScheme 以 HTML 模擬，與 PowerPoint 實際渲染可能有 1–2 px 線寬／漸層差異；柔和螢光筆是自訂 srgb 色，PowerPoint 的螢光筆選單選不到，只能格式刷／複製；只套色彩 .xml 時，快速樣式的陰影／漸層沿用原範本 fmtScheme。<br>Limits: HTML approximation of PowerPoint rendering; custom highlighter colors are only reachable via Format Painter.</p></div>`;
- root.querySelector('#skApply').onclick=()=>{document.dispatchEvent(new CustomEvent('stylekit-apply',{detail:{id:t.id,acc:t.sc.acc}}));};
- root.querySelector('#skThemes').onclick=e=>{const b=e.target.closest('button[data-sk]');if(b)render(b.dataset.sk,root);};}
-window.StyleKit={render,themes:T,current:()=>cur,lum,cell};
+ root.querySelector('#skApply').onclick=()=>{if(t)document.dispatchEvent(new CustomEvent('stylekit-apply',{detail:{id:t.id,acc:t.sc.acc.slice()}}));};
+ root.querySelector('#skFollow').onclick=()=>selectSource('follow',root);
+ root.querySelector('#skIndependent').onclick=()=>selectSource('independent',root);
+ root.querySelector('#skThemes').onclick=e=>{const b=e.target.closest('button[data-sk]');if(b)selectTheme(b.dataset.sk,root);};
+ root.querySelectorAll('[data-stylekit-file]').forEach(a=>{a.onclick=e=>{
+  const latest=state();if(!latest.downloadable||latest.id!==t.id||latest.source!==a.dataset.stylekitSource){e.preventDefault();return;}
+  // The host can synchronously share its export lock without fetching assets:
+  // this keeps both relative file:// links and bundled Blob URLs functional.
+  const request=new CustomEvent('stylekit-download',{cancelable:true,detail:{theme:t.id,format:/\.potx$/.test(a.dataset.stylekitFile)?'potx':/\.xml$/.test(a.dataset.stylekitFile)?'xml':'pptx',file:a.dataset.stylekitFile,href:a.href,download:a.download,source:latest.source,validation:'build-time-package'}});
+  if(!document.dispatchEvent(request))e.preventDefault();
+ }});
+ return state();}
+window.StyleKit={render,sync,selectSource,selectTheme,state,themes:T,current:()=>cur,lum,cell};
 })();

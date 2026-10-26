@@ -1769,15 +1769,15 @@ function buildModel(params,opt){
   grp('引言＋人像',()=>{photo(X1-1.35,3.15,1.7,'人像（右鍵→變更圖片）');T(X1-2.45,4.15,2.2,.35,'客戶 品保經理',{size:Z(11),color:G.t2,align:'center',wrap:0,name:'身分'});});};
  SL.quote2=()=>{const {Z,T,TN,DARK,W2,bdg}=UK();const QC=mix(P,'FFFFFF',.8);
   grp('主色直條引言（白底）',()=>{box(X0+.3,2.0,.12,2.4,{fill:P,r:0,name:'主色直條'});T(X0+.75,1.0,1.6,2.0,'“',{size:96,bold:1,color:QC,font:'Georgia',valign:'top',wrap:0,name:'大引號'});
-   T(X0+2.0,2.2,5.4,1.6,'先把問題說清楚，\n答案就會自己出現。',{size:28,bold:1,color:'1F3864',valign:'top',lsp:1.2,name:'金句'});
+   T(X0+2.0,2.2,5.4,1.6,'先把問題說清楚，\n答案就會自己出現。',{size:28,bold:1,color:PD,valign:'top',lsp:1.2,name:'金句'});
    box(X0+2.0,4.0,.9,.05,{fill:P,r:0,name:'分隔線'});T(X0+2.0,4.2,5.4,.4,'姓名 Name｜職稱 Title',{size:12,bold:1,color:'5B6474',wrap:0,name:'出處'});
    T(X0+2.0,4.7,5.4,.4,'章節轉場或結尾金句用；一頁只放一句',{size:Z(11),color:'5B6474',wrap:0,name:'使用說明'});});
 
   {const bw=CW*.35,bx=X1-bw,by=1.0,bh=5.15;grp('右側淺色塊（人像＋重點）',()=>{box(bx,by,bw,bh,{fill:mix(P,'FFFFFF',.94),r:.1,name:'淺色塊'});
-   photo(bx+bw/2,by+.98,1.2,'人像（右鍵→變更圖片）');T(bx+.3,by+1.8,bw-.6,.36,'姓名 Name',{size:Z(16),bold:1,color:'1F3864',align:'center',wrap:0,name:'姓名'});T(bx+.3,by+2.16,bw-.6,.3,'職稱｜單位 Title | Org',{size:Z(11),color:'5B6474',align:'center',wrap:0,name:'頭銜'});
+   photo(bx+bw/2,by+.98,1.2,'人像（右鍵→變更圖片）');T(bx+.3,by+1.8,bw-.6,.36,'姓名 Name',{size:Z(16),bold:1,color:PD,align:'center',wrap:0,name:'姓名'});T(bx+.3,by+2.16,bw-.6,.3,'職稱｜單位 Title | Org',{size:Z(11),color:'5B6474',align:'center',wrap:0,name:'頭銜'});
    ln(bx+.4,by+2.62,bx+bw-.4,by+2.62,{c:mix(P,'FFFFFF',.75),w:.75});T(bx+.4,by+2.74,bw-.8,.3,'本章重點',{size:Z(11),bold:1,color:P,wrap:0,name:'重點標題'});
    ['先寫結論，再補依據','一頁只回答一個問題','用數字取代形容詞'].forEach((t,k)=>{bdg(bx+.55,by+3.27+k*.5,.3,String(k+1),P,{size:10});T(bx+.82,by+3.12+k*.5,bw-1.1,.3,t,{size:Z(12),color:G.ink,valign:'middle',wrap:0,name:'重點'});});});}
-  grp('適用情境膠囊',()=>{T(X0+2.0,5.3,1.0,.3,'適用情境',{size:Z(11),bold:1,color:P,valign:'middle',wrap:0,name:'情境標題'});['章節轉場','結尾金句','開場定調'].forEach((t,k)=>box(X0+3.05+k*1.25,5.3,1.12,.3,{fill:mix(P,'FFFFFF',.9),r:'full',text:t,size:Z(10.5),bold:1,color:'1F3864',margin:0,name:'情境膠囊'}));});
+  grp('適用情境膠囊',()=>{T(X0+2.0,5.3,1.0,.3,'適用情境',{size:Z(11),bold:1,color:P,valign:'middle',wrap:0,name:'情境標題'});['章節轉場','結尾金句','開場定調'].forEach((t,k)=>box(X0+3.05+k*1.25,5.3,1.12,.3,{fill:mix(P,'FFFFFF',.9),r:'full',text:t,size:Z(10.5),bold:1,color:PD,margin:0,name:'情境膠囊'}));});
   grp('下一章提示',()=>{T(X0,6.38,CW,.3,[{t:'下一章  ',c:G.t2},{t:'問題定義 →',b:1,c:P}],{size:Z(11),align:'right',wrap:0,name:'下一章'});});};
  /* ================= v14：封面／章節／結尾變體、亞洲與世界地圖 ================= */
  const qr=(x,y,s,nm)=>{box(x,y,s,s,{fill:'FFFFFF',line:G.l2,lw:.75,r:.03,name:nm||'QR 佔位（換成你的 QR 圖）'});const q=.056,m=s-2*q,n=9,c=m/n;
@@ -2818,7 +2818,7 @@ function toPptx(pptx,model){
    let runs='';
    if(it.runs){const T=it.tx;runs=it.runs.map(r=>{const o={fontSize:r.o.size,fontFace:r.o.font,bold:r.o.bold,color:r.o.color};if(r.o.cs!=null)o.charSpacing=r.o.cs;if(r.o.hl)o.highlight=r.o.hl;if(r.o.strike)o.strike='sngStrike';if(r.o.u)o.underline=typeof r.o.u==='string'?{style:'sng',color:r.o.u}:{style:'sng'};if(r.o.br)o.breakLine=true;if(r.o.link&&KI[r.o.link])o.hyperlink={slide:KI[r.o.link],tooltip:'跳到該頁'};return{text:r.t,options:o};});
     Object.assign(p,{align:T.align,valign:T.valign,margin:it.doc&&Array.isArray(T.margin)?[T.margin[0],T.margin[1],0,T.margin[3]]:T.margin,fontFace:T.font,fontSize:T.size,color:T.color,bold:T.bold});if(T.lsp&&T.lsp!==1)p.lineSpacingMultiple=T.lsp;}
-   if(it.runs&&it.name!=='標題'&&!it.mk)p.fit='shrink';   /* v9：<a:normAutofit/>——在 PowerPoint 裡改長文字時自動縮小，不會溢出圖形 */
+   if(it.runs&&it.name!=='標題'&&!it.mk&&!it.noAutoShrink)p.fit='shrink';   /* Legacy items retain edit-time fitting; explicit noAutoShrink items preserve their font size. */
    s.addText(runs,p);});});
  return pptx;}
 /* v13 半高螢光筆：文字方塊的硬切線性漸層（上 a 透明 → 淡色帶 → 最後 1−b 透明），不換行＋圖形隨文字調整大小（改字時色帶跟著伸縮） */

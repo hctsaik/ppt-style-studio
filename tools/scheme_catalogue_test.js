@@ -19,6 +19,23 @@ let checks=0,nativeExports=0;
 function check(name,fn){fn();checks++;console.log('PASS '+name);}
 const plain=x=>JSON.parse(JSON.stringify(x));
 const digest=x=>crypto.createHash('sha256').update(JSON.stringify(x)).digest('hex');
+// E7's five named objects now intentionally use the caller's PD. Validate that
+// contract independently, then restore only their run/default text color in a
+// comparison copy. The committed 72-page golden hashes remain untouched and
+// still protect every other property, including geometry and neutral text.
+function legacyPageProjection(slides,params){
+ const copy=plain(slides),quote=copy.find(s=>s.key==='quote2');
+ assert(quote,'Legacy pages include E7');
+ const corrected=[[2,'金句',2],[9,'姓名',1],[20,'情境膠囊',1],[21,'情境膠囊',1],[22,'情境膠囊',1]];
+ for(const[index,name,runCount]of corrected){
+  const it=quote.items[index];assert.equal(it.name,name,'E7 corrected object identity');
+  assert.equal(it.runs.length,runCount,'E7 corrected run count');
+  assert.equal(it.tx.color,params.PD,'E7 '+name+' default text color follows PD');
+  it.runs.forEach(run=>assert.equal(run.o.color,params.PD,'E7 '+name+' run follows PD'));
+  it.tx.color='1F3864';it.runs.forEach(run=>{run.o.color='1F3864';});
+ }
+ return copy;
+}
 // Omit paint and display text only; retain all geometry, typography, shadow,
 // corners, native item types, group addressing and layout metadata.
 const geometry=x=>JSON.parse(JSON.stringify(x,function(k,v){return ['name','fill','line','color','mkC'].includes(k)||(k==='t'&&this.o)?undefined:v;}));
@@ -177,11 +194,13 @@ async function native(model,expectedGroups,dimensions){
  check('All 72 legacy identities remain in their original registry order',()=>assert.deepEqual(D.SLIDES.slice(0,72),LEGACY.registry));
  for(const p of D.PRESETS)for(const size of ['S','M','L']){
   const params={...p,size},old=LEGACY.scenarios[p.id+'/'+size],now=D.buildModel(params,{examples:true});
-  check(p.id+'/'+size+': all 72 legacy pages and their groups are byte-for-byte unchanged',()=>{
+  check(p.id+'/'+size+': 72 legacy pages preserve old golden except the five validated E7 PD text objects',()=>{
    assert(old,'Committed baseline includes this theme/size');
    const slides=now.slides.slice(0,72);assert.equal(slides.length,72);
    assert.equal(slides.reduce((n,s)=>n+s.groups.length,0),old.groups);
-   assert.equal(digest(slides),old.slidesSha256,'Legacy geometry/text/style/metadata unchanged');
+   const before=digest(slides),projected=legacyPageProjection(slides,params);
+   assert.equal(digest(slides),before,'Legacy comparison never mutates the actual model');
+   assert.equal(digest(projected),old.slidesSha256,'Legacy geometry/text/style/metadata unchanged outside the explicit E7 PD correction');
    // Versioned table sizing adds inert metadata to all models. Assert the
    // exact legacy defaults and project only these new fields out; keep every
    // legacy slide hash, semantic value and warning byte-for-byte unchanged.
@@ -190,6 +209,15 @@ async function native(model,expectedGroups,dimensions){
    assert.equal(digest({params:legacyParams,sem:now.sem,warns:now.warns}),old.contractSha256,'Legacy model semantics and warnings unchanged');
   });
  }
+ check('E7 legacy projection rejects wrong-role paint and does not hide geometry or unrelated text changes',()=>{
+  const p=D.PRESETS.find(x=>x.id==='green'),m=D.buildModel(p,{examples:true}),slides=m.slides.slice(0,72),old=LEGACY.scenarios['green/M'];
+  const wrong=plain(slides);wrong.find(s=>s.key==='quote2').items[2].runs[0].o.color='1F3864';
+  assert.throws(()=>legacyPageProjection(wrong,p),/run follows PD/);
+  const geometryMutation=plain(slides);geometryMutation.find(s=>s.key==='quote2').items[2].x+=.01;
+  assert.notEqual(digest(legacyPageProjection(geometryMutation,p)),old.slidesSha256,'Even corrected objects retain their geometry contract');
+  const neutralMutation=plain(slides);neutralMutation.find(s=>s.key==='quote2').items[4].runs[0].o.color=p.P;
+  assert.notEqual(digest(legacyPageProjection(neutralMutation,p)),old.slidesSha256,'Unrelated neutral text remains protected by old golden');
+ });
  for(const size of ['S','M','L']){
   const p={...D.PRESETS[0],size},m=D.buildModel(p,{only:KEYS}),k=D.SIZE_K[size],r=await native(m,[28,28,28,28],[13.333*k,17.5*k]);
   check(size+': complete four-page PPTX has 112 groups, full canvas, no image fallback',()=>{

@@ -1,0 +1,400 @@
+{
+  "engine": "Microsoft PowerPoint COM",
+  "borderEnumSource": "https://learn.microsoft.com/en-us/office/vba/api/powerpoint.ppbordertype",
+  "outlineChecks": [
+    {
+      "file": "outline-1.pptx",
+      "expectedWidth": 1,
+      "edges": [
+        {
+          "edge": "top",
+          "r": 2,
+          "c": 1,
+          "weight": 1.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "bottom",
+          "r": 4,
+          "c": 1,
+          "weight": 1.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "top",
+          "r": 2,
+          "c": 2,
+          "weight": 1.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "bottom",
+          "r": 4,
+          "c": 2,
+          "weight": 1.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "top",
+          "r": 2,
+          "c": 3,
+          "weight": 1.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "bottom",
+          "r": 4,
+          "c": 3,
+          "weight": 1.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "left",
+          "r": 2,
+          "c": 1,
+          "weight": 1.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "right",
+          "r": 2,
+          "c": 3,
+          "weight": 1.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "left",
+          "r": 3,
+          "c": 1,
+          "weight": 1.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "right",
+          "r": 3,
+          "c": 3,
+          "weight": 1.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "left",
+          "r": 4,
+          "c": 1,
+          "weight": 1.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "right",
+          "r": 4,
+          "c": 3,
+          "weight": 1.0,
+          "rgb": 7949855
+        }
+      ],
+      "passed": true
+    },
+    {
+      "file": "outline-1.5.pptx",
+      "expectedWidth": 1.5,
+      "edges": [
+        {
+          "edge": "top",
+          "r": 2,
+          "c": 1,
+          "weight": 1.5,
+          "rgb": 7949855
+        },
+        {
+          "edge": "bottom",
+          "r": 4,
+          "c": 1,
+          "weight": 1.5,
+          "rgb": 7949855
+        },
+        {
+          "edge": "top",
+          "r": 2,
+          "c": 2,
+          "weight": 1.5,
+          "rgb": 7949855
+        },
+        {
+          "edge": "bottom",
+          "r": 4,
+          "c": 2,
+          "weight": 1.5,
+          "rgb": 7949855
+        },
+        {
+          "edge": "top",
+          "r": 2,
+          "c": 3,
+          "weight": 1.5,
+          "rgb": 7949855
+        },
+        {
+          "edge": "bottom",
+          "r": 4,
+          "c": 3,
+          "weight": 1.5,
+          "rgb": 7949855
+        },
+        {
+          "edge": "left",
+          "r": 2,
+          "c": 1,
+          "weight": 1.5,
+          "rgb": 7949855
+        },
+        {
+          "edge": "right",
+          "r": 2,
+          "c": 3,
+          "weight": 1.5,
+          "rgb": 7949855
+        },
+        {
+          "edge": "left",
+          "r": 3,
+          "c": 1,
+          "weight": 1.5,
+          "rgb": 7949855
+        },
+        {
+          "edge": "right",
+          "r": 3,
+          "c": 3,
+          "weight": 1.5,
+          "rgb": 7949855
+        },
+        {
+          "edge": "left",
+          "r": 4,
+          "c": 1,
+          "weight": 1.5,
+          "rgb": 7949855
+        },
+        {
+          "edge": "right",
+          "r": 4,
+          "c": 3,
+          "weight": 1.5,
+          "rgb": 7949855
+        }
+      ],
+      "passed": true
+    },
+    {
+      "file": "outline-2.25.pptx",
+      "expectedWidth": 2.25,
+      "edges": [
+        {
+          "edge": "top",
+          "r": 2,
+          "c": 1,
+          "weight": 2.25,
+          "rgb": 7949855
+        },
+        {
+          "edge": "bottom",
+          "r": 4,
+          "c": 1,
+          "weight": 2.25,
+          "rgb": 7949855
+        },
+        {
+          "edge": "top",
+          "r": 2,
+          "c": 2,
+          "weight": 2.25,
+          "rgb": 7949855
+        },
+        {
+          "edge": "bottom",
+          "r": 4,
+          "c": 2,
+          "weight": 2.25,
+          "rgb": 7949855
+        },
+        {
+          "edge": "top",
+          "r": 2,
+          "c": 3,
+          "weight": 2.25,
+          "rgb": 7949855
+        },
+        {
+          "edge": "bottom",
+          "r": 4,
+          "c": 3,
+          "weight": 2.25,
+          "rgb": 7949855
+        },
+        {
+          "edge": "left",
+          "r": 2,
+          "c": 1,
+          "weight": 2.25,
+          "rgb": 7949855
+        },
+        {
+          "edge": "right",
+          "r": 2,
+          "c": 3,
+          "weight": 2.25,
+          "rgb": 7949855
+        },
+        {
+          "edge": "left",
+          "r": 3,
+          "c": 1,
+          "weight": 2.25,
+          "rgb": 7949855
+        },
+        {
+          "edge": "right",
+          "r": 3,
+          "c": 3,
+          "weight": 2.25,
+          "rgb": 7949855
+        },
+        {
+          "edge": "left",
+          "r": 4,
+          "c": 1,
+          "weight": 2.25,
+          "rgb": 7949855
+        },
+        {
+          "edge": "right",
+          "r": 4,
+          "c": 3,
+          "weight": 2.25,
+          "rgb": 7949855
+        }
+      ],
+      "passed": true
+    },
+    {
+      "file": "outline-3.pptx",
+      "expectedWidth": 3,
+      "edges": [
+        {
+          "edge": "top",
+          "r": 2,
+          "c": 1,
+          "weight": 3.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "bottom",
+          "r": 4,
+          "c": 1,
+          "weight": 3.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "top",
+          "r": 2,
+          "c": 2,
+          "weight": 3.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "bottom",
+          "r": 4,
+          "c": 2,
+          "weight": 3.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "top",
+          "r": 2,
+          "c": 3,
+          "weight": 3.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "bottom",
+          "r": 4,
+          "c": 3,
+          "weight": 3.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "left",
+          "r": 2,
+          "c": 1,
+          "weight": 3.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "right",
+          "r": 2,
+          "c": 3,
+          "weight": 3.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "left",
+          "r": 3,
+          "c": 1,
+          "weight": 3.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "right",
+          "r": 3,
+          "c": 3,
+          "weight": 3.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "left",
+          "r": 4,
+          "c": 1,
+          "weight": 3.0,
+          "rgb": 7949855
+        },
+        {
+          "edge": "right",
+          "r": 4,
+          "c": 3,
+          "weight": 3.0,
+          "rgb": 7949855
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "roundtrips": [
+    {
+      "kind": "table",
+      "source": "table-navy.pptx",
+      "copy": "edited-table-roundtrip.pptx",
+      "changed": [
+        "textbox",
+        "table-cell"
+      ],
+      "nativeTables": 1,
+      "nativeGroups": 0,
+      "sourceUnchanged": true,
+      "passed": true
+    },
+    {
+      "kind": "group",
+      "source": "catalogue-navy.pptx",
+      "copy": "edited-group-roundtrip.pptx",
+      "changed": [
+        "group-textbox"
+      ],
+      "nativeTables": 0,
+      "nativeGroups": 28,
+      "sourceUnchanged": true,
+      "passed": true
+    }
+  ],
+  "safety": "Only generated test PPTX files are read and copies are saved. No security settings changed; no Application.Quit.",
+  "presentationsBefore": 5,
+  "presentationsAfter": 5
+}

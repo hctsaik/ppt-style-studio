@@ -1,0 +1,17 @@
+{
+  "engine": "Microsoft PowerPoint COM",
+  "source": "quickstyles-nine.pptx",
+  "copy": "quickstyles-edited-dark-roundtrip.pptx",
+  "fixtureOnlyBackground": "The last three slides receive a dark background in the acceptance copy only, to simulate pasting native white objects into a dark presentation. The product export remains untouched.",
+  "presentationsBefore": 5,
+  "nativeGroupRetained": true,
+  "editedText": [
+    {
+      "text": "快速樣式已編輯",
+      "fontSize": 20.0
+    }
+  ],
+  "sourceUnchanged": true,
+  "passed": true,
+  "presentationsAfter": 5
+}
