@@ -38,10 +38,10 @@ async function modelTests(){
    if(width==='45'){assert(Math.abs(b.w-D.W*.45)<1e-7);assert.equal(meta.sizing.fit.stubLines>0,meta.hcol);}
   }
  });
- await test('the both-mode corner keeps the first-row appearance; row labels keep their own style',()=>{
+ await test('both axes share selected header paint and the corner is applied once',()=>{
   const row=table(model('row')),both=table(model('both')),col=table(model('col'));
   assert.deepEqual(both.cells[0][0],row.cells[0][0]);assert.equal(both.cells[0][0].fill,D.PRESETS[0].P);
-  assert.equal(both.cells[1][0].bold,true);assert.equal(col.cells[0][0].bold,true);assert.notEqual(both.cells[1][0].fill,both.cells[0][0].fill);
+  assert.equal(both.cells[1][0].bold,true);assert.equal(col.cells[0][0].bold,true);assert.equal(both.cells[1][0].fill,both.cells[0][0].fill);assert.equal(both.cells[1][0].color,both.cells[0][0].color);
  });
  await test('copied HTML uses explicit row/column header scopes without changing content',()=>{
   for(const mode of MODES){const m=model(mode),d=new JSDOM(D.tableHtml(m)).window.document,header=mode==='row'||mode==='both',hcol=mode==='col'||mode==='both';

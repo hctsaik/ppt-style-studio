@@ -45,23 +45,23 @@ let checks=0;async function test(name,fn){await fn();checks++;console.log('PASS 
   assert.equal(F.HIGHLIGHTS.find(h=>h.key==='blue').color,'7C9CC3','Reference blue must not be darkened to force white text');
  });
  const outputs={};
- for(const source of ['common','theme'])await test('Stored '+source+' preference exports selected five schemes and thirteen pages with protected source parts',async()=>{
+ for(const source of ['common','theme'])await test('Stored '+source+' preference exports selected five schemes and twenty-six pages with protected source parts',async()=>{
   const bytes=await F.exportPptx(Z,[],{source}),zip=await Z.loadAsync(bytes);outputs[source]=zip;
-  fs.writeFileSync(path.join(OUT,'template-'+source+'-13pages.pptx'),bytes);
-  assert.equal(els(parse(await zip.file('ppt/presentation.xml').async('string')),P,'sldId').length,13);
-  assert.equal(Object.keys(zip.files).filter(n=>/^ppt\/slides\/[^/]+\.xml$/.test(n)).length,13);
+  fs.writeFileSync(path.join(OUT,'template-'+source+'-26pages.pptx'),bytes);
+  assert.equal(els(parse(await zip.file('ppt/presentation.xml').async('string')),P,'sldId').length,26);
+  assert.equal(Object.keys(zip.files).filter(n=>/^ppt\/slides\/[^/]+\.xml$/.test(n)).length,26);
   for(const name of themes){const before=await original.file(name).async('string'),after=await zip.file(name).async('string');parse(after);
    assertThemeBoundary(before,after,name);
    for(const role of ['dk1','lt1','dk2','lt2','hlink','folHlink']){const pattern=new RegExp('<a:'+role+'>[\\s\\S]*?</a:'+role+'>');assert.equal(after.match(pattern)[0],before.match(pattern)[0]);}
   }
   for(const name of Object.keys(DATA.parts).filter(n=>/^ppt\/(?:slideMasters|slideLayouts|media)\//.test(n)&&!themes.includes(n)))assert.equal(hash(await zip.file(name).async('uint8array')),DATA.parts[name],name);
-  for(const name of ['ppt/slides/slide1.xml','ppt/slides/slide2.xml']){const strip=s=>s.replace(/<p:sp\b[^>]*>[\s\S]*?<\/p:sp>/g,shape=>/\bid="9001"/.test(shape)?'':shape).replace(/(<a:fld\b[^>]*type="slidenum"[\s\S]*?<a:t>)\d+(<\/a:t>)/g,'$1PAGE$2');assert.equal(strip(await zip.file(name).async('string')),strip(await original.file(name).async('string')));}
+  for(const name of ['ppt/slides/slide1.xml','ppt/slides/slide2.xml']){const strip=s=>s.replace(/<p:sp\b[^>]*>[\s\S]*?<\/p:sp>/g,shape=>/\bid="9001"/.test(shape)?'':shape).replace(/(<a:fld\b[^>]*type="slidenum"[\s\S]*?<a:t>)\d+(<\/a:t>)/g,'$1PAGE$2');let current=await zip.file(name).async('string');if(name==='ppt/slides/slide1.xml'){assert.equal(current.split('<a:t>單欄07</a:t>').length,2);const highlight=els(parse(current),P,'sp').find(s=>els(s,P,'cNvPr')[0].getAttribute('id')==='9001');assert.equal(els(highlight,A,'t').map(t=>t.textContent).join(''),'重點文字');current=current.replace('<a:t>單欄07</a:t>','<a:t>單欄內容</a:t>');}assert.equal(strip(current),strip(await original.file(name).async('string')));}
   const props=parse(await zip.file('ppt/presProps.xml').async('string')),mru=els(props,P,'clrMru');assert.equal(mru.length,1);assert.equal(els(mru[0],A,'srgbClr').length,8);assert.equal(els(mru[0],A,'srgbClr')[0].getAttribute('val'),'1F3864');
   assert.deepEqual(els(mru[0],A,'srgbClr').map(c=>c.getAttribute('val')).reverse(),HIGHLIGHTS,'Native ink palette is independent of Accent source');
   const cover=await zip.file('ppt/slides/slideCover.xml').async('string');assert(!cover.includes('螢光筆底帶'));assert(!cover.includes('<a:highlight>'),'Main cover has no example marker');
   assert.equal(hash(F.originalBytes()),rawHash);assert.equal(rawHash,'1d42e27915855f57c1bee5ad185526ee62c51818223e9cfde20609dcf47c1fae');
  });
- await test('Saved legacy palette preference cannot change any part of the thirteen-page package',async()=>{
+ await test('Saved legacy palette preference cannot change any part of the twenty-six-page package',async()=>{
   const names=Object.keys(outputs.common.files).filter(n=>!outputs.common.files[n].dir);assert.deepEqual(names.sort(),Object.keys(outputs.theme.files).filter(n=>!outputs.theme.files[n].dir).sort());for(const name of names)assert.deepEqual(await outputs.common.file(name).async('uint8array'),await outputs.theme.file(name).async('uint8array'),name);
   assert.deepEqual(F.ORIGINAL_ACCENTS,ORIGINAL);for(let i=0;i<6;i++)assert(sourceTheme.includes(`<a:accent${i+1}><a:srgbClr val="${ORIGINAL[i]}"/></a:accent${i+1}>`));
  });
@@ -83,30 +83,31 @@ let checks=0;async function test(name,fn){await fn();checks++;console.log('PASS 
   }
   for(const marker of ['marker','underline']){const model=F.build({layout:'2',marker,color:'yellow'}),slide=parse(F.slideXml(model,4));assert.equal(els(slide,A,'highlight').length,1);assert.equal(els(els(slide,A,'highlight')[0],A,'srgbClr')[0].getAttribute('val'),'F9F0D4');}
  });
- for(const script of ['fixed-master-data.js','native-styles.js','fixed-master.js'])w.eval(fs.readFileSync(path.join(ROOT,script),'utf8'));
+ for(const script of ['deck.js','fixed-master-data.js','native-styles.js','fixed-master.js'])w.eval(fs.readFileSync(path.join(ROOT,script),'utf8'));
  const host=d.getElementById('host'),get=sel=>{const el=host.querySelector(sel);assert(el,'Missing '+sel);return el;},state=()=>JSON.parse(JSON.stringify(w.FixedMaster.getState(host)));
  const onChange=()=>{};
- await test('Five fixed named schemes and both downloads remain visible; legacy palette controls retire safely',()=>{
-  w.FixedMaster.render(host,{state:{paletteSource:'theme',focus:'保留的舊文字',highlightColor:'navy'},onChange,onDownload:async()=>true});assert.equal(state().paletteSource,'theme');assert.equal(get('.fmSchemeList').closest('[data-fm-examples]'),null);assert.deepEqual(Array.from(host.querySelectorAll('[data-fm-scheme]'),n=>n.dataset.fmScheme),['07','06','03','10','04']);assert(host.textContent.includes('Text1 保持深色'));
-  const rows=Array.from(host.querySelectorAll('[data-fm-scheme]'));const palettes=[SELECTED07,['1F77B4','FF7F0E','2CA02C','D62728','9467BD','8C564B'],['4878D0','6ACC64','D65F5F','956CB4','D5BB67','82C6E2'],['8A7CA8','E098C7','8FD3E8','71669E','CC70AF','7CB4CC'],['4269D0','EFB118','FF725C','6CC5B0','3CA951','FF8AB7']];rows.forEach((row,i)=>assert.deepEqual(Array.from(row.querySelectorAll('[title]'),n=>n.title.split('#')[1]),palettes[i]));
-  assert.equal(host.querySelectorAll('[data-fm-download]').length,2);for(const mode of ['template','materials'])assert.equal(get('[data-fm-download="'+mode+'"]').closest('[data-fm-examples]'),null);
-  assert.equal(host.querySelectorAll('[data-fm-card]').length,70);assert.equal(host.querySelectorAll('.fmHighlightList mark').length,8);assert.equal(host.querySelectorAll('[data-fm-field]').length,0);assert(!host.querySelector('[data-fm-download="current"]'));assert(host.textContent.includes('不替換內建 15 色'));assert(host.textContent.includes('沒有獨立底帶'));assert.equal(host.querySelectorAll('.fmOrigins figure').length,13);
-  assert.equal(state().focus,'保留的舊文字');assert.equal(state().highlightColor,'navy');const restored=d.createElement('div');d.body.appendChild(restored);w.FixedMaster.render(restored,{state:state()});assert.equal(w.FixedMaster.getState(restored).paletteSource,'theme');assert.equal(w.FixedMaster.getState(restored).focus,'保留的舊文字');assert.equal(restored.querySelector('.fmGallery').innerHTML,get('.fmGallery').innerHTML);restored.remove();
+ await test('One main download precedes twenty-six previews; hidden legacy helper and state remain compatible',()=>{
+  w.FixedMaster.render(host,{state:{paletteSource:'theme',focus:'保留的舊文字',highlightColor:'navy'},onChange,onDownload:async()=>true});assert.equal(state().paletteSource,'theme');
+  assert.deepEqual(Array.from(w.FixedMaster.SINGLE_SCHEMES,s=>s.label),['單欄07','單欄06','單欄03','單欄10','單欄04']);
+  const palettes=[SELECTED07,['1F77B4','FF7F0E','2CA02C','D62728','9467BD','8C564B'],['4878D0','6ACC64','D65F5F','956CB4','D5BB67','82C6E2'],['8A7CA8','E098C7','8FD3E8','71669E','CC70AF','7CB4CC'],['4269D0','EFB118','FF725C','6CC5B0','3CA951','FF8AB7']];assert.deepEqual(JSON.parse(JSON.stringify(w.FixedMaster.SINGLE_SCHEMES.map(s=>s.accents))),palettes);
+  assert.equal(host.querySelectorAll('[data-fm-download]').length,1);assert(get('[data-fm-download="template"]').textContent.includes('26 頁母片'));assert(get('.fmActions').compareDocumentPosition(get('.fmOrigins'))&w.Node.DOCUMENT_POSITION_FOLLOWING);assert(!host.querySelector('[data-fm-download="materials"]'));assert.equal(typeof w.FixedMaster.exportMaterials,'function');
+  assert.equal(host.querySelectorAll('[data-fm-field]').length,0);assert(!host.querySelector('[data-fm-download="current"]'));assert.equal(host.querySelectorAll('.fmOrigins figure').length,26);
+  assert.equal(state().focus,'保留的舊文字');assert.equal(state().highlightColor,'navy');const restored=d.createElement('div');d.body.appendChild(restored);w.FixedMaster.render(restored,{state:state()});assert.equal(w.FixedMaster.getState(restored).paletteSource,'theme');assert.equal(w.FixedMaster.getState(restored).focus,'保留的舊文字');assert.equal(restored.querySelector('.fmOrigins').innerHTML,get('.fmOrigins').innerHTML);restored.remove();
  });
  await test('Global theme/font input cannot replace fixed-source palette or content',()=>{
-  const before=state(),model=JSON.stringify(w.FixedMaster.build(before)),gallery=get('.fmGallery').innerHTML;
-  w.FixedMaster.render(host,{state:{...before,P:'00FF00',font:'Arial',base:'wine'},onChange,onDownload:async()=>true});assert.equal(JSON.stringify(w.FixedMaster.build(state())),model);assert.equal(get('.fmGallery').innerHTML,gallery);assert.equal(state().paletteSource,'theme');
+  const before=state(),model=JSON.stringify(w.FixedMaster.build(before)),previews=get('.fmOrigins').innerHTML;
+  w.FixedMaster.render(host,{state:{...before,P:'00FF00',font:'Arial',base:'wine'},onChange,onDownload:async()=>true});assert.equal(JSON.stringify(w.FixedMaster.build(state())),model);assert.equal(get('.fmOrigins').innerHTML,previews);assert.equal(state().paletteSource,'theme');
  });
- await test('Both exports snapshot selection once, ignore double click, and restore after cancel/failure',async()=>{
+ await test('Main export snapshots selection once, ignores double click, and restores after cancel/failure',async()=>{
   const captured=[];let resolve;w.FixedMaster.render(host,{onChange,onDownload:value=>{captured.push(value);return new Promise(r=>resolve=r);}});
-  const before=state(),button=get('[data-fm-download="materials"]');button.click();button.click();assert.equal(captured.length,1);assert.equal(captured[0].mode,'materials');assert.equal(captured[0].selection.paletteSource,'theme');assert(get('[data-fm-download="template"]').disabled);
+  const before=state(),button=get('[data-fm-download="template"]');button.click();button.click();assert.equal(captured.length,1);assert.equal(captured[0].mode,'template');assert.equal(captured[0].selection.paletteSource,'theme');assert(get('[data-fm-download="template"]').disabled);
   w.FixedMaster.render(host,{state:{...before,paletteSource:'common',focus:'另一段文字'},onChange,onDownload:async()=>true});assert.deepEqual(state(),before,'Busy rerender cannot change export snapshot');assert.deepEqual(JSON.parse(JSON.stringify(captured[0].selection)),before);
-  assert(get('[data-fm-download="materials"]').disabled,'Rerender cannot start another operation');resolve(false);await until(()=>!get('[data-fm-download="materials"]').disabled);assert(get('[data-fm-status]').textContent.includes('已取消'));assert.deepEqual(state(),before);
+  assert(get('[data-fm-download="template"]').disabled,'Rerender cannot start another operation');resolve(false);await until(()=>!get('[data-fm-download="template"]').disabled);assert(get('[data-fm-status]').textContent.includes('已取消'));assert.deepEqual(state(),before);
   w.FixedMaster.render(host,{onChange,onDownload:async()=>{throw Error('simulated failure');}});get('[data-fm-download="template"]').click();await until(()=>!get('[data-fm-download="template"]').disabled);assert(get('[data-fm-status]').textContent.includes('simulated failure'));assert.deepEqual(state(),before);
-  w.FixedMaster.render(host,{onChange,onDownload:async()=>true});get('[data-fm-download="template"]').click();await until(()=>!get('[data-fm-download="template"]').disabled);assert(get('[data-fm-status]').textContent.includes('十三頁母片'));assert.deepEqual(state(),before);
+  w.FixedMaster.render(host,{onChange,onDownload:async()=>true});get('[data-fm-download="template"]').click();await until(()=>!get('[data-fm-download="template"]').disabled);assert(get('[data-fm-status]').textContent.includes('26 頁母片'));assert.deepEqual(state(),before);
  });
- await test('Retired example state remains stored but cannot block either fixed-content download',async()=>{
-  const modes=[];w.FixedMaster.render(host,{state:{...state(),focus:'長'.repeat(17)},onChange,onDownload:async({mode})=>{modes.push(mode);return true;}});for(const mode of ['materials','template']){get('[data-fm-download="'+mode+'"]').click();await until(()=>!get('[data-fm-download="'+mode+'"]').disabled);}assert.deepEqual(modes,['materials','template']);assert.equal(state().focus.length,17);
+ await test('Retired example state remains stored but cannot block the main download',async()=>{
+  const modes=[];w.FixedMaster.render(host,{state:{...state(),focus:'長'.repeat(17)},onChange,onDownload:async({mode})=>{modes.push(mode);return true;}});get('[data-fm-download="template"]').click();await until(()=>!get('[data-fm-download="template"]').disabled);assert.deepEqual(modes,['template']);assert.equal(state().focus.length,17);
  });
- console.log(JSON.stringify({checks,mainPages:13,legacyInternalExamplePages:4,materialsPages:3,highlightColors:8,fixtureFiles:10,sourceSHA256:rawHash,RibbonUI:'not covered',PowerPointVisual:'not covered'}));dom.window.close();
+ console.log(JSON.stringify({checks,mainPages:26,legacyInternalExamplePages:4,materialsPages:3,highlightColors:8,fixtureFiles:10,sourceSHA256:rawHash,RibbonUI:'not covered',PowerPointVisual:'not covered'}));dom.window.close();
 })().catch(err=>{console.error(err);dom.window.close();process.exitCode=1;});

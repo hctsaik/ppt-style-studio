@@ -17,20 +17,20 @@ function block(xml,name){return xml.match(new RegExp('<a:'+name+'\\b[^>]*>[\\s\\
 let checks=0;async function test(name,fn){await fn();checks++;console.log('PASS '+name);}
 (async()=>{
  const original=await Z.loadAsync(sourceBytes),sourceHash=sha(sourceBytes);
- await test('Thirteen-page download descriptors follow the independent user-selected order',()=>{
+ await test('Twenty-six-page download descriptors follow the independent user-selected order',()=>{
   assert.deepEqual(F.DOWNLOAD_PAGES.map(p=>[p.title,p.label,p.key||null,p.layout]),[
    ['專案重點與下一步','封面',null,1],
-   ['單欄內容','單欄 07 · E01 v5',null,2],['單欄內容','單欄 06 · D3-01 Category10',null,2],['單欄內容','單欄 03 · Seaborn04 muted6',null,2],['單欄內容','單欄 10 · E13 purplepassion',null,2],['單欄內容','單欄 04 · D3-02 Observable10',null,2],
+   ['單欄07','單欄07',null,2],['單欄06','單欄06',null,2],['單欄03','單欄03',null,2],['單欄10','單欄10',null,2],['單欄04','單欄04',null,2],
    ['雙欄內容','雙欄內容',null,4],
    ['可編輯矩形樣式 1 / 2','矩形樣式 1 / 2',null,6],['可編輯矩形樣式 2 / 2','矩形樣式 2 / 2',null,6],['八色原生文字螢光筆','八色文字螢光筆',null,6],
-   ['卡片與面板 Cards & Panels','卡片與面板 · A2','cards',6],['方案元件・內文＋強調','內文＋強調 · A16','schemebody',6],['方案元件・Icon＋內文＋強調','Icon＋內文＋強調 · A18','schemeiconbody',6]
+   ...['商務深藍卡片','青綠科技','墨綠筆記','框架鑑'].flatMap(style=>[['00 總覽','catalog'],['卡片與面板','cards'],['內文＋強調','schemebody'],['Icon＋內文＋強調','schemeiconbody']].map(([title,key])=>[title,style+' · '+title,key,6]))
   ]);
  });
  assert.equal(sourceHash,'1d42e27915855f57c1bee5ad185526ee62c51818223e9cfde20609dcf47c1fae');
  for(const source of ['common','theme']){
   const snapshot={paletteSource:source,title:'保存文字',layout:'4',marker:'highlight',highlightColor:'navy'},before=JSON.stringify(snapshot);
   const main=await Z.loadAsync(await F.exportPptx(Z,[],{source})),materials=await Z.loadAsync(await F.exportMaterials(Z,snapshot));
-  await test('stored '+source+' preference still exports thirteen main pages and three materials pages',async()=>{assert.equal((await active(main)).length,13);assert.equal((await active(materials)).length,3);await noDangling(main);await noDangling(materials);for(const [z,n]of [[main,'13'],[materials,'3']])assert.equal(all(parse(await string(z,'docProps/app.xml')),'http://schemas.openxmlformats.org/officeDocument/2006/extended-properties','Slides')[0].textContent,n);});
+  await test('stored '+source+' preference still exports twenty-six main pages and three materials pages',async()=>{assert.equal((await active(main)).length,26);assert.equal((await active(materials)).length,3);await noDangling(main);await noDangling(materials);for(const [z,n]of [[main,'26'],[materials,'3']])assert.equal(all(parse(await string(z,'docProps/app.xml')),'http://schemas.openxmlformats.org/officeDocument/2006/extended-properties','Slides')[0].textContent,n);});
   await test(source+' both outputs share presentation/master native profile and preserve notes',async()=>{
    for(const part of ['ppt/theme/theme1.xml','ppt/slideMasters/theme/theme2.xml']){const a=await string(main,part),b=await string(materials,part),o=await string(original,part);assert.equal(a,b);assert.notEqual(block(a,'fmtScheme'),block(o,'fmtScheme'));assert.equal(block(a,'fontScheme'),block(o,'fontScheme'));assert.equal(block(a,'bgFillStyleLst'),block(o,'bgFillStyleLst'));const sc=scheme(a),orig=scheme(o);assert.deepEqual(Array.from({length:6},(_,i)=>sc['accent'+(i+1)]),SELECTED07,'Saved legacy palette cannot replace selected 07');for(const k of ['dk1','lt1','dk2','lt2','hlink','folHlink'])assert.equal(sc[k],orig[k]);assert(block(a,'fillStyleLst').includes('<a:tint val="90000"/><a:shade val="27500"/>'));assert(block(a,'effectStyleLst').includes('blurRad="38100"'));assert(block(a,'effectStyleLst').includes('blurRad="57150"'));}
    for(const part of Object.keys(main.files).filter(n=>/notes/i.test(n)&&!main.files[n].dir)){assert.deepEqual(await main.file(part).async('uint8array'),await original.file(part).async('uint8array'),part);assert.deepEqual(await materials.file(part).async('uint8array'),await main.file(part).async('uint8array'),part);}
@@ -54,5 +54,5 @@ let checks=0;async function test(name,fn){await fn();checks++;console.log('PASS 
   });
   await test(source+' export leaves caller snapshot and source unchanged',()=>{assert.equal(JSON.stringify(snapshot),before);assert.equal(sha(F.originalBytes()),sourceHash);});
  }
- console.log(JSON.stringify({checks,outputs:4,legacyPreferencesIgnored:2,mainPages:13,materialPages:3,cardsPerMaterials:70,highlightsPerMaterials:8,sourceSha256:sourceHash}));
+ console.log(JSON.stringify({checks,outputs:4,legacyPreferencesIgnored:2,mainPages:26,materialPages:3,cardsPerMaterials:70,highlightsPerMaterials:8,sourceSha256:sourceHash}));
 })().catch(e=>{console.error(e);process.exitCode=1;});

@@ -699,7 +699,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <script src="jszip.min.js?v=978d62b5"></script>
 <script src="pptxgen.min.js?v=24808c08"></script>
 <script src="icons.js?v=65c03732"></script>
-<script src="deck.js?v=00de47ff"></script>
+<script src="deck.js?v=37569d84"></script>
 <script src="stylekit-data.js?v=47e8edb0"></script>
 <script src="native-styles.js?v=75619d92"></script>
 <script src="stylekit.js?v=2be1fe46"></script>
@@ -707,8 +707,8 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 <script src="export-flow.js?v=c9d4f55c"></script>
 <script src="quickstyles.js?v=b4777192"></script>
 <script src="fixed-master-data.js?v=bcbcf725"></script>
-<script src="fixed-master-previews.js?v=ce432e16"></script>
-<script src="fixed-master.js?v=dbb41fe6"></script>
+<script src="fixed-master-previews.js?v=ab9d2e3b"></script>
+<script src="fixed-master.js?v=32f98b68"></script>
 <script>
 (function(){
  'use strict';
@@ -1191,7 +1191,7 @@ document.addEventListener('keydown',e=>{const p=e.target.closest&&e.target.close
 let quickSaved;try{quickSaved=JSON.parse(localStorage.getItem('ppt-studio-quick-styles')||'null');}catch(_){}
 function renderQuick(){setTab('master');}
 let masterSaved;try{masterSaved=JSON.parse(localStorage.getItem('ppt-studio-fixed-master')||'null');}catch(_){}
-function renderMaster(){if(!window.FixedMaster)return;FixedMaster.render($('#vMaster'),{state:masterSaved,onChange:state=>{masterSaved=state;try{localStorage.setItem('ppt-studio-fixed-master',JSON.stringify(state));}catch(_){toast('本機儲存不可用；本次母片設定仍保留。');}},onDownload:async snapshot=>{const template=snapshot.mode==='template';const bytes=template?await FixedMaster.exportPptx(window.JSZip,[],{source:snapshot.selection.paletteSource}):await FixedMaster.exportMaterials(window.JSZip,snapshot.selection);saveBlob(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'}),template?'固定紅色_十三頁母片.pptx':'固定紅色_卡片與文字素材.pptx');return true;}});}
+function renderMaster(){if(!window.FixedMaster)return;FixedMaster.render($('#vMaster'),{state:masterSaved,onChange:state=>{masterSaved=state;try{localStorage.setItem('ppt-studio-fixed-master',JSON.stringify(state));}catch(_){toast('本機儲存不可用；本次母片設定仍保留。');}},onDownload:async snapshot=>{const template=snapshot.mode==='template';const bytes=template?await FixedMaster.exportPptx(window.JSZip,[],{source:snapshot.selection.paletteSource}):await FixedMaster.exportMaterials(window.JSZip,snapshot.selection);saveBlob(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'}),template?'固定紅色_'+FixedMaster.DOWNLOAD_PAGES.length+'頁母片.pptx':'固定紅色_卡片與文字素材.pptx');return true;}});}
 function renderExtra(){if(S.tab==='style')renderStylePrev();else if(S.tab==='icons')renderIcons();else if(S.tab==='table')renderTable();else if(S.tab==='master')renderMaster();}
 
 /* ---------- 圖示庫 ---------- */

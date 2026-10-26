@@ -13,13 +13,15 @@
  const LAYOUTS=Object.freeze(DATA.layouts.filter(l=>[1,2,4].includes(l.number)).map(l=>Object.freeze({key:String(l.number),number:l.number,label:({1:'封面',2:'單欄內容',4:'雙欄內容'})[l.number],mode:({1:'marker',2:'keycard',4:'paired'})[l.number]})));
  const TEMPLATE_PAGES=Object.freeze([{title:'專案重點與下一步',label:'封面',layout:1},{title:'單欄內容',label:'單欄內容',layout:2},{title:'雙欄內容',label:'雙欄內容',layout:4}].map(Object.freeze));
  const SINGLE_SCHEMES=Object.freeze([
-  {id:'07',name:'E01 v5',label:'單欄 07 · E01 v5',accents:['5470C6','91CC75','FAC858','EE6666','73C0DE','3BA272'],highlight:'7C9CC3'},
-  {id:'06',name:'D3-01 Category10',label:'單欄 06 · D3-01 Category10',accents:['1F77B4','FF7F0E','2CA02C','D62728','9467BD','8C564B'],highlight:'F9F0D4'},
-  {id:'03',name:'Seaborn04 muted6',label:'單欄 03 · Seaborn04 muted6',accents:['4878D0','6ACC64','D65F5F','956CB4','D5BB67','82C6E2'],highlight:'D4E6DF'},
-  {id:'10',name:'E13 purplepassion',label:'單欄 10 · E13 purplepassion',accents:['8A7CA8','E098C7','8FD3E8','71669E','CC70AF','7CB4CC'],highlight:'E5DDF1'},
-  {id:'04',name:'D3-02 Observable10',label:'單欄 04 · D3-02 Observable10',accents:['4269D0','EFB118','FF725C','6CC5B0','3CA951','FF8AB7'],highlight:'F6D8DB'}
+  {id:'07',name:'E01 v5',label:'單欄07',accents:['5470C6','91CC75','FAC858','EE6666','73C0DE','3BA272'],highlight:'7C9CC3'},
+  {id:'06',name:'D3-01 Category10',label:'單欄06',accents:['1F77B4','FF7F0E','2CA02C','D62728','9467BD','8C564B'],highlight:'F9F0D4'},
+  {id:'03',name:'Seaborn04 muted6',label:'單欄03',accents:['4878D0','6ACC64','D65F5F','956CB4','D5BB67','82C6E2'],highlight:'D4E6DF'},
+  {id:'10',name:'E13 purplepassion',label:'單欄10',accents:['8A7CA8','E098C7','8FD3E8','71669E','CC70AF','7CB4CC'],highlight:'E5DDF1'},
+  {id:'04',name:'D3-02 Observable10',label:'單欄04',accents:['4269D0','EFB118','FF725C','6CC5B0','3CA951','FF8AB7'],highlight:'F6D8DB'}
  ].map(s=>Object.freeze({...s,accents:Object.freeze(s.accents)})));
- const DOWNLOAD_PAGES=Object.freeze([TEMPLATE_PAGES[0],...SINGLE_SCHEMES.map(s=>({title:'單欄內容',label:s.label,schemeId:s.id,layout:2})),TEMPLATE_PAGES[2],{title:'可編輯矩形樣式 1 / 2',label:'矩形樣式 1 / 2',layout:6},{title:'可編輯矩形樣式 2 / 2',label:'矩形樣式 2 / 2',layout:6},{title:'八色原生文字螢光筆',label:'八色文字螢光筆',layout:6},{title:'卡片與面板 Cards & Panels',label:'卡片與面板 · A2',key:'cards',layout:6},{title:'方案元件・內文＋強調',label:'內文＋強調 · A16',key:'schemebody',layout:6},{title:'方案元件・Icon＋內文＋強調',label:'Icon＋內文＋強調 · A18',key:'schemeiconbody',layout:6}].map(Object.freeze));
+ const COMPONENT_STYLES=Object.freeze(['navy','teal','green','frame']);
+ const COMPONENT_PAGES=Object.freeze([{key:'catalog',id:'00',title:'00 總覽'},{key:'cards',id:'A2',title:'卡片與面板'},{key:'schemebody',id:'A16',title:'內文＋強調'},{key:'schemeiconbody',id:'A18',title:'Icon＋內文＋強調'}].map(Object.freeze));
+ const DOWNLOAD_PAGES=Object.freeze([TEMPLATE_PAGES[0],...SINGLE_SCHEMES.map(s=>({title:s.label,label:s.label,schemeId:s.id,layout:2})),TEMPLATE_PAGES[2],{title:'可編輯矩形樣式 1 / 2',label:'矩形樣式 1 / 2',layout:6},{title:'可編輯矩形樣式 2 / 2',label:'矩形樣式 2 / 2',layout:6},{title:'八色原生文字螢光筆',label:'八色文字螢光筆',layout:6},...COMPONENT_STYLES.flatMap(styleId=>{const preset=Deck.PRESETS.find(p=>p.id===styleId);return COMPONENT_PAGES.map(p=>({...p,label:preset.zh+' · '+p.title,styleId,layout:6}));})].map(Object.freeze));
  const PRESETS=Object.freeze([
   {label:'封面・文字重點',layout:'1',style:'none',marker:'highlight',color:'red',highlightColor:'red'},
   {label:'單欄・重點卡',layout:'2',style:'soft',marker:'highlight',color:'yellow',highlightColor:'yellow'},
@@ -143,7 +145,7 @@
  async function exportPptx(JSZip,values=[],options={}){
   const prepared=await prepareTemplate(JSZip,values,{...options,selectedSchemes:!values.length}),{zip}=prepared;
   // Legacy internal demonstrations keep their explicit 3+1 contract. The main
-  // empty-values path is the requested thirteen-page download.
+  // empty-values path is the requested current master download.
   if(!values.length){await installSingleSchemes(prepared);await appendDownloadPages(JSZip,prepared,options);}
   return zip.generateAsync({type:'uint8array',compression:'DEFLATE'});
  }
@@ -161,7 +163,7 @@
  function materialCards(profile,pageIndex,number=pageIndex+1){
   const palette=profile.palette,slots=palette.slots,cols=[slots.dk1,...palette.accents],roles=['tx1','accent1','accent2','accent3','accent4','accent5','accent6'];
   const p=materialPage('可編輯矩形樣式 '+(pageIndex+1)+' / 2',number),solid=c=>'<a:solidFill>'+c+'</a:solidFill>',rgb=c=>'<a:srgbClr val="'+c+'"/>';
-  p.label('Materials palette scope',40,93,1100,30,(palette.source==='custom'?'首選 07 · E01 v5':palette.source==='common'?'常用六色':'原母片六色')+' · 原母片字型與主題效果 · 可複製形狀後改字',12);
+  p.label('Materials palette scope',40,93,1100,30,(palette.source==='custom'?'首選 07':palette.source==='common'?'常用六色':'原母片六色')+' · 原母片字型與主題效果 · 可複製形狀後改字',12);
   cols.forEach((color,j)=>p.label('Palette slot '+j,184+j*150,133,142,25,(j?'Accent '+j:'Text1')+' #'+color,9));
   NativeStyles.KIT_EFFECTS.slice(pageIndex*5,pageIndex*5+5).forEach((spec,k)=>{
    const row=pageIndex*5+k,y=180+k*91;
@@ -190,11 +192,13 @@
  }
  // Reuse the registered component renderer, including native groups and icons.
  // Only placement changes: every source component is kept and scaled uniformly.
- function componentModel(profile){
+ function componentModel(profile,presetId){
   if(!Deck||typeof Deck.buildModel!=='function')throw Error('元件模組尚未載入，請重新開啟此頁。');
   const accents=profile.palette.accents,primary=accents[0];
-  const params={...Deck.BASE,P:primary,PD:Deck.mix(primary,'000000',.35),PT:Deck.mix(primary,'FFFFFF',.85),A:accents[1],bFont:FONT,tFont:FONT,nFont:FONT};
-  const model=Deck.buildModel(params,{only:['cards','schemebody','schemeiconbody']}),out=[];
+  const preset=presetId&&Deck.PRESETS.find(p=>p.id===presetId);if(presetId&&!preset)throw Error('未知的元件風格：'+presetId);
+  const params=preset?{...preset}:{...Deck.BASE,P:primary,PD:Deck.mix(primary,'000000',.35),PT:Deck.mix(primary,'FFFFFF',.85),A:accents[1],bFont:FONT,tFont:FONT,nFont:FONT};
+  const keys=preset?COMPONENT_PAGES.map(p=>p.key):['cards','schemebody','schemeiconbody'];
+  const model=Deck.buildModel(params,{only:keys}),out=[];
   function transform(item,k,dx,dy){
    const it=clone(item);
    if(!['sp','ln'].includes(it.t))throw Error('元件含未支援的內容類型，已停止匯出。');
@@ -203,17 +207,18 @@
    for(const a of ['w','h','lw','adj'])if(typeof it[a]==='number')it[a]*=k;
    if(it.sh)for(const a of ['blur','dist'])if(typeof it.sh[a]==='number')it.sh[a]*=k;
    if(it.points)it.points=it.points.map(p=>{const q={...p};for(const a of ['x','y','x1','y1','x2','y2'])if(typeof q[a]==='number')q[a]*=k;return q;});
-   if(it.runs)for(const r of it.runs){r.o.size*=k;r.o.font=FONT;if(r.o.cs!=null)r.o.cs*=k;}
-   if(it.tx){it.tx.size*=k;it.tx.font=FONT;if(Array.isArray(it.tx.margin))it.tx.margin=it.tx.margin.map(x=>x*k);else if(typeof it.tx.margin==='number')it.tx.margin*=k;}
+   if(it.runs)for(const r of it.runs){r.o.size*=k;if(!preset)r.o.font=FONT;if(r.o.cs!=null)r.o.cs*=k;}
+   if(it.tx){it.tx.size*=k;if(!preset)it.tx.font=FONT;if(Array.isArray(it.tx.margin))it.tx.margin=it.tx.margin.map(x=>x*k);else if(typeof it.tx.margin==='number')it.tx.margin*=k;}
    return it;
   }
   const caption=(text,x,y,w)=>({t:'sp',kind:null,x,y,w,h:.21,name:'素材款名',runs:[{t:text,o:{size:9,font:FONT,color:'595959',bold:false}}],tx:{size:9,font:FONT,color:'595959',align:'left',valign:'middle',margin:0,lsp:1}});
-  for(const key of ['cards','schemebody','schemeiconbody']){
+  for(const key of keys){
    const source=model.slides.find(s=>s.key===key);if(!source)throw Error('缺少已註冊元件頁：'+key);
    const slide={...source,items:[],groups:[],w:13.3333333333333,h:7.5,schemeCatalogue:false};
-   if(key==='cards'){
-    if(source.groups.length!==9)throw Error('卡片元件數量已變更，請先更新母片整合。');
-    const start=source.groups[0].from,end=source.groups.at(-1).to+1;
+   if(key==='cards'||key==='catalog'){
+    if(key==='cards'&&source.groups.length!==9)throw Error('卡片元件數量已變更，請先更新母片整合。');
+    const start=key==='catalog'?source.items.findIndex(it=>it.name==='類別'):source.groups[0].from,end=source.groups.at(-1).to+1;
+    if(start<0)throw Error('總覽類別標籤位置已變更。');
     if(source.items[end].name!=='圖說')throw Error('卡片圖說位置已變更。');
     slide.items=source.items.slice(start,end+1).map(it=>transform(it,1,0,-.45));
     slide.groups=source.groups.map(g=>({...g,from:g.from-start,to:g.to-start,y:g.y-.45}));
@@ -236,7 +241,7 @@
   return {...model,slides:out,W:13.3333333333333,H:7.5};
  }
  async function componentSlides(JSZip,profile,options={}){
-  const model=componentModel(profile),PptxGenJS=options.PptxGenJS||getPptxGenJS();
+  const model=componentModel(profile,options.presetId),PptxGenJS=options.PptxGenJS||getPptxGenJS();
   if(typeof PptxGenJS!=='function')throw Error('原生簡報工具尚未載入。');
   const exported=await Deck.exportPptx({JSZip,PptxGenJS},model.params,{model,type:'uint8array'}),source=await JSZip.loadAsync(exported.data),pages=[];
   for(let i=0;i<model.slides.length;i++){
@@ -247,13 +252,27 @@
    // These registered pages currently need no related media/master/theme parts.
    // Refuse future dependencies instead of silently dropping them or importing
    // a foreign theme into the fixed master.
-   if(/\br:(?:id|embed|link)=|<p:pic\b|<p:ph\b|<a:schemeClr\b|<p:style\b/.test(body))throw Error('元件頁新增了外部關係或主題依賴，已停止匯出。');
+   if(/\br:(?:embed|link)=|<p:pic\b|<p:ph\b|<a:schemeClr\b|<p:style\b/.test(body))throw Error('元件頁新增了外部關係或主題依賴，已停止匯出。');
+   // The catalogue can link to Cards in this same four-page style group.
+   // Copy only resolved internal slide links; never import foreign masters/media.
+   const relationships=[],sourceRels=relEntries(await source.file('ppt/slides/_rels/slide'+(i+1)+'.xml.rels').async('string')),mapped=new Map();
+   for(const match of body.matchAll(/\br:id="([^"]+)"/g)){
+    const id=match[1];if(mapped.has(id))continue;const rel=sourceRels.find(r=>r.attrs.Id===id);
+    if(!rel||rel.attrs.Type!==R+'/slide'||rel.attrs.TargetMode)throw Error('元件連結不是可保留的內部投影片。');
+    const target=partTarget('ppt/slides/slide'+(i+1)+'.xml',rel.attrs.Target),dest=target.match(/^ppt\/slides\/slide(\d+)\.xml$/),index=dest?Number(dest[1])-1:-1;
+    if(index<0||index>=model.slides.length)throw Error('元件連結目標不在此風格組。');
+    const next='rIdComponent'+(mapped.size+1);mapped.set(id,next);
+    relationships.push('<Relationship Id="'+next+'" Type="'+R+'/slide" Target="slideMaterial'+((options.startPage||11)+index)+'.xml"/>');
+   }
+   body=body.replace(/\br:id="([^"]+)"/g,(_,id)=>'r:id="'+mapped.get(id)+'"');
    const ids=new Map();let next=1000;
    body=body.replace(/(<p:cNvPr\b[^>]*\bid=")(\d+)(")/g,(_,a,id,b)=>{if(ids.has(id))throw Error('元件 shape ID 重複。');ids.set(id,String(++next));return a+ids.get(id)+b;});
    body=body.replace(/(<a:(?:stCxn|endCxn)\b[^>]*\bid=")(\d+)(")/g,(_,a,id,b)=>{if(!ids.has(id))throw Error('元件連線缺少目標。');return a+ids.get(id)+b;});
-   const page=materialPage(DOWNLOAD_PAGES[i+10].title,i+11);
-   page.label('Component page scope',40,94,1180,28,i?'14 款 A/B，共 28 組原生元件 · 密集素材總覽（9 pt）· 可複製後放大編輯':'9 種原生卡片與面板 · 可整組複製、修改文字與圖示',11);
-   pages.push(page.xml().replace('</p:spTree>',body+'</p:spTree>'));
+   const pageNumber=(options.startPage||11)+i,pageDef=DOWNLOAD_PAGES[pageNumber-1],page=materialPage(pageDef.title,pageNumber);
+   const caption=options.presetId?Deck.PRESETS.find(p=>p.id===options.presetId).zh+' · ':'';
+   const dense=['schemebody','schemeiconbody'].includes(model.slides[i].key);
+   page.label('Component page scope',40,94,1180,28,caption+(dense?'14 款 A/B，共 28 組原生元件 · 密集素材總覽（9 pt）· 可複製後放大編輯':model.slides[i].key==='catalog'?'元件總覽 · 可整組複製、修改文字與圖形':'9 種原生卡片與面板 · 可整組複製、修改文字與圖示'),11);
+   pages.push({xml:page.xml().replace('</p:spTree>',body+'</p:spTree>'),relationships});
   }
   return pages;
  }
@@ -267,7 +286,7 @@
  function singleHighlight(scheme){
   // One additive text box, not a separate shape band. The existing source
   // paragraphs, bullet runs and title stay exactly as supplied.
-  return '<p:sp xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><p:nvSpPr><p:cNvPr id="9001" name="Native highlight '+scheme.id+'"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr><a:xfrm><a:off x="'+emu(84)+'" y="'+emu(621)+'"/><a:ext cx="'+emu(1050)+'" cy="'+emu(42)+'"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/><a:ln><a:noFill/></a:ln></p:spPr>'+textBody(scheme.label+' · 原生文字醒目提示示範',16,'333333',false,scheme.highlight)+'</p:sp>';
+  return '<p:sp xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><p:nvSpPr><p:cNvPr id="9001" name="Native highlight '+scheme.id+'"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr><p:spPr><a:xfrm><a:off x="'+emu(84)+'" y="'+emu(621)+'"/><a:ext cx="'+emu(1050)+'" cy="'+emu(42)+'"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/><a:ln><a:noFill/></a:ln></p:spPr>'+textBody('重點文字',16,'333333',false,scheme.highlight)+'</p:sp>';
  }
  async function installSingleSchemes({zip,profile,stamp}){
   const graph=await NativeStyles.resolveThemeGraph(zip);
@@ -288,7 +307,7 @@
    const slots={...profile.palette.slots};scheme.accents.forEach((c,j)=>slots['accent'+(j+1)]=c);
    const localProfile={...profile,palette:{...profile.palette,accents:scheme.accents.slice(),slots}};
    let themed=NativeStyles.profileThemeXml(themeXml0,localProfile);
-   themed=themed.replace(/(<a:theme\b[^>]*\bname=")[^"]*(")/,(_,a,b)=>a+esc(scheme.label)+b).replace(/(<a:clrScheme\b[^>]*\bname=")[^"]*(")/,(_,a,b)=>a+esc(scheme.name)+b);
+   themed=themed.replace(/(<a:theme\b[^>]*\bname=")[^"]*(")/,(_,a,b)=>a+esc(scheme.label)+b).replace(/(<a:clrScheme\b[^>]*\bname=")[^"]*(")/,(_,a,b)=>a+esc(scheme.label)+b);
    add(themePart,themed,'application/vnd.openxmlformats-officedocument.theme+xml');
    let masterXml=masterXml0.replace(/<p:sldLayoutIdLst>[\s\S]*?<\/p:sldLayoutIdLst>/,'<p:sldLayoutIdLst><p:sldLayoutId xmlns:r="'+R+'" id="'+(2147483800+i)+'" r:id="'+layoutId+'"/></p:sldLayoutIdLst>');
    masterXml=masterXml.replace(/(<p:cSld\b[^>]*\bname=")[^"]*(")/,(_,a,b)=>a+esc(scheme.label)+b);
@@ -307,7 +326,7 @@
    pres=pres.replace('</p:sldMasterIdLst>','<p:sldMasterId xmlns:r="'+R+'" id="'+(2147483700+i)+'" r:id="'+rid+'"/></p:sldMasterIdLst>');
    presRels=presRels.replace('</Relationships>','<Relationship Id="'+rid+'" Type="'+R+'/slideMaster" Target="/'+masterPart+'"/></Relationships>');
    const slidePart=i===0?sourceSlide:'ppt/slides/slideScheme'+scheme.id+'.xml';
-   let sx=numbered(slideXml0,i+2);if(/\bid="9001"/.test(sx))throw Error('Single-column example shape ID collision');
+   let sx=numbered(slideXml0,i+2).replace('<a:t>單欄內容</a:t>','<a:t>'+esc(scheme.label)+'</a:t>');if(/\bid="9001"/.test(sx))throw Error('Single-column example shape ID collision');
    sx=sx.replace('</p:spTree>',singleHighlight(scheme)+'</p:spTree>');
    sx=sx.replace(/(<p:cSld\b[^>]*\bname=")[^"]*(")/,(_,a,b)=>a+esc(scheme.label)+b);
    let sr=slideRels0.replace(layoutRel[0].xml,layoutRel[0].xml.replace(/Target="[^"]*"/,'Target="/'+layoutPart+'"'));
@@ -328,18 +347,20 @@
   for(const [part,xml]of pending)zip.file(part,xml,{date:stamp,createFolders:false});
  }
  async function appendDownloadPages(JSZip,{zip,profile,stamp},options){
-  const pages=[materialCards(profile,0,8),materialCards(profile,1,9),materialHighlights(10),...await componentSlides(JSZip,profile,options)];
+  const components=[];for(const [i,presetId]of COMPONENT_STYLES.entries())components.push(...await componentSlides(JSZip,profile,{...options,presetId,startPage:11+i*4}));
+  const pages=[materialCards(profile,0,8),materialCards(profile,1,9),materialHighlights(10),...components];
   let pres=await zip.file('ppt/presentation.xml').async('string'),rels=await zip.file('ppt/_rels/presentation.xml.rels').async('string'),types=await zip.file('[Content_Types].xml').async('string');
-  pages.forEach((xml,i)=>{
+  pages.forEach((entry,i)=>{
+   const xml=typeof entry==='string'?entry:entry.xml,links=typeof entry==='string'?'':entry.relationships.join('');
    const number=i+8,part='slideMaterial'+number,rid='rIdFixedMaterial'+number;
    zip.file('ppt/slides/'+part+'.xml',xml,{date:stamp,createFolders:false});
-   zip.file('ppt/slides/_rels/'+part+'.xml.rels','<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdLayout" Type="'+R+'/slideLayout" Target="../slideLayouts/slideLayout6.xml"/></Relationships>',{date:stamp,createFolders:false});
+   zip.file('ppt/slides/_rels/'+part+'.xml.rels','<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdLayout" Type="'+R+'/slideLayout" Target="../slideLayouts/slideLayout6.xml"/>'+links+'</Relationships>',{date:stamp,createFolders:false});
    pres=pres.replace('</p:sldIdLst>','<p:sldId xmlns:r="'+R+'" id="'+(300+number)+'" r:id="'+rid+'"/></p:sldIdLst>');
    rels=rels.replace('</Relationships>','<Relationship Id="'+rid+'" Type="'+R+'/slide" Target="slides/'+part+'.xml"/></Relationships>');
    types=types.replace('</Types>','<Override PartName="/ppt/slides/'+part+'.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slide+xml"/></Types>');
   });
   for(const [part,value]of [['ppt/presentation.xml',pres],['ppt/_rels/presentation.xml.rels',rels],['[Content_Types].xml',types]])zip.file(part,value,{date:stamp,createFolders:false});
-  const app=await zip.file('docProps/app.xml').async('string');zip.file('docProps/app.xml',app.replace(/(<(?:\w+:)?Slides>)\d+(<\/(?:\w+:)?Slides>)/,(_,a,b)=>a+'13'+b),{date:stamp,createFolders:false});
+  const app=await zip.file('docProps/app.xml').async('string');zip.file('docProps/app.xml',app.replace(/(<(?:\w+:)?Slides>)\d+(<\/(?:\w+:)?Slides>)/,(_,a,b)=>a+DOWNLOAD_PAGES.length+b),{date:stamp,createFolders:false});
  }
  async function exportMaterials(JSZip,snapshot={}){
   const state=normalize(snapshot),{zip,profile,stamp}=await prepareTemplate(JSZip,[],{selectedSchemes:true});
@@ -369,12 +390,12 @@
   const notify=()=>{if(r.options.onChange)r.options.onChange(clone(r.state));};
   function gallery(colors){return '<div class="fmGallery" role="table" aria-label="十款可編輯矩形，七欄色彩">'+NativeStyles.KIT_EFFECTS.map((row,i)=>'<div class="fmGalleryRow" role="row"><strong role="rowheader">'+esc(row.label)+'</strong>'+colors.map((color,j)=>{const e=NativeStyles.kitEffect(color,i,'000000','FFFFFF','44546A'),sh=e.shadow;return '<div class="fmCard" role="cell" data-fm-card="'+i+':'+j+'" style="background:#'+e.backgrounds[0]+';color:#'+e.foreground+';border:'+(e.line?e.lineWidth*4/3+'px solid #'+e.lineColor:'0')+';border-radius:'+e.radius*4/3+'px;font-weight:'+(e.bold?700:400)+';'+(sh?'box-shadow:0 '+sh.offset*4/3+'px '+sh.blur*4/3+'px rgba(0,0,0,'+sh.alpha+');':'')+'">'+esc(e.text)+'</div>';}).join('')+'</div>').join('')+'</div>';}
   function draw(){const old=container.querySelector('[data-fm-examples]');if(old)r.examplesOpen=old.open;const active=doc.activeElement,key=active&&container.contains(active)?active.getAttribute('data-fm-field'):null,disabled=r.busy?' disabled':'',s=r.state;
-   const colors=SINGLE_SCHEMES[0].accents,previewData=doc.defaultView.FixedMasterPreviews,previews=previewData&&previewData.pages===13?previewData:null;
-   container.innerHTML='<div class="fm" aria-busy="'+r.busy+'"><span class="fmLock">固定母片 · 不跟隨網站風格</span><h2>投影片母片</h2><p class="fmLead">保留原母片外觀與內容，強化下載檔主題效果。十三頁母片包含封面、五種具名單欄、雙欄，以及矩形樣式、八色文字螢光筆、卡片與面板、A16、A18。原內容的紅色標題、字型、bullet、標誌與頁尾保留。</p><div class="fmOrigins" aria-label="十三頁母片預覽">'+DOWNLOAD_PAGES.map((p,i)=>'<figure class="'+(i<7?'fmOriginal':'fmAdded')+'"><figcaption>第 '+(i+1)+' 頁 · '+esc(p.label)+'</figcaption>'+(previews&&previews.images&&previews.images[i]?'<img src="'+previews.images[i]+'" alt="'+esc(p.label)+'，Microsoft PowerPoint 轉圖" width="960" height="540">':'<p>'+esc(p.title)+'</p>')+'</figure>').join('')+'</div><p class="fmNote">十三頁預覽顯示 Microsoft PowerPoint 實際渲染；不同電腦若缺少微軟正黑體，可能替換字型。</p><ol class="fmPageOrder" aria-label="十三頁主下載順序">'+DOWNLOAD_PAGES.map((p,i)=>'<li>第 '+(i+1)+' 頁 · '+esc(p.label)+'</li>').join('')+'</ol><section class="fmPalette" aria-label="五款單欄獨立主題"><h3>單欄版型 · 07 → 06 → 03 → 10 → 04</h3><ol class="fmSchemeList">'+SINGLE_SCHEMES.map((scheme,i)=>'<li data-fm-scheme="'+scheme.id+'"><strong>'+esc(scheme.label)+(i===0?'（首選）':'')+'</strong><div class="fmAccentList">'+scheme.accents.map((c,j)=>'<span title="Accent '+(j+1)+' · #'+c+'" style="display:inline-block;width:24px;height:16px;margin:6px 4px 4px 0;background:#'+c+';border:1px solid #CBD5E1"></span>').join('')+'</div></li>').join('')+'</ol><p class="fmNote">五個單欄各有獨立的具名母片、版型與六個 Accent。可在 PowerPoint「新增投影片／版面配置」選取對應名稱，或複製第 2–6 頁沿用。其他頁與副素材使用首選 07。白色可另選，Text1 保持深色；不新增任意 Ribbon 按鈕。來源檔案保持不變。</p></section><div class="fmActions"><button type="button" class="fmPrimary" data-fm-download="template"'+disabled+'>下載十三頁母片</button><button type="button" data-fm-download="materials"'+disabled+'>下載卡片與文字素材</button></div><p class="fmNote">主下載共十三頁。副下載另提供第 8–10 頁的三頁素材，方便取用。A16、A18 各保留 14 款 A/B 共 28 組，重排為 16:9 的密集素材總覽（9 pt），可複製後放大編輯。</p><p class="fmStatus" role="status" aria-live="polite" data-fm-status>'+esc(r.status)+'</p><details data-fm-examples'+(r.examplesOpen?' open':'')+'><summary>預覽卡片與文字素材</summary><p class="fmNote">前三款是外層白卡：深灰框柔影、細灰框柔影、主色框柔影。七欄為 Text1 與 Accent 1–6。這些是可編輯矩形預設，不代表 Ribbon 有十個完全相同的按鈕。白色填滿可在 PowerPoint 另選。</p><div class="fmGalleryScroll" tabindex="0" role="region" aria-label="矩形素材預覽，可左右捲動">'+gallery(['000000',...colors])+'</div><h3>原生文字螢光筆</h3><div class="fmHighlightList">'+HIGHLIGHTS.map(c=>'<span><mark style="background:#'+c.color+';color:#'+(['dark-gray','navy'].includes(c.key)?'FFFFFF':'333333')+'">'+esc(c.label)+'文字</mark><small>#'+c.color+'</small></span>').join('')+'</div><p class="fmNote">五款單欄共用八個近期色。八色使用真正的文字醒目提示格式，跟隨文字編輯，沒有獨立底帶。參考藍為 #7C9CC3；深灰、深藍範例以白字展示，套用醒目提示不會自動修改您的字色。近期色不保證各版本顯示、順序或永久保留，也不替換內建 15 色。</p></details><details><summary>固定規格與使用範圍</summary><p>16:9 · 1280 × 720；固定紅色標題、微軟正黑體與原生 bullet。來源 master、layouts、logo 及頁尾保留；衍生檔僅按配色更新 Accent 與指定主題填色、線條、效果，文字色槽、字型配置、背景樣式及 notes 主題保留。</p><p>PowerPoint 的樣式選單組合與字色仍由 Office 控制。為讓淺主題色搭白字仍可讀，原生填色已加深；共用填色槽使部分內建線框樣式呈灰底。需要白底外卡請使用上方卡片素材。矩形素材使用主題色與明確形狀格式確保外觀；複製時使用保留來源格式。原生 API 驗證不等於 Ribbon 點擊驗收。瀏覽器可能限制 blob 下載，請確認下載紀錄。</p></details></div>';
+   const colors=SINGLE_SCHEMES[0].accents,previewData=doc.defaultView.FixedMasterPreviews,previews=previewData&&previewData.pages===DOWNLOAD_PAGES.length?previewData:null;
+   container.innerHTML='<div class="fm" aria-busy="'+r.busy+'"><span class="fmLock">固定母片 · 不跟隨網站風格</span><h2>投影片母片</h2><div class="fmActions"><button type="button" class="fmPrimary" data-fm-download="template"'+disabled+'>下載 '+DOWNLOAD_PAGES.length+' 頁母片</button></div><p class="fmStatus" role="status" aria-live="polite" data-fm-status>'+esc(r.status)+'</p><div class="fmOrigins" aria-label="'+DOWNLOAD_PAGES.length+' 頁母片預覽">'+DOWNLOAD_PAGES.map((p,i)=>'<figure class="'+(i<7?'fmOriginal':'fmAdded')+'"><figcaption>第 '+(i+1)+' 頁 · '+esc(p.label)+'</figcaption>'+(previews&&previews.images&&previews.images[i]?'<img src="'+previews.images[i]+'" alt="'+esc(p.label)+'" width="960" height="540">':'<p>'+esc(p.title)+'</p>')+'</figure>').join('')+'</div></div>';
    if(key){const next=container.querySelector('[data-fm-field="'+key+'"]');if(next&&!next.disabled)next.focus();}
-   container.onclick=async e=>{const b=e.target.closest('button[data-fm-download]');if(!b||!container.contains(b)||r.busy)return;const mode=b.dataset.fmDownload;if(!['template','materials'].includes(mode))return;const snapshot=clone(r.state);r.focusDownload=mode;r.busy=true;r.status='正在準備原生封裝…';draw();try{const result=await r.options.onDownload({mode,selection:snapshot});r.status=result===false?'已取消；設定保留。':(mode==='template'?'已產生十三頁母片':'已產生三頁卡片與文字素材')+'並交由瀏覽器處理；請確認下載紀錄。';}catch(err){r.status='未完成下載：'+err.message;}finally{r.busy=false;draw();if(container.isConnected&&!container.hidden&&doc.activeElement===doc.body){const done=container.querySelector('[data-fm-download="'+r.focusDownload+'"]');if(done)done.focus();}}};
+   container.onclick=async e=>{const b=e.target.closest('button[data-fm-download]');if(!b||!container.contains(b)||r.busy)return;const mode=b.dataset.fmDownload;if(!['template','materials'].includes(mode))return;const snapshot=clone(r.state);r.focusDownload=mode;r.busy=true;r.status='正在準備原生封裝…';draw();try{const result=await r.options.onDownload({mode,selection:snapshot});r.status=result===false?'已取消；設定保留。':(mode==='template'?'已產生 '+DOWNLOAD_PAGES.length+' 頁母片':'已產生三頁卡片與文字素材')+'並交由瀏覽器處理；請確認下載紀錄。';}catch(err){r.status='未完成下載：'+err.message;}finally{r.busy=false;draw();if(container.isConnected&&!container.hidden&&doc.activeElement===doc.body){const done=container.querySelector('[data-fm-download="'+r.focusDownload+'"]');if(done)done.focus();}}};
   }
   draw();
  }
- return Object.freeze({COLORS,HIGHLIGHTS,STYLES,MARKERS,PALETTES,ORIGINAL_ACCENTS,LAYOUTS,PRESETS,TEMPLATE_PAGES,DOWNLOAD_PAGES,SINGLE_SCHEMES,componentModel,normalize,validate,combinations,build,preview,slideXml,originalBytes,exportPptx,exportMaterials,render,getState:container=>records.has(container)?clone(records.get(container).state):null,sourceSha256:DATA.sha256});
+ return Object.freeze({COLORS,HIGHLIGHTS,STYLES,MARKERS,PALETTES,ORIGINAL_ACCENTS,LAYOUTS,PRESETS,TEMPLATE_PAGES,DOWNLOAD_PAGES,SINGLE_SCHEMES,COMPONENT_STYLES,COMPONENT_PAGES,componentModel,normalize,validate,combinations,build,preview,slideXml,originalBytes,exportPptx,exportMaterials,render,getState:container=>records.has(container)?clone(records.get(container).state):null,sourceSha256:DATA.sha256});
 });

@@ -40,17 +40,17 @@ S／M／L 對照（上：整頁；下：同一個 PDCA 元件下載後放在標�
 
 獨立「快速樣式」與「範本 Style Kit」頁籤已移除；舊 `tab=quick`／`tab=kit`、程式入口及深連結改到「投影片母片」。舊模組、13 組 Kit 資產及設定保留相容性，不把它們的主題或跟隨設定移入固定紅母片。
 
-母片提供兩個獨立出口：**主下載十三頁；副下載三頁卡片與文字素材**。主檔依序為封面、07／06／03／10／04 五個具名單欄、雙欄、矩形樣式兩頁、八色原生 highlight、Cards & Panels、A16、A18。五個單欄各有獨立 master／layout／theme，可透過「新增投影片／版面配置」或複製對應頁沿用；共用頁與副素材採首選 07。Text1 保留深色，白色另選。舊 common／theme 儲存值不覆寫這五個選定主題。
+母片頁只提供頂部的 **下載 26 頁母片**。前十頁為封面、單欄07／06／03／10／04、雙欄、矩形樣式兩頁、八色原生 highlight；後十六頁依商務深藍卡片、青綠科技、墨綠筆記、框架鑑分組，每組依序為 00 總覽、A2 Cards & Panels、A16、A18。五個單欄各有獨立 master／layout／theme，可透過「新增投影片／版面配置」或複製對應頁沿用；前十頁共用素材採首選 07；後十六頁保留各自真實 PRESETS 配色與外觀，不被 07 覆寫。Text1 保留深色，白色另選。舊 common／theme 儲存值不覆寫這五個選定主題。
 
 衍生檔沿 relationships 更新 presentation 與有效 masters 的實際 theme 填色／線條／效果清單，保留原字型、文字／背景色槽、背景樣式、notes 與原頁內容。若 notes 與主題共用而無法安全隔離，寫入前停止。原生樣式共享槽位，部分線框樣式實際呈灰底；精確白底外卡請用素材。十款素材不是新增十個 Ribbon 按鈕，不承諾原生選單逐格相同。
 
 八色螢光筆固定為 `F6D8DB`、`F9F0D4`、`7C9CC3`、`D4E6DF`、`E0E2E6`、`E5DDF1`、`595959`、`1F3864`，不含白色或獨立底帶。深灰／深藍範例使用白字，但套用高亮不會自動改使用者字色。MRU 不保證顯示、順序或永久保留，也不替換內建 15 色。
 
-`npm run test:master-integration` 驗主題關係、兩出口、原生素材、導覽與下載快照；`npm run test:master-thirteen` 另驗五個獨立主題與 R2 profile；`npm run build:master-samples` 重建十三頁主檔及 07 三頁素材兩份樣本。舊 Kit 資產仍由 `build:native-styles`／`test:native-styles` 保護相容性，並非母片素材來源。詳見 [母片原生樣式契約](docs/master-style-integration.md)。PowerPoint ShapeStyle API、開檔、轉圖及保存重開已作代表性驗證；不等同 Ribbon 點擊或 MRU 選單驗收。
+`npm run test:master-integration` 驗主題關係、主下載與相容 helper、原生素材、導覽與下載快照；`npm run build:master-samples` 可重建當前主檔及保留相容性的三頁 materials helper 樣本。舊 Kit 資產仍由 `build:native-styles`／`test:native-styles` 保護相容性，並非母片素材來源。詳見 [母片原生樣式契約](docs/master-style-integration.md)。PowerPoint ShapeStyle API、開檔、轉圖及保存重開已作代表性驗證；不等同 Ribbon 點擊或 MRU 選單驗收。
 
 元件／表格等動態 PPTX 入口共用三層檢查：**可以匯出／建議調整／必須修正**。缺失的表格資料、非法尺寸或確定超出頁面的可見圖形會阻擋；小字、密集、對比與未經實機測量的文字溢出只是建議。檢查列出頁面／物件／已知儲存格的位置、原因與改善方式；建議不彈確認視窗。檢查與匯出使用同一快照，連點共用鎖；取消或期間修改內容／style 會丟棄舊結果，保留設定。取消不會強行中止底層壓縮，作業結束後可重試。
 
-表格仍沿用既有資料完整性 validator、四個 tabs、尺寸與外框／粗體設定。既有「改字」功能原本的縮字行為保留並提示；本次預檢本身不改資料或縮字。母片兩出口另有原生封裝／主題關係檢查，舊靜態 Kit 資產保留建置檢查；SVG／PNG、完整 TSV、設定 JSON 仍保留各自明確的檔案用途。
+表格仍沿用既有資料完整性 validator、四個 tabs、尺寸與外框／粗體設定。既有「改字」功能原本的縮字行為保留並提示；本次預檢本身不改資料或縮字。母片主下載與內部 helper 另有原生封裝／主題關係檢查，舊靜態 Kit 資產保留建置檢查；SVG／PNG、完整 TSV、設定 JSON 仍保留各自明確的檔案用途。
 
 測試入口：`npm run test:preflight`、`npm run test:stylekit-state`、`npm run test:quickstyles`、`npm run test:theme-audit`。新原生測試使用 `tools/bundled_export_env.js` 載入實際網頁隨附的 PptxGenJS／JSZip，避免誤用不同的全域版本。Microsoft PowerPoint 實機證據與限制見本輪 `review/LOCAL_AUDIT_20261026.md`。
 
@@ -605,13 +605,13 @@ PptxGenJS 無法寫出 algn／sx／sy，因此匯出後會用 JSZip 解開 pptx�
 
 ### 投影片母片（固定外觀與增強主題）
 
-主範本依序為「專案重點與下一步」封面、五個單欄 07／06／03／10／04、雙欄，再接矩形樣式 1/2、2/2、八色文字螢光筆、Cards & Panels、A16、A18，共十三頁。封面沿用原 layout1 的 native placeholder；五個單欄複製來源 slide1，保留原內容、各附一段原生高亮示例及對應頁碼；來源 slide2 雙欄改頁碼為 7。原四頁附件及 SHA 是不變安全基準；保留原 1 master／7 layouts／media，另建五組具名單欄 master／layout／theme，衍生主檔共 6 個有效 master、12 layouts。原紅標題、微軟正黑體、bullet、logo 與頁尾保留。R2 主題效果及每組 Accent 為明確變更，不能宣稱全部 theme bytes 不變。notes 主題不修改；`ppt/presProps.xml` 共用八色 MRU。
+主範本共 26 頁，前十頁為「專案重點與下一步」封面、五個單欄 07／06／03／10／04、雙欄、矩形樣式 1/2、2/2、八色文字螢光筆；再接深藍、青綠、墨綠、框架四風格各四頁（00 總覽、Cards & Panels、A16、A18）。封面沿用原 layout1 的 native placeholder；五單欄保留原內容、改為簡短頁名、各附一段「重點文字」原生高亮與頁碼；雙欄頁碼為 7。原四頁附件及 SHA 不變；保留原 1 master／7 layouts／media，另建五組單欄 master／layout／theme，主檔共 6 個有效 master、12 layouts。原紅標題、微軟正黑體、bullet、logo 與頁尾保留。R2 效果及 Accent 為明確變更，不能宣稱全部 theme bytes 不變。notes 不修改；`ppt/presProps.xml` 共用八色 MRU。
 
-主下載 `固定紅色_十三頁母片.pptx`，次要下載 `固定紅色_卡片與文字素材.pptx`。主檔 13 頁，副素材檔 3 頁（主檔第 8–10 頁），提供 70 個可編輯矩形及八色原生文字高亮。五個單欄以 R2 balanced-v2 原生主題效果建立，不從舊 Kit 種子生成。
+主下載 `固定紅色_26頁母片.pptx` 位於預覽前，保留實際 26 頁縮圖。已移除副素材按鈕、折疊說明、編號目錄與技術配色名列表；內部三頁 materials helper 保留相容性。第 8–10 頁提供 70 個可編輯矩形及八色原生文字高亮。五個單欄以 R2 balanced-v2 原生主題效果建立，不從舊 Kit 種子生成。
 
-十三頁縮圖為 Microsoft PowerPoint 960×540 實際轉圖，原 PNG bytes 與來源 hash 記錄於 `fixed-master-previews.js`。五款單欄透過真實 ShapeStyle API 驗證 210 個樣式、另存重開，並驗證新增文字框繼承微軟正黑體；這不等同 Ribbon 點擊或 MRU 選單驗收。近期色共用八色且不保證永久保留，不替換內建色盤。POTX 新建與 Android 未驗；標準 Blob 產生成功不等於瀏覽器落盤。詳見 [`fixed-master/README.md`](fixed-master/README.md)。
+26 頁縮圖為 Microsoft PowerPoint 960×540 實際轉圖，原 PNG bytes 與來源 hash 記錄於 `fixed-master-previews.js`。上輪五款單欄透過真實 ShapeStyle API 驗證 210 個樣式、另存重開，並驗證新增文字框繼承微軟正黑體；這不等同 Ribbon 點擊或 MRU 選單驗收。近期色共用八色且不保證永久保留，不替換內建色盤。POTX 新建與 Android 未驗；標準 Blob 產生成功不等於瀏覽器落盤。詳見 [`fixed-master/README.md`](fixed-master/README.md)。
 
-六個主導覽頁籤在 901px 以上維持單列，局部橫捲及鍵盤方向鍵／Home／End 保留；HCTSAIK 聯絡小字常駐標題下方，900px 以下保留可操作布局。母片卡片目錄僅局部橫捲，不撐開整頁。正常／離線版同步測，DOM／CSS 合約不等同真瀏覽器視覺驗收。
+六個主導覽頁籤在 901px 以上維持單列，局部橫捲及鍵盤方向鍵／Home／End 保留；HCTSAIK 聯絡小字常駐標題下方，900px 以下保留可操作布局。母片頁只保留主下載與逐頁預覽。正常／離線版同步測，DOM／CSS 合約不等同真瀏覽器視覺驗收。
 
 ### 舊 Style Kit 窄版容器（相容性保留）
 
@@ -620,7 +620,7 @@ PptxGenJS 無法寫出 algn／sx／sy，因此匯出後會用 JSZip 解開 pptx�
 ### 本輪局部設定與樣式
 
 - 精選清單首位加入 00 總覽，原十二個推薦項目與其他分類順序保留。
-- 母片次要素材提供十款可編輯矩形，前三款是外層白卡；共七欄、兩頁七十個原生形狀，另附一頁八色高亮。詳見 docs/master-style-integration.md。
+- 母片第 8–10 頁提供十款可編輯矩形，前三款是外層白卡；共七欄、兩頁七十個原生形狀，另附一頁八色高亮。詳見 docs/master-style-integration.md。
 - 表格設定面板新增「還原預設設定」；確認後還原外觀、強調候選與輸出選項，保留資料、文字、列欄及已套用標記。舊會清除標記的格式還原留在進階選項，作用明確分開。
 - 網站說明及下載檔名採中性名稱；原母片與預覽的公司標誌、頁尾及文字依使用者確認保留。來源檔改名 Fixed_Red_Template.pptx，SHA-256 仍為 1d42e27915855f57c1bee5ad185526ee62c51818223e9cfde20609dcf47c1fae；沒有修改 Git 歷史。
 
@@ -630,3 +630,5 @@ PptxGenJS 無法寫出 algn／sx／sy，因此匯出後會用 JSZip 解開 pptx�
 資料結構提供「無標題／首列／首欄／首列＋首欄」。更新貼上保留已明選模式；新表格仍可先推測再修改。保存、重載與復原保留模式；還原外觀設定不改標題位置。兩者都有時左上角採首列樣式。45% 自適應只對指定標題欄套用標籤欄規則；一般文字欄仍按內容分配。HTML 輸出使用 th/scope，原生表格寫 firstRow/firstCol；不將這些標記宣稱為完整 Office 無障礙驗收。
 
 表格不再顯示「中英間距」與「▲▼ 符號色」兩個控制；原始中英文空白保留，符號固定採主色＋灰。舊儲存值、匯入與歷史快照會安全正規化，不清除資料或強調標記。
+
+本輪局部檢查：`test:master-selected` 驗 26 頁順序、16 個指定元件頁的原生群組與四種 PRESETS、同風格內部連結及前十頁保護；`test:table-header-paint` 用一份 3×3 資料核對首列／首欄／兩者的表頭色與手動強調優先序。首欄現在與首列共用所選表頭底色和字色，交角只套一次。不將本輪局部結果宣稱為整站回歸。

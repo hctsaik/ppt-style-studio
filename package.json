@@ -40,8 +40,10 @@
     "build:master-samples": "node tools/build_fixed_master_samples.js",
     "test:master-integration": "node tools/native_master_profile_test.js && node tools/fixed_master_materials_test.js && node tools/fixed_master_native_test.js && node tools/fixed_master_ui_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/fixed_master_ui_test.js && node tools/navigation_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/navigation_test.js && node tools/export_entrypoints_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/export_entrypoints_test.js",
     "test:table-headers": "node tools/table_header_modes_test.js",
-    "test:master-thirteen": "node tools/fixed_master_thirteen_page_test.js && node tools/native_balanced_profile_test.js",
-    "test:table-retired": "node tools/table_retired_controls_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/table_retired_controls_test.js --dom-only"
+    "test:master-thirteen": "npm run test:master-selected && node tools/native_balanced_profile_test.js",
+    "test:table-retired": "node tools/table_retired_controls_test.js && node tools/run_with_env.js STUDIO_HTML=PPT-Style-Studio.html node tools/table_retired_controls_test.js --dom-only",
+    "test:master-selected": "node tools/fixed_master_selected_pages_test.js",
+    "test:table-header-paint": "node tools/table_header_paint_test.js"
   },
   "keywords": [],
   "author": "",

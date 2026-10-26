@@ -34,7 +34,7 @@ async function boot(storage={},suffix=''){
   await test('Exactly six discoverable entries expose master materials and valid ARIA targets',()=>{
    assert.deepEqual([...d.querySelectorAll('#tabs button')].map(b=>b.dataset.tab),['style','slides','icons','table','master','guide']);assert.equal(d.querySelector('#tabs [data-tab="quick"]'),null);assert.equal($('#tabs').getAttribute('aria-label'),'工作室功能');
    for(const b of d.querySelectorAll('#tabs button'))assert(d.getElementById(b.getAttribute('aria-controls')));
-   assert.equal(d.querySelectorAll('[data-fm-card]').length,70);assert.equal(d.querySelectorAll('.fmGalleryRow').length,10);assert.equal(d.querySelector('#tabs [data-tab="kit"]'),null);assert.equal(w.FixedMaster.getState($('#vMaster')).paletteSource,'common');
+   assert.equal(d.querySelectorAll('#vMaster figure').length,26);assert.deepEqual([...d.querySelectorAll('#vMaster [data-fm-download]')].map(b=>b.dataset.fmDownload),['template']);assert.equal(d.querySelectorAll('#vMaster details,.fmPageOrder,.fmPalette').length,0);assert.equal(d.querySelector('#tabs [data-tab="kit"]'),null);assert.equal(w.FixedMaster.getState($('#vMaster')).paletteSource,'common');
    assert.equal(d.querySelectorAll('#tabs [aria-current="page"]').length,1);assert.equal($('#tabs [aria-current="page"]').dataset.tab,'master');assert.equal(typeof w.QuickStyles.buildModel,'function');
   });
   await test('Repeated legacy programmatic routes never mount the old view or clear state',()=>{

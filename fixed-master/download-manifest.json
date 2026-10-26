@@ -1,9 +1,9 @@
 {
-  "version": 2,
-  "filename": "固定紅色_十三頁母片.pptx",
+  "version": 3,
+  "filename": "固定紅色_26頁母片.pptx",
   "sourceFilename": "Fixed_Red_Template.pptx",
   "sourceSha256": "1d42e27915855f57c1bee5ad185526ee62c51818223e9cfde20609dcf47c1fae",
-  "slideCount": 13,
+  "slideCount": 26,
   "sizeEmu": [
     12192000,
     6858000
@@ -69,24 +69,132 @@
     },
     {
       "number": 11,
+      "key": "catalog",
+      "catalogueId": "00",
+      "styleId": "navy",
+      "layout": 6
+    },
+    {
+      "number": 12,
       "key": "cards",
       "catalogueId": "A2",
+      "styleId": "navy",
       "layout": 6,
       "groups": 9
     },
     {
-      "number": 12,
+      "number": 13,
       "key": "schemebody",
       "catalogueId": "A16",
+      "styleId": "navy",
       "layout": 6,
       "groups": 28,
-      "bodyPt": 9,
-      "smallLetterPt": 8.5
+      "bodyPt": 9
     },
     {
-      "number": 13,
+      "number": 14,
       "key": "schemeiconbody",
       "catalogueId": "A18",
+      "styleId": "navy",
+      "layout": 6,
+      "groups": 28,
+      "bodyPt": 9
+    },
+    {
+      "number": 15,
+      "key": "catalog",
+      "catalogueId": "00",
+      "styleId": "teal",
+      "layout": 6
+    },
+    {
+      "number": 16,
+      "key": "cards",
+      "catalogueId": "A2",
+      "styleId": "teal",
+      "layout": 6,
+      "groups": 9
+    },
+    {
+      "number": 17,
+      "key": "schemebody",
+      "catalogueId": "A16",
+      "styleId": "teal",
+      "layout": 6,
+      "groups": 28,
+      "bodyPt": 9
+    },
+    {
+      "number": 18,
+      "key": "schemeiconbody",
+      "catalogueId": "A18",
+      "styleId": "teal",
+      "layout": 6,
+      "groups": 28,
+      "bodyPt": 9
+    },
+    {
+      "number": 19,
+      "key": "catalog",
+      "catalogueId": "00",
+      "styleId": "green",
+      "layout": 6
+    },
+    {
+      "number": 20,
+      "key": "cards",
+      "catalogueId": "A2",
+      "styleId": "green",
+      "layout": 6,
+      "groups": 9
+    },
+    {
+      "number": 21,
+      "key": "schemebody",
+      "catalogueId": "A16",
+      "styleId": "green",
+      "layout": 6,
+      "groups": 28,
+      "bodyPt": 9
+    },
+    {
+      "number": 22,
+      "key": "schemeiconbody",
+      "catalogueId": "A18",
+      "styleId": "green",
+      "layout": 6,
+      "groups": 28,
+      "bodyPt": 9
+    },
+    {
+      "number": 23,
+      "key": "catalog",
+      "catalogueId": "00",
+      "styleId": "frame",
+      "layout": 6
+    },
+    {
+      "number": 24,
+      "key": "cards",
+      "catalogueId": "A2",
+      "styleId": "frame",
+      "layout": 6,
+      "groups": 9
+    },
+    {
+      "number": 25,
+      "key": "schemebody",
+      "catalogueId": "A16",
+      "styleId": "frame",
+      "layout": 6,
+      "groups": 28,
+      "bodyPt": 9
+    },
+    {
+      "number": 26,
+      "key": "schemeiconbody",
+      "catalogueId": "A18",
+      "styleId": "frame",
       "layout": 6,
       "groups": 28,
       "bodyPt": 9
@@ -99,7 +207,8 @@
       8,
       9,
       10
-    ]
+    ],
+    "uiVisible": false
   },
   "defaultScheme": "07",
   "singleSchemes": [

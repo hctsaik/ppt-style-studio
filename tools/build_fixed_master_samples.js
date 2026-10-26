@@ -8,7 +8,7 @@ async function build(destination=path.resolve(__dirname,'../out/fixed-master-mat
  fs.mkdirSync(destination,{recursive:true});const files=[];
  for(const mode of ['template','materials']){
   const bytes=mode==='template'?await F.exportPptx(Z):await F.exportMaterials(Z);
-  const name=mode==='template'?'template-thirteen.pptx':'materials-07.pptx',file=path.join(destination,name);fs.writeFileSync(file,bytes);files.push({name,bytes:bytes.length,sha256:hash(bytes)});
+  const name=mode==='template'?'template-'+F.DOWNLOAD_PAGES.length+'.pptx':'materials-07.pptx',file=path.join(destination,name);fs.writeFileSync(file,bytes);files.push({name,bytes:bytes.length,sha256:hash(bytes)});
  }
  return {sourceSha256:hash(F.originalBytes()),schemes:['07','06','03','10','04'],destination,files};
 }
