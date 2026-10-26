@@ -7,12 +7,12 @@
 html,body{height:100%}
 body{margin:0;background:#fff;color:var(--ink);font:13px/1.5 "Microsoft JhengHei","微軟正黑體","Noto Sans TC","Noto Sans CJK TC","PingFang TC",system-ui,sans-serif;display:flex;flex-direction:column;overflow:hidden}
 button,select,input{font-family:inherit;font-size:12.5px;color:var(--ink)}
-header{flex:none;display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid var(--line);white-space:nowrap;min-width:0}
+header{flex:none;display:flex;flex-wrap:nowrap;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid var(--line);white-space:nowrap;min-width:0}
 header h1,header .btn{flex:none;white-space:nowrap}
 header .tabs{flex:0 1 auto;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;white-space:nowrap}
-@media (max-width:1440px){header h1 small{display:none}}
-/* Eight tabs need their own row on compact desktops; the existing <=900px layout stays unchanged. */
-@media (min-width:901px) and (max-width:1440px){header{flex-wrap:wrap}header .tabs{order:9;flex:1 1 100%;max-width:100%;margin:0}}
+/* Desktop stays on one row: tabs scroll locally; actions never shrink.
+ * On compact screens the full contact note remains available in More. */
+@media (max-width:1440px){header h1 small,header .reqnote{display:none}header .mobile-reqnote{display:block;padding:8px 10px;white-space:normal;color:var(--p);font-size:12px}}
 .reqnote{display:inline-block;font-size:12.5px;font-weight:600;color:var(--p);white-space:nowrap;margin-right:8px}
 .hx{font-size:12px;color:var(--t2);display:inline-flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap}.hx input{margin:0}
 .more{position:relative;flex:none}.more .menu{position:absolute;right:0;top:calc(100% + 6px);z-index:30;background:#fff;border:1px solid #D6D6D6;border-radius:9px;box-shadow:0 8px 24px #00000026;padding:5px;display:flex;flex-direction:column;min-width:170px}
@@ -532,7 +532,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 
 <header>
  <h1><i id="dot"></i>PPT <span class="hs">Style </span>Studio <small>精緻圖解元件・客製工作室（背景永遠白色）</small></h1>
- <nav class="tabs" id="tabs"><button data-tab="style" title="全站共用：投影片、表格、圖示庫、Style Kit 一起換">風格設定</button><button data-tab="slides" class="on">投影片元件</button><button data-tab="icons">圖示庫</button><button data-tab="table">表格</button><button data-tab="quick" title="主題色或固定七色，產生可編輯方塊與柔和螢光筆">快速樣式</button><button data-tab="master" title="原件母片固定紅色與字型；獨立搭配快速樣式與螢光筆">投影片母片</button><button data-tab="kit" title="PPT 範本 Style Kit：快速樣式＋螢光筆預覽，下載內嵌主題的 .pptx／.potx">範本 Style Kit</button><button data-tab="guide" title="依情境挑元件：週報、8D、提案、面試、作品集、競賽簡報">簡報食譜</button></nav>
+ <nav class="tabs" id="tabs" aria-label="工作室功能"><button data-tab="style" aria-controls="vStyle" title="全站共用：投影片、表格、圖示庫、Style Kit 一起換">風格設定</button><button data-tab="slides" aria-controls="vSlides" class="on">投影片元件</button><button data-tab="icons" aria-controls="vIcons">圖示庫</button><button data-tab="table" aria-controls="vTable">表格</button><button data-tab="master" aria-controls="vMaster" title="原件母片固定紅色與字型；獨立搭配快速樣式與螢光筆">投影片母片</button><button data-tab="kit" aria-controls="vKit" title="PPT 範本 Style Kit：快速樣式＋螢光筆預覽，下載內嵌主題的 .pptx／.potx">範本 Style Kit</button><button data-tab="guide" aria-controls="vGuide" title="依情境挑元件：週報、8D、提案、面試、作品集、競賽簡報">簡報食譜</button></nav>
  <div class="more tools tplm"><button class="btn" id="bTpl" aria-controls="mTpl" aria-haspopup="true" aria-expanded="false" title="切換範本：全站套用，與「風格設定」同步">範本 ▾</button><div class="menu" id="mTpl" role="menu" hidden></div></div>
  <span class="sp"></span>
  <span class="reqnote">新需求請寄信給 HCTSAIK，謝謝</span>
@@ -598,7 +598,8 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
    <div class="ibar2" id="ibar2"><b id="iName"></b><small id="iDim" style="color:#8C8C8C;margin-right:4px"></small><button class="pri" data-a="copy" title="SVG 向量＋透明 PNG">複製</button><button data-a="svg">SVG</button><button data-a="png2">PNG 2×</button><button data-a="png4">PNG 4×</button><button data-a="pic" title="1 頁 .pptx：SVG 向量圖片（PNG 備援），PowerPoint 365 可右鍵「轉換成圖案」">.pptx 圖片</button><button data-a="shape" title="1 頁 .pptx：原生自訂圖案（填色外框），直接可改顏色">.pptx 圖案</button><button data-a="x">✕</button></div>
   </section>
   <section class="view" id="vKit" hidden></section>
-  <section class="view" id="vQuick" hidden style="overflow:auto;padding:18px 22px"></section>
+  <!-- Retained inert compatibility host; no standalone Quick Styles navigation. -->
+  <section class="view" id="vQuick" hidden inert style="overflow:auto;padding:18px 22px"></section>
   <section class="view" id="vMaster" hidden style="overflow:auto;padding:18px 22px"></section>
   <section class="view" id="vTable" hidden>
    <div class="tv">
@@ -847,13 +848,14 @@ const G=[
 const ENUMS={},RANGES={};G.forEach(g=>g.rows.forEach(r=>{if(r.type==='select'||r.type==='seg')ENUMS[r.k]=r.opts.map(o=>o[0]);if(r.type==='range')RANGES[r.k]=[r.min,r.max];}));
 const cleanP=(p,base)=>D.sanitizeParams(p,templateParams(presetOf(base).id),ENUMS,RANGES);
 /* ---------- 狀態 ---------- */
+function normalizeTab(t){return t==='quick'?'kit':['slides','style','icons','table','kit','master','guide'].includes(t)?t:'slides';}
 let S={base:'navy',p:templateParams('navy'),slide:0,autoTone:true,labels:{},examples:true};
 /* 改字（v9）：{ '<頁>:<群組>': { '<第幾個圖形>': {from 原文, to 新文字} } } */
 function cleanLabels(o){const out={};if(!o||typeof o!=='object')return out;Object.keys(o).slice(0,200).forEach(k=>{if(!/^[\w-]+:\d+$/.test(k)||!o[k]||typeof o[k]!=='object')return;const L={};
  Object.keys(o[k]).slice(0,60).forEach(i=>{const v=o[k][i];if(/^\d+$/.test(i)&&v&&typeof v==='object'&&typeof v.icon==='string'&&window.Icons&&Object.prototype.hasOwnProperty.call(window.Icons.BY,v.icon))L[i]={from:typeof v.from==='string'?v.from.slice(0,60):null,icon:v.icon};else if(/^\d+$/.test(i)&&v&&typeof v==='object'&&typeof v.to==='string')L[i]={from:typeof v.from==='string'?D.stripCtl(v.from).slice(0,400):null,to:D.stripCtl(v.to).slice(0,400)};});
  if(/^iconvariants:\d+$/.test(k)&&o[k]._iconStyle&&typeof o[k]._iconStyle==='object')L._iconStyle=D.cleanIconStyle(o[k]._iconStyle);
  if(Object.keys(L).length)out[k]=L;});return out;}
-try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=presetOf(s.base).id;S.p=cleanP(s.p,S.base);S.slideKey=typeof s.key==='string'?s.key:null;/* 位置記憶：以頁面 ID（非索引）記憶，找不到回到 00 總覽 */S.mine=s.mine?D.stripCtl(s.mine).slice(0,40):null;S.autoTone=s.autoTone!==false;S.tab=['slides','style','icons','table','kit','quick','master','guide'].includes(s.tab)?s.tab:'slides';S.examples=true;S.labels=cleanLabels(s.labels);}}catch(e){}
+try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.p&&presetOf(s.base)){S.base=presetOf(s.base).id;S.p=cleanP(s.p,S.base);S.slideKey=typeof s.key==='string'?s.key:null;/* 位置記憶：以頁面 ID（非索引）記憶，找不到回到 00 總覽 */S.mine=s.mine?D.stripCtl(s.mine).slice(0,40):null;S.autoTone=s.autoTone!==false;S.tab=normalizeTab(s.tab);S.examples=true;S.labels=cleanLabels(s.labels);}}catch(e){}
 const persist=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify({base:S.base,p:S.p,slide:S.slide,key:model&&model.slides[S.slide]?model.slides[S.slide].key:S.slideKey,autoTone:S.autoTone,mine:S.mine||null,tab:S.tab||'slides',examples:!!S.examples,labels:S.labels||{}}));}catch(e){}};
 const hex=v=>String(v||'').replace('#','').toUpperCase();
 const toast=(t,ms,html)=>{const e=$('#toast');
@@ -980,8 +982,10 @@ const usedLinks=cs=>`<span class="gocards"><small style="color:#8C8C8C">本頁�
 document.addEventListener('click',e=>{const a=e.target.closest('.gocards a[data-k],.rcp a[data-k]');if(a){e.preventDefault();const restore=a.closest('#pageInfo')&&document.activeElement===a;goKey(a.dataset.k);if(restore)$('#sTitle').focus({preventScroll:true});}});
 $('#pageInfo').addEventListener('keydown',e=>{const a=e.target.closest('.gocards a[data-k]');if(!a||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;const links=[...a.closest('.gocards').querySelectorAll('a[data-k]')],i=links.indexOf(a),j=e.key==='Home'?0:e.key==='End'?links.length-1:(i+(e.key==='ArrowRight'?1:-1)+links.length)%links.length;e.preventDefault();e.stopPropagation();links[j].focus({preventScroll:true});links[j].scrollIntoView({block:'nearest',inline:'nearest'});});
 function hashKey(){const m=/^#\/(?:[^/]*\/)?([\w-]+)$/.exec(location.hash||'');return m?m[1]:null;}
-addEventListener('hashchange',()=>{const k=hashKey();if(k&&model&&model.slides[S.slide].key!==k&&!goKey(k))goKey('catalog');});
-{const hk=hashKey();if(hk)S.slideKey=hk;}
+// Retire old quick links without treating them as an unknown slide or changing filters.
+function consumeQuickRoute(){if(!/^#(?:\/(?:tab\/)?)?quick$/.test(location.hash||''))return false;try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}return true;}
+addEventListener('hashchange',()=>{if(consumeQuickRoute()){setTab('quick');return;}const k=hashKey();if(k&&model&&(S.tab!=='slides'||model.slides[S.slide].key!==k)&&!goKey(k))goKey('catalog');});
+if(consumeQuickRoute())S.tab='kit';else{const hk=hashKey();if(hk)S.slideKey=hk;}
 const RECIPES=[
  {t:'週報／月報',lim:'3–5 頁｜3 分鐘｜每頁標題 ≤ 25 字',who:'主管 3 分鐘看完：先結論、再數字、最後要決策',st:[['F1','封面'],['A0','結論先行標題'],['C1','KPI 數字卡＋燈號'],['C3','進度時間軸'],['D2','改善前後對照'],['D8','需要的決策'],['F15','整頁範例：週報']],tip:'一頁一個訊息；標題寫成完整句子（例如「B 線良率回升至 98.6%」）。'},
  {t:'異常報告／8D',lim:'6–8 頁｜10 分鐘｜每頁 ≤ 3 重點',who:'品質、製程、客訴回覆',st:[['F1','封面'],['A0','問題摘要'],['B1','發生流程'],['D6','魚骨圖／5 Why'],['D7','根因驗證'],['B6','對策步驟'],['C3','矯正時程'],['F14','整頁範例：PCN／變更']],tip:'表格工具 › 行動項目／議題追蹤 預設可直接放對策清單。'},
@@ -1081,7 +1085,7 @@ $('#exportCancel').onclick=e=>{e.preventDefault();e.stopPropagation();exportFlow
 $('#exportCheckClose').onclick=()=>{$('#exportCheck').open=false;};
 $('#exportIssues').onclick=e=>{const b=e.target.closest('[data-issue]');if(!b||!checkedModel||!checkedReport)return;const it=checkedReport.issues[+b.dataset.issue],sl=checkedModel.slides[it.slideIndex];if(!sl)return;
  if(sl.table){setTab('table');TPAGE=it.slideIndex;renderTable();const cell=it.rowIndex!=null?$('#tGrid td[data-r="'+(it.sourceRow==null?it.rowIndex:it.sourceRow)+'"][data-c="'+(it.columnIndex||0)+'"]'):null;if(cell){cell.scrollIntoView({block:'center'});cell.focus();}else $('#tPrev').scrollIntoView({block:'center'});}
- else if(sl.key&&sl.key.startsWith('quickstyle-')){setTab('quick');$('#vQuick').scrollIntoView({block:'center'});}
+ else if(sl.key&&sl.key.startsWith('quickstyle-')){setTab('kit');$('#tabs [data-tab="kit"]').focus({preventScroll:true});($('#skGal')||$('#vKit')).scrollIntoView({block:'nearest',inline:'nearest'});toast('快速樣式獨立入口已移除；已開啟範本 Style Kit。');}
  else{const ix=model.slides.findIndex(x=>x.key===sl.key);if(ix<0){toast('此項目在下載組合中：'+it.location);return;}setTab('slides');go(ix);const gi=(model.slides[ix].groups||[]).findIndex(g=>it.itemIndex>=g.from&&it.itemIndex<=g.to);if(gi>=0)selectEl(gi);}
 };
 let lastKitDownload=0;
@@ -1167,21 +1171,25 @@ window.__studio=window.__studio||{};
 const I=window.Icons;const ENV=()=>({PptxGenJS:window.PptxGenJS,JSZip:window.JSZip});
 const SK=()=>D.SIZE_K[S.p.size]||1;
 function syncPageInfoHeight(){const footer=$('#pageInfo');document.documentElement.style.setProperty('--page-info-height',footer.hidden?'0px':Math.ceil(footer.getBoundingClientRect().height)+'px');}
-function setTab(t){if(t!==S.tab)closeChip();if(t!==S.tab)closeLabelEditor(false);S.tab=t;document.body.classList.toggle('tabT',t==='table');if(t==='table'&&document.body.classList.contains('pan'))setPanel(false);document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
- $('#vSlides').hidden=t!=='slides';$('#pageInfo').hidden=t!=='slides';syncPageInfoHeight();if(t!=='slides'){$('#edPop').hidden=true;$('#edBadge').setAttribute('aria-expanded','false');}$('#vIcons').hidden=t!=='icons';$('#vTable').hidden=t!=='table';$('#vKit').hidden=t!=='kit';$('#vMaster').hidden=t!=='master';document.body.classList.toggle('tabM',t==='master');if(t==='master')renderMaster();$('#vQuick').hidden=t!=='quick';if(t==='quick')renderQuick();$('#vGuide').hidden=t!=='guide';$('#vStyle').hidden=t!=='style';document.body.classList.toggle('tabS',t==='style');if(t==='style')renderStylePrev();if(t==='guide')renderGuide();document.body.classList.toggle('tabK',t==='kit'||t==='guide');document.body.classList.toggle('tabK',t==='kit');if(t==='kit'&&window.StyleKit)StyleKit.sync(S.p,S.base);
+function setTab(t){t=normalizeTab(t);if(t!==S.tab)closeChip();if(t!==S.tab)closeLabelEditor(false);S.tab=t;document.body.classList.toggle('tabT',t==='table');if(t==='table'&&document.body.classList.contains('pan'))setPanel(false);document.querySelectorAll('#tabs button').forEach(b=>{const on=b.dataset.tab===t;b.classList.toggle('on',on);if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
+ $('#vSlides').hidden=t!=='slides';$('#pageInfo').hidden=t!=='slides';syncPageInfoHeight();if(t!=='slides'){$('#edPop').hidden=true;$('#edBadge').setAttribute('aria-expanded','false');}$('#vIcons').hidden=t!=='icons';$('#vTable').hidden=t!=='table';$('#vKit').hidden=t!=='kit';$('#vMaster').hidden=t!=='master';document.body.classList.toggle('tabM',t==='master');if(t==='master')renderMaster();$('#vQuick').hidden=true;$('#vGuide').hidden=t!=='guide';$('#vStyle').hidden=t!=='style';document.body.classList.toggle('tabS',t==='style');if(t==='style')renderStylePrev();if(t==='guide')renderGuide();document.body.classList.toggle('tabK',t==='kit'||t==='guide');document.body.classList.toggle('tabK',t==='kit');if(t==='kit'&&window.StyleKit)StyleKit.sync(S.p,S.base);
  $('#bOne').style.display=$('#bAll').style.display=t==='slides'?'':'none';
- if(t==='icons')renderIcons();if(t==='table'){syncTableUI();renderTable();}persist();}
+ if(t==='icons')renderIcons();if(t==='table'){syncTableUI();renderTable();}if(document.activeElement?.closest('.view[hidden]'))$('#tabs button.on').focus({preventScroll:true});persist();}
 $('#iconCompLibrary').onclick=()=>setTab('icons');
 $('#iconCompVariants').onclick=()=>goKey(model.slides[S.slide].key==='iconvariants'?'iconcomponents':'iconvariants');
 $('#tabs').onclick=e=>{const b=e.target.closest('button[data-tab]');if(b)setTab(b.dataset.tab);};
+// Keep keyboard-focused tabs visible inside the local desktop/mobile scroller.
+$('#tabs').addEventListener('focusin',e=>{const b=e.target.closest('button[data-tab]');if(b)b.scrollIntoView({block:'nearest',inline:'nearest'});});
+$('#tabs').addEventListener('keydown',e=>{if(e.isComposing)return;if(['ArrowUp','ArrowDown'].includes(e.key)){e.stopPropagation();return;}if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;const buttons=[...$('#tabs').querySelectorAll('button[data-tab]')],i=buttons.indexOf(e.target);if(i<0)return;e.preventDefault();e.stopPropagation();const j=e.key==='Home'?0:e.key==='End'?buttons.length-1:(i+(e.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;buttons[j].focus({preventScroll:true});});
 function renderStylePrev(){const H=$('#stPrev');if(!H||!model)return;const ks=['frame','kpi','cmp2','emph'];H.innerHTML=ks.map(k=>{const i=model.slides.findIndex(x=>x.key===k);if(i<0)return'';const s=model.slides[i];return `<div class="sp1" data-key="${k}">${D.toSvg(s,{id:'sp'+i})}<span>${s.title}</span></div>`;}).join('');}
 $('#stReset').onclick=()=>$('#bReset').click();
 document.addEventListener('keydown',e=>{const p=e.target.closest&&e.target.closest('.pal');if(p&&(e.key==='Enter'||e.key===' ')){e.preventDefault();p.click();}});
+// Keep legacy preference bytes and export helpers separate from Style Kit state.
 let quickSaved;try{quickSaved=JSON.parse(localStorage.getItem('ppt-studio-quick-styles')||'null');}catch(_){}
 function renderQuick(){if(!window.QuickStyles)return;QuickStyles.render($('#vQuick'),S.p,{state:quickSaved,onChange:state=>{quickSaved=state;invalidateExport();try{localStorage.setItem('ppt-studio-quick-styles',JSON.stringify(state));}catch(_){toast('本機儲存不可用；本次設定仍保留，可繼續下載。');}},onDownload:async snapshot=>{try{snapshot=QuickStyles.snapshot(S.p,snapshot.selection);const r=await checkedExport(ENV(),snapshot.params,{model:snapshot.model});saveBlob(r.data,snapshot.filename);toast('已下載快速樣式：底帶與文字皆可編輯。');return true;}catch(e){toast(e.message);return false;}}});}
 let masterSaved;try{masterSaved=JSON.parse(localStorage.getItem('ppt-studio-fixed-master')||'null');}catch(_){}
 function renderMaster(){if(!window.FixedMaster)return;FixedMaster.render($('#vMaster'),{state:masterSaved,onChange:state=>{masterSaved=state;try{localStorage.setItem('ppt-studio-fixed-master',JSON.stringify(state));}catch(_){toast('本機儲存不可用；本次母片設定仍保留。');}},onDownload:async snapshot=>{const template=snapshot.mode==='template';const bytes=await FixedMaster.exportPptx(window.JSZip,template?[]:[snapshot.selection]);saveBlob(new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'}),template?'TSMC_三頁母片.pptx':'TSMC_組合示範_3加1頁.pptx');return true;}});}
-function renderExtra(){if(S.tab==='style')renderStylePrev();else if(S.tab==='icons')renderIcons();else if(S.tab==='table')renderTable();else if(S.tab==='kit'&&window.StyleKit)StyleKit.sync(S.p,S.base);else if(S.tab==='quick')renderQuick();else if(S.tab==='master')renderMaster();}
+function renderExtra(){if(S.tab==='style')renderStylePrev();else if(S.tab==='icons')renderIcons();else if(S.tab==='table')renderTable();else if(S.tab==='kit'&&window.StyleKit)StyleKit.sync(S.p,S.base);else if(S.tab==='master')renderMaster();}
 
 /* ---------- 圖示庫 ---------- */
 const IC_COLORS=[['P','主色'],['PD','深主色'],['A','強調色'],['g','灰'],['w','白（深底用）']];

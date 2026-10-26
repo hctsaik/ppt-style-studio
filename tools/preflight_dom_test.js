@@ -1,7 +1,9 @@
 /* Actual Studio DOM/event integration in JSDOM. No browser, server or DevTools.
  * Run with NODE_PATH pointing to an existing jsdom installation, optionally
  * STUDIO_HTML=PPT-Style-Studio.html for the bundled page. Native export bytes
- * are stubbed; these checks do not certify PowerPoint rendering or downloads. */
+ * are stubbed; these checks do not certify PowerPoint rendering or downloads.
+ * QuickStyles is a retained compatibility helper, NOT a user-visible tab. Tests
+ * explicitly mount its inert hidden host to retain cancel/lock/stale coverage. */
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {JSDOM,VirtualConsole,ResourceLoader}=require('jsdom');
@@ -29,15 +31,15 @@ async function boot(storage={}){
   return{status,label:{ready:'可以匯出',advisory:'建議調整',blocked:'必須修正'}[status],canExport:status!=='blocked',errors:status==='blocked'?1:0,warnings:status==='advisory'?1:0,issues:status==='ready'?[]:[issue]};
  };
  w.Deck.exportPptx=async(_env,p,opt)=>{exported.push({params:p,settings:opt});if(pending)await pending.promise;return{data:new w.Blob(['test native export']),model:opt.model,patched:0};};
- const click=selector=>$(selector).click(),tab=name=>click(`#tabs [data-tab="${name}"]`),state=()=>JSON.parse(run('JSON.stringify(QuickStyles.getState($("#vQuick")))'));
+ const click=selector=>$(selector).click(),tab=name=>{if(name==='quick'){run("setTab('quick');renderQuick()");assert.equal(run('S.tab'),'kit');assert($('#vQuick').hidden);}else click(`#tabs [data-tab="${name}"]`);},state=()=>JSON.parse(run('JSON.stringify(QuickStyles.getState($("#vQuick")))'));
  return{dom,w,d,$,run,click,tab,state,errors,exported,setMode:value=>{reportMode=value;},hold:()=>pending=deferred(),release:()=>{const old=pending;pending=null;old&&old.resolve();},settled:()=>until(()=>!run('exportFlow.busy()')&&!d.querySelector('[data-qs-download]:disabled'),'export settled'),downloads:()=>w.__downloads};
 }
 async function main(){
  let count=0;const test=async(name,fn)=>{await fn();count++;console.log('PASS '+name);};const app=await boot();
  const{w,d,$,run,click,tab,state}=app;let saved,kitSaved;
  try{
-  await test('quick tab has one focused gallery with stable default selection',()=>{
-   tab('quick');assert.equal($('#vQuick').hidden,false);assert.equal(state().source,'theme');assert.equal(state().style,'soft');assert.equal(state().themeKey,'main');assert.equal($('[data-qs-text]').value,'重點說明');assert.equal(d.querySelectorAll('[data-qs-style]').length,6);assert.equal(d.querySelectorAll('[data-qs-color]').length,3);
+  await test('retained QuickStyles helper mounts only in its hidden inert compatibility host',()=>{
+   tab('quick');assert.equal($('#vQuick').hidden,true);assert($('#vQuick').hasAttribute('inert'));assert(!d.querySelector('#tabs [data-tab="quick"]'));assert(!$('#vKit').hidden);assert.equal(state().source,'theme');assert.equal(state().style,'soft');assert.equal(state().themeKey,'main');assert.equal($('[data-qs-text]').value,'重點說明');assert.equal(d.querySelectorAll('[data-qs-style]').length,6);assert.equal(d.querySelectorAll('[data-qs-color]').length,3);
   });
   await test('quick source, text, colour and style events persist without losing selection',()=>{
    click('[data-qs-source="common"]');assert.deepEqual([...d.querySelectorAll('[data-qs-color]')].map(e=>e.dataset.qsColor),['red','yellow','blue','green','gray','purple','white']);
@@ -48,7 +50,7 @@ async function main(){
   await test('common colors stay fixed while theme colors and custom roles rerender',async()=>{
    const fixed=$('[data-qs-color="white"]').title;click('#tpls .tpl[data-id="wine"]');await delay(100);tab('quick');assert.equal($('[data-qs-color="white"]').title,fixed);assert.equal(state().text,'中文重點\n00123');
    click('[data-qs-source="theme"]');click('[data-qs-color="deep"]');assert.equal($('[data-qs-color="deep"]').title,'#'+run('S.p.PD'));
-   run("setColor('PD','123A56');syncPanel();schedule()");await delay(100);assert.equal($('[data-qs-color="deep"]').title,'#123A56');assert.equal(state().style,'marker');assert.equal(state().text,'中文重點\n00123');
+   run("setColor('PD','123A56');syncPanel();schedule()");await delay(100);run('renderQuick()');assert.equal($('[data-qs-color="deep"]').title,'#123A56');assert.equal(state().style,'marker');assert.equal(state().text,'中文重點\n00123');
   });
   await test('Kit follows global theme across tabs, but explicit independent selection survives',async()=>{
    click('#tpls .tpl[data-id="navy"]');await delay(100);tab('kit');assert.equal(w.StyleKit.state().source,'follow');assert.equal(w.StyleKit.state().id,'navy');
@@ -90,8 +92,13 @@ async function main(){
    for(const mode of ['ready','advisory']){app.setMode(mode);const n=app.downloads().length;click('[data-qs-download]');await app.settled();assert.equal(app.downloads().length,n+1);assert.equal($('#exportCheck').dataset.status,mode);assert($('#exportCheckTitle').textContent.includes(mode==='ready'?'可以匯出':'建議調整'));}
    app.setMode('blocked');const before=[app.exported.length,app.downloads().length];click('[data-qs-download]');await app.settled();assert.deepEqual([app.exported.length,app.downloads().length],before);assert.equal($('#exportCheck').dataset.status,'blocked');assert($('#exportCheck').open);assert($('#exportIssues').textContent.includes('尺寸無效'));assert($('#exportIssues').textContent.includes('調整此位置'));assert.equal(w.__confirms.length,0);
   });
-  await test('quick blocker location returns to the actual quick tab',()=>{
-   tab('slides');click('#exportIssues [data-issue="0"]');assert.equal(run('S.tab'),'quick');assert.equal($('#vQuick').hidden,false);
+  await test('retained helper blocker location redirects to the visible Kit, never a hidden tab',()=>{
+   tab('slides');click('#exportIssues [data-issue="0"]');assert.equal(run('S.tab'),'kit');assert.equal($('#vQuick').hidden,true);assert.equal($('#vKit').hidden,false);assert.equal(d.activeElement.dataset.tab,'kit');assert.equal(w.__lastScroll,$('#skGal'));
+  });
+  await test('retired helper location falls back to visible Kit when custom colors have no gallery',()=>{
+   const previousColor=run('S.p.P'),previousKit=w.StyleKit.state();
+   run("S.p.P='AB12CD';StyleKit.selectSource('follow')");tab('slides');click('#exportIssues [data-issue="0"]');assert.equal(run('S.tab'),'kit');assert.equal(d.querySelector('#skGal'),null);assert.equal(w.__lastScroll,$('#vKit'));assert.equal(d.activeElement.dataset.tab,'kit');assert($('#skCustomNotice'));
+   run('S.p.P='+JSON.stringify(previousColor)+';StyleKit.sync(S.p,S.base);persist()');if(previousKit.source==='independent')w.StyleKit.selectTheme(previousKit.id);
   });
   await test('cancel button discards pending bytes, resets UI and permits retry',async()=>{
    app.setMode('ready');tab('quick');const before=app.downloads().length;app.hold();click('[data-qs-download]');await until(()=>app.exported.length&&run('exportFlow.busy()'),'export started');assert.equal($('#exportCancel').hidden,false);click('#exportCancel');app.release();await app.settled();assert.equal(app.downloads().length,before);assert.equal(w.__studio.preflight.state,'cancelled');assert.equal($('[data-qs-download]').disabled,false);
