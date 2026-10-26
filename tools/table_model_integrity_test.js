@@ -22,7 +22,7 @@ const fullMatrix = m => [...(m.slides[0].table.h0 ? matrix(m).slice(0, 1) : []),
 function htmlRows(html) {
   const dom = new JSDOM(html);
   for (const br of dom.window.document.querySelectorAll('br')) br.replaceWith('\n');
-  return Array.from(dom.window.document.querySelectorAll('tr'), row => Array.from(row.querySelectorAll('td'), cell => cell.textContent));
+  return Array.from(dom.window.document.querySelectorAll('tr'), row => Array.from(row.cells, cell => cell.textContent));
 }
 function xmlRows(xml) {
   const document = new JSDOM(xml, { contentType: 'application/xml' }).window.document;

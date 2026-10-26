@@ -44,8 +44,8 @@ async function main(){
    for(const old of ['kit','quick']){tab(old);assert(!$('#vMaster').hidden);assert($('#vQuick').hidden);assert($('#vKit').hidden);assert(!$('#vQuick').children.length);assert(!d.querySelector('#tabs [data-tab="'+old+'"]'));assert.equal(w.FixedMaster.getState($('#vMaster')).paletteSource,'common');}
    assert.equal(w.localStorage.getItem('ppt-studio-quick-styles'),oldQuick);assert.equal(w.localStorage.getItem('ppt-studio-stylekit-v1'),oldKit);
   });
-  await test('Master palette remains independent while global presets and custom colors change',async()=>{
-   const e=$('[data-fm-field="paletteSource"]');e.value='theme';e.dispatchEvent(new w.Event('change',{bubbles:true}));const before=JSON.stringify(w.FixedMaster.getState($('#vMaster'))),gallery=$('.fmGallery').innerHTML;
+  await test('Master fixed schemes remain independent while global presets and custom colors change',async()=>{
+   assert.equal(d.querySelectorAll('[data-fm-field]').length,0);assert.deepEqual([...d.querySelectorAll('[data-fm-scheme]')].map(e=>e.dataset.fmScheme),['07','06','03','10','04']);const before=JSON.stringify(w.FixedMaster.getState($('#vMaster'))),gallery=$('.fmGallery').innerHTML;
    click('#tpls .tpl[data-id="wine"]');await delay(100);tab('master');assert.equal(JSON.stringify(w.FixedMaster.getState($('#vMaster'))),before);assert.equal($('.fmGallery').innerHTML,gallery);
    run("setColor('PD','123A56');syncPanel();schedule()");await delay(100);assert.equal(JSON.stringify(w.FixedMaster.getState($('#vMaster'))),before);assert.equal($('.fmGallery').innerHTML,gallery);assert.equal(w.localStorage.getItem('ppt-studio-stylekit-v1'),oldKit);
   });
@@ -91,7 +91,7 @@ async function main(){
   tab('master');storage=Object.fromEntries(Array.from({length:w.localStorage.length},(_,i)=>{const key=w.localStorage.key(i);return[key,w.localStorage.getItem(key)];}));assert.deepEqual(app.errors,[]);
  }finally{app.dom.window.close();}
  const restored=await boot(storage);try{await test('Reload preserves fixed palette, exact table data and old preference bytes without exposing retired UI',()=>{
-   assert(!restored.$('#vMaster').hidden);assert.equal(restored.w.FixedMaster.getState(restored.$('#vMaster')).paletteSource,'theme');assert.equal(restored.run('T.rows[1][1]'),'00123');assert.equal(restored.run('T.rows[2][1]'),'9007199254740993');assert.equal(restored.w.localStorage.getItem('ppt-studio-quick-styles'),oldQuick);assert.equal(restored.w.localStorage.getItem('ppt-studio-stylekit-v1'),oldKit);assert(restored.$('#vQuick').hidden);assert(restored.$('#vKit').hidden);assert.equal(restored.w.__confirms.length,0);assert.deepEqual(restored.errors,[]);
+   assert(!restored.$('#vMaster').hidden);assert.equal(restored.w.FixedMaster.getState(restored.$('#vMaster')).paletteSource,'common');assert.equal(restored.run('T.rows[1][1]'),'00123');assert.equal(restored.run('T.rows[2][1]'),'9007199254740993');assert.equal(restored.w.localStorage.getItem('ppt-studio-quick-styles'),oldQuick);assert.equal(restored.w.localStorage.getItem('ppt-studio-stylekit-v1'),oldKit);assert(restored.$('#vQuick').hidden);assert(restored.$('#vKit').hidden);assert.equal(restored.w.__confirms.length,0);assert.deepEqual(restored.errors,[]);
   });}finally{restored.dom.window.close();}
  console.log(`${count} preflight DOM checks passed (${FILE}; JSDOM events only, native bytes stubbed).`);
 }

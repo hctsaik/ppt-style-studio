@@ -50,7 +50,7 @@ async function boot(storage={},suffix=''){
    $('#tabs [data-tab="master"]').focus();$('#tabs [data-tab="master"]').click();assert.equal(run('S.tab'),'master');assert.equal(d.activeElement.dataset.tab,'master');assert.equal(d.querySelectorAll('#tabs [aria-current="page"]').length,1);
   });
   await test('Programmatic navigation releases focus from a newly hidden view',()=>{
-   tab('master');$('[data-fm-field="paletteSource"]').focus();assert($('#vMaster').contains(d.activeElement));tab('slides');assert.equal(d.activeElement,$('#tabs [data-tab="slides"]'));
+   tab('master');$('[data-fm-download="template"]').focus();assert($('#vMaster').contains(d.activeElement));tab('slides');assert.equal(d.activeElement,$('#tabs [data-tab="slides"]'));
   });
   await test('Legacy hash changes redirect without swallowing real slide links or filters',()=>{
    for(const hash of ['#/quick','#quick','#/tab/quick','#/kit','#kit','#/tab/kit','#/master']){tab('table');w.history.replaceState(null,'','?type=C&n=2'+hash);w.dispatchEvent(new w.HashChangeEvent('hashchange'));assert.equal(run('S.tab'),'master');assert.equal(w.location.hash,'#/master');assert.equal(w.location.search,'?type=C&n=2');assert($('#vKit').hidden);assert(!$('#vMaster').hidden);}
