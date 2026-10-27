@@ -45,7 +45,7 @@ async function main(){
    assert.equal(w.localStorage.getItem('ppt-studio-quick-styles'),oldQuick);assert.equal(w.localStorage.getItem('ppt-studio-stylekit-v1'),oldKit);
   });
   await test('Master fixed schemes remain independent while global presets and custom colors change',async()=>{
-   assert.equal(d.querySelectorAll('[data-fm-field]').length,0);assert.equal(d.querySelectorAll('#vMaster figure').length,26);assert.deepEqual([...d.querySelectorAll('#vMaster [data-fm-download]')].map(b=>b.dataset.fmDownload),['template']);const before=JSON.stringify(w.FixedMaster.getState($('#vMaster'))),origins=$('.fmOrigins').innerHTML;
+   assert.equal(d.querySelectorAll('[data-fm-field]').length,0);assert.equal(d.querySelectorAll('#vMaster figure').length,24);assert.deepEqual([...d.querySelectorAll('#vMaster [data-fm-download]')].map(b=>b.dataset.fmDownload),['template']);const before=JSON.stringify(w.FixedMaster.getState($('#vMaster'))),origins=$('.fmOrigins').innerHTML;
    click('#tpls .tpl[data-id="wine"]');await delay(100);tab('master');assert.equal(JSON.stringify(w.FixedMaster.getState($('#vMaster'))),before);assert.equal($('.fmOrigins').innerHTML,origins);
    run("setColor('PD','123A56');syncPanel();schedule()");await delay(100);assert.equal(JSON.stringify(w.FixedMaster.getState($('#vMaster'))),before);assert.equal($('.fmOrigins').innerHTML,origins);assert.equal(w.localStorage.getItem('ppt-studio-stylekit-v1'),oldKit);
   });
