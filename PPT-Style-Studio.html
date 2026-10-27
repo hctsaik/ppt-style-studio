@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%226%22 fill=%22%231F4E79%22/%3E%3C/svg%3E">
-<!-- PPT Style Studio 單檔版（自動產生於 2026-10-27 21:58，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
+<!-- PPT Style Studio 單檔版（自動產生於 2026-10-27 23:03，請勿手改；來源：studio.html + icons.js + deck.js + stylekit-data.js + stylekit.js + stylekit/* + pptxgen.min.js + jszip.min.js，以 tools/build_single.py 重建） -->
 <title>PPT Style Studio · 圖解元件客製工作室｜新需求請寄信給 HCTSAIK，謝謝</title>
 <style>
 :root{--ink:#3A3A3A;--t2:#595959;--mu:#8C8C8C;--line:#E4E4E4;--fill:#F6F6F6;--p:#1F4E79}
@@ -119,6 +119,7 @@ main{display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff
 .mfoot{display:flex;gap:6px;margin-top:6px}.mfoot button{flex:1}
 .tabs{display:flex;gap:2px;background:#F2F2F2;border-radius:9px;padding:3px;margin-left:8px}
 .tabs button{flex:0 0 auto;border:0;background:none;padding:5px 13px;border-radius:7px;cursor:pointer;font-weight:700;color:var(--t2);font-size:12.5px}
+.tabs button.tab-group-start{margin-left:10px}
 .tabs button.on{background:#fff;color:var(--p);box-shadow:0 1px 3px #00000022}
 .view{flex:1;display:flex;flex-direction:column;min-height:0;position:relative}.view[hidden]{display:none}
 .ibar{flex:none;display:flex;align-items:center;gap:14px;padding:12px 22px 8px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
@@ -430,7 +431,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 
 
 #tIns .tsec[data-sec="data"] > #tDrop{display:block}
-#tIns .tsec[data-sec="data"] > :not(#tDrop):not(#tWorkbench):not(#tDataSemantics):not(.wide){display:none!important}
+#tIns .tsec[data-sec="data"] > :not(#tDrop):not(#tWorkbench):not(#tImportOptions):not(.wide){display:none!important}
 #tIns .tsec[data-sec="data"] > #tEdit.wide{display:flex!important}
 
 .trange-editor{position:absolute;z-index:8;box-sizing:border-box;min-height:28px;border:2px solid #2563EB;border-radius:2px;background:#FFFFFF;color:#1F2937;font:inherit;font-size:14px;line-height:1.3;padding:3px;resize:none;white-space:pre-wrap;user-select:text;touch-action:auto}
@@ -507,11 +508,11 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 }
 @media(min-width:901px){.tpreview-scroll-hint{display:none}}
 
-/* Four task-based tabs; preview controls and persistent actions stay independent. */
+/* Five task-based tabs; preview controls and persistent actions stay independent. */
 .tpreview-workspace{min-width:0;min-height:0;display:flex;flex-direction:column;background:#F4F4F2}.tpreview-workspace>.tcanvas{flex:1;max-width:100%}
 .tpreviewbar{flex:none;display:flex;align-items:center;gap:8px;overflow-x:auto;padding:0 12px;border-bottom:1px solid var(--line);background:#fff;min-height:45px}
 .tpreview-label{flex:none;font-size:11px;color:#526477;white-space:nowrap}.tpreviewbar .tpreview-controls{flex-direction:row;align-items:center;gap:8px;flex:none;order:2}.tpreviewbar .tclean{white-space:nowrap;min-height:44px;display:flex;align-items:center;font-size:12px}.tpreviewbar .tzoom{display:flex;flex:none;gap:6px;justify-content:flex-start;align-self:auto;margin:0}.tpreviewbar .tzoom button{white-space:nowrap;min-height:44px;font-size:12px;padding:6px 10px;border:1px solid #ddd;border-radius:7px;background:#fff}.tpreviewbar .tzoom button[aria-pressed="true"]{background:#EEF3F8;border-color:var(--p);color:var(--p);font-weight:700}
-.tinsTabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:4px 8px;gap:4px}.tinsTabs button{min-width:44px;min-height:44px;padding:4px}
+.tinsTabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding:4px 8px;gap:4px}.tinsTabs button{min-width:44px;min-height:44px;padding:4px;white-space:nowrap}
 .tout-actions{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px;align-items:center}.tins .tout-actions .tsteps{position:static;display:flex;padding:0;gap:2px;border:0}.tout-actions .tsteps>b,.tout-actions .tsteps .tauto{display:none}.tout-actions .tsteps .tub{width:44px;min-width:44px;height:44px;min-height:44px;padding:4px}.tout-actions #tPptx{min-width:0;width:100%;min-height:44px}
 #tWorkbench{display:block!important;min-height:44px;width:100%;margin-bottom:8px}#tIns .tsec[data-sec="data"]>#tEdit.wide{display:flex!important}
 .tdata-semantics>summary,#tOutputAdvanced>summary{min-height:44px;display:flex;align-items:center;cursor:pointer}.tdata-semantics .trow{flex-wrap:wrap}
@@ -534,8 +535,8 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
 
 <header>
  <div class="brand"><h1><i id="dot"></i>PPT <span class="hs">Style </span>Studio <small>精緻圖解元件・客製工作室（背景永遠白色）</small></h1><span class="reqnote">如有需求請寄給 HCTSAIK，謝謝</span></div>
- <nav class="tabs" id="tabs" aria-label="工作室功能"><button data-tab="style" aria-controls="vStyle" title="全站共用：投影片、表格、圖示庫一起換；固定母片獨立">風格設定</button><button data-tab="slides" aria-controls="vSlides" class="on">投影片元件</button><button data-tab="icons" aria-controls="vIcons">圖示庫</button><button data-tab="table" aria-controls="vTable">表格</button><button data-tab="master" aria-controls="vMaster" title="原件母片固定紅色與字型；獨立搭配快速樣式與螢光筆">投影片母片</button><button data-tab="guide" aria-controls="vGuide" title="依情境挑元件：週報、8D、提案、面試、作品集、競賽簡報">簡報食譜</button></nav>
- <div class="more tools tplm"><button class="btn" id="bTpl" aria-controls="mTpl" aria-haspopup="true" aria-expanded="false" title="切換範本：全站套用，與「風格設定」同步">範本 ▾</button><div class="menu" id="mTpl" role="menu" hidden></div></div>
+ <nav class="tabs" id="tabs" aria-label="工作室功能"><button data-tab="slides" aria-controls="vSlides" class="on">投影片元件</button><button data-tab="table" aria-controls="vTable">表格工作台</button><button data-tab="master" aria-controls="vMaster" title="固定紅色、字型與原始內容，不隨全站風格改變">固定母片</button><button class="tab-group-start" data-tab="icons" aria-controls="vIcons">圖示庫</button><button data-tab="guide" aria-controls="vGuide" title="依情境挑元件：週報、8D、提案、面試、作品集、競賽簡報">簡報食譜</button><button class="tab-group-start" data-tab="style" aria-controls="vStyle" title="全站共用：投影片、表格、圖示庫一起換；固定母片獨立">全站風格</button></nav>
+ <div class="more tools tplm"><button class="btn" id="bTpl" aria-controls="mTpl" aria-haspopup="true" aria-expanded="false" title="切換範本：全站套用，與「全站風格」同步">範本 ▾</button><div class="menu" id="mTpl" role="menu" hidden></div></div>
  <span class="sp"></span>
  <button class="btn monly" id="bPanel" aria-expanded="false" aria-controls="panel">☰ 頁面／設定</button>
  <label class="hx" id="exWrap" style="display:none!important" title="23–25 頁是主題式範例版面（三圓架構、框架流程、能力地圖），不是基本元件；預設不放進預覽與整份 .pptx"><input type="checkbox" id="bEx"> 含範例頁</label>
@@ -564,8 +565,8 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
   <div class="stage"><div class="slide" id="big"></div><aside class="fwp" id="fwPanel" aria-label="框架使用說明" hidden></aside></div>
   <div class="xinfo" id="xInfo"></div>
   </section>
-  <section class="view" id="vStyle" hidden><div class="stv"><div class="sthost" id="stHost"><h2 style="margin:0 0 4px">風格設定</h2><p class="hint" style="margin:0 0 8px">在這裡改的範本、顏色、字型會套用到全站：投影片、表格、圖示庫，並自動記住。獨立的「投影片母片」不受影響。</p>
-  <details id="stDet" open><summary>風格設定</summary>
+  <section class="view" id="vStyle" hidden><div class="stv"><div class="sthost" id="stHost"><h2 style="margin:0 0 4px">全站風格</h2><p class="hint" style="margin:0 0 8px">在這裡改的範本、顏色、字型會套用到全站：投影片、表格、圖示庫，並自動記住。「固定母片」的紅色、字型與原始內容不隨全站風格改變。</p>
+  <details id="stDet" open><summary>全站風格</summary>
   <div class="cap">範本</div>
   <div class="tpls" id="tpls"></div>
   <div class="cap">我的風格</div>
@@ -615,33 +616,35 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
      </div>
      <div class="tins" id="tIns" aria-label="表格設定">
 
-      <div class="tinsTabs" role="tablist" aria-label="表格設定"><button id="tTabData" role="tab" data-t="data" aria-controls="tSecData" aria-selected="true" aria-pressed="true" tabindex="0">資料</button><button id="tTabLook" role="tab" data-t="look" aria-controls="tSecLook" aria-selected="false" aria-pressed="false" tabindex="-1">外觀</button><button id="tTabEmphasis" role="tab" data-t="emphasis" aria-controls="tSecEmphasis" aria-selected="false" aria-pressed="false" tabindex="-1">強調</button><button id="tTabOut" role="tab" data-t="out" aria-controls="tSecOut" aria-selected="false" aria-pressed="false" tabindex="-1">輸出</button></div>
+      <div class="tinsTabs" role="tablist" aria-label="表格設定"><button id="tTabData" role="tab" data-t="data" aria-controls="tSecData" aria-selected="true" aria-pressed="true" tabindex="0">資料</button><button id="tTabStructure" role="tab" data-t="structure" aria-controls="tSecStructure" aria-selected="false" aria-pressed="false" tabindex="-1">結構</button><button id="tTabLook" role="tab" data-t="look" aria-controls="tSecLook" aria-selected="false" aria-pressed="false" tabindex="-1">外觀</button><button id="tTabEmphasis" role="tab" data-t="emphasis" aria-controls="tSecEmphasis" aria-selected="false" aria-pressed="false" tabindex="-1">強調</button><button id="tTabOut" role="tab" data-t="out" aria-controls="tSecOut" aria-selected="false" aria-pressed="false" tabindex="-1">版面</button></div>
       <div class="tsecs">
-       <section class="tsec on" data-sec="data" id="tSecData" role="tabpanel" aria-labelledby="tTabData"><button class="btn" id="tWorkbench">開啟資料工作台</button>
-        <div class="tdrop" id="tDrop"><div id="tRawPasteLabel">目前資料</div><div id="tRawPaste" tabindex="0" role="region" aria-labelledby="tRawPasteLabel" aria-describedby="tRawPasteHelp tRawPasteNotice"></div><p id="tRawPasteHelp">原始資料唯讀。點此表格後按 Ctrl／⌘+V 貼上 Excel、TSV、CSV 或 Markdown 表格，取代全部資料；Ctrl／⌘+C 複製全部資料。</p><p class="mobile-data-help" id="tRawPasteTouchHelp">手機可開啟資料工作台，直接編輯或匯入 CSV／TSV；貼上依瀏覽器支援。</p><p id="tRawPasteNotice" role="status" aria-live="polite"></p></div>
+       <section class="tsec on" data-sec="data" id="tSecData" role="tabpanel" aria-labelledby="tTabData"><button class="btn" id="tWorkbench">編輯資料</button>
+        <div id="tImportOptions"><div class="trow timport"><label>整份貼上／匯入 <select id="tImportMode" aria-label="資料匯入模式"><option value="new">新表格（清除舊標題／來源）</option><option value="update">更新這張表（保留標題／來源）</option></select></label><label>分隔 <select id="tDelimiter" aria-label="資料分隔符號"><option value="auto">自動：Tab／CSV</option><option value="tab">Tab</option><option value="comma">逗號 CSV</option></select></label></div><label class="ttg tkeep" title="只沿用欄樣式、對齊與顯示格式；新表格不沿用舊標題、單位與來源"><input type="checkbox" id="tKeep"> 沿用欄樣式（不含標題／來源）</label></div>
+        <div class="tdrop" id="tDrop"><div id="tRawPasteLabel">目前資料</div><div id="tRawPaste" tabindex="0" role="region" aria-labelledby="tRawPasteLabel" aria-describedby="tRawPasteHelp tRawPasteNotice"></div><p id="tRawPasteHelp">原始資料唯讀。點此表格後按 Ctrl／⌘+V 貼上 Excel、TSV、CSV 或 Markdown 表格，取代全部資料；Ctrl／⌘+C 複製全部資料。</p><p class="mobile-data-help" id="tRawPasteTouchHelp">手機可編輯資料，直接編輯或匯入 CSV／TSV；貼上依瀏覽器支援。</p><p id="tRawPasteNotice" role="status" aria-live="polite"></p></div>
         <div class="trow tdrow"><span class="hint tph"><b>Ctrl+V</b> 重新貼上（照原樣）</span><button class="btn" id="tUndoPaste" title="回到貼上之前的資料" hidden>↶ 還原上一份</button>
          <select id="tSample" aria-label="載入範例"><option value="">範例…</option><option value="yield">批次良率</option><option value="fin">損益表摘要</option><option value="status">專案進度</option><option value="cmp">方案比較</option><option value="kpi">月度 KPI</option><option value="risk">風險表</option><option value="issue">議題追蹤</option><option value="action">行動項目</option><option value="raci">RACI 分工</option></select>
 </div>
         <details class="tedit" id="tEdit" open><summary id="tEditSum">編輯資料</summary>
-        <div class="tw-head"><div><b>資料工作台</b><small>原始資料完整保留，投影片同步更新</small></div><div class="trow"><button class="btn" id="tWorkUndo" title="復原（Ctrl+Z）" disabled>↶ 復原</button><button class="btn" id="tWorkRedo" title="重做（Ctrl+Shift+Z）" disabled>↷ 重做</button><button class="btn pri" id="tWideDone">完成，回到投影片</button></div></div>
-        <div class="trow timport"><label>整份貼上／匯入 <select id="tImportMode" aria-label="資料匯入模式"><option value="new">新表格（清除舊標題／來源）</option><option value="update">更新這張表（保留標題／來源）</option></select></label><label>分隔 <select id="tDelimiter" aria-label="資料分隔符號"><option value="auto">自動：Tab／CSV</option><option value="tab">Tab</option><option value="comma">逗號 CSV</option></select></label></div>
+        <div class="tw-head"><div><b>編輯資料</b><small>原始資料完整保留，投影片同步更新</small></div><div class="trow"><button class="btn" id="tWorkUndo" title="復原（Ctrl+Z）" disabled>↶ 復原</button><button class="btn" id="tWorkRedo" title="重做（Ctrl+Shift+Z）" disabled>↷ 重做</button><button class="btn pri" id="tWideDone">完成，回到投影片</button></div></div>
+
         <div class="twork-layout"><div class="twork-data">
-        <div class="tgridbar"><strong id="tGridSel" aria-live="polite">尚未選取儲存格</strong><label>欄類型 <select id="tColType" aria-label="選取欄的資料類型"><option value="auto">自動對齊</option><option value="text">文字／編號</option><option value="number">數字</option></select></label><label>顯示 <select id="tColFormat" aria-label="選取欄的顯示格式"><option value="raw">原樣（不改值）</option><option value="grouped">千分位（不捨入）</option></select></label><button class="btn" id="tMergeCells" data-merge-action="merge" disabled>合併儲存格</button><button class="btn" id="tUnmergeCells" data-merge-action="unmerge" disabled>取消合併</button></div>
+        <div class="tgridbar"><strong id="tGridSel" aria-live="polite">尚未選取儲存格</strong><label>欄類型 <select id="tColType" aria-label="選取欄的資料類型"><option value="auto">自動對齊</option><option value="text">文字／編號</option><option value="number">數字</option></select></label><label>顯示 <select id="tColFormat" aria-label="選取欄的顯示格式"><option value="raw">原樣（不改值）</option><option value="grouped">千分位（不捨入）</option></select></label><button class="btn" data-merge-action="merge" disabled>合併儲存格</button><button class="btn" data-merge-action="unmerge" disabled>取消合併</button></div>
         <div class="tgrid" id="tGrid"></div>
         <div class="trow tstructure" role="group" aria-label="在選取位置插入或刪除"><button class="btn" data-g="r-before">上方插列</button><button class="btn" data-g="r+">下方插列</button><button class="btn" data-g="c-before">左方插欄</button><button class="btn" data-g="c+">右方插欄</button><button class="btn" data-g="r-">刪除選取列</button><button class="btn" data-g="c-">刪除選取欄</button></div>
-        <div class="hint tkeys">拖曳框選，或 Shift＋點選／方向鍵延伸。Enter 往下 · Shift+Enter 往上 · Tab 下一格 · Alt+Enter 換行 · Esc 取消本格修改</div><p class="hint tkeys" id="tMergeHelp">合併會依列順序換行顯示所有文字，原格內容仍保留。改過合併文字後拆分，新文字與原左上格文字會並列保留在左上格，其餘回到原格。</p><p class="hint" id="tMergeStatus" role="status" aria-live="polite"></p>
+        <div class="hint tkeys">拖曳框選，或 Shift＋點選／方向鍵延伸。Enter 往下 · Shift+Enter 往上 · Tab 下一格 · Alt+Enter 換行 · Esc 取消本格修改</div>
         </div><aside class="twork-preview"><b>投影片預覽</b><div id="tWorkbenchPreview" aria-label="與資料同步的投影片預覽"></div><p id="tWorkbenchStatus" class="hint"></p><div class="twork-meta"><label>標題<input data-meta="title" aria-label="表格標題"></label><label>單位<input data-meta="unit" aria-label="表格單位"></label><label>註腳／來源<textarea data-meta="note" aria-label="表格註腳與來源" rows="2"></textarea></label></div></aside></div>
-        <div class="trow twork-footer"><label class="btn" id="tCsvL" title="匯入 .csv／.tsv（支援引號與格內換行）">匯入 CSV／TSV<input type="file" id="tCsv" accept=".csv,.tsv,.txt,text/csv" hidden></label><button class="btn" id="tWide">⤢ 開啟資料工作台</button><button class="btn" id="tDataDownload">下載完整資料 .tsv</button><button class="btn tclr" id="tClear">清空</button></div>
+        <div class="trow twork-footer"><label class="btn" id="tCsvL" title="匯入 .csv／.tsv（支援引號與格內換行）">匯入 CSV／TSV<input type="file" id="tCsv" accept=".csv,.tsv,.txt,text/csv" hidden></label><button class="btn" id="tWide">⤢ 編輯資料</button><button class="btn" id="tDataDownload">下載完整資料 .tsv</button><button class="btn tclr" id="tClear">清空</button></div>
         <p id="tImportNotice" class="hint" aria-live="polite"></p>
         </details>
        </section>
-       <section class="tsec" data-sec="look" id="tSecLook" role="tabpanel" aria-labelledby="tTabLook" hidden>
- <div class="tsettings-heading"><h3>外觀</h3><button class="btn" id="tFormatReset" aria-describedby="tFormatResetScope">清除全部格式</button></div>
-        <details id="tDataSemantics" class="tdata-semantics"><summary>資料結構</summary>        <label class="ttg tkeep" title="只沿用欄樣式、對齊與顯示格式；新表格不沿用舊標題、單位與來源"><input type="checkbox" id="tKeep"> 沿用欄樣式（不含標題／來源）</label>
-        <h4 class="tgh">標題位置</h4><div class="trow thdr"><label for="tHeaderMode">表格標題</label><select id="tHeaderMode" aria-describedby="tHeaderModeHelp"><option value="none">無標題</option><option value="row">首列</option><option value="col">首欄</option><option value="both">首列＋首欄</option></select></div><p id="tHeaderModeHelp" class="tappearance-hint">更新這張表會保留選擇；兩者都有時，左上角沿用首列樣式。清除全部格式會還原標題與合計樣式。</p>
+       <section class="tsec" data-sec="structure" id="tSecStructure" role="tabpanel" aria-labelledby="tTabStructure" hidden><h3>結構</h3><div id="tDataSemantics" class="tdata-semantics">
+        <div class="trow thdr"><label for="tHeaderMode">表頭位置</label><select id="tHeaderMode" aria-describedby="tHeaderModeHelp"><option value="none">無表頭</option><option value="row">首列</option><option value="col">首欄</option><option value="both">首列＋首欄</option></select></div><p id="tHeaderModeHelp" class="tappearance-hint">更新這張表會保留選擇；兩者都有時，左上角沿用首列樣式。清除全部格式會還原表頭與合計樣式。</p>
         <div hidden><label><input type="checkbox" id="tHRow"> 第一列為表頭</label><label><input type="checkbox" id="tHCol"> 第一欄為表頭</label></div>
         <div class="trow" hidden><label>第一列</label><span class="tseg" id="tHead"><button data-v="auto">自動</button><button data-v="1">是表頭</button><button data-v="0">不是</button></span></div>
-        <div class="trow"><label>最後一列</label><label class="ttg"><input type="checkbox" id="tLast"> 是合計（粗體＋上方線）</label></div></details>
+        <div class="trow"><label>最後一列</label><label class="ttg"><input type="checkbox" id="tLast"> 是合計（粗體＋上方線）</label></div></div><h4>選取範圍</h4><p id="tStructureSel" role="status" aria-live="polite">尚未選取儲存格</p><p class="hint">在預覽框選儲存格；Shift＋點選或方向鍵可延伸。選取不會切換頁籤。</p><div class="trow"><button class="btn" id="tMergeCells" data-merge-action="merge" disabled>合併儲存格</button><button class="btn" id="tUnmergeCells" data-merge-action="unmerge" disabled>取消合併</button></div><div class="trow tstructure" role="group" aria-label="在選取位置插入或刪除"><button class="btn" data-g="r-before">上方插列</button><button class="btn" data-g="r+">下方插列</button><button class="btn" data-g="c-before">左方插欄</button><button class="btn" data-g="c+">右方插欄</button><button class="btn" data-g="r-">刪除選取列</button><button class="btn" data-g="c-">刪除選取欄</button></div><p class="hint tkeys" id="tMergeHelp">合併會依列順序換行顯示所有文字，原格內容仍保留。改過合併文字後拆分，新文字與原左上格文字會並列保留在左上格，其餘回到原格。</p><p class="hint" id="tMergeStatus" role="status" aria-live="polite"></p></section>
+       <section class="tsec" data-sec="look" id="tSecLook" role="tabpanel" aria-labelledby="tTabLook" hidden>
+ <div class="tsettings-heading"><h3>外觀</h3><button class="btn" id="tFormatReset" aria-describedby="tFormatResetScope">清除全部格式</button></div>
+
  <p class="tsettings-scope" id="tFormatResetScope">清除樣式、強調與個別格式；保留資料、合併範圍及原文，可復原。</p>
       <div class="tbar1"><div class="tlstrip tappearance" id="tLStrip" role="group" aria-label="可獨立組合的表格外觀">
        <div class="tappearance-row"><span class="tappearance-label" id="tHeaderLabel">表頭</span><div class="tappearance-options" role="group" aria-labelledby="tHeaderLabel" data-appearance="tbHeaderStyle"><button data-v="normal">一般</button><button data-v="primary">主色</button></div></div>
@@ -650,7 +653,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
        <div class="tappearance-row"><span class="tappearance-label" id="tCardLabel">卡片</span><div class="tappearance-options" role="group" aria-labelledby="tCardLabel" data-appearance="tbCardOn"><button data-v="false">無</button><button data-v="true">白卡＋陰影</button></div></div>
       </div><p class="tappearance-hint">四項可自由搭配；只改外觀，不改資料或已套用的強調。</p></div><div class="tlooks" id="tLooks" hidden></div>
         <details class="tmore-options" id="tMoreOptions" open><summary>風格與文字</summary>
-        <div class="trow"><label>風格</label><select id="tStyle" aria-label="風格（顏色、字型）"></select></div>
+        <div class="trow"><label for="tStyle">全站風格</label><select id="tStyle" aria-label="全站風格" aria-describedby="tStyleScope"></select></div><p id="tStyleScope" class="hint">套用到投影片元件、表格與圖示；固定母片的紅色與字型不受影響。</p>
         <div class="trow"><label>字型</label><span class="tseg" data-tp="tbFont"><button data-v="jh" title="表格用微軟正黑體（電腦沒裝時預覽改用相近字型）">微軟正黑體（預設）</button><button data-v="auto" title="沿用目前風格的內文字型">跟風格</button><button data-v="arial">Arial＋正黑</button></span></div>
 </details>
 
@@ -667,7 +670,7 @@ body.tabK aside{display:none}body.tabK .wrap{grid-template-columns:1fr}body.tabK
        </section>
 
        <section class="tsec" data-sec="out" id="tSecOut" role="tabpanel" aria-labelledby="tTabOut" hidden>
-        <h3>輸出尺寸</h3><p class="hint">影響可編輯 PPT；預覽縮放不改變輸出。</p>
+        <h3>投影片版面</h3><p class="hint">影響可編輯 PPT；預覽縮放不改變輸出。</p>
         <p id="tSizingLegacy" class="tsizing-legacy" hidden>沿用原設定。選擇寬度或高度後才採用新版尺寸規則，可以復原。</p>
         <div class="toutput-group" role="group" aria-labelledby="tWidthLabel"><b id="tWidthLabel">表格寬度</b><div class="toutput-options" data-tsizing="width"><button class="btn" data-v="auto" aria-pressed="false">自動</button><button class="btn" data-v="90" aria-pressed="false">90%</button><button class="btn" data-v="45" aria-pressed="false">45%</button></div></div>
         <div class="toutput-group" role="group" aria-labelledby="tHeightLabel"><b id="tHeightLabel">表格高度</b><div class="toutput-options" data-tsizing="height"><button class="btn" data-v="optimal" aria-pressed="false">最適</button><button class="btn" data-v="larger" aria-pressed="false">較大</button><button class="btn" data-v="smaller" aria-pressed="false">較小</button><button class="btn" data-v="minimum" aria-pressed="false">最小</button></div></div>
@@ -6217,9 +6220,11 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
    // Share the selected header paint on both axes; explicit emphasis below wins.
    if(!headerCol&&LK.zebra&&(ri-h0)%2===1)o.fill=LK.zebra;
    if(!headerCol&&key&&LK.keyFill)o.fill=LK.keyFill;
-   if(firstKey(ri)&&LK.key&&ri>h0)o.bT=bw(LK.key);
-   if(sec&&LK.row&&ri>h0)o.bT=bw(LK.row);
    baseGrid(o,ri);
+   // Grid first, semantic separators next, manual emphasis below wins.
+   if(sec&&LK.row&&ri>h0)o.bT=bw(LK.row);
+   const totalRule=last&&T.lastTotal===true&&ri>0;
+   if(firstKey(ri)&&LK.key&&ri>h0||totalRule){const line=LK.key||{c:G.ink,w:.75};o.bT=bw({c:tableHighlightStroke(line.c,[o.fill||'FFFFFF']),w:totalRule?Math.max(1,line.w):line.w});o.semanticTop=true;}
    const s=mergedAt(ri,c)||st.tbStatus===false||!AU.statC[c]?null:statusOf(sizing.version===2?src[ri][c]:t);
    if(s){o.color=ST[s];o.bold=true;if(/[A-Za-z\u4e00-\u9fff]/.test(t))o.dot=ST[s];}
    if(isN&&st.tbNeg&&tNumVal(src[ri][c])<0&&!/^[\s(（]*[▲△]/.test(src[ri][c]))o.color=BAD;
@@ -6237,6 +6242,9 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
     else ruleBoxes.push({r:ri,c,color:C});}
    o.color=cc(o.color,o.fill);
    return rangePaint(o,ri,c);}));
+  // PowerPoint resolves the shared edge from both cells. Match its two sides
+  // before later manual borders; never cut through a vertical merged cell.
+  cells.forEach((row,r)=>row.forEach((cell,c)=>{const m=mergedAt(r,c);if(!r||!cell.semanticTop||m&&m.r0<r)return;const line=row[m?m.c0:c].bT;cell.bT=line;cells[r-1][c].bB=line;}));
   const firstSlide=cur;
   planned.pages.forEach((sourceRows,pageIndex)=>{
    if(pageIndex){cur={key:'table',title:'表格',no:slides.length+1,items:[],groups:[]};slides.push(cur);}else cur=firstSlide;
@@ -8829,7 +8837,9 @@ document.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target
 let exportEpoch=0,checkedModel=null,checkedReport=null,exportCheckDismissed=false;
 const exportRevision=()=>JSON.stringify([exportEpoch,S.p,S.labels,T]);
 function reportExport(report,state,forceReveal=false){
- if(forceReveal)exportCheckDismissed=false;checkedReport=report;const panel=$('#exportCheck');panel.hidden=exportCheckDismissed;panel.dataset.status=report.status;
+ if(forceReveal)exportCheckDismissed=false;checkedReport=report;const panel=$('#exportCheck');
+ const meaningful=report.status!=='ready'||report.issues.length>0||['preparing','exporting','failed','cancelled'].includes(state);
+ panel.hidden=exportCheckDismissed||!meaningful;panel.dataset.status=report.status;
  const label=report.label||({ready:'可以匯出',advisory:'建議調整',blocked:'必須修正'}[report.status]);
  $('#exportCheckTitle').textContent=state==='stale'?'檢查已過期 · 請重新下載':state==='cancelled'?'已取消匯出':state==='failed'?'匯出未完成':state==='preparing'?'正在準備檢查…':label+(state==='exporting'?' · 產生中…':state==='complete'?' · 已產生':'');
  $('#exportCheckNote').textContent=state==='failed'?(report.failureMessage||'匯出未完成，請重新下載；內容與設定保留。'):state==='stale'?'內容或樣式已變更，下次下載會重新檢查。':state==='cancelled'?'本次檔案未下載；內容與設定保留。':report.status==='blocked'?'請先修正以下項目，再重新下載。':report.issues.length?'以下為建議，不會阻擋下載，也不會縮字或改動資料。':'目前未發現可靠的尺寸或資料錯誤。字型與實際換行仍以 PowerPoint 為準。';
@@ -9189,7 +9199,7 @@ const gridCell=(r,c)=>D.tableCellAt(T,r,c);
 function gridStep(point,dr,dc){const cell=gridCell(point.r,point.c),r=Math.max(0,Math.min(T.rows.length-1,cell.anchorR+(dr>0?cell.rowSpan:dr))),c=Math.max(0,Math.min(nCols()-1,cell.anchorC+(dc>0?cell.colSpan:dc))),next=gridCell(r,c);return{r:next.anchorR,c:next.anchorC};}
 function gridTabStep(r,c,step){let pos=r*nCols()+c+step;while(pos>=0&&pos<T.rows.length*nCols()&&gridCell(Math.floor(pos/nCols()),pos%nCols()).covered)pos+=step;return{r:Math.floor(pos/nCols()),c:(pos%nCols()+nCols())%nCols()};}
 function mergeSelection(){if(TRANGE)return {...TRANGE};if(!GRIDSEL||!T.rows.length)return null;const c=gridCell(GRIDSEL.r,GRIDSEL.c);return c.merge?{r0:c.merge.r0,c0:c.merge.c0,r1:c.merge.r1,c1:c.merge.c1}:{r0:c.anchorR,c0:c.anchorC,r1:c.anchorR,c1:c.anchorC};}
-function syncMergeControls(){const q=mergeSelection(),many=q&&(q.r0!==q.r1||q.c0!==q.c1),merges=D.tableMerges(T),has=q&&merges.some(m=>m.r0>=q.r0&&m.c0>=q.c0&&m.r1<=q.r1&&m.c1<=q.c1);document.querySelectorAll('[data-merge-action]').forEach(b=>b.disabled=b.dataset.mergeAction==='merge'?!many:!has);}
+function syncMergeControls(){const q=mergeSelection(),many=q&&(q.r0!==q.r1||q.c0!==q.c1),merges=D.tableMerges(T),has=q&&merges.some(m=>m.r0>=q.r0&&m.c0>=q.c0&&m.r1<=q.r1&&m.c1<=q.c1);document.querySelectorAll('[data-merge-action]').forEach(b=>b.disabled=b.dataset.mergeAction==='merge'?!many:!has);const summary=$('#tStructureSel');if(summary)summary.textContent=q?colLetter(q.c0)+(q.r0+1)+(q.r1!==q.r0||q.c1!==q.c0?':'+colLetter(q.c1)+(q.r1+1):'')+' · '+((q.r1-q.r0+1)*(q.c1-q.c0+1))+' 格':'尚未選取儲存格';}
 function mergeMessage(message){const el=$('#tMergeStatus');if(el)el.textContent=message||'';rangeStatus(message||'');}
 function commitTableMerge(action){finishCellEdit(true);const q=mergeSelection();if(!q)return;let next;try{next=action==='unmerge'?D.tableUnmerge(T,q):D.tableMerge(T,q);}catch(e){mergeMessage(e.message);toast(e.message,5500);return;}const notice=next.mergeNotice;delete next.mergeNotice;pushHist(true);T=next;saveT();pushHist(true);clearRangeSelection();GRID_ANCHOR=null;GRIDSEL={r:q.r0,c:q.c0};closeChip();renderGrid(true);renderAll();selectGrid(q.r0,q.c0,false);const message=notice||(action==='unmerge'?'已取消合併，原格內容保留；可以復原。':'已合併，所有原格文字仍保留；可以復原。');mergeMessage(message);toast(message,5000);}
 function selectGrid(r,c,focus,followPage=true){if(!T.rows.length){GRIDSEL=null;syncMergeControls();return;}r=Math.max(0,Math.min(T.rows.length-1,r));c=Math.max(0,Math.min(nCols()-1,c));const info=gridCell(r,c);r=info.anchorR;c=info.anchorC;GRIDSEL={r,c};
@@ -9368,7 +9378,7 @@ function cancelRangePreview(){const host=$('#tPrev');if(host)host.classList.remo
 function stopRangeDrag(){if(RANGE_FRAME)cancelAnimationFrame(RANGE_FRAME);RANGE_FRAME=0;const d=RANGE_DRAG;RANGE_DRAG=null;if(d)try{$('#tPrev').releasePointerCapture(d.id);}catch(_){}document.body.classList.remove('range-dragging');}
 function clearRangeSelection(){cancelRangePreview();stopRangeDrag();TRANGE=RANGE_ANCHOR=RANGE_FOCUS=null;window.__studio.rangeSelection=null;RANGE_OPEN=false;RANGE_EXTEND=false;const P=$('#tPrev');if(P){P.classList.remove('range-active');P.querySelectorAll('.trange-outline').forEach(e=>e.remove());P.querySelectorAll('[aria-selected="true"]').forEach(e=>e.setAttribute('aria-selected','false'));}rangeStatus('');updateHLLauncher();syncMergeControls();}
 function rangeFromPoints(a,b){const ca=gridCell(a.r,a.c),cb=gridCell(b.r,b.c);return D.tableNormalizeRange({r0:Math.min(ca.anchorR,cb.anchorR),c0:Math.min(ca.anchorC,cb.anchorC),r1:Math.max(ca.anchorR+ca.rowSpan-1,cb.anchorR+cb.rowSpan-1),c1:Math.max(ca.anchorC+ca.colSpan-1,cb.anchorC+cb.colSpan-1)},T.rows.length,nCols());}
-function setRange(a,b,show=true){const ca=gridCell(a.r,a.c),cb=gridCell(b.r,b.c);a={r:ca.anchorR,c:ca.anchorC};b={r:cb.anchorR,c:cb.anchorC};cancelRangePreview();rangeStatus('');RANGE_ANCHOR={...a};RANGE_FOCUS={...b};TRANGE=rangeFromPoints(a,b);if(!TRANGE)return;SELC={r:b.r,c:b.c,kind:'cell'};selectGrid(b.r,b.c,false);drawRangeSelection();if(show)showSec('emphasis');}
+function setRange(a,b,refresh=true){const ca=gridCell(a.r,a.c),cb=gridCell(b.r,b.c);a={r:ca.anchorR,c:ca.anchorC};b={r:cb.anchorR,c:cb.anchorC};cancelRangePreview();rangeStatus('');RANGE_ANCHOR={...a};RANGE_FOCUS={...b};TRANGE=rangeFromPoints(a,b);if(!TRANGE)return;SELC={r:b.r,c:b.c,kind:'cell'};selectGrid(b.r,b.c,false);drawRangeSelection();if(refresh)renderRangePanel();}
 function drawRangeSelection(){const P=$('#tPrev'),tb=tableMeta(),sl=tableSlide();if(!TRANGE||!tb||!sl)return;P.classList.add('range-active');let box=P.querySelector('.trange-outline');const fresh=!box;if(!box){box=document.createElement('div');box.className='trange-outline';box.setAttribute('aria-hidden','true');P.querySelector('.tov').appendChild(box);}const a=tableLocalRow(tb,TRANGE.r0),b=tableLocalRow(tb,TRANGE.r1);if(a<0||b<0){box.hidden=true;return;}box.hidden=false;const sum=(v,a,b)=>v.slice(a,b).reduce((x,y)=>x+y,0),W=sl.w||D.W,H=sl.h||D.H;
  Object.assign(box.style,{left:pc(tb.tx+sum(tb.colW,0,TRANGE.c0),W),top:pc(tb.ty+sum(tb.rowH,0,a),H),width:pc(sum(tb.colW,TRANGE.c0,TRANGE.c1+1),W),height:pc(sum(tb.rowH,a,b+1),H)});
  const paintKey=rangeKey(TRANGE)+'|'+(RANGE_FOCUS?RANGE_FOCUS.r+':'+RANGE_FOCUS.c:'');if(fresh||P.dataset.rangeKey!==paintKey){P.dataset.rangeKey=paintKey;P.querySelectorAll('.tc').forEach(el=>{const r=+el.dataset.r,c=+el.dataset.c,on=r>=TRANGE.r0&&r<=TRANGE.r1&&c>=TRANGE.c0&&c<=TRANGE.c1;el.setAttribute('aria-selected',String(on));el.tabIndex=RANGE_FOCUS&&r===RANGE_FOCUS.r&&c===RANGE_FOCUS.c?0:-1;el.classList.remove('sel','gsel','scopeon');});}
@@ -9524,7 +9534,7 @@ function chipAct(a,v){if(!SELC)return;const {r,c,kind}=SELC;
  if(a==='rule'){if((T.rules||[]).length>=3){toast('數字門檻最多 3 條：請先在右側「重點」移除一條。',3500);return;}T.rules.push(suggestRule(c));showSec('hi');toast(`已加門檻：${escH(colName(c))}（右側「重點」可改數值與效果）`,2800,true);}
  saveT();renderTable(true);renderChip();placeChip();}
 function curDec(c){let d=0;(TM?TM.slides:[]).forEach(sl=>{const tb=sl.table,cells=sl.items.find(i=>i.t==='tbl').cells;cells.forEach((row,ri)=>{if(ri<tb.h0)return;const t=row[c].runs.map(x=>x.t).join('');const m=t.match(/\d\.(\d+)/);if(m)d=Math.max(d,m[1].length);});});return d;}
-function showSec(k){if(k==='hi')k='emphasis';if(!['data','look','emphasis','out'].includes(k))return;
+function showSec(k){if(k==='hi')k='emphasis';if(!['data','structure','look','emphasis','out'].includes(k))return;
  const active=document.activeElement,old=document.querySelector('#tIns .tsec.on'),changed=!old||old.dataset.sec!==k;
  const moveFocus=changed&&((old&&old.contains(active))||$('#tPop').contains(active));
  if(changed)cancelRangePreview();
@@ -9544,7 +9554,7 @@ function resetTableFormat(){
  if(GRID_COMPOSING||CELL_EDIT&&CELL_EDIT.composing){rangeStatus('請先完成中文輸入，再清除格式。');toast('請先完成中文輸入，再清除格式。',3000);return false;}
  TABLE_FORMAT_RESETTING=true;
  try{
-  if(!confirm('清除這張表格的全部格式？\n保留資料、文字、合併範圍與合併前各格原文，不刪除資料。\n清除樣式、強調標記與個別格式；標題／合計樣式恢復自動，首欄樣式恢復預設。\n目前主題及其他頁面的設定不變；可按 Ctrl+Z 復原。'))return false;
+  if(!confirm('清除這張表格的全部格式？\n保留資料、文字、合併範圍與合併前各格原文，不刪除資料。\n清除樣式、強調標記、欄格式與個別格式；表頭／合計樣式、欄寬分配及表格尺寸恢復預設。\n目前主題及其他頁面的設定不變；可按 Ctrl+Z 復原。'))return false;
   cancelRangePreview();
   const edited=finishCellEdit(true,false),base=templateParams(S.base),nextT=Object.assign({},T),nextP=Object.assign({},S.p);
   const defaults={his:[],rules:[],bold:[],align:{},fmt:{},types:{},formats:{},header:'auto',lastTotal:null,hcol:false,cw:null,hiStyle:null};
@@ -9653,9 +9663,9 @@ function buildTableUI(){
  $('#tPop').addEventListener('mouseover',e=>{const b=e.target.closest('button[data-a="scope"]');document.querySelectorAll('#tPrev .tc.scopehl').forEach(x=>x.classList.remove('scopehl'));if(b&&SELC)scopeCells(b.dataset.v,SELC.r,SELC.c).forEach(x=>x.classList.add('scopehl'));});
  $('#tPop').addEventListener('mouseleave',()=>document.querySelectorAll('#tPrev .tc.scopehl').forEach(x=>x.classList.remove('scopehl')));
  addEventListener('resize',()=>placePop());addEventListener('scroll',()=>placePop(),true);
- const openWorkbench=()=>{const range=TRANGE&&{...TRANGE};showSec('data');closeChip();const e=$('#tEdit');e.open=true;e.classList.add('wide');e.setAttribute('role','dialog');e.setAttribute('aria-modal','true');e.setAttribute('aria-label','資料工作台');document.body.classList.add('twide');window.__studio.wide=1;renderGrid(true);renderTable(true);if(range)setRange({r:range.r0,c:range.c0},{r:range.r1,c:range.c1},false);$('#tWideDone').focus();};$('#tWide').onclick=$('#tWorkbench').onclick=$('#tBlockedEdit').onclick=openWorkbench;
+ const openWorkbench=()=>{const range=TRANGE&&{...TRANGE};showSec('data');closeChip();const e=$('#tEdit');e.open=true;e.querySelector('.tw-head').after($('#tImportOptions'));e.classList.add('wide');e.setAttribute('role','dialog');e.setAttribute('aria-modal','true');e.setAttribute('aria-label','編輯資料');document.body.classList.add('twide');window.__studio.wide=1;renderGrid(true);renderTable(true);if(range)setRange({r:range.r0,c:range.c0},{r:range.r1,c:range.c1},false);$('#tWideDone').focus();};$('#tWide').onclick=$('#tWorkbench').onclick=$('#tBlockedEdit').onclick=openWorkbench;
  $('#tBlockedRow').onclick=()=>{const issue=tableBlocked(),r=issue&&issue.table.blockedRow;if(!Number.isInteger(r))return;openWorkbench();selectGrid(r,0,true);};
- $('#tWideDone').onclick=()=>{if($('#tEdit').contains(document.activeElement))document.activeElement.blur();$('#tEdit').classList.remove('wide');['role','aria-modal','aria-label'].forEach(k=>$('#tEdit').removeAttribute(k));document.body.classList.remove('twide');window.__studio.wide=0;renderGrid(true);renderTable();$('#tWorkbench').focus();};
+ $('#tWideDone').onclick=()=>{if($('#tEdit').contains(document.activeElement))document.activeElement.blur();$('#tEdit').classList.remove('wide');$('#tDrop').before($('#tImportOptions'));['role','aria-modal','aria-label'].forEach(k=>$('#tEdit').removeAttribute(k));document.body.classList.remove('twide');window.__studio.wide=0;renderGrid(true);renderTable();$('#tWorkbench').focus();};
  $('#tEdit').addEventListener('keydown',e=>{if(e.defaultPrevented||e.key!=='Tab'||!$('#tEdit').classList.contains('wide'))return;const nodes=[...$('#tEdit').querySelectorAll('button,input,select,textarea,[contenteditable]')].filter(el=>!el.disabled&&el.getClientRects().length);if(!nodes.length)return;const first=nodes[0],last=nodes[nodes.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}});
  addEventListener('keydown',e=>{if(!e.defaultPrevented&&e.key==='Escape'&&$('#tEdit').classList.contains('wide'))$('#tWideDone').click();});
  $('#tCleanV').onchange=e=>{$('#tPrev').classList.toggle('cleanv',e.target.checked);closeChip();};

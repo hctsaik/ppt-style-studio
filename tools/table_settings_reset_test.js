@@ -12,13 +12,13 @@ class Resources extends ResourceLoader{fetch(url){const p=path.join(ROOT,path.ba
  try{
   for(let i=0;i<500&&!w.__studioApi;i++)await sleep(20);assert(w.__studioApi);run("setTab('table');showSec('look')");
   test('one top-level Appearance button and one handler, no duplicate reset route',()=>{
-   assert.equal(d.querySelectorAll('#tFormatReset').length,1);assert.equal($('#tFormatReset').textContent,'清除全部格式');assert.equal($('#tFormatReset').closest('.tsec').id,'tSecLook');assert(!$('#tFormatReset').closest('details'));assert(!$('#tSettingsReset'));assert(!d.querySelector('.treset-options'));assert($('#tFormatReset').compareDocumentPosition($('#tDataSemantics'))&4);assert.equal($('#tFormatReset').getAttribute('aria-describedby'),'tFormatResetScope');assert.equal(run('typeof resetTableSettings'),'undefined');
+   assert.equal(d.querySelectorAll('#tFormatReset').length,1);assert.equal($('#tFormatReset').textContent,'清除全部格式');assert.equal($('#tFormatReset').closest('.tsec').id,'tSecLook');assert(!$('#tFormatReset').closest('details'));assert(!$('#tSettingsReset'));assert(!d.querySelector('.treset-options'));assert($('#tFormatReset').compareDocumentPosition($('#tLStrip'))&4);assert.equal($('#tFormatReset').getAttribute('aria-describedby'),'tFormatResetScope');assert.equal(run('typeof resetTableSettings'),'undefined');
   });
   run("cancelRangePreview();closeChip();S.base='navy';S.p=Object.assign(templateParams(S.base),{P:'226677',tbCardOn:false,tbHeaderStyle:'normal',tbGrid:'all',tbFont:'arial',tbWidthMode:'45'});T={rows:[['名稱','數值','備註'],[' A ','001','0'],['多行\\n文字','','tail']],title:'標題',unit:'單位',note:'來源',header:false,hcol:true,lastTotal:true,his:[{type:'col',i:2,kind:'rec',color:'auto'}],rules:[],bold:[1],align:{1:'right'},fmt:{1:{pct:true}},types:{1:'number'},formats:{1:'grouped'},cw:[3,2,2],hiStyle:'box'};T=D.tableMerge(T,{r0:1,c0:0,r1:2,c1:1});T=D.tableEditCell(T,1,0,'編輯後合併\\n0');HIST.a=[];HIST.i=-1;HIST.lock=false;clearTimeout(HIST.t);saveT();pushHist(true);renderGrid(true);renderTable();persist();");
   w.localStorage.setItem('unrelated-state','keep');
   const before=snap(),beforeT=json('T'),beforeHist=json('HIST.a'),beforeStorage=storage(),globals=json('Object.fromEntries(Object.entries(S.p).filter(([k])=>!TABLE_FORMAT_KEYS.includes(k)))');
   test('Cancel leaves data, merged original/edited text, formats, history and storage unchanged',()=>{
-   let count=0;w.confirm=message=>{count++;for(const t of ['保留資料','合併範圍','合併前各格原文','標題／合計','不刪除資料'])assert(message.includes(t),t);return false};$('#tFormatReset').click();assert.equal(count,1);assert.equal(snap(),before);assert.deepEqual(json('HIST.a'),beforeHist);assert.deepEqual(storage(),beforeStorage);
+   let count=0;w.confirm=message=>{count++;for(const t of ['保留資料','合併範圍','合併前各格原文','表頭／合計','欄格式','欄寬分配','表格尺寸','不刪除資料'])assert(message.includes(t),t);return false};$('#tFormatReset').click();assert.equal(count,1);assert.equal(snap(),before);assert.deepEqual(json('HIST.a'),beforeHist);assert.deepEqual(storage(),beforeStorage);
   });
   let after;
   test('Confirm clears full format once while preserving every source and merge field',()=>{

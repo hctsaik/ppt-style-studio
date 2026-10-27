@@ -2181,9 +2181,11 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
    // Share the selected header paint on both axes; explicit emphasis below wins.
    if(!headerCol&&LK.zebra&&(ri-h0)%2===1)o.fill=LK.zebra;
    if(!headerCol&&key&&LK.keyFill)o.fill=LK.keyFill;
-   if(firstKey(ri)&&LK.key&&ri>h0)o.bT=bw(LK.key);
-   if(sec&&LK.row&&ri>h0)o.bT=bw(LK.row);
    baseGrid(o,ri);
+   // Grid first, semantic separators next, manual emphasis below wins.
+   if(sec&&LK.row&&ri>h0)o.bT=bw(LK.row);
+   const totalRule=last&&T.lastTotal===true&&ri>0;
+   if(firstKey(ri)&&LK.key&&ri>h0||totalRule){const line=LK.key||{c:G.ink,w:.75};o.bT=bw({c:tableHighlightStroke(line.c,[o.fill||'FFFFFF']),w:totalRule?Math.max(1,line.w):line.w});o.semanticTop=true;}
    const s=mergedAt(ri,c)||st.tbStatus===false||!AU.statC[c]?null:statusOf(sizing.version===2?src[ri][c]:t);
    if(s){o.color=ST[s];o.bold=true;if(/[A-Za-z\u4e00-\u9fff]/.test(t))o.dot=ST[s];}
    if(isN&&st.tbNeg&&tNumVal(src[ri][c])<0&&!/^[\s(（]*[▲△]/.test(src[ri][c]))o.color=BAD;
@@ -2201,6 +2203,9 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
     else ruleBoxes.push({r:ri,c,color:C});}
    o.color=cc(o.color,o.fill);
    return rangePaint(o,ri,c);}));
+  // PowerPoint resolves the shared edge from both cells. Match its two sides
+  // before later manual borders; never cut through a vertical merged cell.
+  cells.forEach((row,r)=>row.forEach((cell,c)=>{const m=mergedAt(r,c);if(!r||!cell.semanticTop||m&&m.r0<r)return;const line=row[m?m.c0:c].bT;cell.bT=line;cells[r-1][c].bB=line;}));
   const firstSlide=cur;
   planned.pages.forEach((sourceRows,pageIndex)=>{
    if(pageIndex){cur={key:'table',title:'表格',no:slides.length+1,items:[],groups:[]};slides.push(cur);}else cur=firstSlide;

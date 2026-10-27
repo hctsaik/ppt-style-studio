@@ -27,7 +27,7 @@ const URL=process.argv[2]||'http://localhost:8765/studio.html',SHOT=process.argv
  ck('投影片分頁跟著換色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#big').innerHTML),P));
  ck('投影片側欄不再有重複風格設定',await pg.evaluate(()=>!document.querySelector('#panel #stDet')&&!!document.querySelector('#stHost #stDet')));
  ck('預覽下方資訊列已移除、保留相關列',await pg.evaluate(()=>!document.querySelector('#status,#fsNote,#wPrev,#elHint,.foot,#trayBtn')&&!!document.querySelector('#xInfo')&&!!document.querySelector('#bOne')));
- ck('風格設定為第一個分頁、預設開投影片元件',await pg.evaluate(()=>document.querySelector('#tabs button').dataset.tab==='style'&&document.querySelector('#tabs button.on').dataset.tab==='slides'));
+ ck('全站風格為最後分頁、預設開投影片元件',await pg.evaluate(()=>document.querySelector('#tabs button:last-child').dataset.tab==='style'&&document.querySelector('#tabs button.on').dataset.tab==='slides'));
  await pg.click('#tabs button[data-tab="table"]');await sl(800);
  ck('表格分頁跟著換色',await pg.evaluate(P=>new RegExp(P,'i').test(document.querySelector('#vTable').innerHTML),P));
  await pg.click('#tabs button[data-tab="icons"]');await sl(800);

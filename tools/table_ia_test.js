@@ -1,0 +1,55 @@
+/* Scoped IA event/CSS contracts. JSDOM is not a real-browser pixel/layout test. */
+'use strict';
+const fs=require('fs'),path=require('path'),assert=require('assert/strict'),{JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
+const ROOT=path.resolve(__dirname,'..'),file=process.env.STUDIO_HTML||'studio.html',sleep=ms=>new Promise(r=>setTimeout(r,ms));
+class Resources extends ResourceLoader{fetch(url){const p=path.join(ROOT,path.basename(new URL(url).pathname));return fs.existsSync(p)?Promise.resolve(fs.readFileSync(p)):null;}}
+async function check(width,initialStorage){
+ const errors=[],vc=new VirtualConsole();vc.on('jsdomError',e=>{if(!/navigation|HTMLCanvas|scrollTo/.test(e.message))errors.push(e.message)});
+ const source=fs.readFileSync(path.join(ROOT,file),'utf8').replace('function buildTableUI(){','window.__iaEval=code=>eval(code);function buildTableUI(){');
+ const dom=new JSDOM(source,{url:'http://ia.test/studio.html',runScripts:'dangerously',resources:new Resources(),pretendToBeVisual:true,virtualConsole:vc,beforeParse(w){if(initialStorage)for(const [k,v] of Object.entries(initialStorage))w.localStorage.setItem(k,v);w.innerWidth=width;w.innerHeight=800;w.matchMedia=q=>({matches:(!/min-width:\s*(\d+)/.test(q)||width>=+q.match(/min-width:\s*(\d+)/)[1])&&(!/max-width:\s*(\d+)/.test(q)||width<=+q.match(/max-width:\s*(\d+)/)[1])&&(!/max-height:\s*(\d+)/.test(q)||800<=+q.match(/max-height:\s*(\d+)/)[1]),media:q,addListener(){},addEventListener(){}});w.HTMLElement.prototype.scrollIntoView=()=>{};w.HTMLElement.prototype.animate=()=>({finished:Promise.resolve()});w.HTMLCanvasElement.prototype.getContext=()=>({font:'',measureText:s=>({width:String(s).length*10})});w.scrollTo=()=>{};w.confirm=()=>true;}});
+ const w=dom.window,d=w.document,$=s=>d.querySelector(s),run=s=>w.__iaEval(s),json=s=>JSON.parse(run('JSON.stringify('+s+')')),active=()=>$('.tsec.on').dataset.sec;
+ const key=(el,k,props={})=>el.dispatchEvent(new w.KeyboardEvent('keydown',{key:k,bubbles:true,cancelable:true,...props})),change=(s,v)=>{$(s).value=v;$(s).dispatchEvent(new w.Event('change',{bubbles:true}))};
+ let passed=0;const test=async(n,f)=>{await f();passed++;console.log('PASS '+width+'px '+n)};
+ try{
+  for(let i=0;i<500&&!w.__studioApi;i++)await sleep(20);assert(w.__studioApi);if(d.readyState!=='complete')await new Promise(resolve=>w.addEventListener('load',resolve,{once:true}));await sleep(100);if(initialStorage){assert.equal(run('T.title'),'更新標題');assert.equal(run('T.hcol'),true);assert.equal(run('S.p.tbFont'),'arial');assert.equal(run('S.p.tbWidthMode'),'45');assert.equal(run('S.tab'),'table');}
+  await test('outer order/labels retain route IDs, selection and legacy routes',async()=>{
+   const tabs=[...d.querySelectorAll('#tabs [data-tab]')];assert.deepEqual(tabs.map(b=>b.textContent),['投影片元件','表格工作台','固定母片','圖示庫','簡報食譜','全站風格']);assert.deepEqual(tabs.map(b=>b.dataset.tab),['slides','table','master','icons','guide','style']);
+   for(const name of ['table','style','slides']){tabs.find(b=>b.dataset.tab===name).click();assert.equal(run('S.tab'),name);assert.equal($('#tabs button.on').dataset.tab,name);assert.equal(d.querySelectorAll('#tabs [aria-current="page"]').length,1);}
+   assert.equal(run("normalizeTab('kit')"),'master');assert.equal(run("normalizeTab('quick')"),'master');assert($('#tabs [data-tab="master"]').title.includes('不隨全站風格'));
+   tabs[0].focus();key(tabs[0],'ArrowRight');assert.equal(d.activeElement,tabs[1]);key(tabs[1],'End');assert.equal(d.activeElement,tabs[5]);
+   w.location.hash='#/cards';await sleep(180);assert.equal(run('model.slides[S.slide].key'),'cards');w.location.hash='#/catalog';await sleep(80);assert.equal(run('model.slides[S.slide].key'),'catalog');w.history.back();await sleep(100);assert.equal(run('model.slides[S.slide].key'),'cards');w.history.forward();await sleep(100);assert.equal(run('model.slides[S.slide].key'),'catalog');run("setTab('table')");
+  });
+  await test('five accessible tabs and existing controls have their new single owners',()=>{
+   assert.deepEqual([...d.querySelectorAll('.tinsTabs button')].map(b=>b.textContent),['資料','結構','外觀','強調','版面']);
+   const expected={data:['tImportOptions','tKeep','tImportMode','tDelimiter','tGrid','tColType','tColFormat','tDataDownload','tClear'],structure:['tDataSemantics','tHeaderMode','tLast','tMergeCells','tUnmergeCells','tStructureSel'],look:['tFormatReset','tLStrip','tStyle'],emphasis:['tSelection','tSelPanel'],out:['tCwReset','tOutputSummary']};
+   for(const [sec,ids] of Object.entries(expected))for(const id of ids){assert.equal(d.querySelectorAll('#'+id).length,1,id);assert.equal($('#'+id).closest('.tsec').dataset.sec,sec,id);}
+   assert.equal($('label[for="tHeaderMode"]').textContent,'表頭位置');assert.equal($('#tHeaderMode option').textContent,'無表頭');assert($('#tSecStructure [data-g="r-before"]'));assert($('#tSecStructure [data-g="c-"]'));assert.equal($('#tStyle').getAttribute('aria-describedby'),'tStyleScope');assert($('#tStyleScope').textContent.includes('固定母片'));assert.equal(d.querySelectorAll('#tFormatReset').length,1);
+   $('#tTabData').focus();for(const [k,want] of [['ArrowRight','structure'],['ArrowRight','look'],['ArrowRight','emphasis'],['ArrowRight','out'],['ArrowRight','data'],['End','out'],['Home','data']]){key(d.activeElement,k);assert.equal(active(),want);assert.equal(d.activeElement.dataset.t,want);assert.equal(d.querySelectorAll('.tsec:not([hidden])').length,1);assert.equal(d.querySelectorAll('.tinsTabs [tabindex="0"]').length,1);}
+   assert.equal($('#tUndo').closest('.tsec'),null);assert.equal($('#tRedo').closest('.tsec'),null);assert.equal($('#tPptx').closest('.tsec'),null);assert($('#tPreviewWorkspace .tzoom'));
+   const grid=w.getComputedStyle($('.tinsTabs'));assert.equal(grid.display,'grid');assert.equal(grid.gridTemplateColumns,'repeat(5,minmax(0,1fr))');assert(5*44+16+4*4<=360);for(const b of d.querySelectorAll('.tinsTabs button')){assert.equal(w.getComputedStyle(b).minWidth,'44px');assert.equal(w.getComputedStyle(b).whiteSpace,'nowrap');assert(!b.hidden);}
+  });
+  run("cancelRangePreview();closeChip();T={rows:[['名稱','數值','備註'],['A','001','0'],['B','2','尾'],['合計','3','']],title:'表格標題',unit:'件',note:'原始來源',header:true,hcol:false,lastTotal:false,his:[],rules:[],bold:[],types:{},formats:{}};saveT();renderGrid(true);renderTable();HIST.a=[];HIST.i=-1;HIST.lock=false;pushHist(true);showSec('structure')");
+  const cell=(r,c)=>$(`#tPrev .tc[data-r="${r}"][data-c="${c}"]`);
+  await test('selection, keyboard extension and double-click edit stay on current tab; H is explicit',()=>{
+   const before=json('T.rows');cell(1,0).click();assert.equal(active(),'structure');key(cell(1,0),'ArrowRight',{shiftKey:true});assert.equal(active(),'structure');assert.deepEqual(json('TRANGE'),{r0:1,c0:0,r1:1,c1:1});assert($('#tStructureSel').textContent.includes('A2:B2'));assert(!$('#tMergeCells').disabled);
+   cell(2,2).dispatchEvent(new w.MouseEvent('dblclick',{bubbles:true}));assert(run('CELL_EDIT'));assert.equal(active(),'structure');key($('.trange-editor'),'Escape');assert.equal(run('CELL_EDIT'),null);assert.deepEqual(json('T.rows'),before);
+   key(cell(1,0),'h');assert.equal(active(),'emphasis');assert($('#tSelPanel [data-range-preset]'));run("showSec('look')");cell(1,0).click();assert.equal(active(),'look');run("showSec('structure')");
+  });
+  await test('canonical structure and workbench shortcut merge/undo/insert/delete share one state',()=>{
+   run('setRange({r:1,c:0},{r:1,c:1})');const rows=json('T.rows');$('#tMergeCells').click();assert.equal(active(),'structure');assert.equal(json('D.tableMerges(T)').length,1);assert.deepEqual(json('T.rows'),rows);$('#tUnmergeCells').click();assert.equal(active(),'structure');assert.equal(json('D.tableMerges(T)').length,0);assert.deepEqual(json('T.rows'),rows);
+   $('#tUndo').click();assert.equal(json('D.tableMerges(T)').length,1);$('#tRedo').click();assert.equal(json('D.tableMerges(T)').length,0);
+   run('clearRangeSelection();selectGrid(1,1,false)');$('#tSecStructure [data-g="r+"]').click();assert.equal(run('T.rows.length'),5);assert.equal(active(),'structure');$('#tSecStructure [data-g="r-"]').click();assert.equal(run('T.rows.length'),4);$('#tSecStructure [data-g="c+"]').click();assert.equal(run('nCols()'),4);$('#tSecStructure [data-g="c-"]').click();assert.equal(run('nCols()'),3);
+   run('setRange({r:1,c:0},{r:1,c:1})');$('#tWorkbench').click();assert($('#tEdit').classList.contains('wide'));assert($('#tEdit').contains($('#tImportOptions')));$('#tEdit [data-merge-action="merge"]').click();assert.equal(json('D.tableMerges(T)').length,1);$('#tEdit [data-merge-action="unmerge"]').click();assert.equal(json('D.tableMerges(T)').length,0);$('#tWideDone').click();assert.equal($('#tImportOptions').parentElement.id,'tSecData');assert.equal(d.querySelectorAll('#tImportMode').length,1);
+  });
+  await test('moved header/total and data/metadata/font/layout controls retain behavior',async()=>{
+   run("showSec('structure')");change('#tHeaderMode','both');assert.equal(run('T.header'),true);assert.equal(run('T.hcol'),true);$('#tLast').click();assert.equal(run('T.lastTotal'),$('#tLast').checked);
+   run("showSec('data')");$('#tKeep').click();assert.equal(run('T.keep'),$('#tKeep').checked);change('#tImportMode','update');change('#tDelimiter','tab');assert.equal($('#tImportMode').value,'update');assert.equal($('#tDelimiter').value,'tab');run('selectGrid(1,1,false)');change('#tColType','number');change('#tColFormat','grouped');assert.equal(run('T.types[1]'),'number');assert.equal(run('T.formats[1]'),'grouped');
+   $('#tWorkbench').click();for(const [key,value] of [['title','更新標題'],['unit','單位'],['note','更新來源']]){const el=$(`[data-meta="${key}"]`);el.value=value;el.dispatchEvent(new w.Event('input',{bubbles:true}));assert.equal(run('T.'+key),value);}$('#tWideDone').click();
+   run("showSec('look')");$('[data-tp="tbFont"] [data-v="arial"]').click();await sleep(100);assert.equal(run('S.p.tbFont'),'arial');run("showSec('out')");$('[data-tsizing="width"] [data-v="45"]').click();await sleep(100);assert.equal(run('S.p.tbWidthMode'),'45');assert.equal(active(),'out');
+   run("showSec('look')");const before=run('snapT()');let message;w.confirm=m=>{message=m;return false};$('#tFormatReset').click();assert.equal(run('snapT()'),before);for(const term of ['表頭／合計','欄格式','欄寬分配','表格尺寸','保留資料','合併範圍'])assert(message.includes(term),term);
+   run('saveT();persist()');const saved=JSON.parse(w.localStorage.getItem('ppt-studio-table'));assert.equal(saved.header,true);assert.equal(saved.hcol,true);assert.equal(saved.title,'更新標題');assert.deepEqual(saved.merges,json('T.merges'));
+  });
+  await sleep(250);assert.deepEqual(errors,[]);console.log(JSON.stringify({status:'pass',tests:passed,file,width,scope:'IA DOM/events/CSS only; no browser pixel or PowerPoint claim'}));return Object.fromEntries(Object.keys(w.localStorage).map(k=>[k,w.localStorage.getItem(k)]));
+ }finally{dom.window.close()}
+}
+(async()=>{const saved=await check(1366);await check(360,saved)})().catch(e=>{console.error(e.stack);process.exitCode=1});
