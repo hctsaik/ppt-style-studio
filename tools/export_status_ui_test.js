@@ -1,0 +1,24 @@
+/* Narrow DOM/CSS checks; no browser network/DevTools or real downloads. */
+'use strict';
+const fs=require('fs'),path=require('path'),assert=require('assert/strict'),{JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
+const ROOT=path.resolve(__dirname,'..'),FILE=process.env.STUDIO_HTML||'studio.html',wait=ms=>new Promise(r=>setTimeout(r,ms));
+class Resources extends ResourceLoader{fetch(url){const p=path.join(ROOT,path.basename(new URL(url).pathname));return fs.existsSync(p)?Promise.resolve(fs.readFileSync(p)):null;}}
+async function boot(width){
+ const errors=[],vc=new VirtualConsole();vc.on('jsdomError',e=>{if(!/navigation|HTMLCanvas|scrollTo/.test(e.message))errors.push(e.message);});
+ const source=fs.readFileSync(path.join(ROOT,FILE),'utf8').replace('function buildTableUI(){','window.__scope=code=>eval(code);function buildTableUI(){');
+ const dom=new JSDOM(source,{url:'http://scoped.test/studio.html',runScripts:'dangerously',resources:new Resources(),pretendToBeVisual:true,virtualConsole:vc,beforeParse(w){w.innerWidth=width;w.matchMedia=q=>({matches:/max-width:\s*(\d+)/.test(q)?width<=+q.match(/max-width:\s*(\d+)/)[1]:false,media:q,addListener(){},addEventListener(){}});w.HTMLElement.prototype.scrollIntoView=()=>{};w.HTMLElement.prototype.animate=()=>({finished:Promise.resolve()});w.HTMLCanvasElement.prototype.getContext=()=>({font:'',measureText:t=>({width:String(t).length*10})});w.scrollTo=()=>{};w.confirm=()=>true;w.URL.createObjectURL=()=> 'blob:test';w.URL.revokeObjectURL=()=>{};}});
+ const w=dom.window,d=w.document;for(let i=0;i<500&&!w.__studioApi;i++)await wait(20);assert(w.__studioApi,'Studio ready');const run=c=>w.__scope(c),$=s=>d.querySelector(s);run("setTab('table')");
+ const exportWait=async()=>{for(let i=0;i<500&&run('exportFlow.busy()');i++)await wait(20);assert(!run('exportFlow.busy()'));};
+ try{
+  $('#tTabLook').click();assert(!$('#tSecLook').hidden);assert($('#tSecLook').contains($('#tDataSemantics')));assert(!$('#tSecData').contains($('#tDataSemantics')));assert.equal(d.querySelectorAll('#tHeaderMode').length,1);assert($('#tDataSemantics').compareDocumentPosition($('#tLStrip'))&4);
+  const rows=run('JSON.stringify(T.rows)');$('#tDataSemantics').open=true;$('#tHeaderMode').value='both';$('#tHeaderMode').dispatchEvent(new w.Event('change',{bubbles:true}));assert.equal(run('T.header'),true);assert.equal(run('T.hcol'),true);assert.equal(run('JSON.stringify(T.rows)'),rows);$('#tLast').click();assert.equal(run('T.lastTotal'),$('#tLast').checked);
+  const panel=$('#exportCheck');assert.equal(panel.parentElement.tagName,'MAIN');assert.equal(w.getComputedStyle(panel).position,'static');assert.equal(w.getComputedStyle(panel).flex,'0 0 auto');assert.notEqual(w.getComputedStyle($('#tPptx')).position,'fixed');
+  run("reportExport({status:'ready',label:'Ready',issues:[]},'complete')");assert(!panel.hidden);assert(!panel.open);panel.open=true;assert.equal(w.getComputedStyle(panel).position,'static');$('#exportCheckClose').click();assert(panel.hidden);assert(!panel.open);assert.equal(d.activeElement,$('#tPptx'));
+  run("invalidateExport()");assert(panel.hidden,'Editing after close must not reopen stale report');
+  run("reportExport({status:'blocked',issues:[{location:'Page 1',reason:'Invalid size',fix:'Fix size'}]},'checked',true)");assert(!panel.hidden&&panel.open);assert($('#exportIssues').textContent.includes('Invalid size'));panel.open=false;assert.equal(w.getComputedStyle(panel).position,'static');$('#exportCheckClose').click();assert(panel.hidden);
+  run("saveBlob=()=>{};window.Deck.exportPptx=async()=>{throw new Error('Specific export failure')};window.Preflight.check=()=>({status:'ready',label:'Ready',issues:[]})");$('#tPptx').click();await exportWait();assert(!panel.hidden&&panel.open);assert($('#exportCheckNote').textContent.includes('Specific export failure'));assert(!$('#tPptx').disabled);$('#exportCheckClose').click();assert(panel.hidden);
+  run("window.Deck.exportPptx=async()=>({data:new Blob(['test'])})");$('#tPptx').click();await exportWait();assert(!panel.hidden);assert.equal(panel.dataset.status,'ready');assert.equal($('#exportIssues').children.length,0);assert(!$('#exportCheckNote').textContent.includes('Specific export failure'));assert(!panel.open);assert(!$('#tPptx').disabled);assert.equal(errors.length,0,errors.join('\n'));
+  console.log('PASS '+FILE+' '+width+'px: in-flow collapsed/expanded/closed/stale/error/new export; data controls relocated and live');
+ }finally{dom.window.close();}
+}
+(async()=>{await boot(1366);await boot(360);})().catch(e=>{console.error(e.stack);process.exitCode=1;});

@@ -1,9 +1,9 @@
 {
-  "version": 3,
-  "filename": "固定紅色_26頁母片.pptx",
+  "version": 4,
+  "filename": "固定紅色_24頁母片.pptx",
   "sourceFilename": "Fixed_Red_Template.pptx",
   "sourceSha256": "1d42e27915855f57c1bee5ad185526ee62c51818223e9cfde20609dcf47c1fae",
-  "slideCount": 26,
+  "slideCount": 24,
   "sizeEmu": [
     12192000,
     6858000
@@ -11,202 +11,216 @@
   "pages": [
     {
       "number": 1,
-      "key": "cover",
-      "layout": 1
+      "key": "single-column",
+      "layout": 2,
+      "schemeId": "07",
+      "section": "single"
     },
     {
       "number": 2,
       "key": "single-column",
       "layout": 2,
-      "schemeId": "07"
+      "schemeId": "06",
+      "section": "single"
     },
     {
       "number": 3,
       "key": "single-column",
       "layout": 2,
-      "schemeId": "06"
+      "schemeId": "03",
+      "section": "single"
     },
     {
       "number": 4,
       "key": "single-column",
       "layout": 2,
-      "schemeId": "03"
+      "schemeId": "10",
+      "section": "single"
     },
     {
       "number": 5,
       "key": "single-column",
       "layout": 2,
-      "schemeId": "10"
+      "schemeId": "04",
+      "section": "single"
     },
     {
       "number": 6,
-      "key": "single-column",
-      "layout": 2,
-      "schemeId": "04"
+      "key": "rectangles-1",
+      "layout": 6,
+      "cards": 35,
+      "section": "materials"
     },
     {
       "number": 7,
-      "key": "double-column",
-      "layout": 4
+      "key": "rectangles-2",
+      "layout": 6,
+      "cards": 35,
+      "section": "materials"
     },
     {
       "number": 8,
-      "key": "rectangles-1",
+      "key": "native-highlight",
       "layout": 6,
-      "cards": 35
+      "highlights": 8,
+      "section": "materials"
     },
     {
       "number": 9,
-      "key": "rectangles-2",
+      "key": "catalog",
+      "catalogueId": "00",
+      "styleId": "navy",
       "layout": 6,
-      "cards": 35
+      "section": "navy"
     },
     {
       "number": 10,
-      "key": "native-highlight",
+      "key": "cards",
+      "catalogueId": "A2",
+      "styleId": "navy",
       "layout": 6,
-      "highlights": 8
+      "groups": 9,
+      "section": "navy"
     },
     {
       "number": 11,
-      "key": "catalog",
-      "catalogueId": "00",
+      "key": "schemebody",
+      "catalogueId": "A16",
       "styleId": "navy",
-      "layout": 6
+      "layout": 6,
+      "groups": 28,
+      "bodyPt": 9,
+      "section": "navy"
     },
     {
       "number": 12,
-      "key": "cards",
-      "catalogueId": "A2",
+      "key": "schemeiconbody",
+      "catalogueId": "A18",
       "styleId": "navy",
       "layout": 6,
-      "groups": 9
+      "groups": 28,
+      "bodyPt": 9,
+      "section": "navy"
     },
     {
       "number": 13,
-      "key": "schemebody",
-      "catalogueId": "A16",
-      "styleId": "navy",
+      "key": "catalog",
+      "catalogueId": "00",
+      "styleId": "teal",
       "layout": 6,
-      "groups": 28,
-      "bodyPt": 9
+      "section": "teal"
     },
     {
       "number": 14,
-      "key": "schemeiconbody",
-      "catalogueId": "A18",
-      "styleId": "navy",
+      "key": "cards",
+      "catalogueId": "A2",
+      "styleId": "teal",
       "layout": 6,
-      "groups": 28,
-      "bodyPt": 9
+      "groups": 9,
+      "section": "teal"
     },
     {
       "number": 15,
-      "key": "catalog",
-      "catalogueId": "00",
+      "key": "schemebody",
+      "catalogueId": "A16",
       "styleId": "teal",
-      "layout": 6
+      "layout": 6,
+      "groups": 28,
+      "bodyPt": 9,
+      "section": "teal"
     },
     {
       "number": 16,
-      "key": "cards",
-      "catalogueId": "A2",
+      "key": "schemeiconbody",
+      "catalogueId": "A18",
       "styleId": "teal",
       "layout": 6,
-      "groups": 9
+      "groups": 28,
+      "bodyPt": 9,
+      "section": "teal"
     },
     {
       "number": 17,
-      "key": "schemebody",
-      "catalogueId": "A16",
-      "styleId": "teal",
+      "key": "catalog",
+      "catalogueId": "00",
+      "styleId": "green",
       "layout": 6,
-      "groups": 28,
-      "bodyPt": 9
+      "section": "green"
     },
     {
       "number": 18,
-      "key": "schemeiconbody",
-      "catalogueId": "A18",
-      "styleId": "teal",
+      "key": "cards",
+      "catalogueId": "A2",
+      "styleId": "green",
       "layout": 6,
-      "groups": 28,
-      "bodyPt": 9
+      "groups": 9,
+      "section": "green"
     },
     {
       "number": 19,
-      "key": "catalog",
-      "catalogueId": "00",
+      "key": "schemebody",
+      "catalogueId": "A16",
       "styleId": "green",
-      "layout": 6
+      "layout": 6,
+      "groups": 28,
+      "bodyPt": 9,
+      "section": "green"
     },
     {
       "number": 20,
-      "key": "cards",
-      "catalogueId": "A2",
+      "key": "schemeiconbody",
+      "catalogueId": "A18",
       "styleId": "green",
       "layout": 6,
-      "groups": 9
+      "groups": 28,
+      "bodyPt": 9,
+      "section": "green"
     },
     {
       "number": 21,
-      "key": "schemebody",
-      "catalogueId": "A16",
-      "styleId": "green",
-      "layout": 6,
-      "groups": 28,
-      "bodyPt": 9
-    },
-    {
-      "number": 22,
-      "key": "schemeiconbody",
-      "catalogueId": "A18",
-      "styleId": "green",
-      "layout": 6,
-      "groups": 28,
-      "bodyPt": 9
-    },
-    {
-      "number": 23,
       "key": "catalog",
       "catalogueId": "00",
       "styleId": "frame",
-      "layout": 6
+      "layout": 6,
+      "section": "frame"
     },
     {
-      "number": 24,
+      "number": 22,
       "key": "cards",
       "catalogueId": "A2",
       "styleId": "frame",
       "layout": 6,
-      "groups": 9
+      "groups": 9,
+      "section": "frame"
     },
     {
-      "number": 25,
+      "number": 23,
       "key": "schemebody",
       "catalogueId": "A16",
       "styleId": "frame",
       "layout": 6,
       "groups": 28,
-      "bodyPt": 9
+      "bodyPt": 9,
+      "section": "frame"
     },
     {
-      "number": 26,
+      "number": 24,
       "key": "schemeiconbody",
       "catalogueId": "A18",
       "styleId": "frame",
       "layout": 6,
       "groups": 28,
-      "bodyPt": 9
+      "bodyPt": 9,
+      "section": "frame"
     }
   ],
   "secondary": {
     "filename": "固定紅色_卡片與文字素材.pptx",
     "slideCount": 3,
     "mainPageNumbers": [
-      8,
-      9,
-      10
+      6,
+      7,
+      8
     ],
     "uiVisible": false
   },
@@ -217,5 +231,68 @@
     "03",
     "10",
     "04"
-  ]
+  ],
+  "sections": [
+    {
+      "key": "single",
+      "name": "單欄主題 07／06／03／10／04",
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "key": "materials",
+      "name": "卡片與文字素材",
+      "pages": [
+        6,
+        7,
+        8
+      ]
+    },
+    {
+      "key": "navy",
+      "name": "商務深藍卡片",
+      "pages": [
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "key": "teal",
+      "name": "青綠科技",
+      "pages": [
+        13,
+        14,
+        15,
+        16
+      ]
+    },
+    {
+      "key": "green",
+      "name": "墨綠筆記",
+      "pages": [
+        17,
+        18,
+        19,
+        20
+      ]
+    },
+    {
+      "key": "frame",
+      "name": "框架鑑",
+      "pages": [
+        21,
+        22,
+        23,
+        24
+      ]
+    }
+  ],
+  "sectionCollapse": "PowerPoint 16.0.20527 does not retain collapsed state after reopening."
 }

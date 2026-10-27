@@ -21,7 +21,9 @@
  ].map(s=>Object.freeze({...s,accents:Object.freeze(s.accents)})));
  const COMPONENT_STYLES=Object.freeze(['navy','teal','green','frame']);
  const COMPONENT_PAGES=Object.freeze([{key:'catalog',id:'00',title:'00 總覽'},{key:'cards',id:'A2',title:'卡片與面板'},{key:'schemebody',id:'A16',title:'內文＋強調'},{key:'schemeiconbody',id:'A18',title:'Icon＋內文＋強調'}].map(Object.freeze));
- const DOWNLOAD_PAGES=Object.freeze([TEMPLATE_PAGES[0],...SINGLE_SCHEMES.map(s=>({title:s.label,label:s.label,schemeId:s.id,layout:2})),TEMPLATE_PAGES[2],{title:'可編輯矩形樣式 1 / 2',label:'矩形樣式 1 / 2',layout:6},{title:'可編輯矩形樣式 2 / 2',label:'矩形樣式 2 / 2',layout:6},{title:'八色原生文字螢光筆',label:'八色文字螢光筆',layout:6},...COMPONENT_STYLES.flatMap(styleId=>{const preset=Deck.PRESETS.find(p=>p.id===styleId);return COMPONENT_PAGES.map(p=>({...p,label:preset.zh+' · '+p.title,styleId,layout:6}));})].map(Object.freeze));
+ const DOWNLOAD_PAGES=Object.freeze([...SINGLE_SCHEMES.map(s=>({key:'single-column',title:s.label,label:s.label,schemeId:s.id,layout:2,section:'single'})),{key:'rectangles-1',title:'可編輯矩形樣式 1 / 2',label:'矩形樣式 1 / 2',layout:6,section:'materials'},{key:'rectangles-2',title:'可編輯矩形樣式 2 / 2',label:'矩形樣式 2 / 2',layout:6,section:'materials'},{key:'native-highlight',title:'八色原生文字螢光筆',label:'八色文字螢光筆',layout:6,section:'materials'},...COMPONENT_STYLES.flatMap(styleId=>{const preset=Deck.PRESETS.find(p=>p.id===styleId);return COMPONENT_PAGES.map(p=>({...p,label:preset.zh+' · '+p.title,styleId,layout:6,section:styleId}));})].map(Object.freeze));
+ const pageNumber=(key,styleId)=>{const i=DOWNLOAD_PAGES.findIndex(p=>p.key===key&&(!styleId||p.styleId===styleId));if(i<0)throw Error('Unknown download page '+key);return i+1;};
+ const DOWNLOAD_SECTIONS=Object.freeze([{key:'single',name:'單欄主題 07／06／03／10／04',collapse:true},{key:'materials',name:'卡片與文字素材',collapse:false},...COMPONENT_STYLES.map(key=>({key,name:Deck.PRESETS.find(p=>p.id===key).zh,collapse:true}))].map((s,i)=>Object.freeze({...s,id:'{F17ED024-0000-4000-8000-'+String(i+1).padStart(12,'0')+'}',pages:Object.freeze(DOWNLOAD_PAGES.map((p,i)=>p.section===s.key?i+1:null).filter(Boolean))})));
  const PRESETS=Object.freeze([
   {label:'封面・文字重點',layout:'1',style:'none',marker:'highlight',color:'red',highlightColor:'red'},
   {label:'單欄・重點卡',layout:'2',style:'soft',marker:'highlight',color:'yellow',highlightColor:'yellow'},
@@ -110,9 +112,10 @@
   if(!NativeStyles||typeof NativeStyles.nativeStyleProfile!=='function')throw Error('原生樣式模組尚未載入，請重新開啟此頁。');
   const profile=await NativeStyles.nativeStyleProfile(zip,options.selectedSchemes?{source:'custom',accents:SINGLE_SCHEMES[0].accents.slice(),format:'balanced-v2'}:{source:options.source==='theme'||options.paletteSource==='theme'?'theme':'common'});
   let pres=await zip.file('ppt/presentation.xml').async('string'),rels=await zip.file('ppt/_rels/presentation.xml.rels').async('string'),types=await zip.file('[Content_Types].xml').async('string');
-  // The user-selected cover is not original slide 1: retain original content slides 1/2,
-  // remove comparison/report and their unused note, then prepend a native layout-1 cover.
+  // Source bytes remain immutable. The current download retains only the single-
+  // column source; the legacy internal helper still builds its explicit three pages.
   const removed=['ppt/slides/slide3.xml','ppt/slides/_rels/slide3.xml.rels','ppt/slides/slide4.xml','ppt/slides/_rels/slide4.xml.rels','ppt/notesSlides/notesSlide3.xml','ppt/notesSlides/_rels/notesSlide3.xml.rels'];
+  if(options.currentDownload)removed.push('ppt/slides/slide2.xml','ppt/slides/_rels/slide2.xml.rels','ppt/notesSlides/notesSlide2.xml','ppt/notesSlides/_rels/notesSlide2.xml.rels');
   removed.forEach(name=>zip.remove(name));
   types=types.replace(/<Override\b[^>]*\/>/g,tag=>removed.some(name=>tag.includes('PartName="/'+name+'"'))?'':tag);
   rels=rels.replace(/<Relationship\b[^>]*\/>/g,tag=>tag.includes('Type="'+R+'/slide"')?'':tag);
@@ -126,8 +129,9 @@
    types=types.replace('</Types>',`<Override PartName="/ppt/slides/${part}.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slide+xml"/></Types>`);
   }
   const cover=build({layout:'1',style:'none',marker:'none',color:'red'});
-  addSlide('slideCover',1,slideXml(cover,1),260,'rIdFixedCover');
-  for(const [part,number,id,rid]of [['slide1',2,256,'Rbbb39bd5704c4961'],['slide2',3,257,'Re12590bd29d746d8']]){
+  if(!options.currentDownload)addSlide('slideCover',1,slideXml(cover,1),260,'rIdFixedCover');
+  const retained=options.currentDownload?[['slide1',1,256,'Rbbb39bd5704c4961']]:[['slide1',2,256,'Rbbb39bd5704c4961'],['slide2',3,257,'Re12590bd29d746d8']];
+  for(const [part,number,id,rid]of retained){
    const original=await zip.file('ppt/slides/'+part+'.xml').async('string');let fields=0;
    const numbered=original.replace(/(<a:fld\b[^>]*\btype="slidenum"[^>]*>[\s\S]*?<a:t>)\d+(<\/a:t>[\s\S]*?<\/a:fld>)/g,(_,before,after)=>{fields++;return before+number+after;});
    if(fields!==1)throw Error('來源頁碼欄位不符預期；已停止匯出。');
@@ -143,10 +147,10 @@
  }
  // Both downloads use the same immutable source and native profile.
  async function exportPptx(JSZip,values=[],options={}){
-  const prepared=await prepareTemplate(JSZip,values,{...options,selectedSchemes:!values.length}),{zip}=prepared;
+  const prepared=await prepareTemplate(JSZip,values,{...options,selectedSchemes:!values.length,currentDownload:!values.length}),{zip}=prepared;
   // Legacy internal demonstrations keep their explicit 3+1 contract. The main
   // empty-values path is the requested current master download.
-  if(!values.length){await installSingleSchemes(prepared);await appendDownloadPages(JSZip,prepared,options);}
+  if(!values.length){await installSingleSchemes(prepared);await appendDownloadPages(JSZip,prepared,options);await installSections(prepared);}
   return zip.generateAsync({type:'uint8array',compression:'DEFLATE'});
  }
  function materialPage(title,number){
@@ -167,11 +171,13 @@
   cols.forEach((color,j)=>p.label('Palette slot '+j,184+j*150,133,142,25,(j?'Accent '+j:'Text1')+' #'+color,9));
   NativeStyles.KIT_EFFECTS.slice(pageIndex*5,pageIndex*5+5).forEach((spec,k)=>{
    const row=pageIndex*5+k,y=180+k*91;
-   p.label('Material effect '+row,40,y,132,57,spec.label,12);
+   p.label('Material effect '+row,40,y,132,57,row===0?'中性／淡主色柔影':row===1?'中性／主色白字':spec.label,12);
    cols.forEach((color,j)=>{
-    const role=roles[j],e=NativeStyles.kitEffect(color,row,slots.dk1,slots.lt1,slots.dk2),foreground=e.fontRole==='self'?role:e.fontRole;
+    const role=roles[j],variant=j>0&&row<2;let e=NativeStyles.kitEffect(color,row,slots.dk1,slots.lt1,slots.dk2);
+    if(variant){const paint=NativeStyles.kitEffect(color,row===0?4:9,slots.dk1,slots.lt1,slots.dk2);e={...e,fillRole:'self',fillMods:row===0?[['tint',20000]]:paint.fillMods,fontRole:paint.fontRole,fontMods:paint.fontMods,foreground:paint.foreground,lineRole:'self',lineMods:row===0?[]:paint.fillMods};}
+    const foreground=e.fontRole==='self'?role:e.fontRole;
     const background=row===5?rgb('F2F2F2'):NativeStyles.colorXml(e.fillRole==='self'?role:e.fillRole,row===4?[['tint',20000]]:e.fillMods);
-    const line=e.line?'<a:ln w="'+Math.round(e.lineWidth*12700)+'" cap="flat" cmpd="sng" algn="ctr">'+solid([0,1,3].includes(row)?rgb(e.lineColor):NativeStyles.colorXml(e.lineRole==='self'?role:e.lineRole,e.lineMods))+'<a:prstDash val="solid"/><a:round/></a:ln>':'<a:ln><a:noFill/></a:ln>';
+    const line=e.line?'<a:ln w="'+Math.round(e.lineWidth*12700)+'" cap="flat" cmpd="sng" algn="ctr">'+solid(!variant&&[0,1,3].includes(row)?rgb(e.lineColor):NativeStyles.colorXml(e.lineRole==='self'?role:e.lineRole,e.lineMods))+'<a:prstDash val="solid"/><a:round/></a:ln>':'<a:ln><a:noFill/></a:ln>';
     const shadow=e.shadow?'<a:effectLst><a:outerShdw blurRad="'+Math.round(e.shadow.blur*12700)+'" dist="'+Math.round(e.shadow.offset*12700)+'" dir="5400000" algn="ctr" rotWithShape="0"><a:srgbClr val="000000"><a:alpha val="'+Math.round(e.shadow.alpha*100000)+'"/></a:srgbClr></a:outerShdw></a:effectLst>':'<a:effectLst/>';
     const style='<p:style><a:lnRef idx="0">'+NativeStyles.colorXml(role)+'</a:lnRef><a:fillRef idx="0">'+NativeStyles.colorXml(role)+'</a:fillRef><a:effectRef idx="0">'+NativeStyles.colorXml(role)+'</a:effectRef><a:fontRef idx="minor">'+NativeStyles.colorXml(foreground,e.fontMods)+'</a:fontRef></p:style>';
     const body=textBody(e.text,20,e.foreground,e.bold).replace(fill(e.foreground),solid(NativeStyles.colorXml(foreground,e.fontMods))).replace('<a:pPr>','<a:pPr algn="ctr">');
@@ -241,7 +247,7 @@
   return {...model,slides:out,W:13.3333333333333,H:7.5};
  }
  async function componentSlides(JSZip,profile,options={}){
-  const model=componentModel(profile,options.presetId),PptxGenJS=options.PptxGenJS||getPptxGenJS();
+  const model=componentModel(profile,options.presetId),PptxGenJS=options.PptxGenJS||getPptxGenJS(),startPage=options.startPage||pageNumber(options.presetId?'catalog':'cards',options.presetId||COMPONENT_STYLES[0]);
   if(typeof PptxGenJS!=='function')throw Error('原生簡報工具尚未載入。');
   const exported=await Deck.exportPptx({JSZip,PptxGenJS},model.params,{model,type:'uint8array'}),source=await JSZip.loadAsync(exported.data),pages=[];
   for(let i=0;i<model.slides.length;i++){
@@ -262,13 +268,13 @@
     const target=partTarget('ppt/slides/slide'+(i+1)+'.xml',rel.attrs.Target),dest=target.match(/^ppt\/slides\/slide(\d+)\.xml$/),index=dest?Number(dest[1])-1:-1;
     if(index<0||index>=model.slides.length)throw Error('元件連結目標不在此風格組。');
     const next='rIdComponent'+(mapped.size+1);mapped.set(id,next);
-    relationships.push('<Relationship Id="'+next+'" Type="'+R+'/slide" Target="slideMaterial'+((options.startPage||11)+index)+'.xml"/>');
+    relationships.push('<Relationship Id="'+next+'" Type="'+R+'/slide" Target="slideMaterial'+(startPage+index)+'.xml"/>');
    }
    body=body.replace(/\br:id="([^"]+)"/g,(_,id)=>'r:id="'+mapped.get(id)+'"');
    const ids=new Map();let next=1000;
    body=body.replace(/(<p:cNvPr\b[^>]*\bid=")(\d+)(")/g,(_,a,id,b)=>{if(ids.has(id))throw Error('元件 shape ID 重複。');ids.set(id,String(++next));return a+ids.get(id)+b;});
    body=body.replace(/(<a:(?:stCxn|endCxn)\b[^>]*\bid=")(\d+)(")/g,(_,a,id,b)=>{if(!ids.has(id))throw Error('元件連線缺少目標。');return a+ids.get(id)+b;});
-   const pageNumber=(options.startPage||11)+i,pageDef=DOWNLOAD_PAGES[pageNumber-1],page=materialPage(pageDef.title,pageNumber);
+   const pageNumber=startPage+i,pageDef=DOWNLOAD_PAGES[pageNumber-1],page=materialPage(pageDef.title,pageNumber);
    const caption=options.presetId?Deck.PRESETS.find(p=>p.id===options.presetId).zh+' · ':'';
    const dense=['schemebody','schemeiconbody'].includes(model.slides[i].key);
    page.label('Component page scope',40,94,1180,28,caption+(dense?'14 款 A/B，共 28 組原生元件 · 密集素材總覽（9 pt）· 可複製後放大編輯':model.slides[i].key==='catalog'?'元件總覽 · 可整組複製、修改文字與圖形':'9 種原生卡片與面板 · 可整組複製、修改文字與圖示'),11);
@@ -284,6 +290,47 @@
  function relEntries(xml){return Array.from(xml.matchAll(/<(?:\w+:)?Relationship\b[^>]*\/>/g),m=>({xml:m[0],attrs:Object.fromEntries(Array.from(m[0].matchAll(/([\w:.-]+)="([^"]*)"/g),a=>[a[1],a[2]]))}));}
  function numbered(xml,number){let count=0;const out=xml.replace(/(<a:fld\b[^>]*\btype="slidenum"[^>]*>[\s\S]*?<a:t>)\d+(<\/a:t>[\s\S]*?<\/a:fld>)/g,(_,a,b)=>{count++;return a+number+b;});if(count!==1)throw Error('Single-column page number field changed');return out;}
 
+ // Official ShapeStyle tuples, captured from PowerPoint's saved native gallery
+ // (indices 2/9/16/23/30/37 for Accent1). No direct fill/line/effect overrides:
+ // every sample resolves through this slide's independent balanced-v2 theme.
+ function singleThemeSamples(xml){
+  let content=0;
+  xml=xml.replace(/<p:sp\b[^>]*>[\s\S]*?<\/p:sp>/g,sp=>{
+   if(!/<p:ph\b[^>]*\bidx="1"/.test(sp))return sp;content++;
+   const ps=sp.match(/<a:p(?:\s[^>]*)?>[\s\S]*?<\/a:p>/g);if(!ps||ps.length<3)throw Error('Single-column sample paragraphs changed');
+   // Retain one exact 24/18/14 pt hierarchy, including inherited bullets/font.
+   sp=sp.replace(/(<p:txBody>[\s\S]*?<\/ns0:lstStyle>|<p:txBody>[\s\S]*?<ns0:lstStyle[^>]*\/>)[\s\S]*?<\/p:txBody>/,(_,head)=>head+ps.slice(0,3).join('')+'</p:txBody>');
+   const box=DATA.layouts.find(l=>l.number===2).placeholders['1'];
+   return sp.replace('<p:spPr>','<p:spPr><a:xfrm xmlns:a="'+A+'"><a:off x="'+emu(box.x)+'" y="'+emu(box.y)+'"/><a:ext cx="'+emu(530)+'" cy="'+emu(box.h)+'"/></a:xfrm>');
+  });
+  if(content!==1)throw Error('Expected one single-column content placeholder');
+  const tuples=[[2,1,0,'lt1','dk1'],[2,1,0,'self','lt1'],[3,1,1,'self','lt1'],[1,2,1,'self','dk1'],[1,3,2,'self','lt1'],[0,3,3,'self','lt1']];
+  const parts=[],head=materialPage('',1);head.label('Theme styles heading',650,120,575,38,'佈景主題樣式',20);
+  const label=head.xml().match(/<p:sp><p:nvSpPr><p:cNvPr id="101"[\s\S]*?<\/p:sp>/)[0].replace('id="101"','id="9100"');parts.push(label);
+  for(let row=0;row<6;row++)for(let col=0;col<6;col++){
+   const role='accent'+(col+1),[ln,fillIndex,effect,fillRole,fontRole]=tuples[row],shapeStyle=row*7+col+2;
+   const ref=(name,index,color,mods=[])=>'<a:'+name+' idx="'+index+'">'+NativeStyles.colorXml(color==='self'?role:color,mods)+'</a:'+name+'>';
+   const style='<p:style>'+ref('lnRef',ln,row===2?'lt1':role,row===1?[['shade',15000]]:[])+ref('fillRef',fillIndex,fillRole)+ref('effectRef',effect,role)+ref('fontRef','minor',fontRole)+'</p:style>';
+   const body=textBody('Abc',16).replace(fill('333333'),'').replace('<a:pPr>','<a:pPr algn="ctr">');
+   parts.push('<p:sp><p:nvSpPr><p:cNvPr id="'+(9101+row*6+col)+'" name="Native ShapeStyle '+shapeStyle+'"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr><p:spPr><a:xfrm><a:off x="'+emu(650+col*96)+'" y="'+emu(181+row*76)+'"/><a:ext cx="'+emu(83)+'" cy="'+emu(53)+'"/></a:xfrm><a:prstGeom prst="roundRect"><a:avLst/></a:prstGeom></p:spPr>'+style+body+'</p:sp>');
+  }
+  // Source slide has locally declared DrawingML namespaces; new shapes need a
+  // root declaration without touching any source master/layout or its fonts.
+  xml=xml.replace('<p:sld ', '<p:sld xmlns:a="'+A+'" ');
+  return xml.replace('</p:spTree>',parts.join('')+'</p:spTree>');
+ }
+ async function installSections({zip,stamp}){
+  const file='ppt/presentation.xml';let xml=await zip.file(file).async('string');
+  const ids=Array.from(xml.match(/<p:sldIdLst>[\s\S]*?<\/p:sldIdLst>/)[0].matchAll(/<p:sldId\b[^>]*\bid="(\d+)"/g),m=>m[1]);
+  if(ids.length!==DOWNLOAD_PAGES.length)throw Error('Section page list does not match the download');
+  const uri='{521415D9-36F7-43E2-AB2F-B90AF26B5E84}',body='<p:ext uri="'+uri+'"><p14:sectionLst xmlns:p14="http://schemas.microsoft.com/office/powerpoint/2010/main">'+DOWNLOAD_SECTIONS.map(s=>'<p14:section name="'+esc(s.name)+'" id="'+s.id+'"><p14:sldIdLst>'+s.pages.map(n=>'<p14:sldId id="'+ids[n-1]+'"/>').join('')+'</p14:sldIdLst></p14:section>').join('')+'</p14:sectionLst></p:ext>';
+  if(xml.includes(uri))throw Error('Source already contains sections; avoid overwriting them');
+  // PowerPoint 16.0.20527 saves membership, but reopens collapsed sections
+  // expanded. Do not invent an unsupported collapsed attribute or add macros.
+  xml=xml.includes('<p:extLst>')?xml.replace('</p:extLst>',body+'</p:extLst>'):xml.replace('</p:presentation>','<p:extLst>'+body+'</p:extLst></p:presentation>');
+  zip.file(file,xml,{date:stamp,createFolders:false});
+ }
+
  async function installSingleSchemes({zip,profile,stamp}){
   const graph=await NativeStyles.resolveThemeGraph(zip);
   if(graph.masterParts.length!==1)throw Error('五款單欄需從原單一母片建立；已停止以免覆寫既有設計。');
@@ -295,7 +342,7 @@
   const owner=relEntries(layoutRels0).filter(r=>r.attrs.Type===R+'/slideMaster');if(owner.length!==1||partTarget(layout,owner[0].attrs.Target)!==master)throw Error('Single-column master reference changed');
   const masterXml0=await read(master),masterRels0=await read(masterRels),themeXml0=await read(theme),pending=new Map();
   let pres=await read(graph.presentationPart),presRels=await read(graph.presentationRels),types=await read('[Content_Types].xml');
-  const originalIds=Array.from((pres.match(/<p:sldIdLst>[\s\S]*?<\/p:sldIdLst>/)||[''])[0].matchAll(/<p:sldId\b[^>]*\/>/g),m=>m[0]);if(originalIds.length!==3)throw Error('Expected cover/single/double before scheme expansion');
+  const originalIds=Array.from((pres.match(/<p:sldIdLst>[\s\S]*?<\/p:sldIdLst>/)||[''])[0].matchAll(/<p:sldId\b[^>]*\/>/g),m=>m[0]);if(originalIds.length!==1)throw Error('Expected only the retained single-column source before scheme expansion');
   const insertedIds=[];
   function add(part,xml,type){if(zip.file(part)||pending.has(part))throw Error('Package part collision: '+part);pending.set(part,xml);if(type)types=types.replace('</Types>','<Override PartName="/'+part+'" ContentType="'+type+'"/></Types>');}
   for(let i=0;i<SINGLE_SCHEMES.length;i++){
@@ -322,7 +369,8 @@
    pres=pres.replace('</p:sldMasterIdLst>','<p:sldMasterId xmlns:r="'+R+'" id="'+(2147483700+i)+'" r:id="'+rid+'"/></p:sldMasterIdLst>');
    presRels=presRels.replace('</Relationships>','<Relationship Id="'+rid+'" Type="'+R+'/slideMaster" Target="/'+masterPart+'"/></Relationships>');
    const slidePart=i===0?sourceSlide:'ppt/slides/slideScheme'+scheme.id+'.xml';
-   let sx=numbered(slideXml0,i+2).replace('<a:t>單欄內容</a:t>','<a:t>'+esc(scheme.label)+'</a:t>');
+   let sx=numbered(slideXml0,i+1).replace('<a:t>單欄內容</a:t>','<a:t>'+esc(scheme.label)+'</a:t>');
+   sx=singleThemeSamples(sx);
    sx=sx.replace(/(<p:cSld\b[^>]*\bname=")[^"]*(")/,(_,a,b)=>a+esc(scheme.label)+b);
    let sr=slideRels0.replace(layoutRel[0].xml,layoutRel[0].xml.replace(/Target="[^"]*"/,'Target="/'+layoutPart+'"'));
    if(i===0){pending.set(slidePart,sx);pending.set(sourceSlideRels,sr);}
@@ -336,18 +384,17 @@
     insertedIds.push('<p:sldId xmlns:r="'+R+'" id="'+(400+i)+'" r:id="'+sid+'"/>');
    }
   }
-  pres=pres.replace(/<p:sldIdLst>[\s\S]*?<\/p:sldIdLst>/,'<p:sldIdLst>'+[originalIds[0],originalIds[1],...insertedIds,originalIds[2]].join('')+'</p:sldIdLst>');
-  pending.set('ppt/slides/slide2.xml',numbered(await read('ppt/slides/slide2.xml'),7));
+  pres=pres.replace(/<p:sldIdLst>[\s\S]*?<\/p:sldIdLst>/,'<p:sldIdLst>'+[originalIds[0],...insertedIds].join('')+'</p:sldIdLst>');
   pending.set(graph.presentationPart,pres);pending.set(graph.presentationRels,presRels);pending.set('[Content_Types].xml',types);
   for(const [part,xml]of pending)zip.file(part,xml,{date:stamp,createFolders:false});
  }
  async function appendDownloadPages(JSZip,{zip,profile,stamp},options){
-  const components=[];for(const [i,presetId]of COMPONENT_STYLES.entries())components.push(...await componentSlides(JSZip,profile,{...options,presetId,startPage:11+i*4}));
-  const pages=[materialCards(profile,0,8),materialCards(profile,1,9),materialHighlights(10),...components];
+  const components=[];for(const presetId of COMPONENT_STYLES)components.push(...await componentSlides(JSZip,profile,{...options,presetId,startPage:pageNumber('catalog',presetId)}));
+  const first=pageNumber('rectangles-1'),pages=[materialCards(profile,0,first),materialCards(profile,1,pageNumber('rectangles-2')),materialHighlights(pageNumber('native-highlight')),...components];
   let pres=await zip.file('ppt/presentation.xml').async('string'),rels=await zip.file('ppt/_rels/presentation.xml.rels').async('string'),types=await zip.file('[Content_Types].xml').async('string');
   pages.forEach((entry,i)=>{
    const xml=typeof entry==='string'?entry:entry.xml,links=typeof entry==='string'?'':entry.relationships.join('');
-   const number=i+8,part='slideMaterial'+number,rid='rIdFixedMaterial'+number;
+   const number=i+first,part='slideMaterial'+number,rid='rIdFixedMaterial'+number;
    zip.file('ppt/slides/'+part+'.xml',xml,{date:stamp,createFolders:false});
    zip.file('ppt/slides/_rels/'+part+'.xml.rels','<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdLayout" Type="'+R+'/slideLayout" Target="../slideLayouts/slideLayout6.xml"/>'+links+'</Relationships>',{date:stamp,createFolders:false});
    pres=pres.replace('</p:sldIdLst>','<p:sldId xmlns:r="'+R+'" id="'+(300+number)+'" r:id="'+rid+'"/></p:sldIdLst>');
@@ -386,11 +433,11 @@
   function gallery(colors){return '<div class="fmGallery" role="table" aria-label="十款可編輯矩形，七欄色彩">'+NativeStyles.KIT_EFFECTS.map((row,i)=>'<div class="fmGalleryRow" role="row"><strong role="rowheader">'+esc(row.label)+'</strong>'+colors.map((color,j)=>{const e=NativeStyles.kitEffect(color,i,'000000','FFFFFF','44546A'),sh=e.shadow;return '<div class="fmCard" role="cell" data-fm-card="'+i+':'+j+'" style="background:#'+e.backgrounds[0]+';color:#'+e.foreground+';border:'+(e.line?e.lineWidth*4/3+'px solid #'+e.lineColor:'0')+';border-radius:'+e.radius*4/3+'px;font-weight:'+(e.bold?700:400)+';'+(sh?'box-shadow:0 '+sh.offset*4/3+'px '+sh.blur*4/3+'px rgba(0,0,0,'+sh.alpha+');':'')+'">'+esc(e.text)+'</div>';}).join('')+'</div>').join('')+'</div>';}
   function draw(){const old=container.querySelector('[data-fm-examples]');if(old)r.examplesOpen=old.open;const active=doc.activeElement,key=active&&container.contains(active)?active.getAttribute('data-fm-field'):null,disabled=r.busy?' disabled':'',s=r.state;
    const colors=SINGLE_SCHEMES[0].accents,previewData=doc.defaultView.FixedMasterPreviews,previews=previewData&&previewData.pages===DOWNLOAD_PAGES.length?previewData:null;
-   container.innerHTML='<div class="fm" aria-busy="'+r.busy+'"><span class="fmLock">固定母片 · 不跟隨網站風格</span><h2>投影片母片</h2><div class="fmActions"><button type="button" class="fmPrimary" data-fm-download="template"'+disabled+'>下載 '+DOWNLOAD_PAGES.length+' 頁母片</button></div><p class="fmStatus" role="status" aria-live="polite" data-fm-status>'+esc(r.status)+'</p><div class="fmOrigins" aria-label="'+DOWNLOAD_PAGES.length+' 頁母片預覽">'+DOWNLOAD_PAGES.map((p,i)=>'<figure class="'+(i<7?'fmOriginal':'fmAdded')+'"><figcaption>第 '+(i+1)+' 頁 · '+esc(p.label)+'</figcaption>'+(previews&&previews.images&&previews.images[i]?'<img src="'+previews.images[i]+'" alt="'+esc(p.label)+'" width="960" height="540">':'<p>'+esc(p.title)+'</p>')+'</figure>').join('')+'</div></div>';
+   container.innerHTML='<div class="fm" aria-busy="'+r.busy+'"><span class="fmLock">固定母片 · 不跟隨網站風格</span><h2>投影片母片</h2><div class="fmActions"><button type="button" class="fmPrimary" data-fm-download="template"'+disabled+'>下載 '+DOWNLOAD_PAGES.length+' 頁母片</button></div><p class="fmStatus" role="status" aria-live="polite" data-fm-status>'+esc(r.status)+'</p><div class="fmOrigins" aria-label="'+DOWNLOAD_PAGES.length+' 頁母片預覽">'+DOWNLOAD_PAGES.map((p,i)=>'<figure class="'+(p.schemeId?'fmOriginal':'fmAdded')+'"><figcaption>第 '+(i+1)+' 頁 · '+esc(p.label)+'</figcaption>'+(previews&&previews.images&&previews.images[i]?'<img src="'+previews.images[i]+'" alt="'+esc(p.label)+'" width="960" height="540">':'<p>'+esc(p.title)+'</p>')+'</figure>').join('')+'</div></div>';
    if(key){const next=container.querySelector('[data-fm-field="'+key+'"]');if(next&&!next.disabled)next.focus();}
    container.onclick=async e=>{const b=e.target.closest('button[data-fm-download]');if(!b||!container.contains(b)||r.busy)return;const mode=b.dataset.fmDownload;if(!['template','materials'].includes(mode))return;const snapshot=clone(r.state);r.focusDownload=mode;r.busy=true;r.status='正在準備原生封裝…';draw();try{const result=await r.options.onDownload({mode,selection:snapshot});r.status=result===false?'已取消；設定保留。':(mode==='template'?'已產生 '+DOWNLOAD_PAGES.length+' 頁母片':'已產生三頁卡片與文字素材')+'並交由瀏覽器處理；請確認下載紀錄。';}catch(err){r.status='未完成下載：'+err.message;}finally{r.busy=false;draw();if(container.isConnected&&!container.hidden&&doc.activeElement===doc.body){const done=container.querySelector('[data-fm-download="'+r.focusDownload+'"]');if(done)done.focus();}}};
   }
   draw();
  }
- return Object.freeze({COLORS,HIGHLIGHTS,STYLES,MARKERS,PALETTES,ORIGINAL_ACCENTS,LAYOUTS,PRESETS,TEMPLATE_PAGES,DOWNLOAD_PAGES,SINGLE_SCHEMES,COMPONENT_STYLES,COMPONENT_PAGES,componentModel,normalize,validate,combinations,build,preview,slideXml,originalBytes,exportPptx,exportMaterials,render,getState:container=>records.has(container)?clone(records.get(container).state):null,sourceSha256:DATA.sha256});
+ return Object.freeze({COLORS,HIGHLIGHTS,STYLES,MARKERS,PALETTES,ORIGINAL_ACCENTS,LAYOUTS,PRESETS,TEMPLATE_PAGES,DOWNLOAD_PAGES,DOWNLOAD_SECTIONS,SINGLE_SCHEMES,COMPONENT_STYLES,COMPONENT_PAGES,componentModel,normalize,validate,combinations,build,preview,slideXml,originalBytes,exportPptx,exportMaterials,render,getState:container=>records.has(container)?clone(records.get(container).state):null,sourceSha256:DATA.sha256});
 });

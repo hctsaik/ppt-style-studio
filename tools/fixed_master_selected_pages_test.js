@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 // Scoped contract: one current master, the four requested component styles,
-// and the protected first ten pages. No site-wide style/export matrix.
+// and the protected original master parts and five single themes. No site-wide style/export matrix.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const JSZip=require('../jszip.min'),F=require('../fixed-master'),D=require('../deck');
 const {JSDOM}=require('jsdom'),parser=new (new JSDOM('').window.DOMParser)();
@@ -24,7 +24,7 @@ const relPath=n=>path.posix.join(path.posix.dirname(n),'_rels',path.posix.basena
 const resolve=(n,target)=>path.posix.normalize(target.startsWith('/')?target.slice(1):path.posix.join(path.posix.dirname(n),target));
 async function rels(z,n){return els(xml(await text(z,relPath(n))),PKG,'Relationship').map(r=>({id:r.getAttribute('Id'),type:r.getAttribute('Type'),target:r.getAttribute('Target'),external:r.hasAttribute('TargetMode')}));}
 async function target(z,n,type){const rs=(await rels(z,n)).filter(r=>r.type===R+'/'+type);assert.equal(rs.length,1);return resolve(n,rs[0].target);}
-const expectedParts=['ppt/slides/slideCover.xml','ppt/slides/slide1.xml',...['06','03','10','04'].map(id=>'ppt/slides/slideScheme'+id+'.xml'),'ppt/slides/slide2.xml',...Array.from({length:19},(_,i)=>'ppt/slides/slideMaterial'+(i+8)+'.xml')];
+const expectedParts=['ppt/slides/slide1.xml',...['06','03','10','04'].map(id=>'ppt/slides/slideScheme'+id+'.xml'),...Array.from({length:19},(_,i)=>'ppt/slides/slideMaterial'+(i+6)+'.xml')];
 let checks=0;
 async function check(label,fn){await fn();checks++;console.log('PASS '+label);}
 (async()=>{
@@ -32,13 +32,13 @@ async function check(label,fn){await fn();checks++;console.log('PASS '+label);}
  const z=await JSZip.loadAsync(data),sourceBytes=fs.readFileSync(path.join(__dirname,'../fixed-master/Fixed_Red_Template.pptx')),original=await JSZip.loadAsync(sourceBytes);
  const pres=xml(await text(z,'ppt/presentation.xml')),rs=await rels(z,'ppt/presentation.xml');
  const ordered=els(pres,P,'sldId').map(s=>resolve('ppt/presentation.xml',rs.find(r=>r.id===s.getAttributeNS(R,'id')).target));
- await check('26 pages, exact requested 4 x 4 order, manifest and page numbers',async()=>{
-  assert.deepEqual(ordered,expectedParts);assert.equal(F.DOWNLOAD_PAGES.length,26);
-  assert.deepEqual(F.DOWNLOAD_PAGES.slice(10).map(p=>[p.styleId,p.key]),STYLE_IDS.flatMap(id=>KEYS.map(key=>[id,key])));
-  const manifest=require('../fixed-master/download-manifest.json');assert.equal(manifest.slideCount,26);assert.equal(manifest.filename,'固定紅色_26頁母片.pptx');
-  assert.deepEqual(manifest.pages.slice(10).map(p=>[p.styleId,p.key]),STYLE_IDS.flatMap(id=>KEYS.map(key=>[id,key])));
-  assert.match(await text(z,'docProps/app.xml'),/<(?:\w+:)?Slides>26<\/(?:\w+:)?Slides>/);
-  for(let i=0;i<26;i++){const d=xml(await text(z,ordered[i])),fields=els(d,A,'fld').filter(f=>f.getAttribute('type')==='slidenum');assert.equal(fields.length,1);assert.equal(joined(fields[0]),String(i+1));}
+ await check('24 pages, exact requested 4 x 4 order, manifest and page numbers',async()=>{
+  assert.deepEqual(ordered,expectedParts);assert.equal(F.DOWNLOAD_PAGES.length,24);
+  assert.deepEqual(F.DOWNLOAD_PAGES.slice(8).map(p=>[p.styleId,p.key]),STYLE_IDS.flatMap(id=>KEYS.map(key=>[id,key])));
+  const manifest=require('../fixed-master/download-manifest.json');assert.equal(manifest.slideCount,24);assert.equal(manifest.filename,'固定紅色_24頁母片.pptx');
+  assert.deepEqual(manifest.pages.slice(8).map(p=>[p.styleId,p.key]),STYLE_IDS.flatMap(id=>KEYS.map(key=>[id,key])));
+  assert.match(await text(z,'docProps/app.xml'),/<(?:\w+:)?Slides>24<\/(?:\w+:)?Slides>/);
+  for(let i=0;i<24;i++){const d=xml(await text(z,ordered[i])),fields=els(d,A,'fld').filter(f=>f.getAttribute('type')==='slidenum');assert.equal(fields.length,1);assert.equal(joined(fields[0]),String(i+1));}
  });
  await check('original source, master, layouts, notes, media and five single palettes remain protected',async()=>{
   assert.equal(sha(sourceBytes),'1d42e27915855f57c1bee5ad185526ee62c51818223e9cfde20609dcf47c1fae');
@@ -46,15 +46,15 @@ async function check(label,fn){await fn();checks++;console.log('PASS '+label);}
   for(const n of Object.keys(original.files).filter(n=>!original.files[n].dir&&(/ppt\/(?:media|slideLayouts)\//.test(n)||n==='ppt/slideMasters/slideMaster1.xml'||/^ppt\/notes/.test(n)&&z.file(n))))assert.deepEqual(await z.file(n).async('nodebuffer'),await original.file(n).async('nodebuffer'),n);
   const sourceSingle=await text(original,'ppt/slides/slide1.xml');
   for(let i=0;i<5;i++){
-   const [id,accents,highlight]=SCHEMES[i],part=ordered[i+1],s=await text(z,part),d=xml(s),layout=await target(z,part,'slideLayout'),master=await target(z,layout,'slideMaster'),theme=xml(await text(z,await target(z,master,'theme')));
+   const [id,accents,highlight]=SCHEMES[i],part=ordered[i],s=await text(z,part),d=xml(s),layout=await target(z,part,'slideLayout'),master=await target(z,layout,'slideMaster'),theme=xml(await text(z,await target(z,master,'theme')));
    assert.equal(els(xml(await text(z,layout)),P,'cSld')[0].getAttribute('name'),'單欄'+id);
    assert.equal(els(xml(await text(z,master)),P,'cSld')[0].getAttribute('name'),'單欄'+id);
    assert.equal(theme.documentElement.getAttribute('name'),'單欄'+id);
    for(let k=0;k<6;k++)assert.equal(els(els(theme,A,'accent'+(k+1))[0],A,'srgbClr')[0].getAttribute('val'),accents[k]);
    const added=[...s.matchAll(/<p:sp\b[^>]*>[\s\S]*?<\/p:sp>/g)].filter(m=>/\bid="9001"/.test(m[0]));assert.equal(added.length,0);
    assert.equal(els(d,A,'highlight').length,0);
-   const expected=sourceSingle.replace(/(<a:fld\b[^>]*\btype="slidenum"[^>]*>[\s\S]*?<a:t>)\d+(<\/a:t>[\s\S]*?<\/a:fld>)/g,(_,a,b)=>a+(i+2)+b).replace('<a:t>單欄內容</a:t>','<a:t>單欄'+id+'</a:t>');
-   assert.equal(s,expected,'Only approved title/number changes; no added bottom sample');
+   const content=els(d,P,'sp').find(sp=>els(sp,P,'ph').some(ph=>ph.getAttribute('idx')==='1'));assert.equal(els(content,A,'p').length,3);assert.deepEqual(els(content,A,'pPr').map(p=>p.getAttribute('lvl')),['0','1','2']);assert.equal(els(d,P,'sp').filter(sp=>els(sp,P,'cNvPr')[0]?.getAttribute('name').startsWith('Native ShapeStyle ')).length,36);
+   for(const phrase of ['大標題：主要重點（24 pt）','次標題：說明重點與背景（18 pt）','再次標題：補充資料與細節（14 pt）'])assert(joined(content).includes(phrase));
   }
   assert.equal(els(pres,P,'sldMasterId').length,6);
  });
@@ -63,7 +63,7 @@ async function check(label,fn){await fn();checks++;console.log('PASS '+label);}
    const preset=D.PRESETS.find(p=>p.id===STYLE_IDS[si]);assert.equal(preset.P,PRIMARY[si]);
    const raw=D.buildModel({...preset},{only:KEYS}),model=F.componentModel({palette:{accents:SCHEMES[0][1]}},STYLE_IDS[si]);
    for(let ki=0;ki<4;ki++){
-    const key=KEYS[ki],source=raw.slides.find(s=>s.key===key),actual=model.slides.find(s=>s.key===key),s=await text(z,ordered[10+si*4+ki]),d=xml(s),groups=els(d,P,'grpSp');
+    const key=KEYS[ki],source=raw.slides.find(s=>s.key===key),actual=model.slides.find(s=>s.key===key),s=await text(z,ordered[8+si*4+ki]),d=xml(s),groups=els(d,P,'grpSp');
     assert.equal(actual.groups.length,[si===3?54:55,9,28,28][ki]);assert.equal(groups.length,source.groups.filter(g=>g.to>g.from).length);assert.equal(els(d,P,'pic').length,0);assert(s.includes('val="'+PRIMARY[si]+'"'));
     assert(joined(d).endsWith(actual.items.flatMap(it=>(it.runs||[]).map(r=>r.t)).join('').replace(/\r?\n/g,'')),'Every component text, category and caption is retained in native order');
     for(let gi=0;gi<source.groups.length;gi++){
@@ -76,22 +76,17 @@ async function check(label,fn){await fn();checks++;console.log('PASS '+label);}
  });
  await check('selected-page hyperlinks resolve only to existing same-style components',async()=>{
   let links=0;
-  for(let i=10;i<26;i++){
+  for(let i=8;i<24;i++){
    const part=ordered[i],d=xml(await text(z,part)),rr=await rels(z,part),linkRefs=els(d,A,'hlinkClick');
    for(const r of rr){assert(!r.external);assert(z.file(resolve(part,r.target)),'Internal target exists');}
-   for(const h of linkRefs){const r=rr.find(r=>r.id===h.getAttributeNS(R,'id'));assert(r&&r.type===R+'/slide');const to=ordered.indexOf(resolve(part,r.target));assert(to>=10&&Math.floor((to-10)/4)===Math.floor((i-10)/4),'Link stays in style group');assert([1,2,3].includes((to-10)%4),'Only included Cards/A16/A18 target');links++;}
+   for(const h of linkRefs){const r=rr.find(r=>r.id===h.getAttributeNS(R,'id'));assert(r&&r.type===R+'/slide');const to=ordered.indexOf(resolve(part,r.target));assert(to>=8&&Math.floor((to-8)/4)===Math.floor((i-8)/4),'Link stays in style group');assert([1,2,3].includes((to-8)%4),'Only included Cards/A16/A18 target');links++;}
    const ids=els(d,P,'cNvPr').map(n=>n.getAttribute('id'));assert.equal(new Set(ids).size,ids.length);
   }
   assert.equal(links,8,'Two existing Cards links per catalogue; absent pages have no dangling links');
  });
- if(process.env.MASTER_PREVIOUS_FIXTURE)await check('first ten pages differ from prior delivery only by requested visible cleanup',async()=>{
-  const previous=await JSZip.loadAsync(fs.readFileSync(process.env.MASTER_PREVIOUS_FIXTURE));
-  for(let i=0;i<10;i++){
-   const current=await text(z,ordered[i]);let before=await text(previous,ordered[i]);
-   if(i>=1&&i<=5){const id=SCHEMES[i-1][0];before=before.replace('<a:t>單欄內容</a:t>','<a:t>單欄'+id+'</a:t>').replace(/<p:sp\b[^>]*>[\s\S]*?<\/p:sp>/g,shape=>/\bid="9001"/.test(shape)?'':shape);}
-   if(i===7||i===8)before=before.replace('首選 07 · E01 v5','首選 07');
-   assert.equal(current,before,'Prior page '+(i+1));
-  }
+ if(process.env.MASTER_PREVIOUS_FIXTURE)await check('unchanged materials and components retain bytes except numbers and internal slide targets',async()=>{
+  const previous=await JSZip.loadAsync(fs.readFileSync(process.env.MASTER_PREVIOUS_FIXTURE));const norm=s=>s.replace(/<a:fld\b[^>]*\btype="slidenum"[^>]*>[\s\S]*?<\/a:fld>/g,'<page-number/>');
+  for(let i=6;i<24;i++)assert.equal(norm(await text(z,ordered[i])),norm(await text(previous,'ppt/slides/slideMaterial'+(i+3)+'.xml')),'Retained page '+(i+1));
  });
- console.log(JSON.stringify({checks,failures:0,pages:26,componentPages:16,styles:STYLE_IDS,fixtureSha256:sha(data)}));
+ console.log(JSON.stringify({checks,failures:0,pages:24,componentPages:16,styles:STYLE_IDS,fixtureSha256:sha(data)}));
 })().catch(e=>{console.error(e.stack);process.exitCode=1;});

@@ -50,9 +50,10 @@ async function main(){
  await test('HTML block/inline boundaries preserve multiline cell text without added terminal newlines',()=>{
   paste('ignored\ttext','<table><tr><td>A</td><td><div>first</div>second</td><td><p>first</p><p>second</p>tail</td><td>start<div><div>nested</div>block</div>end</td><td>first<br>second<br></td></tr></table>');assert.deepEqual(state().rows,[['A','first\nsecond','first\nsecond\ntail','start\nnested\nblock\nend','first\nsecond\n']]);assert.deepEqual(shown(),state().rows);
  });
- await test('HTML without a table falls back to text; merged HTML is rejected instead of silently falling back',()=>{
+ await test('HTML without a table falls back to text; merged HTML retains spans and right/below cell positions',()=>{
   paste(serialize(fixture),'<p>Copied as plain text</p>');assert.deepEqual(state().rows,fixture);
-  const before=JSON.stringify(state());paste('A\tB\n1\t2','<table><tr><td colspan="2">Merged</td></tr></table>');assert.equal(JSON.stringify(state()),before);assert($('#tRawPasteNotice').textContent.includes('合併'));assert(!$('#tRawPasteNotice').hidden);
+  paste('conflicting\tplain text','<table><tr><td rowspan="2" colspan="2">Merged</td><td>Right 1</td></tr><tr><td>Right 2</td></tr><tr><td>Below 1</td><td>Below 2</td><td>Below 3</td></tr></table>');
+  const exact=[['Merged','','Right 1'],['','','Right 2'],['Below 1','Below 2','Below 3']];assert.deepEqual(state().rows,exact);assert.deepEqual(shown(),exact);assert.equal(state().merges.length,1);const m=state().merges[0];assert.deepEqual([m.r0,m.c0,m.r1,m.c1,m.text],[0,0,1,1,'Merged']);const anchor=$('#tGrid td[data-r="0"][data-c="0"]');assert.equal(anchor.rowSpan,2);assert.equal(anchor.colSpan,2);assert.equal($('#tGrid td[data-r="1"][data-c="2"]').textContent,'Right 2');assert.equal($('#tGrid td[data-r="2"][data-c="0"]').textContent,'Below 1');assert(!d.querySelector('#tGrid td[data-r="1"][data-c="1"]'));
  });
  await test('Multiple or nested HTML tables are rejected atomically instead of dropping cells or falling back',()=>{
   const before=JSON.stringify(state()),shownBefore=shown();for(const markup of [html([['A','B']])+html([['C','D']]),'<table><tr><td>A</td><td><table><tr><td>nested</td></tr></table></td></tr></table>']){paste('Valid\tTSV\n00123\t9007199254740993',markup);assert.equal(JSON.stringify(state()),before);assert.deepEqual(shown(),shownBefore);assert($('#tRawPasteNotice').textContent.includes('多個或巢狀'));}

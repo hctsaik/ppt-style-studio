@@ -1938,6 +1938,10 @@ function userTableSized(T){const first=cur,slideStart=slides.indexOf(first),n0=f
 function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(tableLayoutParams(stO_()));if(sizingProbe){st.tbWidthMode='auto';st.tbHeightMode='optimal';}if(fontSnapshot)st.tbAuto=false;
   const sizing=tableSizingOf(st),fixedWidth=sizing.version===2&&sizing.widthMode!=='auto',fixedTarget=fixedWidth?W*Number(sizing.widthMode)/100:null;
   const source=tableSource(T);const {nC,h0}=source;const src=source.previewRows;if(!src.length||!nC)return;
+  const merges=source.merges||[],mergeGrid=src.map(()=>Array(nC).fill(null));
+  merges.forEach(m=>{for(let r=m.r0;r<=m.r1;r++)for(let c=m.c0;c<=m.c1;c++)mergeGrid[r][c]=m;});
+  const mergedAt=(r,c)=>mergeGrid[r]&&mergeGrid[r][c],coveredAt=(r,c)=>{const m=mergedAt(r,c);return !!m&&(m.r0!==r||m.c0!==c);};
+  const cellWidth=(r,c,widths)=>{const m=mergedAt(r,c);return m?widths.slice(m.c0,m.c1+1).reduce((a,b)=>a+b,0):widths[c];};
   // Do not filter empty rows: editor, marks and export all use the same source indices.
   const AU=source.auto;
   // 列數少→字大一點、列數多→維持（S／M／L 仍是基準）；tbAuto=false 關閉
@@ -1985,7 +1989,10 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
   const al=T.align||{};
   const colAl=Array.from({length:nC},(_,c)=>al[c]||((T.types||{})[c]==='number'?'right':c===0?'left':AU.numC[c]?'right':'left'));
   // Raw is the default, including inferred numeric columns. Legacy fmt/dec settings stay ignored.
-  const rows=src.map((r,ri)=>r.map((t,c)=>ri<h0||AU.section[ri]?t:tableFormatValue(t,(T.types||{})[c],(T.formats||{})[c])));
+  const rows=src.map((r,ri)=>r.map((t,c)=>mergedAt(ri,c)||ri<h0||AU.section[ri]?t:tableFormatValue(t,(T.types||{})[c],(T.formats||{})[c])));
+  // A horizontal merge constrains the sum of its columns, not the first column.
+  // Restore its display text after column fitting; raw cells are never changed.
+  merges.forEach(m=>{if(m.c1>m.c0)rows[m.r0][m.c0]='';});
   const MK=tableMarks(T,nC,rows.length),REC='176B70',WARN='875B1A';
   const his=MK.his.map(h=>Object.assign({},h,{C:h.type==='range'?tableHighlightPreset(h.presetId,st).color:h.kind==='warn'?WARN:h.kind==='rec'?REC:EC}));
   const hiCol=(r,c)=>his.find(h=>h.type==='col'&&tableMarkContains(h,r,c)),hiRow=(r,c)=>his.find(h=>h.type==='row'&&tableMarkContains(h,r,c)),hiCell=(r,c)=>his.find(h=>h.type==='cell'&&tableMarkContains(h,r,c));
@@ -2000,7 +2007,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
   const ruleOf=(ri,c)=>{if(ri<h0||AU.section[ri])return null;const v=tNumVal(src[ri][c]);if(!Number.isFinite(v))return null;return MK.rules.find(R=>R.c===c&&ruleHit(R,v))||null;};
   let ruleHits=0;const ruleBoxes=[];
   // 欄寬：數字欄＝內容＋18pt、同寬；第一欄吸收剩餘；單欄最多 45%
-  const isNumFont=(ri,c)=>ri>=h0&&AU.numC[c]&&!AU.section[ri];
+  const isNumFont=(ri,c)=>!mergedAt(ri,c)&&ri>=h0&&AU.numC[c]&&!AU.section[ri];
   const layoutBold=(ri,c,t)=>ri<h0||bold.has(ri)||keySet.has(ri)||rangeBoldAt(ri,c)||fixedWidth&&(AU.section[ri]||T.hcol&&c===0||AU.statC[c]&&statusOf(src[ri][c])||/^\s*[▲△▼▽]/.test(t)||hiStyle==='fill'&&(hiCell(ri,c)||c===0&&hiRow(ri,c)));
   const measureW=(t,size,b)=>Math.max(...String(t).split('\n').map(l=>tw(l,size)*(b?1.08:1)));
   const padOf=c=>padH+padH;   /* 欄寬與每欄實際內距一致，且不隨外觀改變 */
@@ -2096,7 +2103,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
    for(let it=0;it<4;it++){sum=colW.reduce((a,b)=>a+b,0);if(sum<=maxW+.001)break;const M=c=>Math.max(mn,colMin[c]);const flex=tc.filter(c=>colW[c]>M(c)+.001);if(!flex.length)break;const fsum=flex.reduce((a,c)=>a+colW[c]-M(c),0);const need=sum-maxW;const f=Math.max(0,1-need/fsum);flex.forEach(c=>colW[c]=M(c)+(colW[c]-M(c))*f);}}}
   const lines=t=>String(t).split('\n').length;
   const wrapN=(t,size,b,cw,c)=>String(t).split('\n').reduce((a,l)=>a+Math.max(1,Math.ceil(mw(l,size,b)/Math.max(.01,cw-padOf(c)/72-.03)-.02)),0);
-  const cellN=(r,ri)=>Math.max(...r.map((t,c)=>wrapN(t,ri<h0?hfs:fs,layoutBold(ri,c,t)||AU.section[ri]||T.hcol&&c===0,colW[c]-(AU.statC[c]&&ri>=h0&&statusOf(sizing.version===2?src[ri][c]:t)?.14*k:0),c)));
+  const cellN=(r,ri)=>Math.max(1,...r.map((t,c)=>coveredAt(ri,c)||mergedAt(ri,c)?.r1>ri?1:wrapN(t,ri<h0?hfs:fs,layoutBold(ri,c,t)||AU.section[ri]||T.hcol&&c===0,cellWidth(ri,c,colW)-(!mergedAt(ri,c)&&AU.statC[c]&&ri>=h0&&statusOf(sizing.version===2?src[ri][c]:t)?.14*k:0),c)));
   let mpad=2.5/72;const minH=(n,size)=>n*size*1.45/72+mpad;   // 1.45＝CJK 字型行高（Noto／正黑），上下邊距各 1pt
   // 有空間就不要換行（例：已完成 60%）：文字欄若會折行而且還有剩餘寬度，加寬到一行放得下
   if(!uw&&wMode!=='compact'){let spare=maxW-colW.reduce((a,b)=>a+b,0);colW.forEach((w,c)=>{if(AU.numC[c])return;let need=0;rows.forEach((r,ri)=>{if(ri<h0)return;const b=bold.has(ri)||keySet.has(ri)||rangeBoldAt(ri,c);const tr=st.tbTight?0:(String(r[c]).match(/[\u3400-\u9fff][A-Za-z0-9]|[A-Za-z0-9][\u3400-\u9fff]/g)||[]).length;const mx=/[\u3400-\u9fff]/.test(r[c])&&/[A-Za-z0-9]/.test(r[c])?1.12:1;need=Math.max(need,measureW(r[c],fs,b)*(b?1.08:1)*mx+tr*fs*.3/72+padOf(c)/72+.05);/* 中英交界留自動間距 */});
@@ -2121,12 +2128,14 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
   function readableLines(text,size,b,av){return String(text).split('\n').flatMap(line=>{const out=[];let part='';
    for(const token of wordTokens(line)){const atoms=mw(token,size,b)>av?tableGraphemes(token):[token];for(const atom of atoms){if(part&&mw(part+atom,size,b)>av){out.push(part);part='';}part+=atom;}}out.push(part);
    if(out.length>1&&/^[\u3400-\u9fff\uff00-\uffef]{1,2}$/.test(out[out.length-1])){let last=out.pop(),prev=out.pop();while(tableGraphemes(last).length<3&&tableGraphemes(prev).length>2){const chars=tableGraphemes(prev),ch=chars.pop();if(!/^[\u3400-\u9fff\uff00-\uffef]$/.test(ch)||mw(ch+last,size,b)>av)break;prev=chars.join('');last=ch+last;}out.push(prev,last);}return out;}).join('\n');}
+  merges.forEach(m=>{rows[m.r0][m.c0]=m.text;});
   const rowsO=rows.map(r=>r.slice());
-  const brk=()=>rows.forEach((r,ri)=>r.forEach((_,c)=>{const t=rowsO[ri][c];if(AU.numC[c]&&ri>=h0)return;const sz0=ri<h0?hfs:fs,b=layoutBold(ri,c,t);const av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0);let safeAv=!narrowFit&&ri>=h0&&mw(t,sz0,b)>av*.92&&String(t).length>10?av*.92:av;if(fixedWidth)for(const ch of tableGraphemes(t))if(ch!=='\n')safeAv=Math.max(safeAv,mw(ch,sz0,b));r[c]=tParts(t)||!fixedWidth&&/^[A-Za-z0-9_.-]+$/.test(String(t))?String(t):narrowFit?readableLines(t,sz0,b,safeAv):fitLines(semBreak(t,sz0,b,safeAv),sz0,b,safeAv);}));   // 長字串接近欄寬時預留 8%（PowerPoint／LibreOffice 實際字寬較寬）
+  const brk=()=>rows.forEach((r,ri)=>r.forEach((_,c)=>{const t=rowsO[ri][c];if(coveredAt(ri,c)||!mergedAt(ri,c)&&AU.numC[c]&&ri>=h0)return;const sz0=ri<h0?hfs:fs,b=layoutBold(ri,c,t);const av=cellWidth(ri,c,colW)-padOf(c)/72-.03-(!mergedAt(ri,c)&&AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0);let safeAv=!narrowFit&&ri>=h0&&mw(t,sz0,b)>av*.92&&String(t).length>10?av*.92:av;if(fixedWidth)for(const ch of tableGraphemes(t))if(ch!=='\n')safeAv=Math.max(safeAv,mw(ch,sz0,b));r[c]=tParts(t)||!fixedWidth&&/^[A-Za-z0-9_.-]+$/.test(String(t))?String(t):narrowFit?readableLines(t,sz0,b,safeAv):fitLines(semBreak(t,sz0,b,safeAv),sz0,b,safeAv);}));   // 長字串接近欄寬時預留 8%（PowerPoint／LibreOffice 實際字寬較寬）
   const calcH=(g=1)=>{brk();return rows.map((r,ri)=>{const base=(ri<h0?hh:AU.section[ri]?rh*.95:rh)*g;return Math.max(base,minH(cellN(r,ri),ri<h0?hfs:fs));});};
   // Freeze width-fitting results before choosing height or sizing the canvas.
   // More rows or a smaller height choice never shrink typography or padding.
-  const optimalH=calcH(),minimumH=rows.map((r,ri)=>minH(cellN(r,ri),ri<h0?hfs:fs));
+  const spanHeights=heights=>{merges.forEach(m=>{const r=m.r0,c=m.c0,size=r<h0?hfs:fs,needed=minH(wrapN(rows[r][c],size,layoutBold(r,c,rows[r][c]),cellWidth(r,c,colW),c),size),actual=heights.slice(r,m.r1+1).reduce((a,b)=>a+b,0);if(needed>actual){const extra=(needed-actual)/(m.r1-r+1);for(let i=r;i<=m.r1;i++)heights[i]+=extra;}});return heights;};
+  const optimalH=spanHeights(calcH()),minimumH=spanHeights(rows.map((r,ri)=>minH(cellN(r,ri),ri<h0?hfs:fs)));
   const rowHAll=sizing.version!==2||sizing.heightMode==='optimal'?optimalH:optimalH.map((h,r)=>sizing.heightMode==='larger'?h*1.25:sizing.heightMode==='smaller'?Math.max(minimumH[r],h*.85):minimumH[r]),tW=colW.reduce((a,b)=>a+b,0),frame=GC?.18*k:0;
   const wrapMeta=(value,size,b,width)=>String(value||'').split('\n').map(line=>{let out='',part='';for(const ch of (fixedWidth?tableGraphemes(line):[...line])){if(part&&mw(part+ch,size,b)>width){out+=part+'\n';part='';}part+=ch;}return out+part;}).join('\n');
   const metaH=(text,size,min=0)=>Math.max(min,Math.max(1,String(text).split('\n').length)*size*1.45/72+.05);
@@ -2175,7 +2184,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
    if(firstKey(ri)&&LK.key&&ri>h0)o.bT=bw(LK.key);
    if(sec&&LK.row&&ri>h0)o.bT=bw(LK.row);
    baseGrid(o,ri);
-   const s=st.tbStatus===false||!AU.statC[c]?null:statusOf(sizing.version===2?src[ri][c]:t);
+   const s=mergedAt(ri,c)||st.tbStatus===false||!AU.statC[c]?null:statusOf(sizing.version===2?src[ri][c]:t);
    if(s){o.color=ST[s];o.bold=true;if(/[A-Za-z\u4e00-\u9fff]/.test(t))o.dot=ST[s];}
    if(isN&&st.tbNeg&&tNumVal(src[ri][c])<0&&!/^[\s(（]*[▲△]/.test(src[ri][c]))o.color=BAD;
    {const am=/^[\s(（]*([▲△▼▽])/.exec(String(src[ri][c]||''));if(am){const up=/[▲△]/.test(am[1]);o.color=up?P:G.t2;o.bold=true;}}
@@ -2204,7 +2213,8 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
    if(T.title)txt(X,Y0,titleWidth,titH,ttl,{size:tfsT,bold:1,color:st.tbTitleInk?G.ink:P,font:slots.title.font,name:'表格標題',valign:'bottom'});
    if(T.unit)txt(X,slots.unit.y,metaW,unitH,unitText,{size:ufs,color:G.t2,name:'單位',valign:'top',wrap:1});
    if(LK.card){const o=grey?{fill:G.fill,r:.14*k,name:'灰色底板'}:{fill:'FFFFFF',line:G.line,lw:.75*k,r:.14*k,sh:'card',force:1,name:'卡片'};box(X-frame,ty-frame,tW+2*frame,tH+2*frame,o);}
-   const tb=table(tx,ty,colW.slice(),rowH,pageCells,{mL:padH,mT:1,name:'表格'});
+   const tb=table(tx,ty,colW.slice(),rowH,pageCells,{mL:padH,mT:1,name:'表格'});tb.merges=merges.map(m=>({...m}));
+   tb.cells.forEach((row,r)=>row.forEach((cell,c)=>{const m=mergedAt(r,c);if(m)Object.assign(cell,{covered:coveredAt(r,c),anchorR:m.r0,anchorC:m.c0,rowSpan:r===m.r0&&c===m.c0?m.r1-m.r0+1:1,colSpan:r===m.r0&&c===m.c0?m.c1-m.c0+1:1});}));
    tb.cells.forEach((r,ri)=>r.forEach((c,ci)=>{const o=pageCells[ri][ci];c.mL=o.mL;c.mR=o.mR;
     if(o.dot&&c.runs.length)c.runs.unshift({t:'●\u2002',o:Object.assign({},c.runs[0].o,{size:sz(7),color:o.dot,bold:false,br:false})});}));
    const noteY=ty+tH+frame+noteGap;
@@ -2215,21 +2225,23 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
     const footerW=Math.min(W-1.2,Math.max(tW,mw(label,10,0)+.12)),footerX=Math.max(.6,X+tW-footerW);
     slots.footer={x:footerX,y:H-bottom-footerH,w:footerW,h:footerH,size:10,color:G.mute};txt(footerX,slots.footer.y,footerW,footerH,label,{size:10,color:G.mute,align:'right',valign:'top',name:'表格頁碼'});}
    const cx0=c=>tx+colW.slice(0,c).reduce((a,b)=>a+b,0),ry0=r=>ty+rowH.slice(0,r).reduce((a,b)=>a+b,0),boxes=[];
+   const expandMergedBox=q=>{q={...q};let changed=true;while(changed){changed=false;for(const m of merges)if(tableRangeIntersection(q,m)&&(q.r0>m.r0||q.r1<m.r1||q.c0>m.c0||q.c1<m.c1)){q={r0:Math.min(q.r0,m.r0),c0:Math.min(q.c0,m.c0),r1:Math.max(q.r1,m.r1),c1:Math.max(q.c1,m.c1)};changed=true;}}return q;};
    const ins=(st.tbPad==='none'?-3:3)*k/72,rad=4*k/72,blw=1.5*k;
    // Visual H/L never changes semantic marks. Mask legacy box paint only while
    // a visible manual range covers it; clearing that range reveals the semantics.
    const visualRegions=his.filter(h=>h.type==='range'&&tableHighlightFamily(h)==='fill').flatMap(h=>tableMarkRegions(h,rows.length,nC));
    const localMarks=his.filter(h=>h.type!=='range').map(h=>visualRegions.length?Object.assign({},h,{excludes:[...(h.excludes||[]),...visualRegions]}):h).map(h=>{if(h.type==='col')return h;const local=sourceRows.indexOf(h.type==='row'?h.i:h.r);return local<0?null:Object.assign({},h,h.type==='row'?{i:local}:{r:local});}).filter(Boolean);
    if(hiStyle==='box')localMarks.forEach(h=>{
+    if(merges.length){tableMarkRegions(h,sourceRows.length,nC).map(expandMergedBox).forEach(q=>{const bx=cx0(q.c0),by=ry0(q.r0),bw0=colW.slice(q.c0,q.c1+1).reduce((a,b)=>a+b,0),bh=rowH.slice(q.r0,q.r1+1).reduce((a,b)=>a+b,0);box(bx+ins,by+ins,bw0-2*ins,bh-2*ins,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});boxes.push({...q,type:'range',color:h.C,kind:h.kind});});return;}
     if(h.excludes&&h.excludes.length){tableMarkRegions(h,sourceRows.length,nC).forEach(q=>{const bx=cx0(q.c0),by=ry0(q.r0),bw0=colW.slice(q.c0,q.c1+1).reduce((a,b)=>a+b,0),bh=rowH.slice(q.r0,q.r1+1).reduce((a,b)=>a+b,0);
       const segIns=Math.max(blw/144,ins);box(bx+segIns,by+segIns,bw0-2*segIns,bh-2*segIns,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});boxes.push(Object.assign({type:'range',color:h.C,kind:h.kind},q));});return;}
     if(h.type==='col'){const y0=legacyLK.hdr.fill&&h0?ty+rowH[0]:ty;box(cx0(h.i)+ins,y0+ins,colW[h.i]-2*ins,ty+tH-y0-2*ins,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});}
     else if(h.type==='row')box(tx+ins,ry0(h.i)+ins,tW-2*ins,rowH[h.i]-2*ins,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});
     else box(cx0(h.c)+ins,ry0(h.r)+ins,colW[h.c]-2*ins,rowH[h.r]-2*ins,{line:h.C,lw:blw,r:rad,name:h.kind==='warn'?'警告框':h.kind==='rec'?'推薦框':'重點框'});
     boxes.push(Object.assign({color:h.C,kind:h.kind},h.type==='cell'?{type:'cell',r:h.r,c:h.c}:{type:h.type,i:h.i}));});
-   ruleBoxes.forEach(b=>{const r=sourceRows.indexOf(b.r);if(r<0)return;box(cx0(b.c)+ins,ry0(r)+ins,colW[b.c]-2*ins,rowH[r]-2*ins,{line:b.color,lw:blw,r:rad,name:'條件框'});boxes.push({type:'cell',r,c:b.c,color:b.color,rule:1});});
+   ruleBoxes.forEach(b=>{const r=sourceRows.indexOf(b.r);if(r<0)return;const q=expandMergedBox({r0:r,c0:b.c,r1:r,c1:b.c});box(cx0(q.c0)+ins,ry0(q.r0)+ins,colW.slice(q.c0,q.c1+1).reduce((a,b)=>a+b,0)-2*ins,rowH.slice(q.r0,q.r1+1).reduce((a,b)=>a+b,0)-2*ins,{line:b.color,lw:blw,r:rad,name:'條件框'});boxes.push(q.r0===q.r1&&q.c0===q.c1?{type:'cell',r,c:b.c,color:b.color,rule:1}:{...q,type:'range',color:b.color,rule:1});});
    const b0=boxes.find(b=>!b.rule&&b.type!=='cell'),orphans=[];
-   sourceRows.forEach(ri=>rows[ri].forEach((t,c)=>{const str=String(t);if(!str.trim())return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri)||rangeBoldAt(ri,c),av=colW[c]-padOf(c)/72-.03-(AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0),ls=str.split('\n'),vis=x=>x.replace(/\s/g,'').length;
+   sourceRows.forEach(ri=>rows[ri].forEach((t,c)=>{const str=String(t);if(!str.trim())return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri)||rangeBoldAt(ri,c),av=cellWidth(ri,c,colW)-padOf(c)/72-.03-(!mergedAt(ri,c)&&AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0),ls=str.split('\n'),vis=x=>x.replace(/\s/g,'').length;
     if(ls.some(l=>mw(l,sz0,b)>av+.01))orphans.push({r:ri,c,t:str,why:'auto-wrap'});else if(ls.length>1&&vis(str)>4&&ls.some((l,i)=>vis(l)<=1||vis(l)<=2&&i>0&&!/[：:；;，,、)）\s]$/.test(ls[i-1])&&!/^[（(]/.test(l)))orphans.push({r:ri,c,t:str,why:'orphan'});}));
    // The new deep theme fill has a light top rule on each visible region/page.
    // Keep it in native cell borders, below explicit line-family overrides; old
@@ -2251,7 +2263,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
    const complete=!layoutOverflow,reason=exportReason||(layoutOverflow?'表格或標題／註腳超出投影片邊界，已停用匯出。請縮短內容或調整欄寬；原始資料仍可下載完整 TSV。':'');
    if(layoutOverflow)warn('表格無法完整匯出',reason);
    const displayRows=tb.cells.map(row=>row.map(c=>c.runs.map(r=>r.t+(r.o&&r.o.br?'\n':'')).join('')));
-   const integrity={documentId,pageIndex,pageCount,h0,nC,sourceValues:source.rows.map(row=>row.slice()),displayRows,bodyStart,bodyEnd,sourceRows:sourceRows.slice(),bodySourceRows:bodySourceRows.slice(),rawRowCount:source.nR,rawBodyRows:source.bodyRows,renderedRowCount:sourceRows.length,renderedBodyRows:bodySourceRows.length,exportComplete:complete,exportReason:reason,layoutOverflow,blockedRow,blockedReasonCode};
+   const integrity={documentId,pageIndex,pageCount,h0,nC,merges:merges.map(m=>({...m})),sourceValues:source.rows.map(row=>row.slice()),displayRows,bodyStart,bodyEnd,sourceRows:sourceRows.slice(),bodySourceRows:bodySourceRows.slice(),rawRowCount:source.nR,rawBodyRows:source.bodyRows,renderedRowCount:sourceRows.length,renderedBodyRows:bodySourceRows.length,exportComplete:complete,exportReason:reason,layoutOverflow,blockedRow,blockedReasonCode};
    if(sizing.version===2)integrity.sizing={version:2,widthMode:sizing.widthMode,heightMode:sizing.heightMode,referenceWidth:fixedWidth?W:canvasW,targetWidth:fixedTarget,actualWidth:tW,widthApplied:!fixedWidthOverflow,font:{bodyPt:fs,headerPt:hfs,scale:k,autoBoost:boost},minimumRowH:minimumH.slice(),optimalRowH:optimalH.slice(),atMinimum:rowHAll.every((h,r)=>Math.abs(h-minimumH[r])<1e-7),...(widthFit?{fit:widthFit}:{})};
    tb.dataIntegrity=Object.assign({},integrity);
    cur.table=Object.assign({},integrity,{rawRows:source.rows,previewBodyRows:bodySourceRows.length,types:Object.assign({},T.types),formats:Object.assign({},T.formats),hcol:!!T.hcol,pad:st.tbPad||'m',orphans,colMin:colMin.map(v=>+v.toFixed(3)),REC,k,colFit:colFit.map(v=>+v.toFixed(3)),tx,ty,tW,tH,colW:colW.slice(),rowH,h0,nC,nR:sourceRows.length,look:lookId,appearance,grey,hiMode:hiStyle,hiStyle,EC,colNum:AU.numC,colStat:AU.statC,key:[...keySet].sort((a,b)=>a-b),hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,
@@ -2400,12 +2412,39 @@ function tableAuto(rows,T){const nC=rows.reduce((n,r)=>Math.max(n,Array.isArray(
 
 // One lossless source for editor and preview. Row numbers are never renumbered by filtering.
 const TABLE_PREVIEW_BODY_ROWS=25; // Legacy API constant only; no longer caps source, preview or export.
+// Merge metadata never overwrites the rectangular raw source. An editable
+// merged label is separate from the original cells, so splitting is lossless.
+function tableRawRows(T){const input=Array.isArray(T&&T.rows)?T.rows:[],nC=input.reduce((n,r)=>Math.max(n,Array.isArray(r)?r.length:0),0);return input.map(r=>Array.from({length:nC},(_,c)=>String(Array.isArray(r)&&r[c]!=null?r[c]:'').replace(/\r\n?/g,'\n')));}
+function tableMergeError(message,code='TABLE_MERGE_INVALID'){const e=new Error(message);e.code=code;throw e;}
+function tableMergeText(rows,q){const values=[];for(let r=q.r0;r<=q.r1;r++)for(let c=q.c0;c<=q.c1;c++)values.push(rows[r][c]);return values.join('\n');}
+function tableMerges(T){const rows=tableRawRows(T),nR=rows.length,nC=rows[0]?.length||0,raw=T&&T.merges;if(raw==null)return[];if(!Array.isArray(raw))tableMergeError('合併資料格式無效；未修改原資料。');const out=[];
+ for(const m of raw){if(!m||!['r0','c0','r1','c1'].every(k=>Number.isInteger(m[k]))||m.r0<0||m.c0<0||m.r1<m.r0||m.c1<m.c0||m.r1>=nR||m.c1>=nC||m.r0===m.r1&&m.c0===m.c1)tableMergeError('合併範圍超出表格或不是矩形；未修改原資料。');const q={r0:m.r0,c0:m.c0,r1:m.r1,c1:m.c1};if(out.some(old=>tableRangeIntersection(old,q)))tableMergeError('合併範圍互相重疊；未修改原資料。','TABLE_MERGE_OVERLAP');q.originalText=typeof m.originalText==='string'?m.originalText.replace(/\r\n?/g,'\n'):tableMergeText(rows,q);q.text=typeof m.text==='string'?m.text.replace(/\r\n?/g,'\n'):q.originalText;out.push(q);}
+ return out.sort((a,b)=>a.r0-b.r0||a.c0-b.c0);}
+function tableCellAt(T,r,c){const rows=tableRawRows(T);if(!Number.isInteger(r)||!Number.isInteger(c)||r<0||c<0||r>=rows.length||c>=(rows[0]?.length||0))tableMergeError('儲存格超出表格。');const merge=tableMerges(T).find(m=>r>=m.r0&&r<=m.r1&&c>=m.c0&&c<=m.c1)||null;return{r,c,anchorR:merge?merge.r0:r,anchorC:merge?merge.c0:c,covered:!!merge&&(r!==merge.r0||c!==merge.c0),rowSpan:merge?merge.r1-merge.r0+1:1,colSpan:merge?merge.c1-merge.c0+1:1,text:merge?merge.text:rows[r][c],merge};}
+function tableDisplayRows(T){const rows=tableRawRows(T);for(const m of tableMerges(T)){for(let r=m.r0;r<=m.r1;r++)for(let c=m.c0;c<=m.c1;c++)rows[r][c]=r===m.r0&&c===m.c0?m.text:'';}return rows;}
+function tableStrictMergeRange(T,range){const rows=tableRawRows(T),nR=rows.length,nC=rows[0]?.length||0;if(!range||!['r0','c0','r1','c1'].every(k=>Number.isInteger(range[k]))||range.r0<0||range.c0<0||range.r1<range.r0||range.c1<range.c0||range.r1>=nR||range.c1>=nC)tableMergeError('請選取表格內完整的矩形範圍。');return{r0:range.r0,c0:range.c0,r1:range.r1,c1:range.c1};}
+function tableMerge(T,range){const q=tableStrictMergeRange(T,range),rows=tableRawRows(T),merges=tableMerges(T);if(q.r0===q.r1&&q.c0===q.c1)tableMergeError('請選取至少兩個儲存格。');const hits=merges.filter(m=>tableRangeIntersection(m,q));if(hits.length===1&&['r0','c0','r1','c1'].every(k=>hits[0][k]===q[k]))return Object.assign({},T,{rows,merges});if(hits.length)tableMergeError('選取範圍包含既有合併；請先取消合併再重新選取。','TABLE_MERGE_OVERLAP');merges.push({...q,text:tableMergeText(rows,q),originalText:tableMergeText(rows,q)});return Object.assign({},T,{rows,merges});}
+function tableUnmerge(T,range){const q=tableStrictMergeRange(T,range),rows=tableRawRows(T),merges=tableMerges(T),hits=merges.filter(m=>tableRangeIntersection(m,q));if(!hits.length)return Object.assign({},T,{rows,merges});if(hits.some(m=>!(q.r0===q.r1&&q.c0===q.c1)&&!(q.r0<=m.r0&&q.c0<=m.c0&&q.r1>=m.r1&&q.c1>=m.c1)))tableMergeError('請選取完整的合併格，或點選其中一格後取消合併。','TABLE_MERGE_OVERLAP');let edited=false;
+ for(const m of hits)if(m.text!==m.originalText){const old=rows[m.r0][m.c0];rows[m.r0][m.c0]=m.text===old?old:m.text&&old?m.text+'\n'+old:m.text||old;edited=true;}
+ return Object.assign({},T,{rows,merges:merges.filter(m=>!hits.includes(m)),mergeNotice:edited?'已保留編輯後文字及原左上格文字於左上格；其他原始儲存格已還原。':'已還原合併前各格原文。'});}
+function tableEditCell(T,r,c,text){const at=tableCellAt(T,r,c),rows=tableRawRows(T),merges=tableMerges(T),value=String(text==null?'':text).replace(/\r\n?/g,'\n');if(at.merge)merges.find(m=>m.r0===at.anchorR&&m.c0===at.anchorC).text=value;else rows[r][c]=value;return Object.assign({},T,{rows,merges});}
+function tableShiftStructure(T,axis,index,remove){if(!['row','col'].includes(axis)||!Number.isInteger(index)||index<0)tableMergeError('列欄操作位置無效。');const rows=tableRawRows(T),merges=tableMerges(T),nR=rows.length,nC=rows[0]?.length||0,max=axis==='row'?nR:nC;if(index>(remove?max-1:max)||remove&&max<=1)tableMergeError('不能移除最後一列或最後一欄。');const lo=axis==='row'?'r0':'c0',hi=axis==='row'?'r1':'c1',affected=merges.filter(m=>index>=m[lo]&&index<=m[hi]);
+ if(remove)for(const m of affected){const removed=axis==='row'?rows[index].slice(m.c0,m.c1+1):rows.slice(m.r0,m.r1+1).map(r=>r[index]);if(removed.some(t=>t!=='')||index===m[lo]&&m.text!==m.originalText)tableMergeError('這列／欄含有合併格的原文或編輯內容；請先取消合併，再確認要刪除的資料。','TABLE_MERGE_DELETE_CONTENT');}
+
+ if(axis==='row')rows.splice(index,remove?1:0,...(remove?[]:[Array(nC).fill('')]));else rows.forEach(row=>row.splice(index,remove?1:0,...(remove?[]:[''])));
+ const next=[];for(const m of merges){const q={...m};if(remove){if(index<q[lo]){q[lo]--;q[hi]--;}else if(index<=q[hi])q[hi]--;}else if(index<=q[lo]){q[lo]++;q[hi]++;}else if(index<=q[hi])q[hi]++;
+  if(q.r0>q.r1||q.c0>q.c1)continue;if(q.r0===q.r1&&q.c0===q.c1){if(q.text!==rows[q.r0][q.c0])rows[q.r0][q.c0]=q.text&&rows[q.r0][q.c0]?q.text+'\n'+rows[q.r0][q.c0]:q.text||rows[q.r0][q.c0];}else next.push(q);}
+ return Object.assign({},T,{rows,merges:next});}
+function tableParseHtmlCells(cellRows){if(!Array.isArray(cellRows)||!cellRows.length)tableMergeError('HTML 表格沒有儲存格。');const rows=Array.from({length:cellRows.length},()=>[]),used=Array.from({length:cellRows.length},()=>[]),merges=[];let width=0;
+ cellRows.forEach((cells,r)=>{if(!Array.isArray(cells))tableMergeError('HTML 表格列格式無效。');let c=0;for(const cell of cells){while(used[r][c])c++;const rs=cell.rowSpan==null?1:Number(cell.rowSpan),cs=cell.colSpan==null?1:Number(cell.colSpan);if(!Number.isInteger(rs)||!Number.isInteger(cs)||rs<1||cs<1||r+rs>rows.length||c+cs>1000)tableMergeError('HTML 合併格的跨列／跨欄範圍無效；原資料未變更。');const text=String(cell.text==null?'':cell.text).replace(/\r\n?/g,'\n');for(let y=r;y<r+rs;y++)for(let x=c;x<c+cs;x++){if(used[y][x])tableMergeError('HTML 合併格互相重疊；原資料未變更。');used[y][x]=true;rows[y][x]=y===r&&x===c?text:'';}if(rs>1||cs>1)merges.push({r0:r,c0:c,r1:r+rs-1,c1:c+cs-1,text,originalText:text});c+=cs;width=Math.max(width,c);}});
+ for(let r=0;r<rows.length;r++)for(let c=0;c<width;c++)if(!used[r][c])tableMergeError('HTML 表格列欄不完整；請修正來源後再貼上，原資料未變更。');return{rows,merges};}
+function tablePasteCells(T,input,r0,c0){const descriptor=Array.isArray(input)?{rows:input,merges:input.merges||[]}:input||{},patch=tableRawRows(descriptor),rows=tableRawRows(T),merges=tableMerges(T);if(!patch.length||!patch[0].length||!Number.isInteger(r0)||!Number.isInteger(c0)||r0<0||c0<0)tableMergeError('貼上範圍無效。');const range={r0,c0,r1:r0+patch.length-1,c1:c0+patch[0].length-1};if(merges.some(m=>tableRangeIntersection(m,range)))tableMergeError('貼上範圍碰到既有合併格；請先取消合併，或直接編輯合併格的文字。','TABLE_MERGE_PASTE_OVERLAP');const added=tableMerges(descriptor),nC=Math.max(rows[0]?.length||0,range.c1+1);while(rows.length<=range.r1)rows.push(Array(nC).fill(''));for(const row of rows)while(row.length<nC)row.push('');patch.forEach((row,r)=>row.forEach((value,c)=>{rows[r+r0][c+c0]=value;}));merges.push(...added.map(m=>({...m,r0:m.r0+r0,r1:m.r1+r0,c0:m.c0+c0,c1:m.c1+c0})));return Object.assign({},T,{rows,merges});}
 function tableSource(T){T=T||{};const input=Array.isArray(T.rows)?T.rows:[];
  const nC=input.reduce((n,r)=>Math.max(n,Array.isArray(r)?r.length:0),0);
  const rows=Array.from(input,r=>Array.from({length:nC},(_,c)=>String(Array.isArray(r)&&r[c]!=null?r[c]:'').replace(/\r\n?/g,'\n')));
  const auto=tableAuto(rows,T),h0=auto.head?1:0,nR=rows.length,bodyRows=Math.max(0,nR-h0);
- const previewRows=rows,exportComplete=true,exportReason='';
- return{rows,rawRows:rows,nC,nR,h0,bodyRows,rawRowCount:nR,rawBodyRows:bodyRows,auto,previewRows,sourceRows:previewRows.map((_,r)=>r),exportComplete,exportReason};}
+ const merges=tableMerges(T),previewRows=merges.length?tableDisplayRows(T):rows,exportComplete=true,exportReason='';
+ return{rows,rawRows:rows,merges,nC,nR,h0,bodyRows,rawRowCount:nR,rawBodyRows:bodyRows,auto,previewRows,sourceRows:previewRows.map((_,r)=>r),exportComplete,exportReason};}
 // Group only the digit substring, preserving precision, leading zeroes, signs, units and spacing.
 function tableFormatValue(value,type,format){const t=String(value==null?'':value);if(type!=='number'||format!=='grouped')return t;
  const m=t.match(T_PARTS);if(!m||!/\d/.test(m[4]))return t;
@@ -2438,6 +2477,10 @@ function assertTableExportComplete(model){const docs=new Map(),isPage=info=>info
    if(info.renderedBodyRows!=null&&info.renderedBodyRows!==body.length||info.bodySourceRows&&!same(info.bodySourceRows,body))fail(info,'invalid body row counts');
    if(!Array.isArray(tb.cells)||tb.cells.length!==info.renderedRowCount||tb.cells.some(r=>!Array.isArray(r)||r.length!==info.nC||r.some(c=>!c||!Array.isArray(c.runs)||c.runs.some(run=>!run||typeof run.t!=='string'||!run.o||typeof run.o!=='object'))))fail(info,'native cell count mismatch');
    if(!Array.isArray(info.displayRows)||info.displayRows.length!==info.renderedRowCount||info.displayRows.some(r=>!Array.isArray(r)||r.length!==info.nC||r.some(t=>typeof t!=='string'))||!sameRows(info.displayRows,tb.cells.map(r=>r.map(c=>c.runs.map(run=>run.t+(run.o&&run.o.br?'\n':'')).join('')))))fail(info,'native cell content mismatch');
+   if((tb.merges||[]).length||(info.merges||[]).length){let merges;try{merges=tableMerges({rows:info.sourceValues,merges:tb.merges});}catch(e){fail(info,'invalid merged table ranges');}
+    if(JSON.stringify(merges)!==JSON.stringify(info.merges)||sl.table&&JSON.stringify(info.merges)!==JSON.stringify(sl.table.merges))fail(info,'merged table metadata mismatch');
+    const grid=tb.cells.map(row=>row.map(()=>null));for(const m of merges)for(let r=m.r0;r<=m.r1;r++)for(let c=m.c0;c<=m.c1;c++)grid[r][c]=m;
+    tb.cells.forEach((row,r)=>row.forEach((cell,c)=>{const m=grid[r][c],covered=!!m&&(r!==m.r0||c!==m.c0);if(!!cell.covered!==covered||m&&!covered&&((cell.rowSpan||1)!==m.r1-m.r0+1||(cell.colSpan||1)!==m.c1-m.c0+1)||covered&&cell.runs.some(run=>run.t!==''))fail(info,'merged cell geometry mismatch');if(m&&!covered&&cell.runs.map(run=>run.t+(run.o&&run.o.br?'\n':'')).join('').replace(/\n/g,'')!==m.text.replace(/\n/g,''))fail(info,'merged cell display text mismatch');}));}
    if(!Array.isArray(tb.rowH)||tb.rowH.length!==info.renderedRowCount||!Array.isArray(tb.colW)||tb.colW.length!==info.nC||[...tb.rowH,...tb.colW].some(v=>!Number.isFinite(v)||v<=0))fail(info,'invalid native grid');
    const width=sl.w||sl.W||model.W||W,height=sl.h||sl.H||model.H||H;
    if(info.sizing&&info.sizing.version===2){const z=info.sizing;
@@ -2541,12 +2584,12 @@ function tableTitleSuggest(T){const rows=tableSource(T).rows;if(rows.length<2)re
 const TABLE_HEADER_MODES=Object.freeze([['none','無標題'],['row','首列'],['col','首欄'],['both','首列＋首欄']].map(([key,label])=>Object.freeze({key,label})));
 function tableHeaderMode(table){const t=table||{},head=tableAuto(t.rows||[],t).head;return head?(t.hcol?'both':'row'):(t.hcol?'col':'none');}
 function tableSetHeaderMode(table,mode){if(!TABLE_HEADER_MODES.some(x=>x.key===mode))throw Error('未知的表格標題模式');return Object.assign({},table,{header:mode==='row'||mode==='both',hcol:mode==='col'||mode==='both'});}
-function tableFromPaste(rows,prev,mode){prev=prev||{};rows=tableSource({rows}).rows;const keep=prev.keep!==false,update=mode==='update',S=tableSuggest(rows,update&&typeof prev.header==='boolean'?{header:prev.header}:undefined);const keepTitle=update&&!!prev.title;
+function tableFromPaste(rows,prev,mode){prev=prev||{};const input=Array.isArray(rows)?{rows,...(Array.isArray(rows.merges)?{merges:rows.merges}:{})}:rows||{},incomingMerges=tableMerges(input);if(mode==='update'&&tableMerges(prev).length&&!Object.prototype.hasOwnProperty.call(input,'merges'))tableMergeError('這張表含合併格；請先取消合併再更新純文字資料，或貼上含完整合併資訊的 HTML 表格。','TABLE_MERGE_UPDATE');rows=tableSource(input).rows;const keep=prev.keep!==false,update=mode==='update',S=tableSuggest(rows,update&&typeof prev.header==='boolean'?{header:prev.header}:undefined);const keepTitle=update&&!!prev.title;
  const his=S.period!=null&&S.kind==='number'?[{type:'col',i:S.period,color:'auto'}]:[];const nR=rows.length;
  // New data may infer its first header. Updating an existing table preserves an
  // explicit choice, including legacy false; no extra persisted mode can disagree.
  const head=update&&typeof prev.header==='boolean'?prev.header:!!S.auto.head;
- const out={rows,title:keepTitle?prev.title:'',pin:keepTitle&&!!prev.pin,unit:update?prev.unit||'':'',note:update?prev.note||'':'',his,rules:[],bold:S.auto.key,align:{},fmt:{},types:{},formats:{},header:head,lastTotal:S.auto.key.includes(nR-1),hcol:!!prev.hcol,cw:null,hiStyle:prev.hiStyle||null,keep};
+ const out={rows,merges:incomingMerges,title:keepTitle?prev.title:'',pin:keepTitle&&!!prev.pin,unit:update?prev.unit||'':'',note:update?prev.note||'':'',his,rules:[],bold:S.auto.key,align:{},fmt:{},types:{},formats:{},header:head,lastTotal:S.auto.key.includes(nR-1),hcol:!!prev.hcol,cw:null,hiStyle:prev.hiStyle||null,keep};
  if(update&&tableSizingFontOf(prev.sizingFont))out.sizingFont=clone(prev.sizingFont);
  // 沿用目前樣式（預設開）：依「欄名」對應；欄名對不上但欄數相同時依位置對應
  if(keep&&Array.isArray(prev.rows)&&prev.rows[0]){const oh=prev.rows[0].map(x=>String(x).trim()),nh=(rows[0]||[]).map(x=>String(x).trim());const same=oh.length===nh.length;
@@ -2862,9 +2905,9 @@ function toPptx(pptx,model){
  model.slides.forEach(sl=>{const s=pptx.addSlide();s.background={color:'FFFFFF'};
   sl.items.forEach(it=>{
    if(it.t==='tbl'){const bd=b=>b?{type:'solid',pt:b.w,color:b.c}:{type:'none'};
-    const rows=tableResolvedBorders(it).map(r=>r.map(c=>({text:c.runs.map(rn=>({text:rn.t,options:Object.assign({fontSize:rn.o.size,fontFace:rn.o.font,bold:rn.o.bold,color:rn.o.color},rn.o.br?{breakLine:true}:{})})),
-     options:Object.assign({align:c.align,valign:'middle',margin:[c.mT,c.mR!=null?c.mR:c.mL,c.mT,c.mL],border:[bd(c.bT),bd(c.bR),bd(c.bB),bd(c.bL)]},c.fill?{fill:{color:c.fill}}:{})})));
-    s.addTable(rows,{x:it.x,y:it.y,w:it.w,colW:it.colW,rowH:it.rowH,autoPage:false});return;}
+    const rows=tableResolvedBorders(it).map(r=>r.filter(c=>!c.covered).map(c=>({text:c.runs.map(rn=>({text:rn.t,options:Object.assign({fontSize:rn.o.size,fontFace:rn.o.font,bold:rn.o.bold,color:rn.o.color},rn.o.br?{breakLine:true}:{})})),
+     options:Object.assign({align:c.align,valign:'middle',...(c.rowSpan>1?{rowspan:c.rowSpan}:{}),...(c.colSpan>1?{colspan:c.colSpan}:{}),margin:[c.mT,c.mR!=null?c.mR:c.mL,c.mT,c.mL],border:[bd(c.bT),bd(c.bR),bd(c.bB),bd(c.bL)]},c.fill?{fill:{color:c.fill}}:{})})));
+    s.addTable(rows,{x:it.x,y:it.y,w:it.w,colW:it.colW.slice(),rowH:it.rowH.slice(),autoPage:false});return;}
    if(it.t==='pic'){s.addImage({data:it.png,x:it.x,y:it.y,w:it.w,h:it.h,rounding:!!it.round,objectName:it.name||'圖片'});return;}
    if(it.t==='ln'){const L={color:it.color,width:it.w,dashType:it.dash};if(it.head)L.endArrowType=ahType(it.head,it.hs);if(it.tail)L.beginArrowType=ahType(it.tail,it.hs);
     s.addShape('line',{x:Math.min(it.x1,it.x2),y:Math.min(it.y1,it.y2),w:Math.abs(it.x2-it.x1),h:Math.abs(it.y2-it.y1),flipH:it.x2<it.x1,flipV:it.y2<it.y1,line:L,objectName:'線條'});return;}
@@ -2986,7 +3029,7 @@ async function fontFix(zip,model){const F=cjkFaces(model&&model.params),cjk=F.bo
   const m=f.match(/^ppt\/slides\/slide(\d+)\.xml$/);
   if(m&&model&&model.slides[+m[1]-1]){const tbls=model.slides[+m[1]-1].items.filter(it=>it.t==='tbl');let ti=0;
    x=x.replace(/<a:tbl>[\s\S]*?<\/a:tbl>/g,tx=>{const tb=tbls[ti++];if(!tb)return tx;const flat=[].concat(...tb.cells);let ci=0;
-    return tx.replace(/<a:tc>[\s\S]*?<\/a:tc>/g,tc=>{const c=flat[ci++];if(!c||/<a:r>/.test(tc))return tc;
+    return tx.replace(/<a:tc\b[^>]*>[\s\S]*?<\/a:tc>/g,tc=>{const c=flat[ci++];if(!c||/<a:r>/.test(tc))return tc;
      const r0=(c.runs&&c.runs[0]&&c.runs[0].o)||{};return tc.replace(/<a:endParaRPr\b[^>]*\/>/,emptyCellRPr({size:r0.size||c.size,font:r0.font||c.font,color:r0.color||c.color,bold:r0.bold},cjk));});});}
   const y=fontFixXml(x,cjk);if(y!==x)zip.file(f,y);}
  const tf=zip.file('ppt/theme/theme1.xml');if(tf){let t=await tf.async('string');
@@ -3169,24 +3212,26 @@ function headShape(tx,ty,fx,fy,type,sz,color,w){const f={sm:2,med:3,lg:5}[sz]||3
 // Mirror only in this read-only renderer projection: source mark ownership and
 // unselected cell appearance stay untouched. Lines overlay fill/semantic borders;
 // chronology resolves only competing line edges. Legacy fill-only XML is unchanged.
-function tableResolvedBorders(table){if(!table.cells.some(row=>row.some(c=>(c.highlightEdges||[]).length)))return table.cells;
+function tableResolvedBorders(table){if(!(table.merges||[]).length&&!table.cells.some(row=>row.some(c=>(c.highlightEdges||[]).length)))return table.cells;
  const cells=table.cells.map(row=>row.map(c=>Object.assign({},c,{highlightEdges:[...(c.highlightEdges||[])]})));
  const resolve=(a,ae,b,be)=>{if(!a.highlightEdges.includes(ae)&&!b.highlightEdges.includes(be))return;
   const order=(c,e)=>c.highlightOrder&&c.highlightOrder[e]!=null?c.highlightOrder[e]:-1;
   const border=order(a,ae)>=order(b,be)?a[ae]:b[be];a[ae]=border;b[be]=border;if(!a.highlightEdges.includes(ae))a.highlightEdges.push(ae);if(!b.highlightEdges.includes(be))b.highlightEdges.push(be);
  };
- cells.forEach((row,r)=>row.forEach((c,k)=>{if(k+1<row.length)resolve(c,'bR',row[k+1],'bL');if(r+1<cells.length)resolve(c,'bB',cells[r+1][k],'bT');}));return cells;
+ cells.forEach((row,r)=>row.forEach((c,k)=>{if(k+1<row.length)resolve(c,'bR',row[k+1],'bL');if(r+1<cells.length)resolve(c,'bB',cells[r+1][k],'bT');}));
+ // Only outer edges belong to a merged cell; never render covered inner grid lines.
+ for(const m of table.merges||[]){const anchor=cells[m.r0][m.c0],edgeCells={bT:cells[m.r0].slice(m.c0,m.c1+1),bB:cells[m.r1].slice(m.c0,m.c1+1),bL:cells.slice(m.r0,m.r1+1).map(r=>r[m.c0]),bR:cells.slice(m.r0,m.r1+1).map(r=>r[m.c1])};for(const edge of Object.keys(edgeCells)){const ordered=edgeCells[edge].filter(c=>c[edge]).sort((a,b)=>((b.highlightOrder||{})[edge]??-1)-((a.highlightOrder||{})[edge]??-1)||(b[edge].w||0)-(a[edge].w||0));anchor[edge]=ordered[0]?.[edge]||null;if(ordered.some(c=>(c.highlightEdges||[]).includes(edge))&&!anchor.highlightEdges.includes(edge))anchor.highlightEdges.push(edge);}}return cells;
 }
 /* 表格 → 預覽用的儲存格矩形＋框線（pptx 端是原生 <a:tbl>） */
 function tblItems(it){const out=[],lines=[],highlights=[];let yy=it.y;
  tableResolvedBorders(it).forEach((r,ri)=>{let xx=it.x;const rh=it.rowH[ri];
-  r.forEach((c,ci)=>{const cw=it.colW[ci];
+  r.forEach((c,ci)=>{const step=it.colW[ci];if(c.covered){xx+=step;return;}const cw=it.colW.slice(ci,ci+(c.colSpan||1)).reduce((a,b)=>a+b,0),rh=it.rowH.slice(ri,ri+(c.rowSpan||1)).reduce((a,b)=>a+b,0);
    out.push({t:'sp',kind:'rect',x:xx,y:yy,w:cw,h:rh,fill:c.fill,line:null,lw:0,runs:c.runs,tx:{align:c.align,valign:'middle',margin:[c.mL,c.mR!=null?c.mR:c.mL,c.mT,c.mT],lsp:1,size:c.size,font:F0(c),color:c.color,bold:c.bold}});
    const edgeLines=edge=>(c.highlightEdges||[]).includes(edge)?highlights:lines;
    if(c.bT)edgeLines('bT').push({t:'ln',x1:xx,y1:yy,x2:xx+cw,y2:yy,color:c.bT.c,w:c.bT.w,dash:'solid'});
    if(c.bB)edgeLines('bB').push({t:'ln',x1:xx,y1:yy+rh,x2:xx+cw,y2:yy+rh,color:c.bB.c,w:c.bB.w,dash:'solid'});
    if(c.bL)edgeLines('bL').push({t:'ln',x1:xx,y1:yy,x2:xx,y2:yy+rh,color:c.bL.c,w:c.bL.w,dash:'solid'});
-   if(c.bR)edgeLines('bR').push({t:'ln',x1:xx+cw,y1:yy,x2:xx+cw,y2:yy+rh,color:c.bR.c,w:c.bR.w,dash:'solid'});xx+=cw;});yy+=rh;});
+   if(c.bR)edgeLines('bR').push({t:'ln',x1:xx+cw,y1:yy,x2:xx+cw,y2:yy+rh,color:c.bR.c,w:c.bR.w,dash:'solid'});xx+=step;});yy+=rh;});
  return out.concat(lines,highlights);}
 const F0=c=>(c.runs[0]&&c.runs[0].o.font)||'Microsoft JhengHei';
 function toSvg(slide,opt){opt=opt||{};const id=(opt.id||'s')+'_';const defs={},parts=[];let fi=0,mi=0;const flat=!!opt.flat;
@@ -3309,7 +3354,7 @@ function tableHtml(model,opt){const sl=tableCopyPage(model,opt);if(!sl)return ''
  let h=`<table style="border-collapse:collapse;table-layout:fixed;width:${pt(tb.w)};font-family:${fstack(T.font||'Microsoft JhengHei').replace(/"/g,"'")}">`;
  h+='<colgroup>'+tb.colW.map(w=>`<col style="width:${pt(w)}">`).join('')+'</colgroup>';
  tableResolvedBorders(tb).forEach((r,ri)=>{h+=`<tr style="height:${pt(tb.rowH[ri])}">`;
-  r.forEach((c,ci)=>{const f=(c.runs[0]&&c.runs[0].o.font)||T.font;const bd=(side,b)=>b?`border-${side}:${b.w}pt solid #${b.c};`:'';let hb='';
+  r.forEach((c,ci)=>{if(c.covered)return;const f=(c.runs[0]&&c.runs[0].o.font)||T.font;const bd=(side,b)=>b?`border-${side}:${b.w}pt solid #${b.c};`:'';let hb='';
    BX.forEach(b=>{const HB=`${b.rule?1.5:1.75}pt solid #${b.color}`;
     if(b.type==='col'&&b.i===ci)hb+=`border-left:${HB};border-right:${HB};`+(ri===0?`border-top:${HB};`:'')+(ri===n-1?`border-bottom:${HB};`:'');
     if(b.type==='row'&&b.i===ri)hb+=`border-top:${HB};border-bottom:${HB};`+(ci===0?`border-left:${HB};`:'')+(ci===r.length-1?`border-right:${HB};`:'');
@@ -3319,7 +3364,7 @@ function tableHtml(model,opt){const sl=tableCopyPage(model,opt);if(!sl)return ''
    const one=x=>{const t=esc(x.t).replace(/\n/g,'<br>');const dif=x.o.size!==c.size||x.o.color!==c.color||!!x.o.bold!==!!c.bold;return (dif?`<span style="font-size:${x.o.size}pt;color:#${x.o.color};font-weight:${x.o.bold?700:400}">${t}</span>`:t)+(x.o.br?'<br>':'');};
    // The corner belongs to the top header row when both axes are headers.
    const scope=ri<(T.h0||0)?'col':ci===0&&T.hcol?'row':null,tag=scope?'th':'td';
-   h+=`<${tag}${scope?` scope="${scope}"`:''} style="${css}">${c.runs.map(one).join('')}</${tag}>`;});h+='</tr>';});
+   h+=`<${tag}${scope?` scope="${scope}"`:''}${c.rowSpan>1?` rowspan="${c.rowSpan}"`:''}${c.colSpan>1?` colspan="${c.colSpan}"`:''} style="${css}">${c.runs.map(one).join('')}</${tag}>`;});h+='</tr>';});
  return h+'</table>';}
 /* 參數驗證（匯入 JSON、localStorage、待選素材快照）：只收 BASE 有的鍵（＋zh／tbLook／tbPanel），顏色必須是 6 碼 hex，數字必須是有限值（可給範圍），
    列舉值必須在清單內（enums 由 studio 的選項表提供）；不合格的值改回 fallback（範本預設）。擋住 "/><img onerror=…> 這類注入。 */
@@ -3348,6 +3393,6 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
  if(p.tbPanel&&!p.tbLook)out.tbLook='card';out.tbCard='white';
  return out;}
-const api={SCHEME_CATALOGUE_KEYS,SCHEME_CATALOGUE_STYLES,TABLE_SIZING_DEFAULTS,TABLE_SIZING_KEYS,tableSizingOf,tableSizingFontOf,adoptTableSizing,iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,TABLE_HIGHLIGHT_HUES,TABLE_HIGHLIGHT_PRESETS_V2,TABLE_HIGHLIGHT_PRESETS_V3,TABLE_HIGHLIGHT_ROLES,TABLE_HIGHLIGHT_PRESETS_V4,TABLE_HIGHLIGHT_FAMILIES,TABLE_HIGHLIGHT_BORDER_WIDTHS,tableHighlightBorderWidth,tableRangeBorderWidth,tableSetRangeBorderWidth,tableRangeBoldState,tableSetRangeBold,tableHighlightFamily,tableHighlightStroke,tableResolvedBorders,tableRangeEdge,tableHighlightPreset,tableHighlightPresetId,tableHighlightRolePresets,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,TABLE_HEADER_MODES,tableHeaderMode,tableSetHeaderMode,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,TABLE_APPEARANCE_KEYS,TABLE_APPEARANCE_DEFAULTS,tableAppearanceOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
+const api={SCHEME_CATALOGUE_KEYS,SCHEME_CATALOGUE_STYLES,TABLE_SIZING_DEFAULTS,TABLE_SIZING_KEYS,tableSizingOf,tableSizingFontOf,adoptTableSizing,iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableMerges,tableCellAt,tableDisplayRows,tableMerge,tableUnmerge,tableEditCell,tableShiftStructure,tableParseHtmlCells,tablePasteCells,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,TABLE_HIGHLIGHT_HUES,TABLE_HIGHLIGHT_PRESETS_V2,TABLE_HIGHLIGHT_PRESETS_V3,TABLE_HIGHLIGHT_ROLES,TABLE_HIGHLIGHT_PRESETS_V4,TABLE_HIGHLIGHT_FAMILIES,TABLE_HIGHLIGHT_BORDER_WIDTHS,tableHighlightBorderWidth,tableRangeBorderWidth,tableSetRangeBorderWidth,tableRangeBoldState,tableSetRangeBold,tableHighlightFamily,tableHighlightStroke,tableResolvedBorders,tableRangeEdge,tableHighlightPreset,tableHighlightPresetId,tableHighlightRolePresets,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,TABLE_HEADER_MODES,tableHeaderMode,tableSetHeaderMode,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,TABLE_APPEARANCE_KEYS,TABLE_APPEARANCE_DEFAULTS,tableAppearanceOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);

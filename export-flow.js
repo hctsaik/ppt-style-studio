@@ -32,7 +32,7 @@ function create(options){
   }catch(error){
    if(error.code==='EXPORT_STALE')publish(job.report||{status:'ready',issues:[]},'stale');
    else if(error.code==='EXPORT_CANCELLED')publish(job.report||{status:'ready',issues:[]},'cancelled');
-   else if(error.code!=='EXPORT_BLOCKED')publish(job.report||{status:'ready',issues:[]},'failed');
+   else if(error.code!=='EXPORT_BLOCKED')publish({...(job.report||{status:'ready',issues:[]}),failureMessage:error.message||'匯出未完成，請重新下載。'},'failed');
    throw error;
   }finally{if(active===job)active=null;}
  }
