@@ -199,9 +199,28 @@ function themeSemanticColors(st){
  const warn=/^[0-9A-F]{6}$/i.test(st.semWarn||'')?st.semWarn.toUpperCase():(hp>=0&&(hp<=20||hp>=330)&&satOf(P)>.45?'C27C0E':(ha>=0&&(ha<=40||ha>=340)&&satOf(A)>.6&&Math.abs(ha-hp)>25?A:'9A5F00'));
  return{warn,good:/^[0-9A-F]{6}$/i.test(st.semGood||'')?st.semGood:P,bad:/^[0-9A-F]{6}$/i.test(st.semBad||'')?st.semBad:'A15C00'};
 }
+// Saved table palettes are scoped to the table; other slides retain global style.
+// Explicit cell appearance and dimension locks; data and merge originals stay separate.
+const TABLE_CELL_STYLE_KEYS=['fill','color','bold','align','valign','font','mL','mR','mT','mB','bT','bB','bL','bR'];
+function tableCellStyle(style){if(!style||typeof style!=='object'||Array.isArray(style))throw Error('儲存格外觀無效');const out={};for(const [k,v]of Object.entries(style)){if(!TABLE_CELL_STYLE_KEYS.includes(k))throw Error('不支援的儲存格外觀：'+k);
+ if(k==='fill'||k==='color'){if(v!==null&&(typeof v!=='string'||!/^\w{6}$/.test(v)||!/^[0-9a-f]{6}$/i.test(v)))throw Error('色碼無效');}
+ else if(k==='bold'){if(typeof v!=='boolean')throw Error('粗體設定無效');}
+ else if(k==='align'||k==='valign'){if(!(k==='align'?['left','center','right']:['top','middle','bottom']).includes(v))throw Error('對齊設定無效');}
+ else if(k==='font'){if(typeof v!=='string'||! /^[\w .\-\u4e00-\u9fff]{1,80}$/.test(v))throw Error('字型無效');}
+ else if(k[0]==='m'){if(!Number.isFinite(v)||v<0||v>36)throw Error('內距必須為 0–36 pt');}
+ else if(v!==null){if(!v||typeof v!=='object'||Object.keys(v).some(k=>!['c','w'].includes(k))||typeof v.c!=='string'||!/^[0-9a-f]{6}$/i.test(v.c)||!Number.isFinite(v.w)||v.w<0||v.w>12)throw Error('框線無效');}
+ out[k]=v&&typeof v==='object'?{...v}:v;
+ }return out;}
+function tableCellFormats(T){const nr=T.rows.length,nc=T.rows[0]?.length||0,map=new Map();if(T.cellFormats!=null&&!Array.isArray(T.cellFormats))throw Error('個別外觀格式無效');for(const f of T.cellFormats||[]){if(!f||Object.keys(f).some(k=>!['r','c','style'].includes(k))||!Number.isInteger(f.r)||!Number.isInteger(f.c)||f.r<0||f.c<0||f.r>=nr||f.c>=nc||map.has(f.r+':'+f.c))throw Error('個別外觀越界或重複');map.set(f.r+':'+f.c,tableCellStyle(f.style));}return map;}
+function tableApplyCellStyle(T,range,style){const nr=T.rows.length,nc=T.rows[0]?.length||0,q=tableNormalizeRange(range,nr,nc);if(!q||['r0','r1','c0','c1'].some(k=>q[k]!==range[k]))throw Error('請選取有效範圍');for(const m of tableMerges(T))if(tableRangeIntersection(q,m)&&(q.r0>m.r0||q.r1<m.r1||q.c0>m.c0||q.c1<m.c1))throw Error('請完整選取合併格後套用外觀');const clean=tableCellStyle(style),map=tableCellFormats(T);for(let r=q.r0;r<=q.r1;r++)for(let c=q.c0;c<=q.c1;c++)map.set(r+':'+c,Object.assign({},map.get(r+':'+c),clean));return Object.assign({},T,{cellFormats:[...map].map(([key,style])=>{const[r,c]=key.split(':').map(Number);return{r,c,style};}).sort((a,b)=>a.r-b.r||a.c-b.c)});}
+function tableLocks(T,axis){const key=axis==='col'?'colLocks':'rowLocks',n=axis==='col'?(T.rows[0]?.length||0):T.rows.length,o=T[key]||{};if(!o||typeof o!=='object'||Array.isArray(o))throw Error('鎖定尺寸格式無效');const out={};for(const [k,v]of Object.entries(o)){if(!/^(0|[1-9]\d*)$/.test(k)||+k>=n||!Number.isFinite(v)||v<.05||v>56)throw Error('鎖定尺寸越界或無效');out[k]=v;}return out;}
+function tableSetLocks(T,axis,indices,value){if(!['row','col'].includes(axis)||!Array.isArray(indices)||!indices.length)throw Error('請選取列或欄');const key=axis==='col'?'colLocks':'rowLocks',out=tableLocks(T,axis),n=axis==='col'?(T.rows[0]?.length||0):T.rows.length;for(const i of indices){if(!Number.isInteger(i)||i<0||i>=n)throw Error('鎖定位置無效');if(value===null)delete out[i];else{if(!Number.isFinite(value)||value<.05||value>56)throw Error('尺寸必須為 0.05–56 吋');out[i]=value;}}return Object.assign({},T,{[key]:out});}
+function tableLockedColumns(weights,minimum,total,locks){const flexible=weights.map((_,i)=>i).filter(i=>locks[i]==null),fixed=Object.entries(locks).reduce((n,[,v])=>n+v,0),room=total-fixed,min=flexible.reduce((n,c)=>n+minimum[c],0);if(room<min-1e-7||!flexible.length&&Math.abs(room)>1e-7)return null;const part=flexible.length?tableFitColumns(flexible.map(c=>weights[c]),flexible.map(c=>minimum[c]),room):[],out=weights.map((v,i)=>locks[i]??v);flexible.forEach((c,i)=>out[c]=part[i]);return out;}
+const TABLE_THEME_KEYS=['P','PD','PT','A','useA','ink','t2','mute','line','l2','fill','tFont','bFont','nFont','tSize','tBold','lSize','lBold','nSize','sh','shFit','shMode','shB','shO','shA','shDir','haloB','haloA','r','semWarn','semGood','semBad','size'];
+function tableParams(params,table){const p=Object.assign({},params||BASE),theme=table&&table.theme;if(!theme||typeof theme!=='object'||Array.isArray(theme))return p;const clean=sanitizeParams(theme,p);for(const key of TABLE_THEME_KEYS)if(Object.prototype.hasOwnProperty.call(theme,key))p[key]=clean[key];return p;}
 /* ================= 幾何模型 ================= */
 function buildModel(params,opt){
- opt=opt||{};const st=Object.assign(clone(BASE),params||{},{tbTight:false,tbArrow:'mono'});
+ opt=opt||{};params=opt.table?tableParams(params,opt.table):params;const st=Object.assign(clone(BASE),params||{},{tbTight:false,tbArrow:'mono'});
  const P=st.P,PD=st.PD,PTn=st.PT,HASA=!!(st.useA&&st.A),A=HASA?st.A:st.P;
  const G={ink:st.ink,t2:st.t2,mute:st.mute,line:st.line,l2:st.l2,fill:st.fill,g7:mix(st.t2,st.mute,.45),l1:mix(st.mute,st.line,.5),white:'FFFFFF'};
  const F=st.bFont,FL=F==='Microsoft JhengHei'?'Microsoft JhengHei Light':F,nf=st.nFont||F;
@@ -1938,6 +1957,8 @@ function userTableSized(T){const first=cur,slideStart=slides.indexOf(first),n0=f
 function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(tableLayoutParams(stO_()));if(sizingProbe){st.tbWidthMode='auto';st.tbHeightMode='optimal';}if(fontSnapshot)st.tbAuto=false;
   const sizing=tableSizingOf(st),fixedWidth=sizing.version===2&&sizing.widthMode!=='auto',fixedTarget=fixedWidth?W*Number(sizing.widthMode)/100:null;
   const source=tableSource(T);const {nC,h0}=source;const src=source.previewRows;if(!src.length||!nC)return;
+  const cellFormats=tableCellFormats(T),colLocks=tableLocks(T,'col'),rowLocks=tableLocks(T,'row'),hasLocks=Object.keys(colLocks).length||Object.keys(rowLocks).length;
+  const formatAt=(r,c)=>cellFormats.get(r+':'+c)||{},paintCell=(o,r,c)=>Object.assign(o,formatAt(r,c));
   const merges=source.merges||[],mergeGrid=src.map(()=>Array(nC).fill(null));
   merges.forEach(m=>{for(let r=m.r0;r<=m.r1;r++)for(let c=m.c0;c<=m.c1;c++)mergeGrid[r][c]=m;});
   const mergedAt=(r,c)=>mergeGrid[r]&&mergeGrid[r][c],coveredAt=(r,c)=>{const m=mergedAt(r,c);return !!m&&(m.r0!==r||m.c0!==c);};
@@ -2008,9 +2029,11 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
   let ruleHits=0;const ruleBoxes=[];
   // 欄寬：數字欄＝內容＋18pt、同寬；第一欄吸收剩餘；單欄最多 45%
   const isNumFont=(ri,c)=>!mergedAt(ri,c)&&ri>=h0&&AU.numC[c]&&!AU.section[ri];
-  const layoutBold=(ri,c,t)=>ri<h0||bold.has(ri)||keySet.has(ri)||rangeBoldAt(ri,c)||fixedWidth&&(AU.section[ri]||T.hcol&&c===0||AU.statC[c]&&statusOf(src[ri][c])||/^\s*[▲△▼▽]/.test(t)||hiStyle==='fill'&&(hiCell(ri,c)||c===0&&hiRow(ri,c)));
+  const layoutBold=(ri,c,t)=>formatAt(ri,c).bold||ri<h0||bold.has(ri)||keySet.has(ri)||rangeBoldAt(ri,c)||fixedWidth&&(AU.section[ri]||T.hcol&&c===0||AU.statC[c]&&statusOf(src[ri][c])||/^\s*[▲△▼▽]/.test(t)||hiStyle==='fill'&&(hiCell(ri,c)||c===0&&hiRow(ri,c)));
   const measureW=(t,size,b)=>Math.max(...String(t).split('\n').map(l=>tw(l,size)*(b?1.08:1)));
-  const padOf=c=>padH+padH;   /* 欄寬與每欄實際內距一致，且不隨外觀改變 */
+  const cellPad=(r,c)=>{const f=formatAt(r,c);return(f.mL??padH)+(f.mR??padH);};
+  const padOf=c=>Math.max(...src.map((_,r)=>cellPad(r,c)));
+  const rowPad=r=>Math.max(2,...src[r].map((_,c)=>{const f=formatAt(r,c);return(f.mT??1)+(f.mB??1);}));   /* 欄寬與每欄實際內距一致，且不隨外觀改變 */
   // 中英混排寬度（含 PowerPoint／LibreOffice 的中英自動間距）
   const widthMemo=new Map();
   const mw=(l,size,b)=>{l=String(l);const key=size+':'+!!b+':'+l;if(widthMemo.has(key))return widthMemo.get(key);const tr=st.tbTight?0:(l.match(/[\u3400-\u9fff][A-Za-z0-9]|[A-Za-z0-9][\u3400-\u9fff]/g)||[]).length;const mx=/[\u3400-\u9fff]/.test(l)&&/[A-Za-z0-9]/.test(l)?1.15:1.06;const value=tw(l,size)*(b?1.08:1)*mx+tr*size*.25/72;if(l.length<=2048&&widthMemo.size<50000)widthMemo.set(key,value);return value;};
@@ -2044,19 +2067,19 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
    const manual=Array.isArray(T.cw)&&T.cw.length===nC&&T.cw.every(v=>Number.isFinite(+v)&&+v>0&&+v<=224)?T.cw.map(v=>+v*k):null;
    const hasStub=!!T.hcol&&nC>1;
    const cache=new Map(),grade=widths=>{let total=0,max=0,stubLines=0;rows.forEach((row,r)=>{let height=0;row.forEach((text,c)=>{const key=c+':'+r+':'+widths[c].toFixed(7);let lines=cache.get(key);if(lines==null){const size=r<h0?hfs:fs,b=layoutBold(r,c,text),av=Math.max(.01,widths[c]-padOf(c)/72-.03-(AU.statC[c]&&r>=h0&&statusOf(src[r][c])?.14*k:0));lines=(r>=h0&&AU.numC[c]||tParts(text)?String(text):readableLines(text,size,b,av)).split('\n').length;cache.set(key,lines);}height=Math.max(height,lines*(r<h0?hfs:fs));if(hasStub&&c===0&&r>=h0&&String(text).length<=80)stubLines=Math.max(stubLines,lines);});total+=height;max=Math.max(max,height);});return{score:total+max*2,stubLines};};
-   let widths=tableFitColumns(manual||preferred,minimum,fixedTarget),rating=grade(widths);
+   let widths=tableLockedColumns(manual||preferred,minimum,fixedTarget,colLocks),rating=grade(widths);
    // Keep manual feasible proportions. For automatic widths, a bounded exchange
    // reduces complete row heights instead of rewarding every long cell equally.
    if(!manual&&nC<=12&&rows.length<=40&&rows.reduce((n,row)=>n+row.join('').length,0)<=20000){
-    for(const weights of [Array(nC).fill(1),preferred.map(Math.sqrt)]){const trial=tableFitColumns(weights,minimum,fixedTarget),q=grade(trial);if(q.score<rating.score-.01){widths=trial;rating=q;}}
-    const step=2/72;for(let pass=0;pass<24;pass++){let best=null;for(let from=0;from<nC;from++){if(widths[from]-minimum[from]<step-1e-7)continue;for(let to=0;to<nC;to++){if(to===from)continue;const trial=widths.slice();trial[from]-=step;trial[to]+=step;const q=grade(trial);if(q.score<rating.score-.01&&(!best||q.score<best.rating.score-.01))best={widths:trial,rating:q};}}if(!best)break;({widths,rating}=best);}}
+    for(const weights of [Array(nC).fill(1),preferred.map(Math.sqrt)]){const trial=tableLockedColumns(weights,minimum,fixedTarget,colLocks),q=grade(trial);if(q.score<rating.score-.01){widths=trial;rating=q;}}
+    const step=2/72;for(let pass=0;pass<24;pass++){let best=null;for(let from=0;from<nC;from++){if(colLocks[from]!=null||widths[from]-minimum[from]<step-1e-7)continue;for(let to=0;to<nC;to++){if(to===from||colLocks[to]!=null)continue;const trial=widths.slice();trial[from]-=step;trial[to]+=step;const q=grade(trial);if(q.score<rating.score-.01&&(!best||q.score<best.rating.score-.01))best={widths:trial,rating:q};}}if(!best)break;({widths,rating}=best);}}
    return{widths,rating};};
   if(narrowFit){
    // Padding is the first concession. Preserve at least 4pt where the original
    // padding permits it, and keep native top/bottom margins at their safe 1pt.
    const rowLower=rows.map((row,r)=>Math.max(...row.map(text=>String(text).split('\n').length))*(r<h0?hfs:fs)),lowerScore=rowLower.reduce((a,b)=>a+b,0)+2*Math.max(...rowLower);
    const pads=[padH,...[7,5,4].filter(v=>v<padH-1e-7)];let chosen=null,settled=false;
-   const candidate=()=>{const minimum=narrowMinimum();if(minimum.reduce((a,b)=>a+b,0)>fixedTarget+1e-7)return false;const layout=narrowLayout(minimum),trial={fs,hfs,padH,minimum,...layout},readable=trial.rating.stubLines<=6;
+   const candidate=()=>{const minimum=narrowMinimum();if(!tableLockedColumns(minimum,minimum,fixedTarget,colLocks))return false;const layout=narrowLayout(minimum),trial={fs,hfs,padH,minimum,...layout},readable=trial.rating.stubLines<=6;
     if(!chosen||(readable&&chosen.rating.stubLines>6)||(readable===(chosen.rating.stubLines<=6)&&trial.rating.score<chosen.rating.score-.01))chosen=trial;
     return readable;};
    // A short stub alone is not enough: compare complete-row wrapping at every
@@ -2118,9 +2141,8 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
   // Fixed percentages are constraints, not zoom or a preferred width. Existing
   // dragged widths become relative weights; their sum cannot defeat the constraint.
   let fixedWidthOverflow=false;
-  if(fixedWidth){const minSum=colMin.reduce((a,b)=>a+b,0);fixedWidthOverflow=minSum>fixedTarget+1e-7;
-   if(fixedWidthOverflow)colW=colMin.slice();
-   else colW=narrowColumns||tableFitColumns(uw||colW,colMin,fixedTarget);}
+  if(fixedWidth){const fit=narrowColumns||tableLockedColumns(uw||colW,colMin,fixedTarget,colLocks);fixedWidthOverflow=!fit;colW=fit||colMin.map((v,c)=>colLocks[c]??v);}
+  else if(Object.keys(colLocks).length){const total=Math.max(target,Object.entries(colLocks).reduce((n,[,v])=>n+v,0)+colMin.reduce((n,v,c)=>n+(colLocks[c]==null?v:0),0));colW=tableLockedColumns(uw||colW,colMin,total,colLocks)||colW.map((v,c)=>colLocks[c]??v);}
   // Guarantee every explicit line fits the measured width, even when the semantic
   // splitter reaches its recursion guard. Keep the final fragment readable.
   const fitLines=(text,size,b,av)=>String(text).split('\n').flatMap(line=>{const out=[];let part='';for(const ch of (fixedWidth?tableGraphemes(line):[...line])){if(part&&mw(part+ch,size,b)>av){out.push(part);part='';}part+=ch;}out.push(part);
@@ -2130,13 +2152,16 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
    if(out.length>1&&/^[\u3400-\u9fff\uff00-\uffef]{1,2}$/.test(out[out.length-1])){let last=out.pop(),prev=out.pop();while(tableGraphemes(last).length<3&&tableGraphemes(prev).length>2){const chars=tableGraphemes(prev),ch=chars.pop();if(!/^[\u3400-\u9fff\uff00-\uffef]$/.test(ch)||mw(ch+last,size,b)>av)break;prev=chars.join('');last=ch+last;}out.push(prev,last);}return out;}).join('\n');}
   merges.forEach(m=>{rows[m.r0][m.c0]=m.text;});
   const rowsO=rows.map(r=>r.slice());
-  const brk=()=>rows.forEach((r,ri)=>r.forEach((_,c)=>{const t=rowsO[ri][c];if(coveredAt(ri,c)||!mergedAt(ri,c)&&AU.numC[c]&&ri>=h0)return;const sz0=ri<h0?hfs:fs,b=layoutBold(ri,c,t);const av=cellWidth(ri,c,colW)-padOf(c)/72-.03-(!mergedAt(ri,c)&&AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0);let safeAv=!narrowFit&&ri>=h0&&mw(t,sz0,b)>av*.92&&String(t).length>10?av*.92:av;if(fixedWidth)for(const ch of tableGraphemes(t))if(ch!=='\n')safeAv=Math.max(safeAv,mw(ch,sz0,b));r[c]=tParts(t)||!fixedWidth&&/^[A-Za-z0-9_.-]+$/.test(String(t))?String(t):narrowFit?readableLines(t,sz0,b,safeAv):fitLines(semBreak(t,sz0,b,safeAv),sz0,b,safeAv);}));   // 長字串接近欄寬時預留 8%（PowerPoint／LibreOffice 實際字寬較寬）
-  const calcH=(g=1)=>{brk();return rows.map((r,ri)=>{const base=(ri<h0?hh:AU.section[ri]?rh*.95:rh)*g;return Math.max(base,minH(cellN(r,ri),ri<h0?hfs:fs));});};
+  const brk=()=>rows.forEach((r,ri)=>r.forEach((_,c)=>{const t=rowsO[ri][c];if(coveredAt(ri,c)||!mergedAt(ri,c)&&AU.numC[c]&&ri>=h0)return;const sz0=ri<h0?hfs:fs,b=layoutBold(ri,c,t);const av=cellWidth(ri,c,colW)-cellPad(ri,c)/72-.03-(!mergedAt(ri,c)&&AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0);let safeAv=!narrowFit&&ri>=h0&&mw(t,sz0,b)>av*.92&&String(t).length>10?av*.92:av;if(fixedWidth)for(const ch of tableGraphemes(t))if(ch!=='\n')safeAv=Math.max(safeAv,mw(ch,sz0,b));r[c]=tParts(t)||!fixedWidth&&/^[A-Za-z0-9_.-]+$/.test(String(t))?String(t):narrowFit?readableLines(t,sz0,b,safeAv):fitLines(semBreak(t,sz0,b,safeAv),sz0,b,safeAv);}));   // 長字串接近欄寬時預留 8%（PowerPoint／LibreOffice 實際字寬較寬）
+  const calcH=(g=1)=>{brk();return rows.map((r,ri)=>{const base=(ri<h0?hh:AU.section[ri]?rh*.95:rh)*g;return Math.max(base,minH(cellN(r,ri),ri<h0?hfs:fs)+(rowPad(ri)-2)/72);});};
   // Freeze width-fitting results before choosing height or sizing the canvas.
   // More rows or a smaller height choice never shrink typography or padding.
-  const spanHeights=heights=>{merges.forEach(m=>{const r=m.r0,c=m.c0,size=r<h0?hfs:fs,needed=minH(wrapN(rows[r][c],size,layoutBold(r,c,rows[r][c]),cellWidth(r,c,colW),c),size),actual=heights.slice(r,m.r1+1).reduce((a,b)=>a+b,0);if(needed>actual){const extra=(needed-actual)/(m.r1-r+1);for(let i=r;i<=m.r1;i++)heights[i]+=extra;}});return heights;};
-  const optimalH=spanHeights(calcH()),minimumH=spanHeights(rows.map((r,ri)=>minH(cellN(r,ri),ri<h0?hfs:fs)));
+  const spanHeights=heights=>{merges.forEach(m=>{const r=m.r0,c=m.c0,size=r<h0?hfs:fs,needed=minH(wrapN(rows[r][c],size,layoutBold(r,c,rows[r][c]),cellWidth(r,c,colW),c),size)+(rowPad(r)-2)/72,actual=heights.slice(r,m.r1+1).reduce((a,b)=>a+b,0);if(needed>actual){const extra=(needed-actual)/(m.r1-r+1);for(let i=r;i<=m.r1;i++)heights[i]+=extra;}});return heights;};
+  const optimalH=spanHeights(calcH()),minimumH=spanHeights(rows.map((r,ri)=>minH(cellN(r,ri),ri<h0?hfs:fs)+(rowPad(ri)-2)/72));
   const rowHAll=sizing.version!==2||sizing.heightMode==='optimal'?optimalH:optimalH.map((h,r)=>sizing.heightMode==='larger'?h*1.25:sizing.heightMode==='smaller'?Math.max(minimumH[r],h*.85):minimumH[r]),tW=colW.reduce((a,b)=>a+b,0),frame=GC?.18*k:0;
+  const lockIssues=[];for(const [r,value]of Object.entries(rowLocks)){if(value<minimumH[+r]-1e-7)lockIssues.push('第 '+(+r+1)+' 列鎖定高度不足（至少 '+(minimumH[+r]*2.54).toFixed(2)+' cm）');rowHAll[+r]=value;}
+  for(const m of merges){const size=m.r0<h0?hfs:fs,need=minH(wrapN(rows[m.r0][m.c0],size,layoutBold(m.r0,m.c0,rows[m.r0][m.c0]),cellWidth(m.r0,m.c0,colW),m.c0),size)+(rowPad(m.r0)-2)/72,actual=rowHAll.slice(m.r0,m.r1+1).reduce((a,b)=>a+b,0);if(need>actual+1e-7)lockIssues.push('合併格第 '+(m.r0+1)+'–'+(m.r1+1)+' 列鎖定高度不足');}
+  for(const [c,value]of Object.entries(colLocks)){if(rows.some((row,r)=>!coveredAt(r,+c)&&String(row[+c]).split('\n').some(line=>mw(line,r<h0?hfs:fs,layoutBold(r,+c,line))>cellWidth(r,+c,colW)-cellPad(r,+c)/72+.01)))lockIssues.push('第 '+(+c+1)+' 欄鎖定寬度放不下文字或內距');}
   const wrapMeta=(value,size,b,width)=>String(value||'').split('\n').map(line=>{let out='',part='';for(const ch of (fixedWidth?tableGraphemes(line):[...line])){if(part&&mw(part+ch,size,b)>width){out+=part+'\n';part='';}part+=ch;}return out+part;}).join('\n');
   const metaH=(text,size,min=0)=>Math.max(min,Math.max(1,String(text).split('\n').length)*size*1.45/72+.05);
   let tfsT=sz(24);const titleRaw=String(T.title||''),metaW=Math.min(maxW,Math.max(tW,6.5));
@@ -2156,8 +2181,9 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
   const totalH=rowHAll.reduce((n,h)=>n+h,0);
   const canvasW=fixedWidth&&!fixedWidthOverflow?W:Math.max(W,tW+2*(.6+frame),titleWidth+1.2);
   const canvasH=Math.max(H,ty0+totalH+frame+noteGap+afterH+bottom);
-  if(canvasW>56||canvasH>56){blockedReasonCode='slide-size';exportReason=`完整表格需要 ${canvasW.toFixed(2)} × ${canvasH.toFixed(2)} 吋，超過 PowerPoint 單張投影片最大 56 × 56 吋。網頁仍完整呈現原始表格；不分頁、不刪列、不縮小文字，已停用 PPTX 匯出。`;}
-  else if(fixedWidthOverflow){blockedReasonCode='table-width';exportReason=`${sizing.widthMode}% 寬度無法同時保留可讀字級與足夠欄寬。預覽保留完整內容與可讀欄寬，尚未套用指定寬度；請改用 ${sizing.widthMode==='45'?'90% 或自動':'自動'}，或減少欄數。未截斷資料，已停用 PPTX 匯出。`;}
+  if(lockIssues.length){blockedReasonCode='locked-size';exportReason=lockIssues[0]+'。鎖定尺寸及原文保持不變，請加大或解除鎖定；已停用 PPTX 匯出。';}
+  else if(canvasW>56||canvasH>56){blockedReasonCode='slide-size';exportReason=`完整表格需要 ${canvasW.toFixed(2)} × ${canvasH.toFixed(2)} 吋，超過 PowerPoint 單張投影片最大 56 × 56 吋。網頁仍完整呈現原始表格；不分頁、不刪列、不縮小文字，已停用 PPTX 匯出。`;}
+  else if(fixedWidthOverflow){blockedReasonCode='table-width';exportReason=(hasLocks?'鎖定欄寬與目前指定總寬無法同時滿足。請解除部分鎖定或改用自動寬度。':'')+`${sizing.widthMode}% 寬度無法同時保留可讀字級與足夠欄寬。預覽保留完整內容與可讀欄寬，尚未套用指定寬度；請改用 ${sizing.widthMode==='45'?'90% 或自動':'自動'}，或減少欄數。未截斷資料，已停用 PPTX 匯出。`;}
   const planned={pages:[source.sourceRows.slice()],capacity:canvasH-bottom-ty0-frame-noteGap-afterH};
   const pageCount=1,hasFooter=false;
   const off=st.tbV==='top'?0:Math.max(0,(planned.capacity-totalH)*.38);
@@ -2172,7 +2198,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
   const firstKey=ri=>keySet.has(ri)&&!keySet.has(ri-1);
   const cells=rows.map((r,ri)=>r.map((t,c)=>{const align=colAl[c];const isN=isNumFont(ri,c);const font=isN?NF:TF;const mL=padH;
    if(ri<h0){const o={t,bold:1,size:hfs,align,font:TF,color:LK.hdr.color,fill:LK.hdr.fill||null,bT:bw(LK.hdr.bT),bB:bw(LK.hdr.bB),mL,mR:padH};
-    baseGrid(o,ri);const hc=hiCol(ri,c)||hiCell(ri,c);
+    baseGrid(o,ri);paintCell(o,ri,c);const hc=hiCol(ri,c)||hiCell(ri,c);
     if(hc){if(LK.hdr.fill){o.bB={c:contrastOf(hc.C,LK.hdr.fill)>=3?hc.C:ensureContrast(mix(hc.C,'FFFFFF',.85),LK.hdr.fill,3),w:3};/* 主色表頭：重點欄只加 3pt 強調色底線 */}else{if(hiStyle==='fill')o.fill=mix(hc.C,'FFFFFF',.9);o.color=ensureContrast(mix(hc.C,'000000',.18),o.fill||'FFFFFF',5);}}
     o.color=cc(o.color,o.fill);return rangePaint(o,ri,c);}
    const last=ri===rows.length-1,key=keySet.has(ri)||bold.has(ri),sec=AU.section[ri];
@@ -2181,7 +2207,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
    // Share the selected header paint on both axes; explicit emphasis below wins.
    if(!headerCol&&LK.zebra&&(ri-h0)%2===1)o.fill=LK.zebra;
    if(!headerCol&&key&&LK.keyFill)o.fill=LK.keyFill;
-   baseGrid(o,ri);
+   baseGrid(o,ri);paintCell(o,ri,c);
    // Grid first, semantic separators next, manual emphasis below wins.
    if(sec&&LK.row&&ri>h0)o.bT=bw(LK.row);
    const totalRule=last&&T.lastTotal===true&&ri>0;
@@ -2220,7 +2246,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
    if(LK.card){const o=grey?{fill:G.fill,r:.14*k,name:'灰色底板'}:{fill:'FFFFFF',line:G.line,lw:.75*k,r:.14*k,sh:'card',force:1,name:'卡片'};box(X-frame,ty-frame,tW+2*frame,tH+2*frame,o);}
    const tb=table(tx,ty,colW.slice(),rowH,pageCells,{mL:padH,mT:1,name:'表格'});tb.merges=merges.map(m=>({...m}));
    tb.cells.forEach((row,r)=>row.forEach((cell,c)=>{const m=mergedAt(r,c);if(m)Object.assign(cell,{covered:coveredAt(r,c),anchorR:m.r0,anchorC:m.c0,rowSpan:r===m.r0&&c===m.c0?m.r1-m.r0+1:1,colSpan:r===m.r0&&c===m.c0?m.c1-m.c0+1:1});}));
-   tb.cells.forEach((r,ri)=>r.forEach((c,ci)=>{const o=pageCells[ri][ci];c.mL=o.mL;c.mR=o.mR;
+   tb.cells.forEach((r,ri)=>r.forEach((c,ci)=>{const o=pageCells[ri][ci];c.mL=o.mL;c.mR=o.mR;c.mT=o.mT??1;c.mB=o.mB??1;c.valign=o.valign||'middle';
     if(o.dot&&c.runs.length)c.runs.unshift({t:'●\u2002',o:Object.assign({},c.runs[0].o,{size:sz(7),color:o.dot,bold:false,br:false})});}));
    const noteY=ty+tH+frame+noteGap;
    slots.note={x:X,y:noteY,w:noteW,h:Math.max(noteH,.26*k),size:nfs,color:G.mute};
@@ -2246,7 +2272,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
     boxes.push(Object.assign({color:h.C,kind:h.kind},h.type==='cell'?{type:'cell',r:h.r,c:h.c}:{type:h.type,i:h.i}));});
    ruleBoxes.forEach(b=>{const r=sourceRows.indexOf(b.r);if(r<0)return;const q=expandMergedBox({r0:r,c0:b.c,r1:r,c1:b.c});box(cx0(q.c0)+ins,ry0(q.r0)+ins,colW.slice(q.c0,q.c1+1).reduce((a,b)=>a+b,0)-2*ins,rowH.slice(q.r0,q.r1+1).reduce((a,b)=>a+b,0)-2*ins,{line:b.color,lw:blw,r:rad,name:'條件框'});boxes.push(q.r0===q.r1&&q.c0===q.c1?{type:'cell',r,c:b.c,color:b.color,rule:1}:{...q,type:'range',color:b.color,rule:1});});
    const b0=boxes.find(b=>!b.rule&&b.type!=='cell'),orphans=[];
-   sourceRows.forEach(ri=>rows[ri].forEach((t,c)=>{const str=String(t);if(!str.trim())return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri)||rangeBoldAt(ri,c),av=cellWidth(ri,c,colW)-padOf(c)/72-.03-(!mergedAt(ri,c)&&AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0),ls=str.split('\n'),vis=x=>x.replace(/\s/g,'').length;
+   sourceRows.forEach(ri=>rows[ri].forEach((t,c)=>{const str=String(t);if(!str.trim())return;const sz0=ri<h0?hfs:fs,b=ri<h0||bold.has(ri)||keySet.has(ri)||rangeBoldAt(ri,c),av=cellWidth(ri,c,colW)-cellPad(ri,c)/72-.03-(!mergedAt(ri,c)&&AU.statC[c]&&ri>=h0&&statusOf(t)?.14*k:0),ls=str.split('\n'),vis=x=>x.replace(/\s/g,'').length;
     if(ls.some(l=>mw(l,sz0,b)>av+.01))orphans.push({r:ri,c,t:str,why:'auto-wrap'});else if(ls.length>1&&vis(str)>4&&ls.some((l,i)=>vis(l)<=1||vis(l)<=2&&i>0&&!/[：:；;，,、)）\s]$/.test(ls[i-1])&&!/^[（(]/.test(l)))orphans.push({r:ri,c,t:str,why:'orphan'});}));
    // The new deep theme fill has a light top rule on each visible region/page.
    // Keep it in native cell borders, below explicit line-family overrides; old
@@ -2268,7 +2294,7 @@ function userTable0(T,k,boost,sizingProbe,fontSnapshot){const st=TBL_FIXED(table
    const complete=!layoutOverflow,reason=exportReason||(layoutOverflow?'表格或標題／註腳超出投影片邊界，已停用匯出。請縮短內容或調整欄寬；原始資料仍可下載完整 TSV。':'');
    if(layoutOverflow)warn('表格無法完整匯出',reason);
    const displayRows=tb.cells.map(row=>row.map(c=>c.runs.map(r=>r.t+(r.o&&r.o.br?'\n':'')).join('')));
-   const integrity={documentId,pageIndex,pageCount,h0,nC,merges:merges.map(m=>({...m})),sourceValues:source.rows.map(row=>row.slice()),displayRows,bodyStart,bodyEnd,sourceRows:sourceRows.slice(),bodySourceRows:bodySourceRows.slice(),rawRowCount:source.nR,rawBodyRows:source.bodyRows,renderedRowCount:sourceRows.length,renderedBodyRows:bodySourceRows.length,exportComplete:complete,exportReason:reason,layoutOverflow,blockedRow,blockedReasonCode};
+   const integrity={locks:{columns:{...colLocks},rows:{...rowLocks},issues:lockIssues.slice()},documentId,pageIndex,pageCount,h0,nC,merges:merges.map(m=>({...m})),sourceValues:source.rows.map(row=>row.slice()),displayRows,bodyStart,bodyEnd,sourceRows:sourceRows.slice(),bodySourceRows:bodySourceRows.slice(),rawRowCount:source.nR,rawBodyRows:source.bodyRows,renderedRowCount:sourceRows.length,renderedBodyRows:bodySourceRows.length,exportComplete:complete,exportReason:reason,layoutOverflow,blockedRow,blockedReasonCode};
    if(sizing.version===2)integrity.sizing={version:2,widthMode:sizing.widthMode,heightMode:sizing.heightMode,referenceWidth:fixedWidth?W:canvasW,targetWidth:fixedTarget,actualWidth:tW,widthApplied:!fixedWidthOverflow,font:{bodyPt:fs,headerPt:hfs,scale:k,autoBoost:boost},minimumRowH:minimumH.slice(),optimalRowH:optimalH.slice(),atMinimum:rowHAll.every((h,r)=>Math.abs(h-minimumH[r])<1e-7),...(widthFit?{fit:widthFit}:{})};
    tb.dataIntegrity=Object.assign({},integrity);
    cur.table=Object.assign({},integrity,{rawRows:source.rows,previewBodyRows:bodySourceRows.length,types:Object.assign({},T.types),formats:Object.assign({},T.formats),hcol:!!T.hcol,pad:st.tbPad||'m',orphans,colMin:colMin.map(v=>+v.toFixed(3)),REC,k,colFit:colFit.map(v=>+v.toFixed(3)),tx,ty,tW,tH,colW:colW.slice(),rowH,h0,nC,nR:sourceRows.length,look:lookId,appearance,grey,hiMode:hiStyle,hiStyle,EC,colNum:AU.numC,colStat:AU.statC,key:[...keySet].sort((a,b)=>a-b),hi:b0||null,boxes,his:his.map(h=>Object.assign({},h)),rules:MK.rules,ruleHits,
@@ -2439,7 +2465,7 @@ function tableShiftStructure(T,axis,index,remove){if(!['row','col'].includes(axi
  if(axis==='row')rows.splice(index,remove?1:0,...(remove?[]:[Array(nC).fill('')]));else rows.forEach(row=>row.splice(index,remove?1:0,...(remove?[]:[''])));
  const next=[];for(const m of merges){const q={...m};if(remove){if(index<q[lo]){q[lo]--;q[hi]--;}else if(index<=q[hi])q[hi]--;}else if(index<=q[lo]){q[lo]++;q[hi]++;}else if(index<=q[hi])q[hi]++;
   if(q.r0>q.r1||q.c0>q.c1)continue;if(q.r0===q.r1&&q.c0===q.c1){if(q.text!==rows[q.r0][q.c0])rows[q.r0][q.c0]=q.text&&rows[q.r0][q.c0]?q.text+'\n'+rows[q.r0][q.c0]:q.text||rows[q.r0][q.c0];}else next.push(q);}
- return Object.assign({},T,{rows,merges:next});}
+ const move=n=>remove?(n===index?null:n>index?n-1:n):n>=index?n+1:n,formats=[];for(const [key,style]of tableCellFormats(T)){const [r,c]=key.split(':').map(Number),value=move(axis==='row'?r:c);if(value!==null)formats.push({r:axis==='row'?value:r,c:axis==='col'?value:c,style});}const lockKey=axis==='row'?'rowLocks':'colLocks',locks={};for(const [i,v]of Object.entries(tableLocks(T,axis))){const value=move(+i);if(value!==null)locks[value]=v;}return Object.assign({},T,{rows,merges:next,...(T.cellFormats?{cellFormats:formats}:{}),...(T[lockKey]?{[lockKey]:locks}:{})});}
 function tableParseHtmlCells(cellRows){if(!Array.isArray(cellRows)||!cellRows.length)tableMergeError('HTML 表格沒有儲存格。');const rows=Array.from({length:cellRows.length},()=>[]),used=Array.from({length:cellRows.length},()=>[]),merges=[];let width=0;
  cellRows.forEach((cells,r)=>{if(!Array.isArray(cells))tableMergeError('HTML 表格列格式無效。');let c=0;for(const cell of cells){while(used[r][c])c++;const rs=cell.rowSpan==null?1:Number(cell.rowSpan),cs=cell.colSpan==null?1:Number(cell.colSpan);if(!Number.isInteger(rs)||!Number.isInteger(cs)||rs<1||cs<1||r+rs>rows.length||c+cs>1000)tableMergeError('HTML 合併格的跨列／跨欄範圍無效；原資料未變更。');const text=String(cell.text==null?'':cell.text).replace(/\r\n?/g,'\n');for(let y=r;y<r+rs;y++)for(let x=c;x<c+cs;x++){if(used[y][x])tableMergeError('HTML 合併格互相重疊；原資料未變更。');used[y][x]=true;rows[y][x]=y===r&&x===c?text:'';}if(rs>1||cs>1)merges.push({r0:r,c0:c,r1:r+rs-1,c1:c+cs-1,text,originalText:text});c+=cs;width=Math.max(width,c);}});
  for(let r=0;r<rows.length;r++)for(let c=0;c<width;c++)if(!used[r][c])tableMergeError('HTML 表格列欄不完整；請修正來源後再貼上，原資料未變更。');return{rows,merges};}
@@ -2596,6 +2622,8 @@ function tableFromPaste(rows,prev,mode){prev=prev||{};const input=Array.isArray(
  const head=update&&typeof prev.header==='boolean'?prev.header:!!S.auto.head;
  const out={rows,merges:incomingMerges,title:keepTitle?prev.title:'',pin:keepTitle&&!!prev.pin,unit:update?prev.unit||'':'',note:update?prev.note||'':'',his,rules:[],bold:S.auto.key,align:{},fmt:{},types:{},formats:{},header:head,lastTotal:S.auto.key.includes(nR-1),hcol:!!prev.hcol,cw:null,hiStyle:prev.hiStyle||null,keep};
  if(update&&tableSizingFontOf(prev.sizingFont))out.sizingFont=clone(prev.sizingFont);
+ if(update&&(prev.cellFormats?.length||Object.keys(prev.colLocks||{}).length||Object.keys(prev.rowLocks||{}).length)){if(rows.length!==prev.rows.length||(rows[0]?.length||0)!==(prev.rows[0]?.length||0))tableMergeError('更新資料的列欄數與個別格式／鎖定尺寸不符，未變更；請先解除鎖定並清除個別格式，或選擇新表。');for(const key of ['cellFormats','colLocks','rowLocks'])if(prev[key])out[key]=clone(prev[key]);}
+ if(prev.theme&&(update||keep))out.theme=clone(prev.theme);
  // 沿用目前樣式（預設開）：依「欄名」對應；欄名對不上但欄數相同時依位置對應
  if(keep&&Array.isArray(prev.rows)&&prev.rows[0]){const oh=prev.rows[0].map(x=>String(x).trim()),nh=(rows[0]||[]).map(x=>String(x).trim());const same=oh.length===nh.length;
   const named=tableAuto(prev.rows,prev).head&&head;
@@ -2911,7 +2939,7 @@ function toPptx(pptx,model){
   sl.items.forEach(it=>{
    if(it.t==='tbl'){const bd=b=>b?{type:'solid',pt:b.w,color:b.c}:{type:'none'};
     const rows=tableResolvedBorders(it).map(r=>r.filter(c=>!c.covered).map(c=>({text:c.runs.map(rn=>({text:rn.t,options:Object.assign({fontSize:rn.o.size,fontFace:rn.o.font,bold:rn.o.bold,color:rn.o.color},rn.o.br?{breakLine:true}:{})})),
-     options:Object.assign({align:c.align,valign:'middle',...(c.rowSpan>1?{rowspan:c.rowSpan}:{}),...(c.colSpan>1?{colspan:c.colSpan}:{}),margin:[c.mT,c.mR!=null?c.mR:c.mL,c.mT,c.mL],border:[bd(c.bT),bd(c.bR),bd(c.bB),bd(c.bL)]},c.fill?{fill:{color:c.fill}}:{})})));
+     options:Object.assign({align:c.align,valign:c.valign||'middle',...(c.rowSpan>1?{rowspan:c.rowSpan}:{}),...(c.colSpan>1?{colspan:c.colSpan}:{}),margin:[Math.max(1,c.mT),c.mR!=null?c.mR:c.mL,c.mB!=null?c.mB:c.mT,c.mL],border:[bd(c.bT),bd(c.bR),bd(c.bB),bd(c.bL)]},c.fill?{fill:{color:c.fill}}:{})})));
     s.addTable(rows,{x:it.x,y:it.y,w:it.w,colW:it.colW.slice(),rowH:it.rowH.slice(),autoPage:false});return;}
    if(it.t==='pic'){s.addImage({data:it.png,x:it.x,y:it.y,w:it.w,h:it.h,rounding:!!it.round,objectName:it.name||'圖片'});return;}
    if(it.t==='ln'){const L={color:it.color,width:it.w,dashType:it.dash};if(it.head)L.endArrowType=ahType(it.head,it.hs);if(it.tail)L.beginArrowType=ahType(it.tail,it.hs);
@@ -2987,6 +3015,8 @@ async function patchZip(zip,model){let n=0,svgN=0;const cst={ok:0,both:0,one:0,f
    // Editor tables have one semantic matrix per slide. Do not invent flags for
    // arbitrary component tables or mixed shape compositions without that record.
    if(meta&&items.filter(it=>it.t==='tbl').length===1)x=x.replace(/<a:tblPr\b([^>]*?)(\/?)>/g,(_,attrs,close)=>'<a:tblPr'+attrs.replace(/\s+(?:firstRow|firstCol)="[^"]*"/g,'')+' firstRow="'+(meta.h0?1:0)+'" firstCol="'+(meta.hcol?1:0)+'"'+close+'>');}
+  if(model.slides[i].table)x=x.replace(/<p:graphicFrame>[\s\S]*?<\/p:graphicFrame>/g,block=>{const id=block.match(/<p:cNvPr id="(\d+)"/),it=id&&items[+id[1]-2];if(!it||it.t!=='tbl')return block;let r=0;
+   return block.replace(/<a:tr\b[^>]*>[\s\S]*?<\/a:tr>/g,row=>{const cells=it.cells[r++];if(!cells)throw Error('原生表格列數不一致');let c=0;const out=row.replace(/<a:tc\b[\s\S]*?<\/a:tc>/g,tc=>{const cell=cells[c++];if(!cell)throw Error('原生表格欄數不一致');const margins={marL:cell.mL,marR:cell.mR??cell.mL,marT:cell.mT,marB:cell.mB??cell.mT};return tc.replace(/<a:tcPr\b([^>]*?)(\/?)>/,(_,attrs,close)=>'<a:tcPr'+attrs.replace(/\s+mar[LTRB]="[^"]*"/g,'')+Object.entries(margins).map(([k,v])=>' '+k+'="'+Math.round(v*12700)+'"').join('')+close+'>');});if(c!==cells.length)throw Error('原生表格缺少儲存格');return out;});});
   x=x.replace(/<p:sp>[\s\S]*?<\/p:sp>/g,blk=>{const m=blk.match(/<p:cNvPr id="(\d+)"/);if(!m)return blk;const it=items[+m[1]-2];if(!it||!it.sh)return blk;
    n++;return blk.replace(/<a:effectLst>[\s\S]*?<\/a:effectLst>/,effectXml(it.sh));});
   /* 明確寫出「無填色／無框線」：PptxGenJS 省略 fill 元素時，LibreOffice 會把封閉的自訂圖形（圖示）填滿；PowerPoint 也以明確值最穩 */
@@ -3134,7 +3164,7 @@ function fitMinFont(items,min,maxW,maxH){const m=minFontOf(items);if(!(min>0)||!
  let k=min/m;const cap=Math.min(maxW/bb.w,maxH/bb.h);const capped=k>cap;if(capped)k=Math.max(1,cap);
  if(k<=1.0001)return{k:1,min:m,capped};shiftItems(items,-bb.x,-bb.y);scaleSlide({items,groups:[]},k);shiftItems(items,bb.x,bb.y);return{k:Math.round(k*100)/100,min:minFontOf(items),capped};}
 /* 單一元件：取出某頁某群組的圖形，置中到一張新投影片 */
-function elementModel(params,key,gi,opt){opt=opt||{};let m=buildModel(params,{only:[key],labels:opt.labels});let sl=m.slides[0];let g=sl&&sl.groups[gi];
+function elementModel(params,key,gi,opt){opt=opt||{};let m=opt.model?clone(opt.model):buildModel(params,{only:[key],labels:opt.labels});let sl=m.slides.find(s=>s.key===key)||m.slides[0];let g=sl&&sl.groups[gi];
  if((!g||(opt.name&&g.name!==opt.name&&(g.full||'')!==opt.name))&&opt.name){/* v13 拆頁後舊的待選項目：依名稱在同系列子頁找 */const base=key.replace(/\d+$/,'');const ks=SLIDES.map(e=>e[0]).filter(k=>k===base||(k.startsWith(base)&&/^\d+$/.test(k.slice(base.length))));
   for(const k of ks){const mm=buildModel(params,{only:[k],labels:opt.labels});const s2=mm.slides[0];const j=s2.groups.findIndex(x=>x.name===opt.name||x.full===opt.name||String(x.name).startsWith(opt.name));if(j>=0){m=mm;sl=s2;g=s2.groups[j];gi=j;key=k;break;}}}
  if(!g)throw new Error('找不到元件 '+gi);
@@ -3231,7 +3261,7 @@ function tableResolvedBorders(table){if(!(table.merges||[]).length&&!table.cells
 function tblItems(it){const out=[],lines=[],highlights=[];let yy=it.y;
  tableResolvedBorders(it).forEach((r,ri)=>{let xx=it.x;const rh=it.rowH[ri];
   r.forEach((c,ci)=>{const step=it.colW[ci];if(c.covered){xx+=step;return;}const cw=it.colW.slice(ci,ci+(c.colSpan||1)).reduce((a,b)=>a+b,0),rh=it.rowH.slice(ri,ri+(c.rowSpan||1)).reduce((a,b)=>a+b,0);
-   out.push({t:'sp',kind:'rect',x:xx,y:yy,w:cw,h:rh,fill:c.fill,line:null,lw:0,runs:c.runs,tx:{align:c.align,valign:'middle',margin:[c.mL,c.mR!=null?c.mR:c.mL,c.mT,c.mT],lsp:1,size:c.size,font:F0(c),color:c.color,bold:c.bold}});
+   out.push({t:'sp',kind:'rect',x:xx,y:yy,w:cw,h:rh,fill:c.fill,line:null,lw:0,runs:c.runs,tx:{align:c.align,valign:c.valign||'middle',margin:[c.mL,c.mR!=null?c.mR:c.mL,c.mB!=null?c.mB:c.mT,c.mT],lsp:1,size:c.size,font:F0(c),color:c.color,bold:c.bold}});
    const edgeLines=edge=>(c.highlightEdges||[]).includes(edge)?highlights:lines;
    if(c.bT)edgeLines('bT').push({t:'ln',x1:xx,y1:yy,x2:xx+cw,y2:yy,color:c.bT.c,w:c.bT.w,dash:'solid'});
    if(c.bB)edgeLines('bB').push({t:'ln',x1:xx,y1:yy+rh,x2:xx+cw,y2:yy+rh,color:c.bB.c,w:c.bB.w,dash:'solid'});
@@ -3365,7 +3395,7 @@ function tableHtml(model,opt){const sl=tableCopyPage(model,opt);if(!sl)return ''
     if(b.type==='row'&&b.i===ri)hb+=`border-top:${HB};border-bottom:${HB};`+(ci===0?`border-left:${HB};`:'')+(ci===r.length-1?`border-right:${HB};`:'');
     if(b.type==='cell'&&b.r===ri&&b.c===ci)hb+=`border:${HB};`;
     if(b.type==='range'&&ri>=b.r0&&ri<=b.r1&&ci>=b.c0&&ci<=b.c1)hb+=(ri===b.r0?`border-top:${HB};`:'')+(ri===b.r1?`border-bottom:${HB};`:'')+(ci===b.c0?`border-left:${HB};`:'')+(ci===b.c1?`border-right:${HB};`:'');});
-   const css=`${c.fill?`background:#${c.fill};`:''}color:#${c.color};font-size:${c.size}pt;font-weight:${c.bold?700:400};text-align:${c.align};vertical-align:middle;padding:${c.mT}pt ${c.mR!=null?c.mR:c.mL}pt ${c.mT}pt ${c.mL}pt;font-family:${fstack(f).replace(/"/g,"'")};`+bd('top',c.bT)+bd('bottom',c.bB)+bd('left',c.bL)+bd('right',c.bR)+hb+(c.highlightEdges||[]).map(edge=>bd({bT:'top',bR:'right',bB:'bottom',bL:'left'}[edge],c[edge])).join('');
+   const css=`${c.fill?`background:#${c.fill};`:''}color:#${c.color};font-size:${c.size}pt;font-weight:${c.bold?700:400};text-align:${c.align};vertical-align:${c.valign||'middle'};padding:${c.mT}pt ${c.mR!=null?c.mR:c.mL}pt ${c.mB!=null?c.mB:c.mT}pt ${c.mL}pt;font-family:${fstack(f).replace(/"/g,"'")};`+bd('top',c.bT)+bd('bottom',c.bB)+bd('left',c.bL)+bd('right',c.bR)+hb+(c.highlightEdges||[]).map(edge=>bd({bT:'top',bR:'right',bB:'bottom',bL:'left'}[edge],c[edge])).join('');
    const one=x=>{const t=esc(x.t).replace(/\n/g,'<br>');const dif=x.o.size!==c.size||x.o.color!==c.color||!!x.o.bold!==!!c.bold;return (dif?`<span style="font-size:${x.o.size}pt;color:#${x.o.color};font-weight:${x.o.bold?700:400}">${t}</span>`:t)+(x.o.br?'<br>':'');};
    // The corner belongs to the top header row when both axes are headers.
    const scope=ri<(T.h0||0)?'col':ci===0&&T.hcol?'row':null,tag=scope?'th':'td';
@@ -3398,6 +3428,6 @@ function sanitizeParams(p,fallback,enums,ranges){fallback=fallback||BASE;enums=e
   if(typeof BASE[k]==='string'){const t=stripCtl(v);if(/^[\w .\-\u4e00-\u9fff]{0,40}$/.test(t))out[k]=t;return;}});
  if(p.tbPanel&&!p.tbLook)out.tbLook='card';out.tbCard='white';
  return out;}
-const api={SCHEME_CATALOGUE_KEYS,SCHEME_CATALOGUE_STYLES,TABLE_SIZING_DEFAULTS,TABLE_SIZING_KEYS,tableSizingOf,tableSizingFontOf,adoptTableSizing,iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableMerges,tableCellAt,tableDisplayRows,tableMerge,tableUnmerge,tableEditCell,tableShiftStructure,tableParseHtmlCells,tablePasteCells,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,TABLE_HIGHLIGHT_HUES,TABLE_HIGHLIGHT_PRESETS_V2,TABLE_HIGHLIGHT_PRESETS_V3,TABLE_HIGHLIGHT_ROLES,TABLE_HIGHLIGHT_PRESETS_V4,TABLE_HIGHLIGHT_FAMILIES,TABLE_HIGHLIGHT_BORDER_WIDTHS,tableHighlightBorderWidth,tableRangeBorderWidth,tableSetRangeBorderWidth,tableRangeBoldState,tableSetRangeBold,tableHighlightFamily,tableHighlightStroke,tableResolvedBorders,tableRangeEdge,tableHighlightPreset,tableHighlightPresetId,tableHighlightRolePresets,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,TABLE_HEADER_MODES,tableHeaderMode,tableSetHeaderMode,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,TABLE_APPEARANCE_KEYS,TABLE_APPEARANCE_DEFAULTS,tableAppearanceOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
+const api={TABLE_CELL_STYLE_KEYS,tableCellStyle,tableCellFormats,tableApplyCellStyle,tableLocks,tableSetLocks,tableLockedColumns,TABLE_THEME_KEYS,tableParams,SCHEME_CATALOGUE_KEYS,SCHEME_CATALOGUE_STYLES,TABLE_SIZING_DEFAULTS,TABLE_SIZING_KEYS,tableSizingOf,tableSizingFontOf,adoptTableSizing,iconPackModel,iconPackFilename,ICON_BASES,ICON_LOOKS,ICON_STATES,cleanIconStyle,iconComponentName,iconComponentPaint,FW_HELP,fwHelp,fwNotes,SPLIT_PARTS,USED,SECTIONS,tw,shortName,trayDeck,W,H,BASE,stripCtl,sanitizeParams,PRESETS,STYLES:PRESETS,SLIDES,SIZE_K,ICONS,mix,buildModel,toPptx,patchZip,groupXml,effectXml,exportPptx,exportElement,elementModel,elementSvg,toSvg,tableHtml,tablePageRows,tableSource,tableMerges,tableCellAt,tableDisplayRows,tableMerge,tableUnmerge,tableEditCell,tableShiftStructure,tableParseHtmlCells,tablePasteCells,tableFormatValue,assertTableExportComplete,TABLE_PREVIEW_BODY_ROWS,TABLE_HIGHLIGHT_LIMIT,TABLE_HIGHLIGHT_PRESETS,TABLE_HIGHLIGHT_HUES,TABLE_HIGHLIGHT_PRESETS_V2,TABLE_HIGHLIGHT_PRESETS_V3,TABLE_HIGHLIGHT_ROLES,TABLE_HIGHLIGHT_PRESETS_V4,TABLE_HIGHLIGHT_FAMILIES,TABLE_HIGHLIGHT_BORDER_WIDTHS,tableHighlightBorderWidth,tableRangeBorderWidth,tableSetRangeBorderWidth,tableRangeBoldState,tableSetRangeBold,tableHighlightFamily,tableHighlightStroke,tableResolvedBorders,tableRangeEdge,tableHighlightPreset,tableHighlightPresetId,tableHighlightRolePresets,tableNormalizeRange,tableRangeIntersection,tableRangeSubtract,tableMarkBounds,tableMarkContains,tableMarkRegions,tableRangeWinner,tableApplyRange,tableClearRange,tableShiftMarks,tableMarks,tNumVal,trayModel,TRAY_LAYOUTS,applyLabels,textOf,minFontOf,smallRuns,tableAuto,TABLE_HEADER_MODES,tableHeaderMode,tableSetHeaderMode,statusOf,TABLE_LOOKS,TABLE_LOOK_ALIAS,tableLookOf,TABLE_APPEARANCE_KEYS,TABLE_APPEARANCE_DEFAULTS,tableAppearanceOf,tFmt,tParts,tableColDec,tableSuggest,tableFromPaste,tableTitleSuggest,ensureContrast,contrastOf,langOf,FONT_STACK};
 if(typeof module!=='undefined')module.exports=api;else root.Deck=api;
 })(this);
