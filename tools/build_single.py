@@ -20,8 +20,8 @@ def inline(m):
     name = m.group(1)
     return f'<script data-inlined="{name}">\n/* ==== 內嵌：{name} ==== */\n{js(name)}\n</script>'
 html = re.sub(r'<script src="([^"?]+\.js)(?:\?v=[\w]+)?"></script>', inline, html)
-if found != 13:
-    sys.exit(f'預期內嵌 13 個 script，實際 {found} 個')
+if found != 17:
+    sys.exit(f'預期內嵌 17 個 script，實際 {found} 個')
 # Only inspect HTML tags, not template strings inside already inlined JS.
 static_html = re.sub(r'<script\b(?![^>]*\bsrc=)[^>]*>[\s\S]*?</script>', '', html)
 if re.search(r'<(script|link|img)[^>]+(src|href)="(?!data:|https?:|#)[^"]+"', static_html):

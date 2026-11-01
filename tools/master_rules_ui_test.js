@@ -1,0 +1,35 @@
+/* Narrow DOM/event checks, not a claim of browser pixel or Ribbon verification. */
+'use strict';
+const fs=require('fs'),path=require('path'),assert=require('assert/strict'),{JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
+const ROOT=path.resolve(__dirname,'..'),BASE=require('../fixed-master').exportPptx(require('jszip')),sleep=ms=>new Promise(r=>setTimeout(r,ms));
+class Resources extends ResourceLoader{fetch(url){const p=path.join(ROOT,path.basename(new URL(url).pathname));return fs.existsSync(p)?Promise.resolve(fs.readFileSync(p)):null;}}
+async function wait(fn,label){for(let i=0;i<600;i++){if(fn())return;await sleep(25);}throw Error('Timed out: '+label);}
+async function check(file,width,saved){
+ const errors=[],vc=new VirtualConsole();vc.on('jsdomError',e=>{if(!/navigation|HTMLCanvas|scrollTo/.test(e.message))errors.push(e.message);});
+ const html=fs.readFileSync(path.join(ROOT,file),'utf8').replace('function buildTableUI(){','window.__ruleEval=c=>eval(c);function buildTableUI(){');
+ const dom=new JSDOM(html,{url:'http://rules.test/studio.html',runScripts:'dangerously',resources:new Resources(),pretendToBeVisual:true,virtualConsole:vc,beforeParse(w){w.setImmediate=setImmediate;w.clearImmediate=clearImmediate;w.innerWidth=width;for(const[k,v]of Object.entries(saved||{}))w.localStorage.setItem(k,v);w.matchMedia=q=>({matches:width===360&&/max-width/.test(q),addEventListener(){},addListener(){}});w.HTMLElement.prototype.scrollIntoView=()=>{};w.HTMLElement.prototype.animate=()=>({finished:Promise.resolve()});w.HTMLCanvasElement.prototype.getContext=()=>({font:'',measureText:t=>({width:t.length*10})});w.scrollTo=()=>{};w.confirm=()=>true;}});
+ const w=dom.window,$=s=>w.document.querySelector(s),run=s=>w.__ruleEval(s),json=s=>JSON.parse(run('JSON.stringify('+s+')'));
+ try{
+  await wait(()=>w.__studioApi,'initialization');if(w.document.readyState!=='complete')await new Promise(r=>w.addEventListener('load',r,{once:true}));await sleep(100);assert.deepEqual(errors,[]);
+  if(saved){assert(json('MASTER_SELECTED').includes('master:single:07'));assert(json('FAVORITES').includes('master:single:07'));assert(run('RULE_STATE.pages["master:single:07"].typography'));}
+  w.__base=new w.Uint8Array(await BASE);run('MASTER_BASE_PROMISE=Promise.resolve(window.__base);RULE_STATE=PR.blank();RULE_UNDO=[];RULE_REDO=[];MASTER_SELECTED=[];FAVORITES=[];syncRuleForm();setTab("master")');
+  assert.equal(w.document.querySelectorAll('[data-master-select]').length,24);assert(!$('#vSlides').contains($('#prPanel')));
+  const select='[data-master-select="master:single:07"]';$(select).click();assert.deepEqual(json('MASTER_SELECTED'),['master:single:07']);$('[data-master-favorite="master:single:07"]').click();$('[data-master-favorite="master:single:06"]').click();$('#myFavorites [data-favorite-up="master:single:07"]').click();assert.equal(run('FAVORITES[0]'),'master:single:07');$('#myFavorites [data-favorite-remove="master:single:06"]').click();$('#myFavorites [data-favorite-go="master:single:07"]').click();assert.equal(w.document.activeElement.dataset.masterId,'master:single:07');
+  $('[data-master-rules]').click();assert.equal($('#prScope').value,'master');assert($('#prPanel').open);assert($('[data-rule-category=semantic]').disabled);assert(!$( '[data-rule-category=semantic]').checked);assert($('#prScopeNote').textContent.includes('語意角色'));
+  $('[data-rule-category=layout]').checked=false;$('#pr-body').value='16';$('#pr-title').value='30';
+  w.confirm=()=>false;const before=run('JSON.stringify(RULE_STATE)');$('#prApply').click();assert.equal(run('JSON.stringify(RULE_STATE)'),before);w.confirm=()=>true;
+  $('#prApply').click();await wait(()=>!$('#prApply').disabled,'apply selected mother rules');assert(run('RULE_STATE.pages["master:single:07"].typography'));assert.equal(Object.keys(json('RULE_STATE.pages')).length,1);const n=run('RULE_UNDO.length');$('#prApply').click();await wait(()=>!$('#prApply').disabled,'repeat');assert.equal(run('RULE_UNDO.length'),n);
+  $('#prUndo').click();assert(!run('RULE_STATE.pages["master:single:07"]'));$('#prRedo').click();assert(run('RULE_STATE.pages["master:single:07"]'));
+  $('#prCheck').click();await wait(()=>$('#prIssues [data-rule-except]'),'mother inspection');const q=json('RULE_ISSUES[0]');$('#prIssues [data-rule-except="0"]').click();await wait(()=>$('#prIssues').textContent.includes('保留差異'),'exception');assert(run('RULE_STATE.exceptions.includes('+JSON.stringify(q.id)+')'));
+  $('#prCheck').click();await wait(()=>run('RULE_CHECK_REV')!==null,'check revision');const current=run('JSON.stringify(RULE_STATE)');$('#pr-title').value='31';$('#prIssues [data-rule-fix]').click();assert.equal(run('JSON.stringify(RULE_STATE)'),current);assert($('#prStatus').textContent.includes('已改變'));$('#pr-title').value='30';
+  run('window.__downloads=[];saveBlob=(blob,name)=>window.__downloads.push({blob,name})');
+  $('[data-master-copy]').click();$('[data-master-copy]').click();await wait(()=>!run('MASTER_RULE_JOB'),'copy');assert.equal(w.__downloads.length,1);assert(w.__downloads[0].name.includes('規則副本'));assert($('[data-master-copy-status]').textContent.includes('僅 1 頁'));
+  // Changing selection during generation cancels the stale file; original download remains separate.
+  $('[data-master-copy]').click();$('[data-master-select="master:single:06"]').click();await wait(()=>!run('MASTER_RULE_JOB'),'stale copy');assert.equal(w.__downloads.length,1);assert($('[data-master-copy-status]').textContent.includes('已改變'));$('[data-master-select="master:single:06"]').click();
+  run('window.FixedMaster={...window.FixedMaster,exportPptx:async()=>window.__base}');$('[data-fm-download="template"]').click();await wait(()=>w.__downloads.length===2,'original download');assert(!w.__downloads[1].name.includes('規則副本'));await wait(()=>!$('#vMaster .fm').getAttribute('aria-busy')||$('#vMaster .fm').getAttribute('aria-busy')==='false','original finish');
+  $('#prScope').value='current';$('#prScope').dispatchEvent(new w.Event('change'));assert($('[data-rule-category=semantic]').disabled);$('#prScope').value='comparison';$('#prScope').dispatchEvent(new w.Event('change'));assert(!$('[data-rule-category=semantic]').disabled);
+  const storage=Object.fromEntries(Object.keys(w.localStorage).map(k=>[k,w.localStorage.getItem(k)]));run("Object.getPrototypeOf(localStorage).setItem=function(){throw Error('blocked')}");$('[data-master-favorite="master:single:03"]').click();assert($('#favoritesStatus').textContent.includes('本機儲存不可用'));assert.deepEqual(errors,[]);
+  console.log('PASS '+file+' '+width+'px: 24 mother page IDs/favorites/pin/remove/restore; explicit semantic disable; scope/cancel/atomic apply/repeat/undo; issue/exception/stale guard; copy/original downloads; storage fallback');return storage;
+ }catch(e){console.error('UI status:', $('#prStatus')?.textContent,'errors:',errors);throw e;}finally{w.close();}
+}
+(async()=>{if(process.env.ONLY_OFFLINE){await check('PPT-Style-Studio.html',360);return;}const saved=await check('studio.html',1366);await check('PPT-Style-Studio.html',360,saved);})().catch(e=>{console.error(e.stack);process.exitCode=1;});

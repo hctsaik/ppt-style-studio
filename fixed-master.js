@@ -314,6 +314,27 @@
    const body=textBody('Abc',16).replace(fill('333333'),'').replace('<a:pPr>','<a:pPr algn="ctr">');
    parts.push('<p:sp><p:nvSpPr><p:cNvPr id="'+(9101+row*6+col)+'" name="Native ShapeStyle '+shapeStyle+'"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr><p:spPr><a:xfrm><a:off x="'+emu(650+col*96)+'" y="'+emu(181+row*76)+'"/><a:ext cx="'+emu(83)+'" cy="'+emu(53)+'"/></a:xfrm><a:prstGeom prst="roundRect"><a:avLst/></a:prstGeom></p:spPr>'+style+body+'</p:sp>');
   }
+  // Additional editable specimens use the spare left column. Keep all 36
+  // native gallery entries and the balanced-v2 theme matrix byte-for-byte.
+  // Each fill/line uses this slide's own Accent slot, with dark theme ink.
+  const pale=materialPage('',1),solid=(role,tint)=>'<a:solidFill>'+NativeStyles.colorXml(role,[['tint',tint]])+'</a:solidFill>';
+  pale.label('Pale styles heading',84,256,530,34,'淺色快用樣式',20);
+  const paleRows=[{key:'soft',label:'柔霧底',tint:22000},{key:'outline',label:'細框淡底',tint:9000},{key:'gradient',label:'輕漸層',tint:26000}];
+  paleRows.forEach((spec,row)=>{
+   const y=330+row*98;
+   pale.label('Pale row '+spec.key,84,y-27,530,23,spec.label,14,'595959');
+   for(let col=0;col<6;col++){
+    const role='accent'+(col+1);
+    const background=spec.key==='gradient'?'<a:gradFill rotWithShape="1"><a:gsLst><a:gs pos="0">'+NativeStyles.colorXml(role,[['tint',8000]])+'</a:gs><a:gs pos="100000">'+NativeStyles.colorXml(role,[['tint',spec.tint]])+'</a:gs></a:gsLst><a:lin ang="5400000" scaled="0"/></a:gradFill>':solid(role,spec.tint);
+    const line=spec.key==='outline'?'<a:ln w="12700">'+solid(role,55000)+'<a:prstDash val="solid"/></a:ln>':'<a:ln><a:noFill/></a:ln>';
+    const style='<p:style><a:lnRef idx="0">'+NativeStyles.colorXml(role)+'</a:lnRef><a:fillRef idx="0">'+NativeStyles.colorXml(role)+'</a:fillRef><a:effectRef idx="0">'+NativeStyles.colorXml(role)+'</a:effectRef><a:fontRef idx="minor">'+NativeStyles.colorXml('dk2')+'</a:fontRef></p:style>';
+    const body=textBody('Abc',16).replace(fill('333333'),'<a:solidFill>'+NativeStyles.colorXml('dk2')+'</a:solidFill>').replace('<a:pPr>','<a:pPr algn="ctr">');
+    pale.shape('Pale '+spec.key+' '+role,84+col*87,y,77,54,background+line+'<a:effectLst/>',body,style);
+   }
+  });
+  const paleShapes=pale.xml().match(/<p:sp><p:nvSpPr><p:cNvPr id="10[1-9]"[\s\S]*?<\/p:sp>|<p:sp><p:nvSpPr><p:cNvPr id="1[1-9][0-9]"[\s\S]*?<\/p:sp>/g)||[];
+  if(paleShapes.length!==22)throw Error('Expected heading, three labels and 18 pale specimens');
+  parts.push(...paleShapes.map(sp=>sp.replace(/(<p:cNvPr id=")(\d+)(")/,(_,a,id,b)=>a+(9200+Number(id))+b)));
   // Source slide has locally declared DrawingML namespaces; new shapes need a
   // root declaration without touching any source master/layout or its fonts.
   xml=xml.replace('<p:sld ', '<p:sld xmlns:a="'+A+'" ');
@@ -434,6 +455,7 @@
   function draw(){const old=container.querySelector('[data-fm-examples]');if(old)r.examplesOpen=old.open;const active=doc.activeElement,key=active&&container.contains(active)?active.getAttribute('data-fm-field'):null,disabled=r.busy?' disabled':'',s=r.state;
    const colors=SINGLE_SCHEMES[0].accents,previewData=doc.defaultView.FixedMasterPreviews,previews=previewData&&previewData.pages===DOWNLOAD_PAGES.length?previewData:null;
    container.innerHTML='<div class="fm" aria-busy="'+r.busy+'"><span class="fmLock">固定母片 · 不跟隨網站風格</span><h2>投影片母片</h2><div class="fmActions"><button type="button" class="fmPrimary" data-fm-download="template"'+disabled+'>下載 '+DOWNLOAD_PAGES.length+' 頁母片</button></div><p class="fmStatus" role="status" aria-live="polite" data-fm-status>'+esc(r.status)+'</p><div class="fmOrigins" aria-label="'+DOWNLOAD_PAGES.length+' 頁母片預覽">'+DOWNLOAD_PAGES.map((p,i)=>'<figure class="'+(p.schemeId?'fmOriginal':'fmAdded')+'"><figcaption>第 '+(i+1)+' 頁 · '+esc(p.label)+'</figcaption>'+(previews&&previews.images&&previews.images[i]?'<img src="'+previews.images[i]+'" alt="'+esc(p.label)+'" width="960" height="540">':'<p>'+esc(p.title)+'</p>')+'</figure>').join('')+'</div></div>';
+   if(r.options.onRender)r.options.onRender(container);
    if(key){const next=container.querySelector('[data-fm-field="'+key+'"]');if(next&&!next.disabled)next.focus();}
    container.onclick=async e=>{const b=e.target.closest('button[data-fm-download]');if(!b||!container.contains(b)||r.busy)return;const mode=b.dataset.fmDownload;if(!['template','materials'].includes(mode))return;const snapshot=clone(r.state);r.focusDownload=mode;r.busy=true;r.status='正在準備原生封裝…';draw();try{const result=await r.options.onDownload({mode,selection:snapshot});r.status=result===false?'已取消；設定保留。':(mode==='template'?'已產生 '+DOWNLOAD_PAGES.length+' 頁母片':'已產生三頁卡片與文字素材')+'並交由瀏覽器處理；請確認下載紀錄。';}catch(err){r.status='未完成下載：'+err.message;}finally{r.busy=false;draw();if(container.isConnected&&!container.hidden&&doc.activeElement===doc.body){const done=container.querySelector('[data-fm-download="'+r.focusDownload+'"]');if(done)done.focus();}}};
   }
